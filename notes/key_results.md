@@ -272,3 +272,36 @@ With the observed data fixed,
 **Library mapping:** `core/solvers.py::GuerreroSpectralSolver`, `models/guerrero.py::GuerreroTrend`.
 
 **Status:** source definition verified; default library implementation corrected and tested. The historical iterated-drift algorithm is explicit as `IteratedDriftTrend`.
+
+
+## 10. Fixed lambda is not fixed smoothness when N changes
+
+The normalized smoothness index depends on sample size:
+
+\[
+s_d(\lambda;N)
+=
+\frac{
+1-N^{-1}\operatorname{tr}(I+\lambda D_d^\top D_d)^{-1}
+}{
+1-d/N
+}.
+\]
+
+Therefore, generally,
+
+\[
+\boxed{
+s_d(\lambda;N_1)\neq s_d(\lambda;N_2)
+}
+\]
+
+for \(N_1\neq N_2\).
+
+For the active object \(S^\star_{T,h,L}\), inner validation therefore uses fixed-width windows \(L\) when one common \(\lambda\) is optimized across origins.
+
+**Library mapping:** `core/smoothness.py`, `validation/rolling_origin.py`, `selection/forecast_optimal.py::select_fixed_window_pure_smoothness`.
+
+**Status:** design implication documented and fixed-window selector implemented.
+
+Detailed note: `notes/window_and_smoothness.md`.

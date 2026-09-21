@@ -63,6 +63,8 @@ At forecast origin \(T\), fitting code may use only observations available at or
 
 Repeated evaluation should use rolling or expanding forecast origins. Random internal masking is useful for a different question—trend reconstruction/interpolation—but it is not the main validation protocol for the active forecasting paper.
 
+Because normalized smoothness depends on fitted sample size, the active \(S^\star_{T,h,L}\) design uses fixed-width inner windows for each candidate \(L\). The library helper `select_fixed_window_pure_smoothness` performs this inner selection.
+
 ## Numerical selection of smoothness
 
 The active numerical direction is:

@@ -94,7 +94,11 @@ H S_\lambda Q S_\lambda Q S_\lambda y_{\mathrm{past}}
 \end{equation}
 
 For repeated chronological forecast origins, the active validation objective
-pools future-block squared errors before selecting a common penalty.
+pools future-block squared errors before selecting a common penalty. Because
+the normalized smoothness index depends on sample length, the principal
+inner-validation design uses a fixed-width window $L$ for each candidate
+configuration. Thus all inner fits for a given $(d,L)$ use the same sample size,
+and a common $\lambda$ corresponds to one common normalized smoothness level.
 
 \section{Numerical selection}
 We work with

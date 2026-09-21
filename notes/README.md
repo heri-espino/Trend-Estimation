@@ -24,5 +24,6 @@ Every note describing a mathematical result should include:
 - `numerical_selection.md` — stationary-point search in log-\(\lambda\).
 - `model_definitions.md` — exact estimator definitions and Guerrero-model audit.
 - `roadmap.md` — active-paper roadmap and rationale.
+- `window_and_smoothness.md` — why fixed \(\lambda\) is not fixed smoothness when sample length changes.
 
 When a result graduates into the public API, keep the note and update its library mapping rather than deleting the derivation.

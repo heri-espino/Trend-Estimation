@@ -190,3 +190,12 @@ Before trusting a numerical result:
 ## Canonical roadmap
 
 `notes/roadmap.md` is the authoritative record of what has been done, what is next, and why.
+
+
+## Window-length/smoothness invariant
+
+Normalized smoothness depends on fitted sample size \(N\). A common raw \(\lambda\) across expanding origins therefore does not imply a common smoothness level.
+
+For the active object \(S^\star_{T,h,L}\), prefer fixed-width inner windows when optimizing one common \(\lambda\) for a candidate \(L\). The helper `select_fixed_window_pure_smoothness` implements this design.
+
+See `notes/window_and_smoothness.md`.

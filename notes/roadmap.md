@@ -76,16 +76,20 @@ Reference: `notes/numerical_selection.md`.
 
 ## Phase 4 — Temporal validation design
 
-**Status:** partial.
+**Status:** active; inner fixed-window selector implemented.
 
 - [x] chronological rolling-origin split generator;
-- [ ] nested rolling selector for \((d,L,\lambda)\);
-- [ ] expanding-window protocol;
-- [ ] fixed-window protocol;
-- [ ] multiple forecast horizons;
+- [x] identify that fixed \(\lambda\) is not fixed normalized smoothness when \(N\) changes;
+- [x] fixed-window inner selector for candidate \((d,L,\lambda)\);
+- [x] convert selected \(\lambda\) to smoothness using the candidate window \(N=L\);
+- [ ] complete nested outer rolling evaluation;
+- [ ] expanding-window robustness protocol;
+- [ ] multiple forecast horizons in the outer experiment grid;
 - [ ] leakage tests for the complete nested pipeline.
 
-**Why:** one 60/20/20 split can make the selected smoothness depend on one historical episode.
+**Why:** one 60/20/20 split can make the selected smoothness depend on one historical episode. Fixed-width inner windows also give a clean interpretation of a shared \(\lambda\) as a shared smoothness level for each candidate \(L\).
+
+Reference: `notes/window_and_smoothness.md`.
 
 ## Phase 5 — Controlled simulations
 
