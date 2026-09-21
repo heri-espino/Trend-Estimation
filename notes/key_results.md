@@ -26,10 +26,7 @@ solves
 \min_t\;\|y-t\|_2^2+\lambda\|D_dt\|_2^2.
 \]
 
-**Library mapping**
-
-- `src/trend_estimation/core/pure.py`
-- `src/trend_estimation/models/pure_penalized.py`
+**Library mapping:** `core/pure.py`, `models/pure_penalized.py`.
 
 **Status:** implemented and tested.
 
@@ -41,15 +38,11 @@ S_\lambda'=-S_\lambda Q S_\lambda
 }
 \]
 
-and therefore
-
 \[
 \boxed{
 \widehat t_\lambda'=-S_\lambda Q\widehat t_\lambda
 }
 \]
-
-and
 
 \[
 \boxed{
@@ -59,15 +52,13 @@ and
 }
 \]
 
-**Library mapping**
-
-- `src/trend_estimation/core/derivatives.py::pure_trend_derivatives`
+**Library mapping:** `core/derivatives.py::pure_trend_derivatives`.
 
 **Status:** implemented and tested against centered finite differences.
 
 ## 3. Forecast residual at origin T
 
-For forecast horizon \(h\), let \(H\) denote the linear continuation operator used by the pure model and let
+For horizon \(h\), let \(H\) denote the linear continuation operator used by the pure model:
 
 \[
 r_T(\lambda)
@@ -87,12 +78,9 @@ H S_\lambda Q S_\lambda y_{\mathrm{past}}.
 }
 \]
 
-**Library mapping**
+**Library mapping:** `forecasting/extrapolation.py`, `forecasting/objectives.py`.
 
-- continuation logic: `src/trend_estimation/forecasting/extrapolation.py`
-- forecast-loss derivative: `src/trend_estimation/forecasting/objectives.py`
-
-**Status:** derived; implementation is the active numerical objective.
+**Status:** derived and implemented.
 
 ## 4. Forecast MSE derivatives
 
@@ -101,8 +89,6 @@ With
 \[
 f_T(\lambda)=\frac{1}{h}r_T(\lambda)^\top r_T(\lambda),
 \]
-
-we obtain
 
 \[
 \boxed{
@@ -130,20 +116,15 @@ H S_\lambda Q S_\lambda Q S_\lambda y_{\mathrm{past}}
 }
 \]
 
-**Library mapping**
+**Library mapping:** `core/derivatives.py::mse_from_prediction_derivatives`, `forecasting/objectives.py::pure_forecast_loss_derivatives`.
 
-- generic MSE derivative identity:
-  `src/trend_estimation/core/derivatives.py::mse_from_prediction_derivatives`
-- forecast objective:
-  `src/trend_estimation/forecasting/objectives.py`
-
-**Status:** derived; tested numerically in the library.
+**Status:** implemented with finite-difference tests.
 
 Detailed derivation: `notes/derivative.md`.
 
 ## 5. Rolling-origin aggregate objective
 
-For forecast origins \(T_1,\ldots,T_M\),
+For origins \(T_1,\ldots,T_M\),
 
 \[
 \boxed{
@@ -154,7 +135,7 @@ CV(\lambda)
 }
 \]
 
-The same pooling applies to the derivatives:
+and
 
 \[
 \boxed{
@@ -170,12 +151,9 @@ CV''(\lambda)
 }
 \]
 
-**Library mapping**
+**Library mapping:** `validation/rolling_origin.py`, `forecasting/objectives.py::rolling_pure_forecast_loss_derivatives`.
 
-- splits: `src/trend_estimation/validation/rolling_origin.py`
-- aggregate objective: `src/trend_estimation/forecasting/objectives.py`
-
-**Status:** derived and implemented for the pure penalized trend.
+**Status:** implemented and tested against explicit weighted aggregation.
 
 ## 6. Log-lambda transformation
 
@@ -205,7 +183,7 @@ g''(\theta)
 }
 \]
 
-Thus stationary points are unchanged for \(\lambda>0\):
+Thus
 
 \[
 g'(\theta)=0
@@ -213,13 +191,11 @@ g'(\theta)=0
 f'(\lambda)=0.
 \]
 
-**Library mapping**
-
-- `src/trend_estimation/selection/numerical.py`
+**Library mapping:** `selection/numerical.py`.
 
 **Status:** implemented.
 
-## 7. Robust stationary-point strategy
+## 7. Bracketed stationary-point strategy
 
 On a bounded log-penalty domain:
 
@@ -233,23 +209,21 @@ On a bounded log-penalty domain:
 \rightarrow
 \text{classify}
 \rightarrow
-\text{evaluate minima and boundaries}.
+\text{evaluate stationary points and boundaries}.
 }
 \]
 
-This avoids assuming that the cross-validation objective is unimodal.
+**Library mapping:** `selection/numerical.py::find_stationary_points_log_lambda`.
 
-**Library mapping**
+**Status:** implemented and tested on a known multimodal objective.
 
-- `src/trend_estimation/selection/numerical.py::find_stationary_points_log_lambda`
-
-**Status:** implementation target for the active paper; compare against grid and Newton.
+**Important limitation:** a finite discovery grid can miss multiple roots inside one interval or a tangential root with no sign change. Dense/adaptive diagnostic scans remain part of validation.
 
 Detailed note: `notes/numerical_selection.md`.
 
 ## 8. Active scientific object
 
-The primary empirical object is not raw \(\lambda^\star\) alone. We want to study
+The primary empirical object is not raw \(\lambda^\star\) alone:
 
 \[
 \boxed{
@@ -261,8 +235,6 @@ g(h,L,\mathcal R_T,\text{series class})
 
 together with out-of-sample forecast skill.
 
-**Library mapping**
-
-This is an experiment-level object built from reusable library components. No paper-specific estimator logic should be added to the manuscript directory.
+**Library mapping:** experiment-level object assembled from reusable library components.
 
 **Status:** active research question.

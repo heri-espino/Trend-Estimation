@@ -36,8 +36,11 @@ from trend_estimation.selection import (
     TimeWeightedValidationSelector,
     SmoothnessSelector,
     LambdaOptimizationResult,
+    StationaryPoint,
+    StationaryPointSearchResult,
     minimize_over_log_lambda,
     newton_stationary_log_lambda,
+    find_stationary_points_log_lambda,
 )
 from trend_estimation.validation import (
     mse_loss,
@@ -49,7 +52,15 @@ from trend_estimation.validation import (
     RollingOriginSplit,
     rolling_origin_splits,
 )
-from trend_estimation.forecasting import ForecastResult, forecast_trend, build_polynomial_from_tail
+from trend_estimation.forecasting import (
+    ForecastResult,
+    forecast_trend,
+    build_polynomial_from_tail,
+    ForecastLossDerivatives,
+    RollingForecastLossDerivatives,
+    pure_forecast_loss_derivatives,
+    rolling_pure_forecast_loss_derivatives,
+)
 from trend_estimation.metrics import mae, mse, rmse, mape, smape, error_metrics_table, compare_error_tables, roughness_d
 from trend_estimation.datasets import (
     SyntheticTrendData,
@@ -87,10 +98,13 @@ __all__ = [
     "HPTrend", "WhittakerTrend", "MovingAverageTrend", "ExponentialSmoothingTrend",
     "PolynomialTrendForecaster", "BaseTrendSelector", "BaseSelectionCriterion", "SelectionResult",
     "golden_local", "find_all_local_minima", "TrainValidationSelector", "TimeWeightedValidationSelector",
-    "SmoothnessSelector", "LambdaOptimizationResult", "minimize_over_log_lambda",
-    "newton_stationary_log_lambda", "mse_loss", "weighted_mse", "TimeWeightedValidationLoss",
+    "SmoothnessSelector", "LambdaOptimizationResult", "StationaryPoint", "StationaryPointSearchResult",
+    "minimize_over_log_lambda", "newton_stationary_log_lambda", "find_stationary_points_log_lambda",
+    "mse_loss", "weighted_mse", "TimeWeightedValidationLoss",
     "make_time_weights", "train_val_test_split", "train_val_test_split_indices", "RollingOriginSplit",
     "rolling_origin_splits", "ForecastResult", "forecast_trend", "build_polynomial_from_tail",
+    "ForecastLossDerivatives", "RollingForecastLossDerivatives",
+    "pure_forecast_loss_derivatives", "rolling_pure_forecast_loss_derivatives",
     "mae", "mse", "rmse", "mape", "smape", "error_metrics_table", "compare_error_tables", "roughness_d",
     "SyntheticTrendData", "make_polynomial_trend_series", "make_noisy_trend_series", "make_piecewise_trend_series",
     "make_sinusoidal_trend_series", "make_local_linear_trend_series", "make_structural_break_series",
