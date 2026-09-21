@@ -1,6 +1,6 @@
 from trend_estimation.models.base import BaseTrendEstimator, TrendFitResult
 from trend_estimation.models.penalized_trend import PenalizedTrend
-from trend_estimation.models.guerrero import GuerreroTrend
+from trend_estimation.models.guerrero import GuerreroTrend, IteratedDriftTrend
 from trend_estimation.models.pure_penalized import PurePenalizedTrend
 from trend_estimation.models.hp_filter import HPTrend
 from trend_estimation.models.whittaker import WhittakerTrend
@@ -13,6 +13,7 @@ __all__ = [
     "TrendFitResult",
     "PenalizedTrend",
     "GuerreroTrend",
+    "IteratedDriftTrend",
     "PurePenalizedTrend",
     "HPTrend",
     "WhittakerTrend",

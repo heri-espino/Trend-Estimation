@@ -15,13 +15,30 @@ def _cached_solver(n_obs: int, order: int) -> GuerreroSpectralSolver:
 
 
 class PenalizedTrend(BaseTrendEstimator):
-    """Guerrero-style penalized least-squares trend estimator."""
+    """Finite-difference penalized trend with optional drift.
 
-    def __init__(self, order: int = 2, smoothness: float | None = 0.75, lambda_: float | None = None, estimate_drift: bool = True):
+    Default drift_mode="data" is the Guerrero (2007) feasible plug-in
+    estimator. drift_mode="iterated" reproduces the historical repository
+    variant, while drift_mode="zero" removes the drift term.
+
+    The old estimate_drift argument remains accepted. Explicit True maps to the
+    historical iterative mode and False maps to zero drift.
+    """
+
+    def __init__(
+        self,
+        order: int = 2,
+        smoothness: float | None = 0.75,
+        lambda_: float | None = None,
+        *,
+        drift_mode: str = "data",
+        estimate_drift: bool | None = None,
+    ):
         self.order = int(order)
         self.smoothness = smoothness
         self.lambda_ = lambda_
-        self.estimate_drift = bool(estimate_drift)
+        self.drift_mode = str(drift_mode)
+        self.estimate_drift = estimate_drift
 
     def fit(self, y, X=None):
         y = as_1d_float_array(y)
@@ -34,7 +51,13 @@ class PenalizedTrend(BaseTrendEstimator):
             lambda_value = self.solver_.lambda_from_s(float(self.smoothness))
         else:
             lambda_value = float(self.lambda_)
-        solver_result = self.solver_.fit_for_lambda(y, lambda_value, estimate_drift=self.estimate_drift)
+
+        solver_result = self.solver_.fit_for_lambda(
+            y,
+            lambda_value,
+            drift_mode=self.drift_mode,
+            estimate_drift=self.estimate_drift,
+        )
         self.trend_ = solver_result.trend
         self.fitted_values_ = self.trend_
         self.residuals_ = y - self.trend_
@@ -42,6 +65,7 @@ class PenalizedTrend(BaseTrendEstimator):
         self.lambda_ = solver_result.lambda_
         self.smoothness_ = solver_result.smoothness
         self.sigma2_hat_ = solver_result.sigma2_hat
+        self.drift_mode_ = solver_result.drift_mode
         self.fit_result_ = TrendFitResult(
             y_=self.y_,
             trend_=self.trend_,
@@ -50,7 +74,12 @@ class PenalizedTrend(BaseTrendEstimator):
             order_=self.order,
             lambda_=self.lambda_,
             smoothness_=self.smoothness_,
-            metadata_={"m_hat": self.m_hat_, "sigma2_hat": self.sigma2_hat_},
+            metadata_={
+                "model": "guerrero_plugin" if self.drift_mode_ == "data" else "penalized_trend",
+                "drift_mode": self.drift_mode_,
+                "m_hat": self.m_hat_,
+                "sigma2_hat": self.sigma2_hat_,
+            },
         )
         return self
 
