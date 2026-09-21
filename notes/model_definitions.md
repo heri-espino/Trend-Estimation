@@ -30,7 +30,7 @@ This is the canonical model for the active derivative and numerical-optimization
 
 ## B. Guerrero (2007) plug-in drift formulation
 
-The uploaded Guerrero paper must be treated as the authority when we describe the published estimator. The relevant plug-in structure is
+The Guerrero (2007) source has now been checked directly. The paper first gives the known-drift estimator
 
 \[
 \widehat\tau_{\lambda,d}
@@ -42,24 +42,48 @@ y+
 \right),
 \]
 
-where the literature audit should verify exactly how \(\widehat m_y\) is estimated from the observed series.
+and then, in equation (17), estimates the unknown drift from the observed differences:
 
-Our current working reading is that the paper's plug-in estimator computes the drift from observed differences rather than repeatedly re-estimating it from the fitted trend. This must be checked against the paper text before being stated as a final manuscript claim.
+\[
+\boxed{
+\widehat m_y
+=
+\frac{1}{N-d}\mathbf1^\top D_d y.
+}
+\]
 
-## C. Current iterative library variant
+Substitution gives equation (18):
 
-The existing `GuerreroSpectralSolver` initializes a drift and repeatedly updates it from the fitted trend. Therefore its current numerical definition is not automatically identical to model B.
+\[
+\boxed{
+\widehat\tau_{\lambda,d}
+=
+(I+\lambda D_d^\top D_d)^{-1}
+\left(
+y+
+\lambda\widehat m_yD_d^\top\mathbf1
+\right).
+}
+\]
 
-Until the audit is complete, call this implementation:
+With the observed sample fixed, \(\widehat m_y\) does not depend on \(\lambda\).
 
-**Guerrero-style iterative drift variant**
+## C. Historical iterative library variant
 
-rather than asserting that it is exactly the published Guerrero (2007) estimator.
+The repository previously initialized a drift and repeatedly updated it from the fitted trend. That procedure is not Guerrero (2007) equation (18).
+
+It is retained only for reproducibility under the explicit name:
+
+**IteratedDriftTrend**
+
+or equivalently `drift_mode="iterated"`.
 
 **Library**
 
 - `src/trend_estimation/core/solvers.py::GuerreroSpectralSolver`
-- `src/trend_estimation/models/guerrero.py::GuerreroTrend`
+- `src/trend_estimation/models/guerrero.py::IteratedDriftTrend`
+
+The canonical `GuerreroTrend` now uses `drift_mode="data"` and implements model B.
 
 ## D. Possible jointly estimated drift model
 
@@ -114,7 +138,7 @@ This is mathematically attractive because it again has the pure quadratic form w
 
 The forecast-optimal-smoothing paper should begin with model A because its derivative and forecast objective can be stated exactly and tested cleanly.
 
-Models B/C/D can become robustness comparisons only after their definitions and relationship to the literature are resolved.
+Model B is now a literature-aligned extension available for robustness comparisons. Model C is historical/reproducibility only. Model D remains a separate possible methodological extension.
 
 ## Library mapping rule
 

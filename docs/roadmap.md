@@ -6,7 +6,8 @@ This file tracks library engineering. The active paper's scientific roadmap is `
 
 - finite-difference operators;
 - pure penalized trend;
-- Guerrero-style iterative drift variant;
+- Guerrero (2007) observed-difference plug-in estimator;
+- explicitly named historical iterated-drift variant;
 - spectral solution machinery;
 - smoothness/lambda conversion;
 - analytic first and second derivatives for the pure trend;

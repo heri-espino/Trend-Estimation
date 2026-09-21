@@ -238,3 +238,37 @@ together with out-of-sample forecast skill.
 **Library mapping:** experiment-level object assembled from reusable library components.
 
 **Status:** active research question.
+
+
+## 9. Guerrero (2007) plug-in drift
+
+For the literature-aligned feasible estimator,
+
+\[
+\widehat m_y
+=
+\frac{1}{N-d}\mathbf1^\top D_dy,
+\]
+
+and
+
+\[
+\widehat\tau_{\lambda,d}
+=
+(I+\lambda D_d^\top D_d)^{-1}
+\left(
+y+\lambda\widehat m_yD_d^\top\mathbf1
+\right).
+\]
+
+With the observed data fixed,
+
+\[
+\boxed{
+\partial\widehat m_y/\partial\lambda=0.
+}
+\]
+
+**Library mapping:** `core/solvers.py::GuerreroSpectralSolver`, `models/guerrero.py::GuerreroTrend`.
+
+**Status:** source definition verified; default library implementation corrected and tested. The historical iterated-drift algorithm is explicit as `IteratedDriftTrend`.

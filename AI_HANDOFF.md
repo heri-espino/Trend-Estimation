@@ -141,9 +141,17 @@ Use `rolling_origin_splits` and eventually nested rolling-origin evaluation for 
 
 Random internal masking belongs to smoothing/reconstruction experiments, not to the main forecasting claim.
 
-## Model-definition caution
+## Guerrero model definition
 
-The current `GuerreroTrend` library implementation re-estimates its drift from the fitted trend. Guerrero (2007) must be checked carefully before calling this implementation the published Guerrero plug-in estimator. Until the literature audit is complete, use the wording **Guerrero-style library variant** for the current iterative implementation.
+The Guerrero (2007) source has now been checked directly. Its feasible estimator uses
+
+\[
+\widehat m_y=(N-d)^{-1}\mathbf1^\top D_dy
+\]
+
+computed from the observed differenced series and plugs that value into the penalized estimator. The canonical `GuerreroTrend` now implements this as `drift_mode="data"`.
+
+The previous repository algorithm that re-estimated drift from the fitted trend is preserved explicitly as `IteratedDriftTrend` / `drift_mode="iterated"`. Do not call that historical variant Guerrero (2007) equation (18).
 
 See `notes/model_definitions.md`.
 

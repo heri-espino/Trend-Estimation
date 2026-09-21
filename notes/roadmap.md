@@ -29,13 +29,15 @@ The paper is not "a new way to choose lambda by cross-validation." Cross-validat
 
 ## Phase 1 — Mathematical model audit
 
-**Status:** active.
+**Status:** complete for the current stage.
 
 - [x] pure penalized model defined;
 - [x] pure first/second derivatives derived and implemented;
-- [ ] verify the exact Guerrero (2007) drift estimator from the source;
-- [ ] decide whether the iterative library variant should be renamed/replaced/supplemented;
-- [ ] add explicit model-distinction tests if the Guerrero API changes.
+- [x] Guerrero (2007) equations (17)--(18) checked directly;
+- [x] canonical `GuerreroTrend` aligned with the observed-difference plug-in estimator;
+- [x] historical iterative variant renamed `IteratedDriftTrend`;
+- [x] direct formula/model-distinction tests added;
+- [ ] derive/test Guerrero plug-in forecast-loss sensitivity only if it becomes necessary for the active experiments.
 
 Reference: `notes/model_definitions.md`.
 

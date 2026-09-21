@@ -142,7 +142,7 @@ Implemented:
 
 - finite-difference operators;
 - pure penalized smoother;
-- Guerrero-style library variant;
+- Guerrero (2007) plug-in estimator plus an explicitly named historical iterated-drift variant;
 - spectral solution machinery;
 - analytic first and second \(\lambda\)-derivatives for the pure smoother;
 - train/validation selectors;
