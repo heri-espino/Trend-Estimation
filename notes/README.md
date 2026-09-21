@@ -25,5 +25,6 @@ Every note describing a mathematical result should include:
 - `model_definitions.md` — exact estimator definitions and Guerrero-model audit.
 - `roadmap.md` — active-paper roadmap and rationale.
 - `window_and_smoothness.md` — why fixed \(\lambda\) is not fixed smoothness when sample length changes.
+- `nested_validation.md` — leakage-free outer/inner rolling evaluation and no-change benchmark.
 
 When a result graduates into the public API, keep the note and update its library mapping rather than deleting the derivation.

@@ -55,11 +55,16 @@ from trend_estimation.validation import (
     train_val_test_split_indices,
     RollingOriginSplit,
     rolling_origin_splits,
+    NestedForecastRecord,
+    NestedRollingForecastResult,
+    nested_rolling_pure_forecast,
 )
 from trend_estimation.forecasting import (
     ForecastResult,
     forecast_trend,
     build_polynomial_from_tail,
+    ForecastAffineOperator,
+    finite_difference_forecast_operator,
     ForecastLossDerivatives,
     RollingForecastLossDerivatives,
     pure_forecast_loss_derivatives,
@@ -91,6 +96,7 @@ from trend_estimation.benchmarks import (
     run_benchmark,
     benchmark_metrics_table,
     default_benchmark_models,
+    no_change_forecast,
 )
 
 __all__ = [
@@ -106,7 +112,7 @@ __all__ = [
     "minimize_over_log_lambda", "newton_stationary_log_lambda", "find_stationary_points_log_lambda", "ForecastOptimalCandidate", "ForecastOptimalSelection", "select_fixed_window_pure_smoothness",
     "mse_loss", "weighted_mse", "TimeWeightedValidationLoss",
     "make_time_weights", "train_val_test_split", "train_val_test_split_indices", "RollingOriginSplit",
-    "rolling_origin_splits", "ForecastResult", "forecast_trend", "build_polynomial_from_tail", "ForecastAffineOperator", "finite_difference_forecast_operator",
+    "rolling_origin_splits", "NestedForecastRecord", "NestedRollingForecastResult", "nested_rolling_pure_forecast", "ForecastResult", "forecast_trend", "build_polynomial_from_tail", "ForecastAffineOperator", "finite_difference_forecast_operator",
     "ForecastLossDerivatives", "RollingForecastLossDerivatives",
     "pure_forecast_loss_derivatives", "rolling_pure_forecast_loss_derivatives",
     "mae", "mse", "rmse", "mape", "smape", "error_metrics_table", "compare_error_tables", "roughness_d",
@@ -114,7 +120,7 @@ __all__ = [
     "make_sinusoidal_trend_series", "make_local_linear_trend_series", "make_structural_break_series",
     "plot_smoothed_series", "plot_train_val_test_split", "plot_validation_curve", "plot_forecasted_trend",
     "plot_metrics_table", "plot_benchmark_forecasts", "plot_benchmark_metrics", "set_style",
-    "BenchmarkResult", "BenchmarkRunner", "run_benchmark", "benchmark_metrics_table", "default_benchmark_models",
+    "BenchmarkResult", "BenchmarkRunner", "run_benchmark", "benchmark_metrics_table", "default_benchmark_models", "no_change_forecast",
 ]
 
 __version__ = "0.2.0a0"

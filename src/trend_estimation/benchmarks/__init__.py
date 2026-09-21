@@ -1,3 +1,4 @@
+from trend_estimation.benchmarks.naive import no_change_forecast
 from trend_estimation.benchmarks.results import BenchmarkResult
 from trend_estimation.benchmarks.runner import BenchmarkRunner, run_benchmark
 from trend_estimation.benchmarks.tables import benchmark_metrics_table
@@ -9,4 +10,5 @@ __all__ = [
     "run_benchmark",
     "benchmark_metrics_table",
     "default_benchmark_models",
+    "no_change_forecast",
 ]

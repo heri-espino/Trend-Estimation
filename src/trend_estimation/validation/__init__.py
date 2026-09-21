@@ -7,4 +7,13 @@ __all__ = [
     "mse_loss", "weighted_mse", "TimeWeightedValidationLoss", "make_time_weights",
     "train_val_test_split", "train_val_test_split_indices", "RollingOriginSplit",
     "rolling_origin_splits",
+    "NestedForecastRecord",
+    "NestedRollingForecastResult",
+    "nested_rolling_pure_forecast",
 ]
+
+from .nested_forecast import (
+    NestedForecastRecord,
+    NestedRollingForecastResult,
+    nested_rolling_pure_forecast,
+)

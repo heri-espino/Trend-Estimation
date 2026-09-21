@@ -82,10 +82,11 @@ Reference: `notes/numerical_selection.md`.
 - [x] identify that fixed \(\lambda\) is not fixed normalized smoothness when \(N\) changes;
 - [x] fixed-window inner selector for candidate \((d,L,\lambda)\);
 - [x] convert selected \(\lambda\) to smoothness using the candidate window \(N=L\);
-- [ ] complete nested outer rolling evaluation;
+- [x] complete nested outer rolling evaluator;
+- [x] no-change/random-walk level benchmark in the nested evaluator;
+- [x] direct leakage-invariance test for the outer forecast;
 - [ ] expanding-window robustness protocol;
 - [ ] multiple forecast horizons in the outer experiment grid;
-- [ ] leakage tests for the complete nested pipeline.
 
 **Why:** one 60/20/20 split can make the selected smoothness depend on one historical episode. Fixed-width inner windows also give a clean interpretation of a shared \(\lambda\) as a shared smoothness level for each candidate \(L\).
 
