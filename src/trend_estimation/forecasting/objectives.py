@@ -9,7 +9,7 @@ from trend_estimation.core.derivatives import (
     mse_from_prediction_derivatives,
     pure_trend_derivatives,
 )
-from trend_estimation.forecasting.extrapolation import forecast_trend
+from trend_estimation.forecasting.operators import finite_difference_forecast_operator
 from trend_estimation.utils.arrays import as_1d_float_array
 
 
@@ -52,9 +52,9 @@ def pure_forecast_loss_derivatives(
     prediction' = -H S Q S y
     prediction'' = 2 H S Q S Q S y
 
-    The implementation never constructs H explicitly. Because the pure
-    continuation is linear, the same recursion can be applied to the trend and
-    to its first two lambda derivatives.
+    The implementation constructs the same finite-dimensional linear operator
+    H used in the derivation. This is tested against the recursive forecast
+    implementation so the paper notation and code share one continuation rule.
     """
 
     y_past = as_1d_float_array(y_past)
@@ -70,9 +70,15 @@ def pure_forecast_loss_derivatives(
         lambda_=float(lambda_),
     )
     steps = int(y_future.size)
-    prediction = forecast_trend(derivatives.trend, int(order), 0.0, steps)
-    prediction_first = forecast_trend(derivatives.first, int(order), 0.0, steps)
-    prediction_second = forecast_trend(derivatives.second, int(order), 0.0, steps)
+    operator = finite_difference_forecast_operator(
+        n_fit=y_past.size,
+        order=int(order),
+        steps=steps,
+    )
+    H = operator.trend_matrix
+    prediction = H @ derivatives.trend
+    prediction_first = H @ derivatives.first
+    prediction_second = H @ derivatives.second
 
     value, first, second = mse_from_prediction_derivatives(
         y_future,

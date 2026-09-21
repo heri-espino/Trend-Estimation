@@ -103,7 +103,7 @@ __all__ = [
     "minimize_over_log_lambda", "newton_stationary_log_lambda", "find_stationary_points_log_lambda",
     "mse_loss", "weighted_mse", "TimeWeightedValidationLoss",
     "make_time_weights", "train_val_test_split", "train_val_test_split_indices", "RollingOriginSplit",
-    "rolling_origin_splits", "ForecastResult", "forecast_trend", "build_polynomial_from_tail",
+    "rolling_origin_splits", "ForecastResult", "forecast_trend", "build_polynomial_from_tail", "ForecastAffineOperator", "finite_difference_forecast_operator",
     "ForecastLossDerivatives", "RollingForecastLossDerivatives",
     "pure_forecast_loss_derivatives", "rolling_pure_forecast_loss_derivatives",
     "mae", "mse", "rmse", "mape", "smape", "error_metrics_table", "compare_error_tables", "roughness_d",

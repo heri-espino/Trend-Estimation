@@ -1,5 +1,6 @@
 from .base import ForecastResult
 from .extrapolation import forecast_trend, build_polynomial_from_tail
+from .operators import ForecastAffineOperator, finite_difference_forecast_operator
 from .objectives import (
     ForecastLossDerivatives,
     RollingForecastLossDerivatives,
@@ -12,6 +13,8 @@ __all__ = [
     "ForecastResult",
     "forecast_trend",
     "build_polynomial_from_tail",
+    "ForecastAffineOperator",
+    "finite_difference_forecast_operator",
     "ForecastLossDerivatives",
     "RollingForecastLossDerivatives",
     "pure_forecast_loss_derivatives",
