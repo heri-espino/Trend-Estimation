@@ -1,54 +1,113 @@
 # Trend Estimation
 
-`trend_estimation` is a research-oriented Python library for penalized trend estimation, temporal validation, forecasting, and downstream decision experiments in time series.
+`trend_estimation` is a research-oriented Python library for penalized trend estimation, chronological validation, forecasting, and numerical smoothness selection.
 
-The project now treats two related smoothers as first-class models rather than conflating them.
+The repository is deliberately **library-first**. Reusable mathematics, estimators, validation protocols, optimizers, metrics, and simulation tools belong in `src/trend_estimation/`. Papers and experiments consume the installed library; they should not duplicate estimator mathematics.
 
-## Model A: pure finite-difference penalization
+## Active research question
 
-For observations \(y\in\mathbb{R}^n\), difference operator \(D_d\), and \(\lambda\ge 0\),
+The current paper studies **forecast-optimal smoothness**:
+
+\[
+S^\star = S^\star(h,L,\mathcal R,\text{series class}),
+\]
+
+where \(h\) is forecast horizon, \(L\) is the estimation-window length, and \(\mathcal R\) denotes local time-series conditions such as volatility, serial dependence, signal-to-noise ratio, and structural change.
+
+The planned empirical progression is
+
+\[
+\text{macroeconomic series}
+\rightarrow
+\text{market indices / ETFs}
+\rightarrow
+\text{individual equities}
+\rightarrow
+\text{crypto}.
+\]
+
+The goal is not to assume that "more volatility means less predictability." The goal is to measure how forecast-optimal smoothing and forecast skill vary with horizon, window length, and local stochastic regime.
+
+The downstream portfolio/decision-aware project is **paused**. It remains a possible future extension but is not part of the active paper.
+
+## Core model currently used for analytic work
+
+For observations \(y\in\mathbb R^n\), difference operator \(D_d\), and \(Q=D_d^\top D_d\),
 
 \[
 \widehat t_{\lambda,d}
-=\arg\min_t\{\|y-t\|_2^2+\lambda\|D_dt\|_2^2\}
-=(I+\lambda D_d^\top D_d)^{-1}y.
+=
+\arg\min_t
+\left\{
+\|y-t\|_2^2+\lambda\|D_dt\|_2^2
+\right\}
+=
+(I+\lambda Q)^{-1}y.
 \]
 
-This model has especially simple analytic sensitivity with respect to \(\lambda\):
+Writing \(S_\lambda=(I+\lambda Q)^{-1}\),
 
 \[
-\frac{\partial \widehat t}{\partial\lambda}=-SQS y,
+S_\lambda'=-S_\lambda Q S_\lambda,
 \qquad
-\frac{\partial^2 \widehat t}{\partial\lambda^2}=2SQSQS y,
+\widehat t_\lambda'=-S_\lambda Q\widehat t_\lambda,
+\qquad
+\widehat t_\lambda''=2S_\lambda Q S_\lambda Q\widehat t_\lambda.
 \]
 
-where \(Q=D_d^\top D_d\) and \(S=(I+\lambda Q)^{-1}\).
+These identities are implemented and tested in the library.
 
-Use `PurePenalizedTrend` when the goal is a transparent quadratic smoother, analytic derivatives, or experiments with differentiable hyperparameter selection.
+## Forecast validation invariant
 
-## Model B: Guerrero-style smoother with drift
+At forecast origin \(T\), fitting code may use only observations available at or before \(T\). Future observations can score the forecast but may not influence the fitted trend.
 
-The original project is retained as a separate model:
+Repeated evaluation should use rolling or expanding forecast origins. Random internal masking is useful for a different question—trend reconstruction/interpolation—but it is not the main validation protocol for the active forecasting paper.
+
+## Numerical selection of smoothness
+
+The active numerical direction is:
 
 \[
-\widehat\tau_{\lambda,d}
-=(I+\lambda D_d^\top D_d)^{-1}
-\left(y+\lambda\widehat m D_d^\top\mathbf 1\right),
+\text{coarse log-}\lambda\text{ scan}
+\rightarrow
+\text{bracket roots of }CV'(\lambda)
+\rightarrow
+\text{Brent root solving}
+\rightarrow
+\text{classify stationary points}
+\rightarrow
+\text{evaluate every local minimum}.
 \]
 
-with \(\widehat m\) estimated from the fitted trend. Because \(\widehat m=\widehat m(\lambda)\), its full derivative requires differentiating the coupled fixed-point/system rather than copying the pure-model derivative.
+Newton in log-\(\lambda\) remains useful as a refinement/benchmark, but not as the only global search when the validation objective is multimodal.
 
-Use `GuerreroTrend` for this formulation. `PenalizedTrend` remains as a backward-compatible alias.
+See `notes/key_results.md`, `notes/derivative.md`, and `notes/numerical_selection.md`.
 
-## Research direction
+## Papers
 
-The current research program separates three questions:
+Paper directories use the convention `paper_<short-title>/`.
 
-1. **Estimation:** how should a smooth trend be defined and computed?
-2. **Hyperparameter selection:** should \(\lambda\) be chosen by GCV, temporal forecast loss, or analytic/numerical optimization?
-3. **Decision-aware selection:** does the \(\lambda\) that minimizes forecast error differ from the \(\lambda\) that maximizes downstream financial utility?
+- `paper_forecast-optimal-smoothing/` — **active research paper**.
+- `paper_penalized-trend-tutorial/` — mathematical/tutorial companion; currently secondary.
+- `paper/` — legacy S&P 500 manuscript assets retained as historical material, not a canonical manuscript.
 
-All financial validation must be chronological. Future observations may be used to score a fitted model, but never to construct the fitted trend used to predict them.
+The active paper must call the installed `trend_estimation` package for experiments. If a method is useful beyond one manuscript, implement it in the library first.
+
+## Internal research documentation
+
+`notes/` is the scientific notebook for this repository.
+
+- `notes/key_results.md`: compact list of results we currently rely on.
+- `notes/derivative.md`: step-by-step forecast-loss derivative derivation.
+- `notes/numerical_selection.md`: root-finding strategy for high-degree/non-unimodal objectives.
+- `notes/model_definitions.md`: exact estimator definitions and unresolved model-identification issues.
+- `notes/roadmap.md`: canonical record of what we are doing, why, what is done, and what comes next.
+
+Every mathematical note should state where the result is used in `src/trend_estimation/` and whether it is implemented, tested, or only derived.
+
+## Literature
+
+`literature/` holds the bibliography manifest and research-reading workflow. Local PDFs belong in `literature/pdfs/`, which is ignored by Git so copyrighted or institutionally accessed files are not redistributed accidentally.
 
 ## Installation
 
@@ -59,44 +118,23 @@ python -m pip install -e ".[dev,finance]"
 pytest
 ```
 
-## Minimal examples
-
-```python
-import trend_estimation as td
-
-series = td.make_polynomial_trend_series(
-    n_obs=160, degree=2, noise_std=0.4, random_state=123
-)
-y = series.y
-
-pure = td.PurePenalizedTrend(order=2, lambda_=100.0).fit(y)
-guerrero = td.GuerreroTrend(order=2, smoothness=0.75).fit(y)
-
-sensitivity = td.pure_trend_derivatives(y, order=2, lambda_=100.0)
-print(sensitivity.first.shape)
-```
-
-For temporal selection:
-
-```python
-selector = td.TrainValidationSelector(orders=[1, 2, 3])
-selection = selector.fit(y, train_idx=slice(0, 100), val_idx=slice(100, 130))
-```
-
-The selector fits on the training prefix and evaluates forecasts on the later validation block; validation observations are not included in the fit.
-
 ## Repository layout
 
 ```text
-src/trend_estimation/   reusable library code
-tests/                  unit and mathematical-consistency tests
-paper/formal/           compact research manuscript
-paper/tutorial/         step-by-step pedagogical companion
-experiments/            reproducible research experiments
-legacy/                 historically important snapshots
+src/trend_estimation/                  reusable research library
+tests/                                 unit and mathematical-consistency tests
+notes/                                 internal derivations, checkpoints, roadmap
+literature/                            bibliography manifest and RAG workflow
+paper_forecast-optimal-smoothing/      active paper
+paper_penalized-trend-tutorial/        tutorial companion
+experiments/                           reproducible experiments using the library
+paper/                                 legacy S&P 500 manuscript assets
+legacy/                                older historical snapshots
 ```
 
-The exact pre-refactor state is preserved on branch `archive/pre-research-v2`.
+## Research-workspace policy
+
+The current repository is a maintainer-controlled research workspace. The current `main` branch may be reorganized, renamed, or refactored when that improves the research program. Old directory structure is not treated as an API contract. Scientific provenance is preserved through Git history and the existing archive material rather than by freezing current source layout.
 
 ## Status
 
@@ -104,24 +142,25 @@ Implemented:
 
 - finite-difference operators;
 - pure penalized smoother;
-- Guerrero-style penalized smoother with drift;
+- Guerrero-style library variant;
 - spectral solution machinery;
 - analytic first and second \(\lambda\)-derivatives for the pure smoother;
-- temporal train/validation selection;
+- train/validation selectors;
 - rolling-origin split generation;
-- log-\(\lambda\) numerical optimization utilities;
-- polynomial continuation implied by finite differences;
+- log-\(\lambda\) optimization utilities;
+- multiple-local-minimum diagnostics;
+- forecasting/extrapolation helpers;
 - benchmark models, metrics, plotting, synthetic datasets, and tests.
 
-Next research tasks:
+Immediate work for the active paper:
 
-- derive/implement implicit differentiation for the Guerrero fixed-point system;
-- implement GCV and blocked/rolling CV selectors;
-- benchmark Brent/Newton/grid selection in log-\(\lambda\) space;
-- add trend-filtering and state-space baselines;
-- formalize financial signals and portfolio objectives;
-- compare forecast-optimal and decision-optimal smoothing.
+1. implement the differentiable forecast-loss objective;
+2. implement bracketed stationary-point search in log-\(\lambda\);
+3. verify both against finite differences and synthetic functions;
+4. formalize rolling-origin/nested temporal selection;
+5. run controlled simulations;
+6. move from macroeconomic series to index/ETF, equity, and crypto data;
+7. study how optimal smoothness and forecast skill vary by horizon, window, and regime;
+8. add formal forecast-comparison inference and robustness checks.
 
-## References
-
-The package is conceptually related to Guerrero (2007), Hodrick--Prescott filtering, Whittaker--Henderson smoothing, smoothing splines, and trend filtering. The software itself should not be interpreted as claiming novelty for those classical components; the research contribution is evaluated at the level of the full estimation-selection-decision pipeline.
+The canonical detailed plan is `notes/roadmap.md`.

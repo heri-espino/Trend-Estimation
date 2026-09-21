@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "trend-estimation"
 version = "0.2.0a0"
-description = "Research library for penalized trend estimation, temporal selection, and decision-aware experiments."
+description = "Research library for penalized trend estimation, chronological validation, forecasting, and numerical smoothness selection."
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}

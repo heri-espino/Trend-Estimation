@@ -33,9 +33,14 @@ venv/
 *.synctex.gz
 *.toc
 
-# Paper build products (source files stay tracked)
+# Manuscript build products
 paper/build/*
 !paper/build/.gitkeep
+paper_*/build/
+
+# Local literature corpus / RAG source files
+# Keep metadata, notes, and extracted text tracked; do not redistribute PDFs by default.
+literature/pdfs/
 
 # Regenerable experiment outputs
 examples/outputs/

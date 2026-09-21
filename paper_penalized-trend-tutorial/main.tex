@@ -1,0 +1,141 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,mathtools,booktabs,hyperref}
+
+\title{Penalized Trend Estimation from First Principles: A Step-by-Step Companion}
+\author{Heriberto Espino Montelongo}
+\date{\today}
+
+\newcommand{\R}{\mathbb{R}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This companion document explains the mathematical and computational ideas used
+in the Trend Estimation library for a reader who has not previously studied
+penalized smoothing. It develops finite differences, quadratic penalties,
+closed-form trend estimation, temporal forecasting, analytic sensitivity, and
+numerical smoothness selection. The active research paper is separate; this
+document is pedagogical and must remain consistent with the tested library and
+the derivations recorded under \texttt{notes/}.
+\end{abstract}
+
+\section{The pure penalized smoother}
+Let $y=(y_1,\ldots,y_n)^\top\in\R^n$ and let $D_d$ compute finite
+differences of order $d$. We define
+\[
+Q=D_d^\top D_d.
+\]
+The pure penalized trend solves
+\[
+\min_t\;\|y-t\|_2^2+\lambda\|D_dt\|_2^2,
+\]
+so
+\[
+\boxed{
+\widehat t_\lambda=(I+\lambda Q)^{-1}y.
+}
+\]
+The implementation solves the corresponding linear/spectral system rather than
+forming an explicit dense inverse.
+
+\section{Sensitivity to the penalty}
+Writing
+\[
+S_\lambda=(I+\lambda Q)^{-1},
+\]
+the inverse-matrix derivative gives
+\[
+S_\lambda'=-S_\lambda Q S_\lambda.
+\]
+Therefore
+\[
+\boxed{
+\widehat t_\lambda'=-S_\lambda Q\widehat t_\lambda,
+}
+\]
+and
+\[
+\boxed{
+\widehat t_\lambda''
+=
+2S_\lambda Q S_\lambda Q\widehat t_\lambda.
+}
+\]
+
+\section{Forecast loss}
+At a forecast origin $T$, no future observation may influence the fitted trend.
+Let $H$ denote the continuation operator and let
+\[
+r_T(\lambda)
+=
+y_{T+1:T+h}
+-
+H S_\lambda y_{\mathrm{past}}.
+\]
+Then
+\[
+r_T'
+=
+H S_\lambda Q S_\lambda y_{\mathrm{past}},
+\]
+and for
+\[
+f_T(\lambda)=\frac1h r_T^\top r_T,
+\]
+we obtain
+\[
+\boxed{
+f_T'(\lambda)
+=
+\frac{2}{h}
+r_T^\top
+H S_\lambda Q S_\lambda y_{\mathrm{past}}.
+}
+\]
+A second derivative is available as well and is derived step by step in
+\texttt{notes/derivative.md}.
+
+\section{Why optimize log-lambda?}
+Set
+\[
+\theta=\log\lambda,
+\qquad
+\lambda=e^\theta.
+\]
+If $g(\theta)=f(e^\theta)$, then
+\[
+g'(\theta)=\lambda f'(\lambda),
+\qquad
+g''(\theta)=\lambda f'(\lambda)+\lambda^2f''(\lambda).
+\]
+This preserves positivity and makes multiplicative penalty scales easier to
+search.
+
+\section{Multiple stationary points}
+A validation objective need not be unimodal. The active numerical strategy is
+therefore to use a coarse log-penalty grid to locate derivative sign changes,
+apply a bracketed root solver to each interval, classify the stationary points,
+and compare all local minima with the search boundaries. Newton and direct
+bounded minimization remain useful comparison methods.
+
+\section{Chronological validation}
+Rolling-origin evaluation repeats
+\[
+1{:}T_j
+\longrightarrow
+T_j{+}1{:}T_j{+}h
+\]
+at several origins. This separates genuine forecasting from interpolation or
+trend reconstruction with future observations available on both sides.
+
+\section{Implementation map}
+Reusable mathematics belongs in \texttt{src/trend\_estimation}. Internal
+derivations and research decisions live in \texttt{notes/}. The active
+research manuscript lives in \texttt{paper\_forecast-optimal-smoothing/}.
+
+\end{document}

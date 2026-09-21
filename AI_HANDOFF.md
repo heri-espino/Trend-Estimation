@@ -1,84 +1,184 @@
 # AI Handoff
 
-This repository is `Trend-Estimation`. The current research direction generalizes the original Guerrero-style project into an experimental library for penalized trend estimation, chronological hyperparameter selection, analytic sensitivity, and eventual decision-aware financial optimization.
+This repository is `Trend-Estimation`.
 
-## Safety snapshot
+## Repository role
 
-The exact repository state before the research-v2 refactor is preserved on branch:
+Treat the repository as a **shared research library**, not as a single-paper repository. Reusable estimators, mathematical operators, validation schemes, optimizers, simulations, metrics, and plotting belong under `src/trend_estimation/` or other reusable library modules. Individual papers should consume that library rather than copy estimator logic.
 
-`archive/pre-research-v2`
+The maintainer has explicitly allowed the current repository layout to be changed freely when useful. Do not preserve an obsolete directory structure merely because it existed before. Git history and `legacy/` provide provenance.
 
-Do not rewrite that branch.
+## Active paper only
 
-## Canonical models
+Current work is focused on:
 
-### Pure penalized trend
+`paper_forecast-optimal-smoothing/`
+
+Working title:
+
+**Forecast-Optimal Trend Smoothing under Changing Time-Series Regimes**
+
+The current scientific question is whether forecast-optimal smoothness changes systematically with:
+
+- forecast horizon \(h\);
+- estimation-window length \(L\);
+- local volatility;
+- serial dependence/persistence;
+- signal-to-noise structure;
+- structural breaks/regimes;
+- series class and observation frequency.
+
+Planned data progression:
 
 \[
-\widehat t_{\lambda,d}=(I+\lambda D_d^\top D_d)^{-1}y.
+\text{macro}
+\rightarrow
+\text{indices/ETFs}
+\rightarrow
+\text{equities}
+\rightarrow
+\text{crypto}.
 \]
 
-Code:
+The decision-aware/portfolio project is paused. Do not add portfolio objectives, trading rules, or `lambda_decision` experiments unless the maintainer explicitly reactivates that work.
+
+## Canonical analytic model for current derivations
+
+Use the pure quadratic finite-difference smoother:
+
+\[
+\widehat t_{\lambda,d}
+=
+(I+\lambda D_d^\top D_d)^{-1}y.
+\]
+
+Let \(Q=D_d^\top D_d\) and \(S_\lambda=(I+\lambda Q)^{-1}\). Then
+
+\[
+S_\lambda'=-S_\lambda Q S_\lambda,
+\]
+
+\[
+\widehat t_\lambda'=-S_\lambda Q\widehat t_\lambda,
+\qquad
+\widehat t_\lambda''=2S_\lambda Q S_\lambda Q\widehat t_\lambda.
+\]
+
+Implementation:
 
 - `src/trend_estimation/core/pure.py`
-- `src/trend_estimation/models/pure_penalized.py`
 - `src/trend_estimation/core/derivatives.py`
+- `src/trend_estimation/models/pure_penalized.py`
 
-The implemented derivatives with respect to lambda belong to this model.
+## Forecast-loss derivative
 
-### Guerrero trend with estimated drift
+For an origin \(T\), horizon \(h\), and a linear forecast operator \(H\),
 
 \[
-\widehat\tau_{\lambda,d}
-=(I+\lambda D_d^\top D_d)^{-1}
-\left(y+\lambda\widehat mD_d^\top\mathbf1\right).
+r_T(\lambda)
+=
+y_{T+1:T+h}
+-
+H S_\lambda y_{\mathrm{past}}.
 \]
 
-Code:
+Then
 
-- `src/trend_estimation/core/solvers.py`
-- `src/trend_estimation/models/penalized_trend.py`
-- explicit research name: `GuerreroTrend`
-- backward-compatible name: `PenalizedTrend`
+\[
+r_T'
+=
+H S_\lambda Q S_\lambda y_{\mathrm{past}},
+\]
 
-Important: the solver re-estimates `m_hat` from the fitted trend. Therefore `m_hat = m_hat(lambda)` and the pure-model derivative cannot be copied to the Guerrero model. Full Guerrero sensitivity is a pending implicit-differentiation task.
+\[
+f_T'(\lambda)
+=
+\frac{2}{h}
+r_T^\top H S_\lambda Q S_\lambda y_{\mathrm{past}},
+\]
+
+and
+
+\[
+f_T''(\lambda)
+=
+\frac{2}{h}
+\left[
+\|H S_\lambda Q S_\lambda y_{\mathrm{past}}\|_2^2
+-
+2r_T^\top H S_\lambda Q S_\lambda Q S_\lambda y_{\mathrm{past}}
+\right].
+\]
+
+The full derivation is canonical in `notes/derivative.md`. If code and the note disagree, resolve the discrepancy explicitly; do not silently change the mathematics.
+
+## Numerical search
+
+Prefer \(\theta=\log\lambda\). If \(g(\theta)=f(e^\theta)\),
+
+\[
+g'(\theta)=\lambda f'(\lambda),
+\qquad
+g''(\theta)=\lambda f'(\lambda)+\lambda^2f''(\lambda).
+\]
+
+The intended robust search is:
+
+1. scan a coarse grid in \(\theta\);
+2. bracket sign changes in \(g'\);
+3. solve each bracket with Brent's root method;
+4. classify stationary points;
+5. evaluate every local minimum plus the search boundaries;
+6. retain the global minimum on the stated bounded domain.
+
+Newton is a benchmark/refinement, not the only search method.
 
 ## Validation invariant
 
-Financial experiments must be chronological. At forecast origin `T`, the fit may use only observations available through `T`. Future observations may score a forecast but may never participate in constructing the fitted trend.
+For financial/economic forecasting, at origin \(T\), no observation after \(T\) may affect the fitted trend or hyperparameter selection used to predict that future block.
 
-Use `rolling_origin_splits` for repeated chronological evaluation.
+Use `rolling_origin_splits` and eventually nested rolling-origin evaluation for tuning \((d,L,\lambda)\).
 
-## Lambda optimization
+Random internal masking belongs to smoothing/reconstruction experiments, not to the main forecasting claim.
 
-Prefer `theta = log(lambda)` for numerical optimization. Utilities live in `src/trend_estimation/selection/numerical.py`.
+## Model-definition caution
+
+The current `GuerreroTrend` library implementation re-estimates its drift from the fitted trend. Guerrero (2007) must be checked carefully before calling this implementation the published Guerrero plug-in estimator. Until the literature audit is complete, use the wording **Guerrero-style library variant** for the current iterative implementation.
+
+See `notes/model_definitions.md`.
+
+## Notes are canonical internal documentation
+
+Before changing the active research direction, read:
+
+- `notes/key_results.md`
+- `notes/derivative.md`
+- `notes/numerical_selection.md`
+- `notes/model_definitions.md`
+- `notes/roadmap.md`
+
+Every new nontrivial result should be added to `notes/key_results.md` and receive a detailed note when derivation or interpretation matters.
 
 ## Papers
 
-Two manuscripts are canonical:
+- `paper_forecast-optimal-smoothing/`: active paper.
+- `paper_penalized-trend-tutorial/`: tutorial companion, secondary.
+- `paper/`: legacy S&P 500 manuscript assets, not canonical.
 
-- `paper/formal/main.tex`: compact research paper.
-- `paper/tutorial/main.tex`: step-by-step pedagogical companion.
-
-They must describe the same estimators and notation. The tutorial can be slower and more explicit but must not silently simplify the formal model.
-
-The previous S&P 500 manuscript remains in the root of `paper/` temporarily as migration material; its exact original state is also in the archive branch.
+Paper scripts should import the installed `trend_estimation` package. Do not put reusable estimator mathematics inside paper folders.
 
 ## Testing priorities
 
-Before trusting a new optimization result:
+Before trusting a numerical result:
 
 1. run the full test suite;
-2. compare analytic derivatives with centered finite differences;
-3. verify chronological split boundaries;
-4. ensure experiments identify whether they use the pure or Guerrero model;
-5. separate forecast-loss results from downstream decision/portfolio results.
+2. compare analytic derivatives against centered finite differences;
+3. verify forecast-origin chronology;
+4. compare root-based search against a dense diagnostic grid on synthetic cases;
+5. report the exact bounded log-\(\lambda\) search domain;
+6. distinguish level forecasting from return/direction forecasting;
+7. compare price forecasts against a random-walk/no-change benchmark.
 
-## Next research tasks
+## Canonical roadmap
 
-- implement implicit differentiation for the Guerrero fixed-point system;
-- implement GCV and rolling/blocked CV selectors;
-- compare grid, Brent, and Newton selection in log-lambda space;
-- add trend-filtering/state-space baselines;
-- define financial trend signals and portfolio objectives;
-- test whether `lambda_forecast` and `lambda_decision` differ materially.
+`notes/roadmap.md` is the authoritative record of what has been done, what is next, and why.

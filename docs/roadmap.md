@@ -1,37 +1,39 @@
-# Roadmap
+# Library Roadmap
+
+This file tracks library engineering. The active paper's scientific roadmap is `notes/roadmap.md`.
 
 ## Implemented
 
-- Penalized trend estimator.
-- Guerrero-style spectral solver with drift estimation.
-- Smoothness-index to `lambda_` conversion.
-- Train-validation selector.
-- Multiple-local-minimum detection.
-- Time-weighted validation selector.
-- Polynomial extrapolation from trend tail.
-- Plotting functions returning `matplotlib.figure.Figure`.
-- Error metric tables.
-- Synthetic datasets.
+- finite-difference operators;
+- pure penalized trend;
+- Guerrero-style iterative drift variant;
+- spectral solution machinery;
+- smoothness/lambda conversion;
+- analytic first and second derivatives for the pure trend;
+- train-validation selection;
+- multiple-local-minimum diagnostics;
+- time-weighted validation;
+- rolling-origin split generation;
+- log-lambda bounded minimization and Newton utilities;
+- forecasting/extrapolation helpers;
+- metrics, plotting, synthetic datasets, and benchmarks.
 
-## Experimental
+## Active library work for forecast-optimal smoothing
 
-- The legacy scripts in `experiments/` remain useful for reproducing earlier exploratory work.
-- The precise statistical interpretation of the drift and endpoint behavior should be documented more rigorously before submission.
+- differentiable future-block forecast objective;
+- pooled rolling-origin objective derivatives;
+- bracketed stationary-point search with Brent in log-lambda space;
+- tests against finite differences and known multimodal objectives;
+- nested rolling-origin selector for \((d,L,\lambda)\);
+- robust random-walk/no-change forecast benchmark utilities.
 
-## Planned
+## Later library work
 
-- GCV selector.
-- AICc/BIC selectors.
-- Rolling-origin and blocked CV.
-- AR(1), ARMA/ARIMA and state-space noise models.
-- Kalman smoothing.
-- Multivariate penalized trends.
-- Segmented smoothness.
-- Benchmark suite against `statsmodels`, `sktime`, and `pybaselines`.
+- GCV/AICc/BIC selectors where scientifically useful;
+- blocked CV for smoothing/reconstruction studies;
+- trend-filtering and state-space baselines;
+- richer regime/simulation generators;
+- AR/ARMA/ARIMA noise models;
+- multivariate or segmented smoothness only if motivated by the active research.
 
-## Not implemented
-
-- Full multivariate model.
-- Full ARIMA/state-space models.
-- Automatic JOSS paper generation.
-- Production-quality benchmark claims.
+Portfolio/decision modules are paused until explicitly reactivated.

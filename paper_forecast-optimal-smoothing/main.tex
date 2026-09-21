@@ -1,0 +1,161 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,mathtools,booktabs,graphicx,natbib,hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\title{Forecast-Optimal Trend Smoothing under Changing Time-Series Regimes}
+\author{Heriberto Espino Montelongo}
+\date{\today}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Dt}{D_d}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We study the selection of smoothness in finite-difference penalized trend
+estimators when the objective is genuinely out-of-sample forecasting. The
+central question is whether forecast-optimal smoothness is stable or changes
+systematically with forecast horizon, estimation-window length, and local
+time-series conditions. For the pure quadratic penalized trend, analytic
+first- and second-order derivatives of the forecast loss with respect to the
+penalty parameter permit derivative-aware numerical selection in log-penalty
+space. The empirical design is strictly chronological and is intended to move
+from controlled simulations and macroeconomic series to market indices,
+individual equities, and cryptocurrency. This manuscript is a research draft;
+novelty and performance claims are deferred until the literature audit and
+planned experiments are complete.
+\end{abstract}
+
+\section{Problem formulation}
+Let $y\in\R^n$, let $\Dt$ be the order-$d$ finite-difference matrix, and let
+$Q=\Dt^\top\Dt$. The pure penalized trend is
+\begin{equation}
+\label{eq:pure-trend}
+\widehat t_{\lambda,d}
+=
+\arg\min_{t\in\R^n}
+\left\{
+\|y-t\|_2^2+\lambda\|\Dt t\|_2^2
+\right\}
+=
+(I+\lambda Q)^{-1}y.
+\end{equation}
+Writing $S_\lambda=(I+\lambda Q)^{-1}$,
+\begin{equation}
+\label{eq:smoother-derivative}
+S_\lambda'=-S_\lambda Q S_\lambda.
+\end{equation}
+
+\section{Forecast-optimal smoothness}
+At forecast origin $T$, only observations available through $T$ may enter the
+fit. Let $H$ denote the linear continuation operator from the fitted trend to
+the next $h$ observations. Define
+\begin{equation}
+\label{eq:forecast-residual}
+r_T(\lambda)
+=
+y_{T+1:T+h}
+-
+H S_\lambda y_{\mathrm{past}},
+\end{equation}
+and
+\begin{equation}
+\label{eq:forecast-loss}
+f_T(\lambda)
+=
+\frac{1}{h}r_T(\lambda)^\top r_T(\lambda).
+\end{equation}
+The first derivative is
+\begin{equation}
+\label{eq:forecast-loss-first}
+f_T'(\lambda)
+=
+\frac{2}{h}
+r_T(\lambda)^\top
+H S_\lambda Q S_\lambda y_{\mathrm{past}},
+\end{equation}
+and the second derivative is
+\begin{equation}
+\label{eq:forecast-loss-second}
+f_T''(\lambda)
+=
+\frac{2}{h}
+\left[
+\|H S_\lambda Q S_\lambda y_{\mathrm{past}}\|_2^2
+-
+2r_T(\lambda)^\top
+H S_\lambda Q S_\lambda Q S_\lambda y_{\mathrm{past}}
+\right].
+\end{equation}
+
+For repeated chronological forecast origins, the active validation objective
+pools future-block squared errors before selecting a common penalty.
+
+\section{Numerical selection}
+We work with
+\begin{equation}
+\label{eq:log-lambda}
+\theta=\log\lambda,
+\qquad
+g(\theta)=CV(e^\theta).
+\end{equation}
+Then
+\begin{equation}
+\label{eq:log-derivatives}
+g'(\theta)=\lambda CV'(\lambda),
+\qquad
+g''(\theta)=\lambda CV'(\lambda)+\lambda^2CV''(\lambda).
+\end{equation}
+The planned robust procedure uses a coarse log-penalty scan only to bracket
+sign changes of $g'$, applies a bracketed root solver to every detected
+interval, classifies the stationary points, and compares all local minima with
+the domain boundaries. Dense grid search and Newton iterations are retained as
+diagnostic and computational benchmarks.
+
+\section{Research questions}
+The main empirical object is
+\begin{equation}
+\label{eq:adaptive-smoothness}
+S^\star_{T,h}
+=
+G\!\left(
+h,L,\mathcal R_T,\text{series class}
+\right),
+\end{equation}
+where $L$ denotes estimation-window length and $\mathcal R_T$ summarizes local
+conditions such as volatility, persistence, signal-to-noise structure, and
+structural change. We ask whether changes in this object are systematic and
+whether adaptive selection improves genuinely out-of-sample forecasts relative
+to simple benchmarks.
+
+\section{Experimental design}
+The planned sequence is:
+\begin{enumerate}
+\item controlled simulations with known latent trends;
+\item lower-frequency macroeconomic series;
+\item broad market indices and ETFs;
+\item individual equities;
+\item cryptocurrency.
+\end{enumerate}
+All real-data experiments use chronological rolling or expanding origins.
+Financial level forecasts must be compared against a no-change/random-walk
+benchmark; return or trend-change targets will be considered separately.
+
+\section{Scope}
+The current paper does not study portfolio utility or decision-optimal
+smoothing. Those questions remain possible future work built on the same
+\texttt{trend\_estimation} library.
+
+\bibliographystyle{plainnat}
+\IfFileExists{literature/references.bib}{
+  \bibliography{literature/references}
+}{
+  \bibliography{../literature/references}
+}
+
+\end{document}
