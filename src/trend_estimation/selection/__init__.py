@@ -27,4 +27,13 @@ __all__ = [
     "minimize_over_log_lambda",
     "newton_stationary_log_lambda",
     "find_stationary_points_log_lambda",
+    "ForecastOptimalCandidate",
+    "ForecastOptimalSelection",
+    "select_fixed_window_pure_smoothness",
 ]
+
+from .forecast_optimal import (
+    ForecastOptimalCandidate,
+    ForecastOptimalSelection,
+    select_fixed_window_pure_smoothness,
+)

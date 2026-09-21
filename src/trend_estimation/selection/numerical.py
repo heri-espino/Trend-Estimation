@@ -237,6 +237,7 @@ def find_stationary_points_log_lambda(
             "stationary_" + point.kind_,
         )
         for point in points
+        if point.kind_ in {"minimum", "flat"}
     )
     best_value, best_lambda, best_theta, best_source = min(
         candidates,

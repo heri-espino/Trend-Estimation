@@ -42,6 +42,9 @@ from trend_estimation.selection import (
     minimize_over_log_lambda,
     newton_stationary_log_lambda,
     find_stationary_points_log_lambda,
+    ForecastOptimalCandidate,
+    ForecastOptimalSelection,
+    select_fixed_window_pure_smoothness,
 )
 from trend_estimation.validation import (
     mse_loss,
@@ -100,7 +103,7 @@ __all__ = [
     "PolynomialTrendForecaster", "BaseTrendSelector", "BaseSelectionCriterion", "SelectionResult",
     "golden_local", "find_all_local_minima", "TrainValidationSelector", "TimeWeightedValidationSelector",
     "SmoothnessSelector", "LambdaOptimizationResult", "StationaryPoint", "StationaryPointSearchResult",
-    "minimize_over_log_lambda", "newton_stationary_log_lambda", "find_stationary_points_log_lambda",
+    "minimize_over_log_lambda", "newton_stationary_log_lambda", "find_stationary_points_log_lambda", "ForecastOptimalCandidate", "ForecastOptimalSelection", "select_fixed_window_pure_smoothness",
     "mse_loss", "weighted_mse", "TimeWeightedValidationLoss",
     "make_time_weights", "train_val_test_split", "train_val_test_split_indices", "RollingOriginSplit",
     "rolling_origin_splits", "ForecastResult", "forecast_trend", "build_polynomial_from_tail", "ForecastAffineOperator", "finite_difference_forecast_operator",
