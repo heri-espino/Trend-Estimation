@@ -4,15 +4,54 @@ This is the canonical active-paper roadmap. It records both **what** we are doin
 
 ## Scientific objective
 
-We want to determine whether forecast-optimal trend smoothness is stable or instead changes systematically with forecast horizon, estimation-window length, and local time-series regime.
+The canonical source of truth is \`notes/research_objective.md\`.
+
+The active paper studies:
+
+> **Forecast-optimal trend estimation as an adaptive forecasting method, where
+> smoothness, memory length and difference order depend on horizon and local
+> regime.**
+
+At forecast origin \(T\) and horizon \(h\), the full forecasting-method object
+is
 
 \[
-S^\star_{T,h}
+\boxed{
+\Theta^\star_{T,h}
 =
-g(h,L,\mathcal R_T,\text{series class}).
+(d^\star_{T,h},L^\star_{T,h},S^\star_{T,h})
+=
+G(h,X_T,\mathcal C).
+}
 \]
 
-The paper is not "a new way to choose lambda by cross-validation." Cross-validation and automatic smoothing selection have substantial prior literature. The intended contribution is the interaction among penalized trend smoothing, forecast horizon/window, local regime, and cross-series behavior, supported by derivative-aware numerical selection.
+The three coordinates are:
+
+- \(d^\star\): finite-difference order;
+- \(L^\star\): finite-memory estimation-window length;
+- \(S^\star\): normalized smoothness.
+
+The local state \(X_T\) may include volatility, persistence, trend strength,
+break evidence, local roughness, and other measurable conditions. Regime must
+not be reduced to volatility alone or persistence alone without evidence.
+
+The paper has three scientific levels:
+
+1. **Target dependence:** forecast-optimal and trend-recovery-optimal
+   configurations need not coincide.
+2. **Mechanisms:** persistence, horizon, signal-to-noise, roughness, endpoints,
+   and structural changes can explain why \(\Theta^\star\) moves.
+3. **Adaptation value:** determine whether \(\Theta^\star_{T,h}\) tracks local
+   regime in a useful way and whether adaptive selection improves untouched
+   out-of-sample forecasts relative to strong fixed methods.
+
+The persistence/AR(1) study is Level II only. It is a mechanism diagnostic,
+not the paper's objective.
+
+The paper is also not "a new way to choose lambda by cross-validation."
+Cross-validation and automatic smoothing selection have substantial prior
+literature. Chronological validation is a correctness requirement; the intended
+contribution is the adaptive forecasting problem and its empirical behavior.
 
 ## Phase 0 — Repository architecture
 
@@ -98,7 +137,9 @@ Reference: `notes/window_and_smoothness.md`.
 
 ## Phase 5 — Controlled simulations
 
-**Status:** infrastructure implemented; paper-scale runs pending.
+**Status:** infrastructure implemented; first factorial and persistence
+mechanism runs completed; search-boundary robustness and adaptive-transition
+experiments pending.
 
 Generate
 
@@ -115,18 +156,33 @@ Implemented infrastructure:
 - [x] two-regime generator with separate changes in roughness, variance, persistence, level, and slope;
 - [x] oracle latent-trend recovery objective and derivative-based lambda selection;
 - [x] first factorial simulation driver under `experiments/forecast_optimal_smoothing/`;
-- [ ] run and inspect the quick grid;
-- [ ] freeze paper-scale parameter grid and seed count;
-- [ ] add dedicated within-series regime-transition experiment after search-boundary robustness is established;
+- [x] run and inspect the first factorial simulation grid;
+- [x] run a dedicated persistence/horizon mechanism study;
+- [ ] rerun the persistence mechanism with wider log-lambda bounds and a denser
+  discovery grid to diagnose boundary optima;
+- [ ] add dedicated within-series regime-transition experiments after
+  search-boundary robustness is established;
+- [ ] track the joint path of
+  ((d^star_{T,h},L^star_{T,h},S^star_{T,h})) and estimate adaptation
+  delay after regime changes;
+- [ ] compare adaptive selection with strong fixed configurations under
+  untouched outer evaluation;
+- [ ] freeze paper-scale parameter grid and seed count only after these checks;
 - [ ] generate paper tables/figures only after design is frozen.
 
 Key questions:
 
-- Does \(\lambda^\star_{\rm recovery}\neq\lambda^\star_{\rm forecast}\)?
+- Does (Theta^star_{m recovery}
+eqTheta^star_{m forecast})?
+- How do (d^star), (L^star), and (S^star) respond jointly to horizon
+  and local state?
 - How does optimal normalized smoothness respond to signal-to-noise ratio?
-- What does autocorrelation do?
-- What happens near breaks/endpoints?
-- When does root-based selection agree with or improve on grid/Newton methods?
+- What mechanisms are created by the sign and magnitude of autocorrelation?
+- What happens near breaks/endpoints and after within-series regime changes?
+- How quickly does the selected method adapt after a change?
+- Does adaptive selection outperform strong fixed methods OOS?
+- When does root-based lambda selection agree with or improve on grid/Newton
+  methods?
 
 ## Phase 6 — Macroeconomic data
 
@@ -171,6 +227,7 @@ X_T=
 \widehat\rho_{1,T},
 \text{trend strength},
 \text{break indicators},
+\text{local roughness},
 \ldots
 )
 \]
@@ -178,12 +235,23 @@ X_T=
 and study
 
 \[
-S^\star_{T,h}=g(X_T,h,L),
-\qquad
-\operatorname{Skill}_{T,h}=q(X_T,S^\star_{T,h},h,L).
+\Theta^\star_{T,h}
+=
+(d^\star_{T,h},L^\star_{T,h},S^\star_{T,h})
+=
+G(X_T,h,\mathcal C),
 \]
 
-Do not define regime as volatility alone unless evidence supports that simplification.
+together with
+
+\[
+\operatorname{Skill}_{T,h}
+=
+q(X_T,\Theta^\star_{T,h},h,\mathcal C).
+\]
+
+Do not define regime as volatility alone or persistence alone unless evidence
+supports that simplification.
 
 ## Phase 10 — Statistical forecast comparison
 
@@ -218,7 +286,12 @@ These remain possible future papers built on the same library.
 
 The 40-paper target set is in `literature/manifest.csv`. For high-priority papers, record research question, estimator, lambda-selection rule, validation protocol, horizon/window, data, regime definition, main result, limitations, overlap with our paper, remaining gap, useful equations, and exact pages.
 
-No novelty claim is final until this audit is complete.
+As of 2026-09-22, the manifest contains 40 target references and 24 papers are
+present in `literature/extracted/`. The extracted corpus has been reviewed,
+but the target audit is not complete.
+
+No novelty claim is final until the high-priority remainder of this audit is
+complete.
 
 ## Definition of "ready to draft results"
 
