@@ -6,7 +6,7 @@
 \usepackage{amsmath,amssymb,mathtools,booktabs,graphicx,natbib,hyperref}
 \usepackage[nameinlink,noabbrev]{cleveref}
 
-\title{Forecast-Optimal Trend Smoothing under Changing Time-Series Regimes}
+\title{Adaptive Forecast-Optimal Trend Estimation under Changing Time-Series Regimes}
 \author{Heriberto Espino Montelongo}
 \date{\today}
 
@@ -17,18 +17,22 @@
 \maketitle
 
 \begin{abstract}
-We study the selection of smoothness in finite-difference penalized trend
-estimators when the objective is genuinely out-of-sample forecasting. The
-central question is whether forecast-optimal smoothness is stable or changes
-systematically with forecast horizon, estimation-window length, and local
-time-series conditions. For the pure quadratic penalized trend, analytic
-first- and second-order derivatives of the forecast loss with respect to the
+We study forecast-optimal trend estimation as an adaptive forecasting method,
+where smoothness, finite-memory window length, and finite-difference order may
+depend on forecast horizon and local time-series regime. The central object is
+therefore the full forecasting-method configuration
+\(\Theta^\star_{T,h}=(d^\star_{T,h},L^\star_{T,h},S^\star_{T,h})\), not a
+single penalty parameter. For the pure quadratic penalized trend, analytic
+first- and second-order derivatives of future forecast loss with respect to the
 penalty parameter permit derivative-aware numerical selection in log-penalty
-space. The empirical design is strictly chronological and is intended to move
-from controlled simulations and macroeconomic series to market indices,
-individual equities, and cryptocurrency. This manuscript is a research draft;
-novelty and performance claims are deferred until the literature audit and
-planned experiments are complete.
+space. The empirical design is strictly chronological. Controlled simulations
+first separate forecast optimality from historical trend-recovery optimality,
+then study mechanisms such as persistence and horizon, and finally examine
+within-series regime transitions and adaptive-versus-fixed out-of-sample
+performance. External evidence is planned from macroeconomic series through
+market indices, equities, and cryptocurrency. This manuscript remains a
+research draft; novelty and performance claims are deferred until the
+literature audit and planned experiments are complete.
 \end{abstract}
 
 \section{Problem formulation}
@@ -148,25 +152,47 @@ minima with the domain boundaries. Dense grid search and Newton iterations are
 retained as diagnostic and computational benchmarks.
 
 \section{Research questions}
-The main empirical object is
+At forecast origin \(T\) and horizon \(h\), define the forecast-method
+configuration
 \begin{equation}
-\label{eq:adaptive-smoothness}
-S^\star_{T,h}
+\label{eq:adaptive-configuration}
+\Theta^\star_{T,h}
 =
-G\!\left(
-h,L,\mathcal R_T,\text{series class}
-\right),
+\left(
+d^\star_{T,h},
+L^\star_{T,h},
+S^\star_{T,h}
+\right)
+=
+G\!\left(h,X_T,\mathcal C\right),
 \end{equation}
-where $L$ denotes estimation-window length and $\mathcal R_T$ summarizes local
-conditions such as volatility, persistence, signal-to-noise structure, and
-structural change. We ask whether changes in this object are systematic and
-whether adaptive selection improves genuinely out-of-sample forecasts relative
-to simple benchmarks.
+where \(d\) is difference order, \(L\) is finite-memory estimation-window
+length, \(S\) is normalized smoothness, \(X_T\) summarizes the local state, and
+\(\mathcal C\) denotes the series class. Candidate components of \(X_T\)
+include volatility, persistence, trend strength, local roughness, and break
+evidence.
+
+The paper has three empirical questions. First, does the forecast-optimal
+configuration differ from the configuration that best reconstructs a known
+historical latent trend? Second, which mechanisms make
+\(\Theta^\star_{T,h}\) vary with horizon and local state? Third, does adapting
+the forecasting method to those states improve untouched future forecasts
+relative to strong fixed configurations?
+
+The persistence/horizon experiment is one mechanism study addressing the
+second question. Its oracle AR-residual-aware forecast is diagnostic only: it
+must not be interpreted as the definition of the paper or as the proposed
+real-data model. Local regime is deliberately broader than persistence alone.
 
 \section{Experimental design}
 The planned sequence is:
 \begin{enumerate}
-\item controlled simulations with known latent trends;
+\item controlled simulations separating forecast and recovery targets;
+\item mechanism studies for persistence, horizon, signal-to-noise structure,
+roughness, endpoints, and related effects;
+\item within-series regime-transition experiments tracking the joint path of
+\((d^\star,L^\star,S^\star)\) and adaptation delay;
+\item adaptive-versus-fixed untouched out-of-sample comparisons;
 \item lower-frequency macroeconomic series;
 \item broad market indices and ETFs;
 \item individual equities;
