@@ -97,14 +97,25 @@ Git history is the archive.
 
 ## Active research
 
-The current paper studies whether forecast-optimal smoothness varies with
-forecast horizon, estimation-window length, and local time-series conditions:
+The current paper studies **forecast-optimal trend estimation as an adaptive
+forecasting method, where smoothness, memory length and difference order depend
+on horizon and local regime**.
+
+The central object is
 
 \[
-S^\star_{T,h,L}=G(h,L,\mathcal R_T,X_T).
+\Theta^\star_{T,h}
+=
+(d^\star_{T,h},L^\star_{T,h},S^\star_{T,h})
+=
+G(h,X_T,\mathcal C).
 \]
 
-See `notes/roadmap.md` for the internal research roadmap.
+The persistence/AR(1) experiment is a mechanism study inside this broader
+question, not the definition of the project.
+
+Read `notes/research_objective.md` first and `notes/roadmap.md` for the
+execution plan.
 
 ## GitHub Actions
 
