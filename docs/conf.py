@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import os
 import sys
-from importlib.metadata import PackageNotFoundError, version
+from importlib.metadata import PackageNotFoundError, version as package_version
 
 sys.path.insert(0, os.path.abspath("../src"))
 
@@ -10,9 +10,11 @@ project = "Trend Estimation"
 author = "Heriberto Espino Montelongo"
 
 try:
-    release = version("trend-estimation")
+    release = package_version("trend-estimation")
 except PackageNotFoundError:
     release = "development"
+
+version = release
 
 extensions = [
     "sphinx.ext.autodoc",
