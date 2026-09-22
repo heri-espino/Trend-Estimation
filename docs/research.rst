@@ -8,6 +8,9 @@ notebook.
 Canonical internal files
 ------------------------
 
+* `notes/research_objective.md` — first scientific source of truth; defines
+  the adaptive forecasting object, scope, hierarchy of experiments, and
+  anti-drift rules.
 * `notes/key_results.md` — established mathematical results.
 * `notes/derivative.md` — forecast-loss derivation.
 * `notes/numerical_selection.md` — root-finding strategy.
