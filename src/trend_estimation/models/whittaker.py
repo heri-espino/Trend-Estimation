@@ -13,7 +13,7 @@ class WhittakerTrend(_DriftPenalizedTrend):
     lambda_ : float or None
         Penalty parameter. Larger values imply smoother trends.
     smoothness : float or None
-        Optional normalized smoothness level used when lambda_ is omitted.
+        Optional normalized smoothness level used when the penalty parameter is omitted.
     """
 
     def __init__(
