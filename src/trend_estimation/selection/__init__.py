@@ -30,10 +30,21 @@ __all__ = [
     "ForecastOptimalCandidate",
     "ForecastOptimalSelection",
     "select_fixed_window_pure_smoothness",
+    "RecoveryLossDerivatives",
+    "RecoveryOptimalSelection",
+    "pure_recovery_loss_derivatives",
+    "select_recovery_optimal_lambda",
 ]
 
 from .forecast_optimal import (
     ForecastOptimalCandidate,
     ForecastOptimalSelection,
     select_fixed_window_pure_smoothness,
+)
+
+from .recovery import (
+    RecoveryLossDerivatives,
+    RecoveryOptimalSelection,
+    pure_recovery_loss_derivatives,
+    select_recovery_optimal_lambda,
 )
