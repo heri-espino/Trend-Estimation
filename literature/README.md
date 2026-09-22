@@ -14,6 +14,18 @@ This directory is the metadata/RAG entry point for the Trend Estimation research
 
 Do not commit closed-access or institutionally licensed PDFs. Keep them locally under `literature/pdfs/`. Open-access files may still be left local by default; the manifest should store the DOI and source URL so they are reproducible.
 
+## Current audit status
+
+The target set in `manifest.csv` contains **40 references**. As of
+2026-09-22, **24 papers are present in `literature/extracted/`** and that
+extracted corpus has been reviewed for the active objective. The target audit
+is therefore not complete.
+
+Do not convert findings from the extracted subset into final novelty claims.
+Prioritize the remaining sources closest to smoothing under autocorrelation,
+forecast-oriented penalized trends, data-driven HP/smoothing choices, and
+time-varying or structural-change forecasting.
+
 ## RAG workflow
 
 For each paper:
