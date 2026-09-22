@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import time
 from itertools import product
 from pathlib import Path
 
@@ -9,6 +10,13 @@ import pandas as pd
 
 import trend_estimation as td
 
+
+SMOKE_GRID = {
+    "slope_noise_std": (0.005,),
+    "observation_noise_std": (0.3,),
+    "ar1_phi": (0.0, 0.7),
+    "horizon": (1,),
+}
 
 PAPER_GRID = {
     "slope_noise_std": (0.002, 0.01, 0.03),
@@ -32,7 +40,7 @@ def parse_args() -> argparse.Namespace:
             "This script is intentionally local/manual; it is not triggered by CI."
         )
     )
-    parser.add_argument("--preset", choices=("quick", "paper"), default="quick")
+    parser.add_argument("--preset", choices=("smoke", "quick", "paper"), default="quick")
     parser.add_argument("--n-seeds", type=int, default=None)
     parser.add_argument("--n-obs", type=int, default=240)
     parser.add_argument("--outer-initial-train", type=int, default=120)
@@ -150,8 +158,15 @@ def run_one_configuration(
 
 def main() -> None:
     args = parse_args()
-    grid = QUICK_GRID if args.preset == "quick" else PAPER_GRID
-    default_seeds = 2 if args.preset == "quick" else 30
+    if args.preset == "smoke":
+        grid = SMOKE_GRID
+        default_seeds = 1
+    elif args.preset == "quick":
+        grid = QUICK_GRID
+        default_seeds = 2
+    else:
+        grid = PAPER_GRID
+        default_seeds = 30
     n_seeds = default_seeds if args.n_seeds is None else int(args.n_seeds)
 
     if n_seeds <= 0:
@@ -168,15 +183,16 @@ def main() -> None:
         )
     )
 
+    total_start = time.perf_counter()
     for i, (seed, slope_sd, noise_sd, phi, horizon) in enumerate(configs, start=1):
+        config_start = time.perf_counter()
         print(
             f"[{i}/{len(configs)}] seed={seed} "
             f"slope_sd={slope_sd} noise_sd={noise_sd} "
             f"phi={phi} h={horizon}",
             flush=True,
         )
-        rows.extend(
-            run_one_configuration(
+        new_rows = run_one_configuration(
                 seed=seed,
                 n_obs=args.n_obs,
                 slope_noise_std=float(slope_sd),
@@ -192,6 +208,12 @@ def main() -> None:
                 log_bounds=(args.log_lambda_min, args.log_lambda_max),
                 n_grid=args.n_grid,
             )
+        rows.extend(new_rows)
+        elapsed = time.perf_counter() - config_start
+        print(
+            f"    completed in {elapsed:.2f}s; "
+            f"outer rows={len(new_rows)}",
+            flush=True,
         )
 
     output = args.output
@@ -199,7 +221,12 @@ def main() -> None:
     frame = pd.DataFrame(rows)
     frame.to_csv(output, index=False)
 
-    print(f"Wrote {len(frame)} outer-origin rows to {output}", flush=True)
+    total_elapsed = time.perf_counter() - total_start
+    print(
+        f"Wrote {len(frame)} outer-origin rows to {output} "
+        f"in {total_elapsed:.2f}s",
+        flush=True,
+    )
 
 
 if __name__ == "__main__":
