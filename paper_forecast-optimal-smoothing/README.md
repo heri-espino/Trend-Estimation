@@ -4,18 +4,39 @@ This is the **active** research manuscript.
 
 Working title:
 
-**Forecast-Optimal Trend Smoothing under Changing Time-Series Regimes**
+**Adaptive Forecast-Optimal Trend Estimation under Changing Time-Series Regimes**
 
 The manuscript must consume reusable functionality from the installed `trend_estimation` package. Do not place reusable estimators, derivative code, optimizers, or validation logic inside this directory.
 
-## Current research question
+## Canonical research objective
 
-How do forecast-optimal smoothness, window length, and difference order vary with forecast horizon and local stochastic regime, and does adaptive selection provide out-of-sample skill across macroeconomic, equity, and crypto series?
+> **Forecast-optimal trend estimation as an adaptive forecasting method, where
+> smoothness, memory length and difference order depend on horizon and local
+> regime.**
+
+Formally,
+
+[
+\Theta^\star_{T,h}
+=
+(d^\star_{T,h},L^\star_{T,h},S^\star_{T,h})
+=
+G(h,X_T,\mathcal C).
+]
+
+The paper asks both whether the full forecast-optimal configuration changes
+systematically with horizon/local state and whether adapting it improves
+untouched out-of-sample forecasts relative to strong fixed methods.
+
+The persistence/AR(1) experiment is one **mechanism study** explaining part of
+the behavior of (S^\star). It is not the research objective and persistence
+must not be used as a synonym for local regime.
 
 ## Internal sources
 
 Before editing the paper, read:
 
+- `../notes/research_objective.md` — first scientific source of truth;
 - `../notes/key_results.md`
 - `../notes/derivative.md`
 - `../notes/numerical_selection.md`
