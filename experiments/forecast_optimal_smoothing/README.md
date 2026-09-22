@@ -71,3 +71,22 @@ The oracle recovery optimum uses the true latent trend and therefore is not a
 real-data tuning method. It exists to answer a scientific question in
 simulation: whether the amount of smoothing that best reconstructs the latent
 trend is the same as the amount that best forecasts future observations.
+
+
+## Versioned result capture
+
+By default every run now writes a self-contained, Git-trackable directory:
+
+```text
+results/forecast_optimal_smoothing/<timestamp>_<preset>_<git-sha>/
+├── simulation_grid.csv
+├── summary.csv
+└── run_metadata.json
+```
+
+The metadata records the exact Git commit, preset, grid, horizons, windows,
+orders, numerical search bounds, row count, and elapsed time. This makes a run
+auditable and lets collaborators analyze results directly from GitHub.
+
+The older `experiments/forecast_optimal_smoothing/outputs/` path remains
+ignored and should be treated as scratch space.

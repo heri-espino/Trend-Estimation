@@ -1,7 +1,10 @@
 from __future__ import annotations
 
 import argparse
+import json
+import subprocess
 import time
+from datetime import datetime, timezone
 from itertools import product
 from pathlib import Path
 
@@ -55,8 +58,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--output",
         type=Path,
-        default=Path(
-            "experiments/forecast_optimal_smoothing/outputs/simulation_grid.csv"
+        default=None,
+        help=(
+            "Optional CSV output path. By default, create a versioned run under "
+            "results/forecast_optimal_smoothing/<run-id>/."
         ),
     )
     return parser.parse_args()
@@ -156,6 +161,54 @@ def run_one_configuration(
     return rows
 
 
+def _git_short_sha() -> str:
+    try:
+        completed = subprocess.run(
+            ["git", "rev-parse", "--short", "HEAD"],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        return completed.stdout.strip() or "unknown"
+    except Exception:
+        return "unknown"
+
+
+def _default_run_directory(preset: str) -> Path:
+    stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    return Path("results") / "forecast_optimal_smoothing" / f"{stamp}_{preset}_{_git_short_sha()}"
+
+
+def _write_summary(frame: pd.DataFrame, path: Path) -> None:
+    group_cols = [
+        "seed",
+        "slope_noise_std",
+        "observation_noise_std",
+        "ar1_phi",
+        "horizon",
+    ]
+    summary = (
+        frame.groupby(group_cols, dropna=False)
+        .agg(
+            n_outer_origins=("outer_origin", "size"),
+            mean_selected_order=("selected_order", "mean"),
+            mean_selected_window=("selected_window", "mean"),
+            mean_smoothness_forecast=("smoothness_forecast", "mean"),
+            mean_smoothness_recovery_oracle=("smoothness_recovery_oracle", "mean"),
+            mean_smoothness_gap=(
+                "smoothness_gap_forecast_minus_recovery",
+                "mean",
+            ),
+            mean_relative_rmsfe=("relative_rmsfe_block", "mean"),
+            median_relative_rmsfe=("relative_rmsfe_block", "median"),
+            mean_outer_block_mse=("outer_block_mse", "mean"),
+            mean_benchmark_block_mse=("benchmark_block_mse", "mean"),
+        )
+        .reset_index()
+    )
+    summary.to_csv(path, index=False)
+
+
 def main() -> None:
     args = parse_args()
     if args.preset == "smoke":
@@ -216,17 +269,53 @@ def main() -> None:
             flush=True,
         )
 
-    output = args.output
-    output.parent.mkdir(parents=True, exist_ok=True)
     frame = pd.DataFrame(rows)
-    frame.to_csv(output, index=False)
-
     total_elapsed = time.perf_counter() - total_start
+
+    if args.output is None:
+        run_dir = _default_run_directory(args.preset)
+        output = run_dir / "simulation_grid.csv"
+    else:
+        output = args.output
+        run_dir = output.parent
+
+    run_dir.mkdir(parents=True, exist_ok=True)
+    frame.to_csv(output, index=False)
+    _write_summary(frame, run_dir / "summary.csv")
+
+    metadata = {
+        "created_at_utc": datetime.now(timezone.utc).isoformat(),
+        "git_commit": _git_short_sha(),
+        "preset": args.preset,
+        "n_seeds": n_seeds,
+        "n_obs": args.n_obs,
+        "outer_initial_train": args.outer_initial_train,
+        "outer_step": args.outer_step,
+        "inner_step": args.inner_step,
+        "max_inner_origins": args.max_inner_origins,
+        "orders": list(args.orders),
+        "windows": list(args.windows),
+        "n_grid": args.n_grid,
+        "log_lambda_bounds": [
+            args.log_lambda_min,
+            args.log_lambda_max,
+        ],
+        "n_configurations": len(configs),
+        "n_output_rows": len(frame),
+        "elapsed_seconds": total_elapsed,
+        "grid": {key: list(values) for key, values in grid.items()},
+        "output_csv": str(output),
+    }
+    with (run_dir / "run_metadata.json").open("w", encoding="utf-8") as handle:
+        json.dump(metadata, handle, indent=2)
+
     print(
         f"Wrote {len(frame)} outer-origin rows to {output} "
         f"in {total_elapsed:.2f}s",
         flush=True,
     )
+    print(f"Run metadata: {run_dir / 'run_metadata.json'}", flush=True)
+    print(f"Summary: {run_dir / 'summary.csv'}", flush=True)
 
 
 if __name__ == "__main__":

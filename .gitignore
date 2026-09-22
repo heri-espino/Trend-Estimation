@@ -41,3 +41,10 @@ literature/extracted/
 
 # Regenerable experiment outputs
 experiments/forecast_optimal_smoothing/outputs/
+
+# Large/non-reviewable research artifacts; lightweight CSV/JSON results are tracked
+results/forecast_optimal_smoothing/**/*.pkl
+results/forecast_optimal_smoothing/**/*.pickle
+results/forecast_optimal_smoothing/**/*.npz
+results/forecast_optimal_smoothing/**/*.npy
+results/forecast_optimal_smoothing/**/*.joblib

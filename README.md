@@ -84,6 +84,7 @@ docs/                                  Sphinx documentation
 tests/                                 tests
 examples/                              small public-API examples
 experiments/forecast_optimal_smoothing active experiments
+results/                               lightweight versioned experiment results
 notes/                                 derivations and checkpoints
 literature/                            bibliography/RAG metadata
 paper_forecast-optimal-smoothing/      active paper
