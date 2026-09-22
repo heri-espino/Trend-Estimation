@@ -50,3 +50,4 @@ When a result graduates into the public API, keep the note and update its librar
 - `checkpoints/2026-09-22_scientific-objective-clarification.md` — records the
   correction from a persistence-centered reading to the full adaptive
   forecasting objective.
+- `checkpoints/2026-09-22_boundary-sensitivity-prepared.md` — verifies the completed Explore-02 run and records the exact wide-domain diagnostic that comes next.
