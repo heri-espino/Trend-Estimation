@@ -28,3 +28,8 @@ Every note describing a mathematical result should include:
 - `nested_validation.md` — leakage-free outer/inner rolling evaluation and no-change benchmark.
 
 When a result graduates into the public API, keep the note and update its library mapping rather than deleting the derivation.
+
+
+## Checkpoints
+
+- `checkpoints/2026-09-21_forecast-optimal-foundation.md` — foundation complete enough to begin controlled simulation runs.

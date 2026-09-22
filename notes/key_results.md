@@ -305,3 +305,112 @@ For the active object \(S^\star_{T,h,L}\), inner validation therefore uses fixed
 **Status:** design implication documented and fixed-window selector implemented.
 
 Detailed note: `notes/window_and_smoothness.md`.
+
+
+## 11. Nested outer evaluation
+
+At outer origin \(T\), define
+
+\[
+\mathcal I_T=\{y_1,\ldots,y_T\}.
+\]
+
+All hyperparameter selection must be measurable with respect to \(\mathcal I_T\). The implemented information flow is
+
+\[
+\boxed{
+y_{1:T}
+\to
+\text{inner selection}
+\to
+\widehat y_{T+1:T+h\mid T}
+\to
+\text{reveal future}
+\to
+\text{score}.
+}
+\]
+
+Changing only the untouched future block while keeping \(y_{1:T}\) fixed must leave the selected \((d,L,\lambda)\) and forecast unchanged.
+
+**Library mapping:** `validation/nested_forecast.py::nested_rolling_pure_forecast`.
+
+**Status:** implemented and tested by direct future-perturbation invariance.
+
+Detailed note: `notes/nested_validation.md`.
+
+## 12. Oracle recovery objective for simulations
+
+When the latent trend \(\tau\) is known in simulation, define
+
+\[
+R(\lambda)
+=
+\frac1N
+\|\tau-S_\lambda y\|_2^2.
+\]
+
+Let
+
+\[
+\widehat t_\lambda=S_\lambda y,
+\qquad
+\widehat t_\lambda'=-S_\lambda Q S_\lambda y,
+\qquad
+\widehat t_\lambda''=2S_\lambda Q S_\lambda Q S_\lambda y.
+\]
+
+Then the generic squared-error derivative identities give
+
+\[
+R'(\lambda)
+=
+-\frac{2}{N}
+(\tau-\widehat t_\lambda)^\top
+\widehat t_\lambda',
+\]
+
+and
+
+\[
+R''(\lambda)
+=
+\frac{2}{N}
+\left[
+\|\widehat t_\lambda'\|_2^2
+-
+(\tau-\widehat t_\lambda)^\top
+\widehat t_\lambda''
+\right].
+\]
+
+This defines the oracle quantity \(\lambda^\star_{\rm recovery}\), which can be compared with forecast-optimal \(\lambda^\star_{\rm forecast}\) only in simulations.
+
+**Library mapping:** `selection/recovery.py`.
+
+**Status:** implemented, derivative checked against centered finite differences.
+
+## 13. Mandatory no-change benchmark for level forecasts
+
+For a level series,
+
+\[
+\widehat y^{(0)}_{T+k\mid T}=y_T,
+\qquad k=1,\ldots,h.
+\]
+
+The nested evaluator reports
+
+\[
+\boxed{
+RMSFE_{rel}
+=
+\frac{RMSFE_{method}}{RMSFE_{no-change}}.
+}
+\]
+
+For price-level experiments, \(RMSFE_{rel}<1\) means lower pooled level RMSFE than the no-change forecast; it is not by itself evidence of trading profitability.
+
+**Library mapping:** `benchmarks/naive.py`, `validation/nested_forecast.py`.
+
+**Status:** implemented.

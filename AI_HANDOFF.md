@@ -137,7 +137,7 @@ Newton is a benchmark/refinement, not the only search method.
 
 For financial/economic forecasting, at origin \(T\), no observation after \(T\) may affect the fitted trend or hyperparameter selection used to predict that future block.
 
-Use `rolling_origin_splits` and eventually nested rolling-origin evaluation for tuning \((d,L,\lambda)\).
+Use the implemented nested chronological pipeline for tuning \((d,L,\lambda)\): `select_fixed_window_pure_smoothness` for inner selection and `nested_rolling_pure_forecast` for untouched outer evaluation.
 
 Random internal masking belongs to smoothing/reconstruction experiments, not to the main forecasting claim.
 
@@ -199,3 +199,21 @@ Normalized smoothness depends on fitted sample size \(N\). A common raw \(\lambd
 For the active object \(S^\star_{T,h,L}\), prefer fixed-width inner windows when optimizing one common \(\lambda\) for a candidate \(L\). The helper `select_fixed_window_pure_smoothness` implements this design.
 
 See `notes/window_and_smoothness.md`.
+
+
+## Current implementation checkpoint
+
+The active infrastructure now includes:
+
+- explicit forecast continuation operator matching the recursive forecast rule;
+- analytic single-origin and pooled rolling forecast-loss derivatives;
+- derivative-root Brent search in log-lambda space;
+- fixed-window inner selection of order, window, and lambda;
+- common inner validation origins across competing window lengths;
+- nested outer rolling evaluation with a direct no-look-ahead invariance test;
+- no-change/random-walk level benchmark and relative RMSFE;
+- controlled local-linear AR(1) and two-regime simulation generators;
+- oracle latent-trend recovery-optimal lambda selection for simulations;
+- `experiments/forecast_optimal_smoothing/run_simulation_grid.py`.
+
+Next: run/inspect the quick simulation grid, stress-test numerical selection, then freeze the paper-scale simulation design.

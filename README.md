@@ -156,13 +156,20 @@ Implemented:
 
 Immediate work for the active paper:
 
-1. implement the differentiable forecast-loss objective;
-2. implement bracketed stationary-point search in log-\(\lambda\);
-3. verify both against finite differences and synthetic functions;
-4. formalize rolling-origin/nested temporal selection;
-5. run controlled simulations;
-6. move from macroeconomic series to index/ETF, equity, and crypto data;
-7. study how optimal smoothness and forecast skill vary by horizon, window, and regime;
-8. add formal forecast-comparison inference and robustness checks.
+1. stress-test the derivative/root-search machinery over extreme penalties, orders, and windows;
+2. run and inspect the first controlled simulation grid;
+3. freeze the paper-scale simulation design and seed count;
+4. add the within-series regime-transition experiment;
+5. move from macroeconomic series to index/ETF, equity, and crypto data;
+6. study how optimal smoothness and forecast skill vary by horizon, window, and regime;
+7. add formal forecast-comparison inference and robustness checks;
+8. update the manuscript only from frozen, reproducible experiment outputs.
 
 The canonical detailed plan is `notes/roadmap.md`.
+
+
+## GitHub Actions policy
+
+Automatic CI is deliberately lightweight: push/pull-request runs execute tests only.
+
+Paper compilation is a heavy derived-output workflow and is therefore manual-only through `.github/workflows/build-papers.yml` using `workflow_dispatch`. It can build the active paper, the tutorial, or both, and uploads PDFs as 30-day artifacts. Generated PDFs are never auto-committed.

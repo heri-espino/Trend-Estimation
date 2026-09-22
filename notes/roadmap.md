@@ -218,11 +218,11 @@ No novelty claim is final until this audit is complete.
 
 ## Definition of "ready to draft results"
 
-- [ ] estimator definitions fully audited;
+- [x] estimator definitions audited for the pure model and Guerrero plug-in;
 - [ ] derivative stability tests complete;
 - [ ] root search stress-tested against dense diagnostics;
-- [ ] nested chronological validation implemented;
-- [ ] random-walk/no-change financial benchmark included;
+- [x] nested chronological validation implemented;
+- [x] random-walk/no-change financial benchmark included;
 - [ ] simulation design frozen;
 - [ ] literature overlap table completed;
 - [ ] empirical datasets and horizons frozen.
