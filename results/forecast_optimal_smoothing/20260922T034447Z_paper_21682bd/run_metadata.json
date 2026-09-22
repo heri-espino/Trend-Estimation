@@ -1,0 +1,52 @@
+{
+  "created_at_utc": "2026-09-22T03:44:47.955905+00:00",
+  "git_commit": "21682bd",
+  "preset": "paper",
+  "n_seeds": 30,
+  "n_obs": 240,
+  "outer_initial_train": 120,
+  "outer_step": 6,
+  "inner_step": 3,
+  "max_inner_origins": 30,
+  "orders": [
+    1,
+    2,
+    3
+  ],
+  "windows": [
+    24,
+    48,
+    72
+  ],
+  "n_grid": 161,
+  "log_lambda_bounds": [
+    -10.0,
+    16.0
+  ],
+  "n_configurations": 2430,
+  "n_output_rows": 48600,
+  "elapsed_seconds": 1839.3199607999995,
+  "grid": {
+    "slope_noise_std": [
+      0.002,
+      0.01,
+      0.03
+    ],
+    "observation_noise_std": [
+      0.2,
+      0.5,
+      1.0
+    ],
+    "ar1_phi": [
+      0.0,
+      0.4,
+      0.8
+    ],
+    "horizon": [
+      1,
+      3,
+      6
+    ]
+  },
+  "output_csv": "results\\forecast_optimal_smoothing\\20260922T034447Z_paper_21682bd\\simulation_grid.csv"
+}
