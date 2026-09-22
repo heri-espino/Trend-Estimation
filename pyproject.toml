@@ -27,7 +27,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=7", "ruff>=0.1"]
-docs = ["sphinx>=8", "furo>=2024.8.6", "myst-parser>=4"]
+docs = ["sphinx>=8", "furo>=2024.8.6"]
 finance = ["yfinance>=0.2"]
 
 [project.urls]

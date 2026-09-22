@@ -22,7 +22,6 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx.ext.viewcode",
     "sphinx.ext.intersphinx",
-    "myst_parser",
 ]
 
 autosummary_generate = True
@@ -31,12 +30,10 @@ autodoc_member_order = "bysource"
 napoleon_google_docstring = True
 napoleon_numpy_docstring = True
 
-templates_path = ["_templates"]
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 html_theme = "furo"
 html_title = "Trend Estimation"
-html_static_path = []
 
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
