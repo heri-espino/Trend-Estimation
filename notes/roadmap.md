@@ -94,7 +94,7 @@ Reference: `notes/window_and_smoothness.md`.
 
 ## Phase 5 — Controlled simulations
 
-**Status:** planned.
+**Status:** infrastructure implemented; paper-scale runs pending.
 
 Generate
 
@@ -103,6 +103,18 @@ y_t=\tau_t+\varepsilon_t
 \]
 
 while controlling noise variance, trend roughness, AR dependence, structural breaks, regimes, sample size, and horizon.
+
+Implemented infrastructure:
+
+- [x] local-linear latent trend with independently controlled trend roughness;
+- [x] AR(1) observation noise with controlled marginal scale and persistence;
+- [x] two-regime generator with separate changes in roughness, variance, persistence, level, and slope;
+- [x] oracle latent-trend recovery objective and derivative-based lambda selection;
+- [x] first factorial simulation driver under `experiments/forecast_optimal_smoothing/`;
+- [ ] run and inspect the quick grid;
+- [ ] freeze paper-scale parameter grid and seed count;
+- [ ] add dedicated within-series regime-transition experiment;
+- [ ] generate paper tables/figures only after design is frozen.
 
 Key questions:
 

@@ -46,3 +46,6 @@ literature/pdfs/
 examples/outputs/
 paper/outputs/*.csv
 paper/outputs/*.json
+
+# Active-paper simulation outputs (regenerable)
+experiments/forecast_optimal_smoothing/outputs/
