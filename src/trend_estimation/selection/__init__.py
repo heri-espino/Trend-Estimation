@@ -16,8 +16,10 @@ from .numerical import (
     newton_stationary_log_lambda,
 )
 from .recovery import (
+    PreparedRollingPureRecoveryObjective,
     RecoveryLossDerivatives,
     RecoveryOptimalSelection,
+    prepare_rolling_pure_recovery_objective,
     pure_recovery_loss_derivatives,
     select_recovery_optimal_lambda,
 )
@@ -41,8 +43,10 @@ __all__ = [
     "ForecastOptimalCandidate",
     "ForecastOptimalSelection",
     "select_fixed_window_pure_smoothness",
+    "PreparedRollingPureRecoveryObjective",
     "RecoveryLossDerivatives",
     "RecoveryOptimalSelection",
+    "prepare_rolling_pure_recovery_objective",
     "pure_recovery_loss_derivatives",
     "select_recovery_optimal_lambda",
 ]
