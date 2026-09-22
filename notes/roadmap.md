@@ -23,7 +23,11 @@ The paper is not "a new way to choose lambda by cross-validation." Cross-validat
 - [x] `paper_penalized-trend-tutorial/` is the tutorial companion;
 - [x] `notes/` is the internal scientific notebook;
 - [x] `literature/` contains the 40-paper manifest and RAG workflow;
-- [x] legacy S&P manuscript assets are explicitly non-canonical.
+- [x] obsolete reports, old S&P manuscript assets, copied legacy scripts, and placeholder modules removed from `main`;
+- [x] editable package install standardized as `pip install -e .`;
+- [x] public API cleaned around explicitly named models and selectors;
+- [x] Sphinx documentation added with a root index, user guides, and API reference;
+- [x] CI validates editable installation, tests, and the Sphinx build.
 
 **Why:** several papers can share the same tested mathematical library.
 
@@ -134,7 +138,7 @@ Start with lower-frequency economic series such as real GDP and industrial produ
 
 ## Phase 7 — Market index / ETF and equity data
 
-**Status:** prior S&P 500 assets exist; new protocol not yet run.
+**Status:** new protocol not yet run. Historical S&P 500 draft assets were removed from `main` during repository cleanup and remain available through Git history.
 
 Use broad index/ETF series and selected equities across different empirical conditions.
 
