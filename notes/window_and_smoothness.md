@@ -78,7 +78,10 @@ is not equivalent to
 
 > one common smoothness level was selected across expanding origins.
 
-This distinction matters because the active paper is framed in terms of forecast-optimal **smoothness**, not raw \(\lambda\) alone.
+This distinction matters because normalized smoothness is one coordinate of
+the active forecast-method object,
+(Theta^star_{T,h}=(d^star_{T,h},L^star_{T,h},S^star_{T,h})), rather
+than because smoothness alone defines the paper.
 
 ## Active-paper design choice
 
@@ -156,7 +159,9 @@ The derivative of the aggregate objective with respect to \(s\) then requires th
 ## Status
 
 - mathematical issue identified;
-- fixed-window design chosen for the main \(S^\star_{T,h,L}\) experiments;
+- fixed-window design chosen so the (S) coordinate is comparable within
+  each candidate (L) while the broader experiments study the joint
+  ((d,L,S)) configuration;
 - selector implemented;
 - basic selector tests added;
 - full nested outer evaluation still pending.
