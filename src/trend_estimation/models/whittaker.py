@@ -1,30 +1,37 @@
 from __future__ import annotations
 
-from .penalized_trend import PenalizedTrend
+from ._drift_penalized import _DriftPenalizedTrend
 
 
-class WhittakerTrend(PenalizedTrend):
-    """Whittaker-Henderson-style quadratic penalized trend baseline.
+class WhittakerTrend(_DriftPenalizedTrend):
+    """Zero-drift Whittaker-Henderson-style quadratic trend baseline.
 
     Parameters
     ----------
     order:
-        Difference order used in the roughness penalty.
+        Difference order in the roughness penalty.
     lambda_:
         Penalty parameter. Larger values imply smoother trends.
     smoothness:
-        Optional smoothness index. If ``lambda_`` is omitted, this is converted
-        to a penalty parameter by the package smoothness map.
-
-    Notes
-    -----
-    The implementation sets ``estimate_drift=False``. This corresponds to the
-    classical quadratic penalty around zero differences, in contrast with the
-    Guerrero-style estimator where a drift term can be estimated.
+        Optional normalized smoothness level used when lambda_ is omitted.
     """
 
-    def __init__(self, order: int = 2, lambda_: float | None = None, smoothness: float | None = 0.75):
-        super().__init__(order=order, smoothness=smoothness, lambda_=lambda_, estimate_drift=False)
+    def __init__(
+        self,
+        order: int = 2,
+        lambda_: float | None = None,
+        smoothness: float | None = 0.75,
+    ):
+        super().__init__(
+            order=order,
+            smoothness=smoothness,
+            lambda_=lambda_,
+            drift_mode="zero",
+        )
 
     def get_params(self):
-        return {"order": self.order, "lambda_": self.lambda_, "smoothness": self.smoothness}
+        return {
+            "order": self.order,
+            "lambda_": self.lambda_,
+            "smoothness": self.smoothness,
+        }

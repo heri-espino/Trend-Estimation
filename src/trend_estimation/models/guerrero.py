@@ -1,13 +1,13 @@
 from __future__ import annotations
 
-from trend_estimation.models.penalized_trend import PenalizedTrend
+from trend_estimation.models._drift_penalized import _DriftPenalizedTrend
 
 
-class GuerreroTrend(PenalizedTrend):
-    """Guerrero (2007) feasible penalized trend estimator.
+class GuerreroTrend(_DriftPenalizedTrend):
+    """Guerrero (2007) feasible plug-in trend estimator.
 
-    The default drift is the sample mean of the observed d-th differences,
-    held fixed while lambda varies.
+    The drift is the sample mean of the observed d-th differences and is held
+    fixed while the penalty parameter varies.
     """
 
     def __init__(
@@ -24,8 +24,8 @@ class GuerreroTrend(PenalizedTrend):
         )
 
 
-class IteratedDriftTrend(PenalizedTrend):
-    """Historical variant with drift repeatedly re-estimated from the fitted trend."""
+class IteratedDriftTrend(_DriftPenalizedTrend):
+    """Historical variant that re-estimates drift from the fitted trend."""
 
     def __init__(
         self,
