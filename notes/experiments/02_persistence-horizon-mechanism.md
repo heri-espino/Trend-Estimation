@@ -1,5 +1,27 @@
 # Exploration 02 — Persistence/Horizon Mechanism
 
+## Relationship to the active paper
+
+This is a **Level-II mechanism study**, not the central research objective.
+
+The active paper studies forecast-optimal trend estimation as an adaptive
+forecasting method,
+
+\[
+\Theta^\star_{T,h}
+=
+(d^\star_{T,h},L^\star_{T,h},S^\star_{T,h})
+=
+G(h,X_T,\mathcal C).
+\]
+
+This experiment isolates one mechanism inside that object: how serial
+persistence and horizon affect the smoothness coordinate when residual
+dynamics are or are not modeled. Persistence is not synonymous with local
+regime, and the oracle AR-aware forecast is not the proposed real-data method.
+
+Canonical objective: \`notes/research_objective.md\`.
+
 ## Why this experiment exists
 
 The first paper-scale factorial run showed that the gap between forecast-optimal
