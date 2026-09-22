@@ -55,6 +55,8 @@ from trend_estimation.validation import (
     train_val_test_split_indices,
     RollingOriginSplit,
     rolling_origin_splits,
+)
+from trend_estimation.validation.nested_forecast import (
     NestedForecastRecord,
     NestedRollingForecastResult,
     nested_rolling_pure_forecast,
