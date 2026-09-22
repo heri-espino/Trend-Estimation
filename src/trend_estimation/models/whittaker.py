@@ -8,11 +8,11 @@ class WhittakerTrend(_DriftPenalizedTrend):
 
     Parameters
     ----------
-    order:
+    order : int
         Difference order in the roughness penalty.
-    lambda_:
+    lambda_ : float or None
         Penalty parameter. Larger values imply smoother trends.
-    smoothness:
+    smoothness : float or None
         Optional normalized smoothness level used when lambda_ is omitted.
     """
 
