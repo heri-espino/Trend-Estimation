@@ -33,7 +33,15 @@ def parse_args() -> argparse.Namespace:
             "difference order and window length."
         )
     )
-    parser.add_argument("--preset", choices=("smoke", "explore"), default="explore")
+    parser.add_argument(
+        "--preset",
+        choices=("smoke", "explore", "boundary"),
+        default="explore",
+        help=(
+            "boundary repeats the full explore grid with a wider log-lambda "
+            "domain and denser root-discovery grid."
+        ),
+    )
     parser.add_argument("--n-seeds", type=int, default=None)
     parser.add_argument("--n-obs", type=int, default=240)
     parser.add_argument("--slope-noise-std", type=float, default=0.01)
@@ -44,9 +52,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--max-inner-origins", type=int, default=30)
     parser.add_argument("--orders", type=int, nargs="+", default=[1, 2, 3])
     parser.add_argument("--windows", type=int, nargs="+", default=[24, 48, 72])
-    parser.add_argument("--n-grid", type=int, default=161)
-    parser.add_argument("--log-lambda-min", type=float, default=-10.0)
-    parser.add_argument("--log-lambda-max", type=float, default=16.0)
+    parser.add_argument("--n-grid", type=int, default=None)
+    parser.add_argument("--log-lambda-min", type=float, default=None)
+    parser.add_argument("--log-lambda-max", type=float, default=None)
     return parser.parse_args()
 
 
@@ -226,6 +234,10 @@ def run_configuration(*, seed, phi, horizon, args):
                 "outer_origin": origin,
                 "selected_order": order,
                 "selected_window": window,
+                "lambda_observed_forecast": float(observed_search.best_lambda_),
+                "lambda_latent_forecast_oracle": float(latent_search.best_lambda_),
+                "lambda_ar_residual_oracle": float(ar_search.best_lambda_),
+                "lambda_recovery_oracle": float(recovery_search.best_lambda_),
                 "smoothness_observed_forecast": smoothness["observed"],
                 "smoothness_latent_forecast_oracle": smoothness["latent"],
                 "smoothness_ar_residual_oracle": smoothness["ar"],
@@ -300,14 +312,35 @@ def write_summary(frame: pd.DataFrame, path: Path) -> None:
 
 def main() -> None:
     args = parse_args()
+
     if args.preset == "smoke":
         grid = SMOKE_GRID
         default_seeds = 1
+        default_n_grid = 161
+        default_log_bounds = (-10.0, 16.0)
+    elif args.preset == "boundary":
+        grid = EXPLORE_GRID
+        default_seeds = 30
+        default_n_grid = 321
+        default_log_bounds = (-18.0, 24.0)
     else:
         grid = EXPLORE_GRID
         default_seeds = 30
+        default_n_grid = 161
+        default_log_bounds = (-10.0, 16.0)
 
     n_seeds = default_seeds if args.n_seeds is None else int(args.n_seeds)
+    args.n_grid = default_n_grid if args.n_grid is None else int(args.n_grid)
+    args.log_lambda_min = (
+        default_log_bounds[0]
+        if args.log_lambda_min is None
+        else float(args.log_lambda_min)
+    )
+    args.log_lambda_max = (
+        default_log_bounds[1]
+        if args.log_lambda_max is None
+        else float(args.log_lambda_max)
+    )
     configs = list(product(range(n_seeds), grid["ar1_phi"], grid["horizon"]))
 
     rows = []
