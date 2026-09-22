@@ -1,20 +1,18 @@
-# Python bytecode/cache
+# Python
 __pycache__/
 *.py[cod]
-
-# Packaging/build artifacts
 *.egg-info/
 build/
 dist/
 
-# Test/tool caches
+# Tests / tools
 .pytest_cache/
 .ruff_cache/
 .mypy_cache/
 .coverage
 htmlcov/
 
-# Environments and editor files
+# Environments / editors
 .venv/
 venv/
 .env
@@ -22,7 +20,10 @@ venv/
 .vscode/
 .idea/
 
-# LaTeX generated files
+# Sphinx
+docs/_build/
+
+# LaTeX
 *.aux
 *.bbl
 *.blg
@@ -32,20 +33,11 @@ venv/
 *.out
 *.synctex.gz
 *.toc
-
-# Manuscript build products
-paper/build/*
-!paper/build/.gitkeep
 paper_*/build/
 
-# Local literature corpus / RAG source files
-# Keep metadata, notes, and extracted text tracked; do not redistribute PDFs by default.
+# Local literature corpus
 literature/pdfs/
+literature/extracted/
 
 # Regenerable experiment outputs
-examples/outputs/
-paper/outputs/*.csv
-paper/outputs/*.json
-
-# Active-paper simulation outputs (regenerable)
 experiments/forecast_optimal_smoothing/outputs/

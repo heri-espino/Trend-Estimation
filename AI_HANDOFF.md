@@ -1,16 +1,41 @@
 # AI Handoff
 
-This repository is `Trend-Estimation`.
-
 ## Repository role
 
-Treat the repository as a **shared research library**, not as a single-paper repository. Reusable estimators, mathematical operators, validation schemes, optimizers, simulations, metrics, and plotting belong under `src/trend_estimation/` or other reusable library modules. Individual papers should consume that library rather than copy estimator logic.
+`Trend-Estimation` is a **library-first research repository**.
 
-The maintainer has explicitly allowed the current repository layout to be changed freely when useful. Do not preserve an obsolete directory structure merely because it existed before. Git history and `legacy/` provide provenance.
+Reusable mathematics, estimators, forecasting, validation, optimization,
+simulations, metrics, and plotting belong under `src/trend_estimation/`.
+Papers and experiments must import the installed package rather than copy
+library logic.
 
-## Active paper only
+The maintainer owns the repository and has explicitly allowed structural
+refactors. Historical draft material is intentionally removed from `main`;
+Git history is the archive.
 
-Current work is focused on:
+The supported local development install is:
+
+~~~bash
+pip install -e .
+~~~
+
+The pip distribution is `trend-estimation` and the Python import is
+`trend_estimation`.
+
+## Documentation
+
+`docs/` is the canonical Sphinx documentation for the public library API.
+Do not add ad-hoc Markdown files under `docs/`.
+
+`notes/` is the internal scientific notebook for derivations, checkpoints,
+research decisions, and the active roadmap.
+
+When a public function or class changes, update its docstring and Sphinx API
+page. When a mathematical result changes, update the relevant note first.
+
+## Active paper
+
+Only this research paper is active:
 
 `paper_forecast-optimal-smoothing/`
 
@@ -18,33 +43,20 @@ Working title:
 
 **Forecast-Optimal Trend Smoothing under Changing Time-Series Regimes**
 
-The current scientific question is whether forecast-optimal smoothness changes systematically with:
+The decision-aware/portfolio project is paused.
 
-- forecast horizon \(h\);
-- estimation-window length \(L\);
-- local volatility;
-- serial dependence/persistence;
-- signal-to-noise structure;
-- structural breaks/regimes;
-- series class and observation frequency.
-
-Planned data progression:
+The research object is
 
 \[
-\text{macro}
-\rightarrow
-\text{indices/ETFs}
-\rightarrow
-\text{equities}
-\rightarrow
-\text{crypto}.
+S^\star_{T,h,L}=G(h,L,\mathcal R_T,X_T).
 \]
 
-The decision-aware/portfolio project is paused. Do not add portfolio objectives, trading rules, or `lambda_decision` experiments unless the maintainer explicitly reactivates that work.
+The empirical progression is controlled simulations, macroeconomic series,
+indices/ETFs, equities, and crypto. Do not reduce regime to volatility alone.
 
-## Canonical analytic model for current derivations
+## Core analytic model
 
-Use the pure quadratic finite-difference smoother:
+For the pure smoother,
 
 \[
 \widehat t_{\lambda,d}
@@ -64,15 +76,11 @@ S_\lambda'=-S_\lambda Q S_\lambda,
 \widehat t_\lambda''=2S_\lambda Q S_\lambda Q\widehat t_\lambda.
 \]
 
-Implementation:
+The detailed derivation is in `notes/derivative.md`.
 
-- `src/trend_estimation/core/pure.py`
-- `src/trend_estimation/core/derivatives.py`
-- `src/trend_estimation/models/pure_penalized.py`
+## Forecast loss
 
-## Forecast-loss derivative
-
-For an origin \(T\), horizon \(h\), and a linear forecast operator \(H\),
+For a causal forecast origin \(T\),
 
 \[
 r_T(\lambda)
@@ -82,13 +90,7 @@ y_{T+1:T+h}
 H S_\lambda y_{\mathrm{past}}.
 \]
 
-Then
-
-\[
-r_T'
-=
-H S_\lambda Q S_\lambda y_{\mathrm{past}},
-\]
+The implemented derivatives are
 
 \[
 f_T'(\lambda)
@@ -110,110 +112,86 @@ f_T''(\lambda)
 \right].
 \]
 
-The full derivation is canonical in `notes/derivative.md`. If code and the note disagree, resolve the discrepancy explicitly; do not silently change the mathematics.
+## Numerical selection
 
-## Numerical search
+Work in \(\theta=\log\lambda\). The active robust search is:
 
-Prefer \(\theta=\log\lambda\). If \(g(\theta)=f(e^\theta)\),
-
-\[
-g'(\theta)=\lambda f'(\lambda),
-\qquad
-g''(\theta)=\lambda f'(\lambda)+\lambda^2f''(\lambda).
-\]
-
-The intended robust search is:
-
-1. scan a coarse grid in \(\theta\);
-2. bracket sign changes in \(g'\);
-3. solve each bracket with Brent's root method;
+1. coarse derivative scan in log-lambda;
+2. bracket sign changes;
+3. Brent root solve;
 4. classify stationary points;
-5. evaluate every local minimum plus the search boundaries;
-6. retain the global minimum on the stated bounded domain.
+5. compare local minima and search boundaries.
 
-Newton is a benchmark/refinement, not the only search method.
+Newton is a refinement/benchmark, not the sole global method.
 
 ## Validation invariant
 
-For financial/economic forecasting, at origin \(T\), no observation after \(T\) may affect the fitted trend or hyperparameter selection used to predict that future block.
+At outer origin \(T\), no observation after \(T\) may influence fitting or
+hyperparameter selection.
 
-Use the implemented nested chronological pipeline for tuning \((d,L,\lambda)\): `select_fixed_window_pure_smoothness` for inner selection and `nested_rolling_pure_forecast` for untouched outer evaluation.
+Use:
 
-Random internal masking belongs to smoothing/reconstruction experiments, not to the main forecasting claim.
+- `select_fixed_window_pure_smoothness` for inner \((d,L,\lambda)\) selection;
+- `nested_rolling_pure_forecast` for untouched outer evaluation.
 
-## Guerrero model definition
+Candidate windows are compared on identical inner forecast origins.
 
-The Guerrero (2007) source has now been checked directly. Its feasible estimator uses
+## Model naming
+
+`PurePenalizedTrend` is the zero-drift quadratic model used for the current
+analytic work.
+
+`GuerreroTrend` implements the Guerrero (2007) observed-difference plug-in
+drift
 
 \[
-\widehat m_y=(N-d)^{-1}\mathbf1^\top D_dy
+\widehat m_y=(N-d)^{-1}\mathbf1^\top D_dy.
 \]
 
-computed from the observed differenced series and plugs that value into the penalized estimator. The canonical `GuerreroTrend` now implements this as `drift_mode="data"`.
+`IteratedDriftTrend` preserves the repository's old iterative drift procedure
+for reproducibility and must not be described as Guerrero (2007) equation (18).
 
-The previous repository algorithm that re-estimated drift from the fitted trend is preserved explicitly as `IteratedDriftTrend` / `drift_mode="iterated"`. Do not call that historical variant Guerrero (2007) equation (18).
+## Current implementation checkpoint
 
-See `notes/model_definitions.md`.
+Implemented:
 
-## Notes are canonical internal documentation
+- pure penalized smoother and analytic trend derivatives;
+- explicit forecast continuation operator;
+- forecast-loss first/second derivatives;
+- derivative-root stationary-point search;
+- fixed-window forecast-optimal selection;
+- common validation origins across candidate windows;
+- nested rolling evaluation with leakage-invariance tests;
+- no-change benchmark and relative RMSFE;
+- local-linear AR(1) and two-regime simulations;
+- oracle recovery-optimal lambda for simulations;
+- first active simulation driver.
 
-Before changing the active research direction, read:
+Next:
+
+1. run and inspect the quick simulation preset;
+2. stress-test derivative/root search against dense reference scans;
+3. freeze the paper-scale simulation design;
+4. add a dedicated within-series regime-transition experiment;
+5. continue the literature audit;
+6. then move to macroeconomic data.
+
+## Canonical internal notes
+
+Read before changing research logic:
 
 - `notes/key_results.md`
 - `notes/derivative.md`
 - `notes/numerical_selection.md`
 - `notes/model_definitions.md`
+- `notes/window_and_smoothness.md`
+- `notes/nested_validation.md`
 - `notes/roadmap.md`
 
-Every new nontrivial result should be added to `notes/key_results.md` and receive a detailed note when derivation or interpretation matters.
+## CI policy
 
-## Papers
+Push/pull-request CI is lightweight: editable install, tests, and Sphinx
+validation.
 
-- `paper_forecast-optimal-smoothing/`: active paper.
-- `paper_penalized-trend-tutorial/`: tutorial companion, secondary.
-- `paper/`: legacy S&P 500 manuscript assets, not canonical.
-
-Paper scripts should import the installed `trend_estimation` package. Do not put reusable estimator mathematics inside paper folders.
-
-## Testing priorities
-
-Before trusting a numerical result:
-
-1. run the full test suite;
-2. compare analytic derivatives against centered finite differences;
-3. verify forecast-origin chronology;
-4. compare root-based search against a dense diagnostic grid on synthetic cases;
-5. report the exact bounded log-\(\lambda\) search domain;
-6. distinguish level forecasting from return/direction forecasting;
-7. compare price forecasts against a random-walk/no-change benchmark.
-
-## Canonical roadmap
-
-`notes/roadmap.md` is the authoritative record of what has been done, what is next, and why.
-
-
-## Window-length/smoothness invariant
-
-Normalized smoothness depends on fitted sample size \(N\). A common raw \(\lambda\) across expanding origins therefore does not imply a common smoothness level.
-
-For the active object \(S^\star_{T,h,L}\), prefer fixed-width inner windows when optimizing one common \(\lambda\) for a candidate \(L\). The helper `select_fixed_window_pure_smoothness` implements this design.
-
-See `notes/window_and_smoothness.md`.
-
-
-## Current implementation checkpoint
-
-The active infrastructure now includes:
-
-- explicit forecast continuation operator matching the recursive forecast rule;
-- analytic single-origin and pooled rolling forecast-loss derivatives;
-- derivative-root Brent search in log-lambda space;
-- fixed-window inner selection of order, window, and lambda;
-- common inner validation origins across competing window lengths;
-- nested outer rolling evaluation with a direct no-look-ahead invariance test;
-- no-change/random-walk level benchmark and relative RMSFE;
-- controlled local-linear AR(1) and two-regime simulation generators;
-- oracle latent-trend recovery-optimal lambda selection for simulations;
-- `experiments/forecast_optimal_smoothing/run_simulation_grid.py`.
-
-Next: run/inspect the quick simulation grid, stress-test numerical selection, then freeze the paper-scale simulation design.
+Paper/PDF compilation is manual-only via `workflow_dispatch` and uploaded as
+artifacts; generated paper outputs are not auto-committed.
