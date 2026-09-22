@@ -2,8 +2,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-import numpy as np
-
 from trend_estimation.core.smoothness import lambda_to_smoothness
 from trend_estimation.forecasting.objectives import rolling_pure_forecast_loss_derivatives
 from trend_estimation.selection.numerical import (
@@ -11,7 +9,7 @@ from trend_estimation.selection.numerical import (
     find_stationary_points_log_lambda,
 )
 from trend_estimation.utils.arrays import as_1d_float_array
-from trend_estimation.validation.rolling_origin import rolling_origin_splits
+from trend_estimation.validation.rolling_origin import RollingOriginSplit
 
 
 @dataclass(frozen=True)
@@ -26,6 +24,7 @@ class ForecastOptimalCandidate:
     objective_: float
     n_origins_: int
     n_scored_: int
+    inner_origins_: tuple[int, ...]
     search_: StationaryPointSearchResult
 
 
@@ -35,6 +34,40 @@ class ForecastOptimalSelection:
 
     best_: ForecastOptimalCandidate
     candidates_: tuple[ForecastOptimalCandidate, ...]
+    common_inner_origins_: tuple[int, ...]
+
+
+def _common_fixed_window_splits(
+    n_obs: int,
+    windows: tuple[int, ...],
+    horizon: int,
+    step: int,
+    max_origins: int | None,
+) -> dict[int, list[RollingOriginSplit]]:
+    """Create candidate-window splits on exactly the same validation origins."""
+
+    valid_windows = tuple(sorted({w for w in windows if w + horizon <= n_obs}))
+    if not valid_windows:
+        return {}
+
+    first_origin = max(valid_windows)
+    origins = list(range(first_origin, n_obs - horizon + 1, step))
+    if max_origins is not None:
+        keep = int(max_origins)
+        if keep <= 0:
+            raise ValueError("max_origins must be positive when provided.")
+        origins = origins[-keep:]
+
+    return {
+        window: [
+            RollingOriginSplit(
+                train=slice(origin - window, origin),
+                validation=slice(origin, origin + horizon),
+            )
+            for origin in origins
+        ]
+        for window in valid_windows
+    }
 
 
 def select_fixed_window_pure_smoothness(
@@ -51,16 +84,16 @@ def select_fixed_window_pure_smoothness(
 ) -> ForecastOptimalSelection:
     """Select order, fixed window, and lambda by inner rolling-origin forecast loss.
 
-    This function is designed as an inner selector at one outer forecast origin.
-    The caller must pass only data available at that outer origin.
+    This is an inner selector at one outer forecast origin. The caller must pass
+    only data available at that outer origin.
 
-    For each candidate window L, all inner fits have exactly L observations.
-    This matters because Guerrero-style normalized smoothness depends on sample
-    size N; with fixed L, one common lambda corresponds to one common smoothness
-    value across the inner origins.
+    All candidate windows are scored on the same validation origins. Candidate
+    window L changes only the amount of past data supplied to the fit, not the
+    future blocks on which competing windows are compared.
 
-    The function does not perform outer evaluation. Use it inside a separate
-    chronological outer loop when estimating out-of-sample performance.
+    For each fixed window L, all inner fits contain exactly L observations. Thus
+    for fixed order d a common lambda corresponds to one common normalized
+    smoothness value across those inner origins.
     """
 
     y_history = as_1d_float_array(y_history)
@@ -84,30 +117,34 @@ def select_fixed_window_pure_smoothness(
     if any(window <= 0 for window in windows):
         raise ValueError("windows must be positive.")
 
+    split_map = _common_fixed_window_splits(
+        n_obs=y_history.size,
+        windows=windows,
+        horizon=horizon,
+        step=step,
+        max_origins=max_origins,
+    )
+    if not split_map:
+        raise ValueError("No candidate window leaves room for the forecast horizon.")
+
+    common_origins = tuple(
+        int(split.validation.start)
+        for split in next(iter(split_map.values()))
+    )
+    if len(common_origins) < min_origins:
+        raise ValueError(
+            "No valid candidate produced enough common inner rolling origins. "
+            "Provide more history, shorter windows/horizon, a smaller step, "
+            "or a smaller min_origins."
+        )
+
     candidates: list[ForecastOptimalCandidate] = []
 
-    for window in windows:
-        if window + horizon > y_history.size:
-            continue
-
-        splits = rolling_origin_splits(
-            y_history.size,
-            initial_train=window,
-            horizon=horizon,
-            step=step,
-            expanding=False,
-            train_window=window,
-        )
-        if max_origins is not None:
-            keep = int(max_origins)
-            if keep <= 0:
-                raise ValueError("max_origins must be positive when provided.")
-            splits = splits[-keep:]
-
-        if len(splits) < min_origins:
-            continue
-
+    for window, splits in split_map.items():
         for order in orders:
+            if order > window:
+                continue
+
             def value_grad_hess(lambda_value: float):
                 result = rolling_pure_forecast_loss_derivatives(
                     y_history,
@@ -143,18 +180,17 @@ def select_fixed_window_pure_smoothness(
                     objective_=pooled.value,
                     n_origins_=pooled.n_origins,
                     n_scored_=pooled.n_scored,
+                    inner_origins_=common_origins,
                     search_=search,
                 )
             )
 
     if not candidates:
-        raise ValueError(
-            "No valid candidate produced enough inner rolling origins. "
-            "Provide more history, shorter windows/horizon, or a smaller min_origins."
-        )
+        raise ValueError("No valid order/window candidate could be evaluated.")
 
     best = min(candidates, key=lambda candidate: candidate.objective_)
     return ForecastOptimalSelection(
         best_=best,
         candidates_=tuple(candidates),
+        common_inner_origins_=common_origins,
     )

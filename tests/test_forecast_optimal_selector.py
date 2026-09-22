@@ -57,3 +57,29 @@ def test_selector_requires_only_history_available_at_outer_origin():
 
     assert np.isclose(first.best_.lambda_, second.best_.lambda_)
     assert np.isclose(first.best_.objective_, second.best_.objective_)
+
+
+
+def test_candidate_windows_are_compared_on_identical_inner_origins():
+    x = np.arange(50, dtype=float)
+    y = 0.01 * x**2 + 0.15 * np.sin(x / 4.0)
+
+    result = td.select_fixed_window_pure_smoothness(
+        y,
+        orders=(2,),
+        windows=(10, 18, 24),
+        horizon=3,
+        step=4,
+        min_origins=2,
+        log_bounds=(-5.0, 7.0),
+        n_grid=41,
+    )
+
+    origin_sets = {candidate.inner_origins_ for candidate in result.candidates_}
+    assert len(origin_sets) == 1
+    assert next(iter(origin_sets)) == result.common_inner_origins_
+
+    n_origins = {candidate.n_origins_ for candidate in result.candidates_}
+    n_scored = {candidate.n_scored_ for candidate in result.candidates_}
+    assert len(n_origins) == 1
+    assert len(n_scored) == 1

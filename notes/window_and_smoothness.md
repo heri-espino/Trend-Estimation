@@ -160,3 +160,37 @@ The derivative of the aggregate objective with respect to \(s\) then requires th
 - selector implemented;
 - basic selector tests added;
 - full nested outer evaluation still pending.
+
+
+## Fair comparison across candidate windows
+
+A second issue appears when \(L\) itself is selected. If each candidate window
+starts validation as soon as it has enough observations, then a short window
+and a long window are scored on different future dates. Their MSEs are not
+directly comparable because both the model and the evaluation sample change.
+
+The active selector therefore defines a common set of inner forecast origins
+starting only after the largest candidate window is available. For every
+candidate \(L\), the validation blocks are identical and only the training
+slice changes:
+
+\[
+[T_j-L,\,T_j)
+\longrightarrow
+[T_j,\,T_j+h).
+\]
+
+Hence candidate windows are compared on the same targets:
+
+\[
+\boxed{
+\mathcal V_{L_1}=\mathcal V_{L_2}=\cdots
+}
+\]
+
+for all admissible \(L\).
+
+**Library mapping:** `selection/forecast_optimal.py::_common_fixed_window_splits`.
+
+**Status:** implemented and tested by checking that every candidate records the
+same tuple of inner validation origins.
