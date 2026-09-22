@@ -36,12 +36,21 @@ S^star_{mathrm{recovery}},
 
 which is only observable in simulation.
 
-## Quick smoke experiment
+## Smoke test
 
-Run locally from the repository root:
+After pulling the latest code, use this first. It runs only two configurations and is intended to verify that the full nested pipeline works end to end:
 
 ~~~bash
 conda activate trend-estimation
+pip install -e .
+python experiments/forecast_optimal_smoothing/run_simulation_grid.py --preset smoke
+~~~
+
+## Quick experiment
+
+The quick preset runs 32 configurations:
+
+~~~bash
 python experiments/forecast_optimal_smoothing/run_simulation_grid.py --preset quick
 ~~~
 
