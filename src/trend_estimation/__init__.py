@@ -81,6 +81,8 @@ from trend_estimation.datasets import (
     make_sinusoidal_trend_series,
     make_local_linear_trend_series,
     make_structural_break_series,
+    make_local_linear_ar1_series,
+    make_two_regime_local_linear_series,
 )
 from trend_estimation.plotting import (
     plot_smoothed_series,
@@ -119,7 +121,7 @@ __all__ = [
     "pure_forecast_loss_derivatives", "rolling_pure_forecast_loss_derivatives",
     "mae", "mse", "rmse", "mape", "smape", "error_metrics_table", "compare_error_tables", "roughness_d",
     "SyntheticTrendData", "make_polynomial_trend_series", "make_noisy_trend_series", "make_piecewise_trend_series",
-    "make_sinusoidal_trend_series", "make_local_linear_trend_series", "make_structural_break_series",
+    "make_sinusoidal_trend_series", "make_local_linear_trend_series", "make_structural_break_series", "make_local_linear_ar1_series", "make_two_regime_local_linear_series",
     "plot_smoothed_series", "plot_train_val_test_split", "plot_validation_curve", "plot_forecasted_trend",
     "plot_metrics_table", "plot_benchmark_forecasts", "plot_benchmark_metrics", "set_style",
     "BenchmarkResult", "BenchmarkRunner", "run_benchmark", "benchmark_metrics_table", "default_benchmark_models", "no_change_forecast",
