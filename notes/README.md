@@ -37,3 +37,5 @@ When a result graduates into the public API, keep the note and update its librar
 
 
 - `checkpoints/2026-09-21_first-paper-simulation-run.md` — first full simulation grid, initial scientific patterns, and numerical diagnostics.
+
+- `checkpoints/2026-09-21_first-paper-simulation-results.md` — first paper-scale simulation run and preliminary aggregate findings.
