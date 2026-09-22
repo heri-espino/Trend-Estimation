@@ -5,7 +5,7 @@ from typing import Callable
 import numpy as np
 import pandas as pd
 
-from trend_estimation.models.penalized_trend import PenalizedTrend
+from trend_estimation.models.guerrero import GuerreroTrend
 from trend_estimation.utils.arrays import as_1d_float_array, indices_from_slice_or_array
 from trend_estimation.validation.losses import mse_loss
 from trend_estimation.validation.splits import train_val_test_split_indices
@@ -65,10 +65,10 @@ class TrainValidationSelector(BaseTrendSelector):
         grid = self._default_grid()
         rows: list[dict] = []
         minima: list[dict] = []
-        models: dict[tuple[int, float], PenalizedTrend] = {}
+        models: dict[tuple[int, float], GuerreroTrend] = {}
 
         def score_for(order: int, smoothness: float) -> float:
-            model = PenalizedTrend(order=order, smoothness=float(smoothness)).fit(y_train)
+            model = GuerreroTrend(order=order, smoothness=float(smoothness)).fit(y_train)
             forecast = model.forecast(len(y_val))
             return float(self.loss(y_val, forecast))
 
@@ -101,7 +101,7 @@ class TrainValidationSelector(BaseTrendSelector):
                 j_min = np.array([best["score"]])
 
             for smoothness, score in zip(s_min, j_min):
-                model = PenalizedTrend(
+                model = GuerreroTrend(
                     order=order,
                     smoothness=float(smoothness),
                 ).fit(y_train)

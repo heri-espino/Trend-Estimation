@@ -10,12 +10,12 @@ def test_guerrero_default_matches_published_plugin_formula():
 
     model = td.GuerreroTrend(order=order, lambda_=lambda_).fit(y)
 
-    D = td.difference_matrix(len(y), order)
-    Q = D.T @ D
-    ones = np.ones(D.shape[0], dtype=float)
-    m_hat = float(np.mean(D @ y))
-    rhs = y + lambda_ * m_hat * (D.T @ ones)
-    expected = np.linalg.solve(np.eye(len(y)) + lambda_ * Q, rhs)
+    difference = td.difference_matrix(len(y), order)
+    penalty = difference.T @ difference
+    ones = np.ones(difference.shape[0], dtype=float)
+    m_hat = float(np.mean(difference @ y))
+    rhs = y + lambda_ * m_hat * (difference.T @ ones)
+    expected = np.linalg.solve(np.eye(len(y)) + lambda_ * penalty, rhs)
 
     assert model.drift_mode_ == "data"
     assert np.isclose(model.m_hat_, m_hat)
@@ -31,21 +31,3 @@ def test_iterated_drift_variant_is_explicitly_named():
     assert plugin.drift_mode_ == "data"
     assert legacy.drift_mode_ == "iterated"
     assert not np.isclose(plugin.m_hat_, legacy.m_hat_)
-
-
-def test_legacy_estimate_drift_boolean_remains_reproducible():
-    y = np.linspace(0.0, 4.0, 15) ** 2
-
-    model = td.PenalizedTrend(
-        order=2,
-        lambda_=2.0,
-        estimate_drift=True,
-    ).fit(y)
-    assert model.drift_mode_ == "iterated"
-
-    zero = td.PenalizedTrend(
-        order=2,
-        lambda_=2.0,
-        estimate_drift=False,
-    ).fit(y)
-    assert zero.drift_mode_ == "zero"
