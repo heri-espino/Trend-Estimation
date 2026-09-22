@@ -44,6 +44,7 @@ When a result graduates into the public API, keep the note and update its librar
 - `checkpoints/2026-09-21_first-paper-simulation-results.md` — first paper-scale simulation run and preliminary aggregate findings.
 
 - `experiments/02_persistence-horizon-mechanism.md` — mechanism study separating observed forecasting, latent forecasting, AR-aware forecasting, and recovery.
+- `experiments/03_search-boundary-sensitivity.md` — controlled wide-domain rerun that tests whether Explore-02 boundary optima are numerical truncation or genuine limiting choices.
 
 - `checkpoints/2026-09-22_persistence-mechanism-results.md` — mechanism-study results, decomposition, and search-boundary caveat.
 - `checkpoints/2026-09-22_scientific-objective-clarification.md` — records the
