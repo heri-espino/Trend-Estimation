@@ -41,7 +41,7 @@ which is only observable in simulation.
 Run locally from the repository root:
 
 ~~~bash
-conda activate trend_estimation
+conda activate trend-estimation
 python experiments/forecast_optimal_smoothing/run_simulation_grid.py --preset quick
 ~~~
 
