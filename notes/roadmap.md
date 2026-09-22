@@ -158,8 +158,8 @@ Implemented infrastructure:
 - [x] first factorial simulation driver under `experiments/forecast_optimal_smoothing/`;
 - [x] run and inspect the first factorial simulation grid;
 - [x] run a dedicated persistence/horizon mechanism study;
-- [ ] rerun the persistence mechanism with wider log-lambda bounds and a denser
-  discovery grid to diagnose boundary optima;
+- [ ] run Exploration 03 with `--preset boundary`: same seeds/DGP grid as
+  Exploration 02, but log-lambda bounds [-18,24] and 321 discovery points;
 - [ ] add dedicated within-series regime-transition experiments after
   search-boundary robustness is established;
 - [ ] track the joint path of
