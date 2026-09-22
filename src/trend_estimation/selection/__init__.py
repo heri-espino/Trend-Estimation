@@ -22,7 +22,7 @@ from .recovery import (
     select_recovery_optimal_lambda,
 )
 from .time_weighted import TimeWeightedValidationSelector
-from .train_val import TrainValidationSelector
+from .train_validation import TrainValidationSelector
 
 __all__ = [
     "BaseSelectionCriterion",

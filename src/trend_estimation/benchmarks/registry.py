@@ -6,14 +6,14 @@ from trend_estimation.models.hp_filter import HPTrend
 from trend_estimation.models.moving_average import MovingAverageTrend
 from trend_estimation.models.whittaker import WhittakerTrend
 from trend_estimation.selection.time_weighted import TimeWeightedValidationSelector
-from trend_estimation.selection.train_val import TrainValidationSelector
+from trend_estimation.selection.train_validation import TrainValidationSelector
 
 
 def default_benchmark_models() -> dict[str, object]:
-    """Return a small default model dictionary for synthetic benchmarks."""
+    """Return a compact default model set for synthetic benchmark experiments."""
     return {
-        "penalized_trainval": TrainValidationSelector(orders=[1, 2, 3]),
-        "penalized_timeweighted": TimeWeightedValidationSelector(orders=[1, 2, 3]),
+        "penalized_train_validation": TrainValidationSelector(orders=[1, 2, 3]),
+        "penalized_time_weighted": TimeWeightedValidationSelector(orders=[1, 2, 3]),
         "moving_average_20": MovingAverageTrend(window=20),
         "exp_smoothing_02": ExponentialSmoothingTrend(alpha=0.2),
         "hp_1600": HPTrend(lambda_=1600.0),

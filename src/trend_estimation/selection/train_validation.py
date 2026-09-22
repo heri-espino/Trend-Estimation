@@ -1,19 +1,21 @@
 from __future__ import annotations
 
 from typing import Callable
+
 import numpy as np
 import pandas as pd
 
-from .base import BaseTrendSelector, SelectionResult
-from .minima import find_all_local_minima
 from trend_estimation.models.penalized_trend import PenalizedTrend
 from trend_estimation.utils.arrays import as_1d_float_array, indices_from_slice_or_array
-from trend_estimation.validation.splits import train_val_test_split_indices
 from trend_estimation.validation.losses import mse_loss
+from trend_estimation.validation.splits import train_val_test_split_indices
+
+from .base import BaseTrendSelector, SelectionResult
+from .minima import find_all_local_minima
 
 
 class TrainValidationSelector(BaseTrendSelector):
-    """Select order and smoothness by validation loss over a temporal split."""
+    """Select difference order and smoothness on a chronological holdout block."""
 
     def __init__(
         self,
@@ -45,9 +47,14 @@ class TrainValidationSelector(BaseTrendSelector):
         y = as_1d_float_array(y)
         n_obs = y.size
         if train_idx is None or val_idx is None:
-            train_idx, val_idx, test_idx_auto = train_val_test_split_indices(n_obs, self.frac_train, self.frac_val)
+            train_idx, val_idx, test_idx_auto = train_val_test_split_indices(
+                n_obs,
+                self.frac_train,
+                self.frac_val,
+            )
             if test_idx is None:
                 test_idx = test_idx_auto
+
         train_pos = indices_from_slice_or_array(train_idx, n_obs)
         val_pos = indices_from_slice_or_array(val_idx, n_obs)
         y_train = y[train_pos]
@@ -66,35 +73,53 @@ class TrainValidationSelector(BaseTrendSelector):
             return float(self.loss(y_val, forecast))
 
         for order in self.orders:
-            for s in grid:
+            for smoothness in grid:
                 try:
-                    score = score_for(order, float(s))
+                    score = score_for(order, float(smoothness))
                 except Exception:
                     score = np.inf
-                rows.append({"order": order, "smoothness": float(s), "score": score})
+                rows.append(
+                    {
+                        "order": order,
+                        "smoothness": float(smoothness),
+                        "score": score,
+                    }
+                )
 
             if self.detect_multiple_minima:
-                J = lambda s, order=order: score_for(order, float(s))
-                s_min, j_min = find_all_local_minima(J, grid, refine=self.refine, refine_iter=self.refine_iter)
+                objective = lambda s, order=order: score_for(order, float(s))
+                s_min, j_min = find_all_local_minima(
+                    objective,
+                    grid,
+                    refine=self.refine,
+                    refine_iter=self.refine_iter,
+                )
             else:
-                sub = [r for r in rows if r["order"] == order]
-                best = min(sub, key=lambda r: r["score"])
+                subset = [row for row in rows if row["order"] == order]
+                best = min(subset, key=lambda row: row["score"])
                 s_min = np.array([best["smoothness"]])
                 j_min = np.array([best["score"]])
-            for s, score in zip(s_min, j_min):
-                model = PenalizedTrend(order=order, smoothness=float(s)).fit(y_train)
-                key = (order, float(s))
+
+            for smoothness, score in zip(s_min, j_min):
+                model = PenalizedTrend(
+                    order=order,
+                    smoothness=float(smoothness),
+                ).fit(y_train)
+                key = (order, float(smoothness))
                 models[key] = model
-                minima.append({
-                    "order": order,
-                    "smoothness": float(s),
-                    "lambda": float(model.lambda_),
-                    "score": float(score),
-                })
+                minima.append(
+                    {
+                        "order": order,
+                        "smoothness": float(smoothness),
+                        "lambda": float(model.lambda_),
+                        "score": float(score),
+                    }
+                )
 
         curve = pd.DataFrame(rows)
-        best = min(minima, key=lambda r: r["score"])
+        best = min(minima, key=lambda row: row["score"])
         best_key = (best["order"], best["smoothness"])
+
         self.best_model_ = models[best_key]
         self.best_order_ = best["order"]
         self.best_smoothness_ = best["smoothness"]
@@ -103,6 +128,7 @@ class TrainValidationSelector(BaseTrendSelector):
         self.all_minima_ = minima
         self.validation_curve_ = curve
         self.models_ = models
+
         return SelectionResult(
             best_model_=self.best_model_,
             best_order_=self.best_order_,
