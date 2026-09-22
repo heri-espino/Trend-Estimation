@@ -34,3 +34,6 @@ When a result graduates into the public API, keep the note and update its librar
 
 - `checkpoints/2026-09-21_forecast-optimal-foundation.md` — foundation complete enough to begin controlled simulation runs.
 - `checkpoints/2026-09-21_repository-cleanup.md` — library-first cleanup, naming, editable install, and Sphinx documentation.
+
+
+- `checkpoints/2026-09-21_first-paper-simulation-run.md` — first full simulation grid, initial scientific patterns, and numerical diagnostics.

@@ -199,12 +199,16 @@ def _write_summary(frame: pd.DataFrame, path: Path) -> None:
                 "smoothness_gap_forecast_minus_recovery",
                 "mean",
             ),
-            mean_relative_rmsfe=("relative_rmsfe_block", "mean"),
-            median_relative_rmsfe=("relative_rmsfe_block", "median"),
+            mean_block_relative_rmsfe=("relative_rmsfe_block", "mean"),
+            median_block_relative_rmsfe=("relative_rmsfe_block", "median"),
             mean_outer_block_mse=("outer_block_mse", "mean"),
             mean_benchmark_block_mse=("benchmark_block_mse", "mean"),
         )
         .reset_index()
+    )
+    summary["pooled_relative_rmsfe"] = np.sqrt(
+        summary["mean_outer_block_mse"]
+        / summary["mean_benchmark_block_mse"]
     )
     summary.to_csv(path, index=False)
 
