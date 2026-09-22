@@ -90,3 +90,31 @@ auditable and lets collaborators analyze results directly from GitHub.
 
 The older `experiments/forecast_optimal_smoothing/outputs/` path remains
 ignored and should be treated as scratch space.
+
+
+## Persistence/horizon mechanism study
+
+After the first factorial run, the next experiment isolates the mechanism behind
+the strong persistence effect. It compares four smoothness objectives
+conditional on the same selected order and window:
+
+- observed-series forecast optimum;
+- oracle latent-trend forecast optimum;
+- oracle AR-residual-aware forecast optimum using the known simulation phi;
+- oracle latent-trend recovery optimum.
+
+Smoke test:
+
+~~~bash
+python experiments/forecast_optimal_smoothing/run_persistence_mechanism.py --preset smoke
+~~~
+
+Exploration run:
+
+~~~bash
+python experiments/forecast_optimal_smoothing/run_persistence_mechanism.py --preset explore
+~~~
+
+The exploration uses 30 seeds, nine AR(1) coefficients (including negative
+values), and five forecast horizons. Results are versioned automatically under
+`results/forecast_optimal_smoothing/`.
