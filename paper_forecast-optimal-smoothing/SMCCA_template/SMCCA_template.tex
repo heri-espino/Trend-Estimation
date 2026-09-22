@@ -1,0 +1,103 @@
+% ===============================================================
+% ===============================================================
+% BOLETÍN SMCCA (PLANTILLA/TEMPLATE)
+% ===============================================================
+% ES: Selecciona el idioma descomentando UNA de las dos líneas.
+% EN: Select the language by uncommenting ONE of the two lines.
+
+\documentclass[spanish]{smcca}  % ES: Artículo en español
+% \documentclass[english]{smcca} % EN: Article in English
+
+% ===============================================================
+% ES: PAQUETES ADICIONALES (OPCIONAL)
+% EN: ADDITIONAL PACKAGES (OPTIONAL)
+% ===============================================================
+% ES: Aquí puedes añadir paquetes extra solo si son necesarios.
+% EN: Add extra packages here only if they are required.
+%
+% \usepackage{...}
+
+
+% ===============================================================
+% ES: DATOS DEL ARTÍCULO
+% EN: ARTICLE INFORMATION
+% ===============================================================
+
+% ES: Escribe el título SIN forzar negritas (\textbf{}).
+% EN: Write the title WITHOUT forcing bold (\textbf{}).
+\title{Title / Título}
+
+% ES/EN: Autores y afiliaciones.
+% ES: Usa índices [1],[2],... para evitar repetir instituciones.
+% EN: Use indices [1],[2],... to avoid repeating institutions.
+%
+% ES: Correos en la primera página con \thanks{} (uno por autor o agrupados).
+% EN: Emails as first-page footnotes using \thanks{} (one per author or grouped).
+
+\author[1,2]{First Author / Primer Autor}
+\author[1]{Second Author / Segundo Autor\thanks{\texttt{a1@uni.mx}}}
+\author[2]{Third Author / Tercer Autor}
+
+\affil[1]{Institution 1, City, Country. / Institución 1, Ciudad, País.}
+\affil[2]{Institution 2, City, Country. / Institución 2, Ciudad, País.}
+
+% ES: Déjalo vacío.
+% EN: Leave empty.
+\date{}
+
+\setcounter{page}{1}
+\begin{document}
+\maketitle
+	
+	% ===============================================================
+	% ES: RESUMEN / EN: ABSTRACT
+	% ===============================================================
+	% ES: Máximo ~10 líneas. Incluye el objetivo, el método, los resultados y las conclusiones.
+	% EN: Max ~10 lines. Include objective, method, main results, and conclusions.
+	
+	\begin{abstract}
+		Abstract / Resumen.
+	\end{abstract}
+	
+	\vspace{1em}
+	
+	% ES/EN: Palabras clave / Keywords
+	% ES: 4–6 palabras clave separadas por punto y coma.
+	% EN: 4–6 keywords separated by semicolons.
+	\noindent\textbf{Palabras clave / Keywords:} Keyword 1; Keyword 2; Keyword 3; Keyword 4.
+	
+	\vspace{10pt}
+
+	% ===============================================================
+	% ES: CUERPO DEL ARTÍCULO / EN: MAIN TEXT
+	% ===============================================================
+	
+	% ES/EN: Cambia los títulos de las secciones según el idioma y las necesidades del artículo.
+	% ES: Ej. "Introducción", "Metodología", "Resultados", "Conclusiones".
+	% EN: E.g. "Introduction", "Methodology", "Results", "Conclusions".
+	
+	\section{Introducción / Introduction}
+		Text...
+	
+	\section{Metodología / Methodology}
+		Text...
+	
+	\section{Resultados / Results}
+		Text...
+	
+	\section{Conclusiones / Conclusions}
+		Text...
+	
+	% ===============================================================
+	% ES: BIBLIOGRAFÍA / EN: REFERENCES
+	% ===============================================================
+	% ES: Usa un archivo .bib (p. ej., bibliografia.bib) y cita con \cite{...}.
+	% EN: Use a .bib file (e.g., bibliografia.bib) and cite with \cite{...}.
+	
+	% Se agrega el comando \nocite{*} para citar todas las referencias y evitar
+	% el error "no \citation commands"; esto puede removerse en la versión final
+	\nocite{*}
+	
+	\bibliographystyle{abbrv}
+	\bibliography{bibliografia} 
+\end{document}
