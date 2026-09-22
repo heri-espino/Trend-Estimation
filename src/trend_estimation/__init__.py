@@ -42,6 +42,8 @@ from trend_estimation.forecasting import (
     ForecastLossDerivatives,
     ForecastResult,
     RollingForecastLossDerivatives,
+    PreparedRollingPureForecastObjective,
+    prepare_rolling_pure_forecast_objective,
     build_polynomial_from_tail,
     finite_difference_forecast_operator,
     forecast_trend,
@@ -151,6 +153,8 @@ __all__ = [
     "finite_difference_forecast_operator",
     "ForecastLossDerivatives",
     "RollingForecastLossDerivatives",
+    "PreparedRollingPureForecastObjective",
+    "prepare_rolling_pure_forecast_objective",
     "pure_forecast_loss_derivatives",
     "rolling_pure_forecast_loss_derivatives",
     # Selection

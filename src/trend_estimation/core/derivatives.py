@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from .pure import PurePenalizedSolver
+from .pure import cached_pure_solver
 from trend_estimation.utils.arrays import as_1d_float_array
 
 
@@ -33,7 +33,7 @@ def pure_trend_derivatives(y, order: int, lambda_: float) -> PureTrendDerivative
     if lambda_ < 0:
         raise ValueError("lambda_ must be nonnegative.")
 
-    solver = PurePenalizedSolver(len(y), int(order))
+    solver = cached_pure_solver(len(y), int(order))
     delta = solver.eigvals
     q = solver.eigvecs
     spectral_y = q.T @ y

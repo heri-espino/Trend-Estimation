@@ -4,6 +4,8 @@ from .operators import ForecastAffineOperator, finite_difference_forecast_operat
 from .objectives import (
     ForecastLossDerivatives,
     RollingForecastLossDerivatives,
+    PreparedRollingPureForecastObjective,
+    prepare_rolling_pure_forecast_objective,
     pure_forecast_loss_derivatives,
     rolling_pure_forecast_loss_derivatives,
 )
@@ -17,6 +19,8 @@ __all__ = [
     "finite_difference_forecast_operator",
     "ForecastLossDerivatives",
     "RollingForecastLossDerivatives",
+    "PreparedRollingPureForecastObjective",
+    "prepare_rolling_pure_forecast_objective",
     "pure_forecast_loss_derivatives",
     "rolling_pure_forecast_loss_derivatives",
     "PolynomialTrendForecaster",

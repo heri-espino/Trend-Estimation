@@ -1,16 +1,9 @@
 from __future__ import annotations
 
-from functools import lru_cache
-
-from trend_estimation.core.pure import PurePenalizedSolver
+from trend_estimation.core.pure import cached_pure_solver
 from trend_estimation.forecasting.extrapolation import forecast_trend
 from trend_estimation.models.base import BaseTrendEstimator, TrendFitResult
 from trend_estimation.utils.arrays import as_1d_float_array
-
-
-@lru_cache(maxsize=32)
-def _cached_pure_solver(n_obs: int, order: int) -> PurePenalizedSolver:
-    return PurePenalizedSolver(int(n_obs), int(order))
 
 
 class PurePenalizedTrend(BaseTrendEstimator):
@@ -35,7 +28,7 @@ class PurePenalizedTrend(BaseTrendEstimator):
         y = as_1d_float_array(y)
         self.y_ = y
         self.n_obs_ = y.size
-        self.solver_ = _cached_pure_solver(y.size, self.order)
+        self.solver_ = cached_pure_solver(y.size, self.order)
         if self.lambda_ is None:
             if self.smoothness is None:
                 raise ValueError("Either smoothness or lambda_ must be provided.")

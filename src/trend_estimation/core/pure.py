@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from functools import lru_cache
 
 import numpy as np
 
@@ -74,4 +75,15 @@ def pure_penalized_solution(y, order: int, lambda_: float) -> np.ndarray:
     """Return only the fitted pure penalized trend."""
 
     y = as_1d_float_array(y)
-    return PurePenalizedSolver(len(y), order).fit_for_lambda(y, lambda_).trend
+    return cached_pure_solver(len(y), order).fit_for_lambda(y, lambda_).trend
+
+
+@lru_cache(maxsize=64)
+def cached_pure_solver(n_obs: int, order: int) -> PurePenalizedSolver:
+    """Return a cached spectral solver for a fixed sample length and order.
+
+    The eigendecomposition depends only on `(n_obs, order)` and is therefore
+    safe to reuse across data vectors and penalty values.
+    """
+
+    return PurePenalizedSolver(int(n_obs), int(order))

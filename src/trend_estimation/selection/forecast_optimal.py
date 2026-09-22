@@ -3,7 +3,9 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from trend_estimation.core.smoothness import lambda_to_smoothness
-from trend_estimation.forecasting.objectives import rolling_pure_forecast_loss_derivatives
+from trend_estimation.forecasting.objectives import (
+    prepare_rolling_pure_forecast_objective,
+)
 from trend_estimation.selection.numerical import (
     StationaryPointSearchResult,
     find_stationary_points_log_lambda,
@@ -145,13 +147,14 @@ def select_fixed_window_pure_smoothness(
             if order > window:
                 continue
 
+            prepared = prepare_rolling_pure_forecast_objective(
+                y_history,
+                splits,
+                order=order,
+            )
+
             def value_grad_hess(lambda_value: float):
-                result = rolling_pure_forecast_loss_derivatives(
-                    y_history,
-                    splits,
-                    order=order,
-                    lambda_=lambda_value,
-                )
+                result = prepared.evaluate(lambda_value)
                 return result.value, result.first, result.second
 
             search = find_stationary_points_log_lambda(
@@ -159,12 +162,7 @@ def select_fixed_window_pure_smoothness(
                 log_bounds=log_bounds,
                 n_grid=n_grid,
             )
-            pooled = rolling_pure_forecast_loss_derivatives(
-                y_history,
-                splits,
-                order=order,
-                lambda_=search.best_lambda_,
-            )
+            pooled = prepared.evaluate(search.best_lambda_)
             smoothness = lambda_to_smoothness(
                 search.best_lambda_,
                 n_obs=window,
