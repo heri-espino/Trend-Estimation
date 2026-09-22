@@ -281,8 +281,18 @@ def run_configuration(*, seed, phi, horizon, args):
 
 
 def write_summary(frame: pd.DataFrame, path: Path) -> None:
+    summary_frame = frame.copy()
+    for objective in ("observed", "latent", "ar", "recovery"):
+        source = summary_frame[f"search_source_{objective}"]
+        summary_frame[f"lower_boundary_{objective}"] = (
+            source.eq("lower_boundary").astype(float)
+        )
+        summary_frame[f"upper_boundary_{objective}"] = (
+            source.eq("upper_boundary").astype(float)
+        )
+
     summary = (
-        frame.groupby(["seed", "ar1_phi", "horizon"], dropna=False)
+        summary_frame.groupby(["seed", "ar1_phi", "horizon"], dropna=False)
         .agg(
             n_outer_origins=("outer_origin", "size"),
             mean_order=("selected_order", "mean"),
@@ -301,6 +311,14 @@ def write_summary(frame: pd.DataFrame, path: Path) -> None:
             latent_mse_observed=("latent_mse_observed_lambda", "mean"),
             latent_mse_latent=("latent_mse_latent_lambda", "mean"),
             latent_mse_recovery=("latent_mse_recovery_lambda", "mean"),
+            frac_lower_observed=("lower_boundary_observed", "mean"),
+            frac_upper_observed=("upper_boundary_observed", "mean"),
+            frac_lower_latent=("lower_boundary_latent", "mean"),
+            frac_upper_latent=("upper_boundary_latent", "mean"),
+            frac_lower_ar=("lower_boundary_ar", "mean"),
+            frac_upper_ar=("upper_boundary_ar", "mean"),
+            frac_lower_recovery=("lower_boundary_recovery", "mean"),
+            frac_upper_recovery=("upper_boundary_recovery", "mean"),
         )
         .reset_index()
     )
