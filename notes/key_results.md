@@ -223,21 +223,40 @@ Detailed note: `notes/numerical_selection.md`.
 
 ## 8. Active scientific object
 
-The primary empirical object is not raw \(\lambda^\star\) alone:
+The active paper studies **forecast-optimal trend estimation as an adaptive
+forecasting method**. The primary object is the full configuration
 
 \[
 \boxed{
-S^\star_{T,h}
+\Theta^\star_{T,h}
 =
-g(h,L,\mathcal R_T,\text{series class})
+\left(
+d^\star_{T,h},
+L^\star_{T,h},
+S^\star_{T,h}
+\right)
+=
+G(h,X_T,\mathcal C).
 }
 \]
 
-together with out-of-sample forecast skill.
+Here (d) is difference order, (L) is finite-memory window length, (S) is
+normalized smoothness, (X_T) describes the local regime, and (mathcal C)
+denotes the series class.
+
+The scientific claim is not merely that one tuning parameter varies. The paper
+asks whether the complete forecast-optimal method changes systematically with
+horizon and local state, and whether that adaptation produces untouched
+out-of-sample skill relative to strong fixed configurations.
+
+The persistence/horizon experiment is a **mechanism study** for one component
+of this object. It must not be promoted to the definition of the project.
+
+**Canonical source:** `notes/research_objective.md`.
 
 **Library mapping:** experiment-level object assembled from reusable library components.
 
-**Status:** active research question.
+**Status:** active research question; adaptation-value claim not yet established.
 
 
 ## 9. Guerrero (2007) plug-in drift
