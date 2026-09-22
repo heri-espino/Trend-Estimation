@@ -1,13 +1,6 @@
-name: trend_estimation
+name: trend-estimation
 channels:
   - conda-forge
 dependencies:
-  - python>=3.10
-  - numpy
-  - scipy
-  - pandas
-  - matplotlib
-  - pytest
+  - python=3.11
   - pip
-  - pip:
-      - -e .
