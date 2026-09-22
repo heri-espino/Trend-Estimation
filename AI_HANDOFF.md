@@ -205,8 +205,9 @@ Implemented:
 
 Next:
 
-1. rerun the persistence mechanism with wider log-lambda bounds and denser
-   root discovery to resolve the current boundary-selection caveat;
+1. run `python experiments/forecast_optimal_smoothing/run_persistence_mechanism.py --preset boundary`
+   to repeat the same persistence grid with log-lambda bounds [-18,24] and
+   321 discovery points;
 2. verify that the qualitative persistence/horizon mechanism survives;
 3. run dedicated within-series regime-transition experiments and track the
    joint path of ((d^\star,L^\star,S^\star));
