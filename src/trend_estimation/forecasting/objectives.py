@@ -41,14 +41,21 @@ class RollingForecastLossDerivatives:
 class PreparedRollingPureForecastObjective:
     """Vectorized fixed-window rolling forecast objective.
 
-    The eigendecomposition, spectral transforms of training windows, and
-    continuation operator are prepared once. Evaluating a new penalty then uses
-    only elementwise spectral weights and small matrix products.
+    The eigendecomposition, spectral transforms, continuation map, target
+    blocks, and any affine prediction offset are prepared once.
+
+    target_series may differ from the observed fitting series. This is useful
+    in simulation for an oracle latent-trend forecast objective.
+
+    residual_ar_phi adds an oracle AR(1) continuation of the final residual.
+    When phi is known, the forecast remains affine in the fitted trend, so the
+    first two lambda derivatives remain analytic.
     """
 
     eigvals: np.ndarray
     spectral_history: np.ndarray
     spectral_to_future: np.ndarray
+    prediction_offset: np.ndarray
     targets: np.ndarray
     n_origins: int
     n_scored: int
@@ -65,7 +72,10 @@ class PreparedRollingPureForecastObjective:
         first_weight = -delta * alpha**2
         second_weight = 2.0 * delta**2 * alpha**3
 
-        prediction = (self.spectral_history * alpha) @ self.spectral_to_future.T
+        prediction = (
+            (self.spectral_history * alpha) @ self.spectral_to_future.T
+            + self.prediction_offset
+        )
         prediction_first = (
             self.spectral_history * first_weight
         ) @ self.spectral_to_future.T
@@ -99,16 +109,40 @@ def prepare_rolling_pure_forecast_objective(
     splits: Iterable,
     *,
     order: int,
+    target_series=None,
+    residual_ar_phi: float | None = None,
 ) -> PreparedRollingPureForecastObjective:
-    """Prepare a vectorized rolling objective for fixed-width splits."""
+    """Prepare a vectorized rolling forecast objective.
+
+    Parameters
+    ----------
+    y:
+        Observed series used to fit the trend.
+    splits:
+        Fixed-width rolling-origin splits.
+    order:
+        Difference order.
+    target_series:
+        Optional series supplying validation targets. If omitted, targets are
+        taken from y. In simulation, passing the latent trend creates an oracle
+        latent-trend forecasting objective while still fitting observed data.
+    residual_ar_phi:
+        Optional known AR(1) coefficient for an oracle residual-aware forecast.
+        The forecast becomes trend continuation plus phi**k times the last
+        fitted residual. This is intended as a simulation diagnostic.
+    """
 
     y = as_1d_float_array(y)
+    targets_source = y if target_series is None else as_1d_float_array(target_series)
+    if targets_source.size != y.size:
+        raise ValueError("target_series must have the same length as y.")
+
     split_list = list(splits)
     if not split_list:
         raise ValueError("At least one rolling-origin split is required.")
 
     train_lengths = [y[split.train].size for split in split_list]
-    forecast_lengths = [y[split.validation].size for split in split_list]
+    forecast_lengths = [targets_source[split.validation].size for split in split_list]
     if any(length <= 0 for length in train_lengths + forecast_lengths):
         raise ValueError("Rolling-origin blocks must be non-empty.")
     if len(set(train_lengths)) != 1:
@@ -126,7 +160,10 @@ def prepare_rolling_pure_forecast_objective(
     q = solver.eigvecs
 
     history = np.stack([y[split.train] for split in split_list], axis=0)
-    targets = np.stack([y[split.validation] for split in split_list], axis=0)
+    targets = np.stack(
+        [targets_source[split.validation] for split in split_list],
+        axis=0,
+    )
     spectral_history = history @ q
 
     operator = finite_difference_forecast_operator(
@@ -134,12 +171,26 @@ def prepare_rolling_pure_forecast_objective(
         order=int(order),
         steps=horizon,
     )
-    spectral_to_future = operator.trend_matrix @ q
+    forecast_matrix = operator.trend_matrix.copy()
+    prediction_offset = np.zeros_like(targets)
+
+    if residual_ar_phi is not None:
+        phi = float(residual_ar_phi)
+        if not -1.0 < phi < 1.0:
+            raise ValueError("residual_ar_phi must lie strictly between -1 and 1.")
+        powers = phi ** np.arange(1, horizon + 1, dtype=float)
+        last_selector = np.zeros(n_fit, dtype=float)
+        last_selector[-1] = 1.0
+        forecast_matrix = forecast_matrix - np.outer(powers, last_selector)
+        prediction_offset = history[:, [-1]] * powers[None, :]
+
+    spectral_to_future = forecast_matrix @ q
 
     return PreparedRollingPureForecastObjective(
         eigvals=solver.eigvals,
         spectral_history=spectral_history,
         spectral_to_future=spectral_to_future,
+        prediction_offset=prediction_offset,
         targets=targets,
         n_origins=len(split_list),
         n_scored=int(targets.size),
