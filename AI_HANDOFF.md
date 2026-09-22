@@ -67,7 +67,7 @@ Only this research paper is active:
 
 Working title:
 
-**Forecast-Optimal Trend Smoothing under Changing Time-Series Regimes**
+**Adaptive Forecast-Optimal Trend Estimation under Changing Time-Series Regimes**
 
 The decision-aware/portfolio project is paused.
 
