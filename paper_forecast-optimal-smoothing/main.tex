@@ -33,7 +33,10 @@ planned experiments are complete.
 
 \section{Problem formulation}
 Let $y\in\R^n$, let $\Dt$ be the order-$d$ finite-difference matrix, and let
-$Q=\Dt^\top\Dt$. The pure penalized trend is
+$Q=\Dt^\top\Dt$. This finite-difference penalized-least-squares construction is closely related
+to classical graduation/smoothing methods and to the controlled-smoothness
+framework of \citet{guerrero2007penalized,whittaker1923graduation}. The pure
+penalized trend used for the initial analytic development is
 \begin{equation}
 \label{eq:pure-trend}
 \widehat t_{\lambda,d}
@@ -93,12 +96,34 @@ H S_\lambda Q S_\lambda Q S_\lambda y_{\mathrm{past}}
 \right].
 \end{equation}
 
-For repeated chronological forecast origins, the active validation objective
-pools future-block squared errors before selecting a common penalty. Because
-the normalized smoothness index depends on sample length, the principal
+For repeated chronological forecast origins $T_1,\ldots,T_M$, the active
+validation objective pools future-block squared errors:
+\begin{equation}
+\label{eq:rolling-cv}
+CV_{d,L,h}(\lambda)
+=
+\frac{\sum_{j=1}^M h_j f_{T_j}(\lambda)}
+{\sum_{j=1}^M h_j}.
+\end{equation}
+The first and second derivatives are obtained by the same weighted aggregation
+of \cref{eq:forecast-loss-first,eq:forecast-loss-second}.
+
+Because the normalized smoothness index depends on sample length, the principal
 inner-validation design uses a fixed-width window $L$ for each candidate
 configuration. Thus all inner fits for a given $(d,L)$ use the same sample size,
 and a common $\lambda$ corresponds to one common normalized smoothness level.
+When several values of $L$ are compared, they are scored on the same set of
+inner forecast origins so that changing $L$ does not also change the validation
+targets.
+
+\subsection{Forecasting versus reconstruction}
+Randomly omitting interior observations can be useful when the scientific
+target is smoothing, interpolation, or trend reconstruction. It is not the
+validation design used for the forecasting claims in this paper, because
+observations later than an interior omission are then available to the
+smoother. Here, at every origin $T$, model fitting and hyperparameter selection
+use only information available through $T$; the future block is revealed only
+after the forecast has been formed.
 
 \section{Numerical selection}
 We work with
@@ -117,9 +142,10 @@ g''(\theta)=\lambda CV'(\lambda)+\lambda^2CV''(\lambda).
 \end{equation}
 The planned robust procedure uses a coarse log-penalty scan only to bracket
 sign changes of $g'$, applies a bracketed root solver to every detected
-interval, classifies the stationary points, and compares all local minima with
-the domain boundaries. Dense grid search and Newton iterations are retained as
-diagnostic and computational benchmarks.
+interval using a bracketed zero-finding method in the spirit of
+\citet{brent1971zero}, classifies the stationary points, and compares all local
+minima with the domain boundaries. Dense grid search and Newton iterations are
+retained as diagnostic and computational benchmarks.
 
 \section{Research questions}
 The main empirical object is
@@ -146,9 +172,25 @@ The planned sequence is:
 \item individual equities;
 \item cryptocurrency.
 \end{enumerate}
-All real-data experiments use chronological rolling or expanding origins.
-Financial level forecasts must be compared against a no-change/random-walk
-benchmark; return or trend-change targets will be considered separately.
+All real-data experiments use nested chronological evaluation. At an outer
+origin, only the available history is passed to the inner selector; after
+$(d,L,\lambda)$ is selected, the chosen model is refitted on the selected
+window and forecasts the untouched future block. For financial level forecasts,
+the mandatory baseline is
+\begin{equation}
+\label{eq:no-change}
+\widehat y^{(0)}_{T+k\mid T}=y_T,
+\qquad k=1,\ldots,h,
+\end{equation}
+and we report the relative pooled forecast error
+\begin{equation}
+\label{eq:relative-rmsfe}
+RMSFE_{\mathrm{rel}}
+=
+\frac{RMSFE_{\mathrm{method}}}
+{RMSFE_{\mathrm{no-change}}}.
+\end{equation}
+Return or trend-change targets will be considered separately.
 
 \section{Scope}
 The current paper does not study portfolio utility or decision-optimal
