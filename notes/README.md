@@ -19,6 +19,9 @@ Every note describing a mathematical result should include:
 
 ## Current notes
 
+- `research_objective.md` — **first scientific source of truth**: canonical
+  objective, full adaptive object ((d,L,S)), experiment hierarchy, scope, and
+  anti-drift rules.
 - `key_results.md` — compact canonical result sheet.
 - `derivative.md` — forecast-loss derivatives for the pure penalized trend.
 - `numerical_selection.md` — stationary-point search in log-\(\lambda\).
@@ -43,3 +46,6 @@ When a result graduates into the public API, keep the note and update its librar
 - `experiments/02_persistence-horizon-mechanism.md` — mechanism study separating observed forecasting, latent forecasting, AR-aware forecasting, and recovery.
 
 - `checkpoints/2026-09-22_persistence-mechanism-results.md` — mechanism-study results, decomposition, and search-boundary caveat.
+- `checkpoints/2026-09-22_scientific-objective-clarification.md` — records the
+  correction from a persistence-centered reading to the full adaptive
+  forecasting objective.
