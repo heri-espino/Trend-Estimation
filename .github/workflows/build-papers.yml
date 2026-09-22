@@ -1,0 +1,74 @@
+name: Build papers
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Paper target to compile
+        required: true
+        default: active
+        type: choice
+        options:
+          - active
+          - tutorial
+          - all
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out exact revision
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Record short commit SHA
+        id: meta
+        shell: bash
+        run: echo "short_sha=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+
+      - name: Install LaTeX toolchain
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            latexmk \
+            texlive-latex-base \
+            texlive-latex-extra \
+            texlive-fonts-recommended
+
+      - name: Build active paper
+        if: ${{ inputs.target == 'active' || inputs.target == 'all' }}
+        shell: bash
+        run: |
+          mkdir -p paper_forecast-optimal-smoothing/build
+          latexmk -pdf -interaction=nonstopmode \
+            -outdir=paper_forecast-optimal-smoothing/build \
+            paper_forecast-optimal-smoothing/main.tex
+
+      - name: Build tutorial paper
+        if: ${{ inputs.target == 'tutorial' || inputs.target == 'all' }}
+        shell: bash
+        run: |
+          mkdir -p paper_penalized-trend-tutorial/build
+          latexmk -pdf -interaction=nonstopmode \
+            -outdir=paper_penalized-trend-tutorial/build \
+            paper_penalized-trend-tutorial/main.tex
+
+      - name: Upload active paper
+        if: ${{ inputs.target == 'active' || inputs.target == 'all' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: trend-estimation-forecast-optimal-smoothing-${{ steps.meta.outputs.short_sha }}
+          path: paper_forecast-optimal-smoothing/build/main.pdf
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload tutorial paper
+        if: ${{ inputs.target == 'tutorial' || inputs.target == 'all' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: trend-estimation-penalized-trend-tutorial-${{ steps.meta.outputs.short_sha }}
+          path: paper_penalized-trend-tutorial/build/main.pdf
+          if-no-files-found: error
+          retention-days: 30
