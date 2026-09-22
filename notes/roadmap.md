@@ -117,7 +117,7 @@ Implemented infrastructure:
 - [x] first factorial simulation driver under `experiments/forecast_optimal_smoothing/`;
 - [ ] run and inspect the quick grid;
 - [ ] freeze paper-scale parameter grid and seed count;
-- [ ] add dedicated within-series regime-transition experiment;
+- [ ] add dedicated within-series regime-transition experiment after search-boundary robustness is established;
 - [ ] generate paper tables/figures only after design is frozen.
 
 Key questions:

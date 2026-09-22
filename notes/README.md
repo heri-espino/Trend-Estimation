@@ -41,3 +41,5 @@ When a result graduates into the public API, keep the note and update its librar
 - `checkpoints/2026-09-21_first-paper-simulation-results.md` — first paper-scale simulation run and preliminary aggregate findings.
 
 - `experiments/02_persistence-horizon-mechanism.md` — mechanism study separating observed forecasting, latent forecasting, AR-aware forecasting, and recovery.
+
+- `checkpoints/2026-09-22_persistence-mechanism-results.md` — mechanism-study results, decomposition, and search-boundary caveat.
