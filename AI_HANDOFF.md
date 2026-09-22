@@ -1,5 +1,31 @@
 # AI Handoff
 
+## Read this first — scientific source of truth
+
+Before interpreting the latest experiment or changing the paper story, read
+`notes/research_objective.md`.
+
+Canonical objective:
+
+> **Forecast-optimal trend estimation as an adaptive forecasting method, where
+> smoothness, memory length and difference order depend on horizon and local
+> regime.**
+
+The central object is the full forecasting-method configuration
+
+[
+\Theta^\star_{T,h}
+=
+(d^\star_{T,h},L^\star_{T,h},S^\star_{T,h})
+=
+G(h,X_T,\mathcal C).
+]
+
+Do **not** redefine the project around the latest mechanism result.
+In particular, the persistence/AR(1) study is one diagnostic explaining part
+of the behavior of (S^\star); it is not the paper's objective and
+persistence is not synonymous with regime.
+
 ## Repository role
 
 `Trend-Estimation` is a **library-first research repository**.
@@ -48,11 +74,21 @@ The decision-aware/portfolio project is paused.
 The research object is
 
 \[
-S^\star_{T,h,L}=G(h,L,\mathcal R_T,X_T).
+\Theta^\star_{T,h}
+=
+(d^\star_{T,h},L^\star_{T,h},S^\star_{T,h})
+=
+G(h,X_T,\mathcal C).
 \]
 
-The empirical progression is controlled simulations, macroeconomic series,
-indices/ETFs, equities, and crypto. Do not reduce regime to volatility alone.
+Here (d) is difference order, (L) is finite-memory window length, and (S)
+is normalized smoothness. The scientific target is future forecast loss, not
+historical trend-recovery loss.
+
+The empirical progression is controlled simulations, mechanism studies,
+within-series regime transitions, adaptive-versus-fixed OOS evaluation,
+macroeconomic series, indices/ETFs, equities, and crypto. Do not reduce regime
+to volatility or persistence alone.
 
 ## Core analytic model
 
@@ -169,17 +205,21 @@ Implemented:
 
 Next:
 
-1. run and inspect the quick simulation preset;
-2. stress-test derivative/root search against dense reference scans;
-3. freeze the paper-scale simulation design;
-4. add a dedicated within-series regime-transition experiment;
-5. continue the literature audit;
-6. then move to macroeconomic data.
+1. rerun the persistence mechanism with wider log-lambda bounds and denser
+   root discovery to resolve the current boundary-selection caveat;
+2. verify that the qualitative persistence/horizon mechanism survives;
+3. run dedicated within-series regime-transition experiments and track the
+   joint path of ((d^\star,L^\star,S^\star));
+4. quantify adaptation delay and adaptive-versus-fixed untouched OOS skill;
+5. continue the literature audit (40 target papers; 24 currently extracted);
+6. freeze the paper-scale simulation design only after those checks;
+7. then move to macroeconomic data.
 
 ## Canonical internal notes
 
 Read before changing research logic:
 
+- `notes/research_objective.md` — first scientific source of truth;
 - `notes/key_results.md`
 - `notes/derivative.md`
 - `notes/numerical_selection.md`
