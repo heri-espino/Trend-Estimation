@@ -240,15 +240,28 @@ k:
 - no-change benchmark;
 - controlled latent-trend simulations;
 - provisional evidence that forecast and recovery optima differ;
-- provisional persistence/horizon mechanism evidence.
+- persistence/horizon mechanism evidence robust to a much wider lambda-search
+  domain;
+- within-series persistence transitions in which the joint
+  \((d^\star,L^\star,S^\star)\) configuration moves toward matched
+  target-regime controls;
+- evidence that selector memory and estimator memory are distinct: shortening
+  inner-selector memory substantially reduces observed adaptation delay;
+- under the M=20 exploratory protocol, adaptive re-selection beats
+  frozen-pre hyperparameters in pooled OOS RMSE for both persistence-transition
+  directions at every studied horizon;
+- transition-specific excess adaptation value is conditional: strongest and
+  most consistent for high-to-low persistence, and for low-to-high persistence
+  at short horizons.
 
 ### Not yet established
 
 - that the adaptive rule \(G(h,X_T,\mathcal C)\) is stable across simulation
   families;
-- how much observed adaptation delay belongs to the selected estimation memory
-  \(L\) versus the separate memory of the inner rolling-validation selector;
-- that adaptation improves OOS performance relative to strong fixed methods;
+- that the persistence adaptation-value result is robust to the retained
+  M=30 selector-memory setting;
+- that adaptation adds transition-specific value across other regime factors,
+  especially observation-noise scale and latent-trend roughness;
 - that the simulation findings transfer to macro/equity/crypto data;
 - that any financial improvement is economically exploitable;
 - final novelty relative to the complete literature target set.
