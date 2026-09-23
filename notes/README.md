@@ -45,9 +45,11 @@ When a result graduates into the public API, keep the note and update its librar
 
 - `experiments/02_persistence-horizon-mechanism.md` — mechanism study separating observed forecasting, latent forecasting, AR-aware forecasting, and recovery.
 - `experiments/03_search-boundary-sensitivity.md` — controlled wide-domain rerun that tests whether Explore-02 boundary optima are numerical truncation or genuine limiting choices.
+- `experiments/04_within-series-persistence-regime-transition.md` — paired stationary controls and within-series persistence changes for measuring joint (d, L, S) adaptation.
 
 - `checkpoints/2026-09-22_persistence-mechanism-results.md` — mechanism-study results, decomposition, and search-boundary caveat.
 - `checkpoints/2026-09-22_scientific-objective-clarification.md` — records the
   correction from a persistence-centered reading to the full adaptive
   forecasting objective.
 - `checkpoints/2026-09-22_boundary-sensitivity-prepared.md` — verifies the completed Explore-02 run and records the exact wide-domain diagnostic that comes next.
+- `checkpoints/2026-09-22_search-boundary-sensitivity-results.md` — Exploration 03 PASS; the persistence/horizon mechanism survives the wider search domain.
