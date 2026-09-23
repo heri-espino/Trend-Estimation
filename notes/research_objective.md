@@ -247,21 +247,19 @@ k:
   target-regime controls;
 - evidence that selector memory and estimator memory are distinct: shortening
   inner-selector memory substantially reduces observed adaptation delay;
-- under the M=20 exploratory protocol, adaptive re-selection beats
-  frozen-pre hyperparameters in pooled OOS RMSE for both persistence-transition
-  directions at every studied horizon;
-- transition-specific excess adaptation value is conditional: strongest and
-  most consistent for high-to-low persistence, and for low-to-high persistence
-  at short horizons.
+- under both M=20 and M=30 selector-memory protocols, adaptive
+  re-selection beats frozen-pre hyperparameters in pooled OOS RMSE for both
+  persistence-transition directions at every studied horizon;
+- the persistence transition-specific excess adaptation-value sign pattern is
+  robust to M=20 versus M=30: strongest and most consistent for high-to-low
+  persistence, and positive for low-to-high persistence at short horizons.
 
 ### Not yet established
 
 - that the adaptive rule \(G(h,X_T,\mathcal C)\) is stable across simulation
   families;
-- that the persistence adaptation-value result is robust to the retained
-  M=30 selector-memory setting;
-- that adaptation adds transition-specific value across other regime factors,
-  especially observation-noise scale and latent-trend roughness;
+- that adaptation adds direct or transition-specific value across other regime
+  factors, especially observation-noise scale and latent-trend roughness;
 - that the simulation findings transfer to macro/equity/crypto data;
 - that any financial improvement is economically exploitable;
 - final novelty relative to the complete literature target set.
