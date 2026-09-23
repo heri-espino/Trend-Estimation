@@ -193,6 +193,8 @@ python experiments\forecast_optimal_smoothing\run_adaptive_value.py --preset exp
 - adaptive_value_summary.csv;
 - paired_adaptation_value.csv;
 - paired_adaptation_value_summary.csv;
+- adaptive_value_seed_summary.csv;
+- paired_adaptation_value_seed_summary.csv;
 - run_metadata.json.
 
 ## Decision after this experiment
