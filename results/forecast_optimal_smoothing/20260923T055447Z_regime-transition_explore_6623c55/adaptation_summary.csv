@@ -1,0 +1,17 @@
+direction,horizon,threshold,consecutive_origins_required,mean_abs_reference_smoothness_shift_post,adaptation_delay_observations,achieved
+high_to_low,1,0.5,3,0.6191190382201978,18.0,True
+high_to_low,1,0.8,3,0.6191190382201978,48.0,True
+high_to_low,3,0.5,3,0.4996747146720706,27.0,True
+high_to_low,3,0.8,3,0.4996747146720706,45.0,True
+high_to_low,6,0.5,3,0.22841395792015076,27.0,True
+high_to_low,6,0.8,3,0.22841395792015076,48.0,True
+high_to_low,12,0.5,3,0.08969702346589843,69.0,True
+high_to_low,12,0.8,3,0.08969702346589843,81.0,True
+low_to_high,1,0.5,3,0.6191190382201978,60.0,True
+low_to_high,1,0.8,3,0.6191190382201978,84.0,True
+low_to_high,3,0.5,3,0.4996747146720706,72.0,True
+low_to_high,3,0.8,3,0.4996747146720706,84.0,True
+low_to_high,6,0.5,3,0.22841395792015076,90.0,True
+low_to_high,6,0.8,3,0.22841395792015076,96.0,True
+low_to_high,12,0.5,3,0.08969702346589843,96.0,True
+low_to_high,12,0.8,3,0.08969702346589843,99.0,True
