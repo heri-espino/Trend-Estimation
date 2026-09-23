@@ -57,3 +57,4 @@ When a result graduates into the public API, keep the note and update its librar
 - `checkpoints/2026-09-22_search-boundary-sensitivity-results.md` — Exploration 03 PASS; the persistence/horizon mechanism survives the wider search domain.
 - `checkpoints/2026-09-23_regime-transition-results.md` — Exploration 04 PASS; the full selected configuration tracks regime changes, with selector-memory sensitivity required next.
 - `checkpoints/2026-09-23_selector-memory-results.md` — Exploration 04B PASS; M=20 is frozen for the next stage, with M=30 retained for robustness.
+- `checkpoints/2026-09-23_adaptive-value-persistence-results.md` — Exploration 05: adaptive beats frozen-pre directly at every studied persistence transition/horizon; transition-specific excess value is conditional, with M=30 robustness next.
