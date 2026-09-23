@@ -205,18 +205,18 @@ Implemented:
 
 Next:
 
-1. run `python experiments/forecast_optimal_smoothing/run_adaptive_value.py --preset explore --selector-max-inner-origins 30`;
-2. compare the M=30 direct adaptive/frozen RMSE ratios and paired
-   transition-minus-stable-control excess advantages against the completed
-   M=20 result;
-3. inspect the new seed-level summary files for sign consistency across the 30
-   seeds;
-4. if the qualitative Level-III conclusion survives, move to isolated
-   observation-noise-scale transitions/value, then latent-trend-roughness
-   transitions/value;
-5. after those mechanisms, freeze the final paper-scale simulation design;
-6. continue the literature audit (40 target papers; 24 currently extracted);
-7. then move to macroeconomic data.
+1. run `python experiments/forecast_optimal_smoothing/run_noise_scale_adaptation.py --preset smoke`;
+2. if successful, run the same script with `--preset explore`;
+3. inspect whether ((d,L,S)) tracks the target stationary noise-scale control
+   for 0.25->0.75 and 0.75->0.25 transitions;
+4. inspect direct adaptive/frozen pooled RMSE ratios and matched
+   transition-minus-control excess adaptation value, including seed-level
+   consistency;
+5. if observation-noise scale is structured, proceed to isolated latent-trend
+   roughness transitions/value;
+6. after those mechanisms, freeze the final paper-scale simulation design;
+7. continue the literature audit (40 target papers; 24 currently extracted);
+8. then move to macroeconomic data.
 
 ## Canonical internal notes
 
