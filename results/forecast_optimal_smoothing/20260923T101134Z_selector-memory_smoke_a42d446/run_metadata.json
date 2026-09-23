@@ -1,0 +1,61 @@
+{
+  "created_at_utc": "2026-09-23T10:11:35.003463+00:00",
+  "git_commit": "a42d446",
+  "experiment": "selector_memory_sensitivity",
+  "preset": "smoke",
+  "n_seeds": 1,
+  "n_obs": 300,
+  "regime_point": 180,
+  "slope_noise_std": 0.01,
+  "observation_noise_std": 0.5,
+  "outer_initial_train": 120,
+  "outer_step": 3,
+  "inner_step": 3,
+  "selector_max_inner_origins_grid": [
+    5,
+    10
+  ],
+  "selector_validation_span_observations": {
+    "5": 12,
+    "10": 27
+  },
+  "orders": [
+    1,
+    2,
+    3
+  ],
+  "windows": [
+    24,
+    48,
+    72
+  ],
+  "n_grid": 81,
+  "log_lambda_bounds": [
+    -18.0,
+    24.0
+  ],
+  "transitions": {
+    "stable_low": {
+      "pre_phi": 0.0,
+      "post_phi": 0.0
+    },
+    "low_to_high": {
+      "pre_phi": 0.0,
+      "post_phi": 0.8
+    },
+    "high_to_low": {
+      "pre_phi": 0.8,
+      "post_phi": 0.0
+    },
+    "stable_high": {
+      "pre_phi": 0.8,
+      "post_phi": 0.8
+    }
+  },
+  "horizons": [
+    1
+  ],
+  "n_configurations": 8,
+  "n_output_rows": 480,
+  "elapsed_seconds": 8.946856500115246
+}

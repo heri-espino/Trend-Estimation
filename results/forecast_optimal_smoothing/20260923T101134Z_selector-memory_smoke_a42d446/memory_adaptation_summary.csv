@@ -1,0 +1,9 @@
+selector_max_inner_origins,selector_validation_span_observations,direction,horizon,threshold,adaptation_delay_observations,achieved,first_all_inner_origins_post_regime,mean_abs_reference_smoothness_shift_post
+5,12,high_to_low,1,0.5,3.0,True,15.0,0.1429506763755946
+5,12,high_to_low,1,0.8,3.0,True,15.0,0.1429506763755946
+5,12,low_to_high,1,0.5,3.0,True,15.0,0.1429506763755946
+5,12,low_to_high,1,0.8,3.0,True,15.0,0.1429506763755946
+10,27,high_to_low,1,0.5,3.0,True,30.0,0.33326664082422053
+10,27,high_to_low,1,0.8,3.0,True,30.0,0.33326664082422053
+10,27,low_to_high,1,0.5,3.0,True,30.0,0.33326664082422053
+10,27,low_to_high,1,0.8,15.0,True,30.0,0.33326664082422053
