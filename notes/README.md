@@ -47,6 +47,7 @@ When a result graduates into the public API, keep the note and update its librar
 - `experiments/03_search-boundary-sensitivity.md` — controlled wide-domain rerun that tests whether Explore-02 boundary optima are numerical truncation or genuine limiting choices.
 - `experiments/04_within-series-persistence-regime-transition.md` — paired stationary controls and within-series persistence changes for measuring joint (d, L, S) adaptation.
 - `experiments/04b_selector-memory-sensitivity.md` — isolates how inner rolling-validation memory controls adaptation delay and forecast variance.
+- `experiments/05_adaptive-vs-frozen-pre.md` — tests whether repeated adaptation of (d, L, S) improves untouched OOS forecasts relative to hyperparameters frozen at T0.
 
 - `checkpoints/2026-09-22_persistence-mechanism-results.md` — mechanism-study results, decomposition, and search-boundary caveat.
 - `checkpoints/2026-09-22_scientific-objective-clarification.md` — records the
@@ -55,3 +56,4 @@ When a result graduates into the public API, keep the note and update its librar
 - `checkpoints/2026-09-22_boundary-sensitivity-prepared.md` — verifies the completed Explore-02 run and records the exact wide-domain diagnostic that comes next.
 - `checkpoints/2026-09-22_search-boundary-sensitivity-results.md` — Exploration 03 PASS; the persistence/horizon mechanism survives the wider search domain.
 - `checkpoints/2026-09-23_regime-transition-results.md` — Exploration 04 PASS; the full selected configuration tracks regime changes, with selector-memory sensitivity required next.
+- `checkpoints/2026-09-23_selector-memory-results.md` — Exploration 04B PASS; M=20 is frozen for the next stage, with M=30 retained for robustness.
