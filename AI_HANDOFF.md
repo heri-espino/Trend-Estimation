@@ -205,17 +205,18 @@ Implemented:
 
 Next:
 
-1. run `python experiments/forecast_optimal_smoothing/run_regime_transition.py --preset explore`;
-2. inspect the paired paths for stable_low, low_to_high, high_to_low, and
-   stable_high, tracking the joint ((d^\star,L^\star,S^\star)) response;
-3. estimate 50%/80% smoothness adaptation delays and inspect order/window
-   adaptation against matched controls;
-4. if the transition result is structured, add adaptive-versus-fixed untouched
-   OOS comparisons;
-5. then repeat isolated transition studies for noise scale and latent-trend
-   roughness before freezing the final simulation design;
-6. continue the literature audit (40 target papers; 24 currently extracted);
-7. then move to macroeconomic data.
+1. run `python experiments/forecast_optimal_smoothing/run_selector_memory_sensitivity.py --preset smoke`;
+2. if the smoke run writes all expected outputs, run the same script with
+   `--preset explore`;
+3. compare selector memories {5,10,20,30} on adaptation delay, stationary-control
+   stability, and untouched OOS relative RMSFE;
+4. freeze a selector-memory protocol only after that tradeoff is understood;
+5. then run adaptive-versus-frozen-pre hyperparameter comparisons with paired
+   stable-regime controls;
+6. after persistence adaptation is understood, repeat isolated transitions for
+   observation-noise scale and latent-trend roughness;
+7. continue the literature audit (40 target papers; 24 currently extracted);
+8. then move to macroeconomic data.
 
 ## Canonical internal notes
 
