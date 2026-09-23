@@ -265,9 +265,13 @@ coordinate of (Theta^star).
 
 Exploration 04 showed that the slow low-to-high persistence adaptation is close
 to the time required for old-regime inner validation origins to leave the
-selector. Therefore no intrinsic adaptation-delay claim for
-((d^star,L^star,S^star)) is final until selector-memory sensitivity has
-been checked.
+selector. Exploration 04B confirmed that selector memory is a major source of
+adaptation inertia.
+
+For the next exploratory stage, use (M=20) inner origins. This is the
+shortest tested memory whose pooled stable-control relative RMSFE remains
+within about 2.5% of the (M=30) reference at every studied horizon. Retain
+(M=30) as a robustness setting.
 
 Do not silently interpret (M) as (L), and do not add (M) to the canonical
 adaptive object unless later evidence shows that it must itself be selected
