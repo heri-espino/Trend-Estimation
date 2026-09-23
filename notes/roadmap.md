@@ -172,8 +172,12 @@ Implemented infrastructure:
   max-inner-origin values {5,10,20,30};
 - [x] freeze M=20 as the exploratory selector-memory protocol after comparing
   adaptation speed and untouched OOS loss; retain M=30 as a robustness setting;
-- [ ] run Exploration 05, adaptive versus frozen-pre hyperparameters, under the
-  same paired stable/transition design;
+- [x] run Exploration 05 with M=20: adaptive beats frozen-pre on all studied
+  persistence transitions/horizons, while transition-specific excess value is
+  directional and horizon dependent; see
+  `notes/checkpoints/2026-09-23_adaptive-value-persistence-results.md`;
+- [ ] repeat Exploration 05 with M=30 as the pre-specified selector-memory
+  robustness check before changing the regime factor;
 - [ ] freeze paper-scale parameter grid and seed count only after these checks;
 - [ ] generate paper tables/figures only after design is frozen.
 
