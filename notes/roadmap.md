@@ -176,8 +176,13 @@ Implemented infrastructure:
   persistence transitions/horizons, while transition-specific excess value is
   directional and horizon dependent; see
   `notes/checkpoints/2026-09-23_adaptive-value-persistence-results.md`;
-- [ ] repeat Exploration 05 with M=30 as the pre-specified selector-memory
-  robustness check before changing the regime factor;
+- [x] repeat Exploration 05 with M=30; the direct adaptive-vs-frozen result
+  and the sign pattern of transition-specific excess value are robust to
+  selector memory;
+- [x] close the persistence mechanism for the exploratory stage;
+- [ ] run Exploration 06, isolating observation-noise scale
+  (0.25 <-> 0.75) with phi=0 and fixed latent roughness, while measuring both
+  configuration tracking and adaptive-vs-frozen value;
 - [ ] freeze paper-scale parameter grid and seed count only after these checks;
 - [ ] generate paper tables/figures only after design is frozen.
 
