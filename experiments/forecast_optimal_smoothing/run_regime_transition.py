@@ -116,6 +116,11 @@ def run_configuration(
         origin = int(record.origin)
         relative_origin = origin - rp
         post_seen = max(0, relative_origin)
+        inner_origins = np.asarray(
+            record.inner_selection.common_inner_origins_,
+            dtype=int,
+        )
+        inner_post_fraction = float(np.mean(inner_origins >= rp))
         window = int(record.selected_window)
         selected_post_count = min(window, post_seen)
         selected_pre_count = window - selected_post_count
@@ -146,6 +151,10 @@ def run_configuration(
                 "outer_origin": origin,
                 "relative_origin": relative_origin,
                 "post_observations_seen": post_seen,
+                "inner_origin_count": int(inner_origins.size),
+                "inner_origin_earliest": int(inner_origins[0]),
+                "inner_origin_latest": int(inner_origins[-1]),
+                "inner_origin_post_fraction": inner_post_fraction,
                 "selected_window_pre_count": selected_pre_count,
                 "selected_window_post_count": selected_post_count,
                 "selected_window_post_fraction": selected_post_fraction,
