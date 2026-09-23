@@ -381,6 +381,59 @@ def _paired_transition_control(frame: pd.DataFrame) -> tuple[pd.DataFrame, pd.Da
     return pd.concat(row_parts, ignore_index=True), pd.DataFrame(summary_rows)
 
 
+def _seed_level_summary(
+    frame: pd.DataFrame,
+    paired: pd.DataFrame,
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+    direct_rows: list[dict] = []
+    for (transition, horizon, seed), group in frame.groupby(
+        ["transition", "horizon", "seed"],
+        dropna=False,
+    ):
+        adaptive_mse = float(group["adaptive_mse"].mean())
+        frozen_mse = float(group["frozen_mse"].mean())
+        direct_rows.append(
+            {
+                "transition": transition,
+                "horizon": int(horizon),
+                "seed": int(seed),
+                "adaptive_mse": adaptive_mse,
+                "frozen_mse": frozen_mse,
+                "adaptive_rmse_vs_frozen": float(
+                    np.sqrt(adaptive_mse / frozen_mse)
+                ),
+                "adaptive_mse_advantage_vs_frozen": float(
+                    frozen_mse - adaptive_mse
+                ),
+            }
+        )
+
+    excess_rows: list[dict] = []
+    for (direction, control, horizon, seed), group in paired.groupby(
+        ["direction", "matched_control", "horizon", "seed"],
+        dropna=False,
+    ):
+        excess_rows.append(
+            {
+                "direction": direction,
+                "matched_control": control,
+                "horizon": int(horizon),
+                "seed": int(seed),
+                "mean_excess_adaptive_mse_advantage": float(
+                    group["excess_adaptive_mse_advantage"].mean()
+                ),
+                "transition_adaptive_mse_advantage": float(
+                    group["transition_adaptive_mse_advantage"].mean()
+                ),
+                "control_adaptive_mse_advantage": float(
+                    group["control_adaptive_mse_advantage"].mean()
+                ),
+            }
+        )
+
+    return pd.DataFrame(direct_rows), pd.DataFrame(excess_rows)
+
+
 def main() -> None:
     args = parse_args()
 
@@ -467,6 +520,16 @@ def main() -> None:
     paired.to_csv(run_dir / "paired_adaptation_value.csv", index=False)
     paired_summary.to_csv(
         run_dir / "paired_adaptation_value_summary.csv",
+        index=False,
+    )
+
+    seed_direct, seed_excess = _seed_level_summary(frame, paired)
+    seed_direct.to_csv(
+        run_dir / "adaptive_value_seed_summary.csv",
+        index=False,
+    )
+    seed_excess.to_csv(
+        run_dir / "paired_adaptation_value_seed_summary.csv",
         index=False,
     )
 
