@@ -163,11 +163,15 @@ Implemented infrastructure:
 - [x] verify that the persistence/horizon mechanism is qualitatively invariant
   to the wider search domain; see
   `notes/checkpoints/2026-09-22_search-boundary-sensitivity-results.md`;
-- [ ] run Exploration 04, the paired within-series persistence transition study
+- [x] run Exploration 04, the paired within-series persistence transition study
   in `experiments/forecast_optimal_smoothing/run_regime_transition.py`;
-- [ ] track the joint path of
-  ((d^star_{T,h},L^star_{T,h},S^star_{T,h})) and estimate adaptation
-  delay after regime changes;
+- [x] verify that the joint ((d^\star,L^\star,S^\star)) configuration moves
+  toward matched target-regime controls; see
+  `notes/checkpoints/2026-09-23_regime-transition-results.md`;
+- [ ] run Exploration 04B to isolate inner-selector memory using
+  max-inner-origin values {5,10,20,30};
+- [ ] freeze the selector-memory protocol after comparing adaptation speed,
+  stationary-control stability, and OOS loss;
 - [ ] compare adaptive selection with strong fixed configurations under
   untouched outer evaluation;
 - [ ] freeze paper-scale parameter grid and seed count only after these checks;
