@@ -158,10 +158,13 @@ Implemented infrastructure:
 - [x] first factorial simulation driver under `experiments/forecast_optimal_smoothing/`;
 - [x] run and inspect the first factorial simulation grid;
 - [x] run a dedicated persistence/horizon mechanism study;
-- [ ] run Exploration 03 with `--preset boundary`: same seeds/DGP grid as
+- [x] run Exploration 03 with `--preset boundary`: same seeds/DGP grid as
   Exploration 02, but log-lambda bounds [-18,24] and 321 discovery points;
-- [ ] add dedicated within-series regime-transition experiments after
-  search-boundary robustness is established;
+- [x] verify that the persistence/horizon mechanism is qualitatively invariant
+  to the wider search domain; see
+  `notes/checkpoints/2026-09-22_search-boundary-sensitivity-results.md`;
+- [ ] run Exploration 04, the paired within-series persistence transition study
+  in `experiments/forecast_optimal_smoothing/run_regime_transition.py`;
 - [ ] track the joint path of
   ((d^star_{T,h},L^star_{T,h},S^star_{T,h})) and estimate adaptation
   delay after regime changes;
