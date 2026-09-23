@@ -205,15 +205,16 @@ Implemented:
 
 Next:
 
-1. run `python experiments/forecast_optimal_smoothing/run_persistence_mechanism.py --preset boundary`
-   to repeat the same persistence grid with log-lambda bounds [-18,24] and
-   321 discovery points;
-2. verify that the qualitative persistence/horizon mechanism survives;
-3. run dedicated within-series regime-transition experiments and track the
-   joint path of ((d^\star,L^\star,S^\star));
-4. quantify adaptation delay and adaptive-versus-fixed untouched OOS skill;
-5. continue the literature audit (40 target papers; 24 currently extracted);
-6. freeze the paper-scale simulation design only after those checks;
+1. run `python experiments/forecast_optimal_smoothing/run_regime_transition.py --preset explore`;
+2. inspect the paired paths for stable_low, low_to_high, high_to_low, and
+   stable_high, tracking the joint ((d^\star,L^\star,S^\star)) response;
+3. estimate 50%/80% smoothness adaptation delays and inspect order/window
+   adaptation against matched controls;
+4. if the transition result is structured, add adaptive-versus-fixed untouched
+   OOS comparisons;
+5. then repeat isolated transition studies for noise scale and latent-trend
+   roughness before freezing the final simulation design;
+6. continue the literature audit (40 target papers; 24 currently extracted);
 7. then move to macroeconomic data.
 
 ## Canonical internal notes
