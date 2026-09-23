@@ -246,10 +246,32 @@ k:
 
 - that the adaptive rule \(G(h,X_T,\mathcal C)\) is stable across simulation
   families;
+- how much observed adaptation delay belongs to the selected estimation memory
+  \(L\) versus the separate memory of the inner rolling-validation selector;
 - that adaptation improves OOS performance relative to strong fixed methods;
 - that the simulation findings transfer to macro/equity/crypto data;
 - that any financial improvement is economically exploitable;
 - final novelty relative to the complete literature target set.
+
+## Selector-memory guardrail
+
+The canonical coordinate (L) is the amount of past data supplied to the
+fitted trend model. It must not be conflated with the amount of historical
+forecast-validation evidence retained by the inner selector.
+
+Let (M) denote, informally, the number of inner rolling origins retained by
+the validation protocol. (M) is currently a protocol parameter, not a fourth
+coordinate of (Theta^star).
+
+Exploration 04 showed that the slow low-to-high persistence adaptation is close
+to the time required for old-regime inner validation origins to leave the
+selector. Therefore no intrinsic adaptation-delay claim for
+((d^star,L^star,S^star)) is final until selector-memory sensitivity has
+been checked.
+
+Do not silently interpret (M) as (L), and do not add (M) to the canonical
+adaptive object unless later evidence shows that it must itself be selected
+adaptively.
 
 ## Numerical caveat before the next mechanism stage
 
