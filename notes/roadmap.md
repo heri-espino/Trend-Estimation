@@ -168,12 +168,12 @@ Implemented infrastructure:
 - [x] verify that the joint ((d^\star,L^\star,S^\star)) configuration moves
   toward matched target-regime controls; see
   `notes/checkpoints/2026-09-23_regime-transition-results.md`;
-- [ ] run Exploration 04B to isolate inner-selector memory using
+- [x] run Exploration 04B to isolate inner-selector memory using
   max-inner-origin values {5,10,20,30};
-- [ ] freeze the selector-memory protocol after comparing adaptation speed,
-  stationary-control stability, and OOS loss;
-- [ ] compare adaptive selection with strong fixed configurations under
-  untouched outer evaluation;
+- [x] freeze M=20 as the exploratory selector-memory protocol after comparing
+  adaptation speed and untouched OOS loss; retain M=30 as a robustness setting;
+- [ ] run Exploration 05, adaptive versus frozen-pre hyperparameters, under the
+  same paired stable/transition design;
 - [ ] freeze paper-scale parameter grid and seed count only after these checks;
 - [ ] generate paper tables/figures only after design is frozen.
 
