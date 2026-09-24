@@ -51,7 +51,7 @@ When a result graduates into the public API, keep the note and update its librar
 - `experiments/06_observation-noise-scale-adaptation.md` — isolates observation-noise-scale changes while jointly measuring configuration tracking and adaptation value.
 - `experiments/07_latent-trend-roughness-adaptation.md` — isolates latent slope roughness while jointly measuring configuration tracking and adaptation value.
 - `experiments/08_fixed-baseline-stress.md` — stress-tests one-time fixed hyperparameter baselines before the final paper-scale simulation.
-- `experiments/09_final-paper-scale-design.md` — frozen 300-seed-per-mechanism design for the main paper-scale Monte Carlo experiment.
+- `experiments/09_final-paper-scale-design.md` — frozen 1,000-seed-per-mechanism design for the resumable main paper-scale Monte Carlo experiment.
 
 - `checkpoints/2026-09-22_persistence-mechanism-results.md` — mechanism-study results, decomposition, and search-boundary caveat.
 - `checkpoints/2026-09-22_scientific-objective-clarification.md` — records the
