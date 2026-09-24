@@ -194,11 +194,16 @@ Implemented infrastructure:
   smooth-to-rough adaptive gains;
 - [x] freeze frozen-all-pre as the primary fixed comparator and
   frozen-local-M20 as a secondary diagnostic;
-- [x] freeze the final paper-scale Monte Carlo design at 300 seeds per
-  mechanism; see `notes/experiments/09_final-paper-scale-design.md`;
-- [ ] benchmark the new multiprocessing implementation on the local workstation
-  and then implement/run the resumable final 300-seed simulation;
-- [ ] freeze paper-scale parameter grid and seed count only after these checks;
+- [x] freeze the final paper-scale Monte Carlo design at 1,000 seeds per
+  mechanism, extensible to 3,000; see
+  `notes/experiments/09_final-paper-scale-design.md`;
+- [x] benchmark multiprocessing locally; 32 workers was fastest on the current
+  32-logical-processor workstation;
+- [x] implement the resumable final runner with atomic 10-seed batches,
+  automatic resume, convergence checkpoints, and both fixed baselines;
+- [ ] smoke-test the final runner, then run the 1,000-seed paper-scale
+  simulation with 32 workers;
+- [x] freeze paper-scale parameter grid and initial seed target;
 - [ ] generate paper tables/figures only after design is frozen.
 
 Key questions:
