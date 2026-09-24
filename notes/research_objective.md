@@ -260,16 +260,19 @@ k:
   or absent transition-specific value at the studied sample size;
 - latent-trend roughness is a third distinct configuration mechanism: both
   transition directions move toward matched stationary target controls;
-- smooth-to-rough transitions show large direct adaptive gains, while
-  rough-to-smooth transition-specific value is confounded by instability of the
-  one-time frozen-pre comparator on some stationary high-roughness seeds.
+- smooth-to-rough transitions show large direct adaptive gains;
+- the stronger frozen-all-pre comparator removes the major stationary
+  high-roughness fragility of frozen-local-M20;
+- smooth-to-rough adaptive gains remain large against frozen-all-pre, whereas
+  rough-to-smooth becomes approximately a tie, clarifying the validity
+  boundary of adaptation value.
 
 ### Not yet established
 
-- that the adaptive rule \(G(h,X_T,\mathcal C)\) is stable across simulation
-  families;
-- whether the adaptation-value conclusions survive a stronger fixed comparator
-  selected from all available pre-regime validation origins;
+- the final paper-scale Monte Carlo precision of these effects at 300 seeds per
+  mechanism;
+- that the adaptive rule \(G(h,X_T,\mathcal C)\) transfers beyond simulation
+  families to external macroeconomic data;
 - that the simulation findings transfer to macro/equity/crypto data;
 - that any financial improvement is economically exploitable;
 - final novelty relative to the complete literature target set.
