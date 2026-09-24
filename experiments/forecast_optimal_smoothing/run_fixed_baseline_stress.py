@@ -2,7 +2,9 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import time
+from concurrent.futures import ProcessPoolExecutor
 from datetime import datetime, timezone
 from itertools import product
 from pathlib import Path
@@ -47,6 +49,15 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--orders", type=int, nargs="+", default=[1, 2, 3])
     parser.add_argument("--windows", type=int, nargs="+", default=[24, 48, 72])
     parser.add_argument("--n-grid", type=int, default=None)
+    parser.add_argument(
+        "--workers",
+        type=int,
+        default=0,
+        help=(
+            "Worker processes. 0=auto, 1=serial. Auto leaves two logical "
+            "CPUs free and caps at 16 workers."
+        ),
+    )
     parser.add_argument("--log-lambda-min", type=float, default=None)
     parser.add_argument("--log-lambda-max", type=float, default=None)
     return parser.parse_args()
@@ -395,6 +406,32 @@ def _seed_summary(
     return pd.DataFrame(direct_rows), pd.DataFrame(excess_rows)
 
 
+def _resolve_workers(requested: int, n_tasks: int) -> int:
+    requested = int(requested)
+    if requested < 0:
+        raise ValueError("workers must be >= 0.")
+    if requested == 1:
+        return 1
+    if requested > 1:
+        return min(requested, n_tasks)
+
+    logical = os.cpu_count() or 1
+    auto = max(1, logical - 2)
+    return min(16, auto, n_tasks)
+
+
+def _run_config_payload(payload) -> list[dict]:
+    seed, transition, pre_sd, post_sd, horizon, args = payload
+    return run_configuration(
+        seed=int(seed),
+        transition=str(transition),
+        pre_slope_noise_std=float(pre_sd),
+        post_slope_noise_std=float(post_sd),
+        horizon=int(horizon),
+        args=args,
+    )
+
+
 def main() -> None:
     args = parse_args()
 
@@ -437,31 +474,43 @@ def main() -> None:
         )
     )
 
+    payloads = [
+        (
+            int(seed),
+            transition,
+            float(pre_sd),
+            float(post_sd),
+            int(horizon),
+            args,
+        )
+        for seed, (transition, (pre_sd, post_sd)), horizon in configs
+    ]
+    workers = _resolve_workers(args.workers, len(payloads))
+    print(
+        f"Execution: {workers} worker process" +
+        ("" if workers == 1 else "es") +
+        f" for {len(payloads)} configurations",
+        flush=True,
+    )
+
     rows: list[dict] = []
     total_start = time.perf_counter()
 
-    for i, (seed, transition_item, horizon) in enumerate(configs, start=1):
-        transition, (pre_sd, post_sd) = transition_item
-        config_start = time.perf_counter()
-        print(
-            f"[{i}/{len(configs)}] seed={seed} transition={transition} "
-            f"slope_sd={pre_sd}->{post_sd} h={horizon}",
-            flush=True,
-        )
-        rows.extend(
-            run_configuration(
-                seed=int(seed),
-                transition=transition,
-                pre_slope_noise_std=float(pre_sd),
-                post_slope_noise_std=float(post_sd),
-                horizon=int(horizon),
-                args=args,
+    if workers == 1:
+        iterator = map(_run_config_payload, payloads)
+        for i, result_rows in enumerate(iterator, start=1):
+            rows.extend(result_rows)
+            print(f"[{i}/{len(payloads)}] completed", flush=True)
+    else:
+        with ProcessPoolExecutor(max_workers=workers) as executor:
+            iterator = executor.map(
+                _run_config_payload,
+                payloads,
+                chunksize=1,
             )
-        )
-        print(
-            f"    completed in {time.perf_counter() - config_start:.2f}s",
-            flush=True,
-        )
+            for i, result_rows in enumerate(iterator, start=1):
+                rows.extend(result_rows)
+                print(f"[{i}/{len(payloads)}] completed", flush=True)
 
     frame = pd.DataFrame(rows)
     elapsed = time.perf_counter() - total_start
@@ -513,6 +562,8 @@ def main() -> None:
         "observation_noise_std": args.observation_noise_std,
         "fixed_ar1_phi": args.ar1_phi,
         "selector_max_inner_origins": args.selector_max_inner_origins,
+        "workers": workers,
+        "logical_cpus": os.cpu_count(),
         "inner_step": args.inner_step,
         "outer_step": args.outer_step,
         "orders": list(args.orders),
