@@ -21,10 +21,11 @@ forecast loss relative to strong fixed configurations.
 
 ## Replication scale
 
-Use **300 Monte Carlo seeds per mechanism**, ten times the exploratory
-replication count of 30.
+Use **1,000 Monte Carlo seeds per mechanism** as the main paper-scale target,
+with the run designed so it can be extended to 3,000 seeds without repeating
+completed work.
 
-This produces 4,800 seed/path/horizon configurations per mechanism and 14,400
+This produces 16,000 seed/path/horizon configurations per mechanism and 48,000
 across the three mechanisms before outer-origin expansion.
 
 ## Three frozen regime mechanisms
@@ -178,8 +179,11 @@ Retain:
   processes;
 - make results independent of process scheduling;
 - write enough metadata to reproduce the exact run;
-- final runner should support resumable/sharded execution so a machine restart
-  does not discard a long Monte Carlo run;
+- final runner uses atomic seed batches of 10 seeds by default; each completed
+  batch is persisted before the next begins, so a machine restart loses at
+  most the currently running batch;
+- re-running the same run-id automatically skips completed batches;
+- increasing the target from 1,000 to 3,000 seeds reuses the first 1,000;
 - heavy final simulation runs locally, not automatically on push.
 
 ## Robustness already established outside the final main grid
@@ -191,7 +195,7 @@ Retain:
   with frozen-local-M20.
 
 These results should be used as supporting/appendix robustness rather than
-multiplying the main 300-seed grid unnecessarily.
+multiplying the main 1,000-seed grid unnecessarily.
 
 ## Stop rule
 
