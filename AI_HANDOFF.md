@@ -205,18 +205,20 @@ Implemented:
 
 Next:
 
-1. note that Exploration 08 was run from commit `9ae024d`, before the later
-   multiprocessing/cache patches; its scientific result is valid but it is not
-   a performance benchmark;
-2. benchmark current code with a small fixed-baseline run at workers 1, 8, 16,
-   and optionally 24 to choose a local process count;
-3. implement the final paper-scale runner from
-   `notes/experiments/09_final-paper-scale-design.md` with 300 seeds per
-   mechanism, adaptive-M20, frozen-all-pre, frozen-local-M20, no-change,
-   paired target tracking, seed-level summaries, and resumable/sharded output;
-4. run the final Monte Carlo locally using multiprocessing;
-5. only after the final simulation results are checked, continue the literature
-   audit and move to macroeconomic data.
+1. pull the latest repo and smoke-test the resumable final runner:
+   `python experiments/forecast_optimal_smoothing/run_final_paper_simulation.py --preset smoke --workers 4`;
+2. run the main simulation with:
+   `python experiments/forecast_optimal_smoothing/run_final_paper_simulation.py --preset final --seeds 1000 --batch-size 10 --workers 32 --run-id paper_mc_v1`;
+3. the runner persists every completed 10-seed batch under
+   `results/forecast_optimal_smoothing/paper_mc_v1/batches/`; re-running the
+   exact command automatically skips completed batches and repeats only any
+   incomplete batch;
+4. after 1,000 seeds, inspect Monte Carlo convergence outputs at 100, 300, 500,
+   and 1,000 seeds;
+5. if additional precision is useful, extend the same run to 3,000 seeds by
+   changing only `--seeds 3000`; do not change run-id or batch size;
+6. then analyze final simulation results, continue the literature audit, and
+   move to macroeconomic data.
 
 ## Canonical internal notes
 
