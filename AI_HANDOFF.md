@@ -205,16 +205,17 @@ Implemented:
 
 Next:
 
-1. run `python experiments/forecast_optimal_smoothing/run_roughness_adaptation.py --preset smoke`;
+1. run `python experiments/forecast_optimal_smoothing/run_fixed_baseline_stress.py --preset smoke`;
 2. if successful, run the same script with `--preset explore`;
-3. inspect whether ((d,L,S)) tracks matched stationary roughness controls for
-   0.005->0.02 and 0.02->0.005 slope-noise transitions;
-4. inspect direct adaptive/frozen pooled RMSE ratios and matched
-   transition-minus-control excess value, including seed-level consistency;
-5. if roughness is also structured, stop adding isolated mechanisms and freeze
-   the final paper-scale simulation design;
-6. continue the literature audit (40 target papers; 24 currently extracted);
-7. then move to macroeconomic data.
+3. compare frozen-local-M20 against frozen-all-pre on stationary high roughness,
+   especially tail failures and seed-level loss stability;
+4. check whether smooth-to-rough adaptive gains survive the stronger fixed
+   baseline and whether rough-to-smooth matched-control excess stabilizes;
+5. if frozen-all-pre is adequate, freeze the final paper-scale simulation
+   design with adaptive, both fixed baselines, and no-change;
+6. if frozen-all-pre remains fragile, add an independently calibrated global
+   fixed comparator before final scale;
+7. continue the literature audit, then move to macroeconomic data.
 
 ## Canonical internal notes
 
