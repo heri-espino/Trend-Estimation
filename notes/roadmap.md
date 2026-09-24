@@ -189,8 +189,15 @@ Implemented infrastructure:
   (slope-noise std 0.005 <-> 0.02) with observation noise 0.5 and phi=0;
 - [x] establish roughness as a third configuration mechanism, while identifying
   frozen-pre fragility under stationary high roughness;
-- [ ] run Exploration 08, a fixed-baseline stress test comparing
-  frozen-local-M20 with frozen-all-pre before freezing the paper-scale design;
+- [x] run Exploration 08: frozen-all-pre removes the catastrophic
+  stationary-high-roughness fragility and preserves the important
+  smooth-to-rough adaptive gains;
+- [x] freeze frozen-all-pre as the primary fixed comparator and
+  frozen-local-M20 as a secondary diagnostic;
+- [x] freeze the final paper-scale Monte Carlo design at 300 seeds per
+  mechanism; see `notes/experiments/09_final-paper-scale-design.md`;
+- [ ] benchmark the new multiprocessing implementation on the local workstation
+  and then implement/run the resumable final 300-seed simulation;
 - [ ] freeze paper-scale parameter grid and seed count only after these checks;
 - [ ] generate paper tables/figures only after design is frozen.
 
