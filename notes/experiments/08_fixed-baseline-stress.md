@@ -73,14 +73,22 @@ Keep the no-change forecast as the external benchmark.
 First:
 
 ~~~powershell
-python experiments\forecast_optimal_smoothing\run_fixed_baseline_stress.py --preset smoke
+python experiments\forecast_optimal_smoothing\run_fixed_baseline_stress.py --preset smoke --workers 4
 ~~~
 
-If successful:
+The runner supports process-level parallelism across independent
+(seed, transition, horizon) configurations. `--workers 0` selects workers
+automatically; `--workers 1` is the serial reference.
+
+For the full exploratory run, benchmark a sensible process count on the local
+machine. For a many-core workstation, 16 is a conservative starting point:
 
 ~~~powershell
-python experiments\forecast_optimal_smoothing\run_fixed_baseline_stress.py --preset explore
+python experiments\forecast_optimal_smoothing\run_fixed_baseline_stress.py --preset explore --workers 16
 ~~~
+
+If CPU utilization remains low and memory is comfortable, 24 workers can be
+tested as well. Scientific outputs are independent of process scheduling.
 
 ## Outputs
 
