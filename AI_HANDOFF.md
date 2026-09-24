@@ -205,17 +205,18 @@ Implemented:
 
 Next:
 
-1. run `python experiments/forecast_optimal_smoothing/run_fixed_baseline_stress.py --preset smoke`;
-2. if successful, run the same script with `--preset explore`;
-3. compare frozen-local-M20 against frozen-all-pre on stationary high roughness,
-   especially tail failures and seed-level loss stability;
-4. check whether smooth-to-rough adaptive gains survive the stronger fixed
-   baseline and whether rough-to-smooth matched-control excess stabilizes;
-5. if frozen-all-pre is adequate, freeze the final paper-scale simulation
-   design with adaptive, both fixed baselines, and no-change;
-6. if frozen-all-pre remains fragile, add an independently calibrated global
-   fixed comparator before final scale;
-7. continue the literature audit, then move to macroeconomic data.
+1. note that Exploration 08 was run from commit `9ae024d`, before the later
+   multiprocessing/cache patches; its scientific result is valid but it is not
+   a performance benchmark;
+2. benchmark current code with a small fixed-baseline run at workers 1, 8, 16,
+   and optionally 24 to choose a local process count;
+3. implement the final paper-scale runner from
+   `notes/experiments/09_final-paper-scale-design.md` with 300 seeds per
+   mechanism, adaptive-M20, frozen-all-pre, frozen-local-M20, no-change,
+   paired target tracking, seed-level summaries, and resumable/sharded output;
+4. run the final Monte Carlo locally using multiprocessing;
+5. only after the final simulation results are checked, continue the literature
+   audit and move to macroeconomic data.
 
 ## Canonical internal notes
 
