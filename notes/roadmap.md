@@ -180,9 +180,13 @@ Implemented infrastructure:
   and the sign pattern of transition-specific excess value are robust to
   selector memory;
 - [x] close the persistence mechanism for the exploratory stage;
-- [ ] run Exploration 06, isolating observation-noise scale
-  (0.25 <-> 0.75) with phi=0 and fixed latent roughness, while measuring both
-  configuration tracking and adaptive-vs-frozen value;
+- [x] run Exploration 06, isolating observation-noise scale
+  (0.25 <-> 0.75) with phi=0 and fixed latent roughness;
+- [x] verify that noise scale moves the full configuration toward target
+  controls, while adaptation value is strongly directional (large for
+  high-to-low noise; weak or absent for low-to-high noise);
+- [ ] run Exploration 07, isolating latent-trend roughness
+  (slope-noise std 0.005 <-> 0.02) with observation noise 0.5 and phi=0;
 - [ ] freeze paper-scale parameter grid and seed count only after these checks;
 - [ ] generate paper tables/figures only after design is frozen.
 
