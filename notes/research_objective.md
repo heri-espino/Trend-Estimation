@@ -269,8 +269,8 @@ k:
 
 ### Not yet established
 
-- the final paper-scale Monte Carlo precision of these effects at 300 seeds per
-  mechanism;
+- the final paper-scale Monte Carlo precision of these effects at 1,000 seeds
+  per mechanism, with convergence diagnostics and optional extension to 3,000;
 - that the adaptive rule \(G(h,X_T,\mathcal C)\) transfers beyond simulation
   families to external macroeconomic data;
 - that the simulation findings transfer to macro/equity/crypto data;
