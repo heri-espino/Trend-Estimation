@@ -185,8 +185,12 @@ Implemented infrastructure:
 - [x] verify that noise scale moves the full configuration toward target
   controls, while adaptation value is strongly directional (large for
   high-to-low noise; weak or absent for low-to-high noise);
-- [ ] run Exploration 07, isolating latent-trend roughness
+- [x] run Exploration 07, isolating latent-trend roughness
   (slope-noise std 0.005 <-> 0.02) with observation noise 0.5 and phi=0;
+- [x] establish roughness as a third configuration mechanism, while identifying
+  frozen-pre fragility under stationary high roughness;
+- [ ] run Exploration 08, a fixed-baseline stress test comparing
+  frozen-local-M20 with frozen-all-pre before freezing the paper-scale design;
 - [ ] freeze paper-scale parameter grid and seed count only after these checks;
 - [ ] generate paper tables/figures only after design is frozen.
 
