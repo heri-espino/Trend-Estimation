@@ -1,0 +1,67 @@
+{
+  "created_at_utc": "2026-09-24T00:27:21.057946+00:00",
+  "git_commit": "45e9c08",
+  "experiment": "observation_noise_scale_adaptation_value",
+  "preset": "explore",
+  "n_seeds": 30,
+  "n_obs": 300,
+  "regime_point": 180,
+  "low_observation_noise_std": 0.25,
+  "high_observation_noise_std": 0.75,
+  "slope_noise_std": 0.01,
+  "fixed_ar1_phi": 0.0,
+  "level_shift": 0.0,
+  "slope_shift": 0.0,
+  "outer_initial_train": 120,
+  "outer_step": 3,
+  "inner_step": 3,
+  "selector_max_inner_origins": 20,
+  "orders": [
+    1,
+    2,
+    3
+  ],
+  "windows": [
+    24,
+    48,
+    72
+  ],
+  "n_grid": 321,
+  "log_lambda_bounds": [
+    -18.0,
+    24.0
+  ],
+  "transitions": {
+    "stable_low_noise": {
+      "pre_observation_noise_std": 0.25,
+      "post_observation_noise_std": 0.25
+    },
+    "low_to_high_noise": {
+      "pre_observation_noise_std": 0.25,
+      "post_observation_noise_std": 0.75
+    },
+    "high_to_low_noise": {
+      "pre_observation_noise_std": 0.75,
+      "post_observation_noise_std": 0.25
+    },
+    "stable_high_noise": {
+      "pre_observation_noise_std": 0.75,
+      "post_observation_noise_std": 0.75
+    }
+  },
+  "horizons": [
+    1,
+    3,
+    6,
+    12
+  ],
+  "n_configurations": 480,
+  "n_output_rows": 18720,
+  "elapsed_seconds": 1821.071674299892,
+  "comparison": {
+    "adaptive": "re-select d, L, lambda at every outer origin with M inner origins",
+    "frozen_pre": "select d, L, lambda once at T0 using only y[:T0], then refit with those hyperparameters on newly observed data",
+    "benchmark": "no-change level forecast",
+    "target_tracking": "compare transition adaptive configuration with matched start and target stationary controls at the same seed/horizon/origin"
+  }
+}
