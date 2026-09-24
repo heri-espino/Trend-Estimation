@@ -2,7 +2,7 @@
 
 Date frozen: 2026-09-23
 
-Status: **scientific design frozen; implementation/performance benchmarking next**
+Status: **scientific design and resumable implementation frozen; final run next**
 
 ## Scientific objective
 
