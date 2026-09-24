@@ -50,6 +50,7 @@ When a result graduates into the public API, keep the note and update its librar
 - `experiments/05_adaptive-vs-frozen-pre.md` — tests whether repeated adaptation of (d, L, S) improves untouched OOS forecasts relative to hyperparameters frozen at T0.
 - `experiments/06_observation-noise-scale-adaptation.md` — isolates observation-noise-scale changes while jointly measuring configuration tracking and adaptation value.
 - `experiments/07_latent-trend-roughness-adaptation.md` — isolates latent slope roughness while jointly measuring configuration tracking and adaptation value.
+- `experiments/08_fixed-baseline-stress.md` — stress-tests one-time fixed hyperparameter baselines before the final paper-scale simulation.
 
 - `checkpoints/2026-09-22_persistence-mechanism-results.md` — mechanism-study results, decomposition, and search-boundary caveat.
 - `checkpoints/2026-09-22_scientific-objective-clarification.md` — records the
@@ -62,3 +63,4 @@ When a result graduates into the public API, keep the note and update its librar
 - `checkpoints/2026-09-23_adaptive-value-persistence-results.md` — Exploration 05: adaptive beats frozen-pre directly at every studied persistence transition/horizon; transition-specific excess value is conditional, with M=30 robustness next.
 - `checkpoints/2026-09-23_persistence-adaptation-robustness.md` — M=30 preserves the M=20 persistence conclusion; persistence is closed for the exploratory stage.
 - `checkpoints/2026-09-23_noise-scale-adaptation-results.md` — observation-noise scale is a second regime mechanism; configuration tracking is clear but forecast value is strongly directional.
+- `checkpoints/2026-09-23_roughness-adaptation-results.md` — latent roughness is a third regime mechanism; frozen-pre can be fragile under high roughness, motivating a stronger fixed baseline.
