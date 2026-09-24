@@ -257,14 +257,19 @@ k:
   configuration moves toward matched target controls when noise changes;
 - noise-scale adaptation value is strongly directional: high-to-low noise has
   large direct and transition-specific gains, while low-to-high noise has weak
-  or absent transition-specific value at the studied sample size.
+  or absent transition-specific value at the studied sample size;
+- latent-trend roughness is a third distinct configuration mechanism: both
+  transition directions move toward matched stationary target controls;
+- smooth-to-rough transitions show large direct adaptive gains, while
+  rough-to-smooth transition-specific value is confounded by instability of the
+  one-time frozen-pre comparator on some stationary high-roughness seeds.
 
 ### Not yet established
 
 - that the adaptive rule \(G(h,X_T,\mathcal C)\) is stable across simulation
   families;
-- that latent-trend roughness is a third distinct configuration/adaptation
-  mechanism;
+- whether the adaptation-value conclusions survive a stronger fixed comparator
+  selected from all available pre-regime validation origins;
 - that the simulation findings transfer to macro/equity/crypto data;
 - that any financial improvement is economically exploitable;
 - final novelty relative to the complete literature target set.
