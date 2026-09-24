@@ -1,19 +1,32 @@
 from __future__ import annotations
 
+from functools import lru_cache
+
 import numpy as np
 
 from .difference import difference_matrix
 
 
+@lru_cache(maxsize=256)
+def _cached_penalty_eigenvalues(n_obs: int, order: int) -> np.ndarray:
+    D = difference_matrix(int(n_obs), int(order))
+    eigvals = np.linalg.eigvalsh(D.T @ D)
+    eigvals.setflags(write=False)
+    return eigvals
+
+
 def penalty_eigenvalues(n_obs: int, order: int) -> np.ndarray:
-    """Eigenvalues of ``D.T @ D`` for the finite-difference penalty."""
-    D = difference_matrix(n_obs, order)
-    return np.linalg.eigvalsh(D.T @ D)
+    """Eigenvalues of D.T @ D for the finite-difference penalty.
+
+    The eigendecomposition is cached by sample length and difference order.
+    A copy is returned so callers can safely mutate the public result.
+    """
+    return _cached_penalty_eigenvalues(int(n_obs), int(order)).copy()
 
 
 def effective_degrees_of_freedom(lambda_: float, n_obs: int, order: int) -> float:
     """Return ``trace((I + lambda D.T D)^-1)``."""
-    eigvals = penalty_eigenvalues(n_obs, order)
+    eigvals = _cached_penalty_eigenvalues(int(n_obs), int(order))
     return float(np.sum(1.0 / (1.0 + float(lambda_) * eigvals)))
 
 
@@ -47,7 +60,7 @@ def smoothness_to_lambda(
     if order == 0:
         return smoothness / (1.0 - smoothness)
 
-    eigvals = penalty_eigenvalues(n_obs, order)
+    eigvals = _cached_penalty_eigenvalues(int(n_obs), int(order))
     s_max = 1.0 - order / n_obs
     target = smoothness * s_max
 
