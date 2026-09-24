@@ -252,14 +252,19 @@ k:
   persistence-transition directions at every studied horizon;
 - the persistence transition-specific excess adaptation-value sign pattern is
   robust to M=20 versus M=30: strongest and most consistent for high-to-low
-  persistence, and positive for low-to-high persistence at short horizons.
+  persistence, and positive for low-to-high persistence at short horizons;
+- observation-noise scale is a second demonstrated regime mechanism: the joint
+  configuration moves toward matched target controls when noise changes;
+- noise-scale adaptation value is strongly directional: high-to-low noise has
+  large direct and transition-specific gains, while low-to-high noise has weak
+  or absent transition-specific value at the studied sample size.
 
 ### Not yet established
 
 - that the adaptive rule \(G(h,X_T,\mathcal C)\) is stable across simulation
   families;
-- that adaptation adds direct or transition-specific value across other regime
-  factors, especially observation-noise scale and latent-trend roughness;
+- that latent-trend roughness is a third distinct configuration/adaptation
+  mechanism;
 - that the simulation findings transfer to macro/equity/crypto data;
 - that any financial improvement is economically exploitable;
 - final novelty relative to the complete literature target set.
