@@ -211,26 +211,25 @@ Implemented:
 
 Next:
 
-1. treat the 1,000-seed `paper_mc_v1` run as the completed main controlled
-   simulation;
-2. preserve both real-data development screens:
-   - observation-scale:
-     `20260929T091259Z_real-data-explore_cc46a3f`;
-   - frequency-aware:
-     `20260929T195226Z_real-data-explore-frequency-aware_2586ef0`;
+1. controlled simulation is complete at 1,000 seeds;
+2. both development-panel real-data screens are complete and preserved:
+   observation-scale and frequency-aware;
 3. read
    `notes/checkpoints/2026-09-29_frequency-aware-real-data-results.md`;
-4. the frequency-aware policy materially improves transfer (44/49 cells improve)
-   but median adaptive/frozen-all-pre RMSFE remains >1 in every class; do not
-   tune the same development panel further;
-5. freeze frequency-aware windows/selector memory and use a separate held-out
-   replication panel for the final financial external-validity claim;
-6. do not run `--preset paper` on the inspected development panel as if it were
-   confirmatory;
-7. current-vintage GDPC1/INDPRO remains exploratory; implement ALFRED
-   vintage-correct macro evaluation before paper-final macro claims;
-8. continue the high-priority literature novelty audit, especially
-   Guerrero/Cortés-Toto/Reyes (2018).
+4. frequency-aware scaling improves 44/49 development cells but does not give
+   broad adaptive superiority; do not tune that panel further;
+5. the next confirmatory financial experiment is the frozen held-out panel in
+   `notes/experiments/11_held-out-financial-replication.md`;
+6. smoke it with:
+   `python experiments/forecast_optimal_smoothing/run_real_data_validation.py --panel replication --preset smoke --scale-policy frequency-aware --workers 3`;
+7. if smoke passes, run:
+   `python experiments/forecast_optimal_smoothing/run_real_data_validation.py --panel replication --preset explore --scale-policy frequency-aware --workers 32`;
+8. do not change the frequency-aware daily windows {63,126,252}, M=51, or
+   horizons after inspecting replication outcomes;
+9. macro remains separate: implement ALFRED vintage-correct GDP/INDPRO before
+   paper-final macro claims;
+10. continue the high-priority literature novelty audit, especially
+    Guerrero/Córtes-Toto/Reyes (2018).
 
 ## Canonical internal notes
 
