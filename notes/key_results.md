@@ -536,3 +536,38 @@ requires a held-out replication panel.
 Full checkpoint:
 `notes/checkpoints/2026-09-29_frequency-aware-real-data-results.md`.
 
+## 17. Broad financial external-validity boundary
+
+The frequency-aware financial evidence now spans 92 distinct series across
+three panels:
+
+- 32 ETFs;
+- 48 stocks;
+- 12 crypto assets.
+
+Combined median adaptive/frozen-all-pre RMSFE is approximately:
+
+[
+1.032 	ext{(ETF)},qquad
+1.022 	ext{(stock)},qquad
+1.014 	ext{(crypto)}.
+]
+
+The strong frozen-all-pre comparator remains approximately equal to no-change
+at the class median.
+
+The result is therefore not that adaptive re-selection never helps, but that
+**broad unconditional superiority is not supported for observed financial price
+levels**. Gains are series- and horizon-specific, while local re-selection
+often moves away from the conservative no-change-like configuration selected by
+long historical validation.
+
+One especially clear horizon boundary is stock h=20, where adaptive beats
+frozen-all-pre in only 1 of 48 series across the frequency-aware panels.
+
+Full breadth checkpoint:
+`notes/checkpoints/2026-09-29_large-universe-financial-results.md`.
+
+**Status:** cross-sectional financial boundary strongly supported; denser
+paper-origin and numerical grid sensitivities remain.
+
