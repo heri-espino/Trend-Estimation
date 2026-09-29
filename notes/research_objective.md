@@ -153,7 +153,8 @@ E[L_{\rm fixed}]
 
 where supported by the data.
 
-This third level is the main unresolved empirical claim.
+This third level is established conditionally in controlled simulation. Its
+external transfer to observed series remains unresolved.
 
 ## Role of the persistence experiment
 
@@ -271,12 +272,18 @@ k:
   lower Monte Carlo noise; persistence high-to-low, noise high-to-low, and
   roughness smooth-to-rough are the clearest positive cases, while several
   opposite-direction/horizon cells are near-neutral or negative.
+- the first observed-data screen, using the literal
+  simulation-scale policy L={24,48,72}, M=20 across all frequencies, is mostly
+  negative relative to frozen-all-pre and no-change; this is preserved as an
+  external-validity boundary and motivates one pre-documented
+  frequency-aware scale diagnostic rather than repeated post-hoc tuning.
 
 ### Not yet established
 
-- that the adaptive rule \(G(h,X_T,\mathcal C)\) transfers beyond simulation
-  families to external macroeconomic data;
-- that the simulation findings transfer to macro/equity/crypto data;
+- whether the controlled-simulation adaptation gains transfer under a
+  frequency-appropriate real-data scale policy;
+- whether a frozen real-data protocol replicates on a separate held-out panel;
+- vintage-correct macroeconomic performance using ALFRED real-time data;
 - that any financial improvement is economically exploitable;
 - final novelty relative to the complete literature target set.
 
@@ -295,29 +302,32 @@ to the time required for old-regime inner validation origins to leave the
 selector. Exploration 04B confirmed that selector memory is a major source of
 adaptation inertia.
 
-For the next exploratory stage, use (M=20) inner origins. This is the
-shortest tested memory whose pooled stable-control relative RMSFE remains
-within about 2.5% of the (M=30) reference at every studied horizon. Retain
-(M=30) as a robustness setting.
+For the controlled-simulation program, M=20 was the frozen adaptive-selector
+memory because it remained within about 2.5% of the M=30 stable-control
+reference while adapting materially faster. Retain M=30 as a simulation
+robustness setting.
+
+For real-data work, do not assume that M=20 has the same time-scale meaning
+across quarterly, monthly, and daily series. The frequency-aware diagnostic
+ties selector-history span to the candidate window scale.
 
 Do not silently interpret (M) as (L), and do not add (M) to the canonical
 adaptive object unless later evidence shows that it must itself be selected
 adaptively.
 
-## Numerical caveat before the next mechanism stage
+## Numerical-search status
 
-The persistence experiment has many optima at the current log-\(\lambda\)
-boundaries. Before interpreting its exact smoothness levels or moving to
-within-series regime-transition experiments, run a wider-domain sensitivity
-study and verify whether the qualitative ordering survives.
-
-Current required diagnostic target:
+The original persistence study exposed many optima near the first
+log-\(\lambda\) boundaries. The required wider-domain sensitivity was
+completed using
 
 \[
 \log\lambda\in[-18,24]
 \]
 
-with a materially denser discovery grid.
+with a denser discovery grid, and the qualitative persistence/horizon
+mechanism survived. The wide domain is now part of the active experimental
+protocol rather than an outstanding prerequisite.
 
 ## Literature positioning
 
