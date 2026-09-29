@@ -52,7 +52,7 @@ class SeriesSpec:
     inner_step: int
 
 
-SERIES: tuple[SeriesSpec, ...] = (
+DEVELOPMENT_SERIES: tuple[SeriesSpec, ...] = (
     SeriesSpec("GDPC1", "US real GDP", "macro", "fred", "quarterly", (1, 2, 4), 1, 1, 1),
     SeriesSpec(
         "INDPRO",
@@ -80,6 +80,25 @@ SERIES: tuple[SeriesSpec, ...] = (
     SeriesSpec("BTC-USD", "Bitcoin / USD", "crypto", "yahoo", "daily", (1, 7, 30), 20, 5, 5),
     SeriesSpec("ETH-USD", "Ether / USD", "crypto", "yahoo", "daily", (1, 7, 30), 20, 5, 5),
 )
+
+REPLICATION_SERIES: tuple[SeriesSpec, ...] = (
+    SeriesSpec("VTI", "Vanguard Total Stock Market ETF", "etf", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("XLK", "Technology Select Sector SPDR Fund", "etf", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("XLF", "Financial Select Sector SPDR Fund", "etf", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("XLE", "Energy Select Sector SPDR Fund", "etf", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("XLV", "Health Care Select Sector SPDR Fund", "etf", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("VNQ", "Vanguard Real Estate ETF", "etf", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("KO", "Coca-Cola", "stock", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("PG", "Procter & Gamble", "stock", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("CVX", "Chevron", "stock", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("BAC", "Bank of America", "stock", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("CAT", "Caterpillar", "stock", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("HD", "Home Depot", "stock", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("LTC-USD", "Litecoin / USD", "crypto", "yahoo", "daily", (1, 7, 30), 20, 5, 5),
+    SeriesSpec("XRP-USD", "XRP / USD", "crypto", "yahoo", "daily", (1, 7, 30), 20, 5, 5),
+)
+
+SERIES: tuple[SeriesSpec, ...] = DEVELOPMENT_SERIES + REPLICATION_SERIES
 
 
 def parse_args() -> argparse.Namespace:
@@ -114,11 +133,20 @@ def parse_args() -> argparse.Namespace:
         help="Populate/refresh the versioned snapshot, write the manifest, and stop.",
     )
     parser.add_argument(
+        "--panel",
+        choices=("development", "replication"),
+        default="development",
+        help=(
+            "Series panel. 'development' reproduces the inspected 16-series "
+            "screen; 'replication' uses a separate frozen financial panel."
+        ),
+    )
+    parser.add_argument(
         "--asset-classes",
         nargs="+",
         choices=("macro", "etf", "stock", "crypto"),
         default=None,
-        help="Optional subset. Default: all four classes.",
+        help="Optional subset within the selected panel.",
     )
     parser.add_argument(
         "--n-grid",
@@ -311,13 +339,21 @@ def _ensure_snapshot(
 
 
 def _selected_specs(args: argparse.Namespace) -> tuple[SeriesSpec, ...]:
-    specs = SERIES
+    specs = (
+        DEVELOPMENT_SERIES
+        if args.panel == "development"
+        else REPLICATION_SERIES
+    )
     if args.asset_classes:
         wanted = set(args.asset_classes)
         specs = tuple(spec for spec in specs if spec.asset_class in wanted)
 
     if args.preset == "smoke":
-        smoke_keys = {"GDPC1", "SPY", "BTC-USD"}
+        smoke_keys = (
+            {"GDPC1", "SPY", "BTC-USD"}
+            if args.panel == "development"
+            else {"VTI", "KO", "LTC-USD"}
+        )
         specs = tuple(spec for spec in specs if spec.key in smoke_keys)
 
     if not specs:
@@ -749,7 +785,8 @@ def main() -> None:
 
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     run_dir = RESULT_ROOT / (
-        f"{stamp}_real-data-{args.preset}-{args.scale_policy}_{git_short_sha()}"
+        f"{stamp}_real-data-{args.panel}-{args.preset}-"
+        f"{args.scale_policy}_{git_short_sha()}"
     )
     run_dir.mkdir(parents=True, exist_ok=True)
 
@@ -765,6 +802,7 @@ def main() -> None:
         "created_at_utc": _utc_now(),
         "git_commit": git_short_sha(),
         "experiment": "real_data_external_validation",
+        "panel": args.panel,
         "preset": args.preset,
         "workers": workers,
         "logical_cpus": os.cpu_count(),
