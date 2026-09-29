@@ -206,20 +206,21 @@ Implemented:
 Next:
 
 1. treat the 1,000-seed `paper_mc_v1` run as the completed main controlled
-   simulation; all 100 batches (seeds 0--999) are complete;
-2. read
-   `notes/checkpoints/2026-09-29_final-1000-seed-monte-carlo-results.md`
-   before changing the scientific story;
-3. do not claim universal adaptive superiority: the final result is explicitly
-   mechanism-, direction-, and horizon-dependent;
-4. 3,000 seeds are optional only for tighter Monte Carlo precision of the
-   heavy-tailed smooth-to-rough roughness effect; they are not required to
-   establish the main conclusion;
-5. next high-priority scientific task: complete the literature novelty audit,
-   especially Guerrero/Cortés-Toto/Reyes (2018) on autocorrelation and
-   penalized-trend smoothness;
-6. after the literature position is secured, generate the final simulation
-   tables/figures and proceed to macroeconomic external evidence.
+   simulation;
+2. run the cached real-data smoke test after installing the finance extra:
+   `python experiments/forecast_optimal_smoothing/run_real_data_validation.py --preset smoke --workers 3`;
+3. if smoke passes, run the full exploratory external-validation screen:
+   `python experiments/forecast_optimal_smoothing/run_real_data_validation.py --preset explore --workers 32`;
+4. the script downloads missing FRED/Yahoo series once into
+   `data/external/real_world/cache/` and reuses them on later invocations;
+   do not pass `--refresh-data` unless intentionally changing the snapshot;
+5. current-vintage GDPC1/INDPRO output is exploratory only; implement ALFRED
+   vintage-correct macro evaluation before paper-final macro claims;
+6. after the exploratory real-data results are pushed, inspect adaptive vs
+   frozen-all-pre and no-change by class/series/horizon, then decide whether the
+   denser `--preset paper` pass is warranted;
+7. in parallel, complete the high-priority literature novelty audit, especially
+   Guerrero/Cortés-Toto/Reyes (2018).
 
 ## Canonical internal notes
 
