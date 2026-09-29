@@ -52,6 +52,7 @@ When a result graduates into the public API, keep the note and update its librar
 - `experiments/07_latent-trend-roughness-adaptation.md` — isolates latent slope roughness while jointly measuring configuration tracking and adaptation value.
 - `experiments/08_fixed-baseline-stress.md` — stress-tests one-time fixed hyperparameter baselines before the final paper-scale simulation.
 - `experiments/09_final-paper-scale-design.md` — frozen 1,000-seed-per-mechanism design for the resumable main paper-scale Monte Carlo experiment.
+- `experiments/10_real-data-external-validation.md` — cached external-validation protocol for macro, ETFs, stocks, and BTC/ETH.
 
 - `checkpoints/2026-09-22_persistence-mechanism-results.md` — mechanism-study results, decomposition, and search-boundary caveat.
 - `checkpoints/2026-09-22_scientific-objective-clarification.md` — records the
