@@ -114,14 +114,19 @@ At every later OOS origin:
 
 No future observation may influence the configuration selected at an origin.
 
-## Data caching
+## Data snapshots
 
 The runner downloads missing series once into
 
-`data/external/real_world/cache/`
+`data/external/real_world/snapshot/`
 
-and then reuses that exact snapshot. Network access occurs only for a missing
-cache entry or when the user explicitly passes `--refresh-data`.
+and then reuses that exact snapshot. The CSV files are small and are tracked by
+ordinary Git, not Git LFS, so the paper's working data are backed up in the
+repository rather than existing only on one workstation.
+
+Network access occurs only for a missing snapshot file or when the user
+explicitly passes `--refresh-data`. A refresh intentionally replaces tracked
+data and should be reviewed as a Git diff before committing.
 
 Result metadata records hashes and date ranges for every input snapshot.
 
