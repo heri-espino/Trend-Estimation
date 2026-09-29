@@ -1,0 +1,384 @@
+{
+  "created_at_utc": "2026-09-29T19:52:26.491142+00:00",
+  "git_commit": "2586ef0",
+  "experiment": "real_data_external_validation",
+  "preset": "explore",
+  "workers": 32,
+  "logical_cpus": 32,
+  "n_grid": 321,
+  "log_lambda_bounds": [
+    -18.0,
+    24.0
+  ],
+  "orders": [
+    1,
+    2,
+    3
+  ],
+  "scale_policy": "frequency-aware",
+  "series_design": {
+    "GDPC1": {
+      "frequency": "quarterly",
+      "windows": [
+        12,
+        24,
+        48
+      ],
+      "selector_memory": 48,
+      "inner_step": 1
+    },
+    "INDPRO": {
+      "frequency": "monthly",
+      "windows": [
+        24,
+        60,
+        120
+      ],
+      "selector_memory": 120,
+      "inner_step": 1
+    },
+    "SPY": {
+      "frequency": "daily",
+      "windows": [
+        63,
+        126,
+        252
+      ],
+      "selector_memory": 51,
+      "inner_step": 5
+    },
+    "QQQ": {
+      "frequency": "daily",
+      "windows": [
+        63,
+        126,
+        252
+      ],
+      "selector_memory": 51,
+      "inner_step": 5
+    },
+    "IWM": {
+      "frequency": "daily",
+      "windows": [
+        63,
+        126,
+        252
+      ],
+      "selector_memory": 51,
+      "inner_step": 5
+    },
+    "DIA": {
+      "frequency": "daily",
+      "windows": [
+        63,
+        126,
+        252
+      ],
+      "selector_memory": 51,
+      "inner_step": 5
+    },
+    "EFA": {
+      "frequency": "daily",
+      "windows": [
+        63,
+        126,
+        252
+      ],
+      "selector_memory": 51,
+      "inner_step": 5
+    },
+    "EEM": {
+      "frequency": "daily",
+      "windows": [
+        63,
+        126,
+        252
+      ],
+      "selector_memory": 51,
+      "inner_step": 5
+    },
+    "AAPL": {
+      "frequency": "daily",
+      "windows": [
+        63,
+        126,
+        252
+      ],
+      "selector_memory": 51,
+      "inner_step": 5
+    },
+    "MSFT": {
+      "frequency": "daily",
+      "windows": [
+        63,
+        126,
+        252
+      ],
+      "selector_memory": 51,
+      "inner_step": 5
+    },
+    "JPM": {
+      "frequency": "daily",
+      "windows": [
+        63,
+        126,
+        252
+      ],
+      "selector_memory": 51,
+      "inner_step": 5
+    },
+    "XOM": {
+      "frequency": "daily",
+      "windows": [
+        63,
+        126,
+        252
+      ],
+      "selector_memory": 51,
+      "inner_step": 5
+    },
+    "JNJ": {
+      "frequency": "daily",
+      "windows": [
+        63,
+        126,
+        252
+      ],
+      "selector_memory": 51,
+      "inner_step": 5
+    },
+    "WMT": {
+      "frequency": "daily",
+      "windows": [
+        63,
+        126,
+        252
+      ],
+      "selector_memory": 51,
+      "inner_step": 5
+    },
+    "BTC-USD": {
+      "frequency": "daily",
+      "windows": [
+        63,
+        126,
+        252
+      ],
+      "selector_memory": 51,
+      "inner_step": 5
+    },
+    "ETH-USD": {
+      "frequency": "daily",
+      "windows": [
+        63,
+        126,
+        252
+      ],
+      "selector_memory": 51,
+      "inner_step": 5
+    }
+  },
+  "evaluation_fraction": 0.4,
+  "transform": "natural log of positive level/adjusted price",
+  "primary_fixed_comparator": "frozen_all_pre",
+  "secondary_fixed_comparator": "frozen_local_same_selector_memory",
+  "external_benchmark": "no_change",
+  "macro_vintage_warning": "GDPC1 and INDPRO are current-vintage FRED snapshots in this exploratory external-validation run. A paper-final macro result must be replicated with ALFRED real-time vintages to avoid revision look-ahead.",
+  "data_snapshot": {
+    "AAPL": {
+      "label": "Apple",
+      "asset_class": "stock",
+      "source": "yahoo",
+      "frequency": "daily",
+      "snapshot_path": "data/external/real_world/snapshot/yahoo/AAPL.csv",
+      "rows": 11540,
+      "first_date": "1980-12-12",
+      "last_date": "2026-09-28",
+      "sha256": "5d0e84e7bc5e4ba1df14245c9c7601bba249f3e56d1efdc98f79252e1fb2e5a5",
+      "macro_vintage": null
+    },
+    "BTC-USD": {
+      "label": "Bitcoin / USD",
+      "asset_class": "crypto",
+      "source": "yahoo",
+      "frequency": "daily",
+      "snapshot_path": "data/external/real_world/snapshot/yahoo/BTC_USD.csv",
+      "rows": 4396,
+      "first_date": "2014-09-17",
+      "last_date": "2026-09-29",
+      "sha256": "fe2fda971d2ae48f1c9c4c9712b3b5fceb1438523ec0bff201d732d489c6eae5",
+      "macro_vintage": null
+    },
+    "DIA": {
+      "label": "SPDR Dow Jones Industrial Average ETF",
+      "asset_class": "etf",
+      "source": "yahoo",
+      "frequency": "daily",
+      "snapshot_path": "data/external/real_world/snapshot/yahoo/DIA.csv",
+      "rows": 7217,
+      "first_date": "1998-01-20",
+      "last_date": "2026-09-28",
+      "sha256": "f856b3fc6c39a277c4794c6830fb95662d2274ba80c8cd70741eb993b426491f",
+      "macro_vintage": null
+    },
+    "EEM": {
+      "label": "iShares MSCI Emerging Markets ETF",
+      "asset_class": "etf",
+      "source": "yahoo",
+      "frequency": "daily",
+      "snapshot_path": "data/external/real_world/snapshot/yahoo/EEM.csv",
+      "rows": 5902,
+      "first_date": "2003-04-14",
+      "last_date": "2026-09-28",
+      "sha256": "7dff5617e182ba03d04ebb4626469701635e641c202eab91c34963033afe159b",
+      "macro_vintage": null
+    },
+    "EFA": {
+      "label": "iShares MSCI EAFE ETF",
+      "asset_class": "etf",
+      "source": "yahoo",
+      "frequency": "daily",
+      "snapshot_path": "data/external/real_world/snapshot/yahoo/EFA.csv",
+      "rows": 6308,
+      "first_date": "2001-08-27",
+      "last_date": "2026-09-28",
+      "sha256": "f57d5c85744bbe2878f66ab8d0f2ccf62510804ff03a48b582674c5f1a2f09c1",
+      "macro_vintage": null
+    },
+    "ETH-USD": {
+      "label": "Ether / USD",
+      "asset_class": "crypto",
+      "source": "yahoo",
+      "frequency": "daily",
+      "snapshot_path": "data/external/real_world/snapshot/yahoo/ETH_USD.csv",
+      "rows": 3247,
+      "first_date": "2017-11-09",
+      "last_date": "2026-09-29",
+      "sha256": "52d94791a67988f6effcf001735a3749afd65359189890505c50e1233a126903",
+      "macro_vintage": null
+    },
+    "GDPC1": {
+      "label": "US real GDP",
+      "asset_class": "macro",
+      "source": "fred",
+      "frequency": "quarterly",
+      "snapshot_path": "data/external/real_world/snapshot/fred/GDPC1.csv",
+      "rows": 318,
+      "first_date": "1947-01-01",
+      "last_date": "2026-04-01",
+      "sha256": "c8335f46e0628add80cc33db3b92e32f516e4188f6bdeeb4fedcfdb6f782ae5f",
+      "macro_vintage": "current-vintage FRED snapshot; exploratory only until ALFRED vintage-correct replication"
+    },
+    "INDPRO": {
+      "label": "US industrial production",
+      "asset_class": "macro",
+      "source": "fred",
+      "frequency": "monthly",
+      "snapshot_path": "data/external/real_world/snapshot/fred/INDPRO.csv",
+      "rows": 1292,
+      "first_date": "1919-01-01",
+      "last_date": "2026-08-01",
+      "sha256": "ba831a4ed739f44bc9ce48ef3153db985ca335401f2eb602c5f629b5d10ca3ad",
+      "macro_vintage": "current-vintage FRED snapshot; exploratory only until ALFRED vintage-correct replication"
+    },
+    "IWM": {
+      "label": "iShares Russell 2000 ETF",
+      "asset_class": "etf",
+      "source": "yahoo",
+      "frequency": "daily",
+      "snapshot_path": "data/external/real_world/snapshot/yahoo/IWM.csv",
+      "rows": 6623,
+      "first_date": "2000-05-26",
+      "last_date": "2026-09-28",
+      "sha256": "8df9a0daa98442a3ad0d80685906edf03d190113d0876fe86ac9a05fd04d2edf",
+      "macro_vintage": null
+    },
+    "JNJ": {
+      "label": "Johnson & Johnson",
+      "asset_class": "stock",
+      "source": "yahoo",
+      "frequency": "daily",
+      "snapshot_path": "data/external/real_world/snapshot/yahoo/JNJ.csv",
+      "rows": 16293,
+      "first_date": "1962-01-02",
+      "last_date": "2026-09-28",
+      "sha256": "f5142544948f3cae7aa08aa83a0ed2f8add575a792001fa887cab27d00385de4",
+      "macro_vintage": null
+    },
+    "JPM": {
+      "label": "JPMorgan Chase",
+      "asset_class": "stock",
+      "source": "yahoo",
+      "frequency": "daily",
+      "snapshot_path": "data/external/real_world/snapshot/yahoo/JPM.csv",
+      "rows": 11728,
+      "first_date": "1980-03-17",
+      "last_date": "2026-09-28",
+      "sha256": "dd5898dde3494c3b393e29a4a691414f757fe26a439e1c6de401bbd17a4c9bf2",
+      "macro_vintage": null
+    },
+    "MSFT": {
+      "label": "Microsoft",
+      "asset_class": "stock",
+      "source": "yahoo",
+      "frequency": "daily",
+      "snapshot_path": "data/external/real_world/snapshot/yahoo/MSFT.csv",
+      "rows": 10214,
+      "first_date": "1986-03-13",
+      "last_date": "2026-09-28",
+      "sha256": "f9d6835b30fd78bee177f29b1b9e764ed5ccc00360c2b109a059222c18a82cbe",
+      "macro_vintage": null
+    },
+    "QQQ": {
+      "label": "Invesco QQQ",
+      "asset_class": "etf",
+      "source": "yahoo",
+      "frequency": "daily",
+      "snapshot_path": "data/external/real_world/snapshot/yahoo/QQQ.csv",
+      "rows": 6931,
+      "first_date": "1999-03-10",
+      "last_date": "2026-09-28",
+      "sha256": "3200578a99991cbe209f4f36e484adfa793093564e024563c98a6f46f897c069",
+      "macro_vintage": null
+    },
+    "SPY": {
+      "label": "SPDR S&P 500 ETF",
+      "asset_class": "etf",
+      "source": "yahoo",
+      "frequency": "daily",
+      "snapshot_path": "data/external/real_world/snapshot/yahoo/SPY.csv",
+      "rows": 8473,
+      "first_date": "1993-01-29",
+      "last_date": "2026-09-28",
+      "sha256": "0fce5b558e6492f37d3e59190a57ba2f2aeaae37bc85d2679f75620cc52c9c10",
+      "macro_vintage": null
+    },
+    "WMT": {
+      "label": "Walmart",
+      "asset_class": "stock",
+      "source": "yahoo",
+      "frequency": "daily",
+      "snapshot_path": "data/external/real_world/snapshot/yahoo/WMT.csv",
+      "rows": 13634,
+      "first_date": "1972-08-25",
+      "last_date": "2026-09-28",
+      "sha256": "1df541b46be3d74710acb3d72a2bcc9fbef116596a4e55619045bdcc644c3136",
+      "macro_vintage": null
+    },
+    "XOM": {
+      "label": "Exxon Mobil",
+      "asset_class": "stock",
+      "source": "yahoo",
+      "frequency": "daily",
+      "snapshot_path": "data/external/real_world/snapshot/yahoo/XOM.csv",
+      "rows": 16293,
+      "first_date": "1962-01-02",
+      "last_date": "2026-09-28",
+      "sha256": "82c92a73f020565bc0af29294bc3b74251df269a28ef689bfa7a2f6c93f43c01",
+      "macro_vintage": null
+    }
+  },
+  "n_tasks": 49,
+  "n_forecast_blocks": 10160,
+  "elapsed_seconds": 154.10210330004338
+}
