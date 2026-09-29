@@ -6,13 +6,30 @@ This directory is the metadata/RAG entry point for the Trend Estimation research
 
 - `manifest.csv` — master list of target references and reading status.
 - `references.bib` — shared BibTeX used by manuscripts.
-- `pdfs/` — local paper PDFs; intentionally ignored by Git.
-- `extracted/` — text/Markdown extracted from papers when useful for RAG.
+- `pdfs/` — original paper PDFs used by the research project; intentionally
+  versioned in Git.
+- `extracted/` — text/Markdown extracted from papers for RAG; intentionally
+  versioned in Git.
 - `notes/` — per-paper structured reading notes when a paper needs more than metadata.
 
 ## PDF policy
 
-Do not commit closed-access or institutionally licensed PDFs. Keep them locally under `literature/pdfs/`. Open-access files may still be left local by default; the manifest should store the DOI and source URL so they are reproducible.
+For this project, the working literature corpus is part of the research
+archive. Original PDFs used by the project and their extracted text are
+intentionally committed to the repository rather than kept only on individual
+workstations.
+
+When adding a paper:
+
+1. keep the original PDF under `literature/pdfs/`;
+2. keep the extracted representation under `literature/extracted/` when
+   available;
+3. record DOI/title/authors/source metadata in `manifest.csv`;
+4. do not silently delete a PDF or extraction while the paper is active.
+
+This repository-level preservation policy is separate from questions of source
+licensing or redistribution rights, which remain the responsibility of the
+repository maintainer.
 
 ## Current audit status
 
