@@ -212,24 +212,27 @@ Implemented:
 Next:
 
 1. controlled simulation is complete at 1,000 seeds;
-2. development real-data screens are complete: observation-scale and
-   frequency-aware;
-3. the pre-frozen held-out financial replication is complete and confirms the
-   external boundary; read
-   `notes/checkpoints/2026-09-29_held-out-financial-replication-results.md`;
-4. do not tune the development or held-out replication panels further;
-5. the next run is the 64-series large-universe robustness panel frozen in
-   `notes/experiments/12_large-universe-financial-robustness.md`;
-6. run:
+2. the development and pre-frozen held-out real-data panels are complete and
+   establish a qualified financial boundary;
+3. the 64-series large-robustness panel is also complete at **explore**
+   temporal density; read
+   `notes/checkpoints/2026-09-29_large-universe-financial-results.md`;
+4. combined frequency-aware evidence now covers 92 distinct financial series
+   (32 ETFs, 48 stocks, 12 crypto); class medians adaptive/frozen-all-pre remain
+   above one while frozen-all-pre remains approximately no-change;
+5. the large-panel run was accidentally/implicitly `preset=explore`, so the
+   next clean sensitivity is the same panel at denser paper origins:
    `python experiments/forecast_optimal_smoothing/run_real_data_validation.py --panel large-robustness --preset paper --scale-policy frequency-aware --workers 32`;
-7. this uses the unchanged daily method {63,126,252}, M=51, but evaluates OOS
-   origins every 5 observations and adds 64 entirely new series;
-8. keep n_grid=321 for the main run. A 1025-point rerun is optional only as a
-   numerical bracket-discovery sensitivity, not as model tuning;
-9. macro remains separate: implement ALFRED vintage-correct GDP/INDPRO before
-   paper-final macro claims;
-10. continue the literature novelty audit, especially
-    Guerrero/Córtes-Toto/Reyes (2018).
+6. do not change windows, M, horizons, or the 321 discovery grid for that run;
+7. after paper-density results are inspected, run the numerical discovery-grid
+   sensitivity:
+   `python experiments/forecast_optimal_smoothing/run_real_data_validation.py --panel large-robustness --preset paper --scale-policy frequency-aware --n-grid 1025 --workers 32`;
+8. treat 321 vs 1025 as numerical root-discovery robustness, not model tuning;
+   Brent already refines bracketed roots continuously;
+9. any expansion of the discrete candidate windows/orders is a separate
+   exploratory model-expansion study and must preserve all previous results;
+10. macro remains separate: implement ALFRED vintage-correct GDP/INDPRO before
+    paper-final macro claims; continue the literature novelty audit.
 
 ## Canonical internal notes
 
