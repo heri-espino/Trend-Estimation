@@ -270,7 +270,42 @@ The next stage is breadth robustness, not additional tuning: a frozen
 64-series panel with denser paper-preset OOS origins. See
 `notes/experiments/12_large-universe-financial-robustness.md`.
 
-## 8. Remaining work before a final manuscript claim
+
+
+## 8. Large-universe financial robustness
+
+A further 64-series robustness panel is complete at explore temporal density:
+
+- 20 ETFs;
+- 36 stocks;
+- 8 crypto assets;
+- 192 series/horizon cells;
+- 31,922 OOS forecast blocks.
+
+Median adaptive/frozen-all-pre RMSFE remains above one:
+
+- ETF: 1.027;
+- stock: 1.022;
+- crypto: 1.014.
+
+Combining all frequency-aware financial panels now gives 92 distinct series
+(32 ETFs, 48 stocks, 12 crypto). Across these panels the class medians remain
+approximately 1.032, 1.022, and 1.014 respectively, while frozen-all-pre is
+approximately no-change in all three classes.
+
+A particularly strong horizon boundary is stock h=20: adaptive wins only 1/48
+series across the three panels. Crypto h=7 is much closer to parity than h=1
+or h=30.
+
+The large robustness run used `preset=explore` rather than the intended
+`preset=paper`. The next sensitivity therefore keeps the method fixed and
+only densifies daily OOS origins from step 20 to step 5.
+
+Full checkpoint:
+`notes/checkpoints/2026-09-29_large-universe-financial-results.md`.
+
+
+## 9. Remaining work before a final manuscript claim
 
 High priority:
 
