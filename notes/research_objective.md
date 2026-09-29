@@ -266,11 +266,14 @@ k:
 - smooth-to-rough adaptive gains remain large against frozen-all-pre, whereas
   rough-to-smooth becomes approximately a tie, clarifying the validity
   boundary of adaptation value.
+- the final 1,000-seed Monte Carlo confirms these mechanism-,
+  direction-, and horizon-dependent adaptation effects with substantially
+  lower Monte Carlo noise; persistence high-to-low, noise high-to-low, and
+  roughness smooth-to-rough are the clearest positive cases, while several
+  opposite-direction/horizon cells are near-neutral or negative.
 
 ### Not yet established
 
-- the final paper-scale Monte Carlo precision of these effects at 1,000 seeds
-  per mechanism, with convergence diagnostics and optional extension to 3,000;
 - that the adaptive rule \(G(h,X_T,\mathcal C)\) transfers beyond simulation
   families to external macroeconomic data;
 - that the simulation findings transfer to macro/equity/crypto data;
