@@ -256,7 +256,7 @@ of this object. It must not be promoted to the definition of the project.
 
 **Library mapping:** experiment-level object assembled from reusable library components.
 
-**Status:** active research question; adaptation-value claim not yet established.
+**Status:** controlled-simulation adaptation value established conditionally; external transfer remains under evaluation.
 
 
 ## 9. Guerrero (2007) plug-in drift
@@ -469,4 +469,37 @@ The complete result is documented in
 
 **Status:** paper-scale controlled-simulation evidence established; external
 validation remains open.
+
+## 15. First real-data external-validation result
+
+The first observed-data screen transferred the simulation-scale protocol
+directly to 16 macro/ETF/stock/crypto series:
+
+[
+Lin{24,48,72},qquad M=20.
+]
+
+Across 49 series/horizon cells and 10,160 untouched OOS forecast blocks,
+adaptive re-selection generally underperformed frozen-all-pre and no-change.
+
+Class-level median adaptive/frozen-all-pre RMSFE was approximately:
+
+- macro: 1.357;
+- ETFs: 1.108;
+- stocks: 1.122;
+- crypto: 1.100.
+
+The result is therefore an external-validity boundary, not evidence of broad
+real-data superiority.
+
+A design diagnostic revealed that identical observation-count windows have very
+different calendar meanings across quarterly, monthly, and daily classes. A
+pre-documented frequency-aware sensitivity is the next experiment; the original
+negative result remains preserved.
+
+Full checkpoint:
+`notes/checkpoints/2026-09-29_real-data-exploratory-results.md`.
+
+**Status:** first external-transfer screen completed; frequency-aware diagnostic
+pending.
 
