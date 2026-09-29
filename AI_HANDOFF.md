@@ -212,8 +212,10 @@ Next:
 3. if smoke passes, run the full exploratory external-validation screen:
    `python experiments/forecast_optimal_smoothing/run_real_data_validation.py --preset explore --workers 32`;
 4. the script downloads missing FRED/Yahoo series once into
-   `data/external/real_world/cache/` and reuses them on later invocations;
-   do not pass `--refresh-data` unless intentionally changing the snapshot;
+   `data/external/real_world/snapshot/`; these small CSV files are tracked in
+   ordinary Git (not LFS), so commit and push them after the first download;
+   later invocations reuse them without network requests; do not pass
+   `--refresh-data` unless intentionally changing the snapshot;
 5. current-vintage GDPC1/INDPRO output is exploratory only; implement ALFRED
    vintage-correct macro evaluation before paper-final macro claims;
 6. after the exploratory real-data results are pushed, inspect adaptive vs
