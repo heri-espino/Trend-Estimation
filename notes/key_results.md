@@ -433,3 +433,40 @@ For price-level experiments, \(RMSFE_{rel}<1\) means lower pooled level RMSFE th
 **Library mapping:** `benchmarks/naive.py`, `validation/nested_forecast.py`.
 
 **Status:** implemented.
+
+## 14. Final paper-scale adaptation result
+
+The final controlled Monte Carlo uses 1,000 seeds per mechanism with
+persistence, observation-noise scale, and latent-trend roughness regime
+changes. The primary fixed comparator is frozen-all-pre.
+
+The main empirical result is qualified rather than universal:
+
+\[
+\boxed{
+\text{adaptation value}=q(\text{mechanism},\text{direction},h)
+}
+\]
+
+Clear positive transition-specific cases include:
+
+- persistence high-to-low at all studied horizons;
+- observation-noise high-to-low at all studied horizons;
+- latent roughness smooth-to-rough at all studied horizons.
+
+Important boundaries include:
+
+- persistence low-to-high becomes negative at horizons 6 and 12 after
+  subtracting the matched stationary-control advantage;
+- noise low-to-high is negative at horizon 1 and only modestly positive later;
+- roughness rough-to-smooth has near-zero mean transition-specific excess even
+  when direct adaptive/fixed ratios improve at longer horizons;
+- strong positive persistence at horizon 1 can still favor the no-change
+  benchmark over the adaptive trend method.
+
+The complete result is documented in
+`notes/checkpoints/2026-09-29_final-1000-seed-monte-carlo-results.md`.
+
+**Status:** paper-scale controlled-simulation evidence established; external
+validation remains open.
+
