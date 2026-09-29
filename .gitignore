@@ -48,3 +48,5 @@ results/forecast_optimal_smoothing/**/*.pickle
 results/forecast_optimal_smoothing/**/*.npz
 results/forecast_optimal_smoothing/**/*.npy
 results/forecast_optimal_smoothing/**/*.joblib
+# Download-once real-world data cache
+data/external/real_world/cache/
