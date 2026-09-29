@@ -34,9 +34,9 @@ from run_adaptive_value import _block_metrics, _fit_frozen_forecast
 SNAPSHOT_ROOT = Path("data") / "external" / "real_world" / "snapshot"
 RESULT_ROOT = Path("results") / "forecast_optimal_smoothing"
 ORDERS = (1, 2, 3)
-WINDOWS = (24, 48, 72)
+OBSERVATION_WINDOWS = (24, 48, 72)
+OBSERVATION_SELECTOR_MEMORY = 20
 LOG_BOUNDS = (-18.0, 24.0)
-SELECTOR_MEMORY = 20
 
 
 @dataclass(frozen=True)
@@ -130,6 +130,17 @@ def parse_args() -> argparse.Namespace:
         type=float,
         default=None,
         help="Fraction reserved for chronological OOS evaluation.",
+    )
+    parser.add_argument(
+        "--scale-policy",
+        choices=("observation", "frequency-aware"),
+        default="observation",
+        help=(
+            "Candidate-window/selector-memory scale. 'observation' reproduces "
+            "the first external screen exactly; 'frequency-aware' uses "
+            "calendar-interpretable windows and a selector span tied to the "
+            "largest candidate window."
+        ),
     )
     return parser.parse_args()
 
@@ -322,6 +333,32 @@ def _resolve_workers(requested: int, n_tasks: int) -> int:
     return max(1, min(int(chosen), int(logical), int(n_tasks)))
 
 
+def _design_for_spec(
+    spec: SeriesSpec,
+    scale_policy: str,
+) -> tuple[tuple[int, ...], int]:
+    if scale_policy == "observation":
+        return OBSERVATION_WINDOWS, OBSERVATION_SELECTOR_MEMORY
+
+    if scale_policy != "frequency-aware":
+        raise ValueError(f"Unknown scale policy: {scale_policy}")
+
+    if spec.frequency == "quarterly":
+        windows = (12, 24, 48)
+    elif spec.frequency == "monthly":
+        windows = (24, 60, 120)
+    elif spec.frequency == "daily":
+        windows = (63, 126, 252)
+    else:
+        raise ValueError(f"Unsupported frequency: {spec.frequency}")
+
+    selector_memory = max(
+        20,
+        int(math.ceil(max(windows) / max(1, int(spec.inner_step)))),
+    )
+    return windows, selector_memory
+
+
 def _transform(frame: pd.DataFrame) -> tuple[np.ndarray, np.ndarray]:
     values = frame["value"].to_numpy(dtype=float)
     if np.any(values <= 0.0):
@@ -369,13 +406,14 @@ def _selection(
     *,
     horizon: int,
     inner_step: int,
+    windows: tuple[int, ...],
     max_origins: int | None,
     n_grid: int,
 ):
     return td.select_fixed_window_pure_smoothness(
         history,
         orders=ORDERS,
-        windows=WINDOWS,
+        windows=windows,
         horizon=horizon,
         step=inner_step,
         max_origins=max_origins,
@@ -393,6 +431,9 @@ def _evaluate_task(payload) -> list[dict]:
         preset,
         n_grid,
         evaluation_fraction,
+        windows,
+        selector_memory,
+        scale_policy,
     ) = payload
 
     frame = pd.read_csv(snapshot_path, parse_dates=["date"])
@@ -409,7 +450,7 @@ def _evaluate_task(payload) -> list[dict]:
     evaluation_start = max(120, int(math.floor(train_fraction * n)))
     evaluation_start = min(evaluation_start, n - int(horizon) - 8)
 
-    if evaluation_start <= max(WINDOWS) + horizon:
+    if evaluation_start <= max(windows) + horizon:
         raise RuntimeError(
             f"{spec.key}: evaluation start leaves insufficient pre-OOS history."
         )
@@ -425,6 +466,7 @@ def _evaluate_task(payload) -> list[dict]:
         y[:evaluation_start],
         horizon=horizon,
         inner_step=spec.inner_step,
+        windows=windows,
         max_origins=None,
         n_grid=n_grid,
     )
@@ -432,7 +474,8 @@ def _evaluate_task(payload) -> list[dict]:
         y[:evaluation_start],
         horizon=horizon,
         inner_step=spec.inner_step,
-        max_origins=SELECTOR_MEMORY,
+        windows=windows,
+        max_origins=selector_memory,
         n_grid=n_grid,
     )
 
@@ -442,9 +485,9 @@ def _evaluate_task(payload) -> list[dict]:
         horizon=horizon,
         outer_step=outer_step,
         orders=ORDERS,
-        windows=WINDOWS,
+        windows=windows,
         inner_step=spec.inner_step,
-        max_inner_origins=SELECTOR_MEMORY,
+        max_inner_origins=selector_memory,
         min_inner_origins=2,
         log_bounds=LOG_BOUNDS,
         n_grid=n_grid,
@@ -488,6 +531,9 @@ def _evaluate_task(payload) -> list[dict]:
                 "label": spec.label,
                 "asset_class": spec.asset_class,
                 "frequency": spec.frequency,
+                "scale_policy": scale_policy,
+                "candidate_windows": "|".join(str(v) for v in windows),
+                "selector_memory": int(selector_memory),
                 "horizon": int(horizon),
                 "outer_step": int(outer_step),
                 "evaluation_start_index": int(evaluation_start),
@@ -527,10 +573,28 @@ def _evaluate_task(payload) -> list[dict]:
 
 def _summary(frame: pd.DataFrame) -> pd.DataFrame:
     rows: list[dict] = []
-    keys = ["series", "label", "asset_class", "frequency", "horizon"]
+    keys = [
+        "series",
+        "label",
+        "asset_class",
+        "frequency",
+        "scale_policy",
+        "candidate_windows",
+        "selector_memory",
+        "horizon",
+    ]
 
     for key, group in frame.groupby(keys, dropna=False):
-        series, label, asset_class, frequency, horizon = key
+        (
+            series,
+            label,
+            asset_class,
+            frequency,
+            scale_policy,
+            candidate_windows,
+            selector_memory,
+            horizon,
+        ) = key
         a = float(group["adaptive_mse"].mean())
         fa = float(group["frozen_all_pre_mse"].mean())
         fl = float(group["frozen_local_mse"].mean())
@@ -542,6 +606,9 @@ def _summary(frame: pd.DataFrame) -> pd.DataFrame:
                 "label": label,
                 "asset_class": asset_class,
                 "frequency": frequency,
+                "scale_policy": scale_policy,
+                "candidate_windows": candidate_windows,
+                "selector_memory": int(selector_memory),
                 "horizon": int(horizon),
                 "n_origins": int(len(group)),
                 "first_origin_date": str(group["origin_date"].min()),
@@ -627,7 +694,15 @@ def main() -> None:
         return
 
     payloads = []
+    design_by_series: dict[str, dict] = {}
     for spec in specs:
+        windows, selector_memory = _design_for_spec(spec, args.scale_policy)
+        design_by_series[spec.key] = {
+            "frequency": spec.frequency,
+            "windows": list(windows),
+            "selector_memory": int(selector_memory),
+            "inner_step": int(spec.inner_step),
+        }
         horizons = spec.horizons
         if args.preset == "smoke":
             horizons = horizons[:1]
@@ -640,6 +715,9 @@ def main() -> None:
                     args.preset,
                     int(n_grid),
                     float(evaluation_fraction),
+                    windows,
+                    int(selector_memory),
+                    args.scale_policy,
                 )
             )
 
@@ -670,7 +748,9 @@ def main() -> None:
     elapsed = time.perf_counter() - start
 
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-    run_dir = RESULT_ROOT / f"{stamp}_real-data-{args.preset}_{git_short_sha()}"
+    run_dir = RESULT_ROOT / (
+        f"{stamp}_real-data-{args.preset}-{args.scale_policy}_{git_short_sha()}"
+    )
     run_dir.mkdir(parents=True, exist_ok=True)
 
     frame.to_csv(run_dir / "real_data_forecast_blocks.csv", index=False)
@@ -691,12 +771,12 @@ def main() -> None:
         "n_grid": n_grid,
         "log_lambda_bounds": list(LOG_BOUNDS),
         "orders": list(ORDERS),
-        "windows": list(WINDOWS),
-        "selector_memory": SELECTOR_MEMORY,
+        "scale_policy": args.scale_policy,
+        "series_design": design_by_series,
         "evaluation_fraction": evaluation_fraction,
         "transform": "natural log of positive level/adjusted price",
         "primary_fixed_comparator": "frozen_all_pre",
-        "secondary_fixed_comparator": "frozen_local_M20",
+        "secondary_fixed_comparator": "frozen_local_same_selector_memory",
         "external_benchmark": "no_change",
         "macro_vintage_warning": (
             "GDPC1 and INDPRO are current-vintage FRED snapshots in this "
