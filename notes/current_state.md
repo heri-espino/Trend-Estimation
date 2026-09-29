@@ -242,7 +242,35 @@ overreact.
 Full checkpoint:
 `notes/checkpoints/2026-09-29_frequency-aware-real-data-results.md`.
 
-## 7. Remaining work before a final manuscript claim
+## 7. Held-out financial replication
+
+The pre-frozen replication panel is complete:
+
+- 6 ETFs;
+- 6 stocks;
+- 2 crypto assets;
+- 42 series/horizon cells;
+- 8,247 OOS forecast blocks.
+
+Class-level median adaptive/frozen-all-pre RMSFE:
+
+- ETF: 1.034;
+- stock: 1.016;
+- crypto: 1.082.
+
+Adaptive beats frozen-all-pre in 4/18 ETF cells, 1/18 stock cells, and 0/6
+crypto cells. This confirms, on a panel frozen before inspection, that the
+frequency-aware adaptive rule does not broadly dominate strong fixed/no-change
+price-level forecasts.
+
+Full checkpoint:
+`notes/checkpoints/2026-09-29_held-out-financial-replication-results.md`.
+
+The next stage is breadth robustness, not additional tuning: a frozen
+64-series panel with denser paper-preset OOS origins. See
+`notes/experiments/12_large-universe-financial-robustness.md`.
+
+## 8. Remaining work before a final manuscript claim
 
 High priority:
 
