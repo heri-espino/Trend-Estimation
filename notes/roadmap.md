@@ -200,8 +200,8 @@ Implemented infrastructure:
   32-logical-processor workstation;
 - [x] implement the resumable final runner with atomic 10-seed batches,
   automatic resume, convergence checkpoints, and both fixed baselines;
-- [ ] smoke-test the final runner, then run the 1,000-seed paper-scale
-  simulation with 32 workers;
+- [x] complete the 1,000-seed paper-scale simulation with 32 workers and
+  inspect Monte Carlo convergence;
 - [x] freeze paper-scale parameter grid and initial seed target;
 - [ ] generate paper tables/figures only after design is frozen.
 
@@ -360,6 +360,6 @@ complete.
 - [ ] root search stress-tested against dense diagnostics;
 - [x] nested chronological validation implemented;
 - [x] random-walk/no-change financial benchmark included;
-- [ ] simulation design frozen;
+- [x] simulation design frozen;
 - [ ] literature overlap table completed;
 - [ ] empirical datasets and horizons frozen.
