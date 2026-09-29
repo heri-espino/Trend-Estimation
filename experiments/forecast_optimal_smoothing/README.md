@@ -144,8 +144,10 @@ python experiments/forecast_optimal_smoothing/run_real_data_validation.py --pres
 ~~~
 
 The runner downloads only missing inputs into
-`data/external/real_world/cache/`. Re-running the command reuses the local
-snapshot without new requests. Use `--refresh-data` only to intentionally
+`data/external/real_world/snapshot/`. These small CSV snapshots are tracked by
+ordinary Git, not Git LFS. Re-running the command reuses them without new
+requests. After the first download, commit and push the snapshot directory so
+the paper data are backed up. Use `--refresh-data` only to intentionally
 replace that snapshot.
 
 The exploratory FRED macro block uses current-vintage data and must not be
