@@ -137,10 +137,16 @@ Smoke test:
 python experiments/forecast_optimal_smoothing/run_real_data_validation.py --preset smoke --workers 3
 ~~~
 
-Full exploratory screen:
+Full exploratory observation-scale screen:
 
 ~~~bash
-python experiments/forecast_optimal_smoothing/run_real_data_validation.py --preset explore --workers 32
+python experiments/forecast_optimal_smoothing/run_real_data_validation.py --preset explore --scale-policy observation --workers 32
+~~~
+
+Frequency-aware scale diagnostic:
+
+~~~bash
+python experiments/forecast_optimal_smoothing/run_real_data_validation.py --preset explore --scale-policy frequency-aware --workers 32
 ~~~
 
 The runner downloads only missing inputs into
