@@ -137,9 +137,8 @@ Reference: `notes/window_and_smoothness.md`.
 
 ## Phase 5 — Controlled simulations
 
-**Status:** infrastructure implemented; first factorial and persistence
-mechanism runs completed; search-boundary robustness and adaptive-transition
-experiments pending.
+**Status:** paper-scale simulation stage complete at 1,000 seeds per mechanism;
+final table/figure synthesis pending.
 
 Generate
 
