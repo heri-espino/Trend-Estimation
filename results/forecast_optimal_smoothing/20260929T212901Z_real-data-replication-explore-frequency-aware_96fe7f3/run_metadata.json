@@ -1,0 +1,341 @@
+{
+  "created_at_utc": "2026-09-29T21:29:01.894473+00:00",
+  "git_commit": "96fe7f3",
+  "experiment": "real_data_external_validation",
+  "panel": "replication",
+  "preset": "explore",
+  "workers": 32,
+  "logical_cpus": 32,
+  "n_grid": 321,
+  "log_lambda_bounds": [
+    -18.0,
+    24.0
+  ],
+  "orders": [
+    1,
+    2,
+    3
+  ],
+  "scale_policy": "frequency-aware",
+  "series_design": {
+    "VTI": {
+      "frequency": "daily",
+      "windows": [
+        63,
+        126,
+        252
+      ],
+      "selector_memory": 51,
+      "inner_step": 5
+    },
+    "XLK": {
+      "frequency": "daily",
+      "windows": [
+        63,
+        126,
+        252
+      ],
+      "selector_memory": 51,
+      "inner_step": 5
+    },
+    "XLF": {
+      "frequency": "daily",
+      "windows": [
+        63,
+        126,
+        252
+      ],
+      "selector_memory": 51,
+      "inner_step": 5
+    },
+    "XLE": {
+      "frequency": "daily",
+      "windows": [
+        63,
+        126,
+        252
+      ],
+      "selector_memory": 51,
+      "inner_step": 5
+    },
+    "XLV": {
+      "frequency": "daily",
+      "windows": [
+        63,
+        126,
+        252
+      ],
+      "selector_memory": 51,
+      "inner_step": 5
+    },
+    "VNQ": {
+      "frequency": "daily",
+      "windows": [
+        63,
+        126,
+        252
+      ],
+      "selector_memory": 51,
+      "inner_step": 5
+    },
+    "KO": {
+      "frequency": "daily",
+      "windows": [
+        63,
+        126,
+        252
+      ],
+      "selector_memory": 51,
+      "inner_step": 5
+    },
+    "PG": {
+      "frequency": "daily",
+      "windows": [
+        63,
+        126,
+        252
+      ],
+      "selector_memory": 51,
+      "inner_step": 5
+    },
+    "CVX": {
+      "frequency": "daily",
+      "windows": [
+        63,
+        126,
+        252
+      ],
+      "selector_memory": 51,
+      "inner_step": 5
+    },
+    "BAC": {
+      "frequency": "daily",
+      "windows": [
+        63,
+        126,
+        252
+      ],
+      "selector_memory": 51,
+      "inner_step": 5
+    },
+    "CAT": {
+      "frequency": "daily",
+      "windows": [
+        63,
+        126,
+        252
+      ],
+      "selector_memory": 51,
+      "inner_step": 5
+    },
+    "HD": {
+      "frequency": "daily",
+      "windows": [
+        63,
+        126,
+        252
+      ],
+      "selector_memory": 51,
+      "inner_step": 5
+    },
+    "LTC-USD": {
+      "frequency": "daily",
+      "windows": [
+        63,
+        126,
+        252
+      ],
+      "selector_memory": 51,
+      "inner_step": 5
+    },
+    "XRP-USD": {
+      "frequency": "daily",
+      "windows": [
+        63,
+        126,
+        252
+      ],
+      "selector_memory": 51,
+      "inner_step": 5
+    }
+  },
+  "evaluation_fraction": 0.4,
+  "transform": "natural log of positive level/adjusted price",
+  "primary_fixed_comparator": "frozen_all_pre",
+  "secondary_fixed_comparator": "frozen_local_same_selector_memory",
+  "external_benchmark": "no_change",
+  "macro_vintage_warning": "GDPC1 and INDPRO are current-vintage FRED snapshots in this exploratory external-validation run. A paper-final macro result must be replicated with ALFRED real-time vintages to avoid revision look-ahead.",
+  "data_snapshot": {
+    "BAC": {
+      "label": "Bank of America",
+      "asset_class": "stock",
+      "source": "yahoo",
+      "frequency": "daily",
+      "snapshot_path": "data/external/real_world/snapshot/yahoo/BAC.csv",
+      "rows": 13515,
+      "first_date": "1973-02-21",
+      "last_date": "2026-09-29",
+      "sha256": "6a9b2958a53c645c5a47374b317ea27cff05500d29f7e17b57b02b006ad1175f",
+      "macro_vintage": null
+    },
+    "CAT": {
+      "label": "Caterpillar",
+      "asset_class": "stock",
+      "source": "yahoo",
+      "frequency": "daily",
+      "snapshot_path": "data/external/real_world/snapshot/yahoo/CAT.csv",
+      "rows": 16294,
+      "first_date": "1962-01-02",
+      "last_date": "2026-09-29",
+      "sha256": "8637048f1aa46752ed24b35fb1c1b2d77d4560a4ff15f7be25640f6af848739c",
+      "macro_vintage": null
+    },
+    "CVX": {
+      "label": "Chevron",
+      "asset_class": "stock",
+      "source": "yahoo",
+      "frequency": "daily",
+      "snapshot_path": "data/external/real_world/snapshot/yahoo/CVX.csv",
+      "rows": 16294,
+      "first_date": "1962-01-02",
+      "last_date": "2026-09-29",
+      "sha256": "848a4e795cee6a36fafa8a3a704a088e033a60a10d5a74ea19085da1d8305c33",
+      "macro_vintage": null
+    },
+    "HD": {
+      "label": "Home Depot",
+      "asset_class": "stock",
+      "source": "yahoo",
+      "frequency": "daily",
+      "snapshot_path": "data/external/real_world/snapshot/yahoo/HD.csv",
+      "rows": 11346,
+      "first_date": "1981-09-22",
+      "last_date": "2026-09-29",
+      "sha256": "ccefffe0ff062fd296ee536b7a9152b1ca04c1b336350445790bafd0018107a1",
+      "macro_vintage": null
+    },
+    "KO": {
+      "label": "Coca-Cola",
+      "asset_class": "stock",
+      "source": "yahoo",
+      "frequency": "daily",
+      "snapshot_path": "data/external/real_world/snapshot/yahoo/KO.csv",
+      "rows": 16294,
+      "first_date": "1962-01-02",
+      "last_date": "2026-09-29",
+      "sha256": "4fd32fea4ce9a38c21ac6665d548464d8e541f27216634af1d52ea45d9e111b4",
+      "macro_vintage": null
+    },
+    "LTC-USD": {
+      "label": "Litecoin / USD",
+      "asset_class": "crypto",
+      "source": "yahoo",
+      "frequency": "daily",
+      "snapshot_path": "data/external/real_world/snapshot/yahoo/LTC_USD.csv",
+      "rows": 4396,
+      "first_date": "2014-09-17",
+      "last_date": "2026-09-29",
+      "sha256": "4e588b64c19b568eb3f0a3a730bf3af4c4ef98246671abbde5d08be6195a5279",
+      "macro_vintage": null
+    },
+    "PG": {
+      "label": "Procter & Gamble",
+      "asset_class": "stock",
+      "source": "yahoo",
+      "frequency": "daily",
+      "snapshot_path": "data/external/real_world/snapshot/yahoo/PG.csv",
+      "rows": 16294,
+      "first_date": "1962-01-02",
+      "last_date": "2026-09-29",
+      "sha256": "9e76e7ffa89c4f3f0bf3a1fc0b887935dbbbb74ad29ad5d8588869eebfc7f9e1",
+      "macro_vintage": null
+    },
+    "VNQ": {
+      "label": "Vanguard Real Estate ETF",
+      "asset_class": "etf",
+      "source": "yahoo",
+      "frequency": "daily",
+      "snapshot_path": "data/external/real_world/snapshot/yahoo/VNQ.csv",
+      "rows": 5535,
+      "first_date": "2004-09-29",
+      "last_date": "2026-09-29",
+      "sha256": "989610857407b038173b9dc04514a534245ddd9aff6589e3cf8c375addfd8a29",
+      "macro_vintage": null
+    },
+    "VTI": {
+      "label": "Vanguard Total Stock Market ETF",
+      "asset_class": "etf",
+      "source": "yahoo",
+      "frequency": "daily",
+      "snapshot_path": "data/external/real_world/snapshot/yahoo/VTI.csv",
+      "rows": 6359,
+      "first_date": "2001-06-15",
+      "last_date": "2026-09-29",
+      "sha256": "e8b717072720e4fc212e5b0f8ddcaa9805cebbe31552678a829a554015c9db33",
+      "macro_vintage": null
+    },
+    "XLE": {
+      "label": "Energy Select Sector SPDR Fund",
+      "asset_class": "etf",
+      "source": "yahoo",
+      "frequency": "daily",
+      "snapshot_path": "data/external/real_world/snapshot/yahoo/XLE.csv",
+      "rows": 6984,
+      "first_date": "1998-12-22",
+      "last_date": "2026-09-29",
+      "sha256": "0c1749fa640f5bd52d19033d49146ad9b7887deb36d5b0187858d06e65068c06",
+      "macro_vintage": null
+    },
+    "XLF": {
+      "label": "Financial Select Sector SPDR Fund",
+      "asset_class": "etf",
+      "source": "yahoo",
+      "frequency": "daily",
+      "snapshot_path": "data/external/real_world/snapshot/yahoo/XLF.csv",
+      "rows": 6984,
+      "first_date": "1998-12-22",
+      "last_date": "2026-09-29",
+      "sha256": "7cce45ea3a415890e0a95f09ad0d8183ac7e2c7736a3246eeffc9ab3146d102f",
+      "macro_vintage": null
+    },
+    "XLK": {
+      "label": "Technology Select Sector SPDR Fund",
+      "asset_class": "etf",
+      "source": "yahoo",
+      "frequency": "daily",
+      "snapshot_path": "data/external/real_world/snapshot/yahoo/XLK.csv",
+      "rows": 6984,
+      "first_date": "1998-12-22",
+      "last_date": "2026-09-29",
+      "sha256": "420493bd90a1625df5451dacbdd8a6385c01678ee45bbf3914f0bef03c4c6a7a",
+      "macro_vintage": null
+    },
+    "XLV": {
+      "label": "Health Care Select Sector SPDR Fund",
+      "asset_class": "etf",
+      "source": "yahoo",
+      "frequency": "daily",
+      "snapshot_path": "data/external/real_world/snapshot/yahoo/XLV.csv",
+      "rows": 6984,
+      "first_date": "1998-12-22",
+      "last_date": "2026-09-29",
+      "sha256": "96c024015b784303497ffdcbdea158fc9ac7e6b574eb21135423d2e4a7c99ad0",
+      "macro_vintage": null
+    },
+    "XRP-USD": {
+      "label": "XRP / USD",
+      "asset_class": "crypto",
+      "source": "yahoo",
+      "frequency": "daily",
+      "snapshot_path": "data/external/real_world/snapshot/yahoo/XRP_USD.csv",
+      "rows": 3247,
+      "first_date": "2017-11-09",
+      "last_date": "2026-09-29",
+      "sha256": "cd1216debbaf269bd281002850fd147e9c0c072d03d301d154bd6f47c116931c",
+      "macro_vintage": null
+    }
+  },
+  "n_tasks": 42,
+  "n_forecast_blocks": 8247,
+  "elapsed_seconds": 131.18535139993764
+}

@@ -1,0 +1,99 @@
+{
+  "created_at_utc": "2026-09-29T21:26:34.328349+00:00",
+  "git_commit": "96fe7f3",
+  "experiment": "real_data_external_validation",
+  "panel": "replication",
+  "preset": "smoke",
+  "workers": 3,
+  "logical_cpus": 32,
+  "n_grid": 81,
+  "log_lambda_bounds": [
+    -18.0,
+    24.0
+  ],
+  "orders": [
+    1,
+    2,
+    3
+  ],
+  "scale_policy": "frequency-aware",
+  "series_design": {
+    "VTI": {
+      "frequency": "daily",
+      "windows": [
+        63,
+        126,
+        252
+      ],
+      "selector_memory": 51,
+      "inner_step": 5
+    },
+    "KO": {
+      "frequency": "daily",
+      "windows": [
+        63,
+        126,
+        252
+      ],
+      "selector_memory": 51,
+      "inner_step": 5
+    },
+    "LTC-USD": {
+      "frequency": "daily",
+      "windows": [
+        63,
+        126,
+        252
+      ],
+      "selector_memory": 51,
+      "inner_step": 5
+    }
+  },
+  "evaluation_fraction": 0.12,
+  "transform": "natural log of positive level/adjusted price",
+  "primary_fixed_comparator": "frozen_all_pre",
+  "secondary_fixed_comparator": "frozen_local_same_selector_memory",
+  "external_benchmark": "no_change",
+  "macro_vintage_warning": "GDPC1 and INDPRO are current-vintage FRED snapshots in this exploratory external-validation run. A paper-final macro result must be replicated with ALFRED real-time vintages to avoid revision look-ahead.",
+  "data_snapshot": {
+    "KO": {
+      "label": "Coca-Cola",
+      "asset_class": "stock",
+      "source": "yahoo",
+      "frequency": "daily",
+      "snapshot_path": "data/external/real_world/snapshot/yahoo/KO.csv",
+      "rows": 16294,
+      "first_date": "1962-01-02",
+      "last_date": "2026-09-29",
+      "sha256": "4fd32fea4ce9a38c21ac6665d548464d8e541f27216634af1d52ea45d9e111b4",
+      "macro_vintage": null
+    },
+    "LTC-USD": {
+      "label": "Litecoin / USD",
+      "asset_class": "crypto",
+      "source": "yahoo",
+      "frequency": "daily",
+      "snapshot_path": "data/external/real_world/snapshot/yahoo/LTC_USD.csv",
+      "rows": 4396,
+      "first_date": "2014-09-17",
+      "last_date": "2026-09-29",
+      "sha256": "4e588b64c19b568eb3f0a3a730bf3af4c4ef98246671abbde5d08be6195a5279",
+      "macro_vintage": null
+    },
+    "VTI": {
+      "label": "Vanguard Total Stock Market ETF",
+      "asset_class": "etf",
+      "source": "yahoo",
+      "frequency": "daily",
+      "snapshot_path": "data/external/real_world/snapshot/yahoo/VTI.csv",
+      "rows": 6359,
+      "first_date": "2001-06-15",
+      "last_date": "2026-09-29",
+      "sha256": "e8b717072720e4fc212e5b0f8ddcaa9805cebbe31552678a829a554015c9db33",
+      "macro_vintage": null
+    }
+  },
+  "n_tasks": 3,
+  "n_forecast_blocks": 55,
+  "elapsed_seconds": 3.957206999999471
+}

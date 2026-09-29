@@ -1,0 +1,4 @@
+asset_class,n_series,n_series_horizon_cells,median_adaptive_rmse_vs_frozen_all_pre,share_cells_adaptive_beats_frozen_all_pre,median_adaptive_relative_rmsfe_vs_no_change,share_cells_adaptive_beats_no_change
+crypto,1,1,0.9999999999999959,1.0,1.0000000086772305,0.0
+etf,1,1,1.0042639795158943,0.0,0.9988755882139199,1.0
+stock,1,1,1.0659786379781613,0.0,1.0641639777244019,0.0
