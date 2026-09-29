@@ -181,3 +181,19 @@ python experiments/forecast_optimal_smoothing/run_real_data_validation.py --pane
 The replication panel contains previously unused ETFs, stocks, and crypto and
 uses the already frozen daily frequency-aware policy without further tuning.
 
+## Large-universe financial robustness
+
+After the held-out replication, the method is frozen and the next stage
+increases breadth rather than tuning the same assets.
+
+~~~bash
+python experiments/forecast_optimal_smoothing/run_real_data_validation.py --panel large-robustness --preset paper --scale-policy frequency-aware --workers 32
+~~~
+
+This panel contains 64 new ETFs, stocks, and crypto assets. The `paper` preset
+uses an outer step of 5 for daily data, versus 20 in the exploratory runs.
+
+Keep the main discovery grid at 321 points. A later `--n-grid 1025` rerun is
+only a numerical root-discovery sensitivity because bracketed roots are refined
+continuously by Brent.
+
