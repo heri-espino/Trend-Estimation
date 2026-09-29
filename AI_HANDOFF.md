@@ -213,22 +213,20 @@ Next:
 
 1. treat the 1,000-seed `paper_mc_v1` run as the completed main controlled
    simulation;
-2. treat
-   `results/forecast_optimal_smoothing/20260929T091259Z_real-data-explore_cc46a3f/`
-   as the completed first real-data development screen; it is mostly negative
-   for adaptive-M20 relative to frozen-all-pre/no-change and must not be hidden;
+2. preserve both real-data development screens:
+   - observation-scale:
+     `20260929T091259Z_real-data-explore_cc46a3f`;
+   - frequency-aware:
+     `20260929T195226Z_real-data-explore-frequency-aware_2586ef0`;
 3. read
-   `notes/checkpoints/2026-09-29_real-data-exploratory-results.md` before
-   interpreting or changing the real-data protocol;
-4. next run the pre-documented frequency-aware scale sensitivity:
-   `python experiments/forecast_optimal_smoothing/run_real_data_validation.py --preset explore --scale-policy frequency-aware --workers 32`;
-5. `--scale-policy observation` reproduces the first screen exactly;
-   frequency-aware uses quarterly {12,24,48}, monthly {24,60,120}, daily
-   {63,126,252}, with selector memory spanning approximately L_max;
-6. do not call the frequency-aware pass a new final test: the first real panel
-   has already been inspected, so this is a development diagnostic. Once the
-   protocol is frozen, use a separate held-out replication panel for the final
-   financial external-validity claim;
+   `notes/checkpoints/2026-09-29_frequency-aware-real-data-results.md`;
+4. the frequency-aware policy materially improves transfer (44/49 cells improve)
+   but median adaptive/frozen-all-pre RMSFE remains >1 in every class; do not
+   tune the same development panel further;
+5. freeze frequency-aware windows/selector memory and use a separate held-out
+   replication panel for the final financial external-validity claim;
+6. do not run `--preset paper` on the inspected development panel as if it were
+   confirmatory;
 7. current-vintage GDPC1/INDPRO remains exploratory; implement ALFRED
    vintage-correct macro evaluation before paper-final macro claims;
 8. continue the high-priority literature novelty audit, especially
