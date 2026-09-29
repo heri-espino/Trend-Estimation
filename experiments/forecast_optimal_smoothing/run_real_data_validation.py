@@ -98,7 +98,82 @@ REPLICATION_SERIES: tuple[SeriesSpec, ...] = (
     SeriesSpec("XRP-USD", "XRP / USD", "crypto", "yahoo", "daily", (1, 7, 30), 20, 5, 5),
 )
 
-SERIES: tuple[SeriesSpec, ...] = DEVELOPMENT_SERIES + REPLICATION_SERIES
+
+LARGE_ROBUSTNESS_SERIES: tuple[SeriesSpec, ...] = (
+    # Equity ETFs: broad market, size/style, sectors, semiconductors, international.
+    SeriesSpec("IVV", "iShares Core S&P 500 ETF", "etf", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("SCHB", "Schwab US Broad Market ETF", "etf", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("ITOT", "iShares Core S&P Total US Stock Market ETF", "etf", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("VO", "Vanguard Mid-Cap ETF", "etf", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("VB", "Vanguard Small-Cap ETF", "etf", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("VUG", "Vanguard Growth ETF", "etf", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("VTV", "Vanguard Value ETF", "etf", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("IWF", "iShares Russell 1000 Growth ETF", "etf", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("IWD", "iShares Russell 1000 Value ETF", "etf", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("MDY", "SPDR S&P MidCap 400 ETF", "etf", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("IJH", "iShares Core S&P Mid-Cap ETF", "etf", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("IJR", "iShares Core S&P Small-Cap ETF", "etf", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("XLY", "Consumer Discretionary Select Sector SPDR Fund", "etf", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("XLP", "Consumer Staples Select Sector SPDR Fund", "etf", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("XLI", "Industrial Select Sector SPDR Fund", "etf", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("XLB", "Materials Select Sector SPDR Fund", "etf", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("XLU", "Utilities Select Sector SPDR Fund", "etf", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("SMH", "VanEck Semiconductor ETF", "etf", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("VEA", "Vanguard FTSE Developed Markets ETF", "etf", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("VWO", "Vanguard FTSE Emerging Markets ETF", "etf", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+
+    # Cross-sector US equities, all distinct from development and held-out panels.
+    SeriesSpec("AMZN", "Amazon", "stock", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("GOOGL", "Alphabet Class A", "stock", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("META", "Meta Platforms", "stock", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("NVDA", "NVIDIA", "stock", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("TSLA", "Tesla", "stock", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("ORCL", "Oracle", "stock", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("IBM", "IBM", "stock", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("CSCO", "Cisco", "stock", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("CRM", "Salesforce", "stock", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("ADBE", "Adobe", "stock", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("AVGO", "Broadcom", "stock", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("AMD", "Advanced Micro Devices", "stock", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("PEP", "PepsiCo", "stock", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("MCD", "McDonald's", "stock", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("NKE", "Nike", "stock", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("DIS", "Walt Disney", "stock", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("COST", "Costco", "stock", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("TGT", "Target", "stock", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("MRK", "Merck", "stock", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("PFE", "Pfizer", "stock", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("ABBV", "AbbVie", "stock", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("UNH", "UnitedHealth Group", "stock", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("LLY", "Eli Lilly", "stock", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("GS", "Goldman Sachs", "stock", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("MS", "Morgan Stanley", "stock", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("C", "Citigroup", "stock", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("BLK", "BlackRock", "stock", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("SLB", "SLB", "stock", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("COP", "ConocoPhillips", "stock", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("OXY", "Occidental Petroleum", "stock", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("BA", "Boeing", "stock", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("GE", "GE Aerospace", "stock", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("MMM", "3M", "stock", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("DE", "Deere", "stock", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("UPS", "UPS", "stock", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+    SeriesSpec("FDX", "FedEx", "stock", "yahoo", "daily", (1, 5, 20), 20, 5, 5),
+
+    # Additional liquid crypto assets.
+    SeriesSpec("SOL-USD", "Solana / USD", "crypto", "yahoo", "daily", (1, 7, 30), 20, 5, 5),
+    SeriesSpec("ADA-USD", "Cardano / USD", "crypto", "yahoo", "daily", (1, 7, 30), 20, 5, 5),
+    SeriesSpec("DOGE-USD", "Dogecoin / USD", "crypto", "yahoo", "daily", (1, 7, 30), 20, 5, 5),
+    SeriesSpec("BCH-USD", "Bitcoin Cash / USD", "crypto", "yahoo", "daily", (1, 7, 30), 20, 5, 5),
+    SeriesSpec("LINK-USD", "Chainlink / USD", "crypto", "yahoo", "daily", (1, 7, 30), 20, 5, 5),
+    SeriesSpec("XLM-USD", "Stellar / USD", "crypto", "yahoo", "daily", (1, 7, 30), 20, 5, 5),
+    SeriesSpec("AVAX-USD", "Avalanche / USD", "crypto", "yahoo", "daily", (1, 7, 30), 20, 5, 5),
+    SeriesSpec("DOT-USD", "Polkadot / USD", "crypto", "yahoo", "daily", (1, 7, 30), 20, 5, 5),
+)
+
+SERIES: tuple[SeriesSpec, ...] = (
+    DEVELOPMENT_SERIES + REPLICATION_SERIES + LARGE_ROBUSTNESS_SERIES
+)
 
 
 def parse_args() -> argparse.Namespace:
@@ -134,11 +209,12 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--panel",
-        choices=("development", "replication"),
+        choices=("development", "replication", "large-robustness"),
         default="development",
         help=(
             "Series panel. 'development' reproduces the inspected 16-series "
-            "screen; 'replication' uses a separate frozen financial panel."
+            "screen; 'replication' uses the pre-frozen held-out panel; "
+            "'large-robustness' is a broader post-replication robustness panel."
         ),
     )
     parser.add_argument(
@@ -339,21 +415,23 @@ def _ensure_snapshot(
 
 
 def _selected_specs(args: argparse.Namespace) -> tuple[SeriesSpec, ...]:
-    specs = (
-        DEVELOPMENT_SERIES
-        if args.panel == "development"
-        else REPLICATION_SERIES
-    )
+    if args.panel == "development":
+        specs = DEVELOPMENT_SERIES
+    elif args.panel == "replication":
+        specs = REPLICATION_SERIES
+    else:
+        specs = LARGE_ROBUSTNESS_SERIES
     if args.asset_classes:
         wanted = set(args.asset_classes)
         specs = tuple(spec for spec in specs if spec.asset_class in wanted)
 
     if args.preset == "smoke":
-        smoke_keys = (
-            {"GDPC1", "SPY", "BTC-USD"}
-            if args.panel == "development"
-            else {"VTI", "KO", "LTC-USD"}
-        )
+        if args.panel == "development":
+            smoke_keys = {"GDPC1", "SPY", "BTC-USD"}
+        elif args.panel == "replication":
+            smoke_keys = {"VTI", "KO", "LTC-USD"}
+        else:
+            smoke_keys = {"IVV", "AMZN", "SOL-USD"}
         specs = tuple(spec for spec in specs if spec.key in smoke_keys)
 
     if not specs:
