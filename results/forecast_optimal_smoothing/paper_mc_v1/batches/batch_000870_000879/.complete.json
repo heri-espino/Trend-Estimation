@@ -1,0 +1,13 @@
+{
+  "code_signature": "9ac62e8d6708bd2e74122e5dd54d6edfaa2295f62239f2c2709693b9792c286a",
+  "completed_at_utc": "2026-09-24T11:30:43.546213+00:00",
+  "design_hash": "c5b32d372d46e8f8ff7abbfb55b0aeb8ac290b89ba7e7802a6834b91d285c7fc",
+  "elapsed_seconds": 187.30727079999633,
+  "end_seed": 879,
+  "grid_sha256": "1ea9bbc1494b2e8d226993ecc0b1eb1111e4b0ebe7a4350312cc4d91b34f258a",
+  "n_configurations": 480,
+  "n_rows": 18720,
+  "n_seeds": 10,
+  "start_seed": 870,
+  "workers": 32
+}

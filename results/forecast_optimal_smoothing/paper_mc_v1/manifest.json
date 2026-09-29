@@ -1,0 +1,160 @@
+{
+  "code_signature": "9ac62e8d6708bd2e74122e5dd54d6edfaa2295f62239f2c2709693b9792c286a",
+  "created_at_utc": "2026-09-24T07:00:44.574221+00:00",
+  "created_git_commit": "79ea510",
+  "design": {
+    "adaptive_method": "adaptive_M20",
+    "experiment": "final_paper_scale_monte_carlo",
+    "external_benchmark": "no_change",
+    "horizons": [
+      1,
+      3,
+      6,
+      12
+    ],
+    "mechanism_parameters": {
+      "noise_scale": {
+        "high_to_low": {
+          "post_observation_noise_std": 0.25,
+          "post_phi": 0.0,
+          "post_slope_noise_std": 0.01,
+          "pre_observation_noise_std": 0.75,
+          "pre_phi": 0.0,
+          "pre_slope_noise_std": 0.01
+        },
+        "low_to_high": {
+          "post_observation_noise_std": 0.75,
+          "post_phi": 0.0,
+          "post_slope_noise_std": 0.01,
+          "pre_observation_noise_std": 0.25,
+          "pre_phi": 0.0,
+          "pre_slope_noise_std": 0.01
+        },
+        "stable_high": {
+          "post_observation_noise_std": 0.75,
+          "post_phi": 0.0,
+          "post_slope_noise_std": 0.01,
+          "pre_observation_noise_std": 0.75,
+          "pre_phi": 0.0,
+          "pre_slope_noise_std": 0.01
+        },
+        "stable_low": {
+          "post_observation_noise_std": 0.25,
+          "post_phi": 0.0,
+          "post_slope_noise_std": 0.01,
+          "pre_observation_noise_std": 0.25,
+          "pre_phi": 0.0,
+          "pre_slope_noise_std": 0.01
+        }
+      },
+      "persistence": {
+        "high_to_low": {
+          "post_observation_noise_std": 0.5,
+          "post_phi": 0.0,
+          "post_slope_noise_std": 0.01,
+          "pre_observation_noise_std": 0.5,
+          "pre_phi": 0.8,
+          "pre_slope_noise_std": 0.01
+        },
+        "low_to_high": {
+          "post_observation_noise_std": 0.5,
+          "post_phi": 0.8,
+          "post_slope_noise_std": 0.01,
+          "pre_observation_noise_std": 0.5,
+          "pre_phi": 0.0,
+          "pre_slope_noise_std": 0.01
+        },
+        "stable_high": {
+          "post_observation_noise_std": 0.5,
+          "post_phi": 0.8,
+          "post_slope_noise_std": 0.01,
+          "pre_observation_noise_std": 0.5,
+          "pre_phi": 0.8,
+          "pre_slope_noise_std": 0.01
+        },
+        "stable_low": {
+          "post_observation_noise_std": 0.5,
+          "post_phi": 0.0,
+          "post_slope_noise_std": 0.01,
+          "pre_observation_noise_std": 0.5,
+          "pre_phi": 0.0,
+          "pre_slope_noise_std": 0.01
+        }
+      },
+      "roughness": {
+        "high_to_low": {
+          "post_observation_noise_std": 0.5,
+          "post_phi": 0.0,
+          "post_slope_noise_std": 0.005,
+          "pre_observation_noise_std": 0.5,
+          "pre_phi": 0.0,
+          "pre_slope_noise_std": 0.02
+        },
+        "low_to_high": {
+          "post_observation_noise_std": 0.5,
+          "post_phi": 0.0,
+          "post_slope_noise_std": 0.02,
+          "pre_observation_noise_std": 0.5,
+          "pre_phi": 0.0,
+          "pre_slope_noise_std": 0.005
+        },
+        "stable_high": {
+          "post_observation_noise_std": 0.5,
+          "post_phi": 0.0,
+          "post_slope_noise_std": 0.02,
+          "pre_observation_noise_std": 0.5,
+          "pre_phi": 0.0,
+          "pre_slope_noise_std": 0.02
+        },
+        "stable_low": {
+          "post_observation_noise_std": 0.5,
+          "post_phi": 0.0,
+          "post_slope_noise_std": 0.005,
+          "pre_observation_noise_std": 0.5,
+          "pre_phi": 0.0,
+          "pre_slope_noise_std": 0.005
+        }
+      }
+    },
+    "mechanisms": [
+      "persistence",
+      "noise_scale",
+      "roughness"
+    ],
+    "paths": [
+      "stable_low",
+      "low_to_high",
+      "high_to_low",
+      "stable_high"
+    ],
+    "preset": "final",
+    "primary_fixed_comparator": "frozen_all_pre",
+    "secondary_fixed_comparator": "frozen_local_M20",
+    "settings": {
+      "inner_step": 3,
+      "log_lambda_bounds": [
+        -18.0,
+        24.0
+      ],
+      "n_grid": 321,
+      "n_obs": 300,
+      "orders": [
+        1,
+        2,
+        3
+      ],
+      "outer_initial_train": 120,
+      "outer_step": 3,
+      "regime_point": 180,
+      "selector_max_inner_origins": 20,
+      "windows": [
+        24,
+        48,
+        72
+      ]
+    },
+    "storage_batch_size": 10
+  },
+  "design_hash": "c5b32d372d46e8f8ff7abbfb55b0aeb8ac290b89ba7e7802a6834b91d285c7fc",
+  "run_id": "paper_mc_v1"
+}
