@@ -1,0 +1,71 @@
+{
+  "created_at_utc": "2026-09-29T09:08:03.846646+00:00",
+  "git_commit": "cc46a3f",
+  "experiment": "real_data_external_validation",
+  "preset": "smoke",
+  "workers": 3,
+  "logical_cpus": 32,
+  "n_grid": 81,
+  "log_lambda_bounds": [
+    -18.0,
+    24.0
+  ],
+  "orders": [
+    1,
+    2,
+    3
+  ],
+  "windows": [
+    24,
+    48,
+    72
+  ],
+  "selector_memory": 20,
+  "evaluation_fraction": 0.12,
+  "transform": "natural log of positive level/adjusted price",
+  "primary_fixed_comparator": "frozen_all_pre",
+  "secondary_fixed_comparator": "frozen_local_M20",
+  "external_benchmark": "no_change",
+  "macro_vintage_warning": "GDPC1 and INDPRO are current-vintage FRED snapshots in this exploratory external-validation run. A paper-final macro result must be replicated with ALFRED real-time vintages to avoid revision look-ahead.",
+  "data_cache": {
+    "BTC-USD": {
+      "label": "Bitcoin / USD",
+      "asset_class": "crypto",
+      "source": "yahoo",
+      "frequency": "daily",
+      "cache_path": "data/external/real_world/cache/yahoo/BTC_USD.csv",
+      "rows": 4396,
+      "first_date": "2014-09-17",
+      "last_date": "2026-09-29",
+      "sha256": "fe2fda971d2ae48f1c9c4c9712b3b5fceb1438523ec0bff201d732d489c6eae5",
+      "macro_vintage": null
+    },
+    "GDPC1": {
+      "label": "US real GDP",
+      "asset_class": "macro",
+      "source": "fred",
+      "frequency": "quarterly",
+      "cache_path": "data/external/real_world/cache/fred/GDPC1.csv",
+      "rows": 318,
+      "first_date": "1947-01-01",
+      "last_date": "2026-04-01",
+      "sha256": "c8335f46e0628add80cc33db3b92e32f516e4188f6bdeeb4fedcfdb6f782ae5f",
+      "macro_vintage": "current-vintage FRED snapshot; exploratory only until ALFRED vintage-correct replication"
+    },
+    "SPY": {
+      "label": "SPDR S&P 500 ETF",
+      "asset_class": "etf",
+      "source": "yahoo",
+      "frequency": "daily",
+      "cache_path": "data/external/real_world/cache/yahoo/SPY.csv",
+      "rows": 8473,
+      "first_date": "1993-01-29",
+      "last_date": "2026-09-28",
+      "sha256": "0fce5b558e6492f37d3e59190a57ba2f2aeaae37bc85d2679f75620cc52c9c10",
+      "macro_vintage": null
+    }
+  },
+  "n_tasks": 3,
+  "n_forecast_blocks": 36,
+  "elapsed_seconds": 1.3622254999354482
+}
