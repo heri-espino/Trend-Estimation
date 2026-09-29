@@ -31,7 +31,7 @@ import trend_estimation as td
 from run_adaptive_value import _block_metrics, _fit_frozen_forecast
 
 
-CACHE_ROOT = Path("data") / "external" / "real_world" / "cache"
+SNAPSHOT_ROOT = Path("data") / "external" / "real_world" / "snapshot"
 RESULT_ROOT = Path("results") / "forecast_optimal_smoothing"
 ORDERS = (1, 2, 3)
 WINDOWS = (24, 48, 72)
@@ -86,7 +86,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description=(
             "Real-data external validation for forecast-optimal trend adaptation. "
-            "Data are downloaded once into a local cache and reused by default."
+            "Data are downloaded once into a versioned snapshot and reused by default."
         )
     )
     parser.add_argument(
@@ -103,12 +103,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--refresh-data",
         action="store_true",
-        help="Replace local cached snapshots with newly downloaded data.",
+        help="Replace local versioned snapshots with newly downloaded data.",
     )
     parser.add_argument(
         "--download-only",
         action="store_true",
-        help="Populate/refresh the local cache, write the manifest, and stop.",
+        help="Populate/refresh the versioned snapshot, write the manifest, and stop.",
     )
     parser.add_argument(
         "--asset-classes",
@@ -152,8 +152,8 @@ def _safe_key(key: str) -> str:
     return key.replace("^", "INDEX_").replace("/", "_").replace("-", "_")
 
 
-def _cache_path(spec: SeriesSpec) -> Path:
-    return CACHE_ROOT / spec.source / f"{_safe_key(spec.key)}.csv"
+def _snapshot_path(spec: SeriesSpec) -> Path:
+    return SNAPSHOT_ROOT / spec.source / f"{_safe_key(spec.key)}.csv"
 
 
 def _sha256(path: Path) -> str:
@@ -224,24 +224,24 @@ def _download_yahoo(spec: SeriesSpec, path: Path) -> None:
     values.to_csv(path, index=False)
 
 
-def _read_cached(spec: SeriesSpec) -> pd.DataFrame:
-    path = _cache_path(spec)
+def _read_snapshot(spec: SeriesSpec) -> pd.DataFrame:
+    path = _snapshot_path(spec)
     frame = pd.read_csv(path, parse_dates=["date"])
     frame["value"] = pd.to_numeric(frame["value"], errors="coerce")
     frame = frame.dropna().sort_values("date").drop_duplicates("date")
     return frame
 
 
-def _ensure_cache(
+def _ensure_snapshot(
     specs: tuple[SeriesSpec, ...],
     *,
     refresh: bool,
 ) -> dict[str, dict]:
-    CACHE_ROOT.mkdir(parents=True, exist_ok=True)
+    SNAPSHOT_ROOT.mkdir(parents=True, exist_ok=True)
     manifest: dict[str, dict] = {}
 
     for i, spec in enumerate(specs, start=1):
-        path = _cache_path(spec)
+        path = _snapshot_path(spec)
         if path.exists() and not refresh:
             action = "cache"
         else:
@@ -257,7 +257,7 @@ def _ensure_cache(
             else:
                 raise ValueError(f"Unknown source: {spec.source}")
 
-        frame = _read_cached(spec)
+        frame = _read_snapshot(spec)
         print(
             f"[data {i}/{len(specs)}] {spec.key}: {action}; "
             f"{len(frame)} rows, {frame['date'].min().date()} -> "
@@ -269,7 +269,7 @@ def _ensure_cache(
             "asset_class": spec.asset_class,
             "source": spec.source,
             "frequency": spec.frequency,
-            "cache_path": str(path).replace("\\", "/"),
+            "snapshot_path": str(path).replace("\\", "/"),
             "rows": int(len(frame)),
             "first_date": str(frame["date"].min().date()),
             "last_date": str(frame["date"].max().date()),
@@ -282,7 +282,7 @@ def _ensure_cache(
             ),
         }
 
-    manifest_path = CACHE_ROOT / "cache_manifest.json"
+    manifest_path = SNAPSHOT_ROOT / "snapshot_manifest.json"
     with manifest_path.open("w", encoding="utf-8") as handle:
         json.dump(
             {
@@ -385,14 +385,14 @@ def _selection(
 def _evaluate_task(payload) -> list[dict]:
     (
         spec,
-        cache_path,
+        snapshot_path,
         horizon,
         preset,
         n_grid,
         evaluation_fraction,
     ) = payload
 
-    frame = pd.read_csv(cache_path, parse_dates=["date"])
+    frame = pd.read_csv(snapshot_path, parse_dates=["date"])
     frame = frame.dropna().sort_values("date").drop_duplicates("date")
     dates, y = _transform(frame)
 
@@ -613,14 +613,14 @@ def main() -> None:
         raise ValueError("evaluation-fraction must be between 0.05 and 0.60.")
 
     print(
-        "Data policy: use cache when present; network only for missing snapshots "
-        "or when --refresh-data is supplied.",
+        "Data policy: use the tracked snapshot when present; network only for "
+        "missing snapshot files or when --refresh-data is supplied.",
         flush=True,
     )
-    cache_manifest = _ensure_cache(specs, refresh=bool(args.refresh_data))
+    snapshot_manifest = _ensure_snapshot(specs, refresh=bool(args.refresh_data))
 
     if args.download_only:
-        print(f"Cache ready under {CACHE_ROOT}", flush=True)
+        print(f"Snapshot ready under {SNAPSHOT_ROOT}", flush=True)
         return
 
     payloads = []
@@ -632,7 +632,7 @@ def main() -> None:
             payloads.append(
                 (
                     spec,
-                    str(_cache_path(spec)),
+                    str(_snapshot_path(spec)),
                     int(horizon),
                     args.preset,
                     int(n_grid),
@@ -675,8 +675,8 @@ def main() -> None:
     class_summary.to_csv(run_dir / "real_data_class_summary.csv", index=False)
 
     selected_cache = {
-        key: cache_manifest[key]
-        for key in sorted(cache_manifest)
+        key: snapshot_manifest[key]
+        for key in sorted(snapshot_manifest)
     }
     metadata = {
         "created_at_utc": _utc_now(),
@@ -701,7 +701,7 @@ def main() -> None:
             "must be replicated with ALFRED real-time vintages to avoid revision "
             "look-ahead."
         ),
-        "data_cache": selected_cache,
+        "data_snapshot": selected_cache,
         "n_tasks": len(payloads),
         "n_forecast_blocks": int(len(frame)),
         "elapsed_seconds": float(elapsed),
