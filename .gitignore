@@ -43,9 +43,6 @@ paper_*/build/
 # Regenerable experiment outputs
 experiments/forecast_optimal_smoothing/outputs/
 
-# Large/non-reviewable research artifacts; lightweight CSV/JSON results are tracked
-results/forecast_optimal_smoothing/**/*.pkl
-results/forecast_optimal_smoothing/**/*.pickle
-results/forecast_optimal_smoothing/**/*.npz
-results/forecast_optimal_smoothing/**/*.npy
-results/forecast_optimal_smoothing/**/*.joblib
+# Research results are intentionally not ignored by extension. If an artifact
+# becomes genuinely large, preserve it with Git LFS rather than hiding it from
+# version control.
