@@ -35,9 +35,10 @@ docs/_build/
 *.toc
 paper_*/build/
 
-# Local literature corpus
-literature/pdfs/
-literature/extracted/
+# Literature corpus
+# Original PDFs and extracted text are intentionally versioned in Git for the
+# active research archive. Do not add ignore rules for literature/pdfs/ or
+# literature/extracted/.
 
 # Regenerable experiment outputs
 experiments/forecast_optimal_smoothing/outputs/
