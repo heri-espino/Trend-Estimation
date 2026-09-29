@@ -103,7 +103,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--refresh-data",
         action="store_true",
-        help="Replace local versioned snapshots with newly downloaded data.",
+        help=(
+            "Replace tracked snapshot files with newly downloaded data. "
+            "Review and commit the resulting data diff deliberately."
+        ),
     )
     parser.add_argument(
         "--download-only",
@@ -193,7 +196,7 @@ def _download_yahoo(spec: SeriesSpec, path: Path) -> None:
         import yfinance as yf
     except ImportError as exc:
         raise RuntimeError(
-            "Market/crypto cache is missing and yfinance is not installed. "
+            "Market/crypto snapshot is missing and yfinance is not installed. "
             'Run: pip install -e ".[finance]"'
         ) from exc
 
@@ -243,7 +246,7 @@ def _ensure_snapshot(
     for i, spec in enumerate(specs, start=1):
         path = _snapshot_path(spec)
         if path.exists() and not refresh:
-            action = "cache"
+            action = "snapshot"
         else:
             action = "download"
             print(
@@ -674,7 +677,7 @@ def main() -> None:
     summary.to_csv(run_dir / "real_data_summary.csv", index=False)
     class_summary.to_csv(run_dir / "real_data_class_summary.csv", index=False)
 
-    selected_cache = {
+    selected_snapshot = {
         key: snapshot_manifest[key]
         for key in sorted(snapshot_manifest)
     }
@@ -701,7 +704,7 @@ def main() -> None:
             "must be replicated with ALFRED real-time vintages to avoid revision "
             "look-ahead."
         ),
-        "data_snapshot": selected_cache,
+        "data_snapshot": selected_snapshot,
         "n_tasks": len(payloads),
         "n_forecast_blocks": int(len(frame)),
         "elapsed_seconds": float(elapsed),
