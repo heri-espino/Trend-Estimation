@@ -213,21 +213,25 @@ Next:
 
 1. treat the 1,000-seed `paper_mc_v1` run as the completed main controlled
    simulation;
-2. run the cached real-data smoke test after installing the finance extra:
-   `python experiments/forecast_optimal_smoothing/run_real_data_validation.py --preset smoke --workers 3`;
-3. if smoke passes, run the full exploratory external-validation screen:
-   `python experiments/forecast_optimal_smoothing/run_real_data_validation.py --preset explore --workers 32`;
-4. the script downloads missing FRED/Yahoo series once into
-   `data/external/real_world/snapshot/`; these small CSV files are tracked in
-   ordinary Git (not LFS), so commit and push them after the first download;
-   later invocations reuse them without network requests; do not pass
-   `--refresh-data` unless intentionally changing the snapshot;
-5. current-vintage GDPC1/INDPRO output is exploratory only; implement ALFRED
+2. treat
+   `results/forecast_optimal_smoothing/20260929T091259Z_real-data-explore_cc46a3f/`
+   as the completed first real-data development screen; it is mostly negative
+   for adaptive-M20 relative to frozen-all-pre/no-change and must not be hidden;
+3. read
+   `notes/checkpoints/2026-09-29_real-data-exploratory-results.md` before
+   interpreting or changing the real-data protocol;
+4. next run the pre-documented frequency-aware scale sensitivity:
+   `python experiments/forecast_optimal_smoothing/run_real_data_validation.py --preset explore --scale-policy frequency-aware --workers 32`;
+5. `--scale-policy observation` reproduces the first screen exactly;
+   frequency-aware uses quarterly {12,24,48}, monthly {24,60,120}, daily
+   {63,126,252}, with selector memory spanning approximately L_max;
+6. do not call the frequency-aware pass a new final test: the first real panel
+   has already been inspected, so this is a development diagnostic. Once the
+   protocol is frozen, use a separate held-out replication panel for the final
+   financial external-validity claim;
+7. current-vintage GDPC1/INDPRO remains exploratory; implement ALFRED
    vintage-correct macro evaluation before paper-final macro claims;
-6. after the exploratory real-data results are pushed, inspect adaptive vs
-   frozen-all-pre and no-change by class/series/horizon, then decide whether the
-   denser `--preset paper` pass is warranted;
-7. in parallel, complete the high-priority literature novelty audit, especially
+8. continue the high-priority literature novelty audit, especially
    Guerrero/Cortés-Toto/Reyes (2018).
 
 ## Canonical internal notes
