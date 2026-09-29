@@ -160,3 +160,24 @@ The exploratory FRED macro block uses current-vintage data and must not be
 treated as a paper-final real-time macro backtest; ALFRED vintage-correct
 replication is required before final macro claims.
 
+## Held-out financial replication
+
+After the development-panel observation-scale and frequency-aware screens, do
+not tune those same series further. A separate financial replication panel is
+frozen in `notes/experiments/11_held-out-financial-replication.md`.
+
+Smoke:
+
+~~~bash
+python experiments/forecast_optimal_smoothing/run_real_data_validation.py --panel replication --preset smoke --scale-policy frequency-aware --workers 3
+~~~
+
+Full replication:
+
+~~~bash
+python experiments/forecast_optimal_smoothing/run_real_data_validation.py --panel replication --preset explore --scale-policy frequency-aware --workers 32
+~~~
+
+The replication panel contains previously unused ETFs, stocks, and crypto and
+uses the already frozen daily frequency-aware policy without further tuning.
+
