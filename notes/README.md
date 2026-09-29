@@ -66,3 +66,4 @@ When a result graduates into the public API, keep the note and update its librar
 - `checkpoints/2026-09-23_noise-scale-adaptation-results.md` — observation-noise scale is a second regime mechanism; configuration tracking is clear but forecast value is strongly directional.
 - `checkpoints/2026-09-23_roughness-adaptation-results.md` — latent roughness is a third regime mechanism; frozen-pre can be fragile under high roughness, motivating a stronger fixed baseline.
 - `checkpoints/2026-09-23_fixed-baseline-stress-results.md` — frozen-all-pre stabilizes the fixed comparator and becomes the primary nonadaptive baseline.
+- `checkpoints/2026-09-29_final-1000-seed-monte-carlo-results.md` — final paper-scale simulation results, Monte Carlo convergence, validity boundaries, and the 3,000-seed decision.
