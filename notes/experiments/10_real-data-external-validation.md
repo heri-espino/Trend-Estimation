@@ -194,3 +194,44 @@ Theta^star_{T,h}=G(h,X_T,mathcal C).
 - A failure in stocks/crypto is scientifically informative and can define a
   boundary of usefulness.
 - Current-vintage GDP/INDPRO results are exploratory until ALFRED replication.
+
+## Post-screen scale diagnostic
+
+The first completed exploratory screen used the literal simulation-scale
+candidate set `L={24,48,72}` and `M=20` for every frequency. That run is
+preserved and documented in
+`notes/checkpoints/2026-09-29_real-data-exploratory-results.md`.
+
+Because the calendar meaning of an observation differs sharply across
+quarterly, monthly, and daily data, the runner now supports two explicit
+policies:
+
+### `--scale-policy observation`
+
+Reproduces the first screen:
+
+- windows: 24, 48, 72 observations;
+- selector memory: M=20.
+
+### `--scale-policy frequency-aware`
+
+Pre-documented scale sensitivity:
+
+- quarterly: windows 12, 24, 48;
+- monthly: windows 24, 60, 120;
+- daily: windows 63, 126, 252;
+- selector memory:
+  `max(20, ceil(L_max / inner_step))`.
+
+Thus the selector-history span is approximately one longest candidate
+estimation window rather than a fixed number of validation origins.
+
+This is a diagnostic of scale transfer, not a post-hoc search over arbitrary
+grids. The negative observation-scale result remains part of the evidence.
+
+Run:
+
+~~~bash
+python experiments/forecast_optimal_smoothing/run_real_data_validation.py --preset explore --scale-policy frequency-aware --workers 32
+~~~
+
