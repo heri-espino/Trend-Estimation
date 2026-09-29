@@ -213,43 +213,50 @@ real-data design.
 Full checkpoint:
 `notes/checkpoints/2026-09-29_real-data-exploratory-results.md`.
 
-## 6. Current next experiment
+## 6. Frequency-aware real-data sensitivity
 
-The next run is a **pre-documented frequency-aware scale sensitivity**, not a
-search until the method wins.
+The pre-documented frequency-aware sensitivity is complete.
 
 Policy:
 
-- quarterly GDP windows: {12,24,48};
-- monthly INDPRO windows: {24,60,120};
-- daily ETF/stock/crypto windows: {63,126,252};
-- selector memory:
-  `max(20, ceil(L_max / inner_step))`.
+- quarterly GDP windows: {12,24,48}, M=48;
+- monthly INDPRO windows: {24,60,120}, M=120;
+- daily ETF/stock/crypto windows: {63,126,252}, M=51.
 
-Command:
+Relative to the first observation-scale screen, 44/49 series-horizon cells
+improved. Class-level median adaptive/frozen-all-pre RMSFE moved from
+1.357->1.068 (macro), 1.108->1.050 (ETF), 1.122->1.022 (stock), and
+1.100->1.003 (crypto).
 
-```bash
-python experiments/forecast_optimal_smoothing/run_real_data_validation.py --preset explore --scale-policy frequency-aware --workers 32
-```
+The correction therefore mattered substantially, but median adaptive performance
+remains worse than frozen-all-pre in every class. The result is a boundary, not
+a broad real-data win.
 
-The already inspected first panel means this is development work. Once the
-real-data protocol is frozen, a separate held-out replication panel should be
-used for the final financial external-validity claim.
+In market series, frozen-all-pre is effectively no-change: all stock and crypto
+cells are within 1% of the no-change benchmark. Adaptive selection uses d=1 at
+about 89% of ETF, 96% of stock, and 98% of crypto OOS origins. This supports the
+interpretation that strong historical validation often prefers a conservative,
+nearly constant price-level continuation, while local re-selection can
+overreact.
+
+Full checkpoint:
+`notes/checkpoints/2026-09-29_frequency-aware-real-data-results.md`.
 
 ## 7. Remaining work before a final manuscript claim
 
 High priority:
 
-1. run and interpret the frequency-aware real-data sensitivity;
-2. freeze the real-data protocol after that diagnostic;
-3. design a held-out replication panel for final financial validation;
-4. replace current-vintage GDP/INDPRO evidence with ALFRED vintage-correct
+1. freeze the frequency-aware policy as the development-selected real-data
+   protocol; do not tune further on the same panel;
+2. define and run a separate held-out replication panel for the final financial
+   external-validity claim;
+3. replace current-vintage GDP/INDPRO evidence with ALFRED vintage-correct
    macro backtests;
-5. complete the high-priority literature novelty audit, especially
+4. complete the high-priority literature novelty audit, especially
    Guerrero/Cortés-Toto/Reyes (2018);
-6. generate final simulation and real-data tables/figures;
-7. add predictive-accuracy inference where appropriate;
-8. finish the active manuscript.
+5. generate final simulation and real-data tables/figures;
+6. add predictive-accuracy inference where appropriate;
+7. finish the active manuscript.
 
 ## 8. Guardrails
 
