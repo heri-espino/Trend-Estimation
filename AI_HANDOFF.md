@@ -56,6 +56,12 @@ Do not add ad-hoc Markdown files under `docs/`.
 `notes/` is the internal scientific notebook for derivations, checkpoints,
 research decisions, and the active roadmap.
 
+`literature/pdfs/` and `literature/extracted/` are intentionally versioned
+in Git. The maintainer wants the original PDFs used by the project, together
+with extracted text, preserved in the repository while the paper is active.
+Do not add ignore rules for these directories or delete their contents as
+"local-only" artifacts.
+
 When a public function or class changes, update its docstring and Sphinx API
 page. When a mathematical result changes, update the relevant note first.
 
