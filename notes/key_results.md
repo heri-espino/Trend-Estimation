@@ -500,6 +500,39 @@ negative result remains preserved.
 Full checkpoint:
 `notes/checkpoints/2026-09-29_real-data-exploratory-results.md`.
 
-**Status:** first external-transfer screen completed; frequency-aware diagnostic
-pending.
+**Status:** first external-transfer screen completed and preserved.
+
+## 16. Frequency-aware external-validity boundary
+
+The pre-documented frequency-aware scale policy uses class-appropriate
+estimator windows and selector memory:
+
+[
+L_{m quarterly}in{12,24,48},quad
+L_{m monthly}in{24,60,120},quad
+L_{m daily}in{63,126,252}.
+]
+
+Compared with the literal observation-scale transfer, 44 of 49
+series/horizon cells improve. Median adaptive/frozen-all-pre RMSFE becomes:
+
+- macro: 1.068;
+- ETFs: 1.050;
+- stocks: 1.022;
+- crypto: 1.003.
+
+Thus class-aware time scale materially improves transfer, but the median
+adaptive method still does not beat the strong fixed comparator in any class.
+
+For stocks and crypto, frozen-all-pre is essentially no-change: every studied
+cell is within 1% of the no-change benchmark. Adaptive choices overwhelmingly
+use d=1 in market data, so the empirical boundary is consistent with the pure
+model approaching a constant price-level forecast when first-difference
+continuation is combined with very low smoothing.
+
+**Status:** development-panel protocol frozen; confirmatory financial evidence
+requires a held-out replication panel.
+
+Full checkpoint:
+`notes/checkpoints/2026-09-29_frequency-aware-real-data-results.md`.
 
