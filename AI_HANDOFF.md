@@ -212,23 +212,23 @@ Implemented:
 Next:
 
 1. controlled simulation is complete at 1,000 seeds;
-2. both development-panel real-data screens are complete and preserved:
-   observation-scale and frequency-aware;
-3. read
-   `notes/checkpoints/2026-09-29_frequency-aware-real-data-results.md`;
-4. frequency-aware scaling improves 44/49 development cells but does not give
-   broad adaptive superiority; do not tune that panel further;
-5. the next confirmatory financial experiment is the frozen held-out panel in
-   `notes/experiments/11_held-out-financial-replication.md`;
-6. smoke it with:
-   `python experiments/forecast_optimal_smoothing/run_real_data_validation.py --panel replication --preset smoke --scale-policy frequency-aware --workers 3`;
-7. if smoke passes, run:
-   `python experiments/forecast_optimal_smoothing/run_real_data_validation.py --panel replication --preset explore --scale-policy frequency-aware --workers 32`;
-8. do not change the frequency-aware daily windows {63,126,252}, M=51, or
-   horizons after inspecting replication outcomes;
+2. development real-data screens are complete: observation-scale and
+   frequency-aware;
+3. the pre-frozen held-out financial replication is complete and confirms the
+   external boundary; read
+   `notes/checkpoints/2026-09-29_held-out-financial-replication-results.md`;
+4. do not tune the development or held-out replication panels further;
+5. the next run is the 64-series large-universe robustness panel frozen in
+   `notes/experiments/12_large-universe-financial-robustness.md`;
+6. run:
+   `python experiments/forecast_optimal_smoothing/run_real_data_validation.py --panel large-robustness --preset paper --scale-policy frequency-aware --workers 32`;
+7. this uses the unchanged daily method {63,126,252}, M=51, but evaluates OOS
+   origins every 5 observations and adds 64 entirely new series;
+8. keep n_grid=321 for the main run. A 1025-point rerun is optional only as a
+   numerical bracket-discovery sensitivity, not as model tuning;
 9. macro remains separate: implement ALFRED vintage-correct GDP/INDPRO before
    paper-final macro claims;
-10. continue the high-priority literature novelty audit, especially
+10. continue the literature novelty audit, especially
     Guerrero/Córtes-Toto/Reyes (2018).
 
 ## Canonical internal notes
