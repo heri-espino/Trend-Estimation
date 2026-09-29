@@ -221,8 +221,8 @@ eqTheta^star_{m forecast})?
 
 ## Phase 6 — Real-data external validation
 
-**Status:** first exploratory observation-scale run completed; frequency-aware
-scale sensitivity is the next diagnostic.
+**Status:** observation-scale and frequency-aware development screens complete;
+frequency-aware protocol frozen for held-out replication.
 
 The unified external-validation protocol is documented in
 `notes/experiments/10_real-data-external-validation.md`.
@@ -239,10 +239,15 @@ observation-scale transfer (L={24,48,72}, M=20 for all frequencies) was mostly
 negative relative to frozen-all-pre and no-change. That result is preserved in
 `notes/checkpoints/2026-09-29_real-data-exploratory-results.md`.
 
-The next diagnostic uses frequency-aware candidate scales rather than identical
-observation counts across quarterly/monthly/daily classes. Current-vintage FRED
-macro results remain exploratory; paper-final GDP/industrial-production
-evidence must be repeated with ALFRED real-time vintages.
+The frequency-aware diagnostic improved 44/49 cells relative to the first
+screen and reduced the class medians substantially, but adaptive remains worse
+than frozen-all-pre on the median in all four classes. Do not tune this panel
+further. Freeze the frequency-aware policy and move to a separate held-out
+replication panel.
+
+Current-vintage FRED macro results remain exploratory; paper-final
+GDP/industrial-production evidence must be repeated with ALFRED real-time
+vintages.
 
 **Why:** simulation identifies mechanisms under controlled DGPs; this phase
 tests whether adaptive ((d,L,S)) has useful external validity across observed
