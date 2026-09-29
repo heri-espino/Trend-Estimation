@@ -205,20 +205,21 @@ Implemented:
 
 Next:
 
-1. pull the latest repo and smoke-test the resumable final runner:
-   `python experiments/forecast_optimal_smoothing/run_final_paper_simulation.py --preset smoke --workers 4`;
-2. run the main simulation with:
-   `python experiments/forecast_optimal_smoothing/run_final_paper_simulation.py --preset final --seeds 1000 --batch-size 10 --workers 32 --run-id paper_mc_v1`;
-3. the runner persists every completed 10-seed batch under
-   `results/forecast_optimal_smoothing/paper_mc_v1/batches/`; re-running the
-   exact command automatically skips completed batches and repeats only any
-   incomplete batch;
-4. after 1,000 seeds, inspect Monte Carlo convergence outputs at 100, 300, 500,
-   and 1,000 seeds;
-5. if additional precision is useful, extend the same run to 3,000 seeds by
-   changing only `--seeds 3000`; do not change run-id or batch size;
-6. then analyze final simulation results, continue the literature audit, and
-   move to macroeconomic data.
+1. treat the 1,000-seed `paper_mc_v1` run as the completed main controlled
+   simulation; all 100 batches (seeds 0--999) are complete;
+2. read
+   `notes/checkpoints/2026-09-29_final-1000-seed-monte-carlo-results.md`
+   before changing the scientific story;
+3. do not claim universal adaptive superiority: the final result is explicitly
+   mechanism-, direction-, and horizon-dependent;
+4. 3,000 seeds are optional only for tighter Monte Carlo precision of the
+   heavy-tailed smooth-to-rough roughness effect; they are not required to
+   establish the main conclusion;
+5. next high-priority scientific task: complete the literature novelty audit,
+   especially Guerrero/Cortés-Toto/Reyes (2018) on autocorrelation and
+   penalized-trend smoothness;
+6. after the literature position is secured, generate the final simulation
+   tables/figures and proceed to macroeconomic external evidence.
 
 ## Canonical internal notes
 
