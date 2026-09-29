@@ -239,6 +239,7 @@ Next:
 Read before changing research logic:
 
 - `notes/research_objective.md` — first scientific source of truth;
+- `notes/current_state.md` — chronological status, interpretations, and next actions;
 - `notes/key_results.md`
 - `notes/derivative.md`
 - `notes/numerical_selection.md`
