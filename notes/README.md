@@ -23,6 +23,7 @@ Every note describing a mathematical result should include:
   objective, full adaptive object ((d,L,S)), experiment hierarchy, scope, and
   anti-drift rules.
 - `key_results.md` — compact canonical result sheet.
+- `current_state.md` — chronological status: what we did, what the results mean, and what comes next.
 - `derivative.md` — forecast-loss derivatives for the pure penalized trend.
 - `numerical_selection.md` — stationary-point search in log-\(\lambda\).
 - `model_definitions.md` — exact estimator definitions and Guerrero-model audit.
@@ -68,3 +69,4 @@ When a result graduates into the public API, keep the note and update its librar
 - `checkpoints/2026-09-23_roughness-adaptation-results.md` — latent roughness is a third regime mechanism; frozen-pre can be fragile under high roughness, motivating a stronger fixed baseline.
 - `checkpoints/2026-09-23_fixed-baseline-stress-results.md` — frozen-all-pre stabilizes the fixed comparator and becomes the primary nonadaptive baseline.
 - `checkpoints/2026-09-29_final-1000-seed-monte-carlo-results.md` — final paper-scale simulation results, Monte Carlo convergence, validity boundaries, and the 3,000-seed decision.
+- `checkpoints/2026-09-29_real-data-exploratory-results.md` — first observed-data screen, negative transfer result, selector-turnover diagnostic, and frequency-scale issue.
