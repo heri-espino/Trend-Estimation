@@ -118,3 +118,37 @@ python experiments/forecast_optimal_smoothing/run_persistence_mechanism.py --pre
 The exploration uses 30 seeds, nine AR(1) coefficients (including negative
 values), and five forecast horizons. Results are versioned automatically under
 `results/forecast_optimal_smoothing/`.
+
+## Real-data external validation
+
+After the controlled 1,000-seed Monte Carlo, the next stage applies the same
+adaptive forecasting object to observed macroeconomic, ETF, stock, and crypto
+series.
+
+Install the optional market-data dependency:
+
+~~~bash
+pip install -e ".[finance]"
+~~~
+
+Smoke test:
+
+~~~bash
+python experiments/forecast_optimal_smoothing/run_real_data_validation.py --preset smoke --workers 3
+~~~
+
+Full exploratory screen:
+
+~~~bash
+python experiments/forecast_optimal_smoothing/run_real_data_validation.py --preset explore --workers 32
+~~~
+
+The runner downloads only missing inputs into
+`data/external/real_world/cache/`. Re-running the command reuses the local
+snapshot without new requests. Use `--refresh-data` only to intentionally
+replace that snapshot.
+
+The exploratory FRED macro block uses current-vintage data and must not be
+treated as a paper-final real-time macro backtest; ALFRED vintage-correct
+replication is required before final macro claims.
+
