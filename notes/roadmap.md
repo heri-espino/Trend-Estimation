@@ -219,19 +219,35 @@ eqTheta^star_{m forecast})?
 - When does root-based lambda selection agree with or improve on grid/Newton
   methods?
 
-## Phase 6 — Macroeconomic data
+## Phase 6 — Real-data external validation
 
-**Status:** planned.
+**Status:** runner implemented; exploratory cached-data run next.
 
-Start with lower-frequency economic series such as real GDP and industrial production. Use the same estimator/selection machinery as later financial series.
+The unified external-validation protocol is documented in
+`notes/experiments/10_real-data-external-validation.md`.
 
-**Why:** provides a clear low-frequency trend setting and anchors the work in classical filtering literature.
+Initial frozen universe:
 
-## Phase 7 — Market index / ETF and equity data
+- macro: GDPC1 and INDPRO;
+- broad ETFs: SPY, QQQ, IWM, DIA, EFA, EEM;
+- stock robustness panel: AAPL, MSFT, JPM, XOM, JNJ, WMT;
+- crypto stress test: BTC-USD and ETH-USD.
 
-**Status:** new protocol not yet run. Historical S&P 500 draft assets were removed from `main` during repository cleanup and remain available through Git history.
+The runner downloads missing data once into a local ignored cache and reuses the
+same snapshot on later runs. Current-vintage FRED macro results are exploratory;
+paper-final GDP/industrial-production evidence must be repeated with
+ALFRED real-time vintages.
 
-Use broad index/ETF series and selected equities across different empirical conditions.
+**Why:** simulation identifies mechanisms under controlled DGPs; this phase
+tests whether adaptive ((d,L,S)) has useful external validity across observed
+series classes.
+
+## Phase 7 — Market index / ETF and equity interpretation
+
+**Status:** incorporated into the unified real-data protocol; results pending.
+
+Use broad index/ETF series as the primary financial application and the frozen
+six-stock panel as cross-sectional robustness.
 
 Minimum financial benchmark:
 
@@ -243,11 +259,14 @@ Do not interpret low level-price RMSE alone as evidence of exploitable predictab
 
 ## Phase 8 — Crypto
 
-**Status:** planned.
+**Status:** incorporated as the BTC/ETH stress-test block of the unified
+external-validation run.
 
-Start with BTC and ETH. Add further assets only if they contribute distinct regimes or structure.
+Do not expand the crypto universe unless the initial result reveals a concrete
+scientific reason to do so.
 
-**Why:** crypto is not simply "equity with larger variance"; its dependence and regime behavior may differ.
+**Why:** crypto is not simply "equity with larger variance"; its dependence and
+regime behavior may differ.
 
 ## Phase 9 — Regime relation
 
