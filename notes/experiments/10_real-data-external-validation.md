@@ -2,7 +2,7 @@
 
 Date designed: 2026-09-29
 
-Status: **implementation ready; exploratory run next**
+Status: **first observation-scale screen complete; frequency-aware sensitivity next**
 
 ## Purpose
 
