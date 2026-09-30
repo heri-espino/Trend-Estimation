@@ -72,3 +72,80 @@ Two quick-run cases that were missed on the Windows run were added as regression
 The first quick run should **not** be used as a final performance table because it was generated before this numerical correction. It served its intended purpose: identify a failure mode before paper-scale experiments.
 
 The next experiment is a complete repeat of --preset quick on the Windows machine after pulling the canonicalization change. We will compare the new result against this diagnostic run and only then decide whether explicit upper-boundary tail refinement is necessary.
+
+
+## 2026-09-30 — Adversarial benchmark and post-nullspace quick rerun
+
+The post-nullspace quick rerun again covered 216 forecast-validation surfaces.
+Compared with the 2001-point dense reference:
+
+- 211/216 surfaces matched every dense interior minimum;
+- 5 interior minima were missed, one in each of 5 surfaces;
+- mean adaptive evaluations were 64.01 versus 2001 dense evaluations
+  (3.20% of the dense evaluation count);
+- median absolute error in the selected smoothness was approximately
+  (8.54\times10^{-5});
+- the largest selected-(S) discrepancy was 0.01869.
+
+Three of the five missed local minima had negligible effect on the selected
+objective. Two were materially relevant and both occurred in the upper tail
+with persistent noise and horizon (h=20):
+
+[
+(	ext{seed},d,L,h)=(2,3,126,20)
+]
+
+had dense (S^starapprox0.996), adaptive
+(S^starapprox0.97731), and objective regret approximately 0.11654; and
+
+[
+(2,4,126,20)
+]
+
+had dense (S^starapprox0.997), adaptive
+(S^starapprox0.98576), and objective regret approximately 0.04366.
+
+These failures are not the earlier nullspace/LAPACK problem. They reveal a
+search-design issue: several derivative roots can be compressed into the last
+coarse interval of the normalized domain near (S=1).
+
+### Adversarial analytic benchmark
+
+The adversarial quick benchmark evaluated 9 known analytic objective shapes
+over
+
+[
+Nin{63,252},qquad din{1,2,3,4}.
+]
+
+For the proposed adaptive-(S) search:
+
+- every known local minimum, flat minimum, and boundary optimum was recovered;
+- the 8 deliberately constructed stationary inflections were not recovered;
+- mean evaluations per case were 52.38.
+
+The uniform log-(lambda) stationary search required 273.21 mean
+evaluations and missed 7 members of the deliberately close two-minimum case,
+in addition to the stationary-inflection targets. The dense reference used
+5001 evaluations per case.
+
+The stationary-inflection result is not currently treated as an optimization
+failure: such points are neither local minima nor candidate smoothness values.
+The manuscript should therefore claim recovery of relevant minima, not
+certified recovery of every stationary root of an arbitrary smooth function.
+
+### Endpoint-aware correction
+
+A regression test was added for the two materially missed synthetic surfaces.
+It fails under the previous search.
+
+The search now augments its uniform initial partition with a deterministic
+dyadic skeleton inside the two boundary cells. The motivation is structural:
+the normalized (S) parametrization compactifies the unbounded
+(lambda)-domain, so multiple objective features can be compressed close to
+(S=1). Six endpoint-refinement levels are now the default and are recorded
+in benchmark metadata.
+
+The new regression test passes on CI. The complete adversarial and synthetic
+quick benchmarks must now be rerun once more. Those reruns, rather than the
+results above, will determine whether the numerical defaults can be frozen.
