@@ -1,0 +1,98 @@
+{
+  "created_at_utc": "2026-09-30T21:31:08.151494+00:00",
+  "git_commit": "b40b192",
+  "suite": "financial_geometry_stress",
+  "preset": "paper",
+  "data_policy": "tracked_snapshot_only",
+  "transform": "natural_log_price",
+  "endpoint_policy": "exact",
+  "forecast_continuation": "native_finite_difference",
+  "frozen_search": {
+    "initial_grid_size": 9,
+    "max_depth": 8,
+    "min_interval": 0.001,
+    "endpoint_refinement_levels": 6,
+    "derivative_tol": 1e-08,
+    "curvature_tol": 1e-08,
+    "near_zero_ratio": 0.2,
+    "root_xtol": 1e-10,
+    "boundary_margin": 1e-06
+  },
+  "series": [
+    "SPY",
+    "QQQ",
+    "AAPL",
+    "XOM",
+    "BTC-USD",
+    "ETH-USD"
+  ],
+  "orders": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "windows": [
+    63,
+    126,
+    252,
+    504
+  ],
+  "horizons": [
+    1,
+    5,
+    20,
+    60
+  ],
+  "tail_observations": 2000,
+  "max_origins": 30,
+  "step": 5,
+  "dense_grid_size": 5001,
+  "n_cases": 384,
+  "snapshot": {
+    "SPY": {
+      "path": "data/external/real_world/snapshot/yahoo/SPY.csv",
+      "sha256": "0fce5b558e6492f37d3e59190a57ba2f2aeaae37bc85d2679f75620cc52c9c10",
+      "rows_used": 2000,
+      "first_date": "2018-10-11",
+      "last_date": "2026-09-28"
+    },
+    "QQQ": {
+      "path": "data/external/real_world/snapshot/yahoo/QQQ.csv",
+      "sha256": "3200578a99991cbe209f4f36e484adfa793093564e024563c98a6f46f897c069",
+      "rows_used": 2000,
+      "first_date": "2018-10-11",
+      "last_date": "2026-09-28"
+    },
+    "AAPL": {
+      "path": "data/external/real_world/snapshot/yahoo/AAPL.csv",
+      "sha256": "5d0e84e7bc5e4ba1df14245c9c7601bba249f3e56d1efdc98f79252e1fb2e5a5",
+      "rows_used": 2000,
+      "first_date": "2018-10-11",
+      "last_date": "2026-09-28"
+    },
+    "XOM": {
+      "path": "data/external/real_world/snapshot/yahoo/XOM.csv",
+      "sha256": "82c92a73f020565bc0af29294bc3b74251df269a28ef689bfa7a2f6c93f43c01",
+      "rows_used": 2000,
+      "first_date": "2018-10-11",
+      "last_date": "2026-09-28"
+    },
+    "BTC-USD": {
+      "path": "data/external/real_world/snapshot/yahoo/BTC_USD.csv",
+      "sha256": "fe2fda971d2ae48f1c9c4c9712b3b5fceb1438523ec0bff201d732d489c6eae5",
+      "rows_used": 2000,
+      "first_date": "2021-04-09",
+      "last_date": "2026-09-29"
+    },
+    "ETH-USD": {
+      "path": "data/external/real_world/snapshot/yahoo/ETH_USD.csv",
+      "sha256": "52d94791a67988f6effcf001735a3749afd65359189890505c50e1233a126903",
+      "rows_used": 2000,
+      "first_date": "2021-04-09",
+      "last_date": "2026-09-29"
+    }
+  },
+  "elapsed_seconds": 303.3418621000601,
+  "interpretation": "Numerical geometry stress test only; not a forecasting-model comparison and not evidence of financial predictability."
+}
