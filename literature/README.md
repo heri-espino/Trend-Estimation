@@ -11,6 +11,7 @@ This directory is the metadata/RAG entry point for the Trend Estimation research
 - `extracted/` — text/Markdown extracted from papers for RAG; intentionally
   versioned in Git.
 - `notes/` — per-paper structured reading notes when a paper needs more than metadata.
+- `dictionary/` — canonical concept and wording dictionary for manuscript writing.
 
 ## Naming convention
 
