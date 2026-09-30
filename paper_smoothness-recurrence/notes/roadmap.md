@@ -25,7 +25,7 @@ passes its stopping criterion.
 - [ ] implement robust interior inversion (lambda(S));
 - [ ] expose (F(S)=CV(\lambda(S)));
 - [ ] verify (F'(S)=0\iff CV'(\lambda)=0);
-- [ ] verify minimum/maximum classification is preserved;
+- [x] verify minimum/maximum classification is preserved;
 - [ ] benchmark conditioning near both endpoints.
 
 Stopping criterion: smoothness-domain evaluations reproduce existing
@@ -46,11 +46,11 @@ Primary algorithm:
 7. compare every local minimum plus both boundaries.
 
 - [x] implement `find_stationary_points_smoothness`;
-- [ ] report all roots, types, objective values, and evaluation counts;
+- [x] report all roots, types, objective values, and evaluation counts;
 - [ ] refine near-zero/flat derivative regions;
 - [ ] define deterministic stopping tolerances and max depth;
 - [ ] cache eigenvalues and repeated inversion work;
-- [ ] add multimodal synthetic tests;
+- [x] add multimodal synthetic tests;
 - [ ] compare with current log-lambda search;
 - [x] add a reproducible dense-reference benchmark runner;\n- [ ] run and inspect the benchmark against the dense reference.
 
