@@ -1,20 +1,20 @@
 # Numerical Results Log
 
-## 2026-09-30 — First synthetic smoke and quick runs
-
-**Status:** diagnostic. The smoke run is useful; the first quick run must be repeated after the nullspace canonicalization fix described below.
+## 2026-09-30 — First synthetic smoke and diagnostic quick run
 
 ### Smoke
 
-The synthetic smoke benchmark covered 8 surfaces with
+The first synthetic smoke benchmark covered 8 surfaces with
 
 \[
 d\in\{1,2\},\qquad L\in\{63,126\},\qquad h\in\{1,5\}.
 \]
 
-All dense-reference interior minima were matched by the adaptive search. The adaptive optimum was within roughly one dense-grid cell of the dense optimum in every case.
+All dense-reference interior minima were matched by the adaptive search. The
+adaptive optimum was within roughly one dense-grid cell of the dense optimum in
+every case.
 
-### First quick run
+### First quick run: diagnostic only
 
 The first quick run contained 216 surfaces:
 
@@ -23,7 +23,7 @@ The first quick run contained 216 surfaces:
 - \(d\in\{1,2,3,4\}\);
 - \(L\in\{63,126,252\}\);
 - \(h\in\{1,5,20\}\);
-- 2001-point dense reference on \(S\in[0,1]\).
+- a 2001-point dense reference on \(S\in[0,1]\).
 
 Observed diagnostic totals:
 
@@ -36,22 +36,11 @@ Observed diagnostic totals:
 - total adaptive-search time: 2.36 s;
 - total dense-reference time: 55.70 s.
 
-The failures were highly structured:
+The failures were highly structured: all 7 missed minima occurred for \(d=4\),
+and the problematic optima were concentrated near the upper endpoint
+\(S\approx1\).
 
-- \(d=1\): 0 missed minima;
-- \(d=2\): 0 missed minima;
-- \(d=3\): 0 missed minima;
-- \(d=4\): all 7 missed minima.
-
-The problematic optima were concentrated near the upper endpoint \(S\approx1\). Four surfaces showed a practically relevant global-optimum disagreement. The worst diagnostic case was
-
-\[
-\text{seed}=1,\quad \phi=0.8,\quad d=4,\quad L=252,\quad h=20,
-\]
-
-where the dense reference had its best grid point near \(S=0.995\), while the adaptive run on the Windows machine selected \(S=1\).
-
-### Numerical diagnosis
+### First numerical diagnosis: structural nullspace
 
 For an order-\(d\) finite-difference penalty,
 
@@ -59,93 +48,147 @@ For an order-\(d\) finite-difference penalty,
 Q=D_d^\top D_d
 \]
 
-is positive semidefinite with **exact nullity \(d\)**. Generic eigensolvers return these structural zero eigenvalues as tiny positive or negative floating-point values whose exact values depend on the LAPACK/backend implementation.
+has exact nullity \(d\). Generic eigensolvers can return those structural zeros
+as tiny positive or negative floating-point values whose exact values depend on
+the LAPACK/backend implementation. Near \(S=1\), the corresponding finite
+\(\lambda\) can be extremely large, so nominally zero eigenvalues can contaminate
+the \(S\leftrightarrow\lambda\) inversion and derivative calculations.
 
-This matters when \(S\) is close to one because the corresponding finite \(\lambda\) may be extremely large. Multiplication by a nominally zero eigenvalue can then amplify machine/backend differences and alter the \(S\leftrightarrow\lambda\) inversion and derivative calculations.
+The implementation was changed to canonicalize the first \(d\) eigenvalues to
+exact zero and clip the positive spectrum to nonnegative values. Exact
+\(S=1\) remains represented by \(\lambda=+\infty\).
 
-The repository now canonicalizes the first \(d\) eigenvalues to exact zero and clips the positive spectrum to nonnegative values before smoothness or pure spectral calculations. Exact \(S=1\) remains represented by \(\lambda=+\infty\).
+This first quick run is retained only as a diagnostic record and must not be
+used as a final performance table.
 
-Two quick-run cases that were missed on the Windows run were added as regression tests. They are recovered on CI after canonicalization.
+## 2026-09-30 — Post-nullspace quick rerun and adversarial suite
 
-### Interpretation
+After nullspace canonicalization, the 216-surface quick benchmark improved but
+still exposed a second failure mode.
 
-The first quick run should **not** be used as a final performance table because it was generated before this numerical correction. It served its intended purpose: identify a failure mode before paper-scale experiments.
-
-The next experiment is a complete repeat of --preset quick on the Windows machine after pulling the canonicalization change. We will compare the new result against this diagnostic run and only then decide whether explicit upper-boundary tail refinement is necessary.
-
-
-## 2026-09-30 — Adversarial benchmark and post-nullspace quick rerun
-
-The post-nullspace quick rerun again covered 216 forecast-validation surfaces.
 Compared with the 2001-point dense reference:
 
 - 211/216 surfaces matched every dense interior minimum;
-- 5 interior minima were missed, one in each of 5 surfaces;
+- 5 interior minima were missed;
 - mean adaptive evaluations were 64.01 versus 2001 dense evaluations
   (3.20% of the dense evaluation count);
-- median absolute error in the selected smoothness was approximately
-  (8.54\times10^{-5});
-- the largest selected-(S) discrepancy was 0.01869.
+- median absolute error in selected smoothness was approximately
+  \(8.54\times10^{-5}\);
+- the largest selected-\(S\) discrepancy was 0.01869.
 
-Three of the five missed local minima had negligible effect on the selected
-objective. Two were materially relevant and both occurred in the upper tail
-with persistent noise and horizon (h=20):
+Three missed minima had negligible effect on the selected objective. Two were
+materially relevant and both occurred in the upper tail with persistent noise
+and \(h=20\):
 
-[
-(	ext{seed},d,L,h)=(2,3,126,20)
-]
+\[
+(\text{seed},d,L,h)=(2,3,126,20)
+\]
 
-had dense (S^starapprox0.996), adaptive
-(S^starapprox0.97731), and objective regret approximately 0.11654; and
+had dense \(S^\star\approx0.996\), adaptive
+\(S^\star\approx0.97731\), and objective regret approximately 0.11654; and
 
-[
-(2,4,126,20)
-]
+\[
+(\text{seed},d,L,h)=(2,4,126,20)
+\]
 
-had dense (S^starapprox0.997), adaptive
-(S^starapprox0.98576), and objective regret approximately 0.04366.
+had dense \(S^\star\approx0.997\), adaptive
+\(S^\star\approx0.98576\), and objective regret approximately 0.04366.
 
-These failures are not the earlier nullspace/LAPACK problem. They reveal a
-search-design issue: several derivative roots can be compressed into the last
-coarse interval of the normalized domain near (S=1).
+These failures were not the earlier nullspace/LAPACK problem. Several
+derivative roots were compressed into the final coarse cell of the normalized
+domain near \(S=1\).
 
 ### Adversarial analytic benchmark
 
-The adversarial quick benchmark evaluated 9 known analytic objective shapes
-over
+The adversarial quick benchmark evaluated 9 known analytic objective shapes over
 
-[
-Nin{63,252},qquad din{1,2,3,4}.
-]
+\[
+N\in\{63,252\},\qquad d\in\{1,2,3,4\}.
+\]
 
-For the proposed adaptive-(S) search:
+Before endpoint refinement, the adaptive-\(S\) search recovered every known
+local minimum, flat minimum, and boundary optimum. The 8 deliberately
+constructed stationary inflections were not recovered. Mean evaluations per
+case were 52.38.
 
-- every known local minimum, flat minimum, and boundary optimum was recovered;
-- the 8 deliberately constructed stationary inflections were not recovered;
-- mean evaluations per case were 52.38.
+The uniform log-\(\lambda\) stationary search required 273.21 mean evaluations
+and missed 7 members of the deliberately close two-minimum case, in addition
+to the stationary-inflection targets. The dense reference used 5001
+evaluations per case.
 
-The uniform log-(lambda) stationary search required 273.21 mean
-evaluations and missed 7 members of the deliberately close two-minimum case,
-in addition to the stationary-inflection targets. The dense reference used
-5001 evaluations per case.
-
-The stationary-inflection result is not currently treated as an optimization
-failure: such points are neither local minima nor candidate smoothness values.
-The manuscript should therefore claim recovery of relevant minima, not
-certified recovery of every stationary root of an arbitrary smooth function.
+Stationary inflections are not optimization candidates. The paper therefore
+claims recovery of relevant minima under the tested designs, not certified
+recovery of every stationary root of an arbitrary smooth function.
 
 ### Endpoint-aware correction
 
-A regression test was added for the two materially missed synthetic surfaces.
-It fails under the previous search.
+The search was augmented with a small deterministic dyadic skeleton inside the
+two boundary cells before applying adaptive subdivision. This is motivated by
+the compactification
 
-The search now augments its uniform initial partition with a deterministic
-dyadic skeleton inside the two boundary cells. The motivation is structural:
-the normalized (S) parametrization compactifies the unbounded
-(lambda)-domain, so multiple objective features can be compressed close to
-(S=1). Six endpoint-refinement levels are now the default and are recorded
-in benchmark metadata.
+\[
+S\to1 \quad\Longleftrightarrow\quad \lambda\to\infty,
+\]
 
-The new regression test passes on CI. The complete adversarial and synthetic
-quick benchmarks must now be rerun once more. Those reruns, rather than the
-results above, will determine whether the numerical defaults can be frozen.
+under which several objective features can be compressed near an endpoint.
+Six endpoint-refinement levels were adopted for the next preregistered quick
+rerun. The two materially missed synthetic surfaces were added as regression
+tests.
+
+## 2026-09-30 — Endpoint-aware quick benchmark: defaults frozen
+
+The final pre-paper quick rerun used the endpoint-aware search with
+
+\[
+\text{initial grid}=9,\qquad
+\text{endpoint levels}=6,\qquad
+\text{max depth}=8,\qquad
+\Delta S_{\min}=10^{-3}.
+\]
+
+The synthetic benchmark again contained 216 surfaces and used a 2001-point
+dense reference.
+
+### Synthetic result
+
+- dense interior minima: 227;
+- matched by adaptive search: **227**;
+- missed interior minima: **0**;
+- surfaces with any missed minimum: **0/216**;
+- positive objective regret: **0 on all 216 surfaces**;
+- maximum \(|S^\star_{\text{adaptive}}-S^\star_{\text{dense}}|\):
+  0.0002545;
+- mean absolute \(S^\star\) error: 0.0000996;
+- median absolute \(S^\star\) error: 0.0000801;
+- mean adaptive evaluations: 82.84;
+- median adaptive evaluations: 82;
+- dense evaluations: 2001 per surface;
+- mean adaptive evaluation fraction: **4.14%**.
+
+The small negative reported regrets arise because the adaptive root refinement
+can locate a minimum between dense-grid points; they are not failures relative
+to the continuous objective.
+
+The selected optimum came from an interior stationary point in 171 surfaces,
+from exact \(S=0\) in 43 surfaces, and from exact \(S=1\) in 2 surfaces. This
+supports retaining both exact endpoints as explicit candidates.
+
+### Endpoint-aware adversarial result
+
+With the same frozen endpoint-aware settings, the adversarial quick suite again
+recovered every known local minimum, flat minimum, and boundary optimum. The
+only unrecovered truth points were the 8 deliberately constructed stationary
+inflections, which are outside the optimization target.
+
+Mean adaptive evaluations increased from 52.38 to 75.26 after adding endpoint
+refinement. This remains far below the 5001 evaluations used by the dense
+reference and below the 273.21 mean evaluations of the log-\(\lambda\) search.
+
+### Decision
+
+The search defaults are now frozen **before** the paper-scale benchmark. The
+paper-scale results will evaluate this fixed algorithm; they will not be used
+to retune its search parameters.
+
+Search-design sensitivity remains useful as a robustness analysis, but any
+later sensitivity run must leave the frozen primary specification unchanged.
