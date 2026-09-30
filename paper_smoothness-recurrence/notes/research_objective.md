@@ -1,99 +1,62 @@
 # Canonical Research Objective
 
-Date established: 2026-09-29
+**Status:** parked.
 
-This file is the first scientific source of truth for the
-smoothness/financial-recurrence paper.
+## Research question
 
-## One-sentence objective
+How do alternative, established definitions of a forecast trend change both
+out-of-sample forecast performance and the measured recurrence of financial
+prices toward that trend?
 
-> Select forecast-optimal normalized smoothness directly on its natural compact
-> domain, using a numerical search for multiple local minima, and use the
-> resulting forecast trend to study recurrence of financial prices toward that
-> trend at multiple horizons.
+## Forecast path
 
-## Mathematical object
-
-For (y=(y_1,\ldots,y_N)^\top), difference order (d), and
-(Q=D_d^\top D_d),
-
+For method \(m\), origin \(T\), and only information available through \(T\),
+construct
 \[
-\widehat\tau_\lambda=(I+\lambda Q)^{-1}y.
+\widehat\tau^{(m)}_{T+k\mid T}.
 \]
 
-For fixed ((N,d)), normalized smoothness is a monotone map
+The path is frozen at \(T\). Future observations may score the forecast and
+determine recurrence, but may not redefine the reference path.
 
+## Recurrence
+
+Let
 \[
-S=S_d(\lambda;N)\in[0,1],
-\]
-
-with (S=0\leftrightarrow\lambda=0) and
-(S=1\leftrightarrow\lambda=\infty) in the limiting sense.
-
-For forecast horizon (h), define chronological CV loss (CV_h(S)). The
-primary selection object is
-
-\[
-\boxed{S_h^\star=\arg\min_{S\in[0,1]}CV_h(S).}
-\]
-
-The numerical question is how to identify all relevant local minima without
-evaluating a dense uniform grid over the full domain.
-
-## Recurrence object
-
-At untouched origin (T), use only (mathcal F_T) to obtain the selected
-smoothness, fit the trend, and generate the frozen future path
-
-\[
-\widehat\tau_{T+k\mid T},\qquad k=1,\ldots,H.
-\]
-
-For log price (x_t=\log P_t), define
-
-\[
-g_{T,k}=x_{T+k}-\widehat\tau_{T+k\mid T}.
-\]
-
-Two primary recurrence definitions are
-
-\[
-R_T^{\mathrm{cross}}
+g^{(m)}_{T,k}
 =
-\inf\{k\ge1:g_{T,k}g_{T,0}\le0\},
+x_{T+k}
+-
+\widehat\tau^{(m)}_{T+k\mid T}.
 \]
 
-and
+Primary outcomes include:
 
 \[
-R_T^{\varepsilon}
+H_T^{(m),\mathrm{cross}}
 =
-\inf\{k\ge1:|g_{T,k}|\le\varepsilon_T\}.
+\inf\{k\ge1:
+g^{(m)}_{T,k}g^{(m)}_{T,0}\le0\},
 \]
 
-Events not recurring before a pre-specified (H_{\max}) are right-censored.
+band-entry recurrence, probability of recurrence by a fixed horizon,
+censored time-to-event summaries, and recurrence conditional on initial
+standardized distance.
 
 ## Scientific questions
 
-1. Can the optimal smoothness be found reliably with far fewer objective
-   evaluations than a dense smoothness grid?
-2. How does (S_h^\star) change with forecast horizon?
-3. How is recurrence time related to initial distance from trend?
-4. Are recurrence distributions different across ETFs, equities, and crypto?
-5. Are conclusions robust to pre-specified definitions of distance and
-   recurrence?
+1. Which trend/forecasting definitions perform best on untouched future data?
+2. Does the preferred method depend on forecast horizon?
+3. Is measured recurrence robust to the trend definition?
+4. How does recurrence depend on the initial distance from trend?
+5. Are these relationships stable across ETFs, equities, and crypto?
 
-## Scope guardrails
+## Methodological role of forecast-optimal PLS
 
-The primary paper is **not** about adaptive joint selection of (d,L,S).
-That is the separate adaptive paper.
+Forecast-optimal PLS is one competitor. Its numerical smoothness-selection
+algorithm is developed and validated in the separate
+paper_numerical-smoothness-selection/ paper and is imported here as a finished
+method.
 
-For the main analysis:
-
-- (d) and (L) are fixed before final evaluation;
-- only (S) is the continuously optimized smoothing coordinate;
-- no future observation may affect selection or the forecast trend at (T);
-- the recurrence reference path is frozen at (T);
-- recurrence to trend is not automatically a stationary mean-reversion claim;
-- forecast accuracy is not evidence of trading profitability;
-- the dense GPU grid is a numerical benchmark, not the proposed optimizer.
+This paper does not claim novelty for AR, ARIMA, GCV, state-space likelihood, or
+other standard forecasting methods individually.
