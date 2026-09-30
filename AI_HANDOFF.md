@@ -1,278 +1,192 @@
 # AI Handoff
 
-## Read this first — choose the paper track
+## Highest-priority instruction
 
-This repository has two separate research papers. Do not merge their
-objectives, checkpoints, or empirical claims.
-
-For the smoothness/financial-recurrence paper, read first:
-
-- `paper_smoothness-recurrence/notes/research_objective.md`;
-- `paper_smoothness-recurrence/notes/roadmap.md`;
-- `paper_smoothness-recurrence/notes/decisions.md`.
-
-Its primary object is (S_h^\star\in[0,1]), followed by a frozen forecast
-trend path and recurrence analysis.
-
-For the broader adaptive forecasting paper, read
-`notes/research_objective.md`. Its canonical object remains
-
-[
-\Theta^\star_{T,h}
-=
-(d^\star_{T,h},L^\star_{T,h},S^\star_{T,h})
-=
-G(h,X_T,\mathcal C).
-]
-
-Results and design choices from one track may inform the other but are not
-automatically evidence for the other paper's claims.
-
-## Repository role
-
-`Trend-Estimation` is a **library-first research repository**.
-
-Reusable mathematics, estimators, forecasting, validation, optimization,
-simulations, metrics, and plotting belong under `src/trend_estimation/`.
-Papers and experiments must import the installed package rather than copy
-library logic.
-
-The maintainer owns the repository and has explicitly allowed structural
-refactors. Historical draft material is intentionally removed from `main`;
-Git history is the archive.
-
-The supported local development install is:
-
-~~~bash
-pip install -e .
-~~~
-
-The pip distribution is `trend-estimation` and the Python import is
-`trend_estimation`.
-
-## Documentation
-
-`docs/` is the canonical Sphinx documentation for the public library API.
-Do not add ad-hoc Markdown files under `docs/`.
-
-`notes/` is the internal scientific notebook for derivations, checkpoints,
-research decisions, and the active roadmap.
-
-`literature/pdfs/` and `literature/extracted/` are intentionally versioned
-in Git. The maintainer wants the original PDFs used by the project, together
-with extracted text, preserved in the repository while the paper is active.
-Do not add ignore rules for these directories or delete their contents as
-"local-only" artifacts.
-
-When a public function or class changes, update its docstring and Sphinx API
-page. When a mathematical result changes, update the relevant note first.
-
-## Paper tracks
-
-### 1. Smoothness and financial recurrence
-
-Directory: `paper_smoothness-recurrence/`.
-
-Working title:
-
-**Numerical Selection of Forecast-Optimal Smoothness and Financial Trend Recurrence**
-
-The primary design fixes difference order and estimation-window policy before
-final evaluation and optimizes normalized smoothness:
+This repository contains **three research papers**, but only one is active.
 
 \[
-S_h^\star=\arg\min_{S\in[0,1]}CV_h(S).
+\boxed{\text{ACTIVE: paper\_numerical-smoothness-selection/}}
 \]
 
-The numerical contribution is multiple-local-minimum search directly on the
-compact smoothness domain using adaptive root isolation and Brent refinement.
-The former dense GPU grid is a diagnostic benchmark.
+Work exclusively on the numerical smoothness-selection paper until its roadmap
+is complete. Do not start new experiments, broaden claims, or add model
+comparisons for the other two papers unless the user explicitly changes this
+priority.
 
-At forecast origin (T), extrapolate and freeze the trend path. Recurrence is
-measured by future hitting/crossing times relative to that path; do not update
-the reference path with future observations.
+The other papers are parked, not abandoned. Preserve their existing results and
+history.
 
-Paper-specific roadmap, ideas, decisions, results, and checkpoints live inside
-the paper directory. Runners belong under
-`experiments/smoothness_recurrence/`; reusable mathematics remains in
-`src/trend_estimation/`.
+## Research-paper map
 
-### 2. Adaptive forecast-optimal trend estimation
+### 1. ACTIVE — Numerical Selection of Forecast-Optimal Smoothness
 
-Directory: `paper_forecast-optimal-smoothing/`.
+Directory: paper_numerical-smoothness-selection/
 
-Working title:
+Read in this order:
 
-**Adaptive Forecast-Optimal Trend Estimation under Changing Time-Series Regimes**
+1. notes/research_objective.md
+2. notes/scope.md
+3. notes/roadmap.md
+4. notes/decisions.md
 
-This broader paper retains
-
+Primary estimator:
 \[
-\Theta^\star_{T,h}
-=
-(d^\star_{T,h},L^\star_{T,h},S^\star_{T,h})
-=
-G(h,X_T,\mathcal C).
-\]
-
-Its canonical scientific notes remain under `notes/`.
-
-## Core analytic model
-
-For the pure smoother,
-
-\[
-\widehat t_{\lambda,d}
+\widehat\tau_\lambda
 =
 (I+\lambda D_d^\top D_d)^{-1}y.
 \]
 
-Let \(Q=D_d^\top D_d\) and \(S_\lambda=(I+\lambda Q)^{-1}\). Then
-
+Normalized smoothness:
 \[
-S_\lambda'=-S_\lambda Q S_\lambda,
+S(\lambda)
+=
+1-
+\frac1{N-d}
+\sum_{j=1}^{N-d}
+\frac1{1+\lambda\delta_j}.
 \]
 
+Primary numerical object, for a fixed discrete configuration
+\((d,L,m,h)\):
 \[
-\widehat t_\lambda'=-S_\lambda Q\widehat t_\lambda,
+F(S)=CV_h(d,L,m,S),
 \qquad
-\widehat t_\lambda''=2S_\lambda Q S_\lambda Q\widehat t_\lambda.
+S^\star\in\arg\min_{S\in[0,1]}F(S).
 \]
 
-The detailed derivation is in `notes/derivative.md`.
+The method must allow multiple local minima. Current numerical design:
 
-## Forecast loss
+1. sparse deterministic partition of \(S\);
+2. derivative/curvature evaluation;
+3. adaptive interval subdivision;
+4. derivative sign-change bracketing;
+5. Brent refinement;
+6. stationary-point classification;
+7. exact/limiting boundary comparison;
+8. post-discovery epsilon spacing of representative minima.
 
-For a causal forecast origin \(T\),
-
+Current epsilon sensitivity:
 \[
-r_T(\lambda)
-=
-y_{T+1:T+h}
--
-H S_\lambda y_{\mathrm{past}}.
+\varepsilon\in\{0,0.02,0.05,0.10,0.15\}.
 \]
 
-The implemented derivatives are
+Keep at most five representative local minima after discovery. Epsilon spacing
+is post-processing and must not affect root discovery.
 
+Important unfinished items:
+
+- exact \(S=1\leftrightarrow\lambda=\infty\) handling;
+- flat/tangential-root robustness;
+- frozen tolerances/stopping rules;
+- benchmark against dense reference;
+- comparison with existing log-\(\lambda\) stationary search;
+- controlled stress tests across \(d\in\{1,2,3,4\}\), several \(L\), \(h\),
+  and a small number of simple continuation rules.
+
+The contribution is numerical. Do not turn this paper into an ARIMA/MLE/GCV
+model-comparison paper or a recurrence paper.
+
+### 2. PARKED — Adaptive Forecast-Optimal Trend Estimation
+
+Directory: paper_forecast-optimal-smoothing/
+
+Core object:
 \[
-f_T'(\lambda)
+\Theta^\star_{T,h}
 =
-\frac{2}{h}
-r_T^\top H S_\lambda Q S_\lambda y_{\mathrm{past}},
+(d^\star_{T,h},L^\star_{T,h},S^\star_{T,h})
+=
+G(h,X_T,\mathcal C).
 \]
 
-and
+This paper owns time-varying regime/state adaptation, mechanism studies, and
+adaptive-versus-fixed forecast evaluation. Detailed historical notes remain
+under root notes/.
 
-\[
-f_T''(\lambda)
-=
-\frac{2}{h}
-\left[
-\|H S_\lambda Q S_\lambda y_{\mathrm{past}}\|_2^2
--
-2r_T^\top H S_\lambda Q S_\lambda Q S_\lambda y_{\mathrm{past}}
-\right].
-\]
+Do not resume it until the numerical paper is finished.
 
-## Numerical selection
+### 3. PARKED — Financial Trend Forecasting and Recurrence
 
-Work in \(\theta=\log\lambda\). The active robust search is:
+Directory: paper_smoothness-recurrence/
 
-1. coarse derivative scan in log-lambda;
-2. bracket sign changes;
-3. Brent root solve;
-4. classify stationary points;
-5. compare local minima and search boundaries.
+This paper owns the applied comparison of trend/forecast definitions and their
+financial recurrence implications.
 
-Newton is a refinement/benchmark, not the sole global method.
+Candidate principles include:
+
+- forecast-optimal penalized trend;
+- GCV-selected penalized trend;
+- likelihood/state-space trend;
+- AR(\(p\))/ARIMA;
+- penalized trend + AR residual;
+- no-change/random walk.
+
+At origin \(T\), every reference trend path must be frozen using only
+\(\mathcal F_T\). Future data may score the forecast and determine recurrence,
+but may not update the reference path retrospectively.
+
+This paper does not own the numerical \(S\)-search. Do not resume it until the
+numerical paper is finished.
+
+## Tutorial companion
+
+paper_penalized-trend-tutorial/ is a tutorial companion, not a fourth research
+track.
+
+## Repository role
+
+Trend-Estimation is library-first.
+
+Reusable estimators, derivatives, optimizers, forecasting logic, simulations,
+metrics, and plotting belong in src/trend_estimation/.
+
+Paper-specific runners belong under experiments/<paper namespace>/.
+Lightweight reproducible outputs belong under results/<paper namespace>/.
+
+Do not duplicate reusable implementation inside paper folders.
+
+## Active numerical implementation
+
+Relevant existing implementation includes:
+
+- src/trend_estimation/core/smoothness.py
+  - lambda_to_smoothness
+  - smoothness_derivatives
+  - smoothness_to_lambda
+- src/trend_estimation/selection/smoothness_numerical.py
+  - find_stationary_points_smoothness
+  - select_spaced_smoothness_minima
+  - sweep_spaced_smoothness_minima
+  - DEFAULT_SPACING_EPSILONS
+- src/trend_estimation/selection/numerical.py
+  - existing log-\(\lambda\) stationary search
+- tests/test_smoothness.py
+- tests/test_smoothness_numerical.py
+
+Current smoothness_to_lambda behavior clips \(S\ge1\) to an interior value.
+That is not acceptable as the final scientific treatment of the endpoint; the
+active roadmap requires exact limiting semantics.
 
 ## Validation invariant
 
-At outer origin \(T\), no observation after \(T\) may influence fitting or
-hyperparameter selection.
+At forecast origin \(T\), no observation after \(T\) may influence fitting,
+hyperparameter selection, or the forecast path.
 
-Use:
+Chronological future observations are revealed only for scoring.
 
-- `select_fixed_window_pure_smoothness` for inner \((d,L,\lambda)\) selection;
-- `nested_rolling_pure_forecast` for untouched outer evaluation.
+## Documentation policy
 
-Candidate windows are compared on identical inner forecast origins.
+docs/ is for public Sphinx API documentation.
 
-## Model naming
+Each research paper owns its scientific objective, scope, roadmap, and decisions
+inside its own folder.
 
-`PurePenalizedTrend` is the zero-drift quadratic model used for the current
-analytic work.
-
-`GuerreroTrend` implements the Guerrero (2007) observed-difference plug-in
-drift
-
-\[
-\widehat m_y=(N-d)^{-1}\mathbf1^\top D_dy.
-\]
-
-`IteratedDriftTrend` preserves the repository's old iterative drift procedure
-for reproducibility and must not be described as Guerrero (2007) equation (18).
-
-## Current implementation checkpoint
-
-Implemented:
-
-- pure penalized smoother and analytic trend derivatives;
-- explicit forecast continuation operator;
-- forecast-loss first/second derivatives;
-- derivative-root stationary-point search;
-- fixed-window forecast-optimal selection;
-- common validation origins across candidate windows;
-- nested rolling evaluation with leakage-invariance tests;
-- no-change benchmark and relative RMSFE;
-- local-linear AR(1) and two-regime simulations;
-- oracle recovery-optimal lambda for simulations;
-- first active simulation driver.
-
-Next:
-
-1. controlled simulation is complete at 1,000 seeds;
-2. the development and pre-frozen held-out real-data panels are complete and
-   establish a qualified financial boundary;
-3. the 64-series large-robustness panel is also complete at **explore**
-   temporal density; read
-   `notes/checkpoints/2026-09-29_large-universe-financial-results.md`;
-4. combined frequency-aware evidence now covers 92 distinct financial series
-   (32 ETFs, 48 stocks, 12 crypto); class medians adaptive/frozen-all-pre remain
-   above one while frozen-all-pre remains approximately no-change;
-5. the large-panel run was accidentally/implicitly `preset=explore`, so the
-   next clean sensitivity is the same panel at denser paper origins:
-   `python experiments/forecast_optimal_smoothing/run_real_data_validation.py --panel large-robustness --preset paper --scale-policy frequency-aware --workers 32`;
-6. do not change windows, M, horizons, or the 321 discovery grid for that run;
-7. after paper-density results are inspected, run the numerical discovery-grid
-   sensitivity:
-   `python experiments/forecast_optimal_smoothing/run_real_data_validation.py --panel large-robustness --preset paper --scale-policy frequency-aware --n-grid 1025 --workers 32`;
-8. treat 321 vs 1025 as numerical root-discovery robustness, not model tuning;
-   Brent already refines bracketed roots continuously;
-9. any expansion of the discrete candidate windows/orders is a separate
-   exploratory model-expansion study and must preserve all previous results;
-10. macro remains separate: implement ALFRED vintage-correct GDP/INDPRO before
-    paper-final macro claims; continue the literature novelty audit.
-
-## Canonical internal notes
-
-Read before changing research logic:
-
-- `notes/research_objective.md` — first scientific source of truth;
-- `notes/current_state.md` — chronological status, interpretations, and next actions;
-- `notes/key_results.md`
-- `notes/derivative.md`
-- `notes/numerical_selection.md`
-- `notes/model_definitions.md`
-- `notes/window_and_smoothness.md`
-- `notes/nested_validation.md`
-- `notes/roadmap.md`
+Root notes/ contains historical/detailed material for the adaptive paper and
+must not override the active numerical paper's local source of truth.
 
 ## CI policy
 
-Push/pull-request CI is lightweight: editable install, tests, and Sphinx
-validation.
+Automatic CI remains lightweight: install, tests, and Sphinx.
 
-Paper/PDF compilation is manual-only via `workflow_dispatch` and uploaded as
-artifacts; generated paper outputs are not auto-committed.
+Paper compilation is manual-only through workflow_dispatch. Do not make heavy
+paper/results workflows run on ordinary push or pull request.
