@@ -18,8 +18,12 @@ then applies the selected trend to a financial recurrence question.
 
 ## Numerical direction
 
-The older implementation could evaluate a dense grid over (S\in(0,1)),
-especially quickly on GPU, identify local minima, and compare them.
+The older `TrainValidationSelector` already implemented the user's remembered
+strategy explicitly: it evaluated a smoothness grid on \(S\in(0,1)\), detected
+multiple local minima with `find_all_local_minima`, and optionally refined
+them locally. The new work keeps that scientific coordinate but replaces dense
+discovery with derivative-aware adaptive search. The dense-grid implementation,
+which can be accelerated separately, remains the reference benchmark.
 
 The current library later moved to a coarse discovery grid in
 (log\lambda), followed by Brent refinement.
@@ -55,3 +59,17 @@ R_T.
 
 Implement and test the smoothness-domain numerical layer before new financial
 experiments. Do not begin by tuning the asset universe or recurrence thresholds.
+
+
+## Candidate spacing rule added
+
+After root finding, local minima are ranked by CV and reduced to at most five
+representative candidates. A selected minimum at \(S=s\) suppresses worse
+minima within radius \(\varepsilon\). The first sensitivity sweep is
+
+\[
+\varepsilon\in\{0,0.02,0.05,0.10,0.15\}.
+\]
+
+For the requested \(\varepsilon=0.10\), the neighborhood is
+\([s-0.10,s+0.10]\), of total width 0.20.
