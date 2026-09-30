@@ -147,3 +147,20 @@ F_{d,L,h}(S)=CV_h(d,L,S),
 
 without a separate forecast-method index \(m\).
 
+## N015 — Principal numerical experiments are complete
+
+**Date:** 2026-09-30  
+**Status:** frozen result.
+
+The frozen N009 search matched:
+
+- 240/240 relevant known adversarial minima/boundary optima;
+- 2105/2105 dense-reference interior minima across 1920 synthetic
+  forecast-validation surfaces;
+- 473/473 dense-reference interior minima across 384 real financial
+  forecast-validation surfaces.
+
+No further primary numerical experiments or tuning are planned. Real financial
+results are interpreted only as numerical geometry stress tests, not as evidence
+of forecasting superiority, predictability, or trading value.
+
