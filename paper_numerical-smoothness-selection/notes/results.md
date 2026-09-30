@@ -192,3 +192,140 @@ to retune its search parameters.
 
 Search-design sensitivity remains useful as a robustness analysis, but any
 later sensitivity run must leave the frozen primary specification unchanged.
+
+## 2026-09-30 — Frozen paper-scale benchmark
+
+The confirmatory paper-scale benchmark was run **after** the primary numerical
+search specification had been frozen under Decision N009.
+
+### Synthetic benchmark
+
+The final synthetic benchmark contained
+
+\[
+10\times 3\times 4\times 4\times 4
+=
+1920
+\]
+
+forecast-validation surfaces:
+
+- 10 random seeds;
+- 3 synthetic regimes: baseline, persistent, and rough;
+- \(d\in\{1,2,3,4\}\);
+- \(L\in\{63,126,252,504\}\);
+- \(h\in\{1,5,20,60\}\);
+- a 5001-point dense \(S\)-grid reference for every surface.
+
+Across those 1920 surfaces:
+
+- dense-reference interior minima: **2105**;
+- adaptive matches: **2105/2105**;
+- missed minima: **0**;
+- surfaces with any missed minimum: **0/1920**;
+- cases with positive objective regret beyond numerical roundoff: **0**;
+- maximum positive reported regret:
+  \(3.56\times10^{-14}\);
+- maximum selected-\(S\) discrepancy: **0.0001018**;
+- mean selected-\(S\) discrepancy: **0.0000406**;
+- median selected-\(S\) discrepancy: **0.0000388**;
+- 95th percentile selected-\(S\) discrepancy: **0.0000938**.
+
+The dense grid spacing was
+
+\[
+\Delta S_{\rm dense}=\frac{1}{5000}=0.0002,
+\]
+
+so the maximum selected-\(S\) discrepancy was approximately one half of one
+dense-grid cell. Negative regrets occur because root refinement can locate a
+continuous minimum between dense-grid points.
+
+The adaptive search required:
+
+- mean evaluations: **78.35**;
+- median evaluations: **75**;
+- 95th percentile evaluations: **139.05**;
+- maximum evaluations: **220**.
+
+Relative to 5001 dense evaluations, the mean evaluation fraction was
+
+\[
+\frac{78.35}{5001}\approx 0.0157,
+\]
+
+or **1.57%** of the dense evaluation count.
+
+Measured total runtime over all 1920 surfaces was:
+
+- adaptive search: **27.29 s**;
+- dense reference: **1497.85 s**.
+
+Thus the observed total runtime ratio was approximately
+
+\[
+\frac{1497.85}{27.29}\approx 54.9.
+\]
+
+This wall-clock ratio is implementation- and hardware-dependent and should be
+reported separately from the more portable evaluation-count comparison.
+
+Exact endpoints remained empirically relevant: the selected optimum was
+
+- interior in 1574 surfaces;
+- exact \(S=0\) in 312 surfaces;
+- exact \(S=1\) in 34 surfaces.
+
+The result was stable across all tested orders, windows, horizons, and
+simulation regimes: every subgroup had zero missed minima and zero meaningful
+positive regret.
+
+### Adversarial paper-scale benchmark
+
+The adversarial paper benchmark evaluated the 9 known analytic objective
+families over
+
+\[
+N\in\{63,126,252,504\},
+\qquad
+d\in\{1,2,3,4\},
+\]
+
+for 144 configurations per search method.
+
+For the frozen adaptive-\(S\) search:
+
+- relevant known minima/boundary optima detected: **240/240**;
+- mean evaluations: **75.24**;
+- median evaluations: **57**;
+- 95th percentile evaluations: **206**;
+- maximum global-optimum \(S\) error: **0.0000906**;
+- maximum positive objective regret:
+  \(2.17\times10^{-15}\).
+
+The uniform log-\(\lambda\) stationary search detected **226/240** relevant
+known minima and required 273.44 mean evaluations. Its failures were
+concentrated in the deliberately close two-minimum construction. The
+20001-point dense grid detected 240/240 relevant minima.
+
+Neither the adaptive search nor the dense local-minimum detector identifies the
+deliberately constructed stationary inflection, which is not a local minimum
+and is outside the primary optimization claim.
+
+The analytic adversarial benchmark is extremely cheap per objective evaluation.
+Consequently, wall-clock timing there is dominated by method overhead and is
+not used to claim that adaptive-\(S\) is faster than log-\(\lambda\). The
+evaluation-count comparison and the synthetic forecast-objective benchmark are
+the primary computational evidence.
+
+### Confirmatory conclusion
+
+The frozen primary algorithm passed the paper-scale benchmark without a
+single missed dense-reference minimum across 1920 synthetic forecast surfaces
+and without a single relevant missed minimum in the analytic adversarial
+suite.
+
+No further tuning of the primary search is permitted from these results.
+Remaining experiments are sensitivity analyses, controlled breadth, and real
+data stress tests.
+
