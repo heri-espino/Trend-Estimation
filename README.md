@@ -83,11 +83,13 @@ src/trend_estimation/                  installable Python package
 docs/                                  Sphinx documentation
 tests/                                 tests
 examples/                              small public-API examples
-experiments/forecast_optimal_smoothing active experiments
+experiments/forecast_optimal_smoothing adaptive-paper experiments
+experiments/smoothness_recurrence/     smoothness/recurrence experiments
 results/                               lightweight versioned experiment results
-notes/                                 derivations and checkpoints
+notes/                                 adaptive-paper derivations/checkpoints
 literature/                            bibliography/RAG metadata
-paper_forecast-optimal-smoothing/      active paper
+paper_forecast-optimal-smoothing/      adaptive forecasting paper
+paper_smoothness-recurrence/           smoothness/financial recurrence paper
 paper_penalized-trend-tutorial/        tutorial paper
 ~~~
 
@@ -95,13 +97,31 @@ Historical draft reports, old manuscript assets, copied legacy scripts, and
 unimplemented placeholder namespaces are intentionally absent from `main`.
 Git history is the archive.
 
-## Active research
+## Research papers
 
-The current paper studies **forecast-optimal trend estimation as an adaptive
-forecasting method, where smoothness, memory length and difference order depend
-on horizon and local regime**.
+The repository contains two distinct research tracks. Do not merge their
+scientific objectives.
 
-The central object is
+### Smoothness and financial recurrence
+
+`paper_smoothness-recurrence/` is the compact SMCCA-oriented paper:
+
+\[
+S_h^\star
+=
+\arg\min_{S\in[0,1]} CV_h(S).
+\]
+
+It selects normalized smoothness directly on its compact domain, searches for
+multiple local minima without an exhaustive dense grid, forecasts a frozen
+trend path, and studies first-return/crossing times relative to that path.
+
+Read `paper_smoothness-recurrence/notes/research_objective.md` and
+`paper_smoothness-recurrence/notes/roadmap.md` first for this track.
+
+### Adaptive forecast-optimal trend estimation
+
+`paper_forecast-optimal-smoothing/` studies the broader adaptive object
 
 \[
 \Theta^\star_{T,h}
@@ -111,11 +131,8 @@ The central object is
 G(h,X_T,\mathcal C).
 \]
 
-The persistence/AR(1) experiment is a mechanism study inside this broader
-question, not the definition of the project.
-
-Read `notes/research_objective.md` first and `notes/roadmap.md` for the
-execution plan.
+Its canonical internal notes remain under `notes/`. Results from this track
+are not automatically results of the recurrence paper.
 
 ## GitHub Actions
 
