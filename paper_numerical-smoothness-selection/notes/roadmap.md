@@ -66,8 +66,9 @@ Report:
 
 **Current pre-paper result:** 227/227 dense-reference interior minima matched across 216 synthetic surfaces, with zero positive objective regret. The primary search specification is frozen before the paper-scale run.
 
-**Stop condition:** empirical accuracy and efficiency are characterized well
-enough to support a precise claim.
+**Paper-scale result:** 2105/2105 dense-reference minima matched across 1920 synthetic surfaces; 240/240 relevant adversarial minima/boundary optima detected; zero meaningful positive regret.
+
+**Stop condition: met.** Empirical accuracy and efficiency are characterized well enough to support a precise claim.
 
 ## Phase 4 — Search-design sensitivity
 
