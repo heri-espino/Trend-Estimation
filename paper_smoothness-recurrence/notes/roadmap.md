@@ -45,14 +45,14 @@ Primary algorithm:
 6. classify roots;
 7. compare every local minimum plus both boundaries.
 
-- [ ] implement `find_stationary_points_smoothness`;
+- [x] implement `find_stationary_points_smoothness`;
 - [ ] report all roots, types, objective values, and evaluation counts;
 - [ ] refine near-zero/flat derivative regions;
 - [ ] define deterministic stopping tolerances and max depth;
 - [ ] cache eigenvalues and repeated inversion work;
 - [ ] add multimodal synthetic tests;
 - [ ] compare with current log-lambda search;
-- [ ] compare with dense GPU smoothness grid.
+- [x] add a reproducible dense-reference benchmark runner;\n- [ ] run and inspect the benchmark against the dense reference.
 
 Without stronger assumptions, no finite adaptive sampler can certify discovery
 of every root of an arbitrary smooth objective. The dense diagnostic grid will
