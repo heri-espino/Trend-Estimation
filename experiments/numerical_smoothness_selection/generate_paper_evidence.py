@@ -174,6 +174,14 @@ def _benchmark_summary() -> tuple[pd.DataFrame, dict[str, pd.DataFrame]]:
     }
 
 
+def _latex_scientific(value: float) -> str:
+    if value == 0:
+        return "$0$"
+    exponent = int(np.floor(np.log10(abs(value))))
+    mantissa = value / (10.0**exponent)
+    return f"$" + f"{mantissa:.2f}" + r"\times 10^{" + str(exponent) + "}$"
+
+
 def _latex_benchmark_table(frame: pd.DataFrame) -> str:
     display = frame.copy()
     display["benchmark"] = display["benchmark"].str.capitalize()
@@ -182,17 +190,17 @@ def _latex_benchmark_table(frame: pd.DataFrame) -> str:
         + "/"
         + display["reference_minima"].astype(str)
     )
-    display["mean evals"] = display["mean_adaptive_evaluations"].map(
+    display["Mean evals."] = display["mean_adaptive_evaluations"].map(
         lambda value: f"{value:.1f}"
     )
-    display["dense evals"] = display["mean_dense_evaluations"].map(
+    display["Dense evals."] = display["mean_dense_evaluations"].map(
         lambda value: f"{value:.0f}"
     )
-    display["eval. fraction"] = display["evaluation_fraction"].map(
+    display["Eval. fraction"] = display["evaluation_fraction"].map(
         lambda value: f"{100.0 * value:.2f}\\%"
     )
-    display["max |dS|"] = display["max_s_error"].map(
-        lambda value: f"{value:.2e}"
+    display[r"Max $|\Delta S^\star|$"] = display["max_s_error"].map(
+        _latex_scientific
     )
     display = display[
         [
@@ -200,10 +208,10 @@ def _latex_benchmark_table(frame: pd.DataFrame) -> str:
             "surfaces",
             "recovery",
             "positive_regret_cases",
-            "mean evals",
-            "dense evals",
-            "eval. fraction",
-            "max |dS|",
+            "Mean evals.",
+            "Dense evals.",
+            "Eval. fraction",
+            r"Max $|\Delta S^\star|$",
         ]
     ].rename(
         columns={
@@ -232,8 +240,8 @@ def _latex_sensitivity_table(frame: pd.DataFrame) -> str:
     display["Mean evals"] = display["mean_evaluations"].map(
         lambda value: f"{value:.1f}"
     )
-    display["Max |dS|"] = display["max_abs_s_error"].map(
-        lambda value: f"{value:.2e}"
+    display[r"Max $|\Delta S^\star|$"] = display["max_abs_s_error"].map(
+        _latex_scientific
     )
     display = display[
         [
@@ -241,7 +249,7 @@ def _latex_sensitivity_table(frame: pd.DataFrame) -> str:
             "missed_minima",
             "positive_regret_cases",
             "Mean evals",
-            "Max |dS|",
+            r"Max $|\Delta S^\star|$",
         ]
     ].rename(
         columns={
