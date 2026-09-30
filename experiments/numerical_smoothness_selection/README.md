@@ -126,3 +126,39 @@ method_summary.csv reports global-optimum error/regret, evaluation count and run
 
 Do not tune the proposed method after looking at a paper-scale run. The adversarial quick run is the intended dataset for diagnosing search-design weaknesses and freezing numerical defaults.
 
+## Frozen-search sensitivity benchmark
+
+The primary adaptive search is frozen under Decision N009. Sensitivity runs are
+therefore robustness analyses only; they must not retune the primary method.
+
+Run:
+
+~~~bash
+python experiments/numerical_smoothness_selection/run_search_sensitivity.py --preset paper
+~~~
+
+The analysis varies one factor at a time around the frozen specification:
+
+- initial grid size;
+- maximum adaptive depth;
+- endpoint refinement levels;
+- minimum interval width;
+- near-zero derivative ratio.
+
+Each alternative is evaluated on the same synthetic surfaces and against the
+same dense reference. The primary specification appears once as a control.
+
+Outputs:
+
+~~~text
+results/numerical_smoothness_selection/<timestamp>_sensitivity-paper_<sha>/
+├── sensitivity_summary.csv
+├── sensitivity_cases.csv
+└── run_metadata.json
+~~~
+
+The main robustness endpoints are missed minima, positive-regret cases,
+selected-\(S\) error, evaluation count, and runtime. A sensitivity setting is
+not allowed to replace the frozen primary specification after seeing these
+results.
+
