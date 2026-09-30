@@ -1,56 +1,59 @@
-# Forecast-Optimal Trend Smoothing
+# Adaptive Forecast-Optimal Trend Smoothing
 
-This is the **active** research manuscript.
+**Status: PARKED until the numerical-smoothness paper is finished.**
 
 Working title:
 
 **Adaptive Forecast-Optimal Trend Estimation under Changing Time-Series Regimes**
 
-The manuscript must consume reusable functionality from the installed `trend_estimation` package. Do not place reusable estimators, derivative code, optimizers, or validation logic inside this directory.
+This is the broad adaptive paper. It is one of three research papers in the
+repository, but it is not the current focus.
 
-## Canonical research objective
+## Canonical objective
 
-> **Forecast-optimal trend estimation as an adaptive forecasting method, where
-> smoothness, memory length and difference order depend on horizon and local
-> regime.**
-
-Formally,
-
-[
+\[
 \Theta^\star_{T,h}
 =
 (d^\star_{T,h},L^\star_{T,h},S^\star_{T,h})
 =
 G(h,X_T,\mathcal C).
-]
+\]
 
-The paper asks both whether the full forecast-optimal configuration changes
-systematically with horizon/local state and whether adapting it improves
-untouched out-of-sample forecasts relative to strong fixed methods.
+The paper asks whether the full forecast-optimal configuration changes
+systematically with horizon and local regime, and whether adapting the
+configuration improves untouched out-of-sample forecasts relative to strong
+fixed methods.
 
-The persistence/AR(1) experiment is one **mechanism study** explaining part of
-the behavior of (S^\star). It is not the research objective and persistence
-must not be used as a synonym for local regime.
+## Delimitation
 
-## Internal sources
+### In scope
 
-Before editing the paper, read:
+- time-varying/adaptive selection of \(d,L,S\);
+- local regime/state descriptors \(X_T\);
+- mechanism studies such as persistence, volatility, roughness, breaks, and
+  horizon;
+- adaptive-versus-fixed nested chronological evaluation;
+- adaptation delay after regime changes.
 
-- `../notes/research_objective.md` — first scientific source of truth;
-- `../notes/key_results.md`
-- `../notes/derivative.md`
-- `../notes/numerical_selection.md`
-- `../notes/model_definitions.md`
-- `../notes/roadmap.md`
+### Out of scope
 
-Literature metadata lives in `../literature/`.
+- developing the normalized-\(S\) stationary-point search as a standalone
+  numerical contribution;
+- broad ARIMA/MLE/GCV trend-model comparison for financial recurrence;
+- first-passage/survival analysis as the main endpoint.
 
-## Build
+The standalone numerical method belongs to
+paper_numerical-smoothness-selection/. Comparative financial recurrence belongs
+to paper_smoothness-recurrence/.
 
-From the repository root:
+## Status rule
 
-```bash
-latexmk -pdf -interaction=nonstopmode -outdir=paper_forecast-optimal-smoothing/build paper_forecast-optimal-smoothing/main.tex
-```
+Do not run new adaptive-paper experiments or expand this manuscript until
+paper_numerical-smoothness-selection/ is complete.
 
-The paper is currently a research skeleton. Do not write strong novelty or performance claims until the literature audit and planned experiments in `notes/roadmap.md` are complete.
+## Read first when resumed
+
+1. notes/research_objective.md
+2. notes/scope.md
+3. notes/roadmap.md
+4. the detailed historical notes under ../notes/
