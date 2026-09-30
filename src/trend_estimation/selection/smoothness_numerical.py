@@ -75,6 +75,7 @@ def find_stationary_points_smoothness(
     near_zero_ratio: float = 0.2,
     root_xtol: float = 1e-10,
     boundary_margin: float = 1e-6,
+    endpoint_refinement_levels: int = 6,
 ) -> SmoothnessStationaryPointSearchResult:
     """Adaptively locate stationary points directly on normalized smoothness.
 
@@ -101,6 +102,7 @@ def find_stationary_points_smoothness(
     near_zero_ratio = float(near_zero_ratio)
     root_xtol = float(root_xtol)
     boundary_margin = float(boundary_margin)
+    endpoint_refinement_levels = int(endpoint_refinement_levels)
 
     if n_obs <= 0:
         raise ValueError("n_obs must be positive.")
@@ -118,6 +120,8 @@ def find_stationary_points_smoothness(
         raise ValueError("near_zero_ratio must lie strictly between 0 and 1.")
     if not 0.0 < boundary_margin < 0.5:
         raise ValueError("boundary_margin must lie strictly between 0 and 0.5.")
+    if endpoint_refinement_levels < 0:
+        raise ValueError("endpoint_refinement_levels must be nonnegative.")
 
     search_lo = 0.0
     search_hi = 1.0 - boundary_margin
@@ -167,13 +171,31 @@ def find_stationary_points_smoothness(
         cache[smoothness] = result
         return result
 
-    initial = np.linspace(search_lo, search_hi, initial_grid_size)
+    uniform_initial = np.linspace(search_lo, search_hi, initial_grid_size)
+    initial_values = {float(value) for value in uniform_initial}
+
+    # The S parametrization compactifies the unbounded lambda domain. Objective
+    # structure can therefore become compressed near S=1 (and, more mildly,
+    # near S=0). Add a small deterministic dyadic skeleton inside the two
+    # boundary cells before applying any data-dependent refinement heuristic.
+    # This prevents several stationary points in one coarse boundary interval
+    # from being represented by only one sign-changing bracket.
+    if endpoint_refinement_levels:
+        boundary_cell_width = float(
+            uniform_initial[1] - uniform_initial[0]
+        )
+        for level in range(1, endpoint_refinement_levels + 1):
+            offset = boundary_cell_width / (2.0**level)
+            initial_values.add(float(search_lo + offset))
+            initial_values.add(float(search_hi - offset))
+
+    initial = np.asarray(sorted(initial_values), dtype=float)
     for smoothness in initial:
         evaluate_smoothness(float(smoothness))
 
     stack = [
         (float(initial[i]), float(initial[i + 1]), 0)
-        for i in range(initial_grid_size - 1)
+        for i in range(len(initial) - 1)
     ]
 
     while stack:
