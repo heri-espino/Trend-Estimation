@@ -8,3 +8,5 @@
 4. decisions.md — frozen design choices.
 
 Do not move ARIMA/MLE/GCV comparative forecasting or recurrence analysis into this folder.
+
+- `submission_positioning.md` — SMCCA fit, state-of-the-art boundary, novelty wording, and claim limits for the manuscript.
