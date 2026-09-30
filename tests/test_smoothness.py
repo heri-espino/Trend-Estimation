@@ -39,3 +39,15 @@ def test_penalty_spectrum_has_exact_theoretical_nullity():
         eigvals = penalty_eigenvalues(252, order)
         assert np.array_equal(eigvals[:order], np.zeros(order))
         assert np.all(eigvals[order:] > 0.0)
+
+
+def test_pure_solver_exact_upper_endpoint_projects_to_penalty_nullspace():
+    y = np.sin(np.arange(40, dtype=float) / 3.0) + 0.02 * np.arange(40) ** 2
+    solver = td.PurePenalizedSolver(40, 2)
+
+    result = solver.fit_for_s(y, 1.0)
+
+    assert result.smoothness == 1.0
+    assert np.isinf(result.lambda_)
+    assert np.all(np.isfinite(result.trend))
+    assert np.max(np.abs(np.diff(result.trend, n=2))) < 1e-10
