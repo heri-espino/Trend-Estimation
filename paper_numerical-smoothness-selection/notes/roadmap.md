@@ -75,19 +75,18 @@ Report:
 The primary settings are already frozen under Decision N009. The remaining
 items are robustness checks and must not retune the primary specification.
 
-- [ ] compare initial grid sizes;
+- [x] compare initial grid sizes;
 - [x] implement reproducible OFAT sensitivity runner;
-- [ ] compare max depths;
-- [ ] compare near-zero/curvature heuristics;
+- [x] compare max depths;
+- [x] compare near-zero derivative heuristic;
 - [x] compare with existing log-\(\lambda\) stationary search using the adversarial suite;
-- [ ] evaluate epsilon set
+- [x] evaluate epsilon set
   \[
   \{0,0.02,0.05,0.10,0.15\};
   \]
-- [ ] decide whether epsilon is algorithmic output or only candidate-summary
-  post-processing.
+- [x] decide that epsilon is candidate-summary post-processing only.
 
-**Stop condition:** sensitivity is characterized without changing the frozen primary protocol.
+**Stop condition: met.** Sensitivity was characterized without changing the frozen primary protocol.
 
 ## Phase 5 — Controlled configuration breadth
 
