@@ -6,9 +6,10 @@ on:
       target:
         description: Paper target to compile
         required: true
-        default: adaptive
+        default: numerical
         type: choice
         options:
+          - numerical
           - adaptive
           - recurrence
           - tutorial
@@ -26,7 +27,7 @@ jobs:
       - name: Record short commit SHA
         id: meta
         shell: bash
-        run: echo "short_sha=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+        run: echo "short_sha=${GITHUB_SHA::7}" >> "${GITHUB_OUTPUT}"
 
       - name: Install LaTeX toolchain
         shell: bash
@@ -37,6 +38,15 @@ jobs:
             texlive-latex-base \
             texlive-latex-extra \
             texlive-fonts-recommended
+
+      - name: Build numerical paper
+        if: ${{ inputs.target == 'numerical' || inputs.target == 'all' }}
+        shell: bash
+        run: |
+          mkdir -p paper_numerical-smoothness-selection/build
+          latexmk -pdf -interaction=nonstopmode \
+            -outdir=paper_numerical-smoothness-selection/build \
+            paper_numerical-smoothness-selection/main.tex
 
       - name: Build adaptive paper
         if: ${{ inputs.target == 'adaptive' || inputs.target == 'all' }}
@@ -64,6 +74,15 @@ jobs:
           latexmk -pdf -interaction=nonstopmode \
             -outdir=paper_penalized-trend-tutorial/build \
             paper_penalized-trend-tutorial/main.tex
+
+      - name: Upload numerical paper
+        if: ${{ inputs.target == 'numerical' || inputs.target == 'all' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: trend-estimation-numerical-smoothness-${{ steps.meta.outputs.short_sha }}
+          path: paper_numerical-smoothness-selection/build/main.pdf
+          if-no-files-found: error
+          retention-days: 30
 
       - name: Upload adaptive paper
         if: ${{ inputs.target == 'adaptive' || inputs.target == 'all' }}
