@@ -1,70 +1,98 @@
-# Smoothness and Financial Trend Recurrence
+# Financial Trend Forecasting and Recurrence
+
+**Status: PARKED until the numerical-smoothness paper is finished.**
 
 Working title:
 
-**Numerical Selection of Forecast-Optimal Smoothness and Financial Trend Recurrence**
+**Forecasting Financial Trends and Measuring Recurrence under Competing Trend Models**
 
-This directory is the self-contained research workspace for the compact
-SMCCA-oriented paper. It is deliberately narrower than
-`paper_forecast-optimal-smoothing/`.
+This is the applied/financial paper. It is intentionally separate from the
+numerical-method paper.
 
-## Read first
+## One-sentence objective
 
-1. `notes/research_objective.md` — scientific source of truth.
-2. `notes/roadmap.md` — execution order and stopping rules.
-3. `notes/decisions.md` — frozen design decisions.
-4. `notes/results.md` — results actually established for this paper.
-5. latest file under `notes/checkpoints/` — chronological handoff.
+> Compare several established ways to estimate and forecast a financial trend,
+> evaluate them on chronological validation and untouched test data, and study
+> how the resulting definition of trend changes observed recurrence/first-passage
+> behavior.
 
-## Core object
+## Core empirical object
 
-For a fixed paper protocol ((d,L)) and forecast horizon (h),
-
+At origin \(T\), each method \(m\) produces an ex-ante trend path
 \[
-S_h^\star=\arg\min_{S\in[0,1]}CV_h(S).
+\widehat\tau^{(m)}_{T+k\mid T},\qquad k\ge0,
+\]
+using only information available through \(T\).
+
+For log price \(x_t\), define
+\[
+g^{(m)}_{T,k}
+=
+x_{T+k}-\widehat\tau^{(m)}_{T+k\mid T}.
 \]
 
-The paper searches directly on normalized smoothness rather than treating
-(lambda) as the scientific coordinate. The intended numerical method is
-
+A crossing time is
 \[
-\text{adaptive stationary-point isolation on }S
-\to
-\text{Brent refinement}
-\to
-\text{classify local minima}
-\to
-\text{compare all minima and endpoints}.
+H_T^{(m)}
+=
+\inf\{k\ge1:
+g^{(m)}_{T,k}g^{(m)}_{T,0}\le0\}.
 \]
 
-A dense GPU smoothness grid is retained only as a validation benchmark.
+The paper compares recurrence summaries across competing trend definitions.
 
-## Financial application
+## Candidate method families
 
-At forecast origin (T), fit the trend using only information available through
-(T), forecast the trend path, and freeze that path. Recurrence is measured
-against future prices without re-estimating the reference trend using those
-future observations.
+The final list must remain small and interpretable. Current candidates are:
 
-Primary recurrence candidates are first crossing time, first entry into a
-tolerance band, probability of recurrence by horizon, and censored
-time-to-recurrence conditional on initial deviation.
+- forecast-optimal penalized trend;
+- GCV-selected penalized trend;
+- likelihood/state-space trend;
+- AR(\(p\)) / ARIMA forecasting benchmarks;
+- penalized trend plus AR residual forecast;
+- no-change/random-walk baseline.
 
-Do not describe this automatically as mean reversion. Recurrence to a
-time-varying forecast trend is a distinct empirical object.
+The paper may also include a small number of literature-motivated trend
+forecasting models if they add a genuinely different modeling principle.
 
-## Repository boundaries
+## Main outputs
 
-Reusable implementation belongs in `src/trend_estimation/`.
-Paper-specific runners belong in `experiments/smoothness_recurrence/`.
-Versioned outputs belong in `results/smoothness_recurrence/`.
+- validation and untouched-test forecast errors;
+- probability of recurrence by horizon;
+- median/restricted-mean recurrence time;
+- survival and hazard summaries when censoring matters;
+- recurrence versus initial standardized distance from trend;
+- robustness of recurrence conclusions to the trend definition.
 
-## Build
+## Delimitation
 
-~~~bash
-latexmk -pdf -interaction=nonstopmode \
-  -outdir=paper_smoothness-recurrence/build \
-  paper_smoothness-recurrence/main.tex
-~~~
+### In scope
 
-The manual GitHub Actions paper builder also exposes target `recurrence`.
+- comparative financial forecasting;
+- chronological train/validation/test separation;
+- multiple known trend/forecasting methods;
+- frozen-origin trend paths;
+- first-passage/recurrence analysis;
+- cross-asset comparisons across ETFs, equities, and crypto;
+- dependence-aware uncertainty.
+
+### Out of scope
+
+- inventing the smoothness search algorithm;
+- proving numerical root-discovery properties;
+- large adaptive regime modeling of \((d,L,S)\);
+- claiming that recurrence automatically implies stationary mean reversion;
+- portfolio/trading profitability unless a separate explicit design is added.
+
+The numerical optimizer used by forecast-optimal PLS belongs to
+paper_numerical-smoothness-selection/.
+
+## Read first when this paper is resumed
+
+1. notes/research_objective.md
+2. notes/scope.md
+3. notes/roadmap.md
+4. notes/decisions.md
+
+Do not resume this roadmap until paper_numerical-smoothness-selection/ is
+finished.
