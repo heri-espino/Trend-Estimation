@@ -34,9 +34,11 @@ consistent to frozen tolerances.
 - [x] refine roots with Brent;
 - [x] classify roots;
 - [x] implement epsilon-separated candidate selection;
-- [ ] strengthen flat/tangential stationary-point diagnostics;
+- [x] verify recovery of flat minima on an adversarial analytic suite;
+- [ ] detect tangential non-minimum stationary roots if the manuscript needs a claim about all stationary points;
 - [x] implement an adversarial analytic suite with known stationary points;
-- [ ] freeze derivative/curvature tolerances and maximum depth;
+- [x] add deterministic endpoint-aware refinement for compactified boundary cells;
+- [ ] freeze derivative/curvature tolerances, endpoint refinement, and maximum depth;
 - [ ] deduplicate roots robustly near numerical boundaries.
 
 **Stop condition:** known synthetic stationary points are recovered within
@@ -48,8 +50,9 @@ frozen tolerances, including adversarial near-flat cases.
 - [x] replace the old mixed-paper runner with an active-paper runner under
   experiments/numerical_smoothness_selection/;
 - [x] run smoke benchmark;
-- [ ] rerun quick benchmark after nullspace canonicalization (the first quick run is diagnostic/pre-fix);
-- [ ] inspect every disagreement with the dense reference;
+- [x] rerun quick benchmark after nullspace canonicalization;
+- [ ] rerun quick benchmark after endpoint-aware refinement;
+- [x] inspect every disagreement in the post-nullspace quick run;
 - [ ] run paper-scale benchmark.
 
 Report:
@@ -69,7 +72,7 @@ enough to support a precise claim.
 - [ ] compare initial grid sizes;
 - [ ] compare max depths;
 - [ ] compare near-zero/curvature heuristics;
-- [ ] compare with existing log-\(\lambda\) stationary search using the adversarial suite;
+- [x] compare with existing log-\(\lambda\) stationary search using the adversarial suite;
 - [ ] evaluate epsilon set
   \[
   \{0,0.02,0.05,0.10,0.15\};
