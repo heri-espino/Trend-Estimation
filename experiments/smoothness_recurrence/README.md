@@ -29,3 +29,33 @@ Write auditable runs under
 with raw event-level data, summaries, and `run_metadata.json`.
 
 Expensive experiments remain manual-only, not ordinary push-triggered CI.
+
+
+## First numerical benchmark
+
+Start with:
+
+~~~bash
+conda activate trend-estimation
+pip install -e .
+python experiments/smoothness_recurrence/benchmark_smoothness_search.py --preset smoke
+~~~
+
+Then the first broader check is:
+
+~~~bash
+python experiments/smoothness_recurrence/benchmark_smoothness_search.py --preset quick
+~~~
+
+The default candidate policy keeps at most five local minima and evaluates
+
+~~~text
+epsilon = 0.00, 0.02, 0.05, 0.10, 0.15
+~~~
+
+where epsilon is a radius in smoothness. For epsilon=0.10, a selected minimum
+suppresses worse minima inside a total-width 0.20 neighborhood.
+
+Outputs are written under
+`results/smoothness_recurrence/<run-id>/` as
+`search_summary.csv`, `candidate_sweep.csv`, and `run_metadata.json`.
