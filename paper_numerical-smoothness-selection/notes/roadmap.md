@@ -18,8 +18,8 @@ experiments for the other research papers until this one reaches Phase 7.
 - [x] implement smoothness-domain stationary-point search;
 - [x] establish stationary-point equivalence under reparameterization;
 - [x] add synthetic multimodal tests;
-- [ ] implement exact \(S=1\leftrightarrow\lambda=\infty\) semantics;
-- [ ] verify exact \(S=0\) and limiting \(S=1\) objectives;
+- [x] implement exact \(S=1\leftrightarrow\lambda=\infty\) semantics;
+- [x] verify exact \(S=0\) and limiting \(S=1\) objectives;
 - [ ] benchmark numerical conditioning near both endpoints.
 
 **Stop condition:** endpoint behavior and interior derivatives are numerically
@@ -43,7 +43,7 @@ frozen tolerances, including adversarial near-flat cases.
 ## Phase 3 — Dense-reference benchmark
 
 - [x] create an initial reproducible benchmark runner;
-- [ ] move/replace the runner under
+- [x] replace the old mixed-paper runner with an active-paper runner under
   experiments/numerical_smoothness_selection/;
 - [ ] run smoke benchmark;
 - [ ] run quick benchmark;

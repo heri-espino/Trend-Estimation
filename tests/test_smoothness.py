@@ -24,3 +24,9 @@ def test_smoothness_derivatives_match_finite_differences():
 
     assert np.isclose(first, first_fd, rtol=1e-5, atol=1e-8)
     assert np.isclose(second, second_fd, rtol=2e-3, atol=1e-6)
+
+
+def test_exact_smoothness_endpoints_map_to_zero_and_infinity():
+    assert td.smoothness_to_lambda(0.0, 40, 2) == 0.0
+    assert np.isinf(td.smoothness_to_lambda(1.0, 40, 2))
+    assert td.lambda_to_smoothness(np.inf, 40, 2) == 1.0
