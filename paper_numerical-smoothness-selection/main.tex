@@ -1,0 +1,128 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,mathtools,booktabs,graphicx,natbib,hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\title{Numerical Selection of Forecast-Optimal Smoothness in Penalized Trend Estimation}
+\author{Heriberto Espino Montelongo}
+\date{\today}
+\newcommand{\R}{\mathbb{R}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We study numerical selection of normalized smoothness for finite-difference
+penalized trend estimation when the objective is chronological forecast loss.
+The penalty parameter is reparameterized by a normalized smoothness index on
+the compact domain $[0,1]$. Because the forecast-validation objective need not
+be unimodal, the numerical task is to discover, refine, and classify multiple
+stationary points without relying on an exhaustive dense grid. The proposed
+method combines a sparse deterministic partition, derivative-aware adaptive
+subdivision, bracketed root refinement, and explicit comparison of local
+minima and boundaries. A dense reference search is used only to quantify
+optimum agreement, missed-minimum risk, objective regret, evaluation count,
+and runtime. This manuscript remains a research draft until the numerical
+benchmark protocol is frozen.
+\end{abstract}
+
+\section{Problem formulation}
+
+For $y\in\R^N$, let $D_d$ be the order-$d$ finite-difference matrix and
+$Q=D_d^\top D_d$. The penalized trend is
+\[
+\widehat\tau_\lambda
+=
+\arg\min_{\tau\in\R^N}
+\left\{
+\|y-\tau\|_2^2+\lambda\|D_d\tau\|_2^2
+\right\}
+=
+(I+\lambda Q)^{-1}y.
+\]
+
+\section{Normalized smoothness}
+
+Let $\delta_1,\ldots,\delta_{N-d}$ be the positive eigenvalues of $Q$.
+Define
+\[
+S(\lambda)
+=
+1-
+\frac{1}{N-d}
+\sum_{j=1}^{N-d}
+\frac{1}{1+\lambda\delta_j}.
+\]
+Then $S(0)=0$, $S(\lambda)\to1$ as $\lambda\to\infty$, and
+\[
+S'(\lambda)
+=
+\frac{1}{N-d}
+\sum_{j=1}^{N-d}
+\frac{\delta_j}{(1+\lambda\delta_j)^2}>0.
+\]
+
+\section{Forecast-validation objective}
+
+For fixed discrete choices $(d,L,m,h)$, where $m$ is a pre-specified trend
+continuation rule, let
+\[
+F(S)=CV_h(d,L,m,S).
+\]
+The continuous optimization problem is
+\[
+S^\star\in\arg\min_{S\in[0,1]}F(S).
+\]
+
+If $f(\lambda)=F(S(\lambda))$, then
+\[
+F'(S)=\frac{f'(\lambda)}{S'(\lambda)}.
+\]
+Hence interior stationary points are preserved by the monotone
+reparameterization.
+
+\section{Multiple-stationary-point search}
+
+The proposed method begins from a small deterministic partition of the
+smoothness domain, evaluates derivative information, adaptively subdivides
+intervals with unresolved stationary structure, brackets derivative sign
+changes, refines roots with a bracketed solver, classifies stationary points,
+and compares the detected local minima with the exact or limiting boundaries.
+
+Nearby local minima may be summarized after discovery with an
+$\varepsilon$-spacing rule. This post-processing step does not alter the root
+search itself.
+
+\section{Numerical validation}
+
+The adaptive method is compared with a very dense smoothness reference. Primary
+metrics are selected-smoothness error, objective regret, local minima
+found/missed, evaluation count, runtime, and failure or ambiguity rate.
+Controlled experiments vary difference order, estimation-window length,
+forecast horizon, and a small set of simple continuation rules only to create
+different objective geometries.
+
+\section{Scope}
+
+The paper does not study adaptive time-varying selection of $(d,L,S)$ and does
+not perform a broad financial comparison among ARIMA, state-space, likelihood,
+GCV, or recurrence models. Those are separate research tracks in the same
+repository.
+
+\section{Limitations}
+
+Without stronger assumptions, finite adaptive sampling cannot certify discovery
+of every stationary point of an arbitrary smooth objective. The empirical
+benchmark therefore measures missed-root and missed-minimum behavior rather
+than claiming a universal guarantee.
+
+\bibliographystyle{plainnat}
+\IfFileExists{literature/references.bib}{
+  \bibliography{literature/references}
+}{
+  \bibliography{../literature/references}
+}
+\end{document}
