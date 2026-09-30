@@ -76,6 +76,7 @@ The primary settings are already frozen under Decision N009. The remaining
 items are robustness checks and must not retune the primary specification.
 
 - [ ] compare initial grid sizes;
+- [x] implement reproducible OFAT sensitivity runner;
 - [ ] compare max depths;
 - [ ] compare near-zero/curvature heuristics;
 - [x] compare with existing log-\(\lambda\) stationary search using the adversarial suite;
