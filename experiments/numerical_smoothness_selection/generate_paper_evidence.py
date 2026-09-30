@@ -245,7 +245,7 @@ def _latex_sensitivity_table(frame: pd.DataFrame) -> str:
         "Primary",
         escaped_specification,
     )
-    display["Mean evals"] = display["mean_evaluations"].map(
+    display["Mean evals."] = display["mean_evaluations"].map(
         lambda value: f"{value:.1f}"
     )
     display[r"Max $|\Delta S^\star|$"] = display["max_abs_s_error"].map(
@@ -256,13 +256,13 @@ def _latex_sensitivity_table(frame: pd.DataFrame) -> str:
             "Specification",
             "missed_minima",
             "positive_regret_cases",
-            "Mean evals",
+            "Mean evals.",
             r"Max $|\Delta S^\star|$",
         ]
     ].rename(
         columns={
             "missed_minima": "Missed minima",
-            "positive_regret_cases": "Positive regret",
+            "positive_regret_cases": "Positive-regret cases",
         }
     )
     return display.to_latex(
