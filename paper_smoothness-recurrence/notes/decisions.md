@@ -1,118 +1,35 @@
 # Decisions Log
 
-Design choices here should not be silently changed after results are inspected.
+## R001 — Applied paper is parked
 
-## D001 — Separate paper
-
-**Date:** 2026-09-29  
+**Date:** 2026-09-30  
 **Status:** frozen.
 
-This study is separate from `paper_forecast-optimal-smoothing/`.
+No new experiments are run for this paper until
+paper_numerical-smoothness-selection/ is finished.
 
-## D002 — Smoothness is the scientific coordinate
+## R002 — Numerical method is external to this paper
 
-**Date:** 2026-09-29  
-**Status:** frozen.
+Forecast-optimal smoothness may be used here, but its algorithmic development
+and validation belong to the numerical paper.
 
-The primary continuous parameter is (S\in[0,1]). (lambda) remains an
-internal parameter because the estimator and existing derivatives are naturally
-expressed in (lambda).
+## R003 — Trend path is frozen at forecast origin
 
-## D003 — Multiple local minima matter
+At origin \(T\), every method constructs its reference path using only
+\(\mathcal F_T\). Future observations score the path and determine recurrence;
+they do not update it retrospectively.
 
-**Date:** 2026-09-29  
-**Status:** frozen.
+## R004 — Keep the model set small
 
-Do not assume the CV objective is unimodal. Return and compare multiple local
-minima plus endpoints.
+AR/ARIMA, GCV, likelihood/state-space, forecast-optimal PLS, residual-AR, and
+no-change are candidate principles. The goal is not a large model zoo.
 
-## D004 — Dense grid is benchmark only
+## R005 — Recurrence is not automatically mean reversion
 
-**Date:** 2026-09-29  
-**Status:** frozen.
+Use first-passage/recurrence language unless stationarity or mean-reversion
+claims are separately established.
 
-The old GPU dense smoothness grid is the numerical reference. The proposed
-method is adaptive stationary-point discovery plus root refinement.
+## R006 — Test is untouched
 
-## D005 — Freeze recurrence reference at origin
-
-**Date:** 2026-09-29  
-**Status:** frozen.
-
-At origin (T), construct (widehat\tau_{T+k\mid T}) using only
-(mathcal F_T). Future prices are compared with this fixed forecast path.
-
-## D006 — Keep the main numerical problem one-dimensional
-
-**Date:** 2026-09-29  
-**Status:** provisional until Phase 3.
-
-The main paper optimizes (S). (d) and (L) are fixed by protocol.
-Joint adaptive ((d,L,S)) selection belongs to the other paper.
-
-## D007 — Recurrence is not automatically mean reversion
-
-**Date:** 2026-09-29  
-**Status:** frozen.
-
-Use *recurrence to the forecast trend*, *first crossing*, and *time to trend*.
-Do not infer stationarity or arbitrage from these statistics alone.
-
-
-## D008 — Maximum five separated local minima
-
-**Date:** 2026-09-29  
-**Status:** frozen for the first numerical benchmark.
-
-For each CV surface, first find all detected local minima. Candidate selection
-then ranks them by CV and greedily keeps at most five. Once a minimum at
-smoothness s is accepted, any remaining minimum inside
-
-\[
-[s-\varepsilon,\ s+\varepsilon]
-\]
-
-is suppressed. Thus \(\varepsilon=0.10\) denotes radius 0.10 and total
-neighborhood width 0.20.
-
-The initial sensitivity set is
-
-\[
-\varepsilon\in\{0,0.02,0.05,0.10,0.15\}.
-\]
-
-The spacing rule is applied after stationary-point discovery, so changing
-epsilon does not change which stationary points the numerical solver finds.
-
-
-## D009 — Separate smoothing from extrapolation
-
-**Date:** 2026-09-29  
-**Status:** frozen conceptually; exact forecast-method set remains to be frozen.
-
-Estimating the historical trend and forecasting that trend h steps ahead are
-different operations. Introduce a discrete forecast rule m and write the
-selection objective as
-
-\[
-CV_h(d,L,m,S).
-\]
-
-The first comparison will include the native finite-difference continuation and
-a small number of simple tail-extrapolation rules. Avoid a large forecasting
-model zoo.
-
-## D010 — Likelihood/state-space benchmark
-
-**Date:** 2026-09-29  
-**Status:** frozen.
-
-The paper must compare forecast-selected smoothness with a likelihood-based
-trend model. The likelihood model estimates stochastic variance/smoothing
-parameters using ML/REML or marginal likelihood; its latent trend is then
-obtained by Kalman filtering/smoothing and forecast through the state-space
-model.
-
-This benchmark is evaluated on the same validation and untouched test periods
-as the proposed method. Likelihood selection itself must not use the final test
-block.
+Model/hyperparameter choices use development/validation data. Final test data
+are used only once the protocol is frozen.
