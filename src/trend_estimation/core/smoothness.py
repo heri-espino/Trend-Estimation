@@ -35,6 +35,8 @@ def lambda_to_smoothness(lambda_: float, n_obs: int, order: int) -> float:
     lambda_ = float(lambda_)
     if lambda_ < 0:
         raise ValueError("lambda_ must be nonnegative.")
+    if np.isinf(lambda_):
+        return 1.0
     if order == 0:
         return lambda_ / (1.0 + lambda_)
     tr = effective_degrees_of_freedom(lambda_, n_obs, order)
@@ -79,12 +81,16 @@ def smoothness_to_lambda(
     tol: float = 1e-11,
     max_iter: int = 100,
 ) -> float:
-    """Map smoothness in [0, 1) to the penalty parameter using bisection."""
+    """Map normalized smoothness in [0, 1] to the penalty parameter.
+
+    The endpoints are exact: S=0 maps to lambda=0 and S=1 maps to
+    lambda=+infinity. Interior values are inverted by monotone bisection.
+    """
     smoothness = float(smoothness)
     if smoothness <= 0:
         return 0.0
     if smoothness >= 1.0:
-        smoothness = 0.999999
+        return float("inf")
     if order == 0:
         return smoothness / (1.0 - smoothness)
 
