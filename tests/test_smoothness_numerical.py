@@ -120,7 +120,7 @@ def test_epsilon_sweep_caps_candidate_count():
     assert all(len(item.candidates_) <= 5 for item in sweep)
 
 
-def _quick_regression_search(*, seed: int, ar1_phi: float, window: int, horizon: int):
+def _quick_regression_search(*, seed: int, ar1_phi: float, window: int, horizon: int, order: int = 4):
     data = td.make_local_linear_ar1_series(
         n_obs=800,
         slope_noise_std=0.01,
@@ -139,7 +139,7 @@ def _quick_regression_search(*, seed: int, ar1_phi: float, window: int, horizon:
     prepared = td.prepare_rolling_pure_forecast_objective(
         data.y,
         splits,
-        order=4,
+        order=order,
     )
 
     def value_grad_hess(lambda_: float):
@@ -149,7 +149,7 @@ def _quick_regression_search(*, seed: int, ar1_phi: float, window: int, horizon:
     return td.find_stationary_points_smoothness(
         value_grad_hess,
         n_obs=window,
-        order=4,
+        order=order,
         initial_grid_size=9,
         max_depth=8,
         min_interval=1e-3,
@@ -188,3 +188,70 @@ def test_search_recovers_persistent_quick_case_minimum_near_upper_boundary():
     ]
 
     assert any(abs(smoothness - 0.995) < 0.003 for smoothness in minima)
+
+
+def _dense_quick_minima(*, seed: int, ar1_phi: float, window: int, horizon: int, order: int):
+    data = td.make_local_linear_ar1_series(
+        n_obs=800,
+        slope_noise_std=0.01,
+        observation_noise_std=0.5,
+        ar1_phi=ar1_phi,
+        random_state=seed,
+    )
+    splits = td.rolling_origin_splits(
+        800,
+        initial_train=window,
+        horizon=horizon,
+        step=5,
+        expanding=False,
+        train_window=window,
+    )[-30:]
+    prepared = td.prepare_rolling_pure_forecast_objective(
+        data.y,
+        splits,
+        order=order,
+    )
+
+    grid = np.linspace(0.0, 1.0, 2001)
+    values = np.asarray(
+        [
+            prepared.evaluate(
+                td.smoothness_to_lambda(s, n_obs=window, order=order)
+            ).value
+            for s in grid
+        ]
+    )
+    return [
+        float(grid[i])
+        for i in range(1, len(grid) - 1)
+        if values[i] <= values[i - 1] and values[i] <= values[i + 1]
+    ]
+
+
+def test_search_recovers_material_upper_tail_minima_from_quick_diagnostics():
+    for order in (3, 4):
+        result = _quick_regression_search(
+            seed=2,
+            ar1_phi=0.8,
+            window=126,
+            horizon=20,
+            order=order,
+        )
+        adaptive = [
+            point.smoothness_
+            for point in result.points_
+            if point.kind_ == "minimum"
+        ]
+        dense = _dense_quick_minima(
+            seed=2,
+            ar1_phi=0.8,
+            window=126,
+            horizon=20,
+            order=order,
+        )
+
+        assert len(dense) >= 2
+        assert all(
+            any(abs(dense_s - adaptive_s) <= 0.0015 for adaptive_s in adaptive)
+            for dense_s in dense
+        )
