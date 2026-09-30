@@ -1,0 +1,132 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,mathtools,booktabs,graphicx,natbib,hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\title{Numerical Selection of Forecast-Optimal Smoothness and Financial Trend Recurrence}
+\author{Heriberto Espino Montelongo}
+\date{\today}
+\newcommand{\R}{\mathbb{R}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We study numerical selection of normalized smoothness for finite-difference
+penalized trend estimation when the target is chronological forecast loss.
+Rather than searching an arbitrary bounded range of the penalty parameter, we
+parameterize the problem by a normalized smoothness index on the compact domain
+$[0,1]$. Because the forecast-validation objective may have multiple local
+minima, the numerical problem is to isolate and refine its stationary points
+without evaluating a dense uniform grid. The selected trend is then used as a
+forecast reference path for studying first-return and crossing times in
+financial price series. This manuscript is a research skeleton; empirical
+claims are deferred until the numerical method and recurrence protocol are
+frozen and validated.
+\end{abstract}
+
+\section{Penalized trend estimation}
+
+For $y\in\R^N$, let $D_d$ be the order-$d$ finite-difference matrix and
+$Q=D_d^\top D_d$. Then
+\[
+\widehat\tau_\lambda
+=
+\arg\min_{\tau\in\R^N}
+\left\{
+\|y-\tau\|_2^2+\lambda\|D_d\tau\|_2^2
+\right\}
+=
+(I+\lambda Q)^{-1}y.
+\]
+
+\section{Normalized smoothness}
+
+Let $\delta_1,\ldots,\delta_{N-d}$ be the positive eigenvalues of $Q$.
+Define
+\[
+S(\lambda)
+=
+1-
+\frac{1}{N-d}
+\sum_{j=1}^{N-d}
+\frac{1}{1+\lambda\delta_j}.
+\]
+Then $S(0)=0$, $S(\lambda)\to1$ as $\lambda\to\infty$, and
+\[
+S'(\lambda)
+=
+\frac{1}{N-d}
+\sum_{j=1}^{N-d}
+\frac{\delta_j}{(1+\lambda\delta_j)^2}
+>0.
+\]
+
+\section{Forecast-optimal smoothness}
+
+For fixed forecasting protocol and horizon $h$, let $CV_h(S)$ be pooled
+chronological forecast loss. The principal object is
+\[
+\boxed{
+S_h^\star=\arg\min_{S\in[0,1]}CV_h(S).
+}
+\]
+
+If $f(\lambda)$ is the same objective in penalty coordinates and
+$F(S)=f(\lambda(S))$, then
+\[
+F'(S)=\frac{f'(\lambda)}{S'(\lambda)}.
+\]
+Thus interior stationary points are preserved by the reparameterization.
+
+\section{Multiple-local-minimum numerical search}
+
+The proposed method starts from a small partition of the smoothness domain,
+adaptively refines intervals with evidence of stationary structure, brackets
+derivative sign changes, applies Brent refinement, classifies stationary
+points, and compares all detected local minima with exact boundaries. A dense
+GPU smoothness grid is retained as a numerical reference.
+
+\section{Financial trend recurrence}
+
+At forecast origin $T$, only information through $T$ may determine the selected
+smoothness and trend. Let $\widehat\tau_{T+k\mid T}$ be the frozen forecast
+trend path and let $x_t=\log P_t$. Define
+\[
+g_{T,k}=x_{T+k}-\widehat\tau_{T+k\mid T}.
+\]
+A crossing recurrence time is
+\[
+R_T^{\mathrm{cross}}
+=
+\inf\left\{
+k\ge1:g_{T,k}g_{T,0}\le0
+\right\}.
+\]
+A tolerance-band recurrence is defined analogously. Events that do not recur
+inside a pre-specified horizon are right-censored.
+
+\section{Experimental design}
+
+First validate the numerical optimizer against dense reference grids. Then
+freeze the forecasting and recurrence protocol before evaluating broad
+ETFs/indices, held-out equities, and cryptocurrency. The main paper does not
+jointly adapt difference order and window length.
+
+\section{Limitations}
+
+Recurrence to a forecast trend is not equivalent to stationarity or classical
+mean reversion. Forecast accuracy and recurrence statistics do not imply
+trading profitability. Dependence induced by overlapping forecast origins must
+be addressed before inferential claims.
+
+\bibliographystyle{plainnat}
+\IfFileExists{literature/references.bib}{
+  \bibliography{literature/references}
+}{
+  \bibliography{../literature/references}
+}
+\end{document}
