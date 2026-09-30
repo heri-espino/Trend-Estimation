@@ -33,7 +33,9 @@ def test_exact_smoothness_endpoints_map_to_zero_and_infinity():
 
 
 def test_penalty_spectrum_has_exact_theoretical_nullity():
+    from trend_estimation.core.smoothness import penalty_eigenvalues
+
     for order in (1, 2, 3, 4):
-        eigvals = td.penalty_eigenvalues(252, order)
+        eigvals = penalty_eigenvalues(252, order)
         assert np.array_equal(eigvals[:order], np.zeros(order))
         assert np.all(eigvals[order:] > 0.0)
