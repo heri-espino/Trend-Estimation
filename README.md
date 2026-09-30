@@ -1,10 +1,90 @@
 # Trend Estimation
 
-`trend_estimation` is a Python research library for penalized trend estimation,
+trend_estimation is a Python research library for penalized trend estimation,
 forecasting, chronological validation, and numerical smoothness selection.
 
 The repository is **library-first**: reusable methods live in
-`src/trend_estimation/`; papers and experiments import the installed package.
+src/trend_estimation/; papers and experiments import the installed package.
+
+## Current research focus
+
+There are **three research papers** in this repository, plus one tutorial
+companion.
+
+Only one research paper is active:
+
+\[
+\boxed{\text{paper\_numerical-smoothness-selection/}}
+\]
+
+We are finishing that paper first. Until it is complete, do not start new
+experiments or expand the scope of the other two research papers.
+
+### 1. ACTIVE — Numerical smoothness selection
+
+Directory: paper_numerical-smoothness-selection/
+
+Working title:
+
+**Numerical Selection of Forecast-Optimal Smoothness in Penalized Trend Estimation**
+
+Core problem:
+\[
+S^\star\in\arg\min_{S\in[0,1]}CV_h(S),
+\]
+where the forecast-validation objective may have multiple local minima.
+
+Main contribution: derivative-aware numerical discovery/refinement of relevant
+minima on the compact smoothness domain, validated against a dense reference.
+
+Read first:
+
+- paper_numerical-smoothness-selection/notes/research_objective.md
+- paper_numerical-smoothness-selection/notes/scope.md
+- paper_numerical-smoothness-selection/notes/roadmap.md
+- paper_numerical-smoothness-selection/notes/decisions.md
+
+### 2. PARKED — Adaptive forecast-optimal trend estimation
+
+Directory: paper_forecast-optimal-smoothing/
+
+Working title:
+
+**Adaptive Forecast-Optimal Trend Estimation under Changing Time-Series Regimes**
+
+Core object:
+\[
+\Theta^\star_{T,h}
+=
+(d^\star_{T,h},L^\star_{T,h},S^\star_{T,h})
+=
+G(h,X_T,\mathcal C).
+\]
+
+This paper owns regime/state adaptation and joint time-varying selection of
+difference order, memory length, and smoothness. It resumes only after the
+numerical paper is finished.
+
+### 3. PARKED — Financial trend forecasting and recurrence
+
+Directory: paper_smoothness-recurrence/
+
+Working title:
+
+**Forecasting Financial Trends and Measuring Recurrence under Competing Trend Models**
+
+This paper compares a compact set of established trend/forecasting principles
+such as forecast-optimal PLS, GCV PLS, likelihood/state-space models,
+AR/ARIMA, residual-AR models, and no-change. It then studies first-passage and
+recurrence behavior relative to the frozen ex-ante trend paths.
+
+It does **not** own the smoothness-search algorithm. It resumes after the
+numerical paper is finished.
+
+### Tutorial companion
+
+paper_penalized-trend-tutorial/ is explanatory material, not one of the three
+research-paper tracks.
 
 ## Install
 
@@ -28,114 +108,51 @@ Optional finance dependencies:
 pip install -e ".[finance]"
 ~~~
 
-Verify the editable install:
+Verify:
 
 ~~~bash
 python -c "import trend_estimation as td; print(td.__version__)"
 pytest
 ~~~
 
-## Quick start
+## Repository layout
 
-~~~python
-import trend_estimation as td
+~~~text
+src/trend_estimation/                       reusable Python package
+docs/                                       Sphinx API documentation
+tests/                                      tests
+examples/                                   small public-API examples
+literature/                                 source literature and extracted text
 
-data = td.make_local_linear_ar1_series(
-    n_obs=200,
-    observation_noise_std=0.4,
-    ar1_phi=0.3,
-    random_state=7,
-)
+paper_numerical-smoothness-selection/       ACTIVE research paper
+paper_forecast-optimal-smoothing/           PARKED adaptive paper
+paper_smoothness-recurrence/                PARKED financial/recurrence paper
+paper_penalized-trend-tutorial/             tutorial companion
 
-model = td.PurePenalizedTrend(order=2, lambda_=10.0).fit(data.y)
-print(model.forecast(steps=5))
-~~~
+experiments/numerical_smoothness_selection/ active-paper experiments
+experiments/forecast_optimal_smoothing/      parked adaptive experiments
+experiments/smoothness_recurrence/           parked/historical applied experiments
 
-For forecast-optimal selection:
-
-~~~python
-selection = td.select_fixed_window_pure_smoothness(
-    data.y,
-    orders=(1, 2, 3),
-    windows=(24, 48, 72),
-    horizon=3,
-)
-print(selection.best_)
+results/                                    lightweight versioned experiment results
+notes/                                      detailed legacy/adaptive scientific notes
 ~~~
 
 ## Documentation
 
-The Sphinx site is the canonical user-facing documentation:
+The Sphinx site is the canonical user-facing library documentation:
 
 ~~~bash
 sphinx-build -W -b html docs docs/_build/html
 ~~~
 
-Open `docs/_build/html/index.html` after the build.
-
-Internal derivations and checkpoints remain in `notes/`. They are intentionally
-separate from API documentation.
-
-## Repository layout
-
-~~~text
-src/trend_estimation/                  installable Python package
-docs/                                  Sphinx documentation
-tests/                                 tests
-examples/                              small public-API examples
-experiments/forecast_optimal_smoothing adaptive-paper experiments
-experiments/smoothness_recurrence/     smoothness/recurrence experiments
-results/                               lightweight versioned experiment results
-notes/                                 adaptive-paper derivations/checkpoints
-literature/                            bibliography/RAG metadata
-paper_forecast-optimal-smoothing/      adaptive forecasting paper
-paper_smoothness-recurrence/           smoothness/financial recurrence paper
-paper_penalized-trend-tutorial/        tutorial paper
-~~~
-
-Historical draft reports, old manuscript assets, copied legacy scripts, and
-unimplemented placeholder namespaces are intentionally absent from `main`.
-Git history is the archive.
-
-## Research papers
-
-The repository contains two distinct research tracks. Do not merge their
-scientific objectives.
-
-### Smoothness and financial recurrence
-
-`paper_smoothness-recurrence/` is the compact SMCCA-oriented paper:
-
-\[
-S_h^\star
-=
-\arg\min_{S\in[0,1]} CV_h(S).
-\]
-
-It selects normalized smoothness directly on its compact domain, searches for
-multiple local minima without an exhaustive dense grid, forecasts a frozen
-trend path, and studies first-return/crossing times relative to that path.
-
-Read `paper_smoothness-recurrence/notes/research_objective.md` and
-`paper_smoothness-recurrence/notes/roadmap.md` first for this track.
-
-### Adaptive forecast-optimal trend estimation
-
-`paper_forecast-optimal-smoothing/` studies the broader adaptive object
-
-\[
-\Theta^\star_{T,h}
-=
-(d^\star_{T,h},L^\star_{T,h},S^\star_{T,h})
-=
-G(h,X_T,\mathcal C).
-\]
-
-Its canonical internal notes remain under `notes/`. Results from this track
-are not automatically results of the recurrence paper.
+Paper-specific scientific decisions belong inside the corresponding paper
+folder. Reusable code never belongs inside a paper directory.
 
 ## GitHub Actions
 
-Automatic CI is lightweight: install, tests, and documentation validation.
-Paper compilation remains manual-only through
-`.github/workflows/build-papers.yml`.
+Push/pull-request CI stays lightweight: editable install, tests, and Sphinx
+validation.
+
+Paper/PDF compilation is manual-only through
+.github/workflows/build-papers.yml. Heavy paper outputs are never generated on
+ordinary pushes.
