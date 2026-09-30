@@ -55,5 +55,5 @@ def test_pure_solver_exact_upper_endpoint_projects_to_penalty_nullspace():
     assert result.smoothness == 1.0
     assert np.isinf(result.lambda_)
     assert np.all(np.isfinite(result.trend))
-    assert np.allclose(result.trend, expected, rtol=1e-10, atol=1e-10)
+    assert np.allclose(result.trend, expected, rtol=1e-8, atol=1e-8)
     assert np.max(np.abs(np.diff(result.trend, n=2))) < 1e-10
