@@ -1,0 +1,61 @@
+{
+  "created_at_utc": "2026-09-30T10:05:06.817699+00:00",
+  "git_commit": "c58d60c",
+  "preset": "quick",
+  "endpoint_policy": "exact",
+  "n_obs": 800,
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "orders": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "windows": [
+    63,
+    126,
+    252
+  ],
+  "horizons": [
+    1,
+    5,
+    20
+  ],
+  "scenarios": [
+    "baseline",
+    "persistent"
+  ],
+  "scenario_parameters": {
+    "baseline": {
+      "slope_noise_std": 0.01,
+      "observation_noise_std": 0.5,
+      "ar1_phi": 0.3
+    },
+    "persistent": {
+      "slope_noise_std": 0.01,
+      "observation_noise_std": 0.5,
+      "ar1_phi": 0.8
+    }
+  },
+  "step": 5,
+  "max_origins": 30,
+  "initial_grid_size": 9,
+  "max_depth": 8,
+  "min_interval": 0.001,
+  "max_candidates": 5,
+  "epsilons": [
+    0.0,
+    0.02,
+    0.05,
+    0.1,
+    0.15
+  ],
+  "dense_grid_size": 2001,
+  "max_cases": null,
+  "elapsed_seconds": 58.97324939991813,
+  "n_cases": 216
+}
