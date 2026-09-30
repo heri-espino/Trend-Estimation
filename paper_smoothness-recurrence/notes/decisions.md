@@ -57,3 +57,29 @@ Joint adaptive ((d,L,S)) selection belongs to the other paper.
 
 Use *recurrence to the forecast trend*, *first crossing*, and *time to trend*.
 Do not infer stationarity or arbitrage from these statistics alone.
+
+
+## D008 — Maximum five separated local minima
+
+**Date:** 2026-09-29  
+**Status:** frozen for the first numerical benchmark.
+
+For each CV surface, first find all detected local minima. Candidate selection
+then ranks them by CV and greedily keeps at most five. Once a minimum at
+smoothness s is accepted, any remaining minimum inside
+
+\[
+[s-\varepsilon,\ s+\varepsilon]
+\]
+
+is suppressed. Thus \(\varepsilon=0.10\) denotes radius 0.10 and total
+neighborhood width 0.20.
+
+The initial sensitivity set is
+
+\[
+\varepsilon\in\{0,0.02,0.05,0.10,0.15\}.
+\]
+
+The spacing rule is applied after stationary-point discovery, so changing
+epsilon does not change which stationary points the numerical solver finds.
