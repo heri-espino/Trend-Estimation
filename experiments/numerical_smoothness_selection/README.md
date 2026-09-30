@@ -214,3 +214,31 @@ results/numerical_smoothness_selection/<timestamp>_financial-stress-paper_<sha>/
 └── run_metadata.json
 ~~~
 
+## Generate frozen manuscript evidence
+
+After all principal numerical experiments are complete, generate the manuscript
+tables and figures directly from the frozen result directories:
+
+~~~bash
+python experiments/numerical_smoothness_selection/generate_paper_evidence.py
+~~~
+
+This writes into the active paper directory:
+
+~~~text
+paper_numerical-smoothness-selection/
+├── tables/
+│   ├── benchmark_summary.csv
+│   ├── benchmark_summary.tex
+│   ├── sensitivity_summary.csv
+│   └── sensitivity_summary.tex
+└── figures/
+    ├── evaluation_efficiency.pdf
+    ├── optimum_agreement.pdf
+    └── sensitivity_tradeoff.pdf
+~~~
+
+The generator intentionally references the exact frozen adversarial, synthetic,
+sensitivity, and financial result directories. If any frozen input is missing,
+it fails rather than silently substituting another run.
+
