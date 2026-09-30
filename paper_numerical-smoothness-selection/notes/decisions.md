@@ -52,3 +52,49 @@ arbitrary smooth objective.
 The numerical paper may repeat the continuous \(S\)-search across discrete
 configurations, but it does not claim joint adaptive optimization of those
 quantities.
+
+
+## N009 — Freeze primary numerical search before paper-scale runs
+
+**Date:** 2026-09-30  
+**Status:** frozen.
+
+The primary adaptive-\(S\) search is frozen with
+
+\[
+\begin{aligned}
+\text{initial grid size} &= 9,\\
+\text{endpoint refinement levels} &= 6,\\
+\text{maximum adaptive depth} &= 8,\\
+\text{minimum interval width} &= 10^{-3},\\
+\text{derivative tolerance} &= 10^{-8},\\
+\text{curvature tolerance} &= 10^{-8},\\
+\text{near-zero derivative ratio} &= 0.2,\\
+\text{Brent root tolerance} &= 10^{-10},\\
+\text{interior boundary margin} &= 10^{-6}.
+\end{aligned}
+\]
+
+Exact \(S=0\) and \(S=1\) are always evaluated separately and compared with all
+detected interior local minima.
+
+This specification was frozen after the endpoint-aware quick benchmark recovered
+227/227 dense-reference interior minima across 216 synthetic
+forecast-validation surfaces with zero positive objective regret.
+
+## N010 — Paper-scale benchmark is confirmatory for the frozen search
+
+Paper-scale benchmark results may characterize performance, failure rate,
+accuracy, and computational cost, but must not be used to retune N009.
+
+Search-design sensitivity may still be reported as a robustness analysis. If
+an alternative setting performs differently, it is reported as sensitivity;
+the primary algorithm remains N009 unless a genuine implementation error is
+discovered.
+
+## N011 — Stationary inflections are outside the primary optimization claim
+
+The target is recovery of relevant local minima and exact boundary optima.
+The paper does not claim certified recovery of every stationary point of an
+arbitrary smooth objective. In particular, a tangential stationary inflection
+that is not a local minimum is not counted as an optimization failure.
