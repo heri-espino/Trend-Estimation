@@ -107,6 +107,7 @@ forecasting model zoo.
 - [x] freeze random seeds and presets;
 - [x] version lightweight summary outputs;
 - [ ] create final figures/tables directly from frozen results;
+- [x] implement tested generator for final frozen figures/tables;
 - [ ] write a limitations section covering missed-root risk;
 - [ ] complete literature audit focused on numerical parameter selection;
 - [ ] run all tests and documentation checks.
