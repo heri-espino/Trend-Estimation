@@ -2,11 +2,6 @@ name: Build literature bundle
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - tools/build_literature_bundle.py
 
 permissions:
   contents: write
