@@ -104,8 +104,8 @@ forecasting model zoo.
 
 ## Phase 6 — Reproducibility and manuscript evidence
 
-- [ ] freeze random seeds and presets;
-- [ ] version lightweight summary outputs;
+- [x] freeze random seeds and presets;
+- [x] version lightweight summary outputs;
 - [ ] create final figures/tables directly from frozen results;
 - [ ] write a limitations section covering missed-root risk;
 - [ ] complete literature audit focused on numerical parameter selection;
