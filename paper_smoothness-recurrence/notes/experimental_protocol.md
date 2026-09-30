@@ -1,3 +1,5 @@
+> **Historical pre-split note (2026-09-29).** This file predates the separation into three research papers. It is preserved for provenance but is **not** the current source of truth. For the applied paper use README.md, notes/research_objective.md, notes/scope.md, notes/roadmap.md, and notes/decisions.md. Numerical smoothness-search material belongs to ../paper_numerical-smoothness-selection/.
+
 # Experimental Protocol
 
 Status: draft; values must be frozen in `decisions.md` before final runs.
