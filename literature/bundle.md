@@ -5783,3 +5783,4039 @@ Difference order qx
 <!-- END SOURCE 5/40: Biessy_2025_whittaker-henderson-smoothing-revisited-appendix.md -->
 
 ---
+
+<!-- BEGIN SOURCE 6/40: Biessy_2025_whittaker-henderson-smoothing-revisited.md -->
+
+# Source: `Biessy_2025_whittaker-henderson-smoothing-revisited.md`
+
+---
+id: "Biessy_2025_whittaker-henderson-smoothing-revisited"
+source_pdf: "../pdf/Biessy_2025_whittaker-henderson-smoothing-revisited.pdf"
+source_filename: "Biessy_2025_whittaker-henderson-smoothing-revisited.pdf"
+format: "academic-paper"
+extraction_profile: "text-math-tables-high-fidelity"
+extraction_mode: "full-page-ocr"
+extraction_quality: "excellent"
+extraction_score: 108.0
+visual_assets: "disabled"
+references_file: "../references/Biessy_2025_whittaker-henderson-smoothing-revisited.references.md"
+---
+
+<!-- p:1 -->
+
+####### RESEARCHARTICLE
+
+## Whittaker-Henderson smoothing revisited: A modern statistical framework for practical use
+
+Guillaume Biessy, PhD1.21D
+
+1LinkPact, Paris, 75015, France
+
+2Sorbonne Université, CNRS, Laboratoire de Probabilités, Statistique et Modélisation, LPSM, Paris, 75005, France Email: guillaume.biessy78@gmail.com
+
+Received: 17 October 2024; Revised: 23 July 2025; Accepted: 24 July 2025; First published online: 3 September 2025
+
+Kk a   s l m  m  m s :es approach; marginal likelihood; LAML; extrapolation
+
+###### Abstract
+
+Introduced over a century ago, Whittaker-Henderson smoothing remains widely used by actuaries in constructing one-dimensional and two-dimensional experience tables for mortality, disability, and other life insurance risks. In this paper, we reinterpret this smoothing technique within a modern statistical framework and address six practically relevant questions about its use. First, we adopt a Bayesian perspective on this method to construct credible intervals. Second, in the context of survival analysis, we clarify how to choose the observation and weight vectors by linking the smoothing technique to a maximum likelihood estimator. Third, we improve accuracy by relaxing the method's reliance on an implicit normal approximation. Fourth, we select the smoothing parameters by maximizing a marginal likelihood function. Fifth, we improve computational efficiency when dealing with numerous observation points and consequently parameters. Finally, we develop an extrapolation procedure that ensures consistency between estimated and predicted values through constraints.
+
+## Notations
+
+In this paper, vectors are denoted in boldface and matrix names in uppercase letters. If y is a vector and A is a matrix, Var(y) denotes the variance-covariance matrix associated with y, diag(A) represents the diagonal of matrix A, and Diag(y) is the diagonal matrix such that diag(Diag(y)) = y. The sum of the diagonal elements of A is denoted as tr(A) and its transpose as AT. In the case where A is invertible, A−1 denotes its inverse and |A| denotes the product of the eigenvalues of A. For a non-invertible matrix A, A− refers to the Moore-Penrose pseudo-inverse of A, and |A|+ denotes the product of the non-zero eigenvalues of A. By writing the eigendecomposition as A = UΣVT, where U and V are orthogonal matrices and Σ is a diagonal matrix containing the eigenvalues of A, and by denoting Σ- as the matrix obtained by replacing the non-zero eigenvalues in Σ with their inverses leaving the zero eigenvalues unchanged, the pseudo-inverse is given by A− = VΣ- UT. The Kronecker product of two matrices A and B is denoted as A ⊗ B, and their Hadamard (element-wise) product is denoted as A  B. [x] denotes the greatest integer less than or equal to x ∈ R. Finally, the symbol α denotes proportionality between the expressions on both sides.
+
+## 1. Introduction
+
+Whittaker-Henderson (WH) smoothing is a graduation method designed to mitigate the effects of sampling fluctuations in a vector of evenly spaced discrete observations. Although this method was originally proposed by Bohlmann (1899), it is named after Whittaker (1923), who applied it to graduate mortality tables, and Henderson (1924), who popularized it among actuaries in the United States. The method
+
+© The Author(s), 2025. Published by Cambridge University Press on behalf of The International Actuarial Association. This is an Open Access article, distributed under the terms of the Creative Commons Attribution licence (https://creativecommons.org/licenses/by/4.0/), which permits unrestricted re-use, distribution and reproduction, provided the original article is properly cited.
+
+IAA
+
+AAI
+
+International Actuarial Association
+
+Association Actuarielle Internationale
+
+
+<!-- p:2 -->
+
+
+## 2 Guillaume Biessy
+
+was later extended to two dimensions by Knorr (1984). WH smoothing may be used to build experience tables for a broad spectrum of life insurance risks, such as mortality, disability, long-term care, lapse, mortgage default, and unemployment. We begin with a brief overview of the method before outlining the structure and main contributions of the paper.
+
+### 1.1. A brief reminder of WH smoothing mathematical formulation
+
+The one-dimensional case
+
+Let y be a vector of observations and w a vector of positive weights, both of size n. The estimator associated with WH smoothing is given by
+
+$$\hat { y } = \arg \min _ { \theta } \{ F ( y , w , \theta ) + R _ { \lambda , q } ( \theta ) \}$$
+
+where:
+
+- n · F(y, w, θ) = ∑w(yi — θ)2 represents a fidelity criterion with respect to the observations, i=1
+- n−q · Rλ,q(θ) = λ∑(∆aθ)2 represents a smoothness criterion. i=1
+
+In the latter expression, λ ≥ 0 is a smoothing parameter and ∆a denotes the forward difference operator of order q, such that for any i ∈ {1, . . . , n − q}:
+
+$$( \Delta ^ { q } \theta ) _ { i } = \sum _ { k = 0 } ^ { q } \left ( \begin{matrix} q \\ k \end{matrix} \right ) ( - 1 ) ^ { q - k } \theta _ { i + k } . \\$$
+
+Define W = Diag(w), the diagonal matrix of weights, and Dn,q as the order q difference matrix of dimensions (n − q) × n, such that (Dn,qθ) = (∆aθ)i for all i ∈ [1, n − q]. The first- and second-order difference matrices are given by
+
+$$\text {distance matrices giving by} \\ D _ { n , 1 } = \begin{bmatrix} - 1 & 1 & 0 & \dots & 0 \\ 0 & - 1 & 1 & \ddots & \vdots \\ \vdots & \ddots & \ddots & \ddots & 0 \\ 0 & \dots & 0 & - 1 & 1 \end{bmatrix} \quad \text {and} \ D _ { n , 2 } = \begin{bmatrix} 1 & - 2 & 1 & 0 & \dots & 0 \\ 0 & 1 & - 2 & 1 & \ddots & \vdots \\ \vdots & \ddots & \ddots & \ddots & \ddots & 0 \\ 0 & \dots & 0 & 1 & - 2 & 1 \end{bmatrix} .$$
+
+while higher-order difference matrices follow the recursive formula Dn,q = D-1,q-1Dn,1. The fidelity and smoothness criteria can be rewritten with matrix notations as
+
+$$F ( y , w , \theta ) = ( y - \theta ) ^ { T } W ( y - \theta ) \quad \text {and} \quad R _ { \lambda , q } ( \theta ) = \lambda \theta ^ { T } D _ { n , q } ^ { T } D _ { n , q } \theta \\$$
+
+and the WH smoothing estimator thus becomes
+
+$$\hat { y } = \arg \min _ { \theta } \left \{ ( y - \theta ) ^ { r } W ( y - \theta ) + \theta ^ { T } P _ { \lambda } \theta \right \}$$
+
+where Pλ = λDna Dn,q n,q
+
+#### The two-dimensional case
+
+In the two-dimensional case, consider a matrix Y of observations and a matrix Ω of non-negative weights, both of dimensions nx × nz. The WH smoothing estimator solves:
+
+$$\widehat { Y } = \arg \min _ { \Theta } \{ F ( Y , \Omega , \Theta ) + R _ { \lambda , q } ( \Theta ) \}$$
+
+where:
+
+- F(Y, Ω, Θ) = Σi=1 Σj=1 Ωij(Yij − Θi,j)2 represents a fidelity criterion with respect to the observations,
+
+
+<!-- p:3 -->
+
+
+- Rx,q(O) = λx ∑j=1 ∑i=1 (∆%Θ.j) + λz ∑i=1 ∑j=1 (∆%Oi ) isa moothness crtrion wihit λ = (λx, λz).
+
+This latter criterion adds row-wise and column-wise regularization criteria to Θ, with respective orders qx and qz, weighted by non-negative smoothing parameters λx and λz. In matrix notation, let y = vec(Y), w = vec(Ω), and θ = vec(Θ) as the vectors obtained by stacking the columns of the matrices Y, Ω, and Θ, respectively. Additionally, denote W = Diag(w) and n = nx × nz. The fidelity and smoothness criteria become
+
+$$F ( y , w , \theta ) = ( y - \theta ) ^ { T } W ( y - \theta ) \\ R _ { \lambda , q } ( \theta ) = \theta ^ { T } ( \lambda _ { x } I _ { n _ { z } , q _ { x } } D _ { n _ { z } , q _ { x } } + \lambda _ { z } D _ { n _ { z } , q _ { z } } ^ { T } D _ { n _ { z } , q _ { z } } \otimes I _ { n _ { x } } ) \theta \\ \text {cited estimator also takes the form of Equation } 1 , 2 \text { except in this case}$$
+
+and the associated estimator also takes the form of Equation 1.2 except in this case
+
+$$P _ { \lambda } = \lambda _ { x } I _ { n _ { z } } \otimes D _ { n _ { x } , q _ { x } } ^ { T } D _ { p _ { x } }$$
+
+Extension to higher dimensions is straightforward and not discussed here.
+
+#### An explicit solution
+
+If W + Pλ is invertible, Equation (1.2) admits the closed-form solution:
+
+$$\hat { y } = ( W + P _ { \lambda } ) ^ { - 1 } W y .$$
+
+Indeed, as a minimum,  satisfies:
+
+$$0 = \frac { \partial } { \partial \theta } \Big | _ { \hat { y } } \left \{ ( y - \theta ) ^ { T } W ( y - \theta ) + \theta ^ { T } P _ { \lambda } \theta \right \} = - 2 W ( y - \hat { y } ) + 2 P _ { \lambda } \hat { y } .$$
+
+It follows that (W + Pλ) = Wy, proving Equation (1.3). If λ ≠ 0, W + Pλ is invertible as long as w has q non-zero elements in the one-dimensional case and Ω has at least qx × qz non-zero elements spread across qx different rows and qz different columns in the two-dimensional case. These conditions are always met in real datasets.
+
+### 1.2. Structure of the paper
+
+Introduced a century ago, WH smoothing remains widely used by actuaries, particularly in France and North America (Canadian Institute of Actuaries, 2017; Society of Actuaries, 2018). Other nonparametric smoothing methods have since emerged, notably spline-based techniques (Reinsch, 1967), which gained even greater popularity with P-splines (Eilers and Marx, 1996). A broader overview of alternative smoothers is available in Wood (2017, chap. 5).
+
+For evenly spaced discrete observations, WH smoothing may be considered a particular case of Psplines with degree-zero splines and identity model matrix. Its appeal lies in its simplicity: no selection of knots, parameters equal to fitted values, and shape controlled solely via penalization. However, it involves more parameters than low-rank smoothers, making it more computationally intensive.
+
+Originally proposed as an empirical alternative to polynomial regression and weighted averages, WH smoothing offered key benefits noted by Whittaker (1923): first q moment preservation, adjustable smoothing parameters, and robustness at boundaries. While smoothing theory has evolved – particularly via generalized additive models (Hastie and Tibshirani, 1990), use of WH smoothing by actuaries remains largely unchanged. This paper reinterprets WH within modern statistical theory to bridge that gap and address six practical questions, each discussed in a dedicated section.
+
+#### How to measure uncertainty in smoothing results?
+
+We propose a method to quantify the uncertainty in WH smoothing based on data volume, a topic that has received little attention in the literature. In a frequentist framework, the WH estimator is biased, which
+
+
+<!-- p:4 -->
+
+
+###### 4 Guillaume Biessy
+
+complicates the construction of valid confidence intervals for finite samples. However, under certain conditions, WH smoothing can be viewed as a Bayesian model, enabling the derivation of credible intstt  a (l   s il a u usa   ton for the method and formally revisited decades later by Taylor (1992). In this section, we build on that equivalence to derive credible intervals for WH smoothing.
+
+#### Which observation and weight vectors to use?
+
+For the Bayesian interpretation of WH smoothing discussed in Section 2 to hold, it must be applied to a vector y of independent, normally distributed observations with known variances. The weight vector w should then contain the inverse variances (up to a constant), as noted by Taylor (1992) and Verrall (1993). We show that, under piecewise constant transition intensities in duration models, the maximum likelihood estimator of crude rates produces vectors (y, w) that asymptotically meet these conditions. This, combined with the results from the previous section, offers a statistical foundation for the use of WH smoothing in constructing experience tables for life insurance risks.
+
+#### How to improve the accuracy of smoothing with limited data volume?
+
+The standard approach applies WH smoothing to crude rate estimates, assuming they are asymptotically normal. However, this assumption often breaks down in practice when data are limited, making the method unreliable in such cases. Following Verrall (1993), we propose a generalization of WH smoothing that replaces the two-step procedure with the direct maximization of a penalized log-likelihood. Instead of smoothing pre-estimated rates, this method works directly with aggregated event and exposure counts. The estimation is performed iteratively using the PIRLS algorithm. We evaluate both methods on simulated datasets reflecting typical life insurance portfolios. Results show that, in smaller samples, the normal approximation in the traditional method introduces notable bias. This supports the use of the generalized approach – based on penalized log-likelihood – as a more robust alternative when data are limited.
+
+#### How to select the smoothing parameters?
+
+We now turn to the crucial choice of the smoothing parameter λ, which has long been left to actuarial judgement. Giesecke and Center (1981) suggested choosing λ so that the variance of the smoothed results matches the average variance of a Chi-square statistic, but uses n — q as degrees of freedom, thus ignoring the reduction in effective model dimension due to penalization. Brooks et al. (1988) minimized the global cross-validation criterion introduced by Wahba (1980), though this can result in severe undersmoothing as noted by Wood (2011).
+
+We instead propose to select λ by maximizing a marginal likelihood function, a method first introduced by Patterson and Thompson (1971) and later applied to smoothing parameter selection by Anderssen and Bloomfield (1974). This approach is consistent with the Bayesian framework discussed earlier and performs well in small samples, as shown by Reiss and Todd Ogden (2009). This marginal likelihood function has a closed-form expression and can be maximized numerically. For the proposed generalization of WH smoothing, the marginal likelihood is no longer available in closed form. Instead, we rely on the Laplace approximation of the marginal likelihood (LAML), which can be maximized numerically. As both solving likelihood equations and selecting the optimal smoothing parameter are iterative processes, we explore different ways of nesting these iterations. We compare three nesting strategies combined with three numerical optimization algorithms for maximizing the marginal likelihood or LAML. Simulation results show that all strategies have near-optimal accuracy, with the fastest performance achieved using the outer iteration strategy combined with the Newton algorithm
+
+
+<!-- p:5 -->
+
+
+###### How to improve smoothing computational efficiency?
+
+When the number of observations – and thus parameters – is large, the computational cost of WH smoothing becomes a major challenge. This is particularly relevant in actuarial contexts, such as smoothing two-dimensional tables for disability or long-term care modelling. Beyond actuarial applications, WH smoothing is also widely used in economics for long time series, where it is known as the HodrickPrescott filter (Hodrick and Prescott, 1997). Although fast algorithms have been developed to exploit the structure of the penalization matrix (e.g., Weinert, 2007; Cornea-Madeira, 2017) they are typically limited to the one-dimensional case and cannot be directly extended to two dimensions.
+
+After briefly outlining the main computational steps of (generalized) WH smoothing-including smoothing parameter selection via marginal likelihood or LAML-and their leading-order costs, we introduce two complementary strategies to reduce the computational burden:
+
+1. Banded matrix exploitation: WH smoothing involves model and penalization matrices with banded structure. Taking advantage of this structure greatly accelerates key computations.
+2. Reduced-rank basis via natural parametrization: Building on the work of Demmler and Reinsch (1975), we apply an eigendecomposition to the one-dimensional penalization matrices and drop o ss ss   s   ss    sowo dimensions, we further improve efficiency using the generalized linear array model (GLAM) framework (Currie et al., 2006) which leverages the rectangular shape of the data.
+
+In the two-dimensional case, we compare these strategies with a cubic P-spline alternative using simulated datasets. Results show that the banded implementation reduces computation time by up to a factor of 25. The reduced-rank approach brings further gains – up to a factor of 250 – at the cost of a slight reduction in accuracy. Its performance is comparable to P-spline smoothing with a cubic basis of similar size.
+
+#### How to extrapolate smoothing results?
+
+We conclude by addressing how to extrapolate smoothing results. Semi-parametric models like WH and P-splines can extrapolate beyond the observed data – similar to parametric models – but this feature is often overlooked in actuarial practice. The existing literature is limited and mostly focused on mortality forecasting.
+
+Currie et al. (2004) uses P-splines to fit and forecast mortality rates by treating the extrapolated positions as zero-weight observations (see also Delwarde et al., 2007; Currie, 2013). While this works well in one dimension, Carballo et al. (2021) showed that it distorts the fit in two dimensions. To fix this, they proposed adding constraints to preserve the values that would result from fitting the observed data alone.
+
+However, their approach to confidence intervals overlooks potential innovation error beyond the observed data, effectively treating the extrapolated process as perfectly smooth. In contrast, we propose an approach that derives credible intervals for extrapolated values, accounting for the underlying variability beyond the observed data range.
+
+## 2. How to measure uncertainty in smoothing results?
+
+The explicit solution given by Equation (1.3) indicates that E() = (W + Pλ)−1WE(y) ≠ E(y) when λ ≠ 0. This implies that penalization introduces a smoothing bias, which prevents the construction of confidence intervals for finite samples centred on E(y). Therefore, in this section, we turn to a Bayesian framework where smoothing can be interpreted more naturally.
+
+### 2.1. Maximum a posteriori estimate
+
+Suppose that y | θ ∼ N(θ, σ2W−) and θ ∼ N(0, σ2P−) for some σ &gt; 0. The Bayes formula allows us to express the posterior likelihood f(θ | y) associated with these choices in the following form:
+
+
+<!-- p:6 -->
+
+
+$$f ( \theta \, | \, y ) \otimes f ( y \, | \, \theta ) f ( \theta ) \otimes \exp \left ( \frac { 1 } { 2 \sigma ^ { 2 } } \left [ ( y - \theta ) ^ { T } W ( y - \theta ) + \theta ^ { T } P _ { \lambda } \theta \right ] \right ) .$$
+
+Hence the mode of the posterior distribution, ê = argmax[f(θ | y)], also known as the maximum a posteriori (MAP) estimate, coincides with the solution  from Equation (1.2), whose explicit form is given by Equation (1.3).
+
+### 2.2. Posterior distribution of θ | y
+
+A second-order Taylor expansion of the log-posterior likelihood around  = ê gives us:
+
+$$\ln f ( \theta \, | \, y ) = \ln f ( \hat { \theta } \, | \, y ) + \frac { \partial \, \ln f ( \theta \, | \, y ) } { \partial \theta } \Big | _ { \theta = \hat { \theta } } ^ { T } ( \theta - \hat { \theta } ) + \frac { 1 } { 2 } ( \theta - \hat { \theta } ) ^ { r } \, \frac { \partial ^ { 2 } \ln f ( \theta \, | \, y ) } { \partial \theta \partial \theta ^ { T } } \Big | _ { \theta _ { \theta } = \hat { \theta } } ( \theta - \hat { \theta } ) \quad ( 2 . 1 )$$
+
+$$\ln f ( \theta | y ) = \ln f ( \theta | y ) + \frac { \partial \theta } { \partial \theta } \Big | _ { \theta = \hat { \theta } } \Big | _ { \theta = 0 } ( \theta - \theta ) + \frac { \partial ( \theta - \theta ) ^ { \prime } } { 2 } \Big | _ { \theta = \hat { \theta } } ( \theta - \theta ) \Big | _ { \theta = \hat { \theta } } \\ \text {where} \quad \frac { \partial \ln f ( \theta | y ) } { \partial \theta } \Big | _ { \theta = \hat { \theta } } = 0 \quad \text {and} \quad \frac { \partial ^ { 2 } \ln f ( \theta | y ) } { \partial \theta \partial \theta ^ { \prime } } \Big | _ { \theta = \hat { \theta } } = - \frac { 1 } { \sigma ^ { 2 } } ( W + P _ { \lambda } ) . \\ \text {As this last derivative no longer depends on $\theta$, higher-order derivatives are all zero. The Taylor expansion}$$
+
+As this last derivative no longer depends on θ, higher-order derivatives are all zero. The Taylor expansion allows for an exact computation of ln f(θ | y). Substituting the result back into Equation (2.1) yields:
+
+$$f ( \theta | y ) \in & \exp \left [ \ln f ( \hat { \theta } | y ) - \frac { 1 } { 2 \sigma ^ { 2 } } ( \theta - \hat { \theta } ) ^ { T } ( W + P _ { \lambda } ) ( \theta - \hat { \theta } ) \right ] \\ & \quad \times \exp \left [ - \frac { 1 } { 2 \sigma ^ { 2 } } ( \theta - \hat { \theta } ) ^ { T } ( W + P _ { \lambda } ) ( \theta - \hat { \theta } ) \right ]$$
+
+which can immediately be recognized as the density of the N(, σ2(W + Pλ)−1) distribution.
+
+### 2.3. Consequence for the WH smoothing
+
+The prior θ ~ N(0, σ2P−) provides a Bayesian interpretation of the smoothness penalty, expressing an (improper) prior belief about the structure of y.
+
+This Bayesian framework and the resulting credible intervals rely on the assumption that y |θ~ N(θ, σ2W−), meaning that the components of y are independent with known variances (up to a constant σ2). The weight vector w must then be proportional to the inverse variances, not chosen empirically. If σ2 is known, 100(1 — α)% credible intervals take the form:
+
+$$\mathbb { E } ( y ) \, | \, y \in \left [ \hat { y } \pm \Phi ^ { - 1 } \left ( 1 - \alpha / 2 \right ) \sqrt { \sigma ^ { 2 } \text {diag} \left \{ ( W + P _ { \lambda } ) ^ { - 1 } \right \} } \right ]$$
+
+where  = (W + Pλ)−1Wy and Φ is the cumulative distribution function for the standard normal distribution. According to Marra and Wood (2012), such intervals have good Frequentist coverage.
+
+If σ2 is unknown, it can be estimated as
+
+$$\hat { \sigma } ^ { 2 } = \frac { ( y - \hat { y } ) ^ { T } W ( y - \hat { y } ) } { n - \text {tr} ( H ) } \quad \text {where} \quad H = ( W + P _ { \lambda } ) ^ { - 1 } W .$$
+
+In that case, σ2 is replaced by ô2 and the normal distribution in Equation (2.2) by the Student t - distribution with n — tr(H) degrees of freedom.
+
+## 3. Which observation and weight vectors to use?
+
+Section 2 highlighted that WH smoothing may be interpreted in a robust statistical framework when applied to a vector y of independent, normally distributed observations with known variances, and a weight vector w proportional to the inverses of those variances. In this section, we propose, within the framework of duration models used for constructing experience tables for life insurance risks, vectors y and w that satisfy these conditions.
+
+
+<!-- p:7 -->
+
+
+### 3.1. Survival analysis framework
+
+We consider a longitudinal follow-up of m individuals, subject to left truncation and non-informative right censoring, and aim to estimate a distribution governed by a continuous explanatory variable x (e.g. age). Let μ denote the hazard function, also known as the force of mortality in the study of the death risk. Under standard survival analysis assumptions, the log-likelihood takes the following continuous-time form:
+
+$$\ell ( \theta ) = \sum _ { i = 1 } ^ { m } \left [ \delta _ { i } \ln \mu ( x _ { i } + t _ { i } , \theta ) - \sum _ { u = 0 } ^ { t _ { i } } \mu ( x _ { i } + u , \theta ) d u \right ] . \\$$
+
+Here x is the age at the start of observation, t is the follow-up duration for individual i and δ is an event indicator: 1 if the event is observed and 0 if censored.
+
+Although model estimation can be based on direct maximization of Equation (3.1), this approach scales poorly with large m and generally requires numerical integration – except in simple parametric cases. We instead adopt a discrete approximation by assuming the hazard rate is piecewise constant over one-year intervals:
+
+$$\mu ( x + \epsilon ) = \mu ( x ) \quad \text {for all} \quad x \in \mathbb { N } , \epsilon \in [ 0 , 1 ] .$$
+
+Under this assumption, the log-likelihood simplifies to a sum over discrete ages:
+
+$$\ell ( \theta ) = \sum _ { x = x _ { \min } } ^ { \max } \ln \mu ( x , \theta ) d ( x ) - \mu ( x , \theta ) e _ { c } ( x ) . \\$$
+
+Here d(x) is the number of observed events at age x and e(x) is the central exposure to risk, that is, the total duration individuals are observed at age x.
+
+This discretization, first introduced by Hoem (1971), is widely used in actuarial science. Its advantages are underlined for example in Gschlössl et al. (2011). It extends naturally to the two-dimensional case by assuming μ(x + ∈, z + ξ) = μ(x, z) and summing over (x, z) pairs.
+
+Details on the derivation of Equations (3.1) and (3.2), along with the computation of central exposures and event counts, are provided in Section A of the Supplementary Materials.
+
+### 3.2. Likelihood equations
+
+Assuming one parameter per observation and using the exponential link μ(θ) = exp(θ), we recover the crude rates estimator, which models each age (or age pair) independently. The exponential link ensures positive hazard rates. The log-likelihood, in both one- and two-dimensional cases, takes the vectorized form:
+
+$$\ell ( \theta ) = \theta ^ { T } d - \exp ( \theta ) ^ { T } e _ { c }$$
+
+where d and ec are the vectors of observed deaths and central exposures.
+
+The derivatives of this likelihood are
+
+$$\frac { \partial \ell } { \partial \theta } = \mathbf d - \exp ( \theta ) \odot \mathbf e _ { c } \quad \text {and} \quad \frac { \partial ^ { 2 } \ell } { \partial \theta \partial \theta ^ { \prime } } = - \text {Diag} ( \exp ( \theta ) \odot \mathbf e _ { c } ) .$$
+
+These equations correspond to those of a Poisson GLM (Nelder and Wedderburn, 1972) with mean μ(θ)  e, although derived under different assumptions.
+
+The model admits the closed-form solution ê = ln (d/ec). Under standard regularity conditions, the maximum likelihood estimator satisfies ê ~ N(θ, W−1), with W3 = Diag(d).
+
+
+<!-- p:8 -->
+
+
+Notably, this asymptotic approximation depends on the number of individuals m and not the dimension n of the aggregated vectors.
+
+### 3.3. Consequence for the WH smoothing
+
+We conclude that, under the duration model framework and using crude rates, the log-estimate ln (d/ec) is asymptotically normal:
+
+$$\ln \left ( \mathbf d / \mathbf e _ { c } \right ) \sim \mathcal { N } ( \ln \mu , W ^ { - 1 } ) \quad \text {with} \quad W = D i a g ( \mathbf d ) .$$
+
+This justifies applying WH smoothing to the observation vector y = ln (d/ec) with weight vector w = d. Using results from Section 2, and σ2 = 1, the credible intervals for ln μ are
+
+$$\ln \mu \, | \, d , e _ { \epsilon } \in \left [ \hat { \theta } \pm \Phi ^ { - 1 } \left ( 1 - \alpha / 2 \right ) \sqrt { \text {diag} \left \{ ( \text {Diag} ( \text {d} ) + P _ { \lambda } ) ^ { - 1 } \right \} } \right ]$$
+
+with ê = (W + Pλ)−1W(ln d − ln ec). Credible intervals for μ itself are then obtained by exponentiating the bounds.
+
+## 4. How to improve the accuracy of smoothing with limited data volume?
+
+### 4.1. Generalized Whittaker-Henderson smoothing
+
+The approach described in Section 3.2 assumes that the crude rates estimator is asymptotically normal, justifying the application of WH smoothing to its logarithm. However, with limited data, this approximation may introduce significant bias. We therefore propose an alternative based directly on the exact likelihood in Equation (3.3). Applying the Bayesian framework from Section 2 and assuming θ ~ N(0, P−), Bayes' theorem gives
+
+$$f ( \theta \, | \, d , e _ { c } ) \, \infty f ( d , e _ { c } \, | \, \theta ) f ( \theta ) \, \infty \exp \left [ \ell ( \theta ) - \frac { 1 } { 2 } \theta ^ { T } P _ { \lambda } \theta \right ]$$
+
+We define the penalized log-likelihood as lp(θ) = l(θ) − θ Pλθ/2. The maximum a posteriori estimate is the maximizer of lp.
+
+Using a second-order Taylor expansion of the posterior log-likelihood around ê leads to the Laplace approximation:
+
+$$f ( \theta \, | \, \mathbf d , \mathbf e _ { \mathbf c } ) \approx \mathcal { N } ( \hat { \theta } , ( W _ { \hat { \theta } } + P _ { \lambda } ) ^ { - 1 } )$$
+
+where W = Diag(exp()  ec). Unlike the normal case studied in Section 2, the higher-order derivatives of the posterior log-likelihood are not zero, and Equation (4.1) only provides an approximation of the posterior log-likelihood, which yields asymptotic credible intervals:
+
+$$\ln \mu \left | \, d , e _ { c } \in \left [ \hat { \theta } \pm \Phi ^ { - 1 } \left ( 1 - \alpha / 2 \right ) \sqrt { \text {diag} \left \{ ( W _ { \hat { \theta } } + P _ { \lambda } ) ^ { - 1 } \right \} } \right ] .$$
+
+Unlike the closed-form estimator in Equation (3.4), no analytical solution for ê exists here. We solve numerically using Newton's algorithm, which iteratively updates:
+
+$$\theta _ { k + 1 } = \theta _ { k } + ( W _ { k } + P _ { \lambda } ) ^ { - 1 } ( \text {d} - \exp ( \theta _ { k } ) \odot \mathfrak { e } _ { \mathfrak { c } } - P _ { \lambda } \theta _ { k } ) ]$$
+
+with Wk = Diag(exp(θk)  ec). The update can be rewritten as
+
+$$\theta _ { k + 1 } = ( W _ { k } + P _ { \lambda } ) ^ { - 1 } W _ { k } z _ { k } \quad \text {where} \quad z _ { k } = \theta _ { k } + W _ { k } ^ { - 1 } [ \mathbf d - \exp ( \theta _ { k } ) \odot \mathbf e _ { \mathbf c } ] .$$
+
+Initializing with the crude rates estimator θ0 = ln (d/ec) implies W0 = Diag(d) and z0 = ln (d/ec), so the first iteration recovers the classical WH smoothing result.
+
+
+<!-- p:9 -->
+
+
+Table 1. Key figures associated with the 6 simulated datasets.
+
+| Portolio type   | Dimensions   |   Head count |   Exposure count |   Death count |
+|-----------------|--------------|--------------|------------------|---------------|
+| Annuity         | 45           |       20,000 |          136,524 |         1,722 |
+| Annuity         | 45           |      100,000 |          679,728 |         8,452 |
+| Annuity         | 45           |      500,000 |        3,405,892 |        42,499 |
+| LTC             | 30 × 15      |       20,000 |            8,115 |         1,888 |
+| LTC             | 30 × 15      |      100,000 |           40,004 |         9,281 |
+| LTC             | 30 15        |      500,000 |          202,666 |        47,358 |
+
+Subsequent iterations refine the observation and weight vectors. This process can thus be interpreted as an iterative generalization of WH smoothing, akin to how generalized linear models extend linear models.
+
+We refer to this method as generalized WH smoothing. The iterative estimation algorithm described above corresponds to the penalized iteratively reweighted least squares (PIRLS) algorithm, widely used for fitting generalized additive models.
+
+This framework naturally extends to other exponential family distributions, such as the binomial case suggested in Verrall (1993), by adapting the likelihood, link function, weight matrix, and working vector. However, we advocate for the Poisson-like likelihood of Equation (3.3), which offers several advantages: it generalizes to competing risks, supports multiplicative covariate effects via the log link and allows the use of an external reference table as a multiplicative offset.
+
+### 4.2. Impact of the normal approximation in the original smoothing
+
+As discussed in Section 3, classical WH smoothing can be viewed as an approximation to a penalized likelihood maximization, relying on a crude rate estimator assumed to be asymptotically normal. To assess the practical consequences of this approximation, we conduct an empirical comparison based on six simulated datasets reflecting the typical structure and volume of real insurance portfolios:
+
+- The first three datasets simulate annuity portfolios with 20,000, 100,000, and 500,000 policyholders. The sole covariate is age, ranging from 50 to 95.
+- The next three mimic long-term care (LTC) portfolios of the same sizes. Modelling of LTC typically relies on the illness-death model (Fix and Neyman, 1951; Clifford, 1977). To get a two-dimensional illustration we focus on the transition between the disabled and dead states (the two other transitions would provide additional one-dimensional examples). Two covariates are used: age (70–100) and duration in LTC (0–15 years).
+
+Each dataset consists of individual-level longitudinal data, from which we derive event counts d and exposures ec, aggregated by age x (for annuities) of by (x, z) pairs (for LTC). All datasets within each group share the same underlying structure and differ only in size. Key dataset statistics are provided in Table 1 and additional details about how those datasets were generated are provided in Section B of the Supplementary Materials.
+
+We apply two methods:
+
+1. Original WH smoothing using y = ln (d/ec) and weights w = d as in Section 3.
+2. Generalized WH smoothing, using the likelihood formulation of Section4.
+
+Both methods use the same smoothing parameter(s) λ, to ensure that prior assumptions on θ = ln μ are held constant. We fix the penalty order at q = 2, corresponding to second-order differences. As both estimators target θ, we compare them using the following relative error metric:
+
+$$\Delta ( \theta ) = \frac { \ell _ { P } ( \hat { \theta } _ { M L } ) - \ell _ { P } ( \theta ) } { \ell _ { P } ( \hat { \theta } _ { M L } ) - \ell _ { P } ( \hat { \theta } _ { \infty } ) } .$$
+
+
+<!-- p:10 -->
+
+
+Table 2. Impact of the approximation from the original WH smoothing on the 6 simulated datasets.
+
+| Portolio type   |   Head count | Relative error   | SMR    |
+|-----------------|--------------|------------------|--------|
+| Annuity         |       20,000 | 1,91%            | 99,19% |
+| Annuity         |      100,000 | 0,02%            | 99,89% |
+| Annuity         |      500,000 | 0,00%            | 99,99% |
+| LTC             |       20,000 | 93,27%           | 86,86% |
+| LTC             |      100,000 | 5,12%            | 97,59% |
+| LTC             |      500,000 | 0,24%            | 99,56% |
+
+Here maximizes the penalized likelihood, while ê corresponds to the solution with λ → ∞, which we later show to be the degree-(q – 1) polynomial that maximizes the likelihood. By construction:
+
+$$\Delta ( \hat { \theta } _ { _ { M L } } ) = 0 , \ \Delta ( \hat { \theta } _ { _ { \infty } } ) = 1 , \ \text { and } \ \Delta ( \theta ) \geq 0 .$$
+
+A model with ∆(θ) &gt; 1 performs worse than a simple polynomial fit under the prior.
+
+Table 2 presents the values of ∆(ênorm) across the six datasets. As expected, discrepancies decrease with portfolio size. For annuities, the approximation performs reasonably well even at smaller scales. In contrast, for LTC, it yields substantial errors, except for the largest portfolio.
+
+One explanation, supported by the standardized mortality ratio (SMR) also provided in Table 2, is the positive correlation between observed event counts and their use as weights. This causes high crude rates to be overweighted, and low rates to be underweighted – introducing systematic overestimation of mortality rates. This bias is more severe in the LTC case where the observed deaths by data point is lower. In contrast, generalized WH smoothing preserves total event counts by construction, always yielding an SMR of exactly 100%. These results support adopting generalized WH smoothing in most practical settings. It retains the advantages of the original method while offering improved accuracy – even in small samples – and remains straightforward to implement.
+
+## 5. How to select the smoothing parameters?
+
+### 5.1. Impact of smoothing parameter choice
+
+In the one-dimensional case, WH smoothing involves a single smoothing parameter λ; in two dimensions a pair λ = (λx, λz). These parameters govern the trade-off between fidelity to the data and smoothness of the estimate, as defined in Equation (1.1).
+
+Figure 1 illustrates this effect in a one-dimensional annuity dataset (100,000 policyholders, see Section 4.2), with three values of λ. The effective degrees of freedom (edf), computed as the trace of the hat matrix H = (W + Pλ)−1W, are shown for each curve. This quantity serves as a non-parametric analog of the number of free parameters in classical models and can take fractional values.
+
+As shown, a low value λ = 101 yields an overfitted result that mirrors sampling noise, while a high value λ = 107 oversmooths and obscures the underlying trend. A mid-range value λ = 104 appears visually balanced. However, selecting a smoothing parameter by eye is unreliable: small-sample variability at the extremes of the age range can easily be mistaken for meaningful patterns.
+
+The two-dimensional case further illustrates this difficulty. Figure 2 presents the smoothed transition rates from disability to death in an LTC portfolio (100,000 policyholders), using 9 combinations of (λx, λz). Choosing an appropriate parameter pair visually becomes nearly impossible, reinforcing the need for a data-driven statistical selection criterion.
+
+### 5.2. Statistical criteria for parameter selection
+
+Smoothing parameter selection typically relies on two classes of statistical criteria:
+
+
+<!-- p:11 -->
+
+λ = 10o
+
+λ = 104
+
+λ = 107
+
+Force of mortality (logarithmic scale)
+
+edf : 35.21
+
+edf : 6.71
+
+edf : 2.10
+
+10-
+
+8%
+
+10
+
+50
+
+60
+
+70
+
+80
+
+90
+
+50
+
+60
+
+0
+
+80
+
+90
+
+50
+
+60
+
+0L
+
+80
+
+90
+
+Age
+
+Figure 1. WH smoothing on a synthetic annuity portfolio with 3 smoothing levels. Dots: crude rates; curves: smoothed estimates; shaded areas: credibility intervals. edf: effective degrees of freedom.
+
+λ2 = 10−1
+
+λ2 = 102
+
+λ2 = 105
+
+95
+
+90
+
+85
+
+Force of
+
+80
+
+mortality
+
+75
+
+0,585
+
+70
+
+edf: 29.6
+
+edf : 9.4
+
+edf : 4.5
+
+0,461
+
+95
+
+0,373
+
+90
+
+0,286
+
+Age
+
+85
+
+0,229
+
+0,185
+
+80
+
+0,150
+
+75
+
+edf : 99.8
+
+edf : 36.7
+
+edf : 16.0
+
+0,118
+
+70
+
+0,090
+
+95
+
+0,066
+
+90
+
+0,043
+
+85
+
+80
+
+75
+
+edf : 364.7
+
+edf : 112.9
+
+edf: 54.9
+
+70
+
+0
+
+10
+
+
+5
+
+10
+
+Duration in LTC
+
+Figure 2. WH smoothing applied to disability-to-death transitions in an LTC portfolio, using 9 combinations of smoothing parameters. Contour lines and colours show the smoothed mortality surface by age and LTC duration.
+
+1. Prediction-based criteria, which aim to minimize prediction error, such as the Akaike Information Criterion (AIC) (Akaike, 1973), and generalized cross-validation (GCV) (Wahba, 1980);
+2. Likelihood-based criteria, which maximize the marginal likelihood – an approach introduced by Patterson and Thompson (1971) (under the name REML in the Gaussian case) and adapted to smoothingby Anderssen and Bloomfield (1974).
+
+While prediction-based criteria have desirable asymptotic properties (Wahba, 1985; Kauermann, 2005), their convergence towards optimal smoothing parameters can be slow. In contrast, marginal
+
+
+<!-- p:12 -->
+
+
+1010
+
+Figure 3. Comparison of criteria for selecting the smoothing parameter in one-dimensional WH smoothing. Left: distribution of effective degrees of freedom under AIC, GCV, and marginal likelihood across 100 replicates. Right: GCV and marginal likelihood values for one replicate as functions of the smoothing parameter.
+
+GCV
+
+marginal likelihood
+
+Effective degrees of freedom
+
+40
+
+3.0
+
+edf : 6.08
+
+Criterion value
+
+-100
+
+30
+
+2.5
+
+20
+
+2.0
+
+-150
+
+1.5
+
+10
+
+-200
+
+edf : 35.31
+
+GCV
+
+Aic
+
+marginal likelihood
+
+100
+
+202
+
+104
+
+106
+
+108
+
+1010
+
+00
+
+102
+
+104
+
+1906
+
+108
+
+Criterion
+
+Smoothing parameter (logarithmic scale)
+
+likelihood criteria tend to perform more robustly in finite samples (Reiss and Todd Ogden, 2009; Wood, 2011).
+
+To illustrate this, we apply AIC, GCV, and marginal likelihood to 100 replicates of the annuity portfolio with 100,000 policyholders (see Section 4.2). For each replicate, we select the optimal smoothing parameter and compute the corresponding effective degrees of freedom.
+
+As shown in the left side of Figure 3, marginal likelihood produces stable and coherent degrees of freedom across replicates, whereas AIC and especially GCV often yield overly complex models. On the right, we plot the GCV and marginal likelihood profiles for a single replicate: marginal likelihood exhibits a well-defined maximum, while GCV presents two local minima. One aligns with the marginal likelihood optimum, but the global minimum corresponds to a model with 35 degrees of freedom – an implausibly complex mortality curve.
+
+These observations support the use of marginal likelihood over prediction-based criteria, especially in actuarial applications where robustness is key. Moreover, this choice aligns naturally with the Bayesian framework introduced in Sections 2–4.
+
+We now detail its implementation – first for the original WH smoothing, then for the generalized setting – introducing three optimization strategies and three numerical algorithms and comparing their respective performances.
+
+### 5.3 Selection in the original smoothing
+
+We consider again the normal framework from Section 2, where y |θ ∼N(θ, σ2W−) and θ |λ~ N(0, σ2P−). In the empirical Bayes approach, the smoothing parameter λ is estimated by maximizing the marginal likelihood:
+
+$$\mathcal { L } _ { \text {norm} } ^ { m } ( \lambda ) = f ( \mathbf y \, | \, \lambda ) = \int f ( \mathbf y , \theta \, | \, \lambda ) d \theta = \int f ( \mathbf y \, | \, \theta ) f ( \theta \, | \, \lambda ) d \theta .$$
+
+This is simply the maximum likelihood method applied to the smoothing parameter, treated as deterministic but unknown. A closed-form expression for this integral can be derived using standard Gaussian identities (see Section C of the Online Supplementary Materials), yielding the marginal log-likelihood:
+
+$$\ell _ { \text {norm} } ^ { m } ( \lambda ) = - \frac { 1 } { 2 } \left [ ( \text {y} - \hat { \theta } _ { \lambda } ) ^ { T } W ( \text {y} - \hat { \theta } _ { \lambda } ) / \sigma ^ { 2 } + \hat { \theta } _ { \lambda } ^ { T } P _ { \lambda } \hat { \theta } _ { \lambda } / \sigma ^ { 2 } + \ln | W + P _ { \lambda } | - \ln | P _ { \lambda } | _ { + } + C \right ] .$$
+
+where θλ = (W + Pλ )−1 Wy, and C = − ln |W|+ + (n* − q) ln (2π σ2) is a constant independent of λ. This function is maximized numerically to obtain λnorm
+
+
+<!-- p:13 -->
+
+
+### 5.4. Selection in the generalized smoothing
+
+The empirical Bayes approach introduced in the normal framework can be extended to the generalized smoothing framework developed in Section 4. While no closed-form expression exists for the marginal likelihood in this context, it can be approximated using a second-order Taylor expansion of the logposterior density around its maximum θλ – similarly to what was done in the normal case. This yields the so-called Laplace approximation of the marginal likelihood (LAML), defined as
+
+$$\ell _ { L A M L } ^ { m } ( \lambda ) = \ell ( \hat { \theta } _ { \lambda } ) - \frac { 1 } { 2 } \left [ \hat { \theta } _ { \lambda } ^ { T } P _ { \lambda } \hat { \theta } _ { \lambda } + \ln | W _ { \lambda } + P _ { \lambda } | - \ln | P _ { \lambda } | _ { + } - q \ln ( 2 \pi ) \right ]$$
+
+where Wλ = Diag(exp (λ)  ec) and l(λ) is the log-likelihood evaluated at the penalized MLE. The detailed derivation of the Laplace approximation in this setting is provided in Section C of the u o aus t     e a da so   uon smoothing parameter λ in the generalized WH smoothing framework. As in the normal case, the marginal likelihood lAmL(λ) must be maximized numerically. However, a key distinction is that the penalized likelihood maximizer  now depends on λ and must be recomputed at each iteration via the PIRLS algorithm. This leads to a two-level optimization procedure:
+
+- an inner loop estimating θλ for fixed λ using PIRLS;
+- and an outer loop optimizing lLAmL(λ) with respect to λ.
+
+This outer iteration approach is the most principled method for smoothing parameter selection in this setting.
+
+Alternative strategies have been proposed to reduce computational burden. The first one, known as performance-oriented iteration, was introduced by Gu (1992) and relies on the observation that, at each PIRLS step, the working response vector Zk can be treated as approximately normal: Zk | θ ~ N(θ, W−1). Assuming Wk independent of λ, the marginal likelihood can be maximized within each PIRLS step using the normal approximation methodology of Section 5.3, with y replaced by Zk and W by Wk. This effectively reverses the nesting structure, potentially saving computational time when updating λ is less costly than recomputing a PIRLS step. A formal justification of the method is provided by Wood (2017, 149), which emphasizes that it does not actually require zk to have a normal distribution to be well founded.
+
+A third and even simpler strategy is the alternate iteration approach, used for instance by Wood et al. (2017). It consists in alternating updates of θ (via PIRLS) and λ (via approximate marginal likelihood), without fully optimizing either at each step. This relies on the empirical observation that a coarse update of λ may suffice, as the marginal likelihood surface changes between iterations.
+
+Despite their efficiency, both performance-oriented and alternate iteration approaches lack formal convergence guarantees. Unlike outer iteration, they operate on different smoothing parameters at each step, rendering penalized likelihood values non-comparable across iterations. Moreover, they do not track the value of lLAmL(λ) during the optimization, making it harder to assess convergence or apply step-length controls.
+
+Detailed algorithmic formulations of all three strategies in the generalized WH smoothing framework are provided in Section D of the Supplementary Materials.
+
+### 5.5. Algorithms for the maximization of the marginal likelihood
+
+Several algorithms can be used to maximize the marginal likelihood or its Laplace approximation (LAML). It is generally preferable to apply these algorithms to the logarithm of the smoothing parameters, for three main reasons:
+
+1. It ensures positivity of the smoothing parameters;
+2. It simplifies the expressions of derivatives, when required;
+
+
+<!-- p:14 -->
+
+
+###### 14 Guillaume Biessy
+
+3. It allows more uniform coverage of the range of interest (e.g. from λ = 101 to 107, as in Figure 1, differences of comparable magnitude occur on a logarithmic scale).
+
+#### Derivative-free heuristics
+
+A first, operationally simple option is to use general-purpose derivative-free optimization methods:
+
+- Brent's method (Brent, 1973) in the one-dimensional case;
+- The Nelder-Mead simplex algorithm (Nelder and Mead, 1965) in higher dimensions.
+
+These are readily available in base R via the optimize and optim functions. They only require evaluating the marginal likelihood or LAML at each step, which is computationally inexpensive. However, they typically require more iterations to converge and cannot be combined with the alternate iteration approach, as they do not guarantee systematic improvement of the criterion at each step.
+
+#### Generalized Fellner-Schall method
+
+A more specialized algorithm is the generalized Fellner-Schall method, based on ideas from Fellner (1986) and Schall (1991), and adapted for smoothing parameter selection in multidimensional generalized linear models by Rodríguez-Álvarez et al. (2015). It may be summarized by the update formula:
+
+$$\lambda _ { j } ^ { \text {next} } = \frac { \text {tr} ( P _ { \lambda } ^ { - } P _ { j } ) - \text {tr} [ ( X ^ { T } W X + P _ { , } ) ^ { - 1 } P _ { j } ] } { \hat { \beta } _ { \lambda _ { j } } ^ { T } P _ { j } \hat { \beta } _ { \lambda } } \lambda _ { j } ^ { \text {current} } \quad \text {for} \quad j \in \{ x , z \} .$$
+
+in the one-dimensional case and Px (resp. Pz) is the marginal Dnz,qz © Ix) in the two-dimensional case.This update can be interpreted more intuitively as
+
+$$\hat { \beta } _ { \lambda } ^ { T } ( \lambda _ { j } ^ { \text {next} } P _ { j } ) \hat { \beta } _ { \lambda } = \text {tr} [ P _ { \lambda } ^ { - } \lambda _ { j } ^ { \text {current} } P _ { j } - ( X ^ { T } W X + P _ { \lambda } ) ^ { - 1 } \lambda _ { j } ^ { \text {current} } P _ { j } ]$$
+
+where the right-hand side corresponds to an effective degrees of freedom associated with λcurrent Pj, and the left-hand side to a squared error, normalized by the updated penalty precision. This makes λnext resemble a REML-based estimator for the inverse variance. More details may be found in RodríguezÁlvarez et al. (2019). This method:
+
+- May be combined with any of the three iteration nesting schemes (outer, performance, and alternate);
+- Does not require explicit derivative computations;
+- Converges towards an approximate maximum of LAML in the generalized case, since it ignores the dependence of W on λ;
+- Tends to take longer steps than EM-like algorithms (Dempster et al., 1977), but shorter than Newton updates (see Wood and Fasiolo 2017, which also provides a thorough justification for the method).
+
+#### Newton algorithm
+
+A third option is the Newton method, which involves computing both the first and second derivatives of the marginal likelihood (or LAML) with respect to ln λ. Full derivations are provided in Wood (2011), which covers a more general case. The method applies in both the normal and generalized cases, but in the latter, derivative expressions are more complex due to the dependence of W on λ. The Newton al   s   s    e ade  sid e   oal complexity associated with this method, especially in the generalized case.
+
+
+<!-- p:15 -->
+
+
+### 5.6. Performance comparison
+
+Sections 5.4 and 5.5 introduced eight combinations of nesting strategies and optimization algorithms applicable to the generalized WH smoothing. We now assess the potential convergence issues and approximation errors associated with each of them.
+
+This analysis is based on 100 replicates of the simulated annuity and LTC portfolios with 100,000 policyholders, as described in Section 4.2. For each replicate and each method combination, we compute the LAML at the selected smoothing parameters and compare this value to the (approximate) optimal value obtained across all combinations, denoted λopt.
+
+To quantify the discrepancy, we define the relative error:
+
+$$\Delta ( \lambda ) = \frac { \ell _ { L A M L } ^ { m } ( \hat { \lambda } _ { o p t } ) - \ell _ { L A M L } ^ { m } ( \lambda ) } { \ell _ { L A M L } ^ { m } ( \hat { \lambda } _ { o p t } ) - \ell _ { L A M L } ^ { m } ( \infty ) } \\ \text {s bounds to the } L \ A M L \ v e l u e \text { when using an infinite smoothening penalty that is the }$$
+
+where lLAmL(∞) corresponds to the LAML value when using an infinite smoothing penalty, that is, the overly smooth baseline. By construction, ∆(λ) ≥ 0 for all tested methods, with ∆(λopt) = 0 and ∆(∞) = sn  e oe s voo ae vo ose  s as  s s replicates.
+
+Results are summarised in Figure 4. The top panel displays the relative error ∆(λ) (capped below 10-10 for readability). In the outer iteration framework:
+
+- The Newton method consistently achieves relative errors below 10-10;
+- Brent and Nelder-Mead heuristics yield slightly higher errors but remain below 10-7;
+- The generalized Fellner-Schall method produces higher errors, but still below 10-5 and negligible in practice.
+
+In the performance and alternate iteration frameworks, all methods yield similar errors, consistently below 10-5, with no convergence issues observed in any replicate. These findings suggest that method selection can be guided by practical considerations such as speed and implementation ease.
+
+The bottom panel of Figure 4 compares computation times (relative to the Nelder-Mead + outer iteration baseline):
+
+- In the outer iteration framework, the Newton method is the fastest, followed by the FellnerSchall approach;
+- All outer iteration variants are faster than their performance or alternate counterparts.
+
+This is unsurprising, as PIRLS steps are particularly lightweight in WH smoothing (where the model matrix is the identity). However, alternate strategies may remain useful for more general cases like those described in Section 6.4.
+
+For reference, the average time required for a single iteration using Nelder-Mead in the 2D outer iteration case is approximately 1.68 s (versus 5 ms in the 1D case).
+
+## 6. How to improve smoothing computational efficiency?
+
+### 6.1. Motivation
+
+WH smoothing is a full-rank method, meaning that it includes as many parameters as there are observation points. This feature ensures a high degree of flexibility, allowing the estimator to closely track the input signal when sufficient data are available. Formally, WH smoothing is asymptotically unbiased since:
+
+$$\mathbb { E } ( \hat { y } ) = ( W + P _ { \lambda } ) ^ { - 1 } W \mathbb { E } ( y ) \stackrel { m \to \infty } { \to } \mathbb { E } ( y ) ,$$
+
+where m denotes the number of observed individuals, which influences the matrix W.
+
+However, this flexibility comes at a computational cost. Some key operations, such as (implicit) matrix inversions, scale cubically with the number of parameters. As a result, WH smoothing may become impractical with large number of combinations or when applied repeatedly (e.g. in simulations or bootstraps).
+
+
+<!-- p:16 -->
+
+
+Figure 4. Comparison of the 8 nesting strategy and algorithm combinations in the 1D and 2D simulated cases. Top: relative error on the LAML (log scale). Bottom: improvement in average computation time compared to the Nelder-Mead + outer iteration reference.
+
+1D, Outer iteration
+
+1D, Performance iteration
+
+1D, Alternated iteration
+
+9-01
+
+Relative error on marginal likelihood
+
+10-7
+
+Brent
+
+Fellner-Schall
+
+Newton
+
+Brent
+
+Fellner-Schall
+
+Newton
+
+Fellner-Schall
+
+Newton
+
+2D, Outer iteration
+
+2D, Performance iteration
+
+2D, Alternated iteration
+
+10-6
+
+10−7
+
+10-8
+
+10-9
+
+01-01
+
+Nelder-Mead Fellner-Schall
+
+Newton
+
+Nelder-Mead Fellner-Schall
+
+Newton
+
+Fellner-Schall
+
+Newton
+
+Outer iteration
+
+Performance iteration
+
+Alternated iteration
+
+3,0
+
+8
+
+Speed-up factor
+
+2,5
+
+2,33
+
+2,0
+
+1,98
+
+1.4
+
+1,5
+
+1,32
+
+1,33
+
+1.15
+
+1,0
+
+1,00
+
+0,63
+
+0,5
+
+Nelder-Mead Fellner-Schall
+
+Newton
+
+Nelder-Mead Fellner-Schall
+
+Newton
+
+Fellner-Schall
+
+Newton
+
+Selection method
+
+In one-dimensional settings, such as age-only models with annual discretization, the number of points rarely exceeds 100, and computation time is negligible. In contrast, two-dimensional use cases – common in insurance – can lead to substantially larger datasets:
+
+- Disability tables in France must cover entry ages from 18 to 61 and exit ages up to 62, resulting in (62 − 18) × (62 − 18 + 1)/2 = 990 combinations.
+- Transition tables from short-term incapacity to disability involve entry ages from 18 to 67 and monthly durations from 0 to 36 months, yielding (67 — 18) × 36 = 1, 764 combinations.
+- Long-term care (LTC) models require coverage over ages 50–100 and durations from 0 to 20 years, totalling (100 — 50) × (20 – 0) = 1000 combinations (in practice, this number may be lower due to data sparsity).
+
+In such settings, computing WH smoothing – especially when paired with smoothing parameter selection – can take several minutes per application, limiting usability in iterative contexts.
+
+To address this limitation, we now analyse the computational complexity of the main steps in WH smoothing and smoothing parameter selection then introduce two complementary strategies to reduce computation time:
+
+- A structural optimization that exploits the specific form of WH penalization matrices;
+
+
+<!-- p:17 -->
+
+
+- A reduced-rank approximation that lowers the number of parameters while minimizing bias compared to the full-rank estimator.
+
+Finally, we benchmark these strategies in terms of runtime and accuracy using 100 replicates of the mid-size annuity and LTC portfolios from Section 4.2. The structural optimization is compared to the original WH method, while the reduced-rank approximation is evaluated against the original method, the structural optimization, and a reference P-spline smoothing approach.
+
+### 6.2. Practical computation for penalized smoothers
+
+WH smoothing belongs to a broader family of penalized smoothing methods that produce estimates of the form:
+
+$$\hat { y } _ { \lambda } = X \hat { \beta } _ { \lambda } \quad \text {where $\beta_{\lambda}$ solves} \, ( X ^ { T } W X + P _ { \lambda } ) \hat { \beta } _ { \lambda } = X ^ { T } W y .$$
+
+Here, X and Pλ denote the model and penalization matrices of size n × p and p × p, respectively, and W is a diagonal matrix of positive weights of size n × n.
+
+#### Computational steps
+
+The computation of  for a given λ typically involves the following steps:
+
+1. Absorb the weights in the model matrix and observation vector, forming W1/2X and W1/2y, which requires O(n2) and O(n) operations, respectively (multiplying each row of X and each element of y by the corresponding element of w).
+2. Form the matrix Pλ. The cost of this operation is typically O(p2) in the general case.
+3. Form the matrix XT WX and the vector XT Wy, which requires up to O(np2) and O(np) operations respectively.
+4. Add together XTM WX and Pλ which requires O(p2) operations in the general case.
+5. Compute the Cholesky decomposition XT WX + Pλ = RT R at a cost of O(p3).
+6. Obtain βλ by forward-backward substitution, first solving Ru = X Wy then Rβλ = u with an associated cost of O(p2) for each system.
+7. Compute λ = Xβλ at a cost of O(np).
+
+As an alternative to Cholesky, QR decomposition may be used for greater numerical stability (see Golub and Van Loan, 2013). It applies to the weighted design matrix stacked with a matrix B such that BT B = Pλ.
+
+#### Simplifications for WH smoothing
+
+In WH smoothing, X = In, which simplifies computations:
+
+- Step 7 is unnecessary, as well as the first part of step 3.
+- XT Wy = Wy (step 3) is computed in O(n) by multiplying w and y.
+- XT WX + Pλ = W + Pλ (step 4) is also computed in O(n) by adding the vector w to the leading diagonal of Pλ.
+
+#### Generalized WH smoothing with outer iteration
+
+When using the outer iteration approach (see Section 5), each candidate λ requires a full PIRLS cycle to estimate , with new working vector k and weight matrix Wk. Steps 1–6 above are repeated until convergence of the PIRLS algorithm, which may be assessed by monitoring the changes in penalized deviance. The deviance may be computed at a O(n) cost. For penalization based on differences matrices, computation of βλ Pλβ should be based on the expression of Rλ,q provided in Section 1.1 for an associated cost of O(qp). In addition, PIRLS iterations for each new λ can be initialized using the previous estimate of  for faster convergence.
+
+
+<!-- p:18 -->
+
+
+#### LAML computation
+
+Once the deviance is known, computing the marginal likelihood/LAML also requires:
+
+- ln |X†WX + Pλ|, which may be computed at a cost of O(p) from the leading diagonal of the Cholesky/QR factor R computed at step 5 in the derivation of λ.
+- ln |Pλ|+, which may be obtained from the eigenvalues of the penalization matrix: Section 6.4 shows that in the two-dimensional case, it can be computed via eigendecomposition of DT px,qx then only requires scaling the eigenvalues for a cost of O(p).
+
+#### Algorithm-specific computations
+
+Brent and Nelder-Mead require only marginal likelihood/LAML evaluations.
+
+The generalized Fellner-Schall algorithm relies on the update formula of Equation (5.1):
+
+$$\lambda _ { j } ^ { \text {next} } = \frac { \text {tr} ( P _ { \lambda } ^ { - } P _ { j } ) - \text {tr} [ ( X ^ { T } W X + P _ { \lambda } ) ^ { - 1 } P _ { j } ] } { \hat { \beta } _ { \lambda } ^ { T } P _ { j } \hat { \beta } _ { \lambda } } \lambda _ { j } ^ { \text {current} } \quad \text {for} \quad j \in \{ x , z \} . \\ \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot \quad \cdot$$
+
+Evaluation of tr(P− Pj) does not require any matrix product. In the one-dimensional case it is simply (p — q)/λ while in the two-dimensional case it may be obtained directly at a O(p) cost using the eigenvalues of the aforementioned penalization matrices Pj. Evaluation of tr[(XWX + Pλ)−1 P] may use the identity tr(AB) = Σ,j AijBji and therefore be computed at an O(p2) cost if the matrix (XT WX + Pλ)−1 and Pj are available. Computation of V = (XT WX + Pλ)−1 is done by first solving for the inverse K = R−1 of the Cholesky/QR factor and then forming V as KKT. Both operations have a O(p3) cost.
+
+Newton method also requires computation of V, as well as several matrix products involving the penalization matrix Pj. For example, the second derivatives of marginal likelihood require tr[VP,VPk] terms, and the second derivatives of marginal likelihood require tr[V(X(∂W/∂ρj)X + Pj)V(X(∂ W/∂ρk)X + Pk)] terms where ρj = ln (λj), j = k = x in the one-dimensional case and {j, k} ∈ {x, z} in the two-dimensional case. The identity tr(AB) = Σi,j ABji can also be used in this case but matrix products VPj or V[X(∂W/∂ρj)X + P] still need to be explicitly computed, for a respective cost of O(p3) and O(np2) each.
+
+These additional computations make Newton updates more expensive than generalized FellnerSchall updates, but they generally yield faster convergence and higher precision (see Section 5.6).
+
+### 6.3. Banded optimization for WH smoothing
+
+We now consider how to exploit the banded structure of the penalization matrix in WH smoothing. This structure enables significant computational gains, especially when dealing with large number of bso ot o os o m   =  pne  =  nt s ons t n  ssal and generalized WH smoothing.
+
+#### One-dimensional case
+
+banded with bandwidth q. As a consequence:
+
+1. Compact storage: Pλ can be stored in a compact form with dimensions n × (q + 1) and updated for new λ at a cost of O(qn). The matrix W + Pλ shares this structure.
+2. Efficient Cholesky decomposition: the Cholesky factor R of W + Pλ can be computed in O(q2n) instead of O(n3), and R is also banded with the same bandwidth.
+
+
+<!-- p:19 -->
+
+
+3. Efficient back-substitution: computing λ = βλ using R is now O(qn) instead of O(n2).
+4. Efficient inversion of R: the inverse K = R−1 costs O(qn2), an improvement over the O(n3) cost for dense matrices.
+
+However, K is a dense triangular matrix, meaning the computation of V = KK remains a O(n3) operation. Fortunately, the generalized Fellner-Schall algorithm only requires the diagonal of V, which can be obtained from K in O(n2), since:
+
+$$\lambda _ { j } [ \text {tr} ( P _ { \lambda } ^ { - } P _ { j } ) - \text {tr} ( V P _ { j } ) ] = ( n - q ) - ( n - \text {tr} [ V W ] ) = \text {diag} ( V ) ^ { T } \mathbf w - q .$$
+
+Furthermore, the Newton algorithm benefits as well: the trace terms involving VPλ or V(∂ W/∂ ln λ + Pλ) are based on banded matrices, making those products computable in O(qn2) instead of O(n3).
+
+#### Two-dimensional case
+
+In two dimensions, the penalization matrix is Pλ = λxPx + λzPz where:
+
+- P x = In ⊗ DT, Dnx,9x nx,qx
+- Pz = DT Dn2,4z ©Inx. nz,qz
+
+This structure has the following key properties:
+
+- Both matrices are made of nz × nz square blocks of dimensions nx × nx each.
+- Px is block diagonal with nz identical nx × nx banded blocks (bandwidth qx).
+- Pz is block banded with bandwidth qz. Each block is a scaled identity matrix.
+- As a whole, Pz and Pλ may be viewed as banded matrices with bandwidth q = qz × nx.
+
+This implies that all statements made in the one-dimensional case carry over to the two-dimensional case with this value of q. It also suggests that, if (qx + 1)/nx &lt; (qz + 1)/nz, dimensions x and z should be permuted before applying WH smoothing for maximal efficiency.
+
+As in the one-dimensional case, the generalized Fellner-Schall update formula does not require the full computation of V. Indeed, to compute tr[VPx] and tr[VPz], we only need access to elements of V for which either Px or Pz is non-zero. From what precedes, Px has bandwidth qx while Pz only contains qz non-zero diagonals on each side of the leading diagonal. As V is symmetric, we only need to compute qx + qz + 1 diagonals of V for an associated cost of O([qx + qz]n2) instead of O(n3).
+
+With the Newton method, while computing V = KKTM still incurs a O(n3) cost, matrix multiplications like VPj or V(∂ W/∂ρj + Pj) can be performed block-wise. It may easily be checked, for example, that the products VPx and V(∂ W/∂ρx + Px) have a cost of O(qxn2), while the products VPz and V(∂W/∂ρz + Pz) have a cost of O(qzn2).
+
+#### Summary of complexity gains
+
+Thanks to the banded structure, most computations involved in WH smoothing can be accelerated by a factor of n/(q + 1) in the 1D case and max (nx/(qz + 1), nz/(qx + 1)) in the 2D case. There are 3 notable exceptions:
+
+- Cholesky decomposition is improved from O(n3) to O(q2n) – a quadratic speed-up.
+- Computation of V = KK remains O(n3).
+- Some matrix products required by Newton method get a full n/(qz + 1) or n/(qz + 1) speed-up in the 2D case.
+
+Table 3 summarizes theoretical complexities across different frameworks, including a typical generalized additive model framework for which the penalization matrix is diagonal. This last framework is used by the rank-reduced WH smoothing approach introduced next, as well as the P-spline alternative used for comparison.
+
+
+<!-- p:20 -->
+
+
+Table 3. Compared theoretical leading-order costs associated with the key steps in smoothing computations for several frameworks. All cells should be read as O(. . .).
+
+| Computation       | Dense   | Banded   | Rank-reduced   |
+|-------------------|---------|----------|----------------|
+| X T WX            | ∅       | ∅        | np 2           |
+| X T Wz            | n       | n        | np             |
+| P λ               | n 2     | qn       | p              |
+| X T WX + P λ      | n       | n        | p              |
+| R                 | n 3     | q 2 n    | p 3            |
+| ˆ β λ             | n 2     | qn       | p 2            |
+| ˆ y λ = X ˆ β λ   | ∅       | ∅        | np             |
+| ML/LAML           | qn      | qn       | n              |
+| K = R - 1         | n 3     | qn 2     | p 3            |
+| V = KK T          | n 3     | n 3      | p 3            |
+| Brent/Nelder-Mead | n 3     | q 2 n    | p 3            |
+| Fellner-Schall    | n 3     | qn 2     | p 3            |
+| Newton            | n 3     | n 3      | p 3            |
+
+Figure 5. Computation time comparison for 2D generalized WH smoothing with outer iteration. The speed-up factor is computed relative to the original dense method using the Nelder–Mead algorithm.
+
+Dense computations
+
+Banded computations
+
+35
+
+3,0
+
+30
+
+Speed-up factor
+
+2,5
+
+2,33
+
+25
+
+24,93
+
+2,0
+
+20
+
+1,64
+
+15
+
+16,65
+
+15,38
+
+1,5
+
+10
+
+1,0
+
+1,00
+
+●00
+
+Nelder-Mead
+
+Fellner-Schall
+
+Newton
+
+Nelder-Mead
+
+Fellner-Schall
+
+Newton
+
+Selection method
+
+#### Empirical gains
+
+Figure 5 compares actual computation times of WH smoothing (two-dimensional, outer iteration), showing that adapting the implementation to exploit banded structures results in large speed gains:
+
+- The Nelder-Mead method benefits the most, with a 25 × speedup compared to dense computation.
+- Newton and Fellner-Schall methods see 6.6 × and 10 × improvements, respectively, making them fall behind the Nelder-Mead method.
+
+As a final advantage, Brent and Nelder-Mead heuristic methods rely solely on banded matrices that can be stored as compact matrices of dimensions (q + 1) × n, adding further efficiency.
+
+### 6.4. Natural parameterization and rank reduction of WH smoothing
+
+Demmler and Reinsch (1975) proposed a natural parameterization for penalized smoothers using the eigendecomposition of the penalization matrix. This provides both an intuitive interpretation of the smoothing mechanism and a foundation for dimension reduction via rank-restricted estimation.
+
+
+<!-- p:21 -->
+
+
+###### One-dimensional case
+
+In one dimension, let Dn,Dn,q = UΣUT be the eigendecomposition of the penalty matrix, where U is orthogonal and Σ diagonal with non-negative eigenvalues. A change of variable θ = Uβ transforms the WH optimization into:
+
+$$\hat { y } = U \hat { \beta } \quad \text {where} \quad \hat { \beta } = \arg \min _ { \beta } \left \{ ( y - U \beta ) ^ { T } W ( y - U \beta ) + \lambda \beta ^ { T } \Sigma \beta \right \}$$
+
+yielding the solution:
+
+$$\hat { y } = U ( U ^ { T } W U + S _ { \lambda } ) ^ { - 1 } U ^ { T } W y \quad \text {where} \quad S _ { \lambda } = \lambda \Sigma .$$
+
+This formulation shows that WH smoothing decomposes the signal into eigenvector components and attenuates each according to the associated eigenvalue – the higher the eigenvalue, the stronger the shrinkage.
+
+We refer to Section E of the Online Supplementary Materials for graphical illustrations of:
+
+- the basis eigenvectors of Dn,qDn,q; n,q
+- the evolution of their effective degrees of freedom under smoothing.
+
+These figures show that only the first few components retain substantial degrees of freedom under moderate smoothing, motivating dimensionality reduction.
+
+#### Two-dimensional case
+
+In two dimensions, the penalization matrix takes the form:
+
+$$P _ { \lambda } = \lambda _ { x } I _ { n _ { z } } \otimes D _ { n _ { x } , q _ { x } } ^ { T } D _ { n _ { x } , q _ { x } } + \lambda _ { z } D _ { n _ { z } , q _ { z } } ^ { T } D _ { n _ { z } , q _ { z } } \otimes I _ { n _ { x } } ,$$
+
+Define U = Uz ⊗ Ux, and θ = Uβ. Then the WH estimate becomes:
+
+$$\hat { y } = U ( U ^ { T } W U + S _ { \lambda } ) ^ { - 1 } U ^ { T } W y \quad \text {where} \quad S _ { \lambda } = \lambda _ { x } I _ { n _ { e } } \otimes \Sigma _ { x } + \lambda _ { z } \Sigma _ { z } \otimes I _ { n _ { z } } .$$
+
+As in the one-dimensional case, this representation reveals how smoothing operates via coordinatewise shrinkage in the eigenbasis. Section E of the Online Supplementary Materials displays the corresponding per-parameter effective degrees of freedom.
+
+#### Rank reduction strategy
+
+Inspection of the effective degrees of freedom reveals that many components are heavily shrunk, especially those associated with high eigenvalues. This suggests reducing the dimension by keeping only the p &lt; n components with the lowest eigenvalues.
+
+In the one-dimensional case, the reduced-rank approximation is
+
+$$\hat { y } _ { p } = U _ { p } ( U _ { p } ^ { T } W U _ { p } + \lambda \Sigma _ { p } ) ^ { - 1 } U _ { p } ^ { T } W y$$
+
+where Up and Σ consist of the first p eigenvectors and their corresponding eigenvalues, respectively.
+
+In the two-dimensional case, we retain px and pz eigenvectors in each dimension and use:
+
+$$\hat { y } _ { p _ { x } , p _ { z } } = U _ { p _ { x } , p _ { z } } ( U _ { p _ { x } , p _ { z } } ^ { T } W U _ { p _ { x } , p _ { z } } + \lambda I _ { x } \otimes \Sigma _ { x , p _ { x } } + \lambda _ { z } \Sigma _ { z , p _ { z } } \otimes I _ { p _ { x } } ) ^ { - 1 } U _ { p _ { x } , p _ { z } } ^ { T } W y \\ U _ { p _ { x } , p _ { z } } = U _ { p _ { x } , p _ { z } } ( U _ { p _ { x } , p _ { z } } ^ { T } W U _ { p _ { x } , p _ { z } } + \dot { \lambda } _ { z } I _ { p _ { z } } \otimes I _ { p _ { x } } ) ^ { - 1 } U _ { p _ { x } , p _ { z } } ^ { T } W y \\$$
+
+with Upx,pz = Uz,pz ⊗ Ux,px. In that case, given a target number of parameters pmax, we propose selecting (px, pz) such that pxPz ≤ pmax and px/nx ≈ pz/nz using the rule:
+
+$$\kappa = \sqrt { p _ { \max } / n _ { x } n _ { z } } , \ \ p _ { x } = \lfloor \min ( \kappa , 1 ) n _ { x } \rfloor , \ \ p _ { z } = \lfloor \min ( \kappa , 1 ) n _ { z } \rfloor .$$
+
+Adaptations for generalized WH smoothing follow by replacing (y, W) with (zk, Wk) in the above expressions.
+
+
+<!-- p:22 -->
+
+
+###### Efficient computation via GLAM
+
+Currie et al. (2006) propose a general framework, GLAM, that exploits Kronecker structure for efficient computations. In our context, the model matrix Upx,pz inherits a Kronecker product form, allowing operations that rely on this matrix to be executed dimension-wise without explicit construction of the full matrix. This significantly reduces memory use and computation time in the two-dimensional rank-reduced WH framework.
+
+#### Impact of using the rank-reduced basis
+
+We now evaluate the impact of the rank-reduced WH basis introduced in Section 6.4 in terms of both smoothing accuracy and computational speed. For context, results are compared against those obtained using P-spline smoothing with the same number of basis functions.
+
+To ensure a fair comparison, both approaches were implemented in the same computational framework, including the use of GLAM in the two-dimensional case – only the structure of the basis (and hence the model matrix) differs. The penalty structure and the unpenalized fixed effects (polynomials of degree q – 1) are identical.
+
+In addition to the full basis of size 450 (30 × 15), three reduced basis of respective size 288 (24 × 12), 128 (16 × 8) and 32 (8 × 4) were considered.
+
+As in Section 5.6, accuracy is assessed using the relative LAML error defined in Equation (5.2). Note, however, that since both reduced-rank and P-spline smoothers rely on different bases and penalization matrices, their LAML expressions are different from the one used for full-rank WH smoothing. Hence, a reduced model can exhibit a higher LAML than the full-rank version at its selected smoothing parameter.
+
+Figure 6 summarises the average speed-up achieved by both the reduced-rank and P-spline smoothers compared to the full-rank WH smoothing. As the number of retained parameters decreases, computation time drops substantially. Compared to the full-rank WH smoothing (unoptimized):
+
+- the 128-parameter basis achieves an 88 × speed-up;
+- the 32-parameter basis achieves up to 256 × faster computation.
+
+The alternate iteration and performance iteration strategies outperform the outer iteration in the -e et ot o se o ct e s oid es etles neck – even with the use of the GLAM framework. In this context, the Newton algorithm combined with alternate iteration proves to be the most efficient, with the generalized Fellner-Schall update being nearly as competitive for smaller bases.
+
+The gains in computational speed come with a moderate tradeoff in estimation accuracy. As shown in Figure 7, the relative LAML errors remain small:
+
+- For the 128-parameter basis, the average error is just 0.82%.
+- For the 32-parameter basis, it rises to 2.26%.
+
+Across all sizes, the reduced-rank WH smoother slightly outperforms the P-spline smoother in terms of LAML error, confirming its effectiveness as a principled dimension reduction strategy.
+
+## 7 How to extrapolate the smoothing?
+
+- ot os s s ts s s s- s s  -n that is, predicting values outside the range of the original data. Extrapolation is handled by solving an extended smoothing problem where extrapolated positions are associated with zero-weight observations.
+
+However, in the two-dimensional case, extrapolation must be performed carefully: constraints are needed to ensure that the extrapolated solution remains consistent with the original smoothing result over the observed data. Following the approach introduced by Carballo et al. (2021) for P-splines, we now extend WH smoothing to support extrapolation while also enabling the construction of credibility intervals that capture uncertainty both inside and outside the original observation domain.
+
+
+<!-- p:23 -->
+
+
+Figure 6. Computation speed improvement from WH smoothing with a reduced-rank basis (solid lines) or P-spline basis (dotted lines), relative to unoptimized full-rank WH smoothing, as a function of basis size.
+
+Nelder-Mead
+
+Fellner-Schall
+
+Newton
+
+153,18
+
+137,78
+
+100
+
+38,60
+
+37,15
+
+100,65
+
+40,64
+
+96,92
+
+13,55
+
+23,89
+
+27,62
+
+34,94
+
+10
+
+11,.46
+
+5,34
+
+5,93
+
+2,51
+
+5,74
+
+4,35
+
+1,84
+
+0.80
+
+2.48
+
+1.29
+
+Computation time improvement factor
+
+0,72
+
+1,28
+
+1,64
+
+244,43
+
+224,21
+
+100
+
+75,66
+
+52,81
+
+210,99
+
+67,44
+
+189,30
+
+Performance iteration
+
+64,92
+
+61,04
+
+18,78
+
+38,40
+
+10
+
+17,95
+
+5,37
+
+9.25
+
+8,70
+
+0.73
+
+0,73
+
+2,42
+
+2.49
+
+1.27
+
+4,54
+
+2,47
+
+2,57
+
+1,22
+
+215,00
+
+256,31
+
+100
+
+204,41
+
+88,31
+
+191,71
+
+44,98
+
+75.70
+
+Alternated iteration
+
+33.42
+
+13,15
+
+10
+
+5.51
+
+13,08
+
+3,55
+
+4,.44
+
+1.26
+
+3,42
+
+1,21
+
+450
+
+288
+
+128
+
+32 450
+
+288
+
+128
+
+32 450
+
+288
+
+128
+
+32
+
+Number of retained parameters
+
+Figure 7. Relative LAML error of WH smoothing with a reduced-rank basis (solid lines) or a P-spline basis (dotted lines), with respect to unoptimized full-rank WH smoothing, as a function of basis size.
+
+4,51%
+
+Relative error on marginal likelihood
+
+%
+
+3%
+
+2,26%
+
+2%
+
+1,21%
+
+0,91%
+
+1%
+
+0,33%
+
+0,82%
+
+0,05%
+
+0%
+
+0,00%
+
+450
+
+288
+
+128
+
+32
+
+Number of retained parameters
+
+Smoothing basis
+
+WH (rank-reduced)
+
+P-splines
+
+
+<!-- p:24 -->
+
+
+### 7.1. Defining the extrapolation of the smoothing
+
+Let ê be the WH smoothing result obtained from an observation vector y defined over positions x (in 1D) or (x, z) (in 2D). We wish to extend predictions to a larger domain x+ (or (x+, z + )), with x ⊂ x+ and similarly for z.
+
+To preserve WH smoothing's requirement for evenly spaced points, we assume that x+ and z+ are sequences of consecutive integers. Let n+ be the length of x+ in the on-dimensional case. In the twodimensional case, let nx+ and nz+ be the lengths of x+ and z+ and note n+ = nx+ × nz+.
+
+We define matrices Cx and Cz such that each extracts the indices of the original data from the larger o   i    i   { x}    ( l    =  :s observed positions. Define the matrix C as
+
+$$C = \begin{cases} C _ { x } & \text {in the one-dimensional case,} \\ C _ { z } \otimes C _ { x } & \text {in the two-dimensional case.} \end{cases}$$
+
+Then C has the following useful properties:
+
+- For any full-domain vector y+, Cy+ returns the observed values only.
+- Cay embeds the observed values into a larger zero-padded vector.
+- CCTM = In and C C is a 2 × 2 block matrix with an identity matrix block and zeros everywhere else.
+
+The extrapolated WH smoothing is defined as the solution to the following extended problem:
+
+$$\hat { y } _ { + } = \arg \min _ { \theta _ { + } } \left \{ ( y _ { + } - \theta _ { + } ) ^ { T } W _ { + } ( y _ { + } - \theta _ { + } ) + \theta _ { + } ^ { T } P _ { + } \theta _ { + } \right \}$$
+
+where:
+
+- y+ = CTy is the extended data vector (zeros for unobserved points),
+- W+ = CT WC is the extended weight matrix (zeros for unobserved points),
+- P+ is the penalization matrix over the extended grid, defined as
+
+$$P _ { + } = \begin{cases} \lambda D _ { n _ { + } , q } ^ { T } D _ { n _ { + } + q } & \text {in the one-dimensional case,} \\ \lambda _ { x _ { z + } } I _ { z + } \otimes D _ { n _ { x + } + q _ { x } } ^ { T } D _ { n _ { x + } + q _ { x } } + \lambda _ { z } D _ { n _ { z + } + q _ { z } } ^ { T } D _ { n _ { x + } + q _ { z } } \otimes I _ { x + } & \text {in the two-dimensional case.} \end{cases}$$
+
+Importantly, the smoothing parameters λ, λx, and λz must remain fixed during extrapolation – they are inherited from the original fit and no new information is introduced.
+
+The fidelity term in Equation (7.1) simplifies to:
+
+$$( y _ { + } - \theta _ { + } ) ^ { T } W _ { + } ( y _ { + } - \theta _ { + } ) = ( C ^ { T } y - \theta _ { + } ) ^ { T } C ^ { T } W C ( C ^ { T } y - \theta _ { + } ) = ( y - \theta ) ^ { T } W ( y - \theta )$$
+
+where θ = Cθ+. This is the fidelity term from the original fit.
+
+The smoothness criterion, on the other hand, now applies to the entire extended domain, constraining the extrapolated parts of + to remain smooth and consistent with the trend learned from the data.
+
+The same extrapolation approach applies directly to generalized WH smoothing, simply by replacing y by zk and W by Wk, obtained at convergence of the PIRLS algorithm and setting σ2 = 1 in the derived credible intervals.
+
+### 7.2. Unconstrained solution for the 1D case
+
+The solution to the extrapolation problem in Equation 7.1 can be obtained directly, as in Section 1.1, by taking derivatives with respect to θ+ and setting them to zero. This yields the closed-form solution:
+
+$$\hat { y } _ { + } = ( W _ { + } + P _ { + } ) ^ { - 1 } W _ { + } y _ { + } \quad \text {where} \quad y _ { + } = C ^ { T } y \quad \text {and} \quad W _ { + } = C ^ { T } W C .$$
+
+
+<!-- p:25 -->
+
+
+Assuming a Bayesian model where y+ |θ+ ∼N(θ+, σ2W +−1) and θ+ ∼ N(0, σ2P +−1 ), we obtain, as in Section 2, the following credible interval:
+
+$$\mathbb { E } ( y _ { + } ) \, | \, y _ { + } \in \left [ ( W _ { + } + P _ { + } ) ^ { - 1 } W _ { + } y _ { + } \pm \Phi ^ { - 1 } \left ( 1 - \alpha / 2 \right ) \sqrt { \sigma ^ { 2 } \text {diag} \left \{ ( W _ { + } + P _ { + } ) ^ { - 1 } \right \} } \right ] .$$
+
+To get a better understanding about how the variance-covariance matrix V+ = (W+ + P+)−1 for the unconstrained extrapolation problem of Equation (7.1) is related to the variance-covariance matrix V = (W + Pλ)−1 of the original smoothing problem, introduce matrices Cj (for j ∈ x, z), which selects the rows in the extrapolated domain that are not part of the original data and define:
+
+$$\overline { C } = \begin{cases} \overline { C } _ { x } & \text { in the one-dimensional case,} \\ \overline { C } _ { z } \otimes \overline { C } _ { x } & \text { in the two-dimensional case,} \end{cases} \quad \text {and} \quad Q = \begin{cases} C \\ \overline { C } \end{cases} \, .$$
+
+With this definition, Q is a permutation matrix moving observed positions to the top.
+
+In the unidimensional case, the extended difference matrix D+,q takes the block-wise form:
+
+$$D _ { n + q } = \begin{bmatrix} D _ { 2 - } & D _ { 1 - } & 0 \\ 0 & D _ { n , q } & 0 \\ 0 & D _ { 1 + } & D _ { 2 + } \end{bmatrix} = Q ^ { r } \left [ \begin{matrix} D _ { n , q } & 0 \\ D _ { 1 } & D _ { 2 } \end{matrix} \right ] Q \quad \text {where } D _ { 1 } = \left [ \begin{matrix} D _ { 1 - } \\ D _ { 1 + } \end{matrix} \right ] \text { and } D _ { 2 } = \left [ \begin{matrix} D _ { 2 - } & 0 \\ 0 & D _ { 2 + } \end{matrix} \right ] .$$
+
+The extended weight and penalization matrices may be rewritten:
+
+$$W _ { + } = Q ^ { T } \left [ \begin{matrix} W & 0 \\ 0 & 0 \end{matrix} \right ] Q \quad \text {and} \quad P _ { + } = D _ { n _ { + , q } , q } ^ { T } D _ { n _ { + , q } } = \lambda Q ^ { T } \left [ \begin{matrix} P _ { \lambda } + P _ { + } ^ { 1 1 } & P _ { + } ^ { 1 2 } \\ P _ { + } ^ { 2 1 } & P _ { + } ^ { 2 2 } \end{matrix} \right ] Q$$
+
+where P+ = λDτ Dj, for i, j ∈ {1, 2}.
+
+This block structure allows us to apply standard results for partitioned matrix inverses to derive:
+
+$$V _ { + } = Q ^ { T } \begin{bmatrix} V _ { + } ^ { 1 1 } & V _ { + } ^ { 1 2 } \\ V _ { + } ^ { 2 1 } & V _ { + } ^ { 2 2 } \end{bmatrix} Q = Q ^ { T } \begin{bmatrix} V _ { + } ^ { 1 1 } & & & - V _ { + } ^ { 1 1 } P _ { + } ^ { 1 2 } ( P _ { + } ^ { 2 2 } ) ^ { - 1 } \\ & & & \\ - ( P _ { + } ^ { 2 2 } ) ^ { - 1 } P _ { + } ^ { 2 1 } V _ { + } ^ { 1 1 } & & ( P _ { + } ^ { 2 2 } ) ^ { - 1 } P _ { + } ^ { 2 1 } V _ { + } ^ { 1 1 } P _ { + } ^ { 1 2 } ( P _ { + } ^ { 2 2 } ) ^ { - 1 } + ( P _ { + } ^ { 2 2 } ) ^ { - 1 } \end{bmatrix} Q$$
+
+with V11 1 = [W + Pλ + P1 − P12(P22)−1 P21]−1.
+
+From the above, we retrieve:
+
+$$C \hat { y } _ { + } = C V _ { + } W _ { + } y _ { + } = C Q ^ { T } V _ { + } Q C ^ { T } W y = V _ { + } ^ { 1 1 } W y .$$
+
+This coincides with the original fit  only if V1 = V. In general, this equality does not hold, since the extrapolation solution minimizes the total smoothness of the extended vector, not just of the observed part.
+
+In V22, we identify:
+
+- known part to the extrapolated part;
+- an innovation error term: (P2)-1 associated with the prior on the extrapolated coefficients C +.
+
+In the one-dimensional case, D2 is block-diagonal with invertible triangular blocks, so:
+
+$$P _ { + } ^ { 1 1 } - P _ { + } ^ { 1 2 } ( P _ { + } ^ { 2 2 } ) ^ { - 1 } P _ { + } ^ { 2 1 } = D _ { 1 } ^ { T } D _ { 1 } - D _ { 1 } ^ { T } D _ { 2 } ( D _ { 2 } ^ { T } D _ { 2 } ) ^ { - 1 } D 2 ^ { T } D _ { 1 } = 0$$
+
+which means that V1 = (W + Pλ)−1 = V. This confirms the result from Carballo et al. (2021), namely that with a difference-based penalty, a perfectly smooth extrapolation that leaves the original fit unchanged can always be constructed in the one-dimensional case.
+
+This behaviour is illustrated in Figure 8, which shows the extrapolated fit (with q = 2) obtained from generalized WH smoothing applied to the annuity portfolio used previously. The extrapolation follows n i   s w ve −-  =  -    ood t - l ns e Age
+
+
+<!-- p:26 -->
+
+(logarithmic scale)
+
+100
+
+10-1
+
+Force of mortality
+
+10-2
+
+O
+
+10-3
+
+40
+
+50
+
+60
+
+70
+
+80
+
+90
+
+100
+
+110
+
+Figure 8. Extrapolation of one-dimensional WH smoothing. The smoother is extrapolated on both sides of the initial observation range following a polynomial of degree q – 1 (in this case a straight line as q = 2).
+
+### 7.3. Constrained solution for the 2D case
+
+In the two-dimensional case, while the extended penalization matrix P+ still takes the same structure as previously described, the expressions of its block components P11, P12, P21, P21, and P22 are more com-+, +, + C+ ≠ . Solving the unconstrained extrapolation problem thus leads to a modification of the estimated coefficients for the observed data positions, as demonstrated by Carballo et al. (2021).
+
+This difference arises because, unlike the one-dimensional case, the smoothness criterion in two dimensions penalizes both rows and columns simultaneously, making it impossible to extrapolate without increasing the penalization. Since no new data are introduced in the extrapolated region, the smoothness criterion weighs more heavily in the optimization, prompting adjustments to the originally fitted values in order to produce a globally smoother estimate.
+
+To address this, we follow the approach proposed by Carballo et al. (2021) and formulate a constrained optimization problem that enforces preservation of the original fitted values in the smoothing region. This is done by introducing a Lagrange multiplier ω and solving the following constrained problem:
+
+$$( \hat { y } _ { + } ^ { * } , \hat { \omega } ) = \arg \min _ { \theta _ { + } ^ { * } , \omega } \left \{ ( y _ { + } - \theta _ { + } ^ { * } ) ^ { T } W _ { + } ( y _ { + } - \theta _ { + } ^ { * } ) + \theta _ { + } ^ { * T } P _ { + } \theta _ { + } ^ { * } + 2 \omega ^ { T } ( C \theta _ { + } ^ { * } - \hat { y } ) \right \} .$$
+
+This optimization admits a closed-form solution for the constrained extrapolated estimator * as a linear transformation of . The derivation details are provided in Section F of the Online Supplementary Materials. The final form is
+
+$$\hat { y } _ { + } ^ { * } = Q ^ { T } \left [ \begin{matrix} I \\ - ( P _ { + } ^ { 2 2 } ) ^ { - 1 } P _ { + } ^ { 2 1 } \end{matrix} \right ] \hat { y }$$
+
+and the associated variance-covariance matrix is
+
+$$V _ { + } ^ { * } = Q ^ { T } \left [ \begin{matrix} V & - V P _ { + } ^ { 1 2 } ( P _ { + } ^ { 2 2 } ) ^ { - 1 } \\ - ( P _ { + } ^ { 2 2 } ) ^ { - 1 } P _ { + } ^ { 2 1 } V & ( P _ { + } ^ { 2 2 } ) ^ { - 1 } P _ { + } ^ { 2 1 } V P _ { + } ^ { 1 2 } ( P _ { + } ^ { 2 2 } ) ^ { - 1 } + ( P _ { + } ^ { 2 2 } ) ^ { - 1 } \end{matrix} \right ] Q .$$
+
+This formulation differs from the variance matrix of the unconstrained solution. Indeed, it enforces the constraint that the initial coefficients remain unchanged, as reflected by the presence of V (the original variance matrix) instead of V1. The corresponding credible intervals are
+
+
+<!-- p:27 -->
+
+
+Figure 9. Constrained extrapolation of 2D WH smoothing. The contour lines of mortality rates and the associated standard deviation are depicted. The dotted lines delimit the boundaries of the initial smoothing region.
+
+Force of
+
+Standard
+
+mortality
+
+deviation
+
+100
+
+
+1,447
+
+1,310
+
+0,968
+
+0,890
+
+90
+
+0,652
+
+90
+
+0,621
+
+0,441
+
+0,476
+
+Age
+
+07*8
+
+Age
+
+0,377
+
+0,204
+
+0,292
+
+80
+
+0,144
+
+80
+
+0,213
+
+0,101
+
+0,145
+
+0,074
+
+0,102
+
+70
+
+0,053
+
+70
+
+180'0
+
+0,034
+
+1900
+
+60
+
+0
+
+5
+
+10
+
+15
+
+20
+
+60
+
+10
+
+15
+
+20
+
+Duration in LTC
+
+
+$$\mathbb { E } ( y _ { + } ) \left | y _ { + } \in \left [ \hat { y } _ { + } ^ { * } \pm \Phi ^ { - 1 } \left ( 1 - \alpha / 2 \right ) \sqrt { \sigma ^ { 2 } \text {diag} ( V _ { + } ^ { * } ) } \right ] .$$
+
+The following figures illustrate the impact of the constrained extrapolation procedure discussed above, using the LTC portfolio of 100,000 policyholders as a case study.
+
+- Figure 9, left (mortality rates): this panel shows the estimated mortality rates obtained after applying the constrained extrapolation procedure to the two-dimensional WH smoothing model. The dotted lines indicate the boundaries of the original smoothing region. Visually, the transition from the smoothing region to the extrapolated area is seamless – the extrapolated surface naturally extends the smoothed mortality rates while respecting the original fitted values within the data range.
+- Figure 9, right (standard deviation): this panel displays the posterior standard deviation (or credible interval width) associated with the extrapolated estimates. It reflects both the uncertainty from the original smoothing and the innovation error introduced in the extrapolated region. As expected, the standard deviation increases as we move away from the observed region, illustrating growing uncertainty about farther values.
+- Figure 10 (ratio of mortality rates): this heatmap shows the pointwise ratio between the unconstrained and constrained extrapolation of the mortality rates. A value above 1 indicates that the unconstrained version overshoots the constrained one at that location, while values below 1 indicate underestimation. We observe that discrepancies exist not only in the extrapolated region but also within the original data region – confirming that the unconstrained approach distorts the original estimates in order to achieve overall smoothness.
+- Figure 11 (ratio of standard deviations): this final figure includes two panels comparing uncertainty estimates.
+- Left panel: ratio of standard deviation from the unconstrained extrapolation over that from the constrained extrapolation (including innovation error). The unconstrained version underestimate the actual uncertainty not only in the extrapolated region but also within the original data region, again reflecting the adjustments made to the original estimates in order to achieve overall smoothness.
+- Right panel: ratio of standard deviation from the constrained extrapolation without innovation error over the fully constrained version with innovation error. This illustrates the contribution of the innovation error to the total uncertainty – it is substantial and should not be neglected.
+
+
+<!-- p:28 -->
+
+
+Figure 10. Ratio of mortality rates resulting from the extrapolation of 2D WH smoothing. The numerator corresponds to the unconstrained extrapolation and the denominator to the constrained extrapolation presented in Figure 9.
+
+Force of
+
+mortality
+
+ratio
+
+100
+
+1,20
+
+1,10
+
+90
+
+1,05
+
+Age
+
+1,01
+
+80
+
+0,99
+
+0,95
+
+0,90
+
+70
+
+0,80
+
+0,50
+
+60
+
+0
+
+10
+
+15
+
+20
+
+Duration in LTC
+
+Figure 11. Ratio of standard deviation of log-mortality rates from the three extrapolation methods. Left: unconstrained versus constrained with innovation error. Right: constrained without versus with innovation error. In both, the denominator is the fully constrained method of Figure 9.
+
+Unconstrained
+
+Without innovation error
+
+Standard
+
+deviation
+
+ratio
+
+100
+
+0,99
+
+0,98
+
+90
+
+0,95
+
+Age
+
+0,90
+
+80
+
+0,80
+
+0,75
+
+70
+
+0,70
+
+0,65
+
+60
+
+0
+
+5
+
+10
+
+15
+
+200
+
+10
+
+15
+
+20
+
+Duration in LTC
+
+## 8. Discussion
+
+#### Choosing the order of the penalization
+
+Throughout this work, we have assumed second-order difference matrices for penalization. This choice is both standard and meaningful: from a Bayesian perspective, it corresponds to a prior belief that the log-transformed quantity of interest evolves linearly, which implies exponential behaviour on the original scale – consistent with actuarial models such as Gompertz.
+
+The difference order directly shapes both the estimated trend and its extrapolation: higher-order penalties allow for more flexibility, but may induce unstable or erratic behaviour outside the data range. While Whittaker originally used third-order differences and higher orders can marginally improve model fit according to information criteria such as AIC, second-order penalties typically offer a robust compromise between smoothness, interpretability, and extrapolation stability. A detailed evaluation is provided in Section G of the Online Supplementary Materials.
+
+
+<!-- p:29 -->
+
+
+###### Summary of contributions
+
+This paper revisits the classical WH smoothing approach through the lens of modern statistical modelling. Each section brought forward a key practical insight:
+
+- Section 2 established that WH smoothing is more than an empirical method. It has a firm Bayesian foundation. Under Gaussian assumptions, credibility intervals may be derived and used as practical substitutes to confidence intervals.
+- Section 3 clarified how to construct observation and weight vectors in survival analysis models: using log-crude rates as observations and event counts as weights yields a sound statistical formulation.
+- Section 4 introduced generalized WH smoothing, in which the penalization is applied directly to the likelihood rather than a normal approximation. This refined method yields more accurate results, especially in situations where the available data volume is limited, but the number of combinations is high, such as in the two-dimensional case.
+- Section 5 advocated for smoothing parameter selection via marginal likelihood (or its Laplace approximation, LAML), offering a principled and robust alternative to heuristic criteria like AIC or GCV.
+- Section 6 presented two computational improvements: one exploits the banded structure of WH matrices to reduce runtime by up to a factor of 25; the other relies on reduced-rank smoothing ae  s  s (-s ×   u o e   a ssac slightly outperforming P-splines.
+- Section 7 addressed extrapolation: while WH smoothing naturally extends beyond the data range, constraints are needed in two dimensions to preserve the original fit. We proposed a method to extrapolate while accounting for both structural uncertainty and innovation error and provided credible intervals accordingly.
+
+All these techniques are available in the WH package for the statistical software R (R Core Team, 2025), including automated smoothing parameter selection and constrained extrapolation with uncertainty quantification.
+
+#### Limitations and outlook
+
+Despite its strong practical appeal, WH smoothing has limitations that suggest several avenues for future work:
+
+- Regular spacing requirement: WH smoothing assumes evenly spaced observations, which aligns well with standard life insurance grids (age and/or duration). However, this is less suitable when events are concentrated in a short period, such as in disability or long-term care claims. One solution is to combine finer discretization in early durations with methods like P-splines that accommodate irregular grids. Alternatively, and adaptive WH smoothing procedure (based on the ideas in Ruppert and Carroll, 2000; Krivobokova et al., 2008) could offer a way to retain regular spacing while varying the smoothness locally.
+- Limited covariate handling: The basic WH framework does not accommodate additional explanatory variables (e.g., gender or policy features). However, WH smoothing can be extended using ideas from smoothing spline ANOVA and hierarchical models (Lee and Durban, 2011; Gu, 2013), allowing for structured random effects and flexible interactions. This opens the door to richer, more personalized experience modelling while preserving interpretability.
+
+In sum, revisiting WH smoothing through a modern lens reinforces its theoretical foundations and offers practitioners fast, transparent, and adaptable tools for experience modelling. It remains a compelling alternative to more recent – yet often more opaque – techniques when working with evenly spaced discrete data.
+
+
+<!-- p:30 -->
+
+
+Supplementary material. The supplementary material for this article can be found at https://doi.org/10.1017/asb.2025.10061.
+
+Acknowledgments. The author thanks the two anonymous referees for their valuable comments, which helped improve the quality and clarity of the paper.
+
+Data availability statement. The synthetic data used to conduct the performance comparisons in this study are available from the author upon request.
+
+Competing interests. The author declares no competing interests.
+
+<!-- END SOURCE 6/40: Biessy_2025_whittaker-henderson-smoothing-revisited.md -->
+
+---
+
+<!-- BEGIN SOURCE 7/40: Brent_1971_zero-finding-algorithm.md -->
+
+# Source: `Brent_1971_zero-finding-algorithm.md`
+
+---
+id: "Brent_1971_zero-finding-algorithm"
+source_pdf: "../pdf/Brent_1971_zero-finding-algorithm.pdf"
+source_filename: "Brent_1971_zero-finding-algorithm.pdf"
+format: "academic-paper"
+extraction_profile: "text-math-tables-high-fidelity"
+extraction_mode: "full-page-ocr"
+extraction_quality: "excellent"
+extraction_score: 106.0
+visual_assets: "disabled"
+references_file: "../references/Brent_1971_zero-finding-algorithm.references.md"
+---
+
+<!-- p:1 -->
+
+## An algorithm with guaranteed convergence for finding a zero of a function
+
+R. P. Brent*
+
+Computer Science Department, Stanford University, Stanford, California 94305, USA
+
+An algorithm is presented for finding a zero of a function which changes sign in a given interval. The algorithm combines linear interpolation and inverse quadratic interpolation with bisection. Convergence is usually superlinear, and is never much slower than for bisection. ALGOL 60 procedures are given.
+
+(Received August 1970, Revised March 1971)
+
+### 1. Introduction
+
+Let f be a real-valued function, defined on the interval [a, b],
+
+with f(a) f(b) ≤ 0. f need not be continuous on [a, b]: for example, f might be a limited-precision approximation to some continuous function (see Forsythe, 1969). We want to find an approximation ζ to a zero ζ of f, to within a given positive tolerance 2δ, by evaluating f at a small number of points. Of course, if f is discontinuous then there may be no zero in [a, b], so we shall be satisfied if f takes both non-negative and nonpositive values in [ζ − 2δ, ζ + 2δ] [a, b]. Clearly, such a ζ may always be found by bisection in about log2 [(b - a)/δ] steps, and this is the best that we can do for arbitrary f. We shall describe an algorithm which is never much slower than bisection, but which has the advantage of superlinear convergence to a simple zero ζ, if we ignore rounding errors and suppose that f is continuously differentiable near ζ. This means that, in practice, convergence is often much faster than for bisection.
+
+### 2. Dekker's algorithm
+
+The algorithm described here is similar to an algorithm, which we call Dekker's algorithm for short, variants of which have been given by van Wijngaarden, Zonneveld, and Dijkstra (1963), Wilkinson (1967), Peters and Wilkinson (1969), and Dekker (1969). We wish to emphasise that, although these variants of Dekker's algorithm have proved satisfactory in most practical cases, none of them guarantees convergence in less than about (b – a)/δ function evaluations (examples are given in Section 3 below). Our algorithm, on the other hand, must converge within about (log2 [(b − a)/δ])2 function evaluations. For example, typically we might have b - a = 1 and δ = 10−12, giving 1012 and 1,600 function evaluations respectively. On well-behaved functions, e.g. polynomials of moderate degree with well-separated roots, our algorithm has proved to be at least as fast as Dekker's, often slightly faster, so there is no extra price to pay for the improvement in the guaranteed rate of convergence. Of course, both our algorithm and Dekker's are much faster than bisection on well-behaved functions.
+
+### 3. The algorithm
+
+To avoid repetition, we assume that the reader is familiar with Peters and Wilkinson (1969) or Dekker (1969), and merely point out the differences between our algorithm and Dekker's. The algorithm is defined precisely by the ALGOL 60 procedure zero given in the Appendix.
+
+mation so far to ζ, a is the previous value of b, and ζ must lie between b and c (initially a = c).
+
+If f(b) ≠ 0 then let m = 1(c − b). We prefer not to return
+
+If f(b) = 0 then we are finished (the ALGOL procedure given by Dekker (1969) does not recognise this case, and can take a large number of small steps if f vanishes on an interval, which may happen because of underflow).
+
+with ζ = 1(b + c) as soon as |m| ≤ 2δ, for if superlinear con o  i     bs  ote approximation to ζ than ↓(b + c) is. Instead, we return with ζ = b if |m| ≤ δ (so the error is no more than δ if, as is often true, f is nearly linear between b and c), and otherwise interpolate (or extrapolate) f linearly between a and b, giving a new point i (see Section 4 for inverse quadratic interpolation). To avoid the possibility of overflow or division by zero we find i as b + p/q, and the division is not performed if 2|p| ≥ 3|m.q|, for then i is not needed anyway. The reason why the simpler criterion |p| ≥ |m.q| is not used is explained in Section 4. Since 0 &lt; |f(b)| ≤ |f(a)| (see Section 4), we can safely compute s = f(b)/f(a), p = ±(a − b)s, and q = 干(1 − s).
+
+Define b′′ = Si if i lies between b and b + m ('interpolation'), b + m otherwise ('bisection'),
+
+and
+
+$$b ^ { \prime } = \begin{cases} b ^ { \prime } \text { if } | b - b ^ { \prime \prime } | > \delta , \\ b + \delta . \text { sign} ( m ) \text { otherwise} \end{cases}$$
+
+Dekker's algorithm takes b' as the next point at which f is evaluated, forms a new set {a, b, c} from the old set {b, c, b′}, and continues. Unfortunately, it is easy to construct a function f for which steps of δ are taken every time, so about (b – a)/δ function evaluations are required for convergence. For example, let
+
+b + δ. sign(m) otherwise (a 'step of δ').
+
+$$) = \begin{cases} 2 ^ { x / \delta } \text { for } a + \delta \leqslant x \leqslant b , \\ - \left ( \frac { b - a - \delta } { \delta } \right ) . 2 ^ { b / \delta } \text { for } x = a , \end{cases}$$
+
+The first linear interpolation gives the point b — δ, the next
+
+(an extrapolation) gives b – 2δ, the next b — 3δ, and so on. Even if steps of δ are avoided, the asymptotic rate of convergence of successive linear interpolation may be very slow if f has a zero of sufficiently high multiplicity. An example for which convergence is worse than linear (Brent, 1971) is
+
+$$\text {with} \quad \ f ( x ) = \begin{cases} 0 \text { if } x = 0 , \\ x . \exp \left ( - x ^ { - 2 } \right ) \text { if } x \neq 0 , \end{cases}$$
+
+At a typical step we have three points a, b and c such that f(b). f(c) ≤ 0, |f(b)| ≤ |.f(c)|, and a may coincide with c. The points a, b and c change during the algorithm, but there should be no confusion if we omit subscripts. b is the best approxion an interval containing the origin. These examples are rather artificial, and unless an extended exponent range is used (see Section 8) we may be saved by underflow, but it is clear that with Dekker's algorithm convergence may occasionally be very slow.
+
+Our main modification of Dekker's algorithm ensures that
+
+*Present Address: P.O. Box 218, Yorktown Heights, New York 10598, USA.
+
+
+<!-- p:2 -->
+
+
+a bisection is done at least once in every 2.log2 (|b - cl/δ) consecutive steps. The modification is this: let e be the value of p/q at the step before the last one. If |e| &lt; δ or |p/q| ≥ łe| then we do a bisection, otherwise we do either a bisection or an interpolation just as in Dekker's algorithm. Thus le| decreases by at least a factor of two on every second step, and when le| &lt; δ a bisection must be done. Àfter a bisection we take e = m for the next step.
+
+A simpler idea is to take e as the value of p/q at the last step, but this slows down convergence for well-behaved functions by causing unnecessary bisections. With the better choice of e, our experience has been that convergence is always at least as fast as for Dekker's algorithm.
+
+### 4. Inverse quadratic interpolation
+
+If the three current points a, b and c are distinct, we can find the point i by inverse quadratic interpolation, i.e. fitting x as a quadratic in y, instead of by linear interpolation using just a and b. For well-behaved functions this device saves about 0.5 u vge vaa  o v  e vttepolation is used because with direct quadratic interpolation we have to solve a quadratic equation for i. Cox (1970) gives another way of avoiding this problem. (See also Ostrowski (1966), Ch. 11.)
+
+Care must be taken to avoid overflow or division by zero when computing the new point i. Since b is the most recent approximation to the root and a is the previous value of b, we do a bisection if |f(b)| ≥ |f(a)|. Otherwise we have |f(b)| &lt; |f(a)| ≤ If(c)|, so a safe way to find i is to compute
+
+$$r _ { 1 } = f ( a ) / f ( c ) , r _ { 2 } = f ( b ) / f ( c ) , r _ { 3 } = f ( b ) / f ( a ) ,$$
+
+and
+
+$$r _ { 1 } = & \int ( a ) / ( c ) , r _ { 2 } = ) ( b ) / ( c ) , r _ { 3 } = ) ( b ) / ( a ) , \\ p = & \pm r _ { 3 } [ ( c - b ) \, r _ { 1 } ( r _ { 1 } - r _ { 2 } ) - ( b - a ) ( r _ { 2 } - 1 ) ] , \\ \text {and} & \quad q = \mp ( r _ { 1 } - 1 ) ( r _ { 2 } - 1 ) ( r _ { 3 } - 1 ) .$$
+
+Then i = b + p/q, but as before we do not perform the division unless it is safe to do so (if bisection is to be done then i is not needed anyway). When inverse quadratic interpolation is used, the interpolating parabola cannot be a good approximation to f unless it is single-valued between (b, f(b)) and (c, f(c)), so it is natural to accept the point i if it lies between b and c and up to three-quarters of the way from b to c (consider the limiting case where the interpolating parabola has a vertical tangent at c and f(b) = −f(c)). Thus i will be rejected if
+
+$$2 | p | \geqslant \frac { 3 } { 2 } \left | ( c - b ) q \right | .$$
+
+### 5. Superlinear convergence
+
+Ostrowski (1966) shows that if f is C2 in a neighbourhood of a simple zero ζ, then successive linear interpolation from a sufficiently good approximation gives superlinear convergence to ζ, with order at least ±(1 + √5) = 1·618 . . . . We remark that this result holds under the weaker hypothesis that f has a Lipschitz continuous derivative near ζ. In fact, convergence is superlinear, in the sense that lim |x − ζ|1/" = 0, if f is C1 n→∞
+
+Ignoring the effect of rounding errors and the tolerance δ, we see, as in Dekker (1969), that the algorithm will eventually stop doing bisections when it is approaching a simple zero of a C1 function, so convergence will be superlinear. In practice, convergence for well-behaved functions is fast, and the stopping criterion is usually satisfied in a few steps once superlinear convergence sets in.
+
+near ζ. If f' is Lipschitz continuous near ζ then the order is at least 1·618... when inverse quadratic interpolations are performed in place of some of the linear interpolations. For proofs of these results, see Brent (1971).
+
+### 6. The tolerance
+
+As in Peters and Wilkinson (1969), the tolerance (2δ) is a combination of a relative tolerance (4ε) and an absolute tolerance (2t). At each step we take δ = 2ε|b| + t, where b is the current best approximation to ζ, ε = macheps is the relative machine precision (β1-for τ-digit truncated floating-point arithmetic with base β, and half this for rounded arithmetic), and t is a positive absolute tolerance. Since δ depends on b, which could lie anywhere in the given interval, we should replace δ by its positive minimum over the interval in the upper bound for the number of function evaluations required. In the ALGOL procedures the variable tol is used for δ.
+
+### 7. The effect of rounding errors
+
+The ALGOL procedures have been written so that rounding errors in the computation of i, m etc. cannot prevent convergence with the above choice of δ. The number 2ε in the definition of δ (Section 6) may be increased if a higher relative error is acceptable, but it should not be decreased, for then rounding errors might prevent convergence.
+
+The bound for |ζ — ζ has to be increased slightly if we take rounding errors into account. Suppose that, for floating-point numbers x and y, the computed arithmetic operations satisfy
+
+and
+
+$$\beta ( x \times y ) = x y ( 1 + \varepsilon _ { 1 } )$$
+
+$$\gamma ( x \pm y ) = x ( 1 + \varepsilon _ { 2 } ) \pm y ( 1 + \varepsilon _ { 3 } ) ,$$
+
+where |εi| ≤ ε for i = 1, 2 and 3 (see Wilkinson, 1963). We also assume that f(|x|) = |x| exactly, for any floating-point number x. The algorithm computes approximations
+
+and
+
+$$\tilde { m } = \beta ( 0 \cdot 5 \times ( c - b ) )$$
+
+$$t \tilde { o } l = \beta ( 2 \times \varepsilon \times | b | + t )$$
+
+to m and tol, where ζ lies between b and c, and the algorithm terminates with ζ = b only when
+
+$$| \tilde { m } | \leqslant t \hat { o } l$$
+
+(unless f(b) = 0, when ζ = ζ = b). Our assumptions give |m| ≥ {[|c − b| − ε(|b| + |c|)] (1 − ε),
+
+and similarly
+
+$$t \tilde { o } l \leq ( 2 \varepsilon | b | + t ) ( 1 + \varepsilon ) ^ { 3 } ,$$
+
+$$\ t \tilde { l } \leq ( 2 \varepsilon | b | + t ) ( 1 + \varepsilon ) ^ { 3 } , \\ \text {agent} \quad \text {so } | \tilde { m } | \leq \ t \tilde { l } \text { implies that} \\ | c - b | \leq \left ( \frac { 2 } { 1 - \varepsilon } \right ) ( 2 \varepsilon | b | + t ) ( 1 + \varepsilon ) ^ { 3 } + \varepsilon ( | b | + | c | ) . \\ \text {Since } | \hat { \zeta } - \zeta | \leq | c - b | \text { and } b = \hat { \zeta } , \text { this gives} \\ | \hat { \zeta } - \zeta | \leq 6 \varepsilon | \zeta | + 2 t , \\ \text {neglecting terms of order } \text { and } \varepsilon ^ { 2 } | \zeta | . \text { Usually the error is less}$$
+
+neglecting terms of order εt and ε2||. Usually the error is less than half this bound (see Section 3).
+
+Of course, it is the user's responsibility to consider the effect of rounding errors in the computation of f. The ALGOL procedures only guarantee to find a zero ζ of the computed function f to the accuracy discussed above, and ζ may be nowhere near a root of the mathematically defined function that the user is really interested in.
+
+### 8. Extended exponent range
+
+In some applications the range of f may be larger than is allowed for standard floating-point numbers. Hence, in the Appendix we give an ALGOL procedure (zero2) which accepts f(x) represented as a pair (y(x), z(x)), where f(x) = y(x). 2z(x) (y real, z integer). Thus zero2 will accept functions in the same representation as is assumed by Peters and Wilkinson (1969), although zero2 does not require that 1/16 ≤ |y(x)| &lt; 1 (unless y(x) = 0), and could be simplified slightly if this assumption were made.
+
+
+<!-- p:3 -->
+
+
+### 9. Practical tests
+
+The ALGOL procedures zero (for standard floating-point numbers) and zero2 (for floating-point with an extended exponent range) were tested using ALGOL W (Wirth and Hoare, 1966) on an IBM 360/67 and a 360/91 with machine precision 16-13 ≈ 2.5 × 10-16. The number of function evaluations for convergence was never more than three times greater than would be needed if bisection were used, even for the pathological functions given in Section 3, and for these functions Dekker's algorithm takes more than 106 function evaluations. Zero2 has been tested extensively with eigenvalue routines, and in this application it usually takes the same or one less function evaluation per eigenvalue than Dekker's algorithm, and considerably less than bisection (numerical results are given in Brent, 1971).
+
+### 10. Concluding remarks
+
+Our algorithm appears to be at least as fast as Dekker's on well-behaved functions, and, unlike Dekker's, it is guaranteed to converge in a reasonable number of steps for any function. The ALGOL procedures zero and zero2 given in the Appendix have been written to avoid problems with rounding errors or overflow, and floating-point underflow is not harmful as long as the result is set to zero. (A FORTRAN translation of procedure zero is given in Brent (1971).)
+
+Finally, we note that golden section search and a method of successive parabolic interpolation (Jarratt, 1967) can be combined to give an algorithm for finding a local minimum of a function of one variable, just as bisection and successive linear interpolation can be combined to give an algorithm for finding a zero. The minimisation algorithm always converges nearly as fast as would Fibonacci search, and it converges superlinearly if f has a positive and continuous second derivative near the minimum (Brent, 1971).
+
+A recent paper by Cox (1970) gives an algorithm which combines bisection with interpolation, using both f and f'. This algorithm may fail to converge in a reasonable number of steps in the same way as Dekker's. A simple modification, similar to the one that we have given in Section 3 for Dekker's algorithm, will remedy this defect without slowing the rate of convergence for well-behaved functions.
+
+#### Acknowledgement
+
+The author wishes to thank Professors G. E. Forsythe and G. H. Golub for their advice and encouragement, the referee for his helpful comments, and the CSIRO for its support.
+
+## Appendix: Algol 60 procedures
+
+real procedure zero (a, b, macheps, t, f); value a, b, macheps, t; real a, b, macheps, t; real procedure f; begin comment:
+
+Procedure zero returns a zero x of the function f in the given interval [a, b], to within a tolerance 6macheps |x| + 2t, where macheps is the relative machine precision and t is a positive tolerance. The procedure assumes that f(a) and f(b) have different signs;
+
+```
+positive tolerance.  ' the procedure assumes that (/a) and (/b)
+      have different signs;
+
+      real c, d, e, fa, fb, fc, tol, m, p, q, r, s;
+      fa := f(a); fb := f(b);
+      int: c := a; fc := fa; d := e := b - a;
+      ext: if abs(fc) < abs(fb) then
+         begin a := b; b := c; c := a;
+         fa := fb; fb := fc; fc := fa
+         end;
+      tol := 2 \times macheps \ abs(b) + t; m := 0-5 \times (c - b);
+      if abs(m) > tol \fB \neq 0 then
+```
+
+begin comment: See if a bisection is forced;
+  if abs(e) < tol \a abs(fa) < abs(fb) then d := e := m else
+  extended begin s := fb/fa; if a = c then
+    earth and
+            begin comment: Linear interpolation;
+            p := 2 × m × s; a := 1 - s
+  function
+    see times
+  even for
+    for these
+    function
+    genvalue
+    or one
+        q := (q - 1) × (r - 1) × (s - 1)
+    s algor-
+    results
+            s := e; e := d;
+            if 2 × p < 3 × m × q - abs(tol × q) ^
+                                  p < abs(0:5 × s × q) then
+  ker's on
+    aranteed
+    function
+      a := b; fa := fb;
+    popendix
+    errors or
+    as long
+    of pro-
+        end;
+  such
+    com-
+    f'. This
+    number of real procedure zero2 (a, b, macheps, t, f);
+  department
+    faction, value a, macheps, t; real a, b, macheps, t; procedure f;
+  Dekker's
+    rate of
+      Procedure zero2 finds a zero of the function f' in the same
+      way as procedure zero does, except that the procedure f(x, y, z)
+  method of    returns  (real)  and  z (integer)  so  that f'(x) = y.2*.  Thus
+  can .be     underflow  and  overflow  can be  avoided  with  a  very  large
+  summ of     function range;
+
+```
+
+Procedure zero2 finds a zero of the function f in the same way as procedure zero does, except that the procedure f(x, y, z) returns y (real) and z (integer) so that f (x) = y.22. Thus underflow and overflow can be avoided with a very large function range;
+
+real procedure pwr2 (x, n); value x, n; real x; integer n; comment: This procedure is machine-dependent. It computes x.2" for n ≤ 0, avoiding underflow in intermediate results;
+
+```
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+```
+
+
+<!-- p:4 -->
+
+
+```
+if p > 0 then q := -q else p := -p; s := e; e := d;
+      if 2 < p < 3  x m \ x q - abs(tol \ x q)  \^
+             p < abs(0-5 \ x s \ x q) then
+      d := p/q else d := e := m
+      end;
+    a := b; fa := fb; ea := eb;
+    b := b + (if abs(d) > tol then d else if m > 0 then
+                  tol else -tol);
+    f(b,fb,eb);
+    go to if fb > 0 = fc < 0 then int else ext
+    end;
+  zero2 := b
+  end zero2
+
+References
+```
+
+<!-- END SOURCE 7/40: Brent_1971_zero-finding-algorithm.md -->
+
+---
+
+<!-- BEGIN SOURCE 8/40: Burman_1994_cross-validatory-dependent-data.md -->
+
+# Source: `Burman_1994_cross-validatory-dependent-data.md`
+
+---
+id: "Burman_1994_cross-validatory-dependent-data"
+source_pdf: "../pdf/Burman_1994_cross-validatory-dependent-data.pdf"
+source_filename: "Burman_1994_cross-validatory-dependent-data.pdf"
+format: "academic-paper"
+extraction_profile: "text-math-tables-high-fidelity"
+extraction_mode: "hybrid"
+extraction_quality: "excellent"
+extraction_score: 108.0
+visual_assets: "disabled"
+references_file: "../references/Burman_1994_cross-validatory-dependent-data.references.md"
+---
+
+<!-- p:1 -->
+
+## A cross-validatory method for dependent data
+
+BY PRABIR BURMAN
+
+Division of Statistics, University of California, Davis, California 95616, U.S.A
+
+##### EDMOND CHOW AND DEBORAH NOLAN
+
+Department of Statistics, University of California, Berkeley, California 94720, U.S.A.
+
+###### SUMMARY
+
+In this paper we extend the technique of cross-validation to the case where observations form a general stationary sequence. We call it h-block cross-validation, because the idea is to reduce the training set by removing the h observations preceding and following the observation in the test set. We propose taking h to be a fixed fraction of the sample size, and we add a term to our h-block cross-validated estimate to compensate for the underuse of the sample. The advantages of the proposed modification over the cross-validation technique are demonstrated via simulation.
+
+Some key words: Cross-validation; Dependence; Integrated square error; Prediction error.
+
+## 1. INTRODUCTION
+
+Cross-validation (Stone, 1974; Geisser, 1975) is acclaimed as a method for estimating prediction error in regression and classification problems, and in recent years it has received much attention for its model selection ability in the nonparametric setting. See for example Härdle &amp; Marron (1985). Even more recently, the technique of cross-validation has been applied to prediction error estimation in the dependent setting. Work in this area includes that of Györfi et al. (1989), C. K. Chu, in a University of North Carolina Ph.D. thesis, and Burman &amp; Nolan (1992). Here we continue this line of development, and present a modification of the traditional leave-one-out method of cross-validation for use with dependent observations. Our approach is suggested by the well-known technique of removing blocks or subseries of observations, which originates from estimation problems for dependent random variables.
+
+To best illustrate our procedure, suppose the goal is to fit the (k + 1)-parameter model
+
+$$x _ { i } = \theta _ { 0 } + \theta _ { 1 } x _ { i - 1 } + \dots + \theta _ { k } x _ { i - k }$$
+
+to N observations X1, ..., XN from a stationary process. Let (o, ..., k) be the leastsquares estimate, where (Xi,..., X+k) for i= 1,..., N − k are the cases on which the calculation is based. Following Akaike (1970), we assess the predictive ability of the fitted model by the expectation:
+
+$$E \{ \text {PE} ( \hat { \theta } _ { 0 } , \dots , \hat { \theta } _ { k } ) \} = E \{ ( \tilde { X } _ { k + 1 } - \hat { \theta } _ { o } - \hat { \theta } _ { 1 } X _ { k } - \dots - \hat { \theta } _ { k } \tilde { X } _ { 1 } ) ^ { 2 } \} ,$$
+
+where X1, . .. , XN is another process that has the same distribution as X1, . . . , XN but is independent of it. Leave-one-out, or ordinary, cross-validation estimates the expected value in (2) by where j,i ( j = 0, . . . , k) denotes the ith least-squares estimate of θj, obtained after deleting the ith case (X, . . . , X+ k), and n = N − k is the number of cases.
+
+
+<!-- p:2 -->
+
+
+$$O C V _ { n } = \frac { 1 } { n } \sum _ { i = 1 } ^ { n } \left ( X _ { i + k } - \hat { \theta } _ { 0 , i } - \hat { \theta } _ { 1 , i } X _ { i + k - 1 } - \dots - \hat { \theta } _ { k , i } X _ { i } \right ) ^ { 2 } , \\ \hat { \theta } _ { 0 } \left ( i - 0 \right ) \sum _ { k = 1 } ^ { k } \left ( X _ { i + k } - \hat { \theta } _ { 0 , i } - \hat { \theta } _ { 1 , i } X _ { i + k - 1 } - \dots - \hat { \theta } _ { k , i } X _ { i } \right ) ^ { 2 } ,$$
+
+In classical applications of leave-one-out cross-validation, the cases are independent, therefore making the cross-validated prediction error a good approximation to the true expected prediction error. Here, however, the cases overlap, so leave-one-out cross-validation (3) may provide a very poor estimate of E{PE(o, . . . , k)}. In this note we examine an alternative method of cross-validation, which we dub 'h-block cross-validation', that can handle general forms of dependence. The idea is a simple one. Rather than remove the single case (Xi, ..., X+k) when calculating the ith least-squares estimate, remove as well a block of h cases from either side of it. Now the training set contains 2h fewer cases, but the test set remains a singleton. Carlstein (1986), Künsch (1989) and Lele (1991) use a similar technique with jackknife variance estimates for stationary sequences, and Chu, in the thesis mentioned above, and Györfi et al. (1989) propose this modification to crossvalidation when selecting the nuisance parameter in nonparametric curve estimation with dependent data. This approach is quite different from v-fold cross-validation. There, the n cases are divided into v sets roughly of size n/v. Each group of n/v cases constitutes a test set; the remaining n — (n/v) cases comprise the corresponding training set. Here instead, there are n test sets, each consisting of one case, and the training sets contain roughly n — 2h - 1 cases. So, h-block cross-validation maintains a leave-one-out aspect.
+
+According to the underlying structure of the data, blocking allows near independence between these two sets. It remains a question how to select the value of h. This is our main concern here. Intuitively, one should shrink the block size relative to the sample size, but to maintain independence between the test set and the training set, h should remain large. Chu, in the thesis mentioned above, and Györfi et al. (1989) require that h/n tend to 0, with the rate of decrease a complex function of the underlying structure of the data and the amount of smoothness in the model. In practice this structure is unknown and, for small samples, h will necessarily be large relative to n. Alternatively, we propose to take h as a fixed fraction of n, that is h/n = p for some 0 &lt; p &lt; 1, and to correct for the underuse of the sample by adding a simple term to the h-block cross-validated estimate. The correction term makes possible our omnibus choice of h. It is analogous to the correction used for v-fold cross-validation (Burman, 1989). We find through simulation that, with the correction term proposed here, h-block cross-validation estimates the expected prediction error well in a wide range of settings, and we also find that, without this correction, h-block cross-validation may be as ineffective as ordinary leave-one-out cro or os  rn so  o os  osnone.. Although long-range dependence models have been proven useful in a variety of applications (Hosking, 1981; Cox, 1984; Dahlhaus, 1989), we do not know if our methodology is applicable.
+
+The next section formally introduces h-block cross validation. Section 3 outlines a few examples where h-block cross-validation can be used. Finally in the last section, a variety of simulations are presented in support of our proposal.
+
+## 2. THE TECHNIQUE
+
+Let Z1,..., Z be a segment of length n from a stationary process where each Z has distribution P on Rd. For h a positive integer and for each i, define Pn,i, an empirical estimate of P, as follows:
+
+
+<!-- p:3 -->
+
+
+$$P _ { n , i } ( A ) & = \sum _ { j = 1 } ^ { n } \omega _ { _ { i , j } } I ( Z _ { j } \in A ) , \\$$
+
+for A a Borel set in Rd. Here the weights {ωij: 1 ≤i, j ≤n} form a double array of nonnegative numbers such that
+
+$$\omega _ { i , j } = 0 \quad \text {if } | i - j | \leqslant h ,$$
+
+$$\sum _ { i = 1 } ^ { n } \omega _ { i , j } = 1 \quad \text {for all $j$} .$$
+
+Many choices for the weight function satisfy these two constraints. In our simulation study we simply take:
+
+for 1 ≤j≤ h,
+
+for h&lt;j≤n− h
+
+for n−h&lt;j≤n,
+
+$$\omega _ { i , j } = \begin{cases} 0 & ( 1 \leqslant i \leqslant j + h ) , \\ 1 / ( n - j - h ) & \text {otherwise} ; \end{cases}$$
+
+$$\omega _ { i , j } = \begin{cases} 0 & ( j - h \leqslant i \leqslant j + h ) , \\ 1 / ( n - 2 h - 1 ) & \text {otherwise} ; \end{cases}$$
+
+$$\omega _ { i , j } = \begin{cases} 0 & ( j - h \leqslant i \leqslant n ) , \\ 1 / ( j - h - 1 ) & \text {otherwise} . \end{cases}$$
+
+The intent of condition (4) is to make the training set and the test set nearly independent. Our notation suppresses the dependence of h on n, of Pn,i on h, and of ω,j on h and n. The empirical estimates P,i need not be probability measures, but condition (5) ensures ∑ Pn,i = nPn, where Pn denotes the standard empirical distribution that places mass 1/n on each of the observations.
+
+For some functional T on Rd × P, where P is a collection of probability measures on Ra, define the prediction error by
+
+$$P E _ { n } = \int T ( z , P _ { n } ) \, d P ( z ) ,$$
+
+and the h-block cross-validated estimate of E(PE) to be
+
+$$C v _ { n } = \frac { 1 } { n } \sum _ { i = 1 } ^ { n } T ( Z _ { i } , P _ { n , i } ) . \\$$
+
+Examples of functionals T are found in the next section. Also define the corrected h-block cross-validated estimate as
+
+$$C C V _ { n } = C V _ { n } - \frac { 1 } { n } \sum _ { i = 1 } ^ { n } \, \int T ( z , P _ { n , i } ) \, d P _ { n } ( z ) + \int T ( z , P _ { n } ) \, d P _ { n } ( z ) .$$
+
+Heuristically, the extra terms in (8) follow from matching the expectation of Cv with that of PE. To see this write CV as:
+
+
+<!-- p:4 -->
+
+
+$$\left \{ \frac { 1 } { n } \sum _ { i = 1 } ^ { n } T ( Z _ { i } , P _ { n , i } ) - \frac { 1 } { n } \sum _ { i = 1 } ^ { n } \int T ( z , P _ { n , i } ) \, d P ( z ) \right \} + \frac { 1 } { n } \sum _ { i = 1 } ^ { n } \int \{ T ( z , P _ { n , i } ) - T ( z , P _ { n } ) \} \, d P ( z ) + \text {PE} _ { n } . \\ \\ \text {If the } \{ Z \} \text { or independent than the } \text { approximation } \text { of the } \text { first } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text {$$
+
+If the {Z} are independent then the expectation of the first term is zero. If not, this expectation is small when Z and {Zj: |i —j| &gt; h} are nearly independent. The correction in (8) is an approximation to the second term in (9). It is needed because this term's expectation is of order h/{n(n − 2h)}. If h = np, for 0 &lt; p &lt; 1, then the order of the expectation becomes 1/n, whereas the order of the expectation of CCv — PE is 1/n2. Note that the order terms include a constant that increases with dimension of the fitted model implicit in T.
+
+Remark 1. Burman &amp; Nolan (1992) consider the problem of estimating the prediction function μ for a stationary process (X, Yi), where
+
+$$Y _ { i } = \mu ( X _ { i } ) + \varepsilon _ { i } , \ E ( \varepsilon _ { i } | X _ { i } ) = 0 .$$
+
+It is argued there that leave-one-out cross-validation for model selection is asymptotically optimal in the sense of Shibata (1980) in many cases. It is important to point out that the test and training set need not be independent for cross-validation to work. Briefly, the prediction error can be well approximated by a quadratic form in the errors plus a bias term, provided E(εiεj|X1, . . . , Xj) = 0 (i &lt;j). A stationary Markov process with Yi = X+1 satisfies this condition, which implies the AR(1) process also meets this condition. See Burman &amp; Nolan (1992) for details of the argument.
+
+Remark 2. Conditions for asymptotic optimality for this proposal remain open. It is noted however that in the independent case Burman (1990) has shown the closely related corrected v-fold cross-validation is asymptotically optimal for 0 &lt; p &lt; 1.
+
+## 3. EXAMPLES
+
+In this section we present three examples where h-block cross-validation may prove useful in estimating the prediction error. The first is a formalization of the example used in § 1 to introduce the notion of h-block cross-validation, i.e. the autoregressive model. The second example concerns additive prediction and the last is a nonparametric model.
+
+Example 1. Let X1,..., XN be N observations from a stationary process. Use least squares to fit an autoregressive model of order k to the data as in (1). Call the fitted parameters o, ... , Ôk. Then the expected quadratic loss (2) in predicting a new observation is
+
+$$E ( \mathbf P _ { n } ) = E \left \{ \int ( x _ { k + 1 } - \hat { \theta } _ { 0 } - \hat { \theta } _ { 1 } x _ { k } - \dots - \hat { \theta } _ { k } x _ { 1 } ) ^ { 2 } \, d P ( x _ { 1 } , \dots , x _ { k + 1 } ) \right \} .$$
+
+Here
+
+$$Z _ { i } = ( X _ { i } , \dots , X _ { i + k } ) , \ \ T ( z , P _ { n } ) = ( x _ { k + 1 } - \hat { \theta } _ { o } - \hat { \theta } _ { 1 } x _ { k } - \dots - \hat { \theta } _ { k } x _ { 1 } ) ^ { 2 } ,$$
+
+To explain further, take k = 1. Then the least squares estimates , θ1 in (10) are the
+
+with z = (x1, . . . , Xk+1) and n = N − k. This is the model that is fitted in the simulations of the next section.
+
+
+<!-- p:5 -->
+
+
+minimizers of
+
+$$\sum _ { i = 1 } ^ { n } \left ( X _ { i + 1 } - \theta _ { 0 } - \theta _ { 1 } X _ { i } \right ) ^ { 2 } ,$$
+
+P is the joint distribution of (X1, X2), and Pn puts mass 1/n, or 1/(N − 1), on each of the pairs (Xi, Xi+1) for i = 1, . . . , N − 1. The leave-one-out cross-validated estimate (3) in this case is
+
+$$O C V _ { n } = \frac { 1 } { n } \sum _ { i = 1 } ^ { n } \left ( X _ { i + 1 } - \hat { \theta } _ { 0 , i } - \hat { \theta } _ { 1 , i } X _ { i } \right ) ^ { 2 } , \\$$
+
+where Ôo,i and 1, minimize
+
+$$\sum _ { j \neq i } ( X _ { j + 1 } - \theta _ { 0 } - \theta _ { 1 } X _ { j } ) ^ { 2 } .$$
+
+To h-block cross-validate, minimize for each i the following quadratic:
+
+$$\sum _ { j = 1 } ^ { n } \left ( X _ { j + 1 } - \theta _ { 0 } - \theta _ { 1 } X _ { j } \right ) ^ { 2 } \omega _ { i , j } , \\$$
+
+where the weights ωi,j satisfy (4) and (5). Call the minimizers ,i,w and 1,i,w. Finally, the corrected h-block cross-validated estimate of (10) is
+
+$$C C _ { n } = & - \sum _ { n = 1 } ^ { 1 } \left ( X _ { i + 1 } - \hat { \theta } _ { 0 , i , w } - \hat { \theta } _ { 1 , i , w } X _ { i } \right ) ^ { 2 } - \frac { 1 } { n ^ { 2 } } \sum _ { i = 1 } ^ { n } \sum _ { j = 1 } ^ { n } \left ( X _ { j + 1 } - \hat { \theta } _ { 0 , i , w } - \hat { \theta } _ { 1 , i , w } X _ { j } \right ) ^ { 2 } \\ & + \frac { 1 } { n } \sum _ { i = 1 } ^ { n } \left ( X _ { i + 1 } - \hat { \theta } _ { 0 } - \hat { \theta } _ { 1 } X _ { i } \right ) ^ { 2 } . \\ \intertext { f o r a l l } \Example 2 _ { A } & \text { as in the previous example. take } X _ { 1 } , \dots X _ { w } \text { to be } N \text { observations from a } A$$
+
+Example 2. As in the previous example, take X1, ... , XN to be N observations from a stationary process. Generalize the ideas of Hastie &amp; Tibshirani (1987) and Stone (1985) by considering the problem of predicting X by an additive nonparametric model: μ0 + μ1(Xi-1) + ... + μk(Xi-k). If we employ least-squares to fit splines or polynomials then, as in the above example, the prediction error (6) is given by
+
+$$P E _ { n } = \int \{ x _ { k + 1 } - \hat { \mu } _ { 0 } - \hat { \mu } _ { 1 } ( x _ { k } ) - \dots - \hat { \mu } _ { k } ( x _ { 1 } ) \} ^ { 2 } \, d P ( x _ { 1 } , \dots , x _ { k + 1 } ) .$$
+
+Again, P represents the distribution of Zi = (Xi, . . . , Xi + k), the function T is the quadratic integrand above, z = (x1, . . . , χk + 1) and n = N − k.
+
+Example 3. Consider the nonparametric regression model
+
+$$E ( Y | X = x ) = \mu ( x ) .$$
+
+Take {Zi = (Xi, Yi): i = 1, . . . , N } to be N observations from a strictly stationary process. Once again if a polynomial of order k, or a spline with k knots, is fitted to the data by the method of least squares then the prediction error using quadratic loss is
+
+$$P _ { n } = \int \{ y - \hat { \mu } _ { k } ( x ) \} ^ { 2 } \, d P ( x , y ) ,$$
+
+where βk is the estimate of μ. In this example n = N.
+
+In each of these examples, quadratic loss was used both to estimate the unknown prediction function and to evaluate the prediction error. Our method is not restricted to the use of quadratic loss; in fact, the functional T can be any reasonably smooth function of z and P. We do not investigate the performance of other loss functions here.
+
+
+<!-- p:6 -->
+
+
+## 4. SIMULATION STUDY
+
+Six simulations are presented here. The simulations demonstrate a variety in autocorrelation, sample size, and fitted model. Each simulation is based on 10 000 replications. For one replication, N observations are generated from a stationary zero-mean Gaussian sequence with standard deviation 3 and specified autocorrelation. A model is fitted to the generated data using least squares; the exact one-step prediction error is calculated based on the fitted parameters and pre-specified correlation structure; and, finally, the expected e   s as o o s o es ss co rco and according to corrected (8) and uncorrected (7) h-block cross-validation for h as the nearest integer to each of the following fractions of n: 0·05, 0·10, 0·15, 0·20, 0·25, 0·30, where n is the effective number of cases. Example 1 in § 3 provides details for computing these quantities. Table 1 reports estimates of E(PEn), E(Cvn), E(CCv) based on the 10 000 repetitions.
+
+The simulations show that classical leave-one-out cross-validation can be very misleading, and caution should be exercised in using the leave-one-out technique when observations are not independent. On the other hand, these simulations also demonstrate that blocking effectively adapts cross-validation to the dependent setting. In each of the simulations, at least one block size produces good results for uncorrected h-block cross-validation. However, as discussed earlier, the best block size to use is determined by the autocorrelation and the appropriateness of the fitted model, both of which are presumed unknown. Therefore it is reassuring to see positive results for corrected h-block crossvalidation over a wide range of block sizes. Whether  or 1 of the cases are removed, blocking with the corrective term yields good cross-validated estimates of the expected prediction error. Our simulations suggest the rule-of-thumb of removing 1 of the data; that is the fourth column in each simulation of Table 1 shows that h = n/6 appears to be a sensible choice in a variety of settings. Finally, it is noted that it can be difficult for the corrective term to compensate for large data loss, where h exceeds 0·25n, because it makes only a first order correction.
+
+Specifically, the first simulation fits the linear model
+
+$$x _ { i } = \theta _ { 0 } + \theta _ { 1 } x _ { i - 1 } .$$
+
+The sample is of size N = 25 with autocorrelations C(Xi, X+ j) = 0·3, 0·4, 0·3, 0·3, 0·3, 0·46, 0·47, 0·48, . .. , 0·424, for j = 1, ... , 24. The results appear at the top of Table 1. Notice ordinary leave-one-out cross-validation greatly underestimates the expected prediction error in this example.
+
+The next two simulation results presented in Table 1 are based on the same stationary process, an autoregressive model with single coefficient 0·7. Burman &amp; Nolan (1992) show that ordinary cross-validation is asymptotically equivalent to PE for the AR(1) process. The first of these two simulations fits a model that is linear in the first lag, and the second fits a model that is quadratic in the first lag:
+
+$$x _ { i } = \theta _ { 0 } + \theta _ { 1 } x _ { i - 1 } + \theta _ { 2 } x _ { i - 1 } ^ { 2 } .$$
+
+The fourth and fifth simulations generate observations from a sequence of Gaussians with autocorrelations: 0, 0·6, 0, 0·4, 0, 0·46, 0, 0·48, . ... In the fourth simulation a linear fit in one lag is made to the data, for N = 25. The results show a large expected prediction error, and the h-block method does a very good job estimating it. In the fifth simulation, N = 64 and the fitted model is linear in two lags:
+
+
+<!-- p:7 -->
+
+
+Table 1. Mean and standard deviations of h-block and corrected h-block estimates of the prediction error for six simulations
+
+|          | N = 25, n = 24, E(PEn) = 10·38, SD(PEn) = 2·74 - h=0   | N = 25, n = 24, E(PEn) = 10·38, SD(PEn) = 2·74 - h= 1   | N = 25, n = 24, E(PEn) = 10·38, SD(PEn) = 2·74 - h=2   | N = 25, n = 24, E(PEn) = 10·38, SD(PEn) = 2·74 - h=4   | N = 25, n = 24, E(PEn) = 10·38, SD(PEn) = 2·74 - h=5   | N = 25, n = 24, E(PEn) = 10·38, SD(PEn) = 2·74 - h= 6   | N = 25, n = 24, E(PEn) = 10·38, SD(PEn) = 2·74 - h=7   |
+|----------|--------------------------------------------------------|---------------------------------------------------------|--------------------------------------------------------|--------------------------------------------------------|--------------------------------------------------------|---------------------------------------------------------|--------------------------------------------------------|
+| E(Cvn)   | 7.96                                                   | 8·22                                                    | 8.89                                                   | 10·58                                                  | 11·82                                                  | 12·32                                                   | 13·01                                                  |
+| E(CCvn)  | 7.93                                                   | 8·12                                                    | 8.64                                                   | 9.81                                                   | 10·68                                                  | 10.73                                                   | 10·83                                                  |
+| SD(CVvn) | 2.83                                                   | 3.00                                                    | 3.52                                                   | 4.85                                                   | 5.92                                                   | 6.75                                                    | 7.86                                                   |
+| SD(cCvn) | 2.82                                                   | 2.96                                                    | 3.39                                                   | 4.32                                                   | 5·05                                                   | 5.43                                                    | 5.96                                                   |
+|          | N = 36, n = 35, E(PEn) = 5·09, SD(PEn) = 0·75          | N = 36, n = 35, E(PEn) = 5·09, SD(PEn) = 0·75           | N = 36, n = 35, E(PEn) = 5·09, SD(PEn) = 0·75          | N = 36, n = 35, E(PEn) = 5·09, SD(PEn) = 0·75          | N = 36, n = 35, E(PEn) = 5·09, SD(PEn) = 0·75          | N = 36, n = 35, E(PEn) = 5·09, SD(PEn) = 0·75           | N = 36, n = 35, E(PEn) = 5·09, SD(PEn) = 0·75          |
+|          | h=0                                                    | h= 2                                                    | h= 4                                                   | h=5                                                    | h=7                                                    | h= 9                                                    | h= 11                                                  |
+| E(Cvn)   | 4.84                                                   | 5.03                                                    | 5·20                                                   | 5.30                                                   | 5.52                                                   | 5.84                                                    | 6·32                                                   |
+| E(CCVn)  | 4.83                                                   | 4.97                                                    | 5.07                                                   | 5·12                                                   | 5·20                                                   | 5·30                                                    | 5.42                                                   |
+| SD(CVn)  | 1·19                                                   | 1·28                                                    | 1·43                                                   | 1·52                                                   | 1·79                                                   | 2·19                                                    | 2.82                                                   |
+| SD(CCVn) | 1·19                                                   | 1·26                                                    | 1·36                                                   | 1·42                                                   | 1·57                                                   | 1·78                                                    | 2.09                                                   |
+|          | N = 36, n = 35, E(PEn) = 5·50, SD(PEn) = 0·75          | N = 36, n = 35, E(PEn) = 5·50, SD(PEn) = 0·75           | N = 36, n = 35, E(PEn) = 5·50, SD(PEn) = 0·75          | N = 36, n = 35, E(PEn) = 5·50, SD(PEn) = 0·75          | N = 36, n = 35, E(PEn) = 5·50, SD(PEn) = 0·75          | N = 36, n = 35, E(PEn) = 5·50, SD(PEn) = 0·75           | N = 36, n = 35, E(PEn) = 5·50, SD(PEn) = 0·75          |
+|          | h=0                                                    | h= 2                                                    | h=4                                                    | h= 5                                                   | h=7                                                    | h=9                                                     | h=11                                                   |
+| E(CVn)   | 5·12                                                   | 5.43                                                    | 5.82                                                   | 6.04                                                   | 6.69                                                   | 7.79                                                    | 10·34                                                  |
+| E(CCvn)  | 5·11                                                   | 5.32                                                    | 5.55                                                   | 5.65                                                   | 5.95                                                   | 6.36                                                    | 7.25                                                   |
+| SD(Cvn)  | 1·37                                                   | 1·68                                                    | 2.34                                                   | 2.73                                                   | 4.42                                                   | 7.72                                                    | 18·24                                                  |
+| SD(CCVn) | 1·36                                                   | 1·61                                                    | 2·10                                                   | 2.36                                                   | 3.47                                                   | 5.68                                                    | 14·26                                                  |
+|          | N = 25, n = 24, E(PEn) = 11·59, sD(PEn) = 2·94         | N = 25, n = 24, E(PEn) = 11·59, sD(PEn) = 2·94          | N = 25, n = 24, E(PEn) = 11·59, sD(PEn) = 2·94         | N = 25, n = 24, E(PEn) = 11·59, sD(PEn) = 2·94         | N = 25, n = 24, E(PEn) = 11·59, sD(PEn) = 2·94         | N = 25, n = 24, E(PEn) = 11·59, sD(PEn) = 2·94          | N = 25, n = 24, E(PEn) = 11·59, sD(PEn) = 2·94         |
+|          | h=0                                                    | h= 1                                                    | h=2                                                    | h=4                                                    | h=5                                                    | h= 6                                                    | h=7                                                    |
+| E(Cvn)   | 8.01                                                   | 8.62                                                    | 10·08                                                  | 12·17                                                  | 12·70                                                  | 13·32                                                   | 13.92                                                  |
+| E(CCvn)  | 7.99                                                   | 8.48                                                    | 9.74                                                   | 11·21                                                  | 11·34                                                  | 11·46                                                   | 11·47                                                  |
+| SD(Cvn)  | 3.31                                                   | 3.72                                                    | 4.85                                                   | 6.73                                                   | 7.42                                                   | 8.40                                                    | 9.25                                                   |
+| SD(CCVn) | 3.30                                                   | 3.65                                                    | 4.63                                                   | 6.00                                                   | 6·31                                                   | 6.82                                                    | 7.14                                                   |
+|          | N = 64, n = 62, E(PEn) = 6·18, SD(PEn) = 0·.56         | N = 64, n = 62, E(PEn) = 6·18, SD(PEn) = 0·.56          | N = 64, n = 62, E(PEn) = 6·18, SD(PEn) = 0·.56         | N = 64, n = 62, E(PEn) = 6·18, SD(PEn) = 0·.56         | N = 64, n = 62, E(PEn) = 6·18, SD(PEn) = 0·.56         | N = 64, n = 62, E(PEn) = 6·18, SD(PEn) = 0·.56          | N = 64, n = 62, E(PEn) = 6·18, SD(PEn) = 0·.56         |
+|          | h=0                                                    | h= 3                                                    | h=6                                                    | h=9                                                    | h= 12                                                  | h= 16                                                   | h= 19                                                  |
+| E(CVn)   | 6.06                                                   | 6·21                                                    | 6·30                                                   | 6.40                                                   | 6.51                                                   | 6.76                                                    | 7.07                                                   |
+| E(CCVn)  | 6.06                                                   | 6·16                                                    | 6·20                                                   | 6·23                                                   | 6·25                                                   | 6·31                                                    | 6.38                                                   |
+| SD(Cvn)  | 1·23                                                   | 1·29                                                    | 1·37                                                   | 1.47                                                   | 1.58                                                   | 1·81                                                    | 2·08                                                   |
+| SD(CCVn) | 1·23                                                   | 1·28                                                    | 1·34                                                   | 1·40                                                   | 1·44                                                   | 1·54                                                    | 1·66                                                   |
+|          | N = 60, n = 58, E(PEn) = 10·17, sD(PEn) = 1·78         | N = 60, n = 58, E(PEn) = 10·17, sD(PEn) = 1·78          | N = 60, n = 58, E(PEn) = 10·17, sD(PEn) = 1·78         | N = 60, n = 58, E(PEn) = 10·17, sD(PEn) = 1·78         | N = 60, n = 58, E(PEn) = 10·17, sD(PEn) = 1·78         | N = 60, n = 58, E(PEn) = 10·17, sD(PEn) = 1·78          | N = 60, n = 58, E(PEn) = 10·17, sD(PEn) = 1·78         |
+|          | h= 0                                                   | h= 3                                                    | h=6                                                    | h=9                                                    | h= 12                                                  | h = 15                                                  | h=17                                                   |
+| E(CVn)   | 8.19                                                   | 8.54                                                    | 9.64                                                   | 10·36                                                  | 11·03                                                  | 11·53                                                   | 12·24                                                  |
+| E(CCVn)  | 8.18                                                   | 8.34                                                    | 9.34                                                   | 9.79                                                   | 10·10                                                  | 10·09                                                   | 10·34                                                  |
+| SD(Cvn)  | 2·18                                                   | 2·29                                                    | 2.99                                                   | 3.62                                                   | 4.34                                                   | 4.92                                                    | 5.73                                                   |
+| SD(cCvn) | 2·18                                                   | 2·25                                                    | 2.85                                                   | 3.30                                                   | 3.74                                                   | 3.93                                                    | 4.39                                                   |
+
+#### xi= θ0 + θ1xi−1+θ2xi−2.
+
+Here, both the h-block method and leave-one-out cross-validation perform well, which is not surprising given the results of Burman &amp; Nolan (1992).
+
+
+<!-- p:8 -->
+
+
+Finally, the last simulation further exemplifies the advantages of h-blocking. There the autocorrelations are: 0·2, 02, 0·2, 0·6, 0·1, 0·1, 0, 0·62, 0, 0, 0, 0.63, 0, 0, 0, 0.64, . . . ; and the fitted model is
+
+$$x _ { i } = \theta _ { 0 } + \theta _ { 1 } x _ { i - 1 } + \theta _ { 2 } x _ { i - 1 } ^ { 2 } + \theta _ { 3 } x _ { i - 2 } .$$
+
+### ACKNOWLEDGEMENT
+
+The authors thank the referees for helpful comments. This research was partially supported by the United States National Science Foundation.
+
+<!-- END SOURCE 8/40: Burman_1994_cross-validatory-dependent-data.md -->
+
+---
+
+<!-- BEGIN SOURCE 9/40: Campbell_2008_predicting-excess-stock-returns.md -->
+
+# Source: `Campbell_2008_predicting-excess-stock-returns.md`
+
+---
+id: "Campbell_2008_predicting-excess-stock-returns"
+source_pdf: "../pdf/Campbell_2008_predicting-excess-stock-returns.pdf"
+source_filename: "Campbell_2008_predicting-excess-stock-returns.pdf"
+format: "academic-paper"
+extraction_profile: "text-math-tables-high-fidelity"
+extraction_mode: "hybrid"
+extraction_quality: "excellent"
+extraction_score: 108.0
+visual_assets: "disabled"
+---
+
+<!-- p:1 -->
+
+## Predicting Excess Stock Returns Out of Sample: Can Anything Beat the Historical Average?
+
+#### Citation
+
+Campbell, John Y. and Samuel B. Thompson. 2008. Predicting excess stock returns out of sample: Can anything beat the historical average? The Review of Financial Studies 21(4): 1509-1531.
+
+#### Published version
+
+https://doi.org/10.1093/rfs/hhm055
+
+#### Link
+
+http://nrs.harvard.edu/urn-3:HUL.InstRepos:2622619
+
+#### Terms of use
+
+This article was downloaded from Harvard University's DASH repository, and is made available under the terms and conditions applicable to Other Posted Material (LAA), as set forth at
+
+https://harvardwiki.atlassian.net/wiki/external/NGY5NDE4ZjgzNTc5NDQzMGIzZWZhMGFlOWI2M2EwYTg
+
+#### Accessibility
+
+https://accessibility.huit.harvard.edu/digital-accessibility-policy
+
+#### Share Your Story
+
+The Harvard community has made this article openly available.
+
+Please share how this access benefits you. Submit a story
+
+
+<!-- p:2 -->
+
+
+### Predicting Excess Stock Returns Out of Sample:
+
+### Can Anything Beat the Historical Average?
+
+John Y. Campbell and Samuel B. Thompson →
+
+* Campbell: Corresponding author. Department of Economics, Littauer Center, Harvard University, Cambridge MA 02138, USA, and NBER. Tel 617-496-6448. Email john\_campbell@harvard.edu. Thompson: Arrowstreet Capital, LP, 44 Brattle Street, 5th  oor, Cambridge MA 02138, USA. Email sthompson@arrowstreetcapital.com.
+
+
+<!-- p:3 -->
+
+
+####### Abstract
+
+Goyal and Welch (2006) argue that the historical average excess stock return forecasts future excess stock returns better than regressions of excess returns on predictor variables. In this paper, we show that many predictive regressions beat the historical average return, once weak restrictions are imposed on the signs of coe cients and return forecasts. The out-of-sample explanatory power is small, but nonetheless is economically meaningful for mean-variance investors. Even better results can be obtained by imposing the restrictions of steady-state valuation models, thereby removing the need to estimate the average from a short sample of volatile stock returns.
+
+
+<!-- p:4 -->
+
+
+Towards the end of the last century, academic  nance economists came to take seriously the view that aggregate stock returns are predictable. During the 1980s, a number of papers studied valuation ratios, such as the dividend-price ratio, earningsprice ratio, or smoothed earnings-price ratio. Value-oriented investors in the tradition of Graham and Dodd (1934) had always asserted that high valuation ratios are an indication of an undervalued stock market and should predict high subsequent returns, but these ideas did not carry much weight in the academic literature until authors such as Roze (1984), Fama and French (1988), and Campbell and Shiller (1988a,b) found that valuation ratios are positively correlated with subsequent returns and that the implied predictability of returns is substantial at longer horizons. Around the same time, several papers pointed out that yields on short- and long-term Treasury and corporate bonds are correlated with subsequent stock returns [Fama and Schwert (1977), Keim and Stambaugh (1986), Campbell (1987), and Fama and French (1989)].
+
+During the 1990s and early 2000s, research continued on the prediction of stock returns from valuation ratios [Kothari and Shanken (1997) and Ponti and Schall (1998)] and interest rates [Hodrick (1992)]. Several papers suggested new predictor variables exploiting information in corporate payout and  nancing activity [Lamont (1998) and Baker and Wurgler (2000)], the level of consumption in relation to wealth [Lettau and Ludvigson (2001)], and the relative valuations of high- and low-beta stocks [Polk, Thompson, and Vuolteenaho (2006)]. At the same time, several authors expressed concern that the apparent predictability of stock returns might be spurious. Many of the predictor variables in the literature are highly persistent: Nelson and Kim (1993) and Stambaugh (1999) pointed out that persistence leads to biased coe cients in predictive regressions if innovations in the predictor variable are correlated with returns (as is strongly the case for valuation ratios, although not for interest rates). Under the same conditions, the standard t -test for predictability has incorrect size [Cavanagh, Elliott, and Stock (1995)]. These problems are exacerbated if researchers are data mining, considering large numbers of variables, and reporting only those results that are apparently statistically signi  cant [Foster, Smith, and Whaley (1997) and Ferson, Sarkissian, and Simin (2003)]. An active recent literature discusses alternative econometric methods for correcting the bias and conducting valid inference [Cavanagh, Elliott, and Stock (1995), Mark (1995), Kilian (1999), Lewellen (2004), Torous, Valkanov, and Yan (2004), Campbell and Yogo (2006), Jansson and Moreira (2006), Polk, Thompson, and Vuolteenaho (2006), and Ang and Bekaert (2007)].
+
+A somewhat di erent critique emphasizes that predictive regressions have often performed poorly out-of-sample [Goyal and Welch (2003, 2006) and Butler, Grullon, and Weston (2005)]. This critique had particular force during the bull market of the late 1990s, when low valuation ratios predicted extraordinarily low stock returns that did not materialize until the early 2000s [Campbell and Shiller (1998)]. Goyal and Welch (2006) argue that the poor out-of-sample performance of predictive regressions is a systemic problem, not con  ned to any one decade. They compare predictive regressions with historical average returns and  nd that historical average returns almost always generate superior return forecasts. They conclude that 'the profession has yet to  nd some variable that has meaningful and robust empirical equity premium forecasting power.'
+
+
+<!-- p:5 -->
+
+
+While it is not clear how much weight should be placed on out-of-sample statistics in judging the predictability of stock returns [Inoue and Kilian (2004)], in this paper we take up Goyal and Welch's (2006) challenge and ask whether standard variables could have been used in real time to forecast twentieth and early twenty- rst century stock returns. We show that simple restrictions on predictive regressions, suggested by investment theory, improve the out-of-sample performance of key forecasting variables and imply that investors could have pro  ted by using market timing strategies.
+
+We begin in Section 2 by comparing the in-sample and out-of-sample forecasting power of standard predictor variables through the end of 2005. We use at least 20 years of data to obtain initial coe cient estimates and restrict the forecast evaluation period to the period since 1927 when high-quality total returns data are available from CRSP. We calculate an out-of-sample ω 2 statistic that can be compared with the usual in-sample ω 2 statistic. Like Goyal and Welch (2006), we  nd unimpressive in-sample results and poor out-of-sample performance for many of the usual linear regressions.
+
+Our contribution is to show that restricted regressions perform considerably better than these unrestricted regressions. We begin by considering two alternative restrictions that can be imposed on any theoretically motivated forecasting regression:  rst, that the regression coe cient has the theoretically expected sign; and second, that the  tted value of the equity premium is positive. We impose these restrictions sequentially and then together, and  nd that they substantially improve the out-of-sample performance of predictive regressions.
+
+Next we look more closely at valuation ratios, for which theory restricts not only the sign but also the magnitude of the regression coe cients. We  nd that out-ofsample predictability can be improved even more by restricting the magnitude of the coe cients to the values implied by a simple steady-state model, such as the Gordon
+
+
+<!-- p:6 -->
+
+
+(1962) growth model in the case of the dividend-price ratio.
+
+Section 1 shows that several commonly used forecasting variables do have some ability to predict stock returns out-of-sample. The out-of-sample ω 2 statistics are positive, but small. This raises the question of whether the predictive power is economically meaningful. In Section 2, we show that even very small ω 2 statistics are relevant for investors because they can generate large improvements in portfolio performance. In a related exercise, we calculate the fees that investors would be willing to pay to exploit the information in each of our forecasting variables. Section 3 brie  y concludes.
+
+## 1 Theoretical Restrictions on Predictive Regressions
+
+In this section, we conduct an out-of-sample forecasting exercise inspired by Goyal and Welch (2006), with modi  cations that reveal the e ectiveness of theoretically motivated restrictions. We use monthly data and predict simple monthly or annual stock returns on the S&amp;P 500 Index. This immediately creates a tradeo between the length of the data sample and the quality of the available data. High-quality total return data are available monthly from CRSP since 1927, while total monthly returns before that time are constructed by interpolation of lower-frequency dividend payments and therefore may be suspect. Accordingly, we use the CRSP data period as our out-of-sample forecast evaluation period, but use earlier data to estimate an initial regression.
+
+Table 1, whose format is based on the tables in Goyal and Welch (2006), reports the results. We begin by discussing monthly return forecasts reported in Panel A, and then discuss annual forecasts reported in Panel B. Each row of the table considers a di erent forecasting variable. The  rst four rows consider valuation ratios: the dividend price ratio, earnings price ratio, smoothed earnings price ratio, and book-tomarket ratio. Each of these ratios is measured in levels, rather than logs, with some accounting measure of corporate value in the numerator, and market value in the denominator. The smoothed earnings price ratio, proposed by Campbell and Shiller (1988b, 1998) is the ratio of a 10-year moving average of real earnings to current real prices. Campbell and Shiller argue that this ratio should have better forecasting power than the current earnings price ratio because aggregate corporate earnings display short-run cyclical noise; in particular, earnings drop close to zero in recession years, such as 1934 and 1992, creating spikes in the current earnings price ratio that have nothing to do with stock market valuation levels. 1
+
+
+<!-- p:7 -->
+
+
+The next row of Table 1 uses a smoothed measure of accounting real return on equity (ROE) as the predictor variable. Real ROE is measured as the level of real earnings divided by lagged real book equity and the gross one-year in  ation rate. This gives a measure of the total resources available to be divided between real payouts and real growth in book equity. 2 We smooth real ROE over ten years to remove short-run cyclical noise in corporate pro  tability. We include this variable in Table 1 not because it has been claimed to predict aggregate stock returns by itself, but because we will use it in combination with valuation ratios in Table 2.
+
+The next  ve rows of Table 1 consider nominal interest rates and in  ation: the short-term interest rate, the long-term bond yield, the term spread between long- and short-term Treasury yields, the default spread between corporate and Treasury bond yields, and the lagged rate of in  ation.
+
+The last two rows of Table 1 evaluate forecasting variables that have been proposed more recently: the equity share of new issues proposed by Baker and Wurgler (2000) and the consumption-wealth ratio of Lettau and Ludvigson (2001). Lettau and Ludvigson's variable is based on a cointegrating relationship between consumption, aggregate labor income, and aggregate  nancial wealth. Rather than estimate a separate cointegrating regression, we simply include the three variables directly in the forecasting equation for stock returns. 3
+
+The  rst column of Table 1 reports the  rst date for which we have data on each forecasting variable. For dividends, earnings, stock returns, long-term bond yields, and in  ation we have data, originally assembled by Robert Shiller, back to the early 1870s. Other data series typically begin shortly after the end of World War I, although book equity does not become available until 1926, which means that the book-to-market ratio begins then and the ten-year smoothed ROE begins in 1936. All data series continue to the end of 2005. The second column reports the date at which we begin the out-of-sample forecast evaluation. This is the beginning of 1927, when accurate data on total monthly stock returns become available from CRSP, or 20 years after the date in column 1, whichever comes later.
+
+The third and fourth columns of Table 1 report the full-sample ε -statistic for the signi  cance of each variable in forecasting stock returns, and the adjusted ω 2 statistic of the full-sample regression. 4 It is immediately obvious from the column of ε - statistics that many of the valuation ratios and interest-rate variables are statistically insigni  cant in predicting stock returns over the long sample periods considered here. The most successful variables are the earnings yield, the Treasury bill rate, and the term spread. Of the two recently proposed variables, net equity issuance is modestly successful and the consumption-wealth ratio is strikingly successful in-sample.
+
+
+<!-- p:8 -->
+
+
+The remaining columns of Table 1 evaluate the out-of-sample performance of these forecasts, using an out-of-sample ω 2 statistic that can be compared with the in-sample ω 2 statistic. This is computed as:
+
+$$R _ { O S } ^ { 2 } = 1 - \frac { \sum _ { t = 1 } ^ { T } ( r _ { t } - \widehat { r } _ { t } ) ^ { 2 } } { \sum _ { t = 1 } ^ { T } ( r _ { t } - \overline { r } _ { t } ) ^ { 2 } } , \\ \intertext { d } value from a predictive regression estimated through period t - 1 ,$$
+
+where b θ π is the  tted value from a predictive regression estimated through period ε → 1 , and θ π is the historical average return estimated through period ε → 1 . If the out-ofsample ω 2 is positive, then the predictive regression has lower average mean squared prediction error than the historical average return. 5 We use the entire available history of stock returns, back to 1871, to estimate the historical average return. This gives the historical mean an advantage over predictive regressions with variables that have become available more recently, because more data are available to estimate the historical mean than to estimate such predictive regressions. However, this is a real-world advantage of the historical mean that should be taken into account in our tests.
+
+The out-of-sample performance of the predictor variables is mixed. The  fth column of Table 1 shows that only two out of four valuation ratios (the earnings yield and smoothed earnings yield) and two out of  ve interest-rate variables (the Treasury bill rate and term spread) deliver positive out-of-sample ω 2 statistics. The interest rate results are consistent with the conclusion of Ang and Bekaert (2007) that the Treasury bill rate and term spread are robust return predictors. The performance of these variables would be stronger if we started the sample period later, because the interest rate process changed dramatically at the time of the Federal Reserve-Treasury Accord in 1951. Of the two recently proposed variables, net issuance performs reasonably well but the consumption-wealth ratio does not. The di culty of estimating coe cients in a short sample is particularly severe for this series because it includes three separately estimated components. 6
+
+
+<!-- p:9 -->
+
+
+All the regressions we have reported predict simple stock returns rather than log stock returns. The use of simple returns makes little di erence to the comparison of predictive regressions with historical mean forecasts, but all forecasts tend to underpredict returns when log returns are used. The reason is that high stock market volatility in the 1920s and 1930s depressed log returns relative to simple returns in this period. Thus the gap between average stock returns in the late twentieth century and the early twentieth century is greater in logs than in levels.
+
+### 1.1 Sign restrictions on slope coe cients and forecasts
+
+Despite the mixed performance of unrestricted predictive regressions out of sample, it is premature to conclude with Goyal and Welch (2006) that predictive regressions cannot pro  tably be used by investors in real time. A regression estimated over a short sample period can easily generate perverse results, such as a negative coe cient when theory suggests that the coe cient should be positive. Since out-of-sample forecast evaluation begins as little as 20 years after a predictor variable  rst becomes available, while the historical mean return is estimated from the beginning of our data set, this can be an important problem in practice. For example, in the early 1930s the earnings-price ratio was very high, but the coe cient on the predictor was estimated to be negative. This led to a negative forecast of the equity premium in the early 1930s and subsequent poor forecast performance. In practice, an investor would not use a perverse coe cient but would likely conclude that the coe cient is zero, in e ect imposing prior knowledge on the output of the regression.
+
+In the remaining columns of Table 1, we explore the impact of imposing sensible restrictions on the out-of-sample forecasting exercise. In the sixth column, we set the regression coe cient to zero whenever it has the 'wrong' sign (di erent from the theoretically expected sign estimated over the full sample). In the seventh column, we assume that investors rule out a negative equity premium, and set the forecast to zero whenever it is negative. In the eighth and  nal column, we impose  rst the sign restriction on the coe cient, and then the sign restriction on the forecast.
+
+These restrictions never worsen and almost always improve the out-of-sample performance of our predictive regressions. With no restrictions, as we noted above, only earnings-based valuation ratios have a positive out-of-sample ω 2 , but the slope restriction delivers a positive out-of-sample ω 2 for the dividend yield and the sign restriction brings the out-of-sample ω 2 close to zero for the book-to-market ratio.
+
+
+<!-- p:10 -->
+
+
+The sign restriction also delivers a positive out-of-sample ω 2 for the long-term bond yield and the consumption-wealth ratio.
+
+Figure 1 illustrates the e ect of the restrictions for the dividend-price ratio. The top panel shows annualized excess return forecasts based on the full-sample OLS regression coe cient, the rolling ('out-of-sample') OLS regression coe cient without restrictions, and the out-of-sample coe cient with both coe cient and forecast sign restrictions. The bottom panel shows the cumulative out-of-sample ω 2 for these three forecasts. The coe cient sign restriction signi  cantly improves the forecasts in the 1930s, when the coe cient was estimated to be negative. The forecast restrictions bind periodically during the 1960s and 1990s. Valuation ratios were unusually low during these periods, leading to unprecedentedly low forecasts. Campbell and Shiller (2001) also noted the unusually low valuation ratios of the 1990s, and wrote 'We do not  nd this extreme forecast credible; when the independent variable has moved so far from the historically observed range, we cannot trust a linear regression line.' Our forecast restrictions are a simple way to avoid such incredible forecasts.
+
+Panel B of Table 1 reports comparable results for annual regressions, estimated using overlapping monthly data. In-sample ε -statistics are corrected for serial correlation and are even lower than those reported in Panel A for monthly data. Despite this weak in-sample predictive power, these regressions perform quite well out-of-sample. When both our theoretical restrictions are imposed, all four valuation ratios and the three variables based on the Treasury yield curve have out-of-sample ω 2 statistics of at least 2%. Net equity issuance and the consumption-wealth ratio also bene  t from our restrictions but do not beat the historical mean return at the annual frequency.
+
+### 1.2 Quantitative coe cient restrictions for valuation ratios
+
+So far we have used theory only to impose weak sign restrictions on coe cients and excess return forecasts. We now go further and impose the restrictions of a simple steady-state model on the coe cients for valuation ratios. This approach can be interpreted as a conditional version of the procedure advocated by Fama and French (2002) to estimate the unconditional average mean return. It can also be interpreted as a way to combine the information from multiple data sources, for example, on market valuations, corporate pro  tability, and payout policy, without increasing the number of free coe cients that must be estimated.
+
+
+<!-- p:11 -->
+
+
+We start from the Gordon (1962) growth formula,
+
+$$\frac { D } { P } = R - G ,$$
+
+which describes the dividend-price ratio in a steady state with a constant discount rate and dividend growth rate. We combine this formula with the steady-state relation between growth and accounting return on equity,
+
+$$G = ( 1 - \frac { D } { E } ) R O E ,$$
+
+where ρ⇀↼ is the payout ratio, to obtain a growth-adjusted return forecast:
+
+$$\widehat { R } _ { D P } = \frac { D } { P } + ( 1 - \frac { D } { E } ) R O E . \\ \\ \intertext { a c h \, c a n \, b e \, u s e d \, t o b t a i n \, g r o w t h \, f o r a c t s \, f o r \, w e r n i g n s \, v i l d }$$
+
+The same approach can be used to obtain growth forecasts from the earnings yield. Using the fact that ρ⇀ς = ( ρ⇀↼ )( ↼⇀ς ) we have:
+
+$$\widehat { R } _ { E P } = \left ( \frac { D } { E } \right ) \frac { E } { P } + ( 1 - \frac { D } { E } ) R O E , \\ \text {weighted average of the earnings yield and the accounting return on}$$
+
+a payout-ratio-weighted average of the earnings yield and the accounting return on equity. When return on equity equals the expected return, as might be the case in long-run equilibrium, then this implies that b ω φς = ↼⇀ς . Finally, since ↼⇀ς = ( ↪⇀↩ ) ω↽↼π we have:
+
+$$\hat { R } _ { B M } = R O E \left [ 1 + \frac { D } { E } \left ( \frac { B } { M } - 1 \right ) \right ] .$$
+
+To use these formulas in practice, one must decide how to combine historical and contemporaneous data on the right-hand side variables. We follow Fama and French (2002) by using historical average data on payouts and pro  tability, but di er from them by using current rather than historical average data on valuation ratios to obtain a return forecast conditional on the market's current valuation level. This procedure assumes that movements in valuation ratios, relative to historical cash  ows, are explained by permanent changes in expected returns. It is a compromise between the view that valuation ratios are driven by changing forecasts of pro  tability, in which case the implied movements in returns would be smaller, and the view that valuation ratios are driven by temporary changes in discount rates, in which case the implied return movements would be larger [Campbell and Shiller (1988a)]. 7
+
+
+<!-- p:12 -->
+
+
+Table 2 reports regression forecasts using both the unadjusted valuation ratios from Table 1, and two variants of growth-adjusted ratios. Our  rst set of growthadjusted ratios uses Equations (4), (5), and (6) with current data on the valuation ratios and historical data on the payout ratio (an average from the beginning of the sample) and the return on equity (a ten-year moving average as in Table 1). 8 Our second set of growth-adjusted ratios in addition subtracts the historical average real interest rate from the beginning of the sample period in order to convert a theoretical real return forecast into a theoretical excess return forecast. The historical average real interest rate is extremely stable, so this  nal step is close to an intercept adjustment. 9
+
+We use these ratios in four di erent ways. First, we report unrestricted regressions of returns on the ratios. Second, we report regressions restricted as in Table 1 to have positive slope coe cients and positive return forecasts. Third, given that valuation ratios are positive, we can obtain reasonable return forecasts merely by bounding the intercept above zero and the slope coe cient to lie between zero and one. This is similar to the second approach but can be implemented by coe cient restrictions rather than by restricting forecasts directly. Finally, we impose the restrictions of the steady-state theory by restricting the intercept of the regression to be zero and the slope coe cient to be one. That is, we estimate the return forecast directly from the data without using any historical information on the covariance between returns and valuation ratios. 10
+
+Table 2 shows that the last and most restrictive approach delivers the best outof-sample performance in monthly data. The out-of-sample ω 2 statistics range from -0.66% to 0.32% when no restrictions are imposed, from -0.45 to 0.43% when the restrictions of Table 1 are imposed, and from 0.24% to 0.97% when the zero-intercept and unit-slope restrictions are imposed. These restrictions improve the out-of-sample monthly forecasting power of every predictive regression we consider. The out-ofsample ω 2 statistics are also reliably positive in annual regressions that impose zerointercept and unit-slope restrictions, ranging from 1.85% to 7.99%, but here the theoretical restrictions worsen out-of-sample predictive power in a few cases. The most striking example is the dividend-price ratio with no growth adjustment, where the zero-intercept restriction is the least theoretically appealing as it e ectively assumes zero real growth in dividends.
+
+
+<!-- p:13 -->
+
+
+Goyal and Welch (2006) emphasize that out-of-sample performance has been particularly poor for predictive regressions in the last few decades. To investigate this issue, Table 3 repeats Table 2 for three subsamples: 1927-1956, 1956-1980, and 19802005. We choose the  rst subsample to end twenty years after we are  rst able to calculate ten-year smoothed ROE, so that growth adjustments in the second and third subsamples are entirely based on ROE and not on historical earnings growth. We omit the book-to-market ratio in the  rst subsample, as the series does not become available until 1926 and thus we cannot estimate coe cients before the  rst subsample begins.
+
+As Goyal and Welch (2006) have noted, the ability of valuation ratios to forecast stock returns is strongest in the  rst subsample. which includes the Great Depression and World War II, slightly weaker in the second subsample, which includes the postwar boom and the oil shocks of the 1970s, and weakest in the third subsample, which includes the great equity bull market at the end of the twentieth century. Even in the third subsample, however, earnings-based valuation ratios outperform the historical mean return in forecasting future monthly stock returns. The outperformance is particularly convincing when the ratios are adjusted for growth, in which case it can be achieved either by imposing a zero intercept and a unit slope or by merely imposing a positive intercept and a slope between zero and one. Results are more mixed in annual data during the third subsample, but here too earnings-based valuation ratios perform reasonably well. The relatively weak performance of the dividend-price ratio in this period is consistent with the observation of Boudoukh, Michaely, Richardson, and Roberts (2007), who  nd that in recent years share repurchases have played a more important role in total payouts to shareholders.
+
+Figure 2 compares the historical mean stock return with four forecasts based on the smoothed earnings yield: the unrestricted rolling regression forecast, the zerointercept unit-slope forecast based on the smoothed earnings yield with no adjustments, and the zero-intercept unit-slope forecasts based on the two growth-adjusted versions of the smoothed earnings yield. The theoretically restricted forecasts are more stable over time and have superior out-of-sample ω 2 statistics as illustrated in the bottom panel of the  gure. Although there is a very gradual decline over time in the out-of-sample ω 2 statistics of these forecasts, this does not mean that the forecasts are not working in the later years of the sample; it simply means that they are not beating the historical mean forecast as decisively as they did in earlier years.
+
+
+<!-- p:14 -->
+
+
+## 2 How Large an ω 2 Should We Expect?
+
+In the previous section, we showed that many of the forecasting variables that have been discussed in the literature do have positive out-of-sample predictive power for aggregate U.S. stock returns, when reasonable restrictions are imposed on the predictive regression. However, the ω 2 statistics are small in magnitude. This raises the important question of whether they are economically meaningful.
+
+To explore this issue, consider the following example:
+
+$$r _ { t + 1 } = \mu + x _ { t } + \varepsilon _ { t + 1 } ,$$
+
+where θ π +1 is the excess simple return on a risky asset over the riskless interest rate, ▷ is the unconditional average excess return, ◁ π is a predictor variable with mean zero and constant variance  2 ⇀ , and  π +1 is a random shock with mean zero and constant variance  2 ⇁ . For tractability, consider an investor with a single-period horizon and mean-variance preferences. The investor's objective function is expected portfolio return less ( ⇀ 2) times portfolio variance, where  can be interpreted as the coe cient of relative risk aversion. 11 If the investor does not observe ◁ π , the investor chooses a portfolio weight in the risky asset:
+
+$$\ t i l s k y \ a s e t . \\ \alpha _ { t } = \alpha = \left ( \frac { 1 } { \gamma } \right ) \left ( \frac { \mu } { \sigma _ { x } ^ { 2 } + \sigma _ { \varepsilon } ^ { 2 } } \right ) \\$$
+
+and earns an average excess return of:
+
+$$\text {excess return on} . \\ \left ( \frac { 1 } { \gamma } \right ) \left ( \frac { \mu ^ { 2 } } { \sigma _ { x } ^ { 2 } + \sigma _ { \varepsilon } ^ { 2 } } \right ) & = \frac { S ^ { 2 } } { \gamma } ,$$
+
+where  is the unconditional Sharpe ratio of the risky asset.
+
+If the investor observes ◁ π , the investor sets:
+
+$$\text {er} \, \varepsilon \, x _ { t } , \, \text {the inverse} \, \text {set} . \\ \alpha _ { t } = \left ( \frac { 1 } { \gamma } \right ) \left ( \frac { \mu + x _ { t } } { \sigma _ { \varepsilon } ^ { 2 } } \right ) , \\$$
+
+where the denominator is now  2 ⇁ rather than  2 ⇀ +  2 ⇁ because the variation in the predictor variable ◁ π is now expected and does not contribute to risk. The investor earns an average excess return of:
+
+$$\text {Edge excess return on} . \\ \left ( \frac { 1 } { \gamma } \right ) \left ( \frac { \mu ^ { 2 } + \sigma _ { x } ^ { 2 } } { \sigma _ { \varepsilon } ^ { 2 } } \right ) = \left ( \frac { 1 } { \gamma } \right ) \left ( \frac { S ^ { 2 } + R ^ { 2 } } { 1 - R ^ { 2 } } \right ) ,$$
+
+
+<!-- p:15 -->
+
+
+where
+
+$$R ^ { 2 } = \frac { \sigma _ { x } ^ { 2 } } { \sigma _ { x } ^ { 2 } + \sigma _ { \varepsilon } ^ { 2 } }$$
+
+is the ω 2 statistic for the regression of excess return on the predictor variable ◁ π .
+
+The di erence between the two expected returns is:
+
+$$\left ( \frac { 1 } { \gamma } \right ) \left ( \frac { R ^ { 2 } } { 1 - R ^ { 2 } } \right ) ( 1 + S ^ { 2 } ) , \\$$
+
+which is always larger than ω 2 ⇀ , and is close to ω 2 ⇀ when the time interval is short and ω 2 and  2 are both small. The proportional increase in the expected return from observing ◁ π is:
+
+$$\left ( \frac { R ^ { 2 } } { 1 - R ^ { 2 } } \right ) \left ( \frac { 1 + S ^ { 2 } } { S ^ { 2 } } \right ) , \\ \text {r} \, \tan \, B ^ { 2 } / S ^ { 2 } \, \text { and } \, \text {js close to } \, B ^ { 2 } / S ^ { 2 } \, \text { when the time interval is }$$
+
+which is always larger than ω 2 ⇀ 2 and is close to ω 2 ⇀ 2 when the time interval is short and ω 2 and  2 are both small.
+
+This analysis shows that the right way to judge the magnitude of ω 2 is to compare it with the squared Sharpe ratio  2 . If ω 2 is large relative to  2 , then an investor can use the information in the predictive regression to obtain a large proportional increase in portfolio return. In our monthly data since 1871, the monthly Sharpe ratio for stocks is 0.108, corresponding to an annual Sharpe ratio of 0.374. The squared monthly Sharpe ratio is  2 = 0 ⇁ 012 = 1 ⇁ 2% . This can be compared with the monthly out-of-sample ω 2 statistic for, say, the smoothed earnings-price ratio of 0.43% in the last column of Panel A of Table 1. A mean-variance investor can use the smoothed earnings-price ratio to increase average monthly portfolio return by a proportional factor of 0.43/1.2 = 36%. The absolute increase in portfolio return depends on risk aversion, but is about 43 basis points per month or 5.2% per year for an investor with unit risk aversion, and about 1.7% per year for an investor with a risk aversion coe cient of three. The calculation can also be done in the annual data shown in Panel B of Table 1, comparing the squared annual Sharpe ratio of 11.8% to the annual out-of-sample ω 2 statistic for, say, the smoothed earnings-price ratio of 7.9%. A mean-variance investor can use the smoothed earnings-price ratio in annual data to increase average annual portfolio return by a proportional factor of 7 ⇁ 9 ⇀ 11 ⇁ 8 = 67% . The absolute increase in portfolio return is 9.6% per year for an investor with unit risk aversion, and 3.2% per year for an investor with a risk aversion coe cient of three.
+
+
+<!-- p:16 -->
+
+
+The investor who observes ◁ π gets a higher portfolio return in part by taking on greater risk. Thus the increase in the average return is not pure welfare gain for a risk-averse investor. To take account of this, in Table 4 we calculate the welfare bene  ts generated by optimally trading on each predictor variable for an investor with a relative risk aversion coe cient of three. We impose realistic portfolio constraints, preventing the investor from shorting stocks or taking more than 50% leverage: that is, con  ning the portfolio weight on stocks to lie between 0% and 150%. The investor's optimal portfolio depends on an estimate of stock return variance at each point in time, and we assume that the investor estimates variance using a rolling  ve-year window of monthly data. 12 We report the change in utility, relative to investing with the historical mean forecast of the equity premium, for each of the models considered in Table 3. These utility di erences have the units of expected annualized return, so they can be interpreted as the transactions costs or portfolio management fees that investors would be prepared to pay each year to exploit the information in the predictor variable.
+
+The utility gains in Table 4 are broadly consistent with the out-of-sample ω 2 statistics reported in Table 3. Utility gains are reliably positive using annual returns and coe cients  xed at theoretical levels: The only utility loss occurs for the unadjusted dividend-price ratio in the 1980-2005 sample, when share repurchases become important. The results are somewhat more mixed for monthly returns, but here too are generally positive. The utility gains tend to be greatest in the 1927-1956 subsample, but by contrast with Table 3, are not always smaller in 1980-2005 than in 1956-1980.
+
+The utility gains reported in Table 4 are limited by the leverage constraint, together with the high average equity premium. Predictable variations in stock returns do not generate portfolio gains when there is a binding upper limit on equity investment. Utility gains would be larger if we relaxed the portfolio constraint or included additional assets, with higher average returns than Treasury bills, in the portfolio choice problem. On the other hand, Table 4 does not take any account of transactions costs. Modest gains from market timing strategies could be o set by the additional costs implied by those strategies. Optimal trading strategies in the presence of transactions costs are complex, and so we do not explore this issue further here. We note that even the baseline strategy based on a historical-mean forecast incurs rebalancing costs and that utility gains of 50 basis points per year, which are commonly achieved in Table 4, are su cient to cover substantial additional costs.
+
+Since small ω 2 statistics can generate large bene  ts for investors, we should expect predictive regressions to have only modest explanatory power. Regressions with large ω 2 statistics would be too pro  table to believe. The saying 'If you're so smart, why aren't you rich?' applies with great force here, and should lead investors to suspect that highly successful predictive regressions are spurious. Since the squared Sharpe ratio and average real interest rate increase in proportion with the investment horizon, however, larger ω 2 statistics are believable at longer horizons. Authors such as Fama and French (1988) have found that ω 2 statistics increase strongly with the horizon when the predictor variable is persistent, a  nding that is analyzed in Campbell, Lo, and MacKinlay (1997, Chapter 7) and Campbell (2001). This behavior is completely consistent with our analysis and empirical results.
+
+
+<!-- p:17 -->
+
+
+## 3 Conclusion
+
+A number of variables are correlated with subsequent returns on the aggregate U.S. stock market in the twentieth century. Some of these variables are stock market valuation ratios, others re  ect the levels of short- and long-term interest rates, patterns in corporate  nance or the cross-sectional pricing of individual stocks, or the level of consumption in relation to wealth. Goyal and Welch (2006) argue that in-sample correlations conceal a systematic failure of these variables out of sample: None have been able to beat a simple forecast based on the historical average stock return.
+
+In this paper, we have shown that most of these predictor variables perform better out-of-sample than the historical average return forecast, once weak restrictions are imposed on the signs of coe cients and return forecasts. The out-of-sample explanatory power is small, but nonetheless is economically meaningful for investors. We have also explored theoretical restrictions on the coe cients relating valuation ratios to future returns. Although these restrictions are based on steady-state models, which do not fully describe asset prices in an economy with changing growth rates and discount rates, they improve the out-of-sample performance of valuation forecasts by removing the need to estimate coe cients from short samples of volatile stock returns. We  nd that even in the period 1980-2005, where return prediction is most challenging, theoretically restricted valuation models often outperform return forecasts based on the long-run historical mean of stock returns. These models also generate meaningful utility gains for mean-variance investors. Importantly, the performance of the models does not depend sensitively on the particular valuation ratio that is used or the manner in which it is adjusted for long-run growth. We interpret this result as illustrating the well-known econometric principle that even false theoretical restrictions can be helpful in forecasting if they reduce the variance of a predictor more than they increase its bias.
+
+
+<!-- p:18 -->
+
+
+We have deliberately kept our methods simple to avoid the charge that we have tested a wide variety of methods and have only reported those that succeed. The results suggest that further improvements in performance can be achieved by exploring alternative methods to combine theory with historical data. One obvious possibility is a Bayesian approach with priors centered either on a model with a constant expected stock return, as in Wachter and Warusawitharana (2006), or on a valuation model with constant or slowly changing pro  tability and payout ratios of the sort we have explored in this paper. Of course, given the quantity of historical data that are now available, optimal forecasts of stock returns going forward may place greater weight on the data, and less weight on theoretical restrictions, than those methods that most successfully predicted stock returns during the twentieth century.
+
+
+<!-- p:19 -->
+
+
+####### Endnotes
+
+Acknowledgements: We are grateful to Jan Szilagyi for able research assistance, to Amit Goyal and Ivo Welch for sharing their data, and to Malcolm Baker, Lutz Kilian, Martin Lettau, Sydney Ludvigson, Rossen Valkanov, the editor, and two anonymous referees for helpful comments on an earlier draft entitled 'Predicting the Equity Premium Out of Sample: Can Anything Beat the Historical Average?' This material is based upon work supported by the National Science Foundation under Grant No. 0214061 to Campbell.
+
+1. Goyal and Welch (2006) consider these variables, along with the ratio of lagged dividends to lagged prices (the 'dividend yield' in Goyal and Welch's terminology). We drop this variable as there is no reason to believe that it should be a better predictor than the ratio of lagged dividends to current prices (the 'dividend price ratio').
+
+2. If earnings obey the clean-surplus relation, the growth rate of real book equity equals real ROE minus the payout ratio. ROE can alternatively be measured from the growth rate of book equity rather than from reported accounting earnings, as in Cohen, Polk, and Vuolteenaho (2006).
+
+3. In 2003, the BEA revised the de  nitions of several variables used by Lettau and Ludvigson (2001) to construct their series. We use the updated data available on Martin Lettau's website, not the original series used in Lettau and Ludvigson (2001). Data revisions raise the deeper problem that the series may not have been available to investors in real time, but we do not try to deal with this issue here.
+
+4. The adjustment of the ω 2 statistic for degrees of freedom makes only a very small di erence in samples of the size used here. The adjustment is about 5 basis points for a regression starting in 1871, and about 10 basis points for a regression starting in 1927.
+
+5. Clark and West (2005) point out that if the return series is truly unpredictable, then in a  nite sample the predictive regression will on average have a higher mean squared prediction error because it must estimate an additional coe cient. Thus the expected out-of-sample ω 2 under the null of unpredictability is negative, and a zero out-of-sample ω 2 can be interpreted as weak evidence for predictability. We do not pursue this point here because, like Goyal and Welch (2006), we ask whether predictive regressions or historical average return forecasts have delivered better out-of-sample forecasts, not whether stock returns are truly predictable.
+
+
+<!-- p:20 -->
+
+
+6. Earlier drafts of this paper reported better out-of-sample performance for this series. BEA data revisions in 2003 and the addition of recent years to the forecast evaluation period are responsible for the change in results.
+
+7. Cochrane (2006) also emphasizes the importance of the fact that valuation ratios do not forecast growth rates of cash  ows. The ability of the theoretical models in this section to predict stock returns is consistent with Cochrane's results.
+
+8. Before 1926, we do not have data on ROE and thus we cannot calculate tenyear smoothed ROE until 1936. Before that date, we use real earnings growth to estimate φ .
+
+9. One could consider forecasting the short-term real interest rate using recent data on in  ation and nominal interest rates. There are two reasons not to pursue this approach. First, the volatility of in  ation makes it di cult in practice. Second, the steady-state growth model delivers a long-run forecast of stock returns that should be matched to a long-run forecast of real bond returns, such as the TIPS yield or (since this is not available before 1997) the long-run historical average real interest rate. If the short-term real interest rate exceeds such a long-run real rate forecast, then it is quite possible that the short-term real stock return shifts upwards in parallel, leaving the excess stock return forecast unchanged.
+
+10. A subtle but important issue is that we use the steady-state model to forecast the arithmetic average stock return, and take arithmetic averages of ROE and other historical data. Some authors, such as Siegel (1994), take geometric averages of historical data and forecast the geometric average stock return. These two approaches are equivalent if the volatility of dividend growth and stock returns are the same, as implied by the steady-state model, but are di erent in the data because stock returns are much more volatile than dividend growth and ROE. A full exploration of the two approaches is beyond the scope of this paper, but we note that the Siegel approach would generate higher forecasts of arithmetic average stock returns, and thus would perform even better in the late twentieth century than the approach we use here.
+
+11. Merton (1969) presents the analogous portfolio solution for the case where the investor has power utility with relative risk aversion  , asset returns are lognormally distributed, and the portfolio can be continuously rebalanced. Campbell and Viceira (2002, Chapter 2) use a discrete-time approximate version of Merton's solution.
+
+
+<!-- p:21 -->
+
+
+Sentana (2005) also explores the relation between regression forecasts and optimal portfolio construction.
+
+12. In an earlier draft we reported similar results for the case where the investor estimates variance using all available historical data. If these variance estimates are incorrect, for example because the predictor variable forecasts variance as well as return, this will reduce the utility generated by trading on the predictive variable.
+
+
+<!-- p:22 -->
+
+
+####### References
+
+- Amihud, Y., and C. Hurvich, 2004, 'Predictive Regressions: A Reduced-Bias Estimation Method,' Journal of Financial and Quantitative Analysis, 39, 813-841.
+- Ang, A., and G. Bekaert, 2007, 'Stock Return Predictability: Is It There?,' The Review of Financial Studies 20, 651-707.
+- Baker, M., and J. Wurgler, 2000, 'The Equity Share in New Issues and Aggregate Stock Returns,' Journal of Finance, 55, 2219-2257.
+- Bollerslev, T., 1990, 'Modelling the Coherence in Short-Run Nominal Exchange Rates: A Multivariate Generalized ARCH Model,' Review of Economics and Statistics, 72, 498-505.
+- Bollerslev, T., and J. Wooldridge, 1992, 'Quasi-Maximum Likelihood Estimation and Inference in Dynamic Models with Time-Varying Covariances,' Econometric Reviews, 11, 143-172.
+- Boudoukh, J., R. Michaely, M. Richardson, and M. Roberts, 2007, 'On the Importance of Measuring Payout Yield: Implications for Empirical Asset Pricing,' Journal of Finance, 62, 877-916.
+- Butler, A. W., G. Grullon, and J. P. Weston, 2005, 'Can Managers Forecast Aggregate Market Returns?,' Journal of Finance, 60, 963-986.
+- Campbell, J. Y., 1987, 'Stock Returns and the Term Structure,' Journal of Financial Economics, 18, 373-399.
+- Campbell, J. Y., 2001, 'Why Long Horizons? A Study of Power Against Persistent Alternatives,' Journal of Empirical Finance, 8, 459-491.
+- Campbell, J. Y., A. W. Lo, and A. C. MacKinlay, 1997, The Econometrics of Financial Markets , Princeton University Press, Princeton.
+- Campbell, J. Y., and R. J. Shiller, 1988a, 'The Dividend-Price Ratio and Expectations of Future Dividends and Discount Factors,' The Review of Financial Studies, 1, 195-228.
+- Campbell, J. Y., and R. J. Shiller, 1988b, 'Stock Prices, Earnings, and Expected Dividends,' Journal of Finance, 43, 661-676.
+
+
+<!-- p:23 -->
+
+
+- Campbell, J. Y., and R. J. Shiller, 1998, 'Valuation Ratios and the Long-Run Stock Market Outlook,' Journal of Portfolio Management 24(2), 11-26.
+- Campbell, J. Y., and R. J. Shiller, 2001, 'Valuation Ratios and the Long-Run Stock Market Outlook: An Update,' NBER Working Paper 8221.
+- Campbell, J. Y., and L. M. Viceira, 2002, Strategic Asset Allocation: Portfolio Choice for Long-Term Investors , Oxford University Press, New York.
+- Campbell, J. Y., and M. Yogo, 2006, 'E cient Tests of Stock Return Predictability', Journal of Financial Economics, 81, 27-60.
+- Cavanagh, C. L., G. Elliott, and J. H. Stock, 1995, 'Inference in Models with Nearly Integrated Regressors,' Econometric Theory, 11, 1131 -1147.
+- Clark, T. E., and K. D. West, 2005, 'Using Out-of-Sample Mean Squared Prediction Errors to Test the Martingale Di erence,' NBER Technical Paper 305.
+- Cochrane, J. H., 2006, 'The Dog That Did Not Bark: A Defense of Return Predictability,' Unpublished paper, University of Chicago.
+- Fama, E. F., and K. R. French, 1988, 'Dividend Yields and Expected Stock Returns,' Journal of Financial Economics , 22, 3-25.
+- Fama, E. F., and K. R. French, 1989, 'Business Conditions and Expected Returns on Stocks and Bonds,' Journal of Financial Economics, 25, 23-49.
+- Fama, E. F., and K. R. French, 2002, 'The Equity Premium,' Journal of Finance, 57, 637-659.
+- Fama, E. F., and G. W. Schwert, 1977, 'Asset Returns and In  ation,' Journal of Financial Economics, 5, 115-146.
+- Ferson, W. E., S. Sarkissian, and T. T. Simin, 2003, 'Spurious Regressions in Financial Economics?,' Journal of Finance, 58, 1393-1413.
+- Foster, F. D., T. Smith, and R. E. Whaley, 1997, 'Assessing Goodness-of-Fit of Asset Pricing Models: The Distribution of the Maximal ω 2 ,' Journal of Finance, 52, 591-607.
+- Gordon, M., 1962, The Investment, Financing, and Valuation of the Corporation , Irwin, Homewood, IL.
+
+
+<!-- p:24 -->
+
+
+- Goyal, A., and I. Welch, 2003, 'Predicting the Equity Premium with Dividend Ratios,' Management Science, 49, 639-654.
+- Goyal, A., and I. Welch, 2006, 'A Comprehensive Look at the Empirical Performance of Equity Premium Prediction,' forthcoming The Review of Financial Studies .
+- Graham, B., and D. L. Dodd, 1934, Security Analysis , First edition, McGraw Hill, New York, NY.
+- Hodrick, R. J., 1992, 'Dividend Yields and Expected Stock Returns: Alternative Procedures for Inference and Measurement,' The Review of Financial Studies, 5, 257-286.
+- Inoue, A., and L. Kilian, 2004, 'In-Sample or Out-of-Sample Tests of Predictability: Which One Should We Use?,' Econometric Reviews, 23, 371-402.
+- Jansson, M., and M. J. Moreira, 2006, 'Optimal Inference in Regression Models with Nearly Integrated Regressors,' Econometrica, 74, 681-715.
+- Keim, D. B., and R. F. Stambaugh, 1986, 'Predicting Returns in the Stock and Bond Markets,' Journal of Financial Economics, 17, 357-390.
+- Kilian, L., 1999, 'Exchange Rates and Monetary Fundamentals: What Do We Learn from Long-Horizon Regressions?,' Journal of Applied Econometrics, 14, 491510.
+- Kothari, S.P., and J. Shanken, 1997, 'Book-to-Market, Dividend Yield, and Expected Market Returns: A Time-Series Analysis,' Journal of Financial Economics, 44, 169-203.
+- Lamont, O., 1998, 'Earnings and Expected Returns,' Journal of Finance, 53, 15631587.
+- Lettau, M., and S. Ludvigson, 2001, 'Consumption, Aggregate Wealth, and Expected Stock Returns,' Journal of Finance, 56, 815-849.
+- Lewellen, J., 2004, 'Predicting Returns with Financial Ratios,' Journal of Financial Economics , 74, 209-235.
+- Litterman, R., 1986, 'Forecasting with Bayesian Vector Autoregressions: Five Years of Experience,' Journal of Business and Economic Statistics, 4, 25-38.
+
+
+<!-- p:25 -->
+
+
+- Mark, N. C., 1995, 'Exchange Rates and Fundamentals: Evidence on Long-Horizon Predictability,' American Economic Review, 85, 201-218.
+- Merton, R. C., 1969, 'Lifetime Portfolio Selection under Uncertainty: The Continuous Time Case,' Review of Economics and Statistics, 51, 247-257.
+- Nelson, C., and M. Kim, 1993, 'Predictable Stock Returns: The Role of Small Sample Bias,' Journal of Finance, 48, 641-661.
+- Polk, C., S. Thompson, and T. Vuolteenaho, 2006, 'Cross-Sectional Forecasts of the Equity Premium,' Journal of Financial Economics, 81, 101-141.
+- Ponti , J., and L. D. Schall, 1998, 'Book-to-Market Ratios as Predictors of Market Returns,' Journal of Financial Economics, 49, 141-160.
+- Roze , M. S., 1984, 'Dividend Yields are Equity Risk Premiums,' Journal of Portfolio Management, 11(1), 68-75.
+- Sentana, E., 2005, 'Least Squares Predictions and Mean-Variance Analysis,' Journal of Financial Econometrics, 3, 56-78.
+- Siegel, J., 1994, Stocks for the Long Run , Norton, New York.
+- Stambaugh, R. F., 1999, 'Predictive Regressions,' Journal of Financial Economics, 54, 375-421.
+- Torous, W., R. Valkanov, and S. Yan, 2004, 'On Predicting Stock Returns with Nearly Integrated Explanatory Variables,' Journal of Business, 77, 937-966.
+- Wachter, J. A., and M. Warusawitharana, 2006, 'Predictable Returns and Asset Allocation: Should a Skeptical Investor Time the Market?,' Unpublished paper, University of Pennsylvania.
+
+
+<!-- p:26 -->
+
+
+Table 1: Excess return prediction with regression constraints
+
+|                             | Sample - Begin   | Forecast - Begin   |   In-Sample - t-statistic | In-Sample - R-squared   | Out-of-Sample R-squared with Different Constraints - Unconstrained   | Out-of-Sample R-squared with Different Constraints - Positive Slope   | Out-of-Sample R-squared with Different Constraints - Pos. Forecast   | Out-of-Sample R-squared with Different Constraints - Both   |
+|-----------------------------|------------------|--------------------|---------------------------|-------------------------|----------------------------------------------------------------------|-----------------------------------------------------------------------|----------------------------------------------------------------------|-------------------------------------------------------------|
+| Panel A: Monthly Returns    |                  |                    |                           |                         |                                                                      |                                                                       |                                                                      |                                                             |
+| Dividend-price ratio        | 1872m2           | 1927m1             |                      1.25 | 1.13%                   | -0.65%                                                               | 0.05%                                                                 | 0.07%                                                                | 0.08%                                                       |
+| Earnings-price ratio        | 1872m2           | 1927m1             |                      2.29 | 0.71                    | 0.12                                                                 | 0.18                                                                  | 0.14                                                                 | 0.18                                                        |
+| Smooth earnings-price ratio | 1881m2           | 1927m1             |                      1.85 | 1.36                    | 0.33                                                                 | 0.42                                                                  | 0.38                                                                 | 0.43                                                        |
+| Book-to-Market              | 1926m6           | 1946m6             |                      1.96 | 0.61                    | -0.43                                                                | -0.43                                                                 | 0.00                                                                 | 0.00                                                        |
+| ROE                         | 1936m6           | 1956m6             |                      0.36 | 0.02                    | -0.93                                                                | -0.06                                                                 | -0.93                                                                | -0.06                                                       |
+| T-Bill rate                 | 1920m1           | 1940m1             |                      2.44 | 0.86                    | 0.52                                                                 | 0.51                                                                  | 0.57                                                                 | 0.55                                                        |
+| Long-term yield             | 1870m1           | 1927m1             |                      1.46 | 0.19                    | -0.19                                                                | -0.19                                                                 | 0.20                                                                 | 0.20                                                        |
+| Term spread                 | 1920m1           | 1940m1             |                      2.16 | 0.65                    | 0.46                                                                 | 0.47                                                                  | 0.45                                                                 | 0.46                                                        |
+| Default spread              | 1919m1           | 1939m1             |                      0.74 | 0.10                    | -0.19                                                                | -0.19                                                                 | -0.19                                                                | -0.19                                                       |
+| Inflation                   | 1871m5           | 1927m1             |                      0.39 | 0.06                    | -0.22                                                                | -0.21                                                                 | -0.18                                                                | -0.17                                                       |
+| Net equity issuance         | 1927m12          | 1947m12            |                      1.74 | 0.48                    | 0.34                                                                 | 0.34                                                                  | 0.50                                                                 | 0.50                                                        |
+| Consumption-wealth ratio    | 1951m12          | 1971m12            |                      4.57 | 2.60                    | -1.36                                                                | -1.36                                                                 | 0.27                                                                 | 0.27                                                        |
+| Panel B: Annual Returns     |                  |                    |                           |                         |                                                                      |                                                                       |                                                                      |                                                             |
+| Dividend-price ratio        | 1872m2           | 1927m1             |                      2.69 | 10.89%                  | 5.53%                                                                | 5.53%                                                                 | 5.63%                                                                | 5.63%                                                       |
+| Earnings-price ratio        | 1872m2           | 1927m1             |                      2.84 | 6.78                    | 4.93                                                                 | 4.93                                                                  | 4.94                                                                 | 4.94                                                        |
+| Smooth earnings-price ratio | 1881m2           | 1927m1             |                      3.01 | 13.57                   | 7.89                                                                 | 7.89                                                                  | 7.85                                                                 | 7.85                                                        |
+| Book-to-Market              | 1926m6           | 1946m6             |                      1.98 | 8.26                    | -3.38                                                                | -3.38                                                                 | 1.39                                                                 | 1.39                                                        |
+| ROE                         | 1936m6           | 1956m6             |                      0.35 | 0.32                    | -8.60                                                                | -0.03                                                                 | -8.35                                                                | -0.03                                                       |
+| T-Bill rate                 | 1920m1           | 1940m1             |                      1.77 | 4.26                    | 5.54                                                                 | 5.54                                                                  | 7.47                                                                 | 7.47                                                        |
+| Long-term yield             | 1870m1           | 1927m1             |                      0.91 | 0.77                    | -0.15                                                                | -0.15                                                                 | 2.26                                                                 | 2.26                                                        |
+| Term spread                 | 1920m1           | 1940m1             |                      1.72 | 3.10                    | 4.79                                                                 | 4.79                                                                  | 4.74                                                                 | 4.74                                                        |
+| Default spread              | 1919m1           | 1939m1             |                      0.07 | 0.01                    | -3.81                                                                | -3.81                                                                 | -3.81                                                                | -3.81                                                       |
+| Inflation                   | 1871m5           | 1927m1             |                      0.17 | 0.07                    | -0.71                                                                | -0.71                                                                 | -0.71                                                                | -0.71                                                       |
+| Net equity issuance         | 1927m12          | 1947m12            |                      0.54 | 0.35                    | -4.27                                                                | -4.27                                                                 | -2.38                                                                | -2.38                                                       |
+| Consumption-wealth ratio    | 1951m12          | 1971m12            |                      3.76 | 19.87                   | -7.75                                                                | -7.75                                                                 | -1.48                                                                | -1.48                                                       |
+
+This table presents statistics on forecast errors for stock returns. We use S&amp;P500 total returns (dividend included) where data prior to January 1927 was obtained from Robert Shiller's website. "Sample Begin" denotes when the predictor was first available. All statistics are for the period that starts at "Forecast Begin" and ends on December 31, 2005 (for monthly forecasts) or December 31, 2004 (for annual forecasts). The "Unconstrained" out-of-sample R-squared compares the forecast error of the historical mean versus the forecast from unconstrained ordinary least squares. "Positive Slope" introduces the restriction that the coefficient on the predictor must be of the right sign, otherwise the historical mean is used as a predictor instead. "Pos. Forecast" requires that the prediction be positive, otherwise we use zero as the forecast. "Both" indicates that we impose both restrictions. The in-sample t-statistic and R-squared both come from the last regression (i.e., over the whole sample from the "Sample Begin" date to December 2005 for monthly data and December 2004 for annual data). The "In-Sample t statistic" is heteroskedasticity robust. The Annual forecasts in Panel B are based on 12 overlapping annual returns per year. The t-statistics in Panel B are corrected to take into account correlation induced by the overlapping nature of the dependent variable. For the consumption-wealth ratio, we report the robust F-statistic that all the slope coefficients are zero.
+
+
+<!-- p:27 -->
+
+
+Table 2: Excess return prediction with valuation constraints
+
+|                                            | Sample Begin   | Forecast Begin   |   In-Sample t-statistic | In-Sample R-squared   | Out-of-Sample R-squared with Different Constraints - Unconstrained   | Out-of-Sample R-squared with Different Constraints - Positive Slope, Pos. Forecast   | Out-of-Sample R-squared with Different Constraints - Pos. Intercept, Bounded Slope   | Out-of-Sample R-squared with Different Constraints - Fixed Coefs   |
+|--------------------------------------------|----------------|------------------|-------------------------|-----------------------|----------------------------------------------------------------------|--------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------|--------------------------------------------------------------------|
+| Panel A: Monthly Returns                   |                |                  |                         |                       |                                                                      |                                                                                      |                                                                                      |                                                                    |
+| Dividend/price                             | 1872m2         | 1927m1           |                    1.25 | 1.12%                 | -0.66%                                                               | 0.08%                                                                                | 0.19%                                                                                | 0.42%                                                              |
+| Earnings/price                             | 1872m2         | 1927m1           |                    2.28 | 0.71                  | 0.12                                                                 | 0.18                                                                                 | 0.25                                                                                 | 0.76                                                               |
+| Smooth earnings/price                      | 1881m2         | 1927m1           |                    1.85 | 1.35                  | 0.32                                                                 | 0.43                                                                                 | 0.43                                                                                 | 0.97                                                               |
+| Dividend/price + growth                    | 1891m2         | 1927m1           |                    1.40 | 1.03                  | -0.05                                                                | 0.20                                                                                 | 0.17                                                                                 | 0.63                                                               |
+| Earnings/price + growth                    | 1892m2         | 1927m1           |                    1.82 | 0.49                  | -0.05                                                                | 0.08                                                                                 | 0.07                                                                                 | 0.57                                                               |
+| Smooth earnings/price + growth             | 1892m2         | 1927m1           |                    2.00 | 1.10                  | 0.11                                                                 | 0.25                                                                                 | 0.21                                                                                 | 0.72                                                               |
+| Book-To-Market + growth                    | 1936m6         | 1956m6           |                    1.61 | 0.33                  | -0.35                                                                | -0.34                                                                                | -0.34                                                                                | 0.33                                                               |
+| Dividend/price + growth - real rate        | 1891m5         | 1927m1           |                    1.47 | 0.86                  | -0.02                                                                | 0.21                                                                                 | 0.18                                                                                 | 0.41                                                               |
+| Earnings/price + growth - real rate        | 1892m2         | 1927m1           |                    1.53 | 0.36                  | 0.00                                                                 | 0.12                                                                                 | 0.09                                                                                 | 0.39                                                               |
+| Smooth earnings/price + growth - real rate | 1892m2         | 1927m1           |                    1.97 | 0.84                  | 0.15                                                                 | 0.26                                                                                 | 0.23                                                                                 | 0.52                                                               |
+| Book-To-Market + growth - real rate        | 1936m6         | 1956m6           |                    1.68 | 0.36                  | -0.45                                                                | -0.45                                                                                | -0.42                                                                                | 0.24                                                               |
+| Panel B: Annual Returns                    |                |                  |                         |                       |                                                                      |                                                                                      |                                                                                      |                                                                    |
+| Dividend/price                             | 1872m2         | 1927m1           |                    2.69 | 10.89%                | 5.53%                                                                | 5.63%                                                                                | 3.76%                                                                                | 2.20%                                                              |
+| Earnings/price                             | 1872m2         | 1927m1           |                    2.84 | 6.78                  | 4.93                                                                 | 4.94                                                                                 | 4.34                                                                                 | 5.87                                                               |
+| Smooth earnings/price                      | 1881m2         | 1927m1           |                    3.01 | 13.57                 | 7.89                                                                 | 7.85                                                                                 | 6.44                                                                                 | 7.99                                                               |
+| Dividend/price + growth                    | 1891m2         | 1927m1           |                    1.77 | 9.30                  | 2.49                                                                 | 2.99                                                                                 | 2.67                                                                                 | 4.35                                                               |
+| Earnings/price + growth                    | 1892m2         | 1927m1           |                    1.42 | 4.44                  | 1.69                                                                 | 2.11                                                                                 | 1.80                                                                                 | 3.89                                                               |
+| Smooth earnings/price + growth             | 1892m2         | 1927m1           |                    1.75 | 10.45                 | 3.16                                                                 | 3.33                                                                                 | 3.23                                                                                 | 5.39                                                               |
+| Book-To-Market + growth                    | 1936m6         | 1956m6           |                    1.97 | 5.45                  | -3.53                                                                | -0.64                                                                                | -2.39                                                                                | 3.63                                                               |
+| Dividend/price + growth - real rate        | 1891m5         | 1927m1           |                    1.46 | 7.69                  | 2.87                                                                 | 3.24                                                                                 | 2.95                                                                                 | 1.89                                                               |
+| Earnings/price + growth - real rate        | 1892m2         | 1927m1           |                    1.13 | 3.27                  | 2.01                                                                 | 2.05                                                                                 | 2.04                                                                                 | 1.85                                                               |
+| Smooth earnings/price + growth - real rate | 1892m2         | 1927m1           |                    1.53 | 7.90                  | 3.35                                                                 | 3.35                                                                                 | 3.38                                                                                 | 3.22                                                               |
+| Book-To-Market + growth - real rate        | 1936m6         | 1956m6           |                    2.03 | 5.77                  | -1.73                                                                | -1.12                                                                                | -1.82                                                                                | 2.33                                                               |
+
+The table presents forecast statistics for value predictors under various constraints. The predictor label "+ growth" indicates that we add an earnings growth forecast to the predictor. The predictor label "- real rate" indicates that we subtract a forecast of the real risk-free rate from the predictor. See the text for details. The "In-Sample" statistics are defined as in Table 1. The "Unconstrained" and "Positive Slope, Pos. Forecast" columns are described in Table 1. "Pos. Intercept, Bounded Slope" indicates that we constrain the intercept to be positive and the slope to be between zero and one. "Fixed Coefs" indicates that we fix the intercept at zero and the slope at one.
+
+
+<!-- p:28 -->
+
+
+Table 3: Subsample stability
+
+|                                                                           | Sample: 1927-1956 Pos. - Unconstrained   | Sample: 1927-1956 Pos. - Intercept, Bounded Slope   | Sample: 1927-1956 Pos. - Fixed Coefs   | Sample: 1956-1980 - Unconstrained   | Sample: 1956-1980 - Pos. Intercept, Bounded Slope   | Sample: 1956-1980 - Fixed Coefs   | Sample: 1980-2005 Pos. - Unconstrained   | Sample: 1980-2005 Pos. - Intercept, Bounded Slope   | Sample: 1980-2005 Pos. - Fixed Coefs   |
+|---------------------------------------------------------------------------|------------------------------------------|-----------------------------------------------------|----------------------------------------|-------------------------------------|-----------------------------------------------------|-----------------------------------|------------------------------------------|-----------------------------------------------------|----------------------------------------|
+| Panel A: Monthly Returns                                                  |                                          |                                                     |                                        |                                     |                                                     |                                   |                                          |                                                     |                                        |
+| Dividend/price                                                            | -0.86%                                   | 0.21%                                               | 0.63%                                  | 0.88%                               | 0.57%                                               | 0.67%                             | -1.30%                                   | -0.21%                                              | -0.54%                                 |
+| Earnings/price                                                            | 0.16                                     | 0.28                                                | 1.04                                   | 0.56                                | 0.45                                                | 0.30                              | -0.53                                    | -0.09                                               | 0.07                                   |
+| Smooth earnings/price                                                     | 0.56                                     | 0.53                                                | 1.33                                   | 0.80                                | 0.48                                                | 0.51                              | -1.06                                    | -0.06                                               | 0.01                                   |
+| Dividend/price + growth                                                   | -0.15                                    | 0.18                                                | 0.78                                   | 0.18                                | 0.18                                                | 0.59                              | 0.11                                     | 0.11                                                | 0.14                                   |
+| Earnings/price + growth                                                   | -0.06                                    | 0.12                                                | 0.73                                   | -0.12                               | -0.12                                               | 0.33                              | 0.05                                     | 0.05                                                | 0.16                                   |
+| Smooth earnings/price + growth                                            | 0.09                                     | 0.25                                                | 0.93                                   | 0.19                                | 0.19                                                | 0.47                              | 0.06                                     | 0.06                                                | 0.16                                   |
+| Book-To-Market + growth                                                   |                                          |                                                     |                                        | -0.62                               | -0.73                                               | 0.73                              | -0.12                                    | -0.02                                               | 0.00                                   |
+| Dividend/price + growth - real rate                                       | -0.01                                    | 0.30                                                | 0.45                                   | -0.24                               | -0.24                                               | 0.76                              | 0.11                                     | 0.11                                                | -0.08                                  |
+| Earnings/price + growth - real rate Smooth earnings/price + growth - real | 0.06                                     | 0.20                                                | 0.41                                   | -0.34                               | -0.34                                               | 0.66                              | 0.06                                     | 0.06                                                | 0.03                                   |
+| rate                                                                      | 0.27                                     | 0.39                                                | 0.60                                   | -0.28                               | -0.28                                               | 0.74                              | 0.04                                     | 0.04                                                | 0.02                                   |
+| Book-To-Market + growth - real rate                                       |                                          |                                                     |                                        | -0.82                               | -0.91                                               | 0.89                              | -0.14                                    | -0.02                                               | -0.27                                  |
+| Panel B: Annual Returns                                                   |                                          |                                                     |                                        |                                     |                                                     |                                   |                                          |                                                     |                                        |
+| Dividend/price                                                            | 9.95                                     | 4.53                                                | 3.67                                   | 9.46                                | 5.99                                                | 6.88                              | -16.19                                   | -1.38                                               | -7.98                                  |
+| Earnings/price                                                            | 7.45                                     | 5.34                                                | 7.58                                   | 5.08                                | 3.25                                                | 2.56                              | -6.06                                    | 0.88                                                | 1.47                                   |
+| Smooth earnings/price                                                     | 12.51                                    | 8.22                                                | 10.49                                  | 4.93                                | 3.71                                                | 3.71                              | -8.86                                    | 1.33                                                | 1.33                                   |
+| Dividend/price + growth                                                   | 2.77                                     | 3.05                                                | 4.83                                   | 1.76                                | 1.74                                                | 6.61                              | 1.87                                     | 1.82                                                | 0.28                                   |
+| Earnings/price + growth                                                   | 2.21                                     | 2.38                                                | 4.37                                   | -0.85                               | -0.85                                               | 3.97                              | 1.63                                     | 1.63                                                | 1.60                                   |
+| Smooth earnings/price + growth                                            | 3.73                                     | 3.87                                                | 6.38                                   | 1.27                                | 1.19                                                | 4.65                              | 2.30                                     | 2.23                                                | 1.81                                   |
+| Book-To-Market + growth                                                   |                                          |                                                     |                                        | -7.09                               | -5.16                                               | 10.34                             | -0.24                                    | 0.14                                                | -2.43                                  |
+| Dividend/price + growth - real rate                                       | 4.40                                     | 4.51                                                | 1.67                                   | -3.57                               | -3.56                                               | 8.28                              | 2.19                                     | 2.19                                                | -2.95                                  |
+| Earnings/price + growth - real rate Smooth earnings/price + growth - real | 3.44                                     | 3.49                                                | 1.25                                   | -4.68                               | -4.68                                               | 7.16                              | 1.88                                     | 1.88                                                | -0.64                                  |
+| rate                                                                      | 5.34                                     | 5.37                                                | 3.19                                   | -4.91                               | -4.84                                               | 7.32                              | 2.36                                     | 2.36                                                | -0.47                                  |
+| Book-To-Market + growth - real rate                                       |                                          |                                                     |                                        | -3.36                               | -4.22                                               | 11.85                             | -0.25                                    | 0.35                                                | -6.20                                  |
+
+The table provides out-of-sample R-squared statistics from predicting the equity premium with a forecasting variable versus the historical mean. The subsamples roughly but not exactly divide the data into thirds. The column labels "Unconstrained," "Pos. Intercept, Bounded Slope," and "Fixed Coefs" are all defined in Tables 1 and 2. We do not provide results for the "Book-To-Market + Growth" predictor in the 1927-1956 subsample because we do not have 20 years of data until 1956.
+
+
+<!-- p:29 -->
+
+
+Table 4: Portfolio choice
+
+|                                                                           | Sample: 1927-1956 - Unconstrained   | Sample: 1927-1956 - Pos. Intercept, Bounded Slope   | Sample: 1927-1956 - Fixed Coefs   | Sample: 1956-1980 Pos. - Unconstrained   | Sample: 1956-1980 Pos. - Intercept, Bounded Slope   | Sample: 1956-1980 Pos. - Fixed Coefs   | Sample: 1980-2005 Pos. - Unconstrained   | Sample: 1980-2005 Pos. - Intercept, Bounded Slope   | Sample: 1980-2005 Pos. - Fixed Coefs   |
+|---------------------------------------------------------------------------|-------------------------------------|-----------------------------------------------------|-----------------------------------|------------------------------------------|-----------------------------------------------------|----------------------------------------|------------------------------------------|-----------------------------------------------------|----------------------------------------|
+| Panel A: Monthly Returns                                                  |                                     |                                                     |                                   |                                          |                                                     |                                        |                                          |                                                     |                                        |
+| Dividend/price                                                            | -0.03%                              | 0.43%                                               | 0.11%                             | 1.93%                                    | 0.92%                                               | 1.46%                                  | -3.69%                                   | -0.22%                                              | -1.32%                                 |
+| Earnings/price                                                            | 0.86                                | 1.42                                                | 1.80                              | 0.28                                     | 0.12                                                | -0.51                                  | -0.80                                    | 0.07                                                | 0.74                                   |
+| Smooth earnings/price                                                     | 0.53                                | 1.14                                                | 1.89                              | 0.75                                     | 0.05                                                | -0.04                                  | -2.73                                    | 0.13                                                | 0.46                                   |
+| Dividend/price + growth                                                   | -0.28                               | 0.64                                                | 0.43                              | 0.46                                     | 0.46                                                | 0.64                                   | 0.22                                     | 0.22                                                | 0.34                                   |
+| Earnings/price + growth                                                   | -1.05                               | 0.36                                                | 1.60                              | 0.08                                     | 0.08                                                | -0.21                                  | 0.00                                     | 0.00                                                | 0.19                                   |
+| Smooth earnings/price + growth                                            | -0.47                               | 0.77                                                | 0.89                              | 0.04                                     | 0.04                                                | 0.13                                   | 0.04                                     | 0.06                                                | 0.24                                   |
+| Book-To-Market + growth                                                   |                                     |                                                     |                                   | 0.43                                     | 0.15                                                | 1.38                                   | 0.08                                     | -0.02                                               | 0.23                                   |
+| Dividend/price + growth - real rate                                       | 0.42                                | 0.96                                                | -0.74                             | 0.01                                     | 0.01                                                | 1.49                                   | 0.04                                     | 0.04                                                | 0.18                                   |
+| Earnings/price + growth - real rate Smooth earnings/price + growth - real | -0.31                               | 0.61                                                | 0.79                              | -0.17                                    | -0.17                                               | 0.73                                   | -0.09                                    | -0.09                                               | 0.17                                   |
+| rate                                                                      | 0.36                                | 1.14                                                | -0.20                             | -0.38                                    | -0.38                                               | 1.07                                   | 0.04                                     | 0.04                                                | 0.21                                   |
+| Book-To-Market + growth - real rate                                       |                                     |                                                     |                                   | 0.38                                     | 0.05                                                | 1.94                                   | -0.04                                    | -0.10                                               | -0.11                                  |
+| Panel B: Annual Returns                                                   |                                     |                                                     |                                   |                                          |                                                     |                                        |                                          |                                                     |                                        |
+| Dividend/price                                                            | 0.55                                | 0.76                                                | 0.34                              | 1.56                                     | 0.59                                                | 0.95                                   | -4.74                                    | 0.34                                                | -0.95                                  |
+| Earnings/price                                                            | 1.29                                | 1.30                                                | 0.78                              | 1.41                                     | 0.41                                                | 0.40                                   | -1.44                                    | 0.53                                                | 0.68                                   |
+| Smooth earnings/price                                                     | 1.81                                | 1.91                                                | 1.42                              | 1.53                                     | 0.44                                                | 0.44                                   | -3.06                                    | 0.81                                                | 0.81                                   |
+| Dividend/price + growth                                                   | -0.18                               | 0.34                                                | 1.04                              | 0.35                                     | 0.35                                                | 0.70                                   | 0.19                                     | 0.17                                                | 0.34                                   |
+| Earnings/price + growth                                                   | -0.14                               | 0.28                                                | 1.52                              | 0.15                                     | 0.15                                                | 0.49                                   | 0.04                                     | 0.04                                                | 0.24                                   |
+| Smooth earnings/price + growth                                            | 0.05                                | 0.53                                                | 1.34                              | 0.28                                     | 0.25                                                | 0.51                                   | 0.41                                     | 0.36                                                | 0.50                                   |
+| Book-To-Market + growth                                                   |                                     |                                                     |                                   | -0.01                                    | 0.14                                                | 1.27                                   | -0.10                                    | -0.13                                               | 0.26                                   |
+| Dividend/price + growth - real rate                                       | 0.44                                | 0.66                                                | 0.02                              | 0.01                                     | 0.01                                                | 1.06                                   | 0.06                                     | 0.06                                                | 0.23                                   |
+| Earnings/price + growth - real rate Smooth earnings/price + growth - real | 0.34                                | 0.49                                                | 0.60                              | -0.09                                    | -0.09                                               | 0.85                                   | -0.02                                    | -0.02                                               | 0.15                                   |
+| rate                                                                      | 0.68                                | 0.87                                                | 0.39                              | -0.20                                    | -0.18                                               | 0.94                                   | 0.24                                     | 0.24                                                | 0.36                                   |
+| Book-To-Market + growth - real rate                                       |                                     |                                                     |                                   | 0.25                                     | 0.13                                                | 1.93                                   | -0.17                                    | -0.14                                               | 0.26                                   |
+
+This table presents out-of-sample portfolio choice results. The numbers are the change in average utility from forecasting the market with the predictor instead of the historical mean. All numbers are annualized, so we multiply the monthly numbers by 12. "Unconstrained" indicates that we use the unconstrained OLS predictor of the equity premium. "Pos. Intercept, Bounded Slope" indicates that we use the forecast with the intercept bounded above zero and the slope bounded between zero and one. "Fixed Coefs" indicates that we use the forecast that sets the intercept to zero and the slope to one. The utility function is E(Rp) - ( ! /2)Var(Rp), where Rp is the portfolio return and ! =3. All utility changes are annualized, so we multiply monthly utility changes by 12.
+
+
+<!-- p:30 -->
+
+
+Figure 1, Panel A: Forecasts Based on Dividend Yield ("oos ols" denotes out-of-sample ordinary least squares)
+
+Figure 1, Panel B: Cumulative R-Squared Based on Dividend Yield (relative to historical mean)
+
+2005
+
+
+<!-- p:31 -->
+
+
+Figure 2, Panel A: Forecasts Based on Smoothed Earnings Yield
+
+Figure 2, Panel B: Cumulative R-Squared Based on Smoothed Earnings Yield (relative to historical mean)
+
+<!-- p:32 -->
+
+
+###### Figure legends
+
+Figure 1: Forecasting excess returns with the dividend yield.  The top panel shows the historical annualized excess return forecasts for the historical mean and three different regression models, as labeled in the figure, where 'oos' refers to 'out-of-sample' and 'ols' refers to ordinary least squares.  The bottom panel shows the cumulative out-ofsample R-squared up to each point in the historical sample, for the three regression models relative to the historical mean.
+
+Figure 2: Forecasting excess returns with the smoothed earnings yield.  The top panel shows the historical annualized excess return forecasts for the historical mean, an unrestricted regression on the smoothed earnings yield, and three theoretically restricted forecasts from the smoothed earnings yield, as labeled in the figure.  The bottom panel shows the cumulative out-of-sample R-squared up to each point in the historical sample, for the four models that use the earnings yield relative to the historical mean.
+
+<!-- END SOURCE 9/40: Campbell_2008_predicting-excess-stock-returns.md -->
+
+---
+
+<!-- BEGIN SOURCE 10/40: Christiano_2003_band-pass-filter.md -->
+
+# Source: `Christiano_2003_band-pass-filter.md`
+
+---
+id: "Christiano_2003_band-pass-filter"
+source_pdf: "../pdf/Christiano_2003_band-pass-filter.pdf"
+source_filename: "Christiano_2003_band-pass-filter.pdf"
+format: "academic-paper"
+extraction_profile: "text-math-tables-high-fidelity"
+extraction_mode: "hybrid"
+extraction_quality: "excellent"
+extraction_score: 106.0
+visual_assets: "disabled"
+references_file: "../references/Christiano_2003_band-pass-filter.references.md"
+---
+
+<!-- p:1 -->
+
+### NBER WORKING PAPER SERIES
+
+### THE BAND PASS FILTER
+
+Lawrence J. Christiano Terry J. Fitzgerald
+
+Working Paper 7257 http://www.nber.org/papers/w7257
+
+NATIONAL BUREAU OF ECONOMIC RESEARCH 1050 Massachusetts Avenue Cambridge, MA 02138
+
+Jy 9
+
+We thank Jeff Schwarz for his outstanding research assistance. Christiano is grateful for a National Science Foundation Grant to the National Bureau of Economic Research. The views expressed herein are those of the authors and not necessarily those of the Federal Reserve Bank of Cleveland, the Federal Reserve System, or the National Bureau of Economic Research. -
+
+© 1999 by Lawrence J. Christiano and Terry J. Fitzgerald. All rights reserved. Short sections of text, not xie iit et t d rsd  it   r 'se t e t notice, is given to the source.
+
+
+<!-- p:2 -->
+
+
+The Band Pass Filter Lawrence J. Christiano and Terry J. Fitzgerald NBER Working Paper No. 7257 ry 9 JEL No. E3, C1, C2, C22
+
+### ABSTRACT
+
+The 'ideal' band pass filter can be used to isolate the component of a time series that lies within a particular band of frequencies. However, applying this filter requires a dataset of infinite length. In practice, some sort of approximation is needed. Using projections, we derive approximations that are optimal when the time series representations underlying the raw data have a unit root, or are stationary about a trend. We identify one approximation which, though it is only optimal for one particular time series representation, nevertheless works well for standard macroeconomic time series.
+
+To illustrate the use of this approximation, we use it to characterize the change in the nature of the Phillips curve and the money-inflation relation before and after the 1960s. We find that there is surprisingly little change in the Phillips curve and substantial change in money growth-inflation relation.
+
+| Lawrence J. Christiano Department of Economics Northwestern University 2003 Sheridan Road Evanston, IL 60628-2600 and NBER lchrist@meiie.acns.nwu.edu   | Teriy Fitzgerald Research Department Federal Reserve Bank of Cleveland P0 Box 6387 Cleveland, OH 44101 tj.fitzgerald®clev.frb.org   |
+|---------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+
+
+<!-- p:3 -->
+
+
+## 1. Introduction
+
+Economists have long been interested in the different frequency components of the data. For example, business cycle theory is primarily concerned with understanding fluctuations in the range of 1.5 to 8 years while growth theory focuses on the longer run components of the data. In addition, some economic hypotheses are naturally formulated in the frequency domain, such as Milton Friedman's h         t negatively sloped, and the proposition that money growth and inflation are highly correlated in the long run, and less correlated in the short run. As a final example, certain frequency components of the data are important as inputs into macroeconomic stabilization policy. For instance, a policy maker who observes a recent change in output is interested in knowing whether that change is part of a trend (i.e., part of the lower frequency component of the data) or is more transitory (i.e., part of the higher frequency component).
+
+The theory of the spectral analysis of time series provides a rigorous foundation for the notion that there are different frequency components of the data. An advantage of this theory: relative to other perspectives on decomposing time series, is that it does not require a commitment to any particular statistical model of the data. Instead, it relies on the Spectral Representation Theorem, according to which any time series within a broad class can be decomposed into different frequency components. The theory also supplies a tool for extracting those components. That tool is the ideal band pass filter. It is a linear transformation of the data, which leaves intact the components of the data within a specified band of frequencies and eliminates all other components. The adjective, ideal, on this filter reflects an important practical limitation. Literally, application of the ideal band pass filter requires an infinite amount of data. Some sort of approximation is required.
+
+In this paper, we characterize and study optimal linear approximations, assess alternative approaches developed in the literature and provide empirical illustrations. To explain what we mean by an optimal linear approximation, let yt denote the data generated by applying the ideal, though infeasible, band pass filter to the raw data, x. We approximate yt by Ît, a linear function, or filter, of the observed sample πe's. We select the fiter weights to make Ît as close as possible to the object of interest, , in the sense of minimizing the mean square error criterion:
+
+$$E \left [ ( y _ { t } - \hat { y } ) ^ { 2 } | x \right ] , \, x \equiv \{ x _ { 1 } , \dots , x _ { T } \} ,$$
+
+where the expectation operator is evaluated using the time series properties of x. Thus, Ît is the linear projection of y onto every element in the data set, x, and there is a different projection problem for each date t. We derive closed form formulas for the filter weights in these projections.
+
+
+<!-- p:4 -->
+
+
+We illustrate the use of ét in two empirical applications: one concerns the relationship between inflation and unemploymnent and the other, the relationship between money growth and inflation. We use the filtering technology developed here to characterize the change in the dynamics of these variables before and after 1960. A bootstrap procedure is applied for conducting the relevant statistical inference.
+
+The optimal approximation to the band pass filter requires knowing the true time series representation of x. In practice, this is not known and must be estimated. It turns out, however, that for standard macroeconomic time series, a more straightforward approach that does not involve first estimating a time series model works well. That approach uses the approximation that is optimal under the (most likely, false) assumption that the data are generated by a pure random walk.1 The procedure is nearly optimal for the type of time series representations that fit US data on interest rates, unemployment, inflation, and output. The filter is easy to implement, and is described as follows. To isolate the component of x, with period of oscillation between pl and pu, where 2 ≤ pl &lt; Pu &lt; ∞, our recommended approximation of yt, Ît, is computed as follows:2
+
+$$\hat { y } _ { t } & = B _ { 0 } x _ { t } + B _ { 1 } x _ { t + 1 } + \dots + B _ { T - 1 - t } x _ { T - 1 } + \bar { B } _ { T - t } x _ { T } \\ & + B _ { 1 } x _ { t - 1 } + \dots + B _ { t - 2 } x _ { 2 } + \tilde { B } _ { t - 1 } x _ { 1 } ,$$
+
+for t = 3, 4, .., T − 2. In (1.2),
+
+Also, B-1 solves
+
+$$\begin{array} { r l } { \quad } & { B _ { j } = \frac { \sin ( j b ) - \sin ( j a ) } { \pi j } , \, j \geq 1 } \\ & { B _ { 0 } = \frac { b - a } { \pi } , \, a = \frac { 2 \pi } { p _ { u } } , \, b = \frac { 2 \pi } { p _ { u } } . } \end{array}$$
+
+and BT-t, Bt-1 are simple linear functions of the Bj's.3 The formulas for Ît when t = 2 and T – 1 are straightforward adaptations on the above expressions. The formulas for ý1 and iT are also of interest.
+
+'Our formulas assume there is no drift in the random walk. If there is a drift in the raw data, we assume it has been removed prior to analysis. For more details, see footnote 5 below.
+
+3In particular, BT-t is the sum of the By's over j = T−t, T −t + 1, .. and Be−1 is the sum of the Bj's over j = t − 1. t, .. . Exploiting the fact that Bo + 2 ∑i, B; = 0,
+
+2If the data are quarterly and pt = 6, pu = 32, then y. is the component of r, with periodicities between 1.5 and 8 years.
+
+$$\tilde { B } _ { T - 1 } = - \frac { 1 } { 2 } B _ { 0 } - \sum _ { j = 1 } ^ { T - 1 } B _ { j } , \text { for } t = 3 , \dots , T - 2$$
+
+0 = B0 + B1 + ... + BT-1-t + BT-t + B1 + ... + Bt-2 + B.
+
+
+<!-- p:5 -->
+
+
+For r example, For example,
+
+$$\dot { y } _ { T } = \left ( \frac { 1 } { 2 } B _ { 0 } \right ) x _ { T } + B _ { 1 } x _ { T - 1 } + \dots + B _ { T - 2 } x _ { 2 } + \tilde { B } _ { T - 1 } x _ { 1 } , \quad u \quad$$
+
+where BT-1 is constructed using the analog of the formulas underlying the Bj's in (1.2). The expression for îr is useful in circumstances when an estimate of yr is required in real time, in which case only a one-sided filter is feasible. As we discuss below, the need for real time estimates of yt arises in a macroeconomic stabilization context.
+
+Note from (1.2) that our recommended filter varies with time, and is not symmetric in terms of future and past xt's. It is easy to adjust our recommended filter weights to impose stationarity and symmetry, if these features were deemed to be absolutely necessary. Simply construct (1.2) so that it is a function of a fixed number, p, of leads and lags of x and compute the weights on the highest lead and lag using simple functions of the Bj's.5 This is the solution to our projection problem when xt is a random walk, and t is restricted to be a linear function of {xt, t±1, ..., t±p} only. With this approach, it is not possible to estimate yt for the first and last p observations in the data set. In practice, this means restricting p to be relatively small, to say three years of data. This filter renders stationary time series which have up to two unit roots, or which have a polynomial trend up to the power of two.
+
+It is important to emphasize a caveat regarding our recommended filter, (1.2)-(1.3). That filter does not closely approximate the optimal filter in all circumstances. To illustrate this, we display an example in which the first difference of the data displays substantial negative autocorrelation, and our recommended filter does not work well. For cases in which the appropriateness of our recommended filter is questionable, it makes sense to estimate the time series representation of the data to be filtered, and then compute, using the formulas we provide, the optimal filter based on the estimated time series representation.6 Our formulas work for a fairly large class of time series models. Still, the class can be extended even further by applying the kind of algebraic manipulations we do in the appendix.
+
+The outline of the paper is as follows. In section two we describe precisely the component of the
+
+Bj.
+
+sThe weights on , t±,., ±(p-1) are B, .., Bp-1, respectively. The weight on t-p and +p, p, is obtained using
+
+$$\bar { B } _ { p } = - \frac { 1 } { 2 } \left [ B _ { 0 } + 2 \sum _ { j = 1 } ^ { p - 1 } B _ { j } \right ] .$$
+
+It is easy to verify that in this case there is no need to drift-adjust the raw data because the output of the formula is invariant to drift. The reason is that the optimal symmetric filter when the raw data are a random walk has two unit roots. The first makes x: stationary and the second eliminates any drift. In contrast, the output of the potentially asymmetric filter just discussed in the text is not invarient to drift. When p ≠ f. that filter has just one unit root.
+
+Software for computing the filters in MATLAB is available from the authors on request. The default option in this software takes as input a raw time series, removes its drift, and then filters it using our recommended random walk flter. Alternatively, any other formula in this paper can also be implemented simply by overriding the default.
+
+
+<!-- p:6 -->
+
+
+data we seek to identify. We then discuss how we estimate it in a finite data set. Section 3 does a quantitative evaluation of alternative approaches to this estimation problem. Section 4 relates our analysis to the relevant literature. We stress in particular, the important papers by Baxter and King (1999) and Hodrick and Prescott (1997). Section 5 presents two empirical applications to illustrate the use of the filtering technology analyzed here. These examples complement the ones presented in Baxter (1994), Baxter and King (1999), Hornstein (1998), King and Watson (1994), King, Stock and Watson (1995), and Stock and Watson (1998). Section 6 concludes.
+
+## 2. The Problem and Its Solution
+
+Ou analysis accommodates two types of xt processes. In one, xt has a zero mean, and is covariance stationary. If the raw data have a non-zero mean, we assume it has been removed prior to analysis. If the raw data are covariance stationary about a trend, then we assume that trend has been removed. We also consider the unit root case, in which xt - xt-1 is a zero mean, covariance stationary process. If in the raw data this mean is non-zero, then we suppose that it has been removed prior to analysis.7 As we will see, the latter is actually only necessary when we consider asymmetric filters. Any' sampling uncertainty in the parameters needed obtain xt from the raw data is ignored in our analysis.
+
+We begin this section by defining precisely the object that we seek: the component of x, that lies in a particular frequency range. We then explain why this is difficult to compute directly in a finite data set and that some sort of approximation is necessary. We describe a method for obtaining an optimal approximation. Several examples are presented which convey the intuition about the formulas we develop to implement this.
+
+### 2.1. The Ideal Band Pass Filter
+
+Consider the following orthogonal decomposition of the stochastic process, t:
+
+$$x _ { t } = y _ { t } + \bar { x } _ { t } .$$
+
+Removing this mean corresponds to 'drift adjusting' the x, process. We elaborate on this briefly here. Suppose the raw data are denoted w, and they have the representation, w. = μ + ut-1 + u, where u, is a zero mean, covariance stationary process. Then, wt can equivalently be expressed as w, = (t − j)μ + xt, where xt = xt-1 + ut for all t and j is a fixed integer, which we normalize to unity for concreteness. The variable, x, is the 'drift-adjusted' version of wt, and can be recovered from observations on w, as follows: x1 = w1, x2 = w2- μ, x3 = w3 - 2μ, ... . In practice, μ must. be estimated, with  = (wr - w1)/(T – 1). Though we set j = 1, it is readily confirmed that the output of our filter is invariant to the value of j chosen. In sum, in the unit root case, we assume z. is the result of removing a trend line from the raw data, where the slope of the line is the drift in the raw data and the level is arbitrary.
+
+
+<!-- p:7 -->
+
+
+The process, yt, has power only in frequencies belonging to the interval {(a, b) U (−b, −a)} ∈ (−π, π). The process, t, has power only in the complement of this interval in (−π, π). Here, 0 &lt; a ≤ b ≤ π. It is well known (see, for example, Sargent (1987, p. 259)), that,
+
+$$y _ { t } = B ( D ) x _ { t } , & & \quad ^ { t } ( 2 . 2 )$$
+
+where the ideal band pass filter, B(L), has the following structure:
+
+$$B ( L ) = \sum _ { j = - \infty } ^ { \infty } B _ { j } L ^ { j } , \, L ^ { t } x _ { t } \equiv x _ { t - l } ,$$
+
+where the Bj's are given by (1.3). With this specification of the Bj's, we have
+
+$$u & = B ( e ^ { - i w } ) \ = u , \text { for } w \in ( a , b ) \cup ( - b , - a ) \quad u \\ & = \ 0 , \text { otherwise.}$$
+
+Our assumption, a &gt; 0, implies, together with (2.3), that B(1) = 0. Note from (2.2) that to compute yt using B(L) requires an infinite number of observations on x.8 Moreover, it is not clear that simply truncating the Bj's will produce good results.
+
+This can be seen in two ways. First, consider Figure 1a, which displays Bj for j = 0, ..., 200, when a = 2π/96 and b = 2π/18. These frequencies, in monthly data, correspond to the business cycle, e.g., t   t    e   e Even after j = 120, i.e., 10 years, the Bj's remain noticeably different from zero. Second, Figures 1b - 1d show that truncation has a substantial impact on B(e-iw). They display the Fourier transform of filter coefficients obtained by truncating the Bj's for j &gt; p and j &lt; −p for p = 12, 24, 36 (i.e., 1 to 3
+
+sAs already noted, we want to consider not just cases in which r. is covariance stationary, but also cases in which it has a unit root. In the unit root case, the covariance function and hence, the spectral density of rt, are not well defined. This creates a problem of how to interpret the notion that (2.1) represents an orthogonal decomposition. We do so as follows. Let z.(λ) for |λ| &lt; 1 be a covariance stationary stochastic process in which the unit root of x, is replaced by λ. Denote the spectral density of this process, which is well defined, by fs.(ω). Then, (see Sargent (1987, p. 268)) the cross-spectrum between yt and i, 9y.s(ω; λ), is
+
+$$g _ { n , 1 } ( \omega _ { n } , \lambda ) = B ( e ^ { - i \omega _ { n } } ) \left [ 1 - B ( e ^ { i \omega _ { n } } ) \right ] f _ { n , 1 } ( \omega _ { n } ) , \, | \lambda | < 1 .$$
+
+By the definition of B (see (2.3)), this cross spectrum is zero for all ω, for each λ. Since the covariance between y and i at any lag is just the suitably weighted integral of this spectrum, it follows that èr and i, are uncorrelated at all leads and lags, for each λ. In the unit root case, our interpretation of (2.1) as an orthogonal decomposition reflects that we define
+
+5.
+
+for all ω ∈ (−π, π).
+
+$$g _ { r } ( \omega ; 1 ) = \lim _ { \lambda \to 4 } g _ { r ^ { \lambda } } ( \omega _ { r } , \lambda ) = 0 ,$$
+
+
+<!-- p:8 -->
+
+
+years).9 These differ noticeably from B(e-iw).
+
+### 2.2. Optimal Approximations
+
+Suppose we have a finite set of observations, x = [x1, ..., xτ] and that we know the population second moment properties of {xt}. Our estimate of y = {y1 ..., yτ] is ý, the projection of y onto the available data:
+
+$$\dot { y } = P \left [ y | x \right ] .$$
+
+This corresponds to the following set of projection problems:
+
+$$\hat { y } _ { t } = P [ y _ { t } | x ] , \, t = 1 , \dots , T .$$
+
+For each t, the solution to the projection problem is a linear function of the available data:
+
+$$\hat { y } = \sum _ { j = - f } ^ { p } \hat { B } _ { j } ^ { p , f } x _ { t - j } ,$$
+
+where f = T - t and p = t - 1, and the Bps's solve
+
+$$\min _ { \hat { B } _ { j } ^ { \prime } \cdot j = - f _ { \dots , \mathcal { P } } } E \left [ ( y _ { t } - \hat { y } _ { t } ) ^ { 2 } | x | \right ] .$$
+
+Presumably, the solution to this problem would be different if instead of having the true second moment properties of {xt}, we had to rely on sample estimates. Studying the solution to (2.6) in this latter case is beyond the scope of this paper. In any case, we report results below which suggest that in practice, reasonable approximations to the solution can be obtained without knowing the details of the time series representation of rt.
+
+To discuss the solution to (2.6), it is useful to first define the following filter:
+
+$$\hat { B } ^ { p , f } ( L ) = \sum _ { j = - f } ^ { p } \hat { B } _ { j } ^ { p , f } L ^ { j } , \, L ^ { h } x _ { t } \equiv x _ { t - h } .$$
+
+The strategy for estimating y1, y2, ..,yr described above in effect uses a different filter for each t. The filters differ according to the values of p and f: which vary with t.
+
+Alternative strategies for estimating the yt's impose various restrictions. For example, one might impose stationarity, i.e., constancy of p and f, and/or symmetry, i.e., p = f, on the sequence of projection problems defined above. A feature of these alternatives is that they do not use all the available observations on t to estimate the yt's. There may be advantages to restricting one's attention to stationary and/or symmetric filters. For example, stationarity may have econometric advantages. Symmetry has the advantage of ensuring that there is no phase shift between it and yt.1o Thus, there at t    s s    bos  bt  t t hg sense of (2.6). One of our objectives is to quantify the severity of this trade-off in settings that are of practical interest.
+
+The figure reports Bo + 2 ∑j= Bj cos(wj) for various values of p.
+
+
+<!-- p:9 -->
+
+
+For given t, we can obtain a closed form solution to the projection problem, (2.4), by formulating it in the frequency domain:
+
+$$\min _ { \dot { B } _ { f } ^ { p , f } ( j = - f _ { r } , \dots , p ) } \int _ { - \infty } ^ { \infty } | B ( e ^ { - i \omega } ) - \dot { B } ^ { p , f } ( e ^ { - i \omega } ) | ^ { 2 } f _ { x } ( \omega ) d \omega , \quad n o t h s c r { U }$$
+
+where fx(ω) is the spectral density of x.11 This formulation of the problem emphasizes that the solution to the projection problem, (2.4), depends on the time series properties of the data being filtered. This is true, despite the fact that the ideal band pass filter is not dependent on the time series properties of the data.
+
+### 2.3. Time Series Representations
+
+We consider the following class of time series representations for t:
+
+$$x _ { t } = x _ { t - 1 } + \theta ( L ) \varepsilon _ { t } , \ E \varepsilon _ { t } ^ { 2 } = 1 , \quad \, \quad ,$$
+
+$$\Omega _ { 0 } = \frac { \Omega _ { 0 } } { \Omega _ { 1 } } ( \omega ) = \frac { \theta ( e ^ { - i \omega } ) \theta ( e ^ { i \omega } ) } { ( 1 - e ^ { - i \omega } ) ( 1 - e ^ { i \omega } ) } .$$
+
+so that so that
+
+10This observation follows from standard results. The phase-shift between ýt and y: is determined by the phase of the z-transform of the cross-covariance function between Ît and yt, 9sv(z). This is given by:
+
+$$g _ { n } ( z ) = \hat { B } ^ { p , l } ( z ) B ( z ^ { - 1 } ) f _ { s } ( z ) ,$$
+
+where f≠(z) is the z-transform of the covariance function of the data being filtered. The phase in gey(e-) is related to the complex part of giy(e-). Given that B(e-) and fs(e-) are real, this is zero if, and only if, p.s(e-) is real. But, this is equivalent to the requirement, .(e-) = .(e), i.e., that . = .!.
+
+1This formula corresponds to one derived under similar circumstances by Sims (1972). Sims (1972) posits a situation in which some variable, yt, is related to z. by a distributed lag, yt = B(L)x, + εt, while the econometrician imposes that the lag structure has the form, ./(L). He assumes that the restrictions imposed by the econometrician on .(L) exclude the true distributed lag, B(L). Sims showed that, in population, the econometrician's estimate of J(L), obtained by a least squares regression of yt on x,'s, solves (2.7).
+
+
+<!-- p:10 -->
+
+
+We place a simple structure on θ(L), by assuming it is a finite-ordered polynomial12:
+
+$$\theta ( z ) = \theta _ { 0 } + \theta _ { 1 } z + \dots + \theta _ { q } z ^ { q } , \ q \geq 0 .$$
+
+We suppose that p and f are large by comparison with q.13 Specifically,
+
+$$p \geq 0 , \ f \geq 0 , \ p + f > 0 , \ p + f \geq 2 q .$$
+
+Define Demne
+
+$$g ( z ) = \theta ( z ) \theta ( z ^ { - 1 } ) = c _ { 0 } + c _ { 1 } ( z + z ^ { - 1 } ) + \dots + c _ { q } ( z ^ { q } + z ^ { - q } ) ,$$
+
+with c−r = cr for all τ, and cr = 0 for τ &gt; q.
+
+The case where x is difference stationary corrcsponds to θ(1) ≠ 0. The covariance stationary case corresponds to θ(1) = 0, when the time series representation of xt is x, = [θ(L)/(1 − L)] εt = ē(L)εt. where (L) is a finite-ordered polynomial in L.
+
+Formulas for the solution to (2.7) when xt has the time series representation, (2.8), are derived in Appendix A. The solution when x, is a random walk (i.e., θ(L) ≡ 1) was presented in the introduction.14 Other special cases are discussed in the next subsection.
+
+### 2.4. The Optimal Approximation and fz
+
+The key to understanding the solution to (2.7) is to note that for finite p and f, it is not possible to construct p.f(e-iω) so that p.f(e−) = B(e-ω) for all ω. The two functions can be made close over some subintervals, but only at the cost of sacrificing accuracy over other subintervals. The existence of this trade-off implies that some weighting scheme is needed to determine which intervals to emphasize in constructing p,s(e-). The weighting scheme implicit in our optimization criterion is the spectral density of x. The reason for this is that the optimization problem seeks to make yt and Ît as close as possible, and this translates into making the product of B and fx similar to the product of ps and fr. Thus, the optimization criterion picks the Bp.f's so that P.f(e-i) resembles B(e-) closely for values of ω where fr() is large and places less emphasis on regions where fz is relatively small. We illustrate this principle using four examples. The four examples tilt the graph of fr(ω), ω ∈ (0, π) in various ways and the effects on the Bp.f's are displayed.
+
+intensive, extension of what we do here. Our analysis suggests that the extension to the rational polynomial case may not be necessary to achieve good results in practice.
+
+IThe random walk case is simple, and can be established with the following time-domain argument. The problem is that not all the observations on xt are available to evaluate yt in (2.2). The missing data are the x's after the end of the data set and before the beginning. We can use the assumed time series model for x, to forecast and backcast these missing observations based on the actual data. We obtain ý. by incorporating the actual data and the estimates for the missing observations into the formula for y. In the random walk case, the formulas for the missing observations are particularly simple: for j &lt; t − T, P[zt-j|x1....,xτ] = xT and for j &gt; t − 1, P[x-,[x1, .., τ] = x1. With these observations, it is easy to verify (1.2)-(1.4), where Bτ-t is the sum of the Bj's over all j ≥ T − t and B-1 is the sum of the B,'s over all j ≥ t – 1. This time domain strategy for solving our problem follows the one implement by Stock and Watson (1998) in a business cycle context and by Geweke (1978) and Wallis (1981) in a seasonal adjustment context.
+
+13This is only imposed to simplify the projection formulas in the Appendix. The requirement could be dropped by a suitable extension of the formulas derived there.
+
+
+<!-- p:11 -->
+
+
+In what we call the 'IID case', θ(z) = 1−z, so that fr(ω) = 1 for all ω. In this case, the optimization criterion assigns equal weight to all frequencies. In the appendix, it is shown that the Pf's that solve (2.7) in this case are given by:
+
+$$I I D \, \text {case} \colon \, \tilde { B } _ { j } ^ { p . f } = B _ { j } , \, \text {for} \, j = - f , - f + 1 , \dots , 0 , \dots , p .$$
+
+For p = f = 12, pu = 24, pt = 4 (see (1.3)), p.s(e−) and B(e−ω) are displayed in Figure 2a.15
+
+In our other three examples, x, has a single unit root. That (2.12) is not the solution to (2.7) in this case can be seen using a simple argument by contradiction. Thus, suppose (2.12) is the solution to (2.7) in the unit root case. Since B(1) = 0, it follows that yt is covariance stationary. But, since most likely p.f(1) ≠ 0, Ît will not be covariance stationary.16 This implies that Ît and, hence, yt - Ît: has infinite variance. This variance can be made finite by just altering the filter weights so that P.f(1) = 0. This is a contradiction to the assumption that the filter weights solve (2.7).
+
+The preceding considerations suggest that a necessary condition for p.f(L) to solve (2.7) when xt has a unit root is that p.f(1) = 0. We impose this in the formulas derived in the appendix.
+
+To illustrate these formulas, we analyze the following additional exampleș. The case where xt is a random walk is discussed in the introduction. In the 'Near IID case',
+
+$$\Omega _ { 0 } = \theta ( z ) = 1 - ( 1 - \eta ) z , \ \eta > 0 , \ \eta \text { small} .$$
+
+1sThat (2.12) is the solution to (2.7) in the IID case can be verified trivially using the time domain strategy in footnote 12. The frequency domain strategy is also straightforward in this case. The first order condition of (2.7) associated with the optimal choice of p. is
+
+$$\int \lim i t s _ { - \infty } B ( e ^ { - \omega } ) e ^ { - \omega j } d \omega = \int \lim i t s _ { - \infty } \dot { B } ^ { j , j } ( e ^ { - \omega } ) e ^ { - \omega j } d \omega , \\$$
+
+for j = -f, -f + 1, .., 0, ..., p. Equation (2.12) follows by evaluating these integrals using the well known fact
+
+$$\int \lim i t s _ { - \infty } ^ { \infty } e ^ { - \log \omega } d \omega = \left \{ \begin{array} { l l } { 2 \pi , \, h = 0 } \\ { 0 , \, h \neq 0 } \end{array} .$$
+
+ee  '  t t   f e d   e s e e sd     e e BP.S's are constructed as in (2.12).
+
+
+<!-- p:12 -->
+
+
+Note that if η = 0, then this reduces to the IID case just discussed. However, with η positive, no matter how small, fz(ω) diverges to infinity for ω → 0. Outside of a small region around ω = 0, the spectrum of x, in the Near IID case looks like the one in the IID case: constant at unity. In this case, the solution to (2.7), for p = f, is
+
+$$\text {Near IID base} \colon \hat { B } _ { j } ^ { p , f } = B _ { j } + \frac { \Delta } { 1 + 2 p } , \, j = 0 , \pm 1 , \dots , \pm p ,$$
+
+$$\Delta = - \left [ B _ { 0 } + 2 \sum _ { j = 1 } ^ { P } B _ { j } \right ] ,$$
+
+where where
+
+and the Bj's are defined in (1.3).17 In this case, it is optimal to truncate the ideal band pass filter and then adjust all the weights by a constant to ensure psf(1) = 0. This differs from the Random Walk case discussed in the introduction. In the latter, optimality dictates truncating the ideal band pass filter, and then only adjusting the highest order terms to ensure p.f(1) = 0.
+
+Figure 2 allows us to assess the impact on the optimal filter approximations of the three specifications of fz already described and of the fourth one that will be described shortly. We begin by comparing B12,12(e-) in the Near IID and IID cases (see Figures 2a and 2b). We can think of the Near IID case as adapting B12,12(e-i) from the IID case by shifting it up towards zero in the neighborhood of ω = 0. This improvement is achieved at the cost of making 12,12(e-i) diverge from B(e-iω) for values of ω slightly above zero. In the IID case, when fz(ω) = 1 for all ω, this cost outweighs the improvement. In the Near IID case, when f(0) = ∞, the situation is reversed. For fes  oe  se t    (t    e i eos that shifting power towards one frequéncy range causes the optimal filter to become more accurate in the re e ne   e  e tge.
+
+a (   s ar   C    (t   e spectrum of xt in the Random Walk case resembles the one in the Near IID case in that it diverges to infinity for ω → 0. However, it declines more slowly as ω increases above zero.18 As a result,
+
+17Verifying this is only a little more complicated than the problem of verifying (2.12), discussed in footnote 12. Consider unsurprising feature of the p = f case, and is established rigorously in Appendix A.) The p + 1 unknown p.s's may be found by solving the condition, p.f(1) = 0, and the p first order conditions associated with (2.7): the case, p = so that the solution to (2.7) is symmetric with B"1 = for p (this symmetry property is an
+
+$$\int _ { - \tau } ^ { \tau } B ( e ^ { - \omega } ) e ^ { - \omega j } f _ { s } ( \omega ) d \omega = \int _ { \tau } ^ { \tau } \dot { B } ^ { p . f } ( e ^ { - \omega } ) e ^ { - \omega j } f _ { s } ( \omega ) d \omega ,$$
+
+for j = 0,..., p – 1. That these indeed are the first order conditions can be verified with some algebra, but in any case is established carefully in Appendix A. It is easily verified that the ÀP.'s in (2.14) satisfy these conditions.
+
+18In the random walk case, fz(ω) = 1/ [2(1 − cos(ω))|.
+
+
+<!-- p:13 -->
+
+
+by comparison with the IID case, the Random Walk case assigns relatively heavy weight to the low frequencies and relatively low weight to the others. The effects on the optimal filter are evident in Figure 2b: the Random Walk case does better than the Near IID case in the region of ω = 0, but at the cost of performing relatively poorly at the higher frequencies.
+
+A final case, the Persistent case, is studied in Figure 2c. There,
+
+$$\theta ( z ) = 1 + z + \dots + z ^ { 1 3 } .$$
+
+Taking the Random Walk case as a benchmark, this case goes to the opposite extreme relative to the Near IID case. The Persistent case tilts power in xt even more towards frequency zero and away from the higher frequencies. It almost corresponds to the case in which it is not the first difference, but the second difference of xt, that is a white noise. We compare B12,12(e-) for these two cases in Figure 2c. Note how 12,12(e-iw) for the Persistent case does better in a neighborhood of ω = 0 than the Random Walk case. This is achieved in exchange for a very pronounced deterioration in performance in the higher frequencies.
+
+## 3. Quantitative Assessment of Various Filters
+
+A key purpose of this section is to explore the quantitative importance of three factors in the solution to (2.7). We examine the role of asymmetry and time nonstationarity of the p.S's. We also assess the importance of knowing the details of the time series representation of x. Clearly, the importance of these three factors depends on the actual time series properties of x. To make the analysis interesting, we use difference stationary and trend stationary time series representations that fit standard US macroeconomic data.
+
+Our findings are as follows. First, in minimizing (1.1), the biggest gains come from allowing the filter weights to vary over time. These gains refiect that allowing nonstationarity substantially increases the amount of information in r that can be used in estimating Ît. Second, allowing the filter weights to be asymmetric further increases the amount of information in x that can be used in constructing èt, though by a lesser amount. So, we find that nonstationarity and asymmetry are valuable in minimizing the distance metric. It turns out that the cost of these features is relatively minor. We display evidence that the degree of asymmetry and nonstationary in the optimally filtered data is quantitatively small.19 Finally, we find that there is relatively little gain in knowing the precise details of the time series representation generating the xt's. In particular, the gain from using the true time series representation of xt to compute Ît rather than proceeding as though xt is a random walk, is minimal in practice. These are the findings that lead us to the view that an adequate, though not optimal, procedure for isolating frequency bands in macroeconomic time series is to proceed as if the data were a random walk and use filters that are optimal in that case.
+
+19This is similar to results obtained for the Hodrick-Prescott filter, which is also nonstationary and asymmetric. Christiano and den Haan (1996) show that, apart from data at the very beginning and end of the data set, the degree of
+
+
+<!-- p:14 -->
+
+
+The second purpose of this section is to evaluate other filtering approaches used in the literature. These include the band-pass filtering approach recommended by Baxter and King (1999) and the filter proposed by Hodrick and Prescott (1997) (HP). In addition, we consider the band-pass approximation based on regressing data on sine and cosine functions, as described in Christiano and Fitzgerald (1998, Appendix) and Hamilton (1994, pages 158-163). We call this last procedure the Trigonometric Regression procedure.
+
+The first subsection describes the statistics that we use in our analysis. The next subsection studies the properties of the solution to (2.7). The third subsection compares these properties with those of alternative filters that are used in the literature. The second and third subsections are based on unit root representations of the data. The final subsection considers robustness of our results by considering trend stationary representations instead.
+
+### 3.1. Some Useful Statistics
+
+We evaluate the filtering procedures by studying the dynamic correlations, corrt(ét, yt-r), and the relative standard deviations, (vart(ýt)/var(yt))1/2, for various t.20 This section explains why we look at these statistics, and how we compute them.
+
+These statistics have three features which make them useful for our purposes. First, wher the s are based on variable lag filters, they are non-trivial functions of time. We use the quantitative magnitude of this variation to assess the degree of non-stationarity in Ît. Of course, statistics based on yt alone, or statistics based on Ît when fixed lag filters are used, are invariant with respect to t, given the data generating mechanisms that we consider. Second, for filters that solve a projection problem.
+
+nonstationarity in this filter is quantitatively small.
+
+20Following convention, a statistic for a particular date is defined across the ensemble of realizations for the underlying stochastic process at that date.
+
+
+<!-- p:15 -->
+
+
+the projection criterion, E[(yt – t)2Ω], is a simple function of the correlation between yt and :21
+
+$$E [ ( y _ { t } - \dot { y } _ { t } ) ^ { 2 } | \Omega _ { t } ] = \left [ 1 - c o r r _ { t } ( \dot { y } _ { t } , y _ { t } ) ^ { 2 } \right ] v a r ( y _ { t } ) .$$
+
+Here, Ω is the relevant information set in the projection.22 This relation indicates that we are free to think of the projection criterion in terms of corrt(ýt, yt), an object that we find easier to interpret than E[(yt – ýt)2|Ω] itself. In evaluating our results, it is useful to be aware of two other results that are true when Ît solves a projection problem:
+
+$$c o r r _ { t } ( \hat { y } _ { t } , y _ { t } ) = \left [ \frac { v a r _ { t } ( \hat { y } _ { t } ) } { v a r ( y _ { t } ) } \right ] ^ { 1 / 2 } , \ v a r _ { t } ( \hat { y } _ { t } ) \leq v a r ( y _ { t } ) .$$
+
+Third, one of our concerns is to quantify the phase shifts that exist between yt and Ît when the latter is computed using non-symmetric filters. As explained below, the dynamic correlations between yt and Ît are useful for this.
+
+We now briefly discuss how we compute these statistics. We evaluate the variance of yt using the following relation:23
+
+$$v a r ( y _ { t } ) = \frac { 1 } { \pi } \int _ { a } ^ { b } f _ { x } ( \omega ) d \omega .$$
+
+21This is a standard result. To see it, note that by the orthogonality property of projections, we can write yt = t + ε, where ε, is orthogonal to Ω, and, hence, i: itself. Then,
+
+$$v a r _ { t } ( y _ { t } - \dot { y } _ { t } ) = v a r _ { t } ( y _ { t } ) - v a r _ { t } ( \dot { y } _ { t } ) = v a r _ { t } ( y ) \left [ 1 - \frac { v a r _ { t } ( \dot { y } _ { t } ) } { v a r ( y _ { t } ) } \right ] = v a r ( y _ { t } ) \left [ 1 - \rho _ { t } ( 0 ) ^ { 2 } \right ] .$$
+
+The last equality follows from the following observation:
+
+$$c o r r ( \dot { y } , y _ { l } ) = \frac { c o v _ { l } ( \dot { y } , y _ { l } ) } { [ v a r ( \dot { y } ) v a r _ { l } ( y _ { l } ) ] ^ { 1 / 2 } } = \frac { v a r _ { l } ( \dot { y } _ { l } ) } { [ v a r ( \dot { y } ) v a r _ { l } ( y _ { l } ) ] ^ { 1 / 2 } } = \left ( \frac { V a r _ { l } ( \dot { y } _ { l } ) } { V a r _ { l } ( y _ { l } ) } \right ) ^ { 1 / 2 } .$$
+
+22That is, Ω, = {x1,., r} for all t in the case of Optimal, e-12,..., 0,.., e+12 in the case of Optimal Fixed, p = f = 12, etc. In practice, we approximate an integral like this by the Riemann sum:
+
+$$\frac { 1 } { \pi } \int _ { \real } f _ { x } ( \omega ) \omega \approx \frac { b - a } { \pi } \frac { 1 } { N } \sum _ { j = 1 } ^ { N } f _ { x } ( \omega _ { j } ) = \frac { b - a } { \pi } \frac { 1 } { N } \sum _ { j = 1 } ^ { N } \frac { \theta ( e ^ { - j } ) \theta ( e ^ { j } ) } { 2 ( 1 - \cos ( \omega _ { j } ) ) } , \, \omega _ { j } = a + \frac { b - a } { N } j , \, j = 1 , \dots , N$$
+
+To guarantee that var(yt) is accurately computed, and because it only needs to be computed a few times, we set N to a very high value, 10,000.
+
+
+<!-- p:16 -->
+
+
+We evaluate the variance of ýt using the following expression:24
+
+$$v a r _ { t } ( \dot { y } _ { t } ) = \frac { 1 } { \pi } \int _ { 0 } ^ { \pi } | \dot { B } ^ { p , f } ( e ^ { - i \omega } ) | ^ { 2 } f _ { x } ( \omega ) d \omega .$$
+
+Here, var is a non-trivial function of time when p and f vary with t.
+
+The dynamic correlations between. yt: and ýt are computed using the following the expression:
+
+$$c o r r _ { t } ( \dot { y } _ { t } , y _ { - \tau } ) = \frac { c o v _ { t } ( \hat { y } _ { t } , y _ { - \tau } ) } { \sqrt { v a r _ { t } ( \dot { y } _ { t } ) v a r ( y _ { t } ) } } = \frac { \frac { 1 } { \pi } \int _ { a } ^ { b } \real { \text {real} } \left [ r ^ { p . } ( e ^ { - \dot { w } } ) e ^ { i ( \theta ( w ; p . ) + \omega k ) } f _ { x } ( \omega ) \right ] d \omega } { \sqrt { v a r _ { t } ( \dot { y } _ { t } ) v a r ( y _ { t } ) } } .$$
+
+For convenience, we have written p.f in polar form:
+
+$$\hat { B } ^ { p , f } ( e ^ { - i \omega } ) = r ^ { p f } ( e ^ { - i \omega } ) e ^ { i \omega ( \omega _ { i } p , \omega ) } ,$$
+
+where r.f (e-) is real and the function θ(ω; p, f) is the phase of ps (e-) (see Sargent (1987, chapter XI).25 We use the location of the peak of this correlation function to determine whether there is a phase shift between yt and ýt. To see the rationale for this, consider the following special cases. When p.f is symmetric, so that θ(ω; p, f) ≡ 0 and there is no phase shift betweer y and Ît, then it is easily verified that corrt(ýt, yt-r) is symmetric about τ = 0.26 When p.f is not symmetric, so that there is a nonzero phase shift between yt and Ît, then this symmetry property of the correlatiou fuction fails. Consider, for example, the extreme case in which p.f(L) = Lh and h ≠ 0, so that τP.f(e−) = 1 and θ(ω;p, F) = -hω. In this case, it is easy to see that corrt(ýt, yt-r) is symnetric about τ = h. In general,when symmetry fails the phase of pf(e-iw) does not satisfy this proportionality property,
+
+2The integrand in the expression for var (ýt) exhibits substantial variation, particularly in the region about ω = a and ω = b. To ensure that these integrals are computed accurately, we divided the interval, ω ∈ (0, π) into five regions: (0, a − ∆1), (a − ∆1, a + ∆1), (a + ∆1, b − ∆2), (b − ∆2, b + ∆2), (b + ∆2, x), with ∆1, ∆2 &gt; 0. The integral in each region was evaluated using the Riemann approximation formula described in the previous footnote, with N = 100 in each interval.
+
+2sTo verify our covariance formula, note first from the results in Sargent (1987, chapter XI), that
+
+$$c o v ( \dot { y } _ { t } , y _ { t - k } ) = \frac { 1 } { 2 \pi } \int _ { - \tau } ^ { \tau } \hat { B } ^ { p , f } ( e ^ { - i \omega } ) B ( e ^ { i \omega } ) e ^ { i k } f _ { t } ( \omega ) d \omega .$$
+
+Then, note that the integral from 0 to π is the complex conjugate of the integral from -π to 0. Finally, we have taken into account of the definition of B to limit the range of integration.
+
+s     e n d se s  e    s   o hy symmetry of p./ also implies symmetry of the covariance function, note that when θ ≡ 0, the covariance can be written
+
+$$\frac { 1 } { \pi } \int _ { 0 } ^ { 1 } B ( e ^ { - i \omega } ) r ^ { 2 } ( e ^ { - i \omega } ) e ^ { i \omega t } f _ { 2 } ( \omega ) d \omega$$
+
+which is the covariance function of a stochastic process whose spectral density is B(e-)r.f(e-)f(ω) . The result follows from the symmetry about k = 0 of the covariance function of a stochastic process.
+
+
+<!-- p:17 -->
+
+
+and so the asymmetry in ps(e-iw) is manifested in more exotic forms of asymmetry in ρt(τ).
+
+### 3.2. Difference Stationary Data Generating Mechanisms
+
+We estimated time series models of the form (2.8) for four data sets often studied in macroeconomic analysis. In each case, we fit a model to the monthly, quarterly and annuai data. The variables, t, considered are: inflation, output (GDP for the annual and quarterly frequencies and industrial production for monthly), the rate of interest (measured by the three-month return on US Treasury bills) and the unemployment rate. Inflation is measured as the first difference of the log of the consumer price index (CPI); the rate of interest is measured as the logarithm of the net rate; and output was transformed using the logarithm. The data set covers the period 1960-1997. The estimation results are presented in Table 1. With one exception, the Box-Pierce statistic ('Q') indicates little evidence of serial correlation in the errors, as indicated by the p-values in the table. In the exceptional case, monthly inflation, the addition of higher order lags does not raise the p-value.
+
+The spectral density of (1 – L)zt for each model is graphed in Figure 3. Note that the spectral densities of output, interest rates and unemployment are very similar. They exhibit relatively high power in the low frequencies. Quarterly and monthly inflation deviates from this pattern in having relatively more power in the higher frequencies.
+
+
+<!-- p:18 -->
+
+
+| Table 1: Time Series Representations for Selected US Data - L)xg = e + Oe_ + O2Eg_2 + 0c_ + O4Eg...4 + Ee? = - variable, Xt (1   |   Table 1: Time Series Representations for Selected US Data - L)xg = e + Oe_ + O2Eg_2 + 0c_ + O4Eg...4 + Ee? = |   Table 1: Time Series Representations for Selected US Data - L)xg = e + Oe_ + O2Eg_2 + 0c_ + O4Eg...4 + Ee? = - )__0 | Table 1: Time Series Representations for Selected US Data - L)xg = e + Oe_ + O2Eg_2 + 0c_ + O4Eg...4 + Ee? = - J__02   |   Table 1: Time Series Representations for Selected US Data - L)xg = e + Oe_ + O2Eg_2 + 0c_ + O4Eg...4 + Ee? = - f, |   Table 1: Time Series Representations for Selected US Data - L)xg = e + Oe_ + O2Eg_2 + 0c_ + O4Eg...4 + Ee? = - f |   Table 1: Time Series Representations for Selected US Data - L)xg = e + Oe_ + O2Eg_2 + 0c_ + O4Eg...4 + Ee? = - 0 | Table 1: Time Series Representations for Selected US Data - L)xg = e + Oe_ + O2Eg_2 + 0c_ + O4Eg...4 + Ee? = - Q   | Table 1: Time Series Representations for Selected US Data - L)xg = e + Oe_ + O2Eg_2 + 0c_ + O4Eg...4 + Ee? = - F1equency   |
+|----------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
+| log(CPIt/CPIg_i)                                                                                                                 |                                                                                                         0.0021 |                                                                                                                 -0.75 |                                                                                                                        |                                                                                                                     |                                                                                                                    |                                                                                                                    | 0.00 (36.1)                                                                                                        | M                                                                                                                          |
+|                                                                                                                                  |                                                                                                         0.0042 |                                                                                                                 -0.23 | -0.27                                                                                                                  |                                                                                                                0.32 |                                                                                                                    |                                                                                                                    | 0.11 (30-3)                                                                                                        | Q                                                                                                                          |
+|                                                                                                                                  |                                                                                                          0.015 |                                                                                                                  0.81 |                                                                                                                        |                                                                                                                     |                                                                                                                    |                                                                                                                    | 0.34 (9-1)                                                                                                         | A                                                                                                                          |
+| log(CDPg)                                                                                                                        |                                                                                                         0.0075 |                                                                                                                  0.28 | 0.21                                                                                                                   |                                                                                                                 020 |                                                                                                               0.16 |                                                                                                                    | 0.20 (36-4)                                                                                                        | M                                                                                                                          |
+|                                                                                                                                  |                                                                                                         0.0088 |                                                                                                                  0.25 | 0.16                                                                                                                   |                                                                                                                0.10 |                                                                                                               0.12 |                                                                                                                    | 0.09 (30-4)                                                                                                        | Q                                                                                                                          |
+|                                                                                                                                  |                                                                                                          0.021 |                                                                                                                  0.34 |                                                                                                                        |                                                                                                                     |                                                                                                                    |                                                                                                                    | 0.89 (9-1)                                                                                                         | A                                                                                                                          |
+| Log(Tbillt)                                                                                                                      |                                                                                                          0.064 |                                                                                                                  0.26 |                                                                                                                        |                                                                                                                     |                                                                                                                    |                                                                                                                    | 0.05 (36-1)                                                                                                        | M                                                                                                                          |
+|                                                                                                                                  |                                                                                                          0.105 |                                                                                                                  0.45 | -.16                                                                                                                   |                                                                                                                     |                                                                                                                    |                                                                                                                    | 0.24 (30-2)                                                                                                        | Q                                                                                                                          |
+|                                                                                                                                  |                                                                                                           0.21 |                                                                                                                  0.58 |                                                                                                                        |                                                                                                                     |                                                                                                                    |                                                                                                                    | 0.54 (9-1)                                                                                                         | A                                                                                                                          |
+| Unempk'ymentt                                                                                                                    |                                                                                                           0.18 |                                                                                                                 -0.02 | 0.19                                                                                                                   |                                                                                                                0.17 |                                                                                                               0.20 |                                                                                                               0.05 | 0.021 (36-5)                                                                                                       | M                                                                                                                          |
+|                                                                                                                                  |                                                                                                           0.27 |                                                                                                                  0.65 | 0.48                                                                                                                   |                                                                                                                0.41 |                                                                                                                    |                                                                                                                    | 0.66 (30-3)                                                                                                        | Q                                                                                                                          |
+|                                                                                                                                  |                                                                                                           0.96 |                                                                                                                  0.28 | --                                                                                                                     |                                                                                                                     |                                                                                                                    |                                                                                                                    | 0.80 (9-1)                                                                                                         | A                                                                                                                          |
+
+Note: All time series models estimated using the RATS command, boxjenk. Data cover the period 1960-1997. Q denotes the p-value of the Box-Pierce test of the null hypothesis of zero autocorrelation in the residuals. In (n, m), n denotes number of autocorrelations in residuals used, and m denotes degrees of freedom of chi-square test statistic.
+
+### 3.3. Properties of the Optimal Filter Approximation
+
+We evaluate various procedures for computing Ît under a variety of specifications of the time series representation for t, various data sampling intervals and frequency bands. The procedures we consider are listed in Table 2. Comparison of Optimal Symmetric and Optimal Fixed permits us to assess the importance of time stationarity in the filter. Comparison of Optimal and Optimal Symmetric permits us to assess the importance of symmetry. Comparison of Optimal and Random Walk permits us to assess the importance of getting the details of the time series representation of It just right.
+
+
+<!-- p:19 -->
+
+
+| Table 2: Band Pass Filter Approximation Procedures Considered - Name   | Table 2: Band Pass Filter Approximation Procedures Considered - Definition   |
+|------------------------------------------------------------------------|------------------------------------------------------------------------------|
+| Optimal                                                                | Optimal                                                                      |
+| Random Walk                                                            | Optimal, assuming random walk zt ((1.2)-(??))                                |
+| Optimal, Symmetric                                                     | Optimal, subject to p = I                                                    |
+| Optimal, Fixed                                                         | Optimal, subject to p =1=36                                                  |
+| Random Walk, Fixed                                                     | Optimal, subject to p = f = 36, assuming random walk Xg                      |
+
+This section reports our results, based on the unit root representations in Table 1, and on the Near IID ((2.13) with η = .01) and Persistent, (2.15), representations considered in the previous section. Given the evidence in Figure 3, it is not surprising that the findings for many of the time series representations in Table 1 are very similar. Therefore, of the time series representations in Table 1, we only present results for inflation. We selected this time series representation because it provides the weakest support for our contention that the Random Walk filter is close to optimal. Results based on the Persistent representation are similar to those for the other representations in Table 1, and so we do not present these. Results based on annual, monthly and quarterly data sampling intervals are also very similar. Consequently, we only present the findings based on the monthly sampling interval. We consider three frequency bands: 1.5 to 8 years, 8 to 20 years, and 20 to 40 years.
+
+The results we present are based on two monthly time series representations: the one estimated using inflation (see Figure 4) and the Near IID representation (Figure 5). Consider Figure 4 first. The first, second and third columns of the figure provide information on corr(ýt, yt), [var,(ýt)/var(yt)]1/2, and corre(ýt, yt-k), respectively. We report results for t = 1, .., 240, since statistics are symmetric across the first and second halves of the sample. The first, second and third rows in the figure correspond to three different frequency bands: 1.5 to 8 years; 8 – 20 years; and 20 – 40 years, respectively. Each panel in the frst column contains four curves, differentiated according to the procedure used to compute it: Optimal, Random Walk, Optimal Symmetric, or Optimal Fixed. Results for Optimal and Random Walk are presented for t = 1,..., T/2. Results for Optimal Symmetric and Optimal Fixed are presented for t = 37, ..,T/2, since we set p = f = 36. Here, T = 480, which is slightly more than the number of monthly observations in the estimation period for the monthly time series representations in Table 1. The second column contains results for Optimal and Random Walk alone. Here, results for Optimal are simply repeated for convenience from the first column. As discussed above, for filters that solve a projection problemn, the correlation and relative standard deviation coincide. Finally, the third column reports corrt(ýe, yt-k) for five different values of t: t = 1,31,61, 121, 240. In each case, k ranges from -24 to 24. Also, the location of k = 0 is indicated by a '+'.
+
+
+<!-- p:20 -->
+
+
+The main findings in Figure 4 are as follows. First, the efficiency differences between Random Walk and Optimal are very small (column 1). A minor exception to this can be found in the business cycle frequencies for t = 4, ..., 11. For these dates, the difference between corrt(ét, yt) based on Optimal and Random Walk is between 0.08 and 0.12. Although these differences are noticeable, they do not seem quantitatively large. Moreover, the differences between Random Walk and Optimal are barely visible when the analysis is based on the other time series representations in Table 1.
+
+Second, imposing symmetry (see Optimal Symmetric) results in a relatively small loss of efficiency in the center of the data set, but that loss grows in the tails. Third, imposing stationarity in addition to symmetry (Optimal Fixed) results in a noticeable loss of efficiency throughout the data set. However, the efficiency losses due to the imposition of symmetry and stationarity are comparatively small in the business cycle frequencies. They are dramatic in the lowest frequencies.
+
+Fourth, Ît based on Optimal and Random Walk appears to be reasonably stationary, except in an area in the tails. This tail area is fairly small (about 1.5 years) for the business cycle frequencies, but Fs  s  s r r  (        nn ae shift between Ît and yt (column 3). There is essentially no phase shift, even at the lowest frequencies.
+
+We conclude from these results that the noticeable efficiency gains obtained by filters that use all the data come at little cost in terms of nonstationarity and phase shift. However, the gains of going from a simple procedure like Random Walk to Optimal are quite small.
+
+These findings apply to all the time series models in Table 1, as well as to the Persistent time series representation. One time series representation where these findings do not hold up is the Near IID case, which is reported in Figure 5. In particular, the finding that Random Walk is nearly optimal and roughly stationary no longer holds (columns 1 and 2). However, the other conclusions continue to hold. For example, Optimal is still nearly stationary outside of tail areas. Also, imposing symmetry and time-stationarity on the filter imposes substantial efficiency costs, especially in the low frequencies.
+
+### 3.4. Properties of Alternative Filter Approximations
+
+Next we discuss three alternative band pass filter approximations that have been used in the literature. The first of these, the one due to Baxter and King (1999), is the fixed-lag, symmetric filter defined in (2.14). This filter can do no better than Optimal Fixed, discussed in the previous section. That filter is dominated by Random Walk, which is nearly optimal for the time series models reported in Table 1. Below, we provide a detailed analysis of two other filters: the HP filter and Trigonometric Regression. Again, we find that Random Walk is nearly optimal and dominates the HP filter and Trigonometric Regression.
+
+
+<!-- p:21 -->
+
+
+#### 3.4.1. Hodrick-Prescott Filter
+
+Proponents of the HP filter offer several interpretations of what it does (see section 4 below for an elaboration). The interpretation that we adopt here is that it approximates a band pass filter designed to isolate, in quarterly data, frequencies corresponding to the business cycle and higher.27 We identify these with cycles of period 8 years and less. We display evidence which suggests that, for data like US GDP, unemployment and the CPI, our Random Walk filter is nearly optimal and outperforms the HP filter. This finding also applies when these filters are used to obtain real-time estimates of yt. We stress this here because the HP filter is sometimes used in a macroeconomic stabilization context, when estimates of current yt are needed.
+
+Our discussion in this section is divided into two parts. We first discuss the evidence on Ît in Columns 1 and 2 of Figure 6, ignoring the first 2-5 years' observations. We then focus separately on those observations and on the information in Column 3 because this allows us to assess the value of the filters for obtaining real-time estimates of yt.
+
+The first column in Figure 6 displays corrt(ýt, yt) associated with the HP filter, Random Walk, and Optimal Fixed for t = 1, .., 80 and for the indicated three quarterly time series models. We do not display these statistics for Optimal, because they are virtually indistinguishable from Random Walk. Interestingly, despite the fact that HP uses all the data, it nevertheless performs less well than Optimal Fixed. Moreover, it does notably less well than Random Walk, particularly for Unemployment and GDP. .Outside of a tail area of roughly two years, corrt(űt, yt) exceeds 0.95 and it is closer to 0.99 towards the middle of the data set for Random Walk. For GDP and Unemployment, this statistic based on the HP filter never exceeds 0.90.
+
+Column 2 shows that, outside of a five year tail area, the performance of Random Walk is similar to that of the HP filter, in terms of the standard deviation of Ît: Random Walk undershoots Var(yt) somewhat while HP overshoots.
+
+Another way to compare HP filter and Randomn Walk focuses on the metric, (1.1), that we use to construct optimal filters. In particular, we consider R. the absolute size of the tpical estimation error, Ît - yt (measured by its standard deviation), to the absolute size of the typical value of yt (measured by its standard deviation): R = [Var(ý: - yt)/Var(yt)]1/2 28 A large value of Rę indicates a poor filter approximation. In the extreme case when R is greater than or equal to unity, then the filter approximation is literally useless. In this case one can do just as well, or better, estimating yt by its mean with Ît ≡ 0. In the case of Random Walk, R is 0.14 towards the middle of the data set and R is no greater than 0.31 if we ignore the first two years' data. In the case of the HP filter, this number is 0.49 for Unemployment and GDP and around 0.37 for Inflation. These results are the basis for our conclusion that, outside of the tail area, Random Walk outperforms the HP filter.
+
+The HP filter parameter, λ, is set to 1600, as is typical in applications using quarterly data.
+
+
+<!-- p:22 -->
+
+
+We now turn to the implications of the results in Figure 6 for the real time performance of the filters. We do this because it is of interest in the context of stabilization policy, when current estimates of the output and unemployment gaps are used. For example, John Taylor has argued persuasively that monetary policy makers set current policy as a function of the current output gap, among other things. 29 The output gap is the log difference between actual GDP and 'potential' GDP, and the unemployment gap is the difference between actual unemployment and the 'natural' rate of unemployment. One interpretation of potential GDP and the natural rate of unemployment is that they correspond to the HP trend in actual GDP and unemployment, respectively.30 For this reason, we now investigate how effective HP filter, Random Walk and Optimal are in estimating yt in real time.
+
+At the outset, it should be clear that estimating the current value of yt is likely to be a difficult task. Suppose, for example, that the variable, xt, has recently changed value. How is one to decide whether that change is temporary (i.e., part of yt) or more persistent (i.e., part of )? No doubt we can confidently answer this question with a sufficient passage of time, with more data. In the light of hindsight, it is relatively easy to determine whether a given change in a variable was just a blip or a movement in the trend. But, in real time without the advantage of hindsight, we can expect that even our best estimates of yt will be noisy. That is the case for Random Walk and HP Filter. However, we show that the estimate based on HP filter is noisier than that based on Random Walk.
+
+28Here,
+
+<!-- p:23 -->
+
+
+Recall the symmetry properties of the statistics in Columns 1 and 2 in Figure 6: their properties in the second half of the sample are the mirror image of their properties in the first half. As a result, the statistics at the left end-point of these two columns provide evidence on the real-time performance of the filters being considered. That is because, by symmetry, these statistics can be viewed as being based upon the estimate, īr, of 'current' yT, where T = 160. (In the case of Random Walk, T is computed using the one-sided filter, (1.4).) Note that the correlation between Ît and ye is at its lowest for t = T (t = 1) for both Random Walk and HP filter. That is, the real time correlation between the estimated and actual gaps is lower than what it is after the arrival of new data.31 The drop is fairly substantial.
+
+The evidence in Column 2 shows that, for the three time series representations considered, the real-time variance of ýt computed using Random Walk is less than what it is after new data arrives. In this sense, the estimate of the trend implicit in this filtering procedure (and Optimal) tends to follow the actual data more closely in real time than after the arrival of new data.32 We do not know if this is a general property of Random Walk, true for all time series representations. Evidently, it is not a general property of the HP filter. With the data generating mechanisms based on GDP and inflation, we see that the real time variance of Ît is at its global maximum for t = T and t = 1.33
+
+We now compare Random Walk and HP filter using the Re statistic described above, for t = T. Using Random Walk, Rr = 0.77, 0.78, and 0.69 for GNP, unemployment, and inflation respectively. Note that these numbers are substantially larger than what they are for data points closer to the middle. Still, they indicate Random Walk provides at least some information about yr. Now consider HP filter. For GDP, Rr = 1.01. For unemployment and inflation, Rr is 1.03 and 0.80, respectively. Evidently, these statistics indicate that Random Walk dominates HP filter in real time. Moreover, for purposes of estimating the GDP and unemployment gaps in real time, HP filter is worse than useless. The estimate, ÎT = 0, produces a smaller error than using the HP filter estimate, r.
+
+The statistics on the real-time properties of the filters that we have just considered abstract from scale. The evidence in Column 3 exhibits the magnitude of the error in real-time gap estimates for our variables. We consider the standard deviation of the error , yt -ût, for a fixed date, t = 160. We display this statistic for the time when t is the current date and continuing as new data become available and the data set becomes correspondingly larger. These results allow us to quantify the value of hindsight when estimating yt.
+
+3iThe evidence in Columns 1 and 2 actually do not allow us to literally infer what happens with the arrival of new data. The data set underlying the experiments in these columins are based on a fixed sample of length 160.
+
+These are counterexamples to the conjectures by Barrell and Sefton (1995, p. 68) and St-Amant and van Norden (1997, p. 11).
+
+2In our context, the estimated trend is d, where de equals it plus the drift in the data, where it = x - t (recall our decomposition, (2.1).)
+
+
+<!-- p:24 -->
+
+
+We study [var16o(ġ160 – y16o0)]1/2 for T = 160, 161, .., 200, based on Random Walk, Optimal and HP filter. For Random Walk and Optimal, the standard deviations are based on įı6o = P[yı6olx1, ..., T], for T = 160, .., 200. In the case of HP, they are based on 16o, the 160th observation in the HP filtered x, ..., xT, for T = 160, 161, .., 200. There are several things worth emphasizing in the third column of Figure 6. First, Random Walk and Optimal essentially coincide, and both dominate the HP filter. Second the error in estimating yi6o declines by roughly one-half in the first year after t = 160. Thereafter, further declines in the error come more slowly. Third, after initially falling with the arrival of the first two years' data, the error of the HP filter asymptotes to a relatively high level. The reason is that, as the size of the data set grows, the HP filter does not asymptote to a band p'a        a  t t    et ely [varı6o(Î16o – y16o)]1/2 would shrink to zero for Random Walk and Optimal. The information in Figure 6 suggests that this requires a very large value of T. These results are the basis for our conclusion that Random Walk is nearly optimal and outperforms the HP filter in terms of real-time performance.34
+
+In this discussion, we have emphasized the differences in the performance of the Hodrick-Prescott filter and Random Walk. We note, however, that the quantitative magnitude of the differences is not very great for some purposes. For example, in Appendix B we display business cycle statistics based on US data using various filter approximations and the HP filter, and there is little quantitative difference between them. The differences seem relatively larger when we consider real-time estimation of yt. The HP filter performs very poorly on this dimension. Indeed, in the case of GDP it is useless.35 However, even the optimal procedure seems relatively unreliable in this case.36
+
+e ed e   sn e t ens ree   e nn   sr and econometric framework, by Staiger, Stock and Watson (1997). Their estimated standard deviations of this gap range from 0.46 to 1.25 percentage points, depending on the data used in the analysis. They note how wide this range is and so it is not surprising that our estimates fall inside it.
+
+3sThese conclusions about the real time performance of the HP filter complement those obtained using different methods by others, including Laxton and Tetlow (1992), Orphanides (1999) and St-Amant and van Norden (1997).
+
+3We have abstracted from several real-time issues which could make the HP filter, Optimal and Random Walk seem ev es  t  e i i g e i   e   e s ion and data revisions. A more complete analysis would also take these factors into account in characterizing the accuracy of real time estimates of the business cycle and higher frequency components of the data. For further discussion, see Orphanides (1999) and Orphanides and van Norden (1999).
+
+
+<!-- p:25 -->
+
+
+#### 3.4.2. Trigonometric Regression
+
+We now discuss the Trigonometric Regression procedure. This procedure makes use of the entire dataset, x1, ..., IT: to estimate each yt, as follows:
+
+$$\dot { y } _ { t } = B _ { t } ( L ) x _ { t } , \, t = 1 , \dots , T ,$$
+
+where
+
+$$B _ { ( L ) } ( x _ { l } ) & = \sum _ { l = T } ^ { t - 1 } \left \{ \frac { 2 } { T } \sum _ { j \in J } \cos ( \omega _ { j } l ) \right \} z _ { l - l _ { l } } , \, \text {if} \, \frac { T } { 2 } \notin J \, , \\ & = \sum _ { l = T } ^ { t - 1 } \left \{ \frac { 2 } { T } \sum _ { j \in J _ { 1 } } \cos ( \omega _ { j } l ) + \frac { 1 } { T } \cos ( \pi ( t - l ) ) \cos ( \pi ) \right \} z _ { l - l _ { l } } , \, \text {if} \, \frac { T } { 2 } \in J \, \\ & \quad t = 1 , \dots , T , \, w _ { j } = \frac { 2 } { T } j . \quad u .$$
+
+Here, J indexes the set of frequencies we wish to isolate, and is a subset of the integers 1..., T/2.37 It a t t Bt .. =   s     t   = t t s   ly has a second unit root for t in the middle of the data set, when Bt(L) is symmetric.39 For this reason. it is important to drift adjust xt prior to filtering.
+
+We assume T is even. Also, J is the set of integers between ji and j2, where ji = T/pu and j2 = T/pr. The representation of i: given in the text, while convenient for our purposes, is not the conventional one. The conventional representation is based on the following relation:
+
+$$\dot { u } = \sum _ { i \in J } \{ a , \cos ( \omega _ { i } t ) + b _ { j } \sin ( \omega _ { i } t ) \} \, ,$$
+
+where the a,'s and b,'s are coefficients computed by ordinary least squares regression of zt on the indicated sine and cosine functions. The regression coefficients are:
+
+$$y = \{ \begin{array} { c } 4 , 5 \sum _ { 1 } ^ { 2 } \cos ( \omega _ { 1 } t ) z _ { 1 } , j = 1 , \dots , T / 2 - 1 \\ 4 \sum _ { 1 } ^ { 2 } \cos ( \pi t ) z _ { 1 } , j = T / 2 , \end{array} , \, , b = \left \{ \begin{array} { c } 4 \sum _ { 1 } ^ { T } \sin ( \omega _ { 1 } t ) z _ { 1 } , j = 1 , \dots , T / 2 - 1 \\ 4 \sum _ { 1 } ^ { T } \sin ( \pi t ) z _ { 1 } , j = T / 2 \end{array} .$$
+
+The expression in the text is obtained by collecting terms in z, and making use of the trigonometric identity. cos(z) cos(y)- sin(z) sin(y) = cos(r − y).
+
+To see that B.(1) = 0 when T/2  J, simply evaluate the sum of the coefficients on 1, 2..., T for each t :
+
+$$\frac { 1 } { T } \sum _ { j \in J ( J = 1 ) } \sum _ { 1 } ^ { 1 - T } 2 \cos ( y , t ) = \frac { 1 } { T } \sum _ { j \in J ( J = 1 ) } \sum _ { 1 - j } ^ { 1 - T } \left [ e ^ { i t } + e ^ { - i t } \right ] = \frac { 1 } { T } \sum _ { j \in J } \left [ e ^ { - i t ( j - 1 ) } \frac { 1 - e ^ { i t } } { 1 - e ^ { i t } } + e ^ { i t } \right ] ( i - 1 ) ^ { 1 - e ^ { i t } - T } \right ] = 0 ,$$
+
+because 1 - e,T = 1 − e−T = 1 − cos(2xj) + sin(2xj) = 1 for all integers, j.
+
+sWhen T is even, then there cannot be an eract second unit root since it rules out the existence of a date precisely in the middle of the dataset. By B.(L) having n unit roots we mean that it can be expressed as B.(L)(1 – L)", where B.(L) is a finite ordered polynomial. The discussion of two unit roots in the text exploits the fact that the roots of a symmetric polynomial come in pairs.
+
+When T/2 ∈ J, the expression for B.(1) includes ∑ ns  s s sdxr s  {(ak ((1 - kt s } 1of an even number of 1's and -1's, so it sums to 0.
+
+
+<!-- p:26 -->
+
+
+Our basic finding is that when the when the data are generated by the time series representations in Table 1, the performance of Trigonometric Regression is worse than that of Random Walk. Since the results based on these time series representations are fairly similar, we present only those based on the data generating mechanism for inflation. These are displayed in Figure 7, which has the same format as Figures 4 and 5. The results for Random Walk and Optimal in Figure 7 correspond to those reported in Figure 4, and are reproduced here for convenience. In Column 1, we see that in terms of corrt(Ît, yt), Trigonometric Regression is outperformed in all frequency ranges by Random Walk, which is nearly optimal. Column 2 shows that the estimates of yt based on Trigonometric Regression overshoot Var(yt), sometimes by a great deal, and performs worse on this dimension than either Random Walk or Optimal. The relative performance of Trigonometric Regression is particularly poor in the lower y e . t t r t   ot i eot' which is even worse than HP filter. Column 3 displays the dynamic cross correlations between Ît and yt when the former are computed by Trigonometric Regression. The evidence shows that there is very little phase shift between the variables, but there appears to be a substantial departure from covariance stationarity. The correlations in the tails of the data set are notably smaller than they are in the middle.
+
+Although Trigonometric Regression appears in Figure 7 to be substantially worse than Random Walk, for some purposes the poor performance may not be quantitatively important. For example, in Appendix B we find that, for standard business cycle statistics, Trigonometric Regression produces results quite similar to Random Walk.
+
+### 3.5. Robustness of Analysis to Trend Stationarity
+
+The quantitative analysis of our filters has been based, up to now, on the assumption that the data are generated by a difference stationary process estimated for one of the standard macroeconomic data series. Our basic finding is that Random Walk is nearly Optimal. Here, we show that - with a slight qualification - the same basic conclusion holds, even if we assume the data are trend stationary.
+
+Our first step in the analysis was to redo the calculations in Table 2, by fitting moving average representations to the residuals from regressions of log GDP, inflation, the interest rate and unemployment on a constant and time trend. We then repeated the preceding calculations, using Optimal, Random Walk, HP filter and Trigonometric regression. Although the results are fairly similar across different time series representations, the model for inflation poses a modestly greater challenge for Random Walk. This is why we decided to only present results based on the time series representation for monthly inflation.
+
+Results are presented in Figure 8, which is in the same format as Figures 4, 5, and 7. There are two things worth emphasizing here. First, consider the results for Random Walk. As in the difference stationary case (see Figure 4), Random Walk is nearly optimal in the business cycle frequencies, if we ignore the first and last two years' observations. However, some discrepancies between Random Walk and Optimal are apparent in the lower frequencies. Still, in the 8-20 year frequencies, there is no noticeable difference if we ignore the first and last five years' observations. Second, note that Trigonometric Regression still performs worse than Random Walk. Any concerns about Random Walk that might be raised by the results in Figure 8 do not warrant adopting the Trigonometric Regression procedure. If anything, they suggest adopting something closer to Optimal.
+
+
+<!-- p:27 -->
+
+
+## 4.Related Literature
+
+Ea tat      t   a   t  ued forcefully the case that economic hypotheses are usefully cast in the frequency domain. One of the examples studied in the next section of this paper, an analysis of the relationship between money growth and inflation, is inspired in part by Engle's work on the same subject.
+
+On a methodological level, the closest work to ours is that of Baxter and King (1999). They emphasize the potential usefulness of the band pass filter for constructing statistics to characterize the dynamics in the data. They confront the same practical problem that we do. Namely, to apply the band pass filter in a finite data set requires approximating it in some way. As noted above, the approximation t't r 't          r King and Watson (1994), and Stock and Watson (1998). They show how the Baxter-King recommended filter can be used to address interesting empirical questions.
+
+Our analysis can be compared with Baxter and King's in three ways. First, our approach to approximating the band pass filter differs from theirs. We select the approximation which minimizes (1.1). Baxter and King adopt a different optimization criterion. They require that the approximating ilter optimize (2.7) with fr ≡ 1, subject to the requirement, B(1) = 0. This is equivalent to optimizing (2.7) under the assumption that xt has a Near IID time series representation. This is the representation analyzed in the previous section, in which the spectral density is flat over most frequencies, and then rises sharply in a small neighborhood of zero. This observation is useful because it clarifies the set of circumstances in which the Baxter-King filter is expected to work well, in the sense of (1.1).40 Second, we supply formulas for the optimal approximation to the band pass filter that apply in a broad class of time series representations. This provides alternatives to the Baxter-King filter, which is suitable for cases when the Near IID assumption is a poor one. We do not expect the Near IID representation to be well suited for many macroeconomic variables. As noted by Granger (1966) (see also Sargent (1987, pp. 280-281)), the 'typical spectral shape' of macroeconomic time series is one in which there is substantial power in a significant range of low frequencies. Third, the Baxter-King approach works with symmetric, fixed lag filters. In the previous section we presented experiments which suggest that adopting filters which use all the data, and which are therefore asymmetric and time-varying, improves the estimate of yt. There is a valid basis for concern that filters like this might result in no               th time series representations like those that fit several key postwar macroeconomic data series, these effects are not quantitatively large.
+
+We have not established that the Near //D representation is the only one that rationalizes the Baxter-King filter as the optimal one.
+
+
+<!-- p:28 -->
+
+
+Our approach can also be compared to that of Hodrick and Prescott (1997). They provide a linear filter of the data, which has three interpretations. Under the first interpretation, their filter is viewed as solving a particular projection problem: extract a signal from a data series that is the sum of a signal and an orthogonal noise. As is evident from (2.1) and the discussion thereafter, optimally extracting a particular band of frequencies from the data requires solving the same kind of problem. The difference between the two approaches is that, under this interpretation of the HP filter, it is based on a particular statistical model of the data while ours is not.41 Under this interpretation, the HP filter has two shortcomings: (i) The underlying model has the same difficulty of interpretation as do other trend-cycle decompositions: the concepts of 'signal' and 'noise' they seek to extract from the data do not correspond to meaningful economic objects in standard business cycle models. The data generated by these business cycle models do contain components that could perhaps loosely be characterized as trend and noise. But, they do not satisfy the orthogonality conditions posited by typical trend-cycle decompositions, including the one underlying the HP filter (see Christiano and Eichenbaum (1990)). (ii) Under the first interpretation of the HP filter, one has to take the underlying statistical model seriously. For example, a parameter λ, which corresponds to the relative variance of the signal and noise in the underlying model, needs to be estimated. This gives rise to numerous estimation and model evaluation issues that, from our perspective, are tangential. The decomposition we focus on is guaranteed to exist under very general conditions by the Spectral Representation Theorem.42 In our approach, the decomposition selected simply reflects the research interests of the analyst. Focusing on a particular decomposition does not require a commitment to any particular model of the data, beyond the relatively weak assumptions needed for the Spectral Representation Theorem to hold.
+
+4Lucas (1980) also adopts a structural model like that of Hodrick-Prescott. Both assume that the data, , are the sum of a signal, st, and a noise, n. The signal and noise are assumed to be orthogonal, and the noise is uncorrelated over time. Lucas assumes the signal has the representation, s, = pst-1 + v, where v, is a white noise and |ρ| &lt; 1. Hodrick and Prescott assume 3, = 2st-1 - st-2 + vt.
+
+42For a formal analysis of the Spectral Decomposition Theorem, see Koopmans (1974). A simplified discussion appears in Christiano and Fitzgerald (1998, Appendix).
+
+
+<!-- p:29 -->
+
+
+A second interpretation of the HP filter is that it is a particular band pass filter. For λ = 1600, it has been argued that the filter does well at isolating frequencies 8 years and higher (see Prescott (1986), King and Rebelo (1993), and Singleton (1988)). No claim has ever been made that the HP filter isa  ins si   s    d    oe o ns in section 3.4.1 which show that the Random Walk and Optimal filters dominate HP, especially for computing real-time estimates of èt. Still, it is shown in the Appendix that these differences are not quantitatively large enough to produce substantial differences in the computation of standard business cycle statistics. A problem is that when one wants to isolate different frequençy bands or use monthly or annual data, it is not clear how to proceed under this interpretation of the Hodrick-Prescott approach.43 The framework of this paper, which focuses on developing optimal approximations to the band pass filter, provides a straightforward way to proceed in these cases.
+
+A thind interpretation of the HP filter is that it is a precisely stated algorithm which simply, draws a smooth line through the data. All the other filters discussed in this paper do this too.
+
+We find the second two interpretations of the HP filter appealing. Under these interpretations, the band pass filter represents a natural extension of the work of Hodrick and Prescott. The band pass filter performs similarly to the HP filter in situations for which the latter was designed: extracting the business cycle component from quarterly time series data (see Appendix B). However, the band pass filter - particularly the approach advocated bere - can be used to construct filters that are effective in isolating other frequency bands as well. The next subsection describes empirical applications where filters of this type are of interest.
+
+## 5. Applications
+
+We illustrate the use of our recommended filter, presented in the introduction, using two examples. The first focuses on the relationship between unemployment and inflation, and the second examines the relationship between money growth and inflation.
+
+We divide the annual data available for the period 1900 to 1997 into two parts: 1900-1960 and
+
+The perspective adopted in this paper does offer one strategy: optimize, by choice of λ, the version of (2.7) with BP.f replaced by the Hodrick-Prescott filter. This strategy produces a vaiue of λ that is time-dependent and dependent upon the properties of the true time series representation. We suspect that closed form solutions for the values of λ that solve these optimization problems do not exist. We think that this strategy for filtering the data is not a good one. First, implementing it is likely to be computationaily burdensome. Second, as this paper shows, identifying the optimal band-pass filter approximation is straightforward.
+
+
+<!-- p:30 -->
+
+
+1961-1997. In each case, the data are broken into three sets of frequencies: those corresponding to 2-8 years (the business cycle), 8-20 years and 20-40 years. With respect to the Phillips curve, we find that in the pre-1960 sample, the correlation between inflation and unemployment is negative at all frequencies. Loosely, we characterize this as reflecting that all frequencies of the data exhibit a Phillips curve trade-of.. The most significant change in the post-1960 sample is that the 20-40 year correlation ap  s   o   in  e    rs this evidence in light of the Barro-Gordon model of inflation.
+
+We then turn to the inflation-money growth relation. We find that in the pre-1960 period, the two variables move closely together in all frequencies. The relationship remains positive in the low frequencies in the post-1960s data. However, at the business cycle and 8-20 year frequencies, there is a substantial change.
+
+### 5.1. The Phillips Curve
+
+We consider annual data for the 1900-1960 and 1960-1997 periods separately. Figure 9a displays the raw unemployment and inflation data for the first sample. For convenience, the figure also depicts the NBER business cycle peak and trough dates. Casual inspection suggests a negative relationship (i.e., a 'Phillips curve') at all frequencies.44 The various frequency components of the data are displayed in Figures 9b - 9d, and they confirm this impression. The contemporaneous correlations between filtered inflation and unemployment are reported in Table 4, Panel A. The table also reports p-values under the null hypothesis that there is no relationship between the variables in any frequency band.45 The ne  e ts Gts td i   s   tt tor these observations, it is not surprising that the scatter plot of inflation and unemployment, exhibited in Figure 9b, also shows a negative relationship. This is just the classic Phillips curve, of textbook fame.46
+
+It is worth emphasizing that, by 'Phillips Curve', we mean a statistical relationship, and not necessarily a relationship exploitable by policy.
+
+The slope of the regression line drawn through the scatter plot of points in Figure 9b is -0.42, with a t-statistic of 3.77 and an R2 of 0.20.
+
+isThese are computed by fitting separate q-lag scalar autoregressive representations to the level of inflation (first difference, log CPI) and to the level of the unemployment rate, and using the ftted disturbances and actual historical initial conditions to simulate 2,000 artificial data sets on inflation and unemployment. For annual data, q = 3; for monthly. q = 12; and for quarterly, q = 8. The data sets on unemployment and inflation are independent by construction. In each artifcial data set we compute correlations between the various frequency components, as we did in the actual data. In the data and the simulations, we dropped the first and last three years of the filtered data before computing sample correlations. The numbers in parentheses in Table 4 are the frequency of times that the simulated correlation is greater (less) than the positive (negative) estimated correlation. These are p-values under the null hypothesis that there is no relationship between the inflation and unemployment data.
+
+
+<!-- p:31 -->
+
+
+| Table 4: Phillips Curve and Money Growth-Inflation Correlations - Sample   | Table 4: Phillips Curve and Money Growth-Inflation Correlations - H. Frequency   | Table 4: Phillips Curve and Money Growth-Inflation Correlations - Bus. Cyc. Frequency   | Table 4: Phillips Curve and Money Growth-Inflation Correlations - &o   | Table 4: Phillips Curve and Money Growth-Inflation Correlations - 20-40 years   |
+|----------------------------------------------------------------------------|----------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------|------------------------------------------------------------------------|---------------------------------------------------------------------------------|
+| Panel A: CPI Inflation and Unemployment                                    | Panel A: CPI Inflation and Unemployment                                          | Panel A: CPI Inflation and Unemployment                                                 | Panel A: CPI Inflation and Unemployment                                | Panel A: CPI Inflation and Unemployment                                         |
+| 1900-1960 (A)                                                              |                                                                                  | -0.57 (0.00)                                                                            | -0.32 (0.19)                                                           | -0.51 (0.23)                                                                    |
+| 1961-1997 (A)                                                              |                                                                                  | -0.38 (0.11)                                                                            | -0.16 (0.41)                                                           | 0.45 (0.32)                                                                     |
+| 1961, Q2 - 1997, Q4 (Q)                                                    | -0.37 (0.00)                                                                     | -0.65 (0.00)                                                                            | -0.30 (0.29)                                                           | 0.25 (0.34)                                                                     |
+| 1961, Jan. - 1997, Dec. (M)                                                | -0.24 (0.00)                                                                     | -0.69 (0.00)                                                                            | -0.27 (0.30)                                                           | 0.23 (0.40)                                                                     |
+| Panel B: CPI Inflation and M2 Growth                                       | Panel B: CPI Inflation and M2 Growth                                             | Panel B: CPI Inflation and M2 Growth                                                    | Panel B: CPI Inflation and M2 Growth                                   | Panel B: CPI Inflation and M2 Growth                                            |
+| . 1900-1960 (A)                                                            |                                                                                  | 0.45 (0.00)                                                                             | 0.59 (0.04)                                                            | 0.95 (0.01)                                                                     |
+| 1961 - 1997 (A)                                                            |                                                                                  | -0.72 (0.00)                                                                            | -0.77 (0.02)                                                           | 0.90 (0.10)                                                                     |
+| 1961, Q2 - 1997, Q44Q)                                                     | -0.34 (0.00)                                                                     | -13.67 (0.00)                                                                           | -0.71 (0.05)                                                           | 0.87 (0.09)                                                                     |
+| 1961, Jan. - 1997, Dec. (M)                                                | -0.13 (0.02)                                                                     | -0.66 (0.00)                                                                            | -0.74 (0.04)                                                           | 0.87 (0.10)                                                                     |
+
+Note: Contemporaneous correlation between indicated two variables, over indicated sample periods and frequencies. Numbers in parentheses are p- values, in decimals, against the null hypothesis of zero correlation at all frequencies. For further details, see the text and footnote 25.
+
+The post 1960 monthly inflation and unemployment data are analyzed in Figures 10a-f.47 There is a surprising degree of similarity between the pre and post 1960s data. For example, it is plain from the raw data in Figure 10a that for frequencies in the neighborhood of the business cycle, inflation and unemployment covary negatively. That is, the Phillips curve seems to be a pronounced feature of the higher frequency component of the data. At the same time, the Phillips curve appears to have vanished in the very lowest frequencies. The data in Figure 10a show a slow trend rise in unemployment throughout the 1960s and 1970s, which is reversed starting in early 1983." A similar pattern occurs in inflation, though the turnaround in inflation begins in April 1980, roughly three years before the turnaround in unemployment. The low frequency component of the data dominates in the scatter plot of inflation versus unemployment, exhibited in Figure 10b. That figure suggests that the relationship between inflation and unemployment is positive, in contrast with the pre-1960's data, which suggest otherwise (see Figure 9b). Clearly, this scatter plot exaggerates the degree to which the inflationunemployment dynamics have changed in the post-1960s data.48
+
+4Figure 10 exhibits monthly observations on infiation and unemployment. To reduce the high frequency fuctuations in inflation, Figure 10a exhibits the annual average of inflation, rather than monthly inflation rate. The scatter plot in Figure 10b is based on the same data used in Figure 10a. Figures 10c-10f are based on monthly inflation, i.e., Iaos     o    e   n e tetr plot. The slope of that line, based on monthly data covering the period 1959:2 - 1998:1, is 0.47 with a t-statistic of 5.2.
+
+
+<!-- p:32 -->
+
+
+Impressions based on casual inspection of the raw data can be formalized and quantified using the band pass filtered data reported in Figures 10c - 10f. Thus, the frequency range from two months to 20 years (see Figures 10c and 10e) is characterized by a noticeable Phillips curve. Table 4 shows that the correlation in the range of high frequencies (when available) and in the business cycle frequencies is significantly negative. The correlation between inflation and unemployment is also negative in the 8-20 year range, but it is not statistically significantly different from zero in this case. Presumably, this reflects the relative paucity of information about these frequencies in the post-1960s data. Finally, Figure 10f indicates that the correlation between 20-40 year components is now positive, with unemployment lagging inflation. These results are consistent with the hypothesis that the Phillips curve changed relatively little in the 2-20 year frequency range, and that the changes that did occur are primarily concentrated in the very low frequencies.
+
+Formal tests of this hypothesis, presented in Panel A of Table 5, fail to reject it. The table displays p-values for the null hypothesis that the post-1960s data on inflation and unemployment are generated by the bivariate vector autoregression (VAR) that generated the pre-1960s data. We implement the test using 2,000 artificial post-1960s data sets obtained by simulating a three-lag VAR and its fitted residuals estimated using the pre-1960s unemployment and inflation data.49 In each artificial data set we compute correlations between filtered inflation and unemployment just like we did in the actual post 1960s data. Table 5 indicates that 9 percent of correlations between the business cycle component of inflation and unemployment exceed the -0.38 value reported in Table 4 for the post-1960s data, so that the null hypothesis fails to be rejected at the 5 percent level. The p-value for the 8 - 20 year correlation is quite large, and is consistent with the null hypothesis at any significance level.
+
+The statistical evidence against the null hypothesis that there has been no change in the 20 - 40 year component of the data is also not strong. This may in part reflect a lack of power stemming from the relatively small amount of information in the sample about the 20 – 40 year frequency component of the data. But, the p-value may also be overstated for bias reasons. The table indicates that there is a small sample bias in this correlation, since the small sample mean, -0.35, is substantially larger than the corresponding probability limit of -0.45. This bias may, at least in part, be the reason the VAR's small sample mean overstates the pre-1960s sample mean of -0.51. A bias-adjustment procedure would adjust the coefficients of the estimated pre-1960s VAR so that the implied small sample mean lines up better with the pre-1960s empirical estimate. Presumably, such an adjustment procedure would shift the simulated correlations to the left, reducing the p-value. It is beyond the scope of our analysis to develop a suitable bias adjustment method.50 However we suspect that, given the large magnitude of the bias, the bias-corrected p-value would be substantially smaller than the 14 percent value reported in the table.51
+
+4Consistent with these observations, when inflation and unemployment are detrended using a linear trend with a break in slope (not level) in 1980:4 for inflation and 1983:1 for unemployment, the scatter plot of the detrended variables show a negative relationship. The regression of detrended inflation on detrended unemployment has a coefficient of -0.31, with t statistic of -4.24 and R2 = 0.037. The slope coefficient is similar to what was obtained in an earlier footnote for the pre-1960s period, but the R2 is considerably smaller.
+
+inflation and unemployment is 0.06 and the p-value for these correlations in the 20 – 40 year range is 0.11.
+
+49We redid the calculations in both panels of Table 4 using a 5-lag VAR and found that the results were essentially unchanged. The only notable differences in the results are that the p-value for the business cycle correlations between
+
+
+<!-- p:33 -->
+
+
+s0One could be developed along the lines pursued by Kilian (1998).
+
+siTo get a feel for the likely quantitative magnitude of the effects of bias adjustment, we redid the bootstrap simulations by adjusting the varianc-covariance matrix of the VAR disturbances used in the bootstrap simulations. Let V = [V]ij denote the variance-covariance matrix. In the pre-1960s estimation results, Vi,a = -0.1024, Vi.1 = 0.0018, V2.2 = 6.0653. When we set the value of Vi.2 to -0.0588 and recomputed the entries in Table 4, we found that the mean correlations were as follows: business cycle, -0.75 (0.01); 8-20 year: -0.54 (0.09); 20–40 year: -0.51 (0.06). The numbers in parentheses are the analogs of the p-values in Table 4. Note how the mean correlation in the 20-40 year frequency coincides with the empirical estimate reported in the first row of Panel A of Table 4, and that the p-value has dropped substantially, from 0.23 to 0.06. This confirms our conjecture that bias adjustment may have an important impact on the p-value for the 20-40 year correlation. However, the other numbers indicate that the bias adjustment procedure that we applied, by varying Vi.2 only, is not a good one. Developing a superior bias adjustment method is clearly beyond the scope of this paper.
+
+
+<!-- p:34 -->
+
+
+| Table 5: Testing Null Hypothesis That Post-1960s Equal pre-1960s Correlations - Frequency - Panel A: DGM, Bivariate VAR with CPI Inflation (x) and Unemployment (y) - 2-8 year - 8-20 year - 20-40 year - Panel B: DGM,_Bivariate VAR with CPI Inflation (x) and M2 Growth (y) - 2-8 year - 8-20 year - 20-40 year   | Table 5: Testing Null Hypothesis That Post-1960s Equal pre-1960s Correlations - Plim - Panel A: DGM, Bivariate VAR with CPI Inflation (x) and Unemployment (y) - -0.66 - -0.36 - -0.45 - Panel B: DGM,_Bivariate VAR with CPI Inflation (x) and M2 Growth (y) - 0.49 - 0.73 - 0.78   | Table 5: Testing Null Hypothesis That Post-1960s Equal pre-1960s Correlations - Small Sample - Mean - Panel A: DGM, Bivariate VAR with CPI Inflation (x) and Unemployment (y) - -0.61 - -0.38 - -0.35 - Panel B: DGM,_Bivariate VAR with CPI Inflation (x) and M2 Growth (y) - 0.48 - 0.64   | Table 5: Testing Null Hypothesis That Post-1960s Equal pre-1960s Correlations - Std. Dev., Small - Sample Mean - Panel A: DGM, Bivariate VAR with CPI Inflation (x) and Unemployment (y) - 0.0036x - 0.0079x '/öö - 0.0129xiñö - Panel B: DGM,_Bivariate VAR with CPI Inflation (x) and M2 Growth (y) - 0.0044x '/&iö - 0.0062x - 0.0099x   | Table 5: Testing Null Hypothesis That Post-1960s Equal pre-1960s Correlations - p-value - Panel A: DGM, Bivariate VAR with CPI Inflation (x) and Unemployment (y) - 0.09 - 0.25 - 0.14 - Panel B: DGM,_Bivariate VAR with CPI Inflation (x) and M2 Growth (y) - 0.00 - 0.37   |
+|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+Notes: (i) Data Generating Mechanism (DGM) in all cases is 3-lag, Bivariate VAR fit to pre-1960s data. (ii) P-value: frequency, in 2000 artificial post-1960s data sets, that contemporaneous correlation between indicated frequency components of x and y exceeds, in absolute value, corresponding post 1960s estimate. (iii) Plim: mean, over 1,000 artificial samples of length 2,000 observations each, of correlation.
+
+- (iv) Small Sample Mean: mean of correlation, across 2000 artificial post-1960s data sets.
+- (v) Std. dev., small sample (product of Monte Carlo std. error for mean and √2000) :
+
+stanti  ss at stod ett a si ait orins
+
+The low-frequency observations on unemployment have been documented using other methods (see, for example, Barro (1987, Chapter 16)). Similarly, using the Baxter-King band-pass filtering approach, the presence of the Phillips curve in the business cycle frequency range has been documented by King and Watson (1994) and Stock and Watson (1998) (see also Sargent (1999, p.12)). What has not been documented is how far the Phillips curve extends into the low frequencies of the post war data. In addition, we draw attention to the evidence that inflation leads unemployment in the low frequency range. We think these frequency domain properties of inflation and unemployment are interesting because we suspect that they pose a challenge for at least simple versions of conventional interpretations of the post war data.
+
+One such interpretation is articulated by the theory developed in Kydland and Prescott (1977) and Barro and Gordon (1983), which builds on the idea of the expectations-augmented Phillips curve initially suggested by Friedman (1968) and Phelps (1968).52 The basic idea is that institutional impediments that had previously constrained US monetary policy, such as the gold standard, ceased to do so by the early 1960s. With institutional constraints impeding discretionary monetary policy minimized, a new monetary regime was initiated, in which the monetary authority set out to improve economic performance by attempting to actively exploit the Phillips curve. But, according to this view, the Phillips curve is merely a statistical relation, and does not represent a menu of inflation, un  o   o d o  s   tat s don theory predicts that the new monetary regime should have caused it to disappear, and be replaced by a deterministic, positive relationship between inflation and unemployment.53
+
+
+<!-- p:35 -->
+
+
+Our scatter diagrams show that before the 1960s inflation and unemployment are negatively related, while they are positively related after the 1960s. At first glance, this appears to be a resounding victory fot at   d a  r t tt  bn a   tioen series and is formalized using the band pass filter suggests a different picture. The simple version of the Barro-Gordon theory implies that, after 1960, the Phillips curve relationship should have evaporated, not just at the low frequencies, but at all frequencies. It also implies that inflation and unemployment should be perfectly in phase. Both these implications appear to be contradicted by the data.
+
+Barro and Gordon (1983, pp. 601-602) recognize these extreme implications of their theory and describe an extension to their model that is designed to deal with them. The extension involves making the (plausible) assumption that the monetary authority's control over inflation is imperfect, perhaps because of lags in the effects of monetary actions. Under these conditions, inflation surprises occur, thus opening up the possibility that the forecast errors between infiation and unemployment might be negatively correlated. In turn, this may put the model into better conformity with the observation that there is a Phillips curve in the high frequencies, but not in the low frequencies.
+
+s2Our discussion builds on Ireland (1998), who emphasizes the importance of evaluating the time series implications of the Barro-Gordon model.
+
+a(1-k) π=u, = &gt;0. γ
+
+s3For convenience, we briefly remind the reader of the Barro-Gordon model. The loss function of the monetary authority is [(u - ku~)2 + γx2] /2, where γ &gt; 0 is 8 parameter that specifies the relative social cost associated with inflation, ; u is the actual unemployment rate; and u~ is the natural rate of unemployment, i.e., the rate that would prevail if inflation were at its expected level. Also, 0 &lt; k &lt; 1. Inflation surprises generate a fall in the unemployment rate according to the 'expectations augmented Phillips curve': u - u~ = -α(x - π°), α &gt; 0. where π° is expected inflation. At the time the monetary authority chooses its action, π* is a state variable. The policy maker's objective is to minimize: L(xjx°, u~) = { [a (π − x*) − (1 − k) uN]2 + γx2 } /2. Let π [x°, uN] = arg min L(x|x°, u~). Conventionaly, the Markv equilibrium concept is used, in which equilibrium π and x* depend only on u~, and not the past history of central bank actions. This equilibrium concept has the advantage that, in the Barro-Gordon model, it is unique. The equilibrium is an expectation function, π"(u~), with the property x"(u~) = π [x"(u~), u~}, so that, in a Markov equilibrium, u = u~. Examining the first order condition associated with the monetary authority's problem and imposing the fixed point condition, implies
+
+The microeconomic environment in the Barro-Gordon theory is specified at the reduced form level. Environments in which preferences and technology are stated explicitly, and which capture elements of the Barro-Gordon analysis may be found in Ireland (1997), and Chari, Christiano and Eichenbaum (1998).
+
+
+<!-- p:36 -->
+
+
+Perhaps it is possible to reconcile the last observation with plausible implementation delays.54 However, we suspect that it will be difficult to identify variations on the model that make it consistent with the observation that inflation leads unemployment in the low frequency range.s5 This phase relationship calls into question a basic feature of the Barro-Gordon model, according to which policy makers set inflation in response to developments in unemployment. A fruitful approach may be to explore modifications of the theory, in which policymakers' incentives to inflate are driven by variables that exhibit a more plausible timing relationship to inflation than unemployment.
+
+We hope that this discussion demonstrates that statistics based on approximations to the band pass filter have a potentially useful role to play in helping us think about the inflation, unemployment dynamics. This is true, whether they are used for evaluating a Barro-Gordon type conception of the inflation process, or some other conception.56
+
+Ireland (1998) introduces a one period lag, and he shows that this is this is strongly rejected by the data. In addition to considering longer implementation lags, another potentially useful modification would introduce rigidities that lead inflation surprises to have long-lasting effects. In the standard Barro-Gordon model, the effect of such a surprise is only contemporaneous.
+
+ssOur skepticism is based in part on analysis of an extension of Ireland (1998)'s version of the Barro-Gordon model in which a one-period implementation lag is replaced by a p &gt; 0 period implementation lag in policy. Thus, we replace the p         =                 sd variable chosen p periods in the past by the policy maker, and θ  η captures the shocks that impact on π between the time i is set and π is realized. Here,
+
+$$\theta * \eta _ { 3 } = ( \theta _ { 0 } + \theta _ { 1 } L + \dots + \theta _ { p - 1 } L ^ { p - 1 } ) \eta _ { 3 } ,$$
+
+where η is a white noise and L is the lag operator. The policymaker's problem is optimized by setting i = ψü~, where u is the forecast of the natural rate of unemployment available at the time π is selected. As in footnote 37, we suppose that u~ is a random walk with innovation ν, so that u~ = u" + g * ν, where
+
+$$g * \nu _ { t } = ( 1 + \mathcal { L } + \dots + \mathcal { L } ^ { r - 1 } ) \nu _ { t } .$$
+
+Suppose the Lucas supply curve is u = u~ – a(π - x*) + ε, where ε is a shock. We impose rational expectations, which implies π = i. Then, it is easy to verify that inflation and unemployment evolve according to
+
+$$\pi _ { t } \dot { = } \psi \frac { L \mathcal { P } } { 1 - L } \nu _ { t } + \theta ( L ) \eta _ { t } , \, u _ { t } = \frac { 1 } { 1 - L } \nu _ { t } - \alpha \theta ( L ) \eta _ { t } + \epsilon _ { t } ,$$
+
+respectively. We make the simplifying assumption that all shocks are uncorrelated with each other. Then, the cross spectrum between these variables is:
+
+$$g _ { \infty } ( \omega ) = \psi \sigma _ { \nu } ^ { 2 } \left [ \frac { e ^ { - i \omega \nu } } { ( 1 - e ^ { - \omega \nu } ) ( 1 - e ^ { i \omega \nu } ) } - \frac { a } { \psi } \theta ( e ^ { - \omega \nu } ) \theta ( e ^ { - \omega \nu } ) \lambda \right ] ,$$
+
+where λ = σ2/σ2. The phase angle, θ(ω), between inflation and unemployment is:
+
+$$\theta ( \omega ) = \tan ^ { - 1 } \left [ \frac { i m a g n i a r y \left [ g _ { r } ( \omega ) \right ] } { \real { \left [ g _ { r } ( \omega ) \right ] } } \right ] = \tan ^ { - 1 } \left [ \frac { - \sin ( p \omega ) } { \cos ( p \omega ) - 2 ( 1 - \cos ( \omega ) ) \frac { \theta ( e ^ { r } - 1 ) \theta ( e ^ { r } - 1 ) \lambda } { \theta ( e ^ { r } - 1 ) \theta ( e ^ { r } - 1 ) \lambda } \right ] ,$$
+
+subject to −π ≤ θ(ω) ≤ π. It is easy to verify that for ω sufficiently small, θ(ω)/ω = p, so that infation lags unemployment
+
+sé An alternative approach, based on the assumption that policy makers have bounded rationality, is pursued in Sargent
+
+by p periods at these frequencies.
+
+
+<!-- p:37 -->
+
+
+### 5.2. Money Growth and Inflation
+
+Figure 11a displays annual M2 growth and CPI inflation for in the pre-1960s period. The figure suggests, and the results in Table 4 confirm, that the two variables move very closely with each other. The primary exception appears to be the period of the second world war, when M2 growth was strong and inflation rose relatively less. But, this presumably reflects the effects of wage and price controls. The impression of the strong contemporaneous correlation at all frequencies is confirmed by the evidence in Figures 11b - 11d. Now consider Figures 12a-d. These depict the same data over the post-1960 period. Note first that there is essentially no difference in the 20-40 year frequency. In this band, money growth and inflation are highly correlated and there is very little phase shift between the two. However, there is a striking change in the relationship at the higher frequencies. The two variables are now strongly negatively correlated. According to Table 5, the null hypothesis that the business cycle and 8-20 year correlations in the post-1960s coincide with the corresponding pre-1960s correlation is strongly rejected. The change appears to be that in these frequencies, inflation now lags money growth by a few years. We think these are interesting statistics which a good model of money ought to confront.57
+
+## 6. Conclusion
+
+The theory of spectral analysis informs us that data can be viewed as the sum of uncorrelated components with different frequencies of fluctuation. This way of thinking about the data makes rigorous a perspective that is standard in macroeconomics: that the data are the sum of low frequency components, a business cycle component and a high frequency component. The various components can in principle be extracted by a suitably chosen 'ideal' band-pass filter.
+
+Unfortunately, application of the ideal band pass filter requires substantially more data than is available in typical macroeconomic time series. This is not surprising. A subinterval of frequencies in a time series is composed of a continuum of objects, and in general there is no way that a discrete set of observations can pin these down. However, if something is known about the time series representation that generated the data, then it is possible to use projection theory to extrapolate from the observed time series to the frequency components of interest. We derive a set of formulas for this that are valid under standard time series representations, and are easy to implement. We identify one approximation which, though it is only optimal for one particular time series representation, nevertheless works well for standard macroeconomic time series. It is displayed in the introduction.
+
+'ae t   e  e de  e e (  't s '(t s e (r it has difficulty accounting for the burst of inflation in the late 1970s.
+
+s7Lucas (1980) was also interested in examining the relationship between the low frequency components of inflation and money growth. However, rather than using an approximation to the band pass filter, he used an early precursor to what later became known as the Hodrick-Prescott filter. Our comments on the Hodrick-Prescott filter, stated in the previous section, aiso apply to Lucas' filter. We think the band pass filter represents an advance over that filter. In a comment on Lucas (1980), Whiteman (1984) presents a useful reminder of the pitfalls of trying to interpret statistics like those discussed in this paper without the assistance of explicit economic theory.
+
+
+<!-- p:38 -->
+
+
+To illustrate the use of our recommended filter approximation, we use it to characterize the change in the nature of the Phillips curve and the money-inflation relation before and after the 1960s. We find that there is surprisingly little change in the Phillips curve and substantial change in money grouthinfation relation. In this analysis, we display a bootstrap methodology for conducting statistical inference on statistics computed using filtered data.
+
+
+<!-- p:39 -->
+
+
+##### A. Derivation of the Filter
+
+This Appendix derives the optimal filtering formulas analyzed in the body of the paper.
+
+##### A.1. The Problem
+
+In our discussion we feature the unit root case (i.e., θ(1) ≠ 0 in (2.8)) and indicate later how to adjust things to accommodate covariance stationarity. The problem is to optimize (2.7):
+
+$$b _ { j } ^ { \prime } f _ { j = - f , - p } ^ { \min } \int _ { \pi } \delta ( \omega ) \delta ( - \omega ) f _ { z } ( \omega ) d \omega ,$$
+
+where f(ω) is defined in (2.9) and,
+
+where where
+
+and and
+
+$$\delta ( \omega ) = B ( e ^ { - \omega } ) - \hat { B } ^ { \prime } \rho ( e ^ { - \omega } ) .$$
+
+A necessary condition for an optimum is P(1) = 0. Without this, the criterion is infinite. With this condition,
+
+is a finite-ordered polynomial in z:
+
+$$b ( z ) = b _ { f - 1 } z ^ { p - 1 } + b _ { f - 1 } z ^ { p - 2 } + \dots + b _ { 0 } + \dots + b _ { - f + 1 } z ^ { - f + 1 } + b _ { - f } z ^ { - f } ,$$
+
+with with
+
+$$b _ { j } = - \sum _ { i = j + 1 } ^ { p } \hat { B } _ { i } ^ { f , p } , \, j = p - 1 , \dots , - f .$$
+
+ae  f + de e  f + e ee e e e el, e  f e de ae ds g.
+
+Write the criterion as follows:
+
+$$b _ { j } = \min _ { P = 1 , \dots , - 1 } \int _ { - P } ^ { 1 } \bar { \delta } ( \omega ) \bar { \delta } ( - \omega ) g ( e ^ { - \omega } ) d \omega ,$$
+
+$$\bar { \delta } ( \omega ) = \bar { B } ( e ^ { - i \omega } ) - b ( e ^ { - i \omega } ) ,$$
+
+$$\tilde { B } ( z ) = \frac { B ( z ) } { 1 - z } .$$
+
+$$b ( z ) = \frac { \hat { B } ^ { \prime } p _ { ( z ) } } { 1 - z } ,$$
+
+
+<!-- p:40 -->
+
+
+To obtain the first order conditions, note first that
+
+so that,
+
+Then, the first order conditions are:
+
+$$\int _ { - \pi } ^ { \pi } \left [ \bar { \delta } ( \omega ) e ^ { i \omega j } + \bar { \delta } ( - \omega ) e ^ { - i \omega j } \right ] g ( e ^ { - i \omega j } ) d \omega = 0 , \ j = p - 1 , \dots , - f ,$$
+
+or,
+
+j = p - 1, .., -f. This expression reduces further to:
+
+$$\int _ { - \pi } \bar { B } ( e ^ { - i \omega } ) g ( e ^ { - i \omega } ) e ^ { i j } d \omega = \int _ { - \pi } \bar { B } ( e ^ { - i \omega } ) g ( e ^ { - i \omega } ) e ^ { i j } d \omega ,$$
+
+j = p − 1, .., − f.1 Our strategy for computing the BfP's is to translate the p + f equations, (A.2) into a system of linear equations in BjP, j = p,...,−f. We obtain the p + f + 1a equation in the Bj's from the fact, Bf-P(1) = 0.
+
+We begin by replacing the system of p + f equations, (A.2), with another system composed of the equation with j = − f and the p + f − 1 equations formed by subtracting the j − 1th equation in (A.2) from the jth, j = p − 1, ..., − f + 1.
+
+'To see this, note that
+
+so that R is real. Consequently.
+
+and
+
+$$\int _ { - \pi } f ( \omega ) d \omega & = \int _ { - \pi } f ( - \omega ) d \omega , \\ 2 \int _ { - \pi } f ( \omega ) d \omega & = \int _ { - \pi } [ f ( \omega ) + f ( - \omega ) ] d \omega .$$
+
+
+<!-- p:41 -->
+
+
+##### A.2. Representing the Solution as a Solution to a System of Linear Equations
+
+Consider the term on the left of (A.2). That term, evaluated at j, minus itself at j - 1, for j = p − 1, .., −f + 1, is:
+
+$$& \int _ { - \pi } ^ { \pi } \{ \bar { B } ( e ^ { - i \omega } ) e ^ { i j } - \bar { B } ( e ^ { - i \omega } ) e ^ { i j - 1 } \} g ( e ^ { - i \omega } ) d \omega \\ & = \int _ { - \pi } ^ { \pi } \bar { B } ( e ^ { - i \omega } ) ( 1 - e ^ { - i \omega } ) e ^ { i j } g ( e ^ { - i \omega } ) d \omega \\ & = \int _ { - \pi } ^ { \pi } B ( e ^ { - i \omega } ) g ( e ^ { - i \omega } ) e ^ { i j } d \omega .$$
+
+To evaluate this integral and others like it, we find it convenient to apply the well-known results:
+
+$$\int _ { \pi } e ^ { i \omega h } d \omega \ = \ 0 , \, \text {for} \, h = \pm 1 , \, \pm 2 , \dots \\ \int _ { \pi } e ^ { i \omega } \ = \ 2 \pi , \, \text {for} \, h = 0 .$$
+
+With this, it is easy to see that the integral in (A.3) is the product of 2π and the constant (i.e., the coefficient on z0) in the polynomial in z, B(z)g(z)z−j.
+
+To evaluate the integral in (A.3), consider first the case q = 0, so that g(e-) = θ2. In this case, (A.3) reduces to 2π Bjθ2, where Bj is defined in (1.3). When q &gt; 0,
+
+$$& \int _ { - \pi } ^ { \pi } B ( e ^ { - i \omega } ) g ( e ^ { - i \omega } ) e ^ { i \omega j } d \omega \\ & = \ 2 \pi \left ( B _ { j } c _ { 0 } + \sum _ { i = 1 } ^ { q } \left [ B _ { | j | + i } + B _ { | i | - i } \right ] c _ { i } \right ) ^ { \dots } \quad ^ { \circ } \\$$
+
+The reason why the absolute value of j, ljl, appears in this expression is that the constant term in B(z)g(z)z-i corresponding to a given value of j, coincides with the constant term associated with -j. This is because B(z)g(z) = B(z−1)g(z−1).
+
+Now consider the term on the right of (A.2). For j = p − 1,..., -f + 1, subtract that term minus itself at j - 1 to obtain:
+
+$$& \quad \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$$
+
+This integral is the product of 2π and the constant term in the polynomial in z, f.P(z)g(z)z-j, for j = p − 1,...,−f + 1. When q = 0, this is 2πBθ2. When q &gt; 0,
+
+
+<!-- p:42 -->
+
+
+$$\int _ { - \infty } ^ { \infty } \dot { B } ^ { \prime \prime } ( e ^ { - i \omega } ) e ^ { i \omega j } g ( e ^ { - i \omega } ) d \omega = 2 \pi A _ { j } \hat { B } ^ { \prime \prime } ,$$
+
+where /p is a p + f + 1 column vector:
+
+$$\hat { B } ^ { l p } = \left \{ \begin{matrix} \end{matrix}$$
+
+and Aj is a p + f + 1 row vector, j = p − 1, .., − f + 1. For p − q ≥ j ≥ q − f:
+
+$$A _ { j } = \begin{bmatrix} 0 , \dots , 0 & , c , & 0 , \dots , 0 \\ 1 x ( \underbrace { - j - q } _ { 1 } ) & 1 x ( \underbrace { - j - q } _ { 1 } + n ) \end{bmatrix} ,$$
+
+where c = [cq, Cq-1, . o, .., Cq-1, Cq] . When j = p − q, the first set of zeros is absent in Aj, and whenn j = q − f, the second set of zeros is absent. When j &gt; p − q, the first set of zeros is absent in Aj, and the first j – (p − q) elements of c are absent too. When j &lt; q – f, the last set of zeros is absent in Aj, and the last q - f - j elements of c are absent too.
+
+We now consider equation (A.2) for j = −f :
+
+$$\int _ { - \pi } \bar { B } ( e ^ { - i \omega } ) g ( e ^ { - i \omega } ) e ^ { - i \omega f } d \omega = \int _ { - \pi } ^ { \pi } b ( e ^ { - i \omega } ) e ^ { - i \omega f } g ( e ^ { - i \omega } ) d \omega .$$
+
+This equation can be written
+
+$$\int _ { a } ^ { a } \left [ \frac { i - \omega f } { 1 - e ^ { i \omega } } + \frac { e ^ { i \omega f } } { 1 - e ^ { i \omega } } \right ] g ( e ^ { - i \omega } ) d \omega = 2 \pi F b ,$$
+
+x
+
+where b = [bp-1: bp–2, .., o,...,b-s]' is a p + f− dimensional column vector and F is the p + f dimensional row vector:
+
+$$F = [ \underbrace { 0 , \dots , 0 } _ { 1 \times ( p + f - q - 1 ) } , \underbrace { , c _ { q } , c _ { q - 1 } , \dots , c _ { 0 } ] } _ { 1 } .$$
+
+If p + f - q – 1 = 0, the row vector is as above, with the zeros deleted. We want to express the right hand side of (A.8) in terms of Àfp instead of b. We do this using the matrix representation of the relation, (A.1):
+
+$$Q \dot { B } ^ { t p } = b _ { 0 } ,$$
+
+
+<!-- p:43 -->
+
+
+where Q is the following (p + f) × (p + f + 1) matrix:
+
+$$\varrho = \begin{bmatrix} - 1 & 0 & 0 & \cdots & 0 & 0 \\ - 1 & - 1 & 0 & \cdots & 0 & 0 \\ \vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\ - 1 & - 1 & - 1 & \cdots & - 1 & 0 \end{bmatrix} .$$
+
+Substitute (A.10) into (A.6) to get:
+
+$$\begin{array} { l } \int _ { 0 } ^ { \infty } \left [ \frac { e ^ { - i \omega f } } { 1 - e ^ { - i \omega } } + \frac { e ^ { i \omega f } } { 1 - e ^ { i \omega } } \right ] g ( e ^ { - i \omega } ) d \omega = 2 \pi F Q \dot { B } ^ { \prime } P = 2 \pi A _ { - } \hat { B } ^ { \prime } P , \\ \end{array}$$
+
+say, where A-j = FQ.
+
+We have now achieved what we set out to do. We have a linear system of p + f + 1 equations in the p + f + 1 unknown B/P's. We summarize this as follows:
+
+$$d = A \hat { B } ^ { f _ { 0 } } ,$$
+
+$$\text {where} \quad \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$$
+
+where where
+
+where Aj, j = p − 1, .., −f + 1 is defined in (A.7) and A\_/ = FQ, where Q is defined in (A.11) and F is defined in (A.9).
+
+With a small adjustment to d and A, the filter weights are also determined by an expression like (A.12) when xt is covariance stationary. To indicate the adjustment, it is convenient to adopt a notational convention that is different from the one used in section 2 of the paper. In the covariance stationary case, we specify that xt has the representation
+
+$$\tau _ { t } = \theta ( L ) \varepsilon _ { t } , \ E \varepsilon _ { t } ^ { 2 } = 1 ,$$
+
+$$\theta ( z ) = \overset { \cdot } { \theta } _ { 0 } + \theta _ { 1 } z + \dots + \theta _ { q } z ^ { q } , \ q \geq 0 ,$$
+
+where and the spectral density of θ(L)εt is g(e-), with
+
+
+<!-- p:44 -->
+
+
+$$g ( e ^ { - i \omega } ) = \theta ( e ^ { - i \omega } ) \theta ( e ^ { i \omega } ) = c _ { 0 } + c _ { 1 } ( e ^ { - i \omega } + e ^ { i \omega } ) + \dots + c _ { 0 } ( e ^ { - i \omega } + e ^ { i \omega } ) .$$
+
+Here, c is the covariance function of θ(L)εt. As before, we wish to solve (2.6) subject to (2.5). The unknown filter weights satisfy the linear system, (A.12), in which all but the last two rows of A and d are unchanged. The last two rows of d contain ∫ B(e-)g(e−)edω for l = p and -f, respectively. The last two rows of A contain Ap and A\_f, where these are evaluated using (A.7).
+
+A.3. The Solution
+
+We solve for the 's using
+
+$$\bar { B } ^ { f _ { 2 } } = A ^ { - 1 } d . \quad u \quad ( \Lambda . 1 4 )$$
+
+When q = 0, this problem is very simple. In this case,
+
+$$\hat { B } _ { j } ^ { ( j ) } & = B _ { j } , \, j = p - 1 , \dots , - f + 1 \\ \hat { B } _ { - j } ^ { ( j ) } & = \frac { 1 } { 2 \pi } \int _ { \Delta } ^ { \Delta } \left [ \frac { e ^ { - i \omega } } { 1 - e ^ { - i \omega } } + \frac { e ^ { i \omega } } { 1 - e ^ { i \omega } } \right ] \omega \\ \hat { B } _ { p } ^ { ( p ) } & = - \sum _ { j = p - 1 } ^ { - f } \hat { B } _ { j } ^ { ( j ) } .$$
+
+It is of interest to note that, when p = f, pp(L) is a symmetric polynomial. To see this, note first that BP.P = Bj for j = p − 1,...,0,..., 1 − p and recall that the Bj's are themselves symmetric. But, is it the case that BpP = BPp? To see that this is indeed the case, note first from (A.1) that p = −bp-1. p But, after evaluating (A.2) at j = p − 1, we conclude:
+
+$$\hat { B } _ { P } ^ { P P } = - \frac { 1 } { 2 \pi } \int _ { a } ^ { b } \left [ \frac { e ^ { - i \omega ( P - 1 ) } } { 1 - e ^ { - i \omega } } + \frac { e ^ { i \omega ( P - 1 ) } } { 1 - e ^ { i \omega } } \right ] d \omega .$$
+
+Combining this with the middle expression in (A.15), evaluated at f = p, we find that Bp = BPp if. and only if
+
+$$\int _ { 0 } ^ { 0 } \left [ \frac { e ^ { - i w } } { 1 - e ^ { - i w } } + \frac { e ^ { i w } } { 1 - e ^ { i w } } + \frac { e ^ { i w ( p - 1 ) } } { 1 - e ^ { - i w } } + \frac { e ^ { - i w ( p - 1 ) } } { 1 - e ^ { i w } } \right ] d w = 0 .$$
+
+To see that this relationship indeed is satisfied, first collect terms in ep :
+
+$$e ^ { i \omega p } \left [ \frac { 1 } { 1 - e ^ { i \omega } } + \frac { e ^ { - i \omega } } { 1 - e ^ { - i \omega } } \right ] = e ^ { i \omega p } \frac { 1 - e ^ { - i \omega } + ( 1 - e ^ { i \omega } ) e ^ { - i \omega } } { ( 1 - e ^ { i \omega } ) ( 1 - e ^ { - i \omega } ) } = 0 .$$
+
+
+<!-- p:45 -->
+
+
+The same is true for the term in e-ip. We conclude,
+
+$$\hat { B } _ { p } ^ { p , p } = \hat { B } _ { - p } ^ { p , p } ,$$
+
+so that when p = f and q = 0, the filter produced by this projection is symmetric.
+
+##### A.4. Computational Note
+
+Note from (A.7), (A.4), (A.13), that, with one exception, we have closed form expressions for all the objects- that are needed to solve our problem. The exception occurs in the unit root case, with the expression
+
+$$R ( f ) = \int _ { 0 } ^ { b } \left [ \frac { e ^ { - i \omega f } } { 1 - e ^ { - i \omega } } + \frac { e ^ { i \omega f } } { 1 - e ^ { i \omega } } \right ] g ( e ^ { - i \omega } ) d \omega .$$
+
+This expression could be solved using a numerical integration procedure. The drawback is that such computations take time, and, as emphasized in the paper, in practice the expression needs to be evaluated for many different values of f. For this reason, we now describe a quick way to evaluate this integral.
+
+Note first that when f = 0,
+
+$$\begin{array} { r l } { R ( 0 ) } & { = \int _ { a } ^ { b } \left [ \frac { 1 } { 1 - e ^ { - i j } } + \frac { 1 } { 1 - e ^ { i j } } \right ] g ( e ^ { - i j } ) d \omega } \\ & { = \frac { 1 } { 2 } \int _ { - x } ^ { x } B ( e ^ { - i j } ) g ( e ^ { - i j } ) d \omega , } \end{array}$$
+
+since the object in square brackets is unity. The expression, R(0), can be evaluated using (A.4).
+
+$$R ( f ) - R ( f + 1 ) \ = \ \int _ { \varnothing } ^ { \flat } \left ( e ^ { - i w f } + e ^ { i w f } \right ) g ( e ^ { - i w } ) d \omega \quad \\ \cdot \quad \cdot \quad \cdot \quad = \frac { 1 } { 2 } \int _ { - \pi } ^ { \pi } B ( e ^ { - i w } ) g ( e ^ { - i w } ) \left ( e ^ { - i w } + e ^ { i w } \right ) \dot { \omega } \quad \\ \cdot \quad \cdot \quad \cdot \quad = \int _ { - \pi } ^ { \pi } B ( e ^ { - i w } ) g ( e ^ { - i w } ) e ^ { - i w } d \omega .$$
+
+The last integral in this expression can be evaluated using (A.4). This gives us a recursive way to compute R(0), R(1), .., using closed-form formulas.
+
+
+<!-- p:46 -->
+
+
+##### B. Second Moments of Aggregate Variables
+
+We compare the second moment properties of aggregate time series, filtered using the various procedures discussed in this paper. Results are presented for various frequencies: the high frequencies with period of oscillation between 2 and 6 quarters; business cycle frequencies with period of oscillation between 6 and 32 quarters; low frequencies with period of oscillation between 32 and 80 quarters; and very low frequencies with period of oscillation between 80 and 160 quarters. We also present results based on combining the high and business cycle frequencies, so that we can do a direct comparison with results based on the HP filter.
+
+Our findings are presented in Tables B.1-B.5. The tables are differentiated according to the frequency band isolated by the filter method used. The band pass filter approximations considered are Random Walk, Random Walk Fixed, Random Walk Symmetric, the Baxter-King method (BK), and Trigonometric Regression. All but the last two of these methods are defined in Table 2. BK is den    s          e   s always the same, and sets λ = 1600. The data cover the period 1948 to 1998. In most cases, they are logged prior to filtering. Exceptions are cases where the variable can potentially be negative. Thus, '(Ex-Im)/GDP' represents net exports deflated by GDP, and this is not logged. The same is true for 'Chg Invntry/GDP' which is the change in the stock of inventories (i.e., inventory investment), scaled by GDP. In addition, interest rates have not been logged.
+
+Our basic finding is that results are very similar across the different filtering methods, except at the very lowest frequencies. There, they differ sharply. It is our impression that nothing of substantive turns on which filter is used to isolate the higher frequency components of the data.
+
+Three observations about the sensitivity of the Random Walk results to the choice of frequency band are worth noting. First, consistent with findings in Hornstein (1998), the correlation between inventory investmnent and sales is negative in the high frequencies, and positive in the lower frequencies. Perhaps this reflects the predominance of different types of shocks in these frequency bands. Second. consumption is about 25 percent more volatile than output in the very lowest frequencies. This stands in striking contrast to its behavior in the higher frequencies, where consumption is substantially less volatile than output. Third, the correlation between the price level and output is more negative in the low frequencies than in the higher frequencies. On the other hand, the correlation between output and inflation increases as one goes from the high frequencies to the low frequencies. The switch in the sign of the correlation between inflation and output and the price level and output has been noted before (see Ball and Mankiw (1994), Christiano (1991), and Cooley and Ohanian (1991)), and has generated
+
+I
+
+
+<!-- p:47 -->
+
+
+considerable discussion. That the phenomenon is more pronounced in the lower frequencies has not been noted before.
+
+
+<!-- p:48 -->
+
+<!-- END SOURCE 10/40: Christiano_2003_band-pass-filter.md -->
+
+---
