@@ -402,3 +402,87 @@ the sensitivity experiment independently confirms why endpoint refinement and
 a nontrivial near-zero derivative heuristic are present. No primary parameter
 is changed after the frozen paper-scale benchmark.
 
+## 2026-09-30 — Financial geometry stress test
+
+The frozen numerical search was evaluated on 384 objective surfaces generated
+from tracked real financial price snapshots:
+
+- SPY and QQQ;
+- AAPL and XOM;
+- BTC-USD and ETH-USD.
+
+Each series used its final 2000 positive observations, transformed to natural
+log price. The grid covered
+
+\[
+d\in\{1,2,3,4\},\qquad
+L\in\{63,126,252,504\},\qquad
+h\in\{1,5,20,60\},
+\]
+
+with the native finite-difference continuation rule fixed and a 5001-point dense
+reference.
+
+Across all 384 real-data surfaces:
+
+- dense-reference interior minima: **473**;
+- adaptive matches: **473/473**;
+- missed minima: **0**;
+- surfaces with any missed minimum: **0/384**;
+- positive-regret cases: **0**;
+- maximum selected-\(S\) discrepancy: **0.0000998**;
+- mean selected-\(S\) discrepancy: **0.0000433**;
+- median selected-\(S\) discrepancy: **0.0000443**;
+- 95th percentile selected-\(S\) discrepancy: **0.0000936**;
+- mean adaptive evaluations: **91.89**;
+- median adaptive evaluations: **95.5**;
+- 95th percentile adaptive evaluations: **144.85**;
+- maximum adaptive evaluations: **179**.
+
+Relative to the 5001-point dense reference, the mean evaluation fraction was
+
+\[
+\frac{91.89}{5001}\approx 0.0184,
+\]
+
+or **1.84%**.
+
+Measured total runtime was:
+
+- adaptive search: **6.52 s**;
+- dense reference: **292.97 s**,
+
+for an observed total runtime ratio of approximately \(45\times\). As in the
+synthetic benchmark, wall-clock ratios are implementation- and
+hardware-dependent and are secondary to evaluation-count comparisons.
+
+The global optimum was interior in 321 surfaces, exact \(S=0\) in 53 surfaces,
+and exact \(S=1\) in 10 surfaces. Exact endpoint handling therefore remains
+empirically relevant on observed market data.
+
+Every subgroup by asset class, difference order, window, and horizon had zero
+missed dense-reference minima and zero positive-regret cases.
+
+### Interpretation
+
+This is a numerical geometry stress test only. It does not compare forecasting
+models, establish financial predictability, or support trading claims. Its role
+is to show that the frozen numerical search that succeeded on analytic and
+synthetic objectives also remains accurate on objective surfaces produced by
+observed market series.
+
+### Experimental conclusion
+
+The principal numerical validation is complete:
+
+- analytic adversarial objectives: 240/240 relevant known minima/boundary
+  optima detected;
+- synthetic forecast-validation objectives: 2105/2105 dense-reference interior
+  minima matched across 1920 surfaces;
+- financial real-data objectives: 473/473 dense-reference interior minima
+  matched across 384 surfaces.
+
+The algorithm is now considered experimentally frozen. Remaining work is
+evidence packaging, literature positioning, manuscript writing, and
+referee-style review.
+
