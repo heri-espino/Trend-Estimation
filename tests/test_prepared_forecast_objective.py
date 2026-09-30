@@ -35,3 +35,20 @@ def test_cached_solver_is_reused():
     from trend_estimation.core.pure import cached_pure_solver
 
     assert cached_pure_solver(40, 2) is cached_pure_solver(40, 2)
+
+
+def test_prepared_objective_supports_infinite_penalty_limit():
+    x = np.arange(50, dtype=float)
+    y = 0.02 * x**2 + 0.1 * np.sin(x / 3.0)
+    splits = [
+        td.RollingOriginSplit(slice(10, 30), slice(30, 33)),
+        td.RollingOriginSplit(slice(14, 34), slice(34, 37)),
+        td.RollingOriginSplit(slice(18, 38), slice(38, 41)),
+    ]
+
+    prepared = td.prepare_rolling_pure_forecast_objective(y, splits, order=2)
+    result = prepared.evaluate(np.inf)
+
+    assert np.isfinite(result.value)
+    assert result.first == 0.0
+    assert result.second == 0.0
