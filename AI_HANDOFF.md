@@ -1,17 +1,21 @@
 # AI Handoff
 
-## Read this first — scientific source of truth
+## Read this first — choose the paper track
 
-Before interpreting the latest experiment or changing the paper story, read
-`notes/research_objective.md`.
+This repository has two separate research papers. Do not merge their
+objectives, checkpoints, or empirical claims.
 
-Canonical objective:
+For the smoothness/financial-recurrence paper, read first:
 
-> **Forecast-optimal trend estimation as an adaptive forecasting method, where
-> smoothness, memory length and difference order depend on horizon and local
-> regime.**
+- `paper_smoothness-recurrence/notes/research_objective.md`;
+- `paper_smoothness-recurrence/notes/roadmap.md`;
+- `paper_smoothness-recurrence/notes/decisions.md`.
 
-The central object is the full forecasting-method configuration
+Its primary object is (S_h^\star\in[0,1]), followed by a frozen forecast
+trend path and recurrence analysis.
+
+For the broader adaptive forecasting paper, read
+`notes/research_objective.md`. Its canonical object remains
 
 [
 \Theta^\star_{T,h}
@@ -21,10 +25,8 @@ The central object is the full forecasting-method configuration
 G(h,X_T,\mathcal C).
 ]
 
-Do **not** redefine the project around the latest mechanism result.
-In particular, the persistence/AR(1) study is one diagnostic explaining part
-of the behavior of (S^\star); it is not the paper's objective and
-persistence is not synonymous with regime.
+Results and design choices from one track may inform the other but are not
+automatically evidence for the other paper's claims.
 
 ## Repository role
 
@@ -65,19 +67,45 @@ Do not add ignore rules for these directories or delete their contents as
 When a public function or class changes, update its docstring and Sphinx API
 page. When a mathematical result changes, update the relevant note first.
 
-## Active paper
+## Paper tracks
 
-Only this research paper is active:
+### 1. Smoothness and financial recurrence
 
-`paper_forecast-optimal-smoothing/`
+Directory: `paper_smoothness-recurrence/`.
+
+Working title:
+
+**Numerical Selection of Forecast-Optimal Smoothness and Financial Trend Recurrence**
+
+The primary design fixes difference order and estimation-window policy before
+final evaluation and optimizes normalized smoothness:
+
+\[
+S_h^\star=\arg\min_{S\in[0,1]}CV_h(S).
+\]
+
+The numerical contribution is multiple-local-minimum search directly on the
+compact smoothness domain using adaptive root isolation and Brent refinement.
+The former dense GPU grid is a diagnostic benchmark.
+
+At forecast origin (T), extrapolate and freeze the trend path. Recurrence is
+measured by future hitting/crossing times relative to that path; do not update
+the reference path with future observations.
+
+Paper-specific roadmap, ideas, decisions, results, and checkpoints live inside
+the paper directory. Runners belong under
+`experiments/smoothness_recurrence/`; reusable mathematics remains in
+`src/trend_estimation/`.
+
+### 2. Adaptive forecast-optimal trend estimation
+
+Directory: `paper_forecast-optimal-smoothing/`.
 
 Working title:
 
 **Adaptive Forecast-Optimal Trend Estimation under Changing Time-Series Regimes**
 
-The decision-aware/portfolio project is paused.
-
-The research object is
+This broader paper retains
 
 \[
 \Theta^\star_{T,h}
@@ -87,14 +115,7 @@ The research object is
 G(h,X_T,\mathcal C).
 \]
 
-Here (d) is difference order, (L) is finite-memory window length, and (S)
-is normalized smoothness. The scientific target is future forecast loss, not
-historical trend-recovery loss.
-
-The empirical progression is controlled simulations, mechanism studies,
-within-series regime transitions, adaptive-versus-fixed OOS evaluation,
-macroeconomic series, indices/ETFs, equities, and crypto. Do not reduce regime
-to volatility or persistence alone.
+Its canonical scientific notes remain under `notes/`.
 
 ## Core analytic model
 
