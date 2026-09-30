@@ -79,7 +79,7 @@ def smoothness_to_lambda(
     tol: float = 1e-11,
     max_iter: int = 100,
 ) -> float:
-    """Map smoothness in [0,1) to lambda_ using bisection."""
+    """Map smoothness in [0, 1) to the penalty parameter using bisection."""
     smoothness = float(smoothness)
     if smoothness <= 0:
         return 0.0
