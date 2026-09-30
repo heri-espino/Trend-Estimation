@@ -7,10 +7,33 @@ import numpy as np
 from .difference import difference_matrix
 
 
+def _canonicalize_penalty_eigenvalues(
+    eigvals: np.ndarray,
+    order: int,
+) -> np.ndarray:
+    """Enforce the exact nullity of a finite-difference penalty spectrum.
+
+    D_d.T @ D_d is positive semidefinite with nullity exactly d. Numerical
+    eigensolvers return those structural zeros as tiny signed values whose
+    magnitudes and signs depend on the LAPACK backend. Canonicalizing them
+    prevents high-penalty calculations from amplifying platform noise.
+    """
+    values = np.asarray(eigvals, dtype=float).copy()
+    order = int(order)
+    if order > 0:
+        values[:order] = 0.0
+    if order < values.size:
+        values[order:] = np.maximum(values[order:], 0.0)
+    return values
+
+
 @lru_cache(maxsize=256)
 def _cached_penalty_eigenvalues(n_obs: int, order: int) -> np.ndarray:
     D = difference_matrix(int(n_obs), int(order))
-    eigvals = np.linalg.eigvalsh(D.T @ D)
+    eigvals = _canonicalize_penalty_eigenvalues(
+        np.linalg.eigvalsh(D.T @ D),
+        int(order),
+    )
     eigvals.setflags(write=False)
     return eigvals
 

@@ -118,3 +118,73 @@ def test_epsilon_sweep_caps_candidate_count():
 
     assert [item.epsilon_ for item in sweep] == [0.0, 0.05, 0.10, 0.15]
     assert all(len(item.candidates_) <= 5 for item in sweep)
+
+
+def _quick_regression_search(*, seed: int, ar1_phi: float, window: int, horizon: int):
+    data = td.make_local_linear_ar1_series(
+        n_obs=800,
+        slope_noise_std=0.01,
+        observation_noise_std=0.5,
+        ar1_phi=ar1_phi,
+        random_state=seed,
+    )
+    splits = td.rolling_origin_splits(
+        800,
+        initial_train=window,
+        horizon=horizon,
+        step=5,
+        expanding=False,
+        train_window=window,
+    )[-30:]
+    prepared = td.prepare_rolling_pure_forecast_objective(
+        data.y,
+        splits,
+        order=4,
+    )
+
+    def value_grad_hess(lambda_: float):
+        evaluated = prepared.evaluate(lambda_)
+        return evaluated.value, evaluated.first, evaluated.second
+
+    return td.find_stationary_points_smoothness(
+        value_grad_hess,
+        n_obs=window,
+        order=4,
+        initial_grid_size=9,
+        max_depth=8,
+        min_interval=1e-3,
+    )
+
+
+def test_search_recovers_quick_case_minimum_near_upper_boundary():
+    result = _quick_regression_search(
+        seed=1,
+        ar1_phi=0.3,
+        window=63,
+        horizon=1,
+    )
+
+    minima = [
+        point.smoothness_
+        for point in result.points_
+        if point.kind_ == "minimum"
+    ]
+
+    assert any(abs(smoothness - 0.988) < 0.003 for smoothness in minima)
+
+
+def test_search_recovers_persistent_quick_case_minimum_near_upper_boundary():
+    result = _quick_regression_search(
+        seed=1,
+        ar1_phi=0.8,
+        window=252,
+        horizon=20,
+    )
+
+    minima = [
+        point.smoothness_
+        for point in result.points_
+        if point.kind_ == "minimum"
+    ]
+
+    assert any(abs(smoothness - 0.995) < 0.003 for smoothness in minima)
