@@ -25,7 +25,7 @@ def penalty_eigenvalues(n_obs: int, order: int) -> np.ndarray:
 
 
 def effective_degrees_of_freedom(lambda_: float, n_obs: int, order: int) -> float:
-    """Return ``trace((I + lambda D.T D)^-1)``."""
+    """Return trace((I + lambda D.T D)^-1)."""
     eigvals = _cached_penalty_eigenvalues(int(n_obs), int(order))
     return float(np.sum(1.0 / (1.0 + float(lambda_) * eigvals)))
 
@@ -43,6 +43,34 @@ def lambda_to_smoothness(lambda_: float, n_obs: int, order: int) -> float:
     return float(s_raw / s_max) if s_max > 0 else 0.0
 
 
+def smoothness_derivatives(
+    lambda_: float,
+    n_obs: int,
+    order: int,
+) -> tuple[float, float]:
+    """Return first and second lambda derivatives of normalized smoothness."""
+    lambda_ = float(lambda_)
+    n_obs = int(n_obs)
+    order = int(order)
+    if lambda_ < 0.0:
+        raise ValueError("lambda_ must be nonnegative.")
+    if n_obs <= 0:
+        raise ValueError("n_obs must be positive.")
+    if order < 0 or order >= n_obs:
+        raise ValueError("order must satisfy 0 <= order < n_obs.")
+
+    if order == 0:
+        denom = 1.0 + lambda_
+        return float(denom**-2), float(-2.0 * denom**-3)
+
+    eigvals = np.clip(_cached_penalty_eigenvalues(n_obs, order), 0.0, None)
+    denom = 1.0 + lambda_ * eigvals
+    normalizer = float(n_obs - order)
+    first = float(np.sum(eigvals / denom**2) / normalizer)
+    second = float(-2.0 * np.sum(eigvals**2 / denom**3) / normalizer)
+    return first, second
+
+
 def smoothness_to_lambda(
     smoothness: float,
     n_obs: int,
@@ -51,7 +79,7 @@ def smoothness_to_lambda(
     tol: float = 1e-11,
     max_iter: int = 100,
 ) -> float:
-    """Map smoothness in ``[0,1)`` to ``lambda_`` using bisection."""
+    """Map smoothness in [0,1) to lambda_ using bisection."""
     smoothness = float(smoothness)
     if smoothness <= 0:
         return 0.0
