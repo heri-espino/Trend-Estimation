@@ -37,12 +37,13 @@ def test_adversarial_lambda_callback_matches_chain_rule():
         )
 
         lambda_ = smoothness_to_lambda(smoothness, n_obs, order)
+        recovered_s = td.lambda_to_smoothness(lambda_, n_obs, order)
         value, grad_lambda, hess_lambda = callback(lambda_)
         ds, d2s = smoothness_derivatives(lambda_, n_obs, order)
 
-        assert np.isclose(value, case.value(smoothness), rtol=1e-11, atol=1e-12)
-        assert np.isclose(grad_lambda, case.first(smoothness) * ds, rtol=1e-9, atol=1e-12)
-        expected_hess = case.second(smoothness) * ds**2 + case.first(smoothness) * d2s
+        assert np.isclose(value, case.value(recovered_s), rtol=1e-12, atol=1e-12)
+        assert np.isclose(grad_lambda, case.first(recovered_s) * ds, rtol=1e-9, atol=1e-12)
+        expected_hess = case.second(recovered_s) * ds**2 + case.first(recovered_s) * d2s
         assert np.isclose(hess_lambda, expected_hess, rtol=1e-8, atol=1e-12)
 
 
