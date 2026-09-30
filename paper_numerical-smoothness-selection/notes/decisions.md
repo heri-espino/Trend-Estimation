@@ -113,3 +113,37 @@ These results close the primary algorithm-validation phase. Subsequent
 experiments must not change the N009 primary specification unless a genuine
 implementation error is discovered.
 
+## N013 — Epsilon spacing is post-processing only
+
+**Date:** 2026-09-30  
+**Status:** frozen.
+
+The epsilon rule is applied only after stationary-point discovery and
+classification. Candidate minima are sorted by objective value before spacing,
+so the best detected local minimum is never removed.
+
+The paper may use \(\varepsilon=0.10\) as a representative summary setting and
+report sensitivity over
+\(\{0,0.02,0.05,0.10,0.15\}\), but epsilon is not part of the primary
+optimization algorithm.
+
+## N014 — Numerical paper fixes the forecast continuation rule
+
+**Date:** 2026-09-30  
+**Status:** frozen scope decision.
+
+The numerical paper uses the native finite-difference continuation associated
+with the penalized trend model. Its controlled breadth varies \(d\), \(L\),
+\(h\), and simulation regime.
+
+Multiple forecast/extrapolation model comparisons (AR/ARIMA, state-space,
+alternative trend continuation rules, and related model selection) belong to
+the parked applied financial-trend paper. The numerical paper therefore writes
+its objective as
+
+\[
+F_{d,L,h}(S)=CV_h(d,L,S),
+\]
+
+without a separate forecast-method index \(m\).
+
