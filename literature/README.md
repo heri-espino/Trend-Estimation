@@ -39,15 +39,14 @@ repository maintainer.
 
 ## Current audit status
 
-The target set in `manifest.csv` contains **40 references**. As of
-2026-09-22, **24 papers are present in `literature/extracted/`** and that
-extracted corpus has been reviewed for the active objective. The target audit
-is therefore not complete.
+The canonical target set in `manifest.csv` contains **40 references**. As of
+2026-09-30, the repository contains **40 PDFs** and **40 extracted Markdown
+files**, but these cover **34 of the 40 canonical references**; the remaining
+files include supplemental or duplicate documents outside the manifest.
 
-Do not convert findings from the extracted subset into final novelty claims.
-Prioritize the remaining sources closest to smoothing under autocorrelation,
-forecast-oriented penalized trends, data-driven HP/smoothing choices, and
-time-varying or structural-change forecasting.
+The **6 canonical references still missing** are tracked in
+[`missing.md`](missing.md). Do not infer corpus completeness from the raw PDF
+count alone.
 
 ## RAG workflow
 
