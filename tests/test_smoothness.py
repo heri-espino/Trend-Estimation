@@ -47,7 +47,13 @@ def test_pure_solver_exact_upper_endpoint_projects_to_penalty_nullspace():
 
     result = solver.fit_for_s(y, 1.0)
 
+    design = np.column_stack(
+        [np.ones(40, dtype=float), np.arange(40, dtype=float)]
+    )
+    expected = design @ np.linalg.lstsq(design, y, rcond=None)[0]
+
     assert result.smoothness == 1.0
     assert np.isinf(result.lambda_)
     assert np.all(np.isfinite(result.trend))
+    assert np.allclose(result.trend, expected, rtol=1e-10, atol=1e-10)
     assert np.max(np.abs(np.diff(result.trend, n=2))) < 1e-10
