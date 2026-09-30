@@ -61,23 +61,38 @@ measure empirical missed-root risk.
 Stopping criterion: match the dense/reference global optimum to a frozen
 tolerance with materially fewer evaluations.
 
-## Phase 3 — Freeze forecasting protocol
+## Phase 3 — Freeze forecasting/model-selection protocol
 
 **Status: planned.**
 
 Before final financial outcomes:
 
 - [ ] choose primary scale, with log price as leading candidate;
-- [ ] freeze (d);
-- [ ] freeze (L);
+- [ ] evaluate difference orders d in {1,2,3,4};
+- [ ] freeze a small grid of estimation windows L;
+- [ ] freeze forecast methods m;
 - [ ] freeze CV history/origin spacing;
-- [ ] freeze forecast horizons;
+- [ ] freeze forecast horizons h;
 - [ ] freeze loss;
-- [ ] decide once-per-series vs. rolling smoothness selection.
+- [ ] implement a likelihood/state-space benchmark;
+- [ ] decide once-per-series vs. rolling selection.
 
-Preferred primary design: estimate one (S_h^\star) per series/horizon on a
-development prefix, then freeze it during untouched recurrence evaluation.
-Rolling re-selection is secondary robustness.
+For each discrete configuration (d,L,m,h), find multiple local minima in S and
+retain at most five epsilon-separated candidates. Select the complete
+configuration using development/validation data only:
+
+\[
+(d^\star,L^\star,m^\star,S_h^\star)
+=
+\arg\min CV_h(d,L,m,S).
+\]
+
+Then freeze the selected configuration and evaluate it once on the untouched
+test block.
+
+The likelihood benchmark is not tuned by forecast CV: its variance/smoothing
+parameters are estimated by ML/REML or marginal likelihood and its forecasts
+are scored on the same validation/test periods.
 
 ## Phase 4 — Freeze recurrence definition
 
