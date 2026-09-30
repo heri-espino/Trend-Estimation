@@ -38,7 +38,7 @@ consistent to frozen tolerances.
 - [ ] detect tangential non-minimum stationary roots if the manuscript needs a claim about all stationary points;
 - [x] implement an adversarial analytic suite with known stationary points;
 - [x] add deterministic endpoint-aware refinement for compactified boundary cells;
-- [ ] freeze derivative/curvature tolerances, endpoint refinement, and maximum depth;
+- [x] freeze derivative/curvature tolerances, endpoint refinement, and maximum depth;
 - [ ] deduplicate roots robustly near numerical boundaries.
 
 **Stop condition:** known synthetic stationary points are recovered within
@@ -51,7 +51,7 @@ frozen tolerances, including adversarial near-flat cases.
   experiments/numerical_smoothness_selection/;
 - [x] run smoke benchmark;
 - [x] rerun quick benchmark after nullspace canonicalization;
-- [ ] rerun quick benchmark after endpoint-aware refinement;
+- [x] rerun quick benchmark after endpoint-aware refinement;
 - [x] inspect every disagreement in the post-nullspace quick run;
 - [ ] run paper-scale benchmark.
 
@@ -64,10 +64,15 @@ Report:
 - runtime;
 - failure/ambiguity rate.
 
+**Current pre-paper result:** 227/227 dense-reference interior minima matched across 216 synthetic surfaces, with zero positive objective regret. The primary search specification is frozen before the paper-scale run.
+
 **Stop condition:** empirical accuracy and efficiency are characterized well
 enough to support a precise claim.
 
 ## Phase 4 — Search-design sensitivity
+
+The primary settings are already frozen under Decision N009. The remaining
+items are robustness checks and must not retune the primary specification.
 
 - [ ] compare initial grid sizes;
 - [ ] compare max depths;
@@ -80,7 +85,7 @@ enough to support a precise claim.
 - [ ] decide whether epsilon is algorithmic output or only candidate-summary
   post-processing.
 
-**Stop condition:** one default algorithm/protocol is frozen before final runs.
+**Stop condition:** sensitivity is characterized without changing the frozen primary protocol.
 
 ## Phase 5 — Controlled configuration breadth
 
