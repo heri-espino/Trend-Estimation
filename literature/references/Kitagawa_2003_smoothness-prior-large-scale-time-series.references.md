@@ -1,0 +1,36 @@
+---
+id: "Kitagawa_2003_smoothness-prior-large-scale-time-series-references"
+source_pdf: "../pdf/Kitagawa_2003_smoothness-prior-large-scale-time-series.pdf"
+content: "references-only"
+---
+
+### References
+
+- [1] H. Akaike, A new look at the statistical model identiFFcation, IEEE Trans. Automat. Control AC-19 (1974) 716-723.
+- [2] H. Akaike, Likelihood and the Bayes procedure (with discussion), in: J.M. Bernardo, M.H. De Groot, D.V. Lindley, A.F.M. Smith (Eds.), Bayesian Statistics, University Press, Valencia, Spain, 1980, pp. 143-166.
+- [3] H. Akaike, Seasonal adjustment by a Bayesian modeling, J. Time Ser. Anal. 1 (1980) 1-13.
+- [4] H. Akaike, G. Kitagawa (Eds.), The Practice of Time Series Analysis, Springer, New York, 1999.
+- [5] M. Bevis, S. Businger, T.A. Herring, C. Rocken, R.A. Anthes, R.H. Ware, Remote sensing of atmospheric water vapor using the Global Positioning System, J. Geophys. Res. 97 (1992) 15,787-15,801.
+- [6] W. Gersch, G. Kitagawa, The prediction of time series with trends and seasonalities, J. Business Econom. Statist. 1 (3) (1983) 253-264.
+- [7] K. Heki, T. Kato, C. Rizos, P. Xu (Eds.), Application of GPS and other space geodesic techniques to Earth Sciences (1), Earth Planets Space 52(10) (2000).
+- [8] K. Heki, S. Miyazaki, H. Tsuji, Silent fault slip following an interplate thrust earthquake at the Japan trench, Nature 386 (1997) 595-598.
+- [9] T. Higuchi, A method to separate the spin synchronized signals using a Bayesian approach (in Japanese with English Abstract), Proc. Inst. Statist. Math. 41 (1993) 115-130.
+- [10] K. Hirahara, E.R. Ivins, A. Saito, T. Tsuda (Eds.), Application of GPS and other space geodedic techniques to Earth Sciences (2), Earth Planets Space 52(11) (2000).
+- [11] R.E. Kalman, A new approach to linear FFltering and prediction problems, Trans. Amer. Soc. Mech. Eng., J Basic Eng. 82 (1960) 35-45.
+- [12] N. Kashiwagi, On the use of the Kalman FFlter for spatial smoothing, Ann. Inst. Statist. Math. 45 (1993) 21-34.
+- [13] G. Kitagawa, W. Gersch, Smoothness Priors Analysis of Time Series, Lecture Notes in Statistics, Vol. 116, Springer, New York, 1996.
+- [14] G. Kitagawa, T. Higuchi, Automatic transaction of signal via statistical modeling, Proc. First Internat. Conf. on Discovery Science, Lecture Notes in ArtiFFcial Intelligence Series, Springer, Berlin, 1998, pp. 375-386.
+- [15] G. Kitagawa, N. Matsumoto, Detection of coseismic changes of underground water level, J. Amer. Statist. Assoc. 91 (434) (1996) 521-528.
+- [16] J. Li, K. Miyashita, T. Kato, S. Miyazaki, GPS time series modeling by autoregressive moving average method: application to the crustal deformation in central Japan, Earth Planets Space 52 (3) (2000) 155-162.
+- [17] B. Mandelbrot, Fractals: Form, Chance and Dimension, Freeman, San Francisco, 1977.
+- [18] J. Rissanen, Modeling by shortest data description, Automatica 14 (1978) 465-471.
+
+
+<!-- p:16 -->
+
+
+- [19] F.N. Kondo, G. Kitagawa, Discovery of competitive structure in brand substitution and category expansion caused by price promotion, in: Proc. of World Multiconference on Systemics, Cybernetics and Informatics, Vol. II, Information Systems (2001) 171-178.
+- [20] Y. Sakamoto, M. Ishiguro, G. Kitagawa, Akaike Information Criterion Statistics, D-Reidel, Dordrecht, 1986.
+- [21] T. Shiller, A distributed lag estimator derived from smoothness priors, Econometrica 41 (1973) 775-778.
+- [22] T. Tsuda, K. Heki, S. Miyazaki, K. Aonashi, K. Hirahara, H. Nakamura, M. Tobita, F. Kimata, T. Tabei, T. Matsushima, F. Kimura, M. Satomura, T. Kato, I. Naito, GPS meteorology project of Japanexploring frontiers of geodesy, Earth Planets Space 50 (10) (1998) i-v.
+- [23] E.T. Whittaker, On a new method of graduation, Proc. Edinburgh Math. Assoc. 78 (1923) 81-89.

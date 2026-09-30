@@ -6,11 +6,11 @@
 
 ### Abstract
 
-- Markdown: `extracted/01_Guerrero_2007_Time_Series_Smoothing_by_Penalized_Least_Squares.md`
-- PDF: `pdf/01_Guerrero_2007_Time_Series_Smoothing_by_Penalized_Least_Squares.pdf`
+- Markdown: `extracted/Guerrero_2007_time-series-smoothing-penalized-least-squares.md`
+- PDF: `pdf/Guerrero_2007_time-series-smoothing-penalized-least-squares.pdf`
 - Extraction: `full-page-ocr`
 - Quality: `excellent` (108.0)
-- References: `references/01_Guerrero_2007_Time_Series_Smoothing_by_Penalized_Least_Squares.references.md`
+- References: `references/Guerrero_2007_time-series-smoothing-penalized-least-squares.references.md`
 - Sections:
   - 1. Introduction
   - ScienceDirect
@@ -23,11 +23,11 @@
 
 ### ESTIMATING TRENDS WITH PERCENTAGE OF SMOOTHNESS CHOSEN BY THE USER
 
-- Markdown: `extracted/02_Estimating_Trends_with_Percentage_of_Smoothness.md`
-- PDF: `pdf/02_Estimating_Trends_with_Percentage_of_Smoothness.pdf`
+- Markdown: `extracted/Guerrero_2008_estimating-trends-percentage-smoothness.md`
+- PDF: `pdf/Guerrero_2008_estimating-trends-percentage-smoothness.pdf`
 - Extraction: `full-page-ocr`
 - Quality: `excellent` (108.0)
-- References: `references/02_Estimating_Trends_with_Percentage_of_Smoothness.references.md`
+- References: `references/Guerrero_2008_estimating-trends-percentage-smoothness.references.md`
 - Sections:
   - Víctor M. Guerrero1
   - DE-C05.5
@@ -41,11 +41,11 @@
 
 ### Communications in Statistics - Simulation and Computation
 
-- Markdown: `extracted/04_CortesGuerreroReyes_ComStat-SimCom2017.md`
-- PDF: `pdf/04_CortesGuerreroReyes_ComStat-SimCom2017.pdf`
+- Markdown: `extracted/Cortes-Toto_2017_trend-smoothness-optimality-criteria.md`
+- PDF: `pdf/Cortes-Toto_2017_trend-smoothness-optimality-criteria.pdf`
 - Extraction: `hybrid`
 - Quality: `excellent` (106.0)
-- References: `references/04_CortesGuerreroReyes_ComStat-SimCom2017.references.md`
+- References: `references/Cortes-Toto_2017_trend-smoothness-optimality-criteria.references.md`
 - Sections:
   - Trend smoothness achieved by penalized least squares with the smoothing parameter chosen by optimality criteria
   - Daniela Cortés-Toto, Víctor M. Guerrero & Hortensia J. Reyes
@@ -59,11 +59,11 @@
 
 ### FORECASTING REMITTANCES TO MEXICO WITH A MULTI-STATE MARKOVSWITCHING MODEL APPLIED TO THE TREND WITH CONTROLLED 3.
 
-- Markdown: `extracted/07_Forecasting_Remittances_to_Mexico.md`
-- PDF: `pdf/07_Forecasting_Remittances_to_Mexico.pdf`
+- Markdown: `extracted/Islas-Camargo_2019_forecasting-remittances-mexico.md`
+- PDF: `pdf/Islas-Camargo_2019_forecasting-remittances-mexico.pdf`
 - Extraction: `hybrid`
 - Quality: `excellent` (106.0)
-- References: `references/07_Forecasting_Remittances_to_Mexico.references.md`
+- References: `references/Islas-Camargo_2019_forecasting-remittances-mexico.references.md`
 - Sections:
   - SMOOTHNESS
   - A. ISLAS 1 Víctor M. GUERRERO 2 Eliud SILVA 3
@@ -77,11 +77,11 @@
 
 ### NOTES
 
-- Markdown: `extracted/09_Adjusting_HP_Filter_Frequency.md`
-- PDF: `pdf/09_Adjusting_HP_Filter_Frequency.pdf`
+- Markdown: `extracted/Ravn_2002_adjusting-hp-filter-frequency.md`
+- PDF: `pdf/Ravn_2002_adjusting-hp-filter-frequency.pdf`
 - Extraction: `hybrid`
 - Quality: `excellent` (108.0)
-- References: `references/09_Adjusting_HP_Filter_Frequency.references.md`
+- References: `references/Ravn_2002_adjusting-hp-filter-frequency.references.md`
 - Sections:
   - ON ADJUSTING THE HODRICK-PRESCOTT FILTER FOR THE FREQUENCY OF OBSERVATIONS
   - I. Introduction
@@ -94,8 +94,8 @@
 
 ### UNIVERSITY OF NOTTINGHAM
 
-- Markdown: `extracted/10_HP_Filter_Time_Series_Endpoints.md`
-- PDF: `pdf/10_HP_Filter_Time_Series_Endpoints.pdf`
+- Markdown: `extracted/Mise_2005_hp-filter-time-series-endpoints.md`
+- PDF: `pdf/Mise_2005_hp-filter-time-series-endpoints.pdf`
 - Extraction: `full-page-ocr`
 - Quality: `excellent` (104.8)
 - Sections:
@@ -106,8 +106,8 @@
 
 ### On a New Method of Graduation.
 
-- Markdown: `extracted/13_New_Method_of_Graduation.md`
-- PDF: `pdf/13_New_Method_of_Graduation.pdf`
+- Markdown: `extracted/Whittaker_1923_new-method-graduation.md`
+- PDF: `pdf/Whittaker_1923_new-method-graduation.pdf`
 - Extraction: `hybrid`
 - Quality: `good` (88.0)
 - Sections:
@@ -116,11 +116,11 @@
 
 ### Smoothing Noisy Data with Spline Functions
 
-- Markdown: `extracted/14_Smoothing_Noisy_Data_with_Spline_Functions.md`
-- PDF: `pdf/14_Smoothing_Noisy_Data_with_Spline_Functions.pdf`
+- Markdown: `extracted/Craven_1979_smoothing-noisy-data-spline-functions.md`
+- PDF: `pdf/Craven_1979_smoothing-noisy-data-spline-functions.pdf`
 - Extraction: `hybrid`
 - Quality: `excellent` (98.0)
-- References: `references/14_Smoothing_Noisy_Data_with_Spline_Functions.references.md`
+- References: `references/Craven_1979_smoothing-noisy-data-spline-functions.references.md`
 - Sections:
   - 1. Introduction
   - 2. Bernoulli Polynomials and Smoothing Splines
@@ -133,8 +133,8 @@
 
 ### Generalized d Cross-Validation as a Method for Choosing a Good Ridge Parameter
 
-- Markdown: `extracted/15_Generalized_Cross_Validation_Ridge.md`
-- PDF: `pdf/15_Generalized_Cross_Validation_Ridge.pdf`
+- Markdown: `extracted/Golub_1979_generalized-cross-validation-ridge.md`
+- PDF: `pdf/Golub_1979_generalized-cross-validation-ridge.pdf`
 - Extraction: `hybrid`
 - Quality: `excellent` (108.0)
 - Sections:
@@ -150,8 +150,8 @@
 
 ### Flexible Smoothing with B-splines and Penalties
 
-- Markdown: `extracted/16_Flexible_Smoothing_B_Splines.md`
-- PDF: `pdf/16_Flexible_Smoothing_B_Splines.pdf`
+- Markdown: `extracted/Eilers_1996_flexible-smoothing-b-splines.md`
+- PDF: `pdf/Eilers_1996_flexible-smoothing-b-splines.pdf`
 - Extraction: `full-page-ocr`
 - Quality: `excellent` (108.0)
 - Sections:
@@ -167,22 +167,22 @@
 
 ### l1 Trend Filtering
 
-- Markdown: `extracted/18_L1_Trend_Filtering.md`
-- PDF: `pdf/18_L1_Trend_Filtering.pdf`
+- Markdown: `extracted/Kim_2009_l1-trend-filtering.md`
+- PDF: `pdf/Kim_2009_l1-trend-filtering.pdf`
 - Extraction: `full-page-ocr`
 - Quality: `excellent` (100.0)
-- References: `references/18_L1_Trend_Filtering.references.md`
+- References: `references/Kim_2009_l1-trend-filtering.references.md`
 - Sections:
   - 1. Introduction.
   - 5. Optimality Condition and Dual Problem.
 
 ### A Note on the Validity of Cross-Validation for Evaluating Autoregressive Time Series Prediction
 
-- Markdown: `extracted/24_Validity_of_Cross_Validation_AR_Time_Series.md`
-- PDF: `pdf/24_Validity_of_Cross_Validation_AR_Time_Series.pdf`
+- Markdown: `extracted/Bergmeir_2018_cross-validation-ar-time-series.md`
+- PDF: `pdf/Bergmeir_2018_cross-validation-ar-time-series.pdf`
 - Extraction: `hybrid`
 - Quality: `excellent` (108.0)
-- References: `references/24_Validity_of_Cross_Validation_AR_Time_Series.references.md`
+- References: `references/Bergmeir_2018_cross-validation-ar-time-series.references.md`
 - Sections:
   - Abstract
   - 1. Introduction
@@ -196,11 +196,11 @@
 
 ### Comparing predictive accuracy
 
-- Markdown: `extracted/25_Comparing_Predictive_Accuracy.md`
-- PDF: `pdf/25_Comparing_Predictive_Accuracy.pdf`
+- Markdown: `extracted/Diebold_1995_comparing-predictive-accuracy.md`
+- PDF: `pdf/Diebold_1995_comparing-predictive-accuracy.pdf`
 - Extraction: `hybrid`
 - Quality: `excellent` (108.0)
-- References: `references/25_Comparing_Predictive_Accuracy.references.md`
+- References: `references/Diebold_1995_comparing-predictive-accuracy.references.md`
 - Sections:
   - Francis X. DIEBOLD
   - Roberto S. MARIANO
@@ -214,11 +214,11 @@
 
 ### Tests of conditional predictive ability
 
-- Markdown: `extracted/26_Tests_of_Conditional_Predictive_Ability.md`
-- PDF: `pdf/26_Tests_of_Conditional_Predictive_Ability.pdf`
+- Markdown: `extracted/Giacomini_2006_conditional-predictive-ability.md`
+- PDF: `pdf/Giacomini_2006_conditional-predictive-ability.pdf`
 - Extraction: `full-page-ocr`
 - Quality: `excellent` (108.0)
-- References: `references/26_Tests_of_Conditional_Predictive_Ability.references.md`
+- References: `references/Giacomini_2006_conditional-predictive-ability.references.md`
 - Sections:
   - Abstract
   - 1Introduction
@@ -232,11 +232,11 @@
 
 ### A Comprehensive Look at The Empirical Performance of Equity Premium Prediction
 
-- Markdown: `extracted/28_Equity_Premium_Prediction.md`
-- PDF: `pdf/28_Equity_Premium_Prediction.pdf`
+- Markdown: `extracted/Welch_2008_equity-premium-prediction.md`
+- PDF: `pdf/Welch_2008_equity-premium-prediction.pdf`
 - Extraction: `hybrid`
 - Quality: `excellent` (106.0)
-- References: `references/28_Equity_Premium_Prediction.references.md`
+- References: `references/Welch_2008_equity-premium-prediction.references.md`
 - Sections:
   - Ivo Welch
   - Amit Goyal
@@ -250,11 +250,11 @@
 
 ### NBER WORKING PAPER SERIES
 
-- Markdown: `extracted/31_Approximate_Band_Pass_Filters.md`
-- PDF: `pdf/31_Approximate_Band_Pass_Filters.pdf`
+- Markdown: `extracted/Baxter_1999_approximate-band-pass-filters.md`
+- PDF: `pdf/Baxter_1999_approximate-band-pass-filters.pdf`
 - Extraction: `hybrid`
 - Quality: `excellent` (106.0)
-- References: `references/31_Approximate_Band_Pass_Filters.references.md`
+- References: `references/Baxter_1999_approximate-band-pass-filters.references.md`
 - Sections:
   - MEASURING BUSINESS CYCLES APPROXIMATE BAND-PASS FILTERS FOR ECONOMIC TIME SERIES
   - NATIONAL BUREAU OF ECONOMIC RESEARCH 1050 Massachusetts Avenue Cambridge, MA 02138 February 1995
@@ -268,11 +268,11 @@
 
 ### NBER WORKING PAPER SERIES
 
-- Markdown: `extracted/32_Band_Pass_Filter.md`
-- PDF: `pdf/32_Band_Pass_Filter.pdf`
+- Markdown: `extracted/Christiano_2003_band-pass-filter.md`
+- PDF: `pdf/Christiano_2003_band-pass-filter.pdf`
 - Extraction: `hybrid`
 - Quality: `excellent` (106.0)
-- References: `references/32_Band_Pass_Filter.references.md`
+- References: `references/Christiano_2003_band-pass-filter.references.md`
 - Sections:
   - THE BAND PASS FILTER
   - ABSTRACT
@@ -286,11 +286,11 @@
 
 ### NBER WORKING PAPER SERIES
 
-- Markdown: `extracted/33_Never_Use_HP_Filter.md`
-- PDF: `pdf/33_Never_Use_HP_Filter.pdf`
+- Markdown: `extracted/Hamilton_2018_never-use-hp-filter.md`
+- PDF: `pdf/Hamilton_2018_never-use-hp-filter.pdf`
 - Extraction: `hybrid`
 - Quality: `good` (88.0)
-- References: `references/33_Never_Use_HP_Filter.references.md`
+- References: `references/Hamilton_2018_never-use-hp-filter.references.md`
 - Sections:
   - WHY YOU SHOULD NEVER USE THE HODRICK-PRESCOTT FILTER
   - ABSTRACT
@@ -304,11 +304,11 @@
 
 ### Boosting: Why you Can Use the HP Filter
 
-- Markdown: `extracted/34_Boosting_HP_Filter.md`
-- PDF: `pdf/34_Boosting_HP_Filter.pdf`
+- Markdown: `extracted/Phillips_2021_boosting-hp-filter.md`
+- PDF: `pdf/Phillips_2021_boosting-hp-filter.pdf`
 - Extraction: `full-page-ocr`
 - Quality: `excellent` (108.0)
-- References: `references/34_Boosting_HP_Filter.references.md`
+- References: `references/Phillips_2021_boosting-hp-filter.references.md`
 - Sections:
   - Abstract
   - 1Introduction
@@ -322,8 +322,8 @@
 
 ### Estimating and Testing Linear Models with Multiple Structural Changes
 
-- Markdown: `extracted/36_Multiple_Structural_Changes.md`
-- PDF: `pdf/36_Multiple_Structural_Changes.pdf`
+- Markdown: `extracted/Bai_1998_multiple-structural-changes.md`
+- PDF: `pdf/Bai_1998_multiple-structural-changes.pdf`
 - Extraction: `hybrid`
 - Quality: `excellent` (98.0)
 - Sections:
@@ -339,11 +339,11 @@
 
 ### ABSTRACT
 
-- Markdown: `extracted/37_Risks_and_Returns_of_Cryptocurrency.md`
-- PDF: `pdf/37_Risks_and_Returns_of_Cryptocurrency.pdf`
+- Markdown: `extracted/Liu_2021_risks-returns-cryptocurrency.md`
+- PDF: `pdf/Liu_2021_risks-returns-cryptocurrency.pdf`
 - Extraction: `hybrid`
 - Quality: `excellent` (106.0)
-- References: `references/37_Risks_and_Returns_of_Cryptocurrency.references.md`
+- References: `references/Liu_2021_risks-returns-cryptocurrency.references.md`
 - Sections:
   - 1 Introduction
   - 2 Data and Basic Characteristics
@@ -357,11 +357,11 @@
 
 ### ABSTRACT
 
-- Markdown: `extracted/38_Common_Risk_Factors_Cryptocurrency.md`
-- PDF: `pdf/38_Common_Risk_Factors_Cryptocurrency.pdf`
+- Markdown: `extracted/Liu_2022_common-risk-factors-cryptocurrency.md`
+- PDF: `pdf/Liu_2022_common-risk-factors-cryptocurrency.pdf`
 - Extraction: `hybrid`
 - Quality: `excellent` (108.0)
-- References: `references/38_Common_Risk_Factors_Cryptocurrency.references.md`
+- References: `references/Liu_2022_common-risk-factors-cryptocurrency.references.md`
 - Sections:
   - 1 Introduction
   - 2 Data
@@ -375,11 +375,11 @@
 
 ### An algorithm with guaranteed convergence for finding a zero of a function
 
-- Markdown: `extracted/39_Brent_Zero_Finding_Algorithm.md`
-- PDF: `pdf/39_Brent_Zero_Finding_Algorithm.pdf`
+- Markdown: `extracted/Brent_1971_zero-finding-algorithm.md`
+- PDF: `pdf/Brent_1971_zero-finding-algorithm.pdf`
 - Extraction: `full-page-ocr`
 - Quality: `excellent` (106.0)
-- References: `references/39_Brent_Zero_Finding_Algorithm.references.md`
+- References: `references/Brent_1971_zero-finding-algorithm.references.md`
 - Sections:
   - 1. Introduction
   - 2. Dekker's algorithm
@@ -393,11 +393,11 @@
 
 ### On the Use of Cross-validation for Time Series Predictor Evaluation
 
-- Markdown: `extracted/40_on_the_use_of_cv_for_time_series.md`
-- PDF: `pdf/40_on_the_use_of_cv_for_time_series.pdf`
+- Markdown: `extracted/Bergmeir_2012_cross-validation-time-series-predictors.md`
+- PDF: `pdf/Bergmeir_2012_cross-validation-time-series-predictors.pdf`
 - Extraction: `hybrid`
 - Quality: `excellent` (106.0)
-- References: `references/40_on_the_use_of_cv_for_time_series.references.md`
+- References: `references/Bergmeir_2012_cross-validation-time-series-predictors.references.md`
 - Sections:
   - Abstract
   - 1. Introduction
@@ -412,11 +412,11 @@
 
 ### ROBERT J. HODRICK EDWARD C. PRESCOTT
 
-- Markdown: `extracted/post-war.md`
-- PDF: `pdf/post-war.pdf`
+- Markdown: `extracted/Hodrick_1997_postwar-us-business-cycles.md`
+- PDF: `pdf/Hodrick_1997_postwar-us-business-cycles.pdf`
 - Extraction: `hybrid`
 - Quality: `excellent` (106.0)
-- References: `references/post-war.references.md`
+- References: `references/Hodrick_1997_postwar-us-business-cycles.references.md`
 - Sections:
   - 1. DECOMPOSITION PROCEDURE
   - 2. VARIABILITY AND COVARIABILITY OF THE SERIES
@@ -430,11 +430,11 @@
 
 ### Theoretical Computer Science
 
-- Markdown: `extracted/1-s2.0-S0304397502001809-main.md`
-- PDF: `pdf/1-s2.0-S0304397502001809-main.pdf`
+- Markdown: `extracted/Kitagawa_2003_smoothness-prior-large-scale-time-series.md`
+- PDF: `pdf/Kitagawa_2003_smoothness-prior-large-scale-time-series.pdf`
 - Extraction: `hybrid`
 - Quality: `excellent` (108.0)
-- References: `references/1-s2.0-S0304397502001809-main.references.md`
+- References: `references/Kitagawa_2003_smoothness-prior-large-scale-time-series.references.md`
 - Sections:
   - Smoothness prior approach to explore mean structure in large-scale time series
   - Abstract
@@ -448,11 +448,11 @@
 
 ### Exchange rate predictability: Multi-State Markov-Switching model and trend with controlled smoothness
 
-- Markdown: `extracted/6+-+Alejandro+Islas+e+Juan+A.+Zumaya+GALVÁN+(3).md`
-- PDF: `pdf/6+-+Alejandro+Islas+e+Juan+A.+Zumaya+GALVÁN+(3).pdf`
+- Markdown: `extracted/Islas-Camargo_2025_exchange-rate-predictability-controlled-smoothness.md`
+- PDF: `pdf/Islas-Camargo_2025_exchange-rate-predictability-controlled-smoothness.pdf`
 - Extraction: `full-page-ocr`
 - Quality: `excellent` (108.0)
-- References: `references/6+-+Alejandro+Islas+e+Juan+A.+Zumaya+GALVÁN+(3).references.md`
+- References: `references/Islas-Camargo_2025_exchange-rate-predictability-controlled-smoothness.references.md`
 - Sections:
   - Alejandro Islas CAMARGO1
   - Juan A. Zumaya GALVÁN2
@@ -466,11 +466,11 @@
 
 ### A cross-validatory method for dependent data
 
-- Markdown: `extracted/A_cross-validatory_method_for_dependent_data.md`
-- PDF: `pdf/A_cross-validatory_method_for_dependent_data.pdf`
+- Markdown: `extracted/Burman_1994_cross-validatory-dependent-data.md`
+- PDF: `pdf/Burman_1994_cross-validatory-dependent-data.pdf`
 - Extraction: `hybrid`
 - Quality: `excellent` (108.0)
-- References: `references/A_cross-validatory_method_for_dependent_data.references.md`
+- References: `references/Burman_1994_cross-validatory-dependent-data.references.md`
 - Sections:
   - EDMOND CHOW AND DEBORAH NOLAN
   - SUMMARY
@@ -483,8 +483,8 @@
 
 ### Predicting Excess Stock Returns Out of Sample: Can Anything Beat the Historical Average?
 
-- Markdown: `extracted/Campbell_Predicting.md`
-- PDF: `pdf/Campbell_Predicting.pdf`
+- Markdown: `extracted/Campbell_2008_predicting-excess-stock-returns.md`
+- PDF: `pdf/Campbell_2008_predicting-excess-stock-returns.pdf`
 - Extraction: `hybrid`
 - Quality: `excellent` (108.0)
 - Sections:
@@ -500,11 +500,11 @@
 
 ### COMPUTATIONAL STATISTICS & DATA ANALYSIS
 
-- Markdown: `extracted/Efficient_computation_for_Whittaker-Henderson_smoo.md`
-- PDF: `pdf/Efficient_computation_for_Whittaker-Henderson_smoo.pdf`
+- Markdown: `extracted/Weinert_2007_efficient-whittaker-henderson-smoothing.md`
+- PDF: `pdf/Weinert_2007_efficient-whittaker-henderson-smoothing.pdf`
 - Extraction: `full-page-ocr`
 - Quality: `excellent` (98.0)
-- References: `references/Efficient_computation_for_Whittaker-Henderson_smoo.references.md`
+- References: `references/Weinert_2007_efficient-whittaker-henderson-smoothing.references.md`
 - Sections:
   - Available online at www.sciencedirect.com
   - Efficient computation for Whittaker-Henderson smoothing
@@ -518,8 +518,8 @@
 
 ### BY JAMES D. HAMILTON1
 
-- Markdown: `extracted/Hamilton1989.md`
-- PDF: `pdf/Hamilton1989.pdf`
+- Markdown: `extracted/Hamilton_1989_nonstationary-time-series-business-cycle.md`
+- PDF: `pdf/Hamilton_1989_nonstationary-time-series-business-cycle.pdf`
 - Extraction: `hybrid`
 - Quality: `excellent` (98.0)
 - Sections:
@@ -535,11 +535,11 @@
 
 ### Automated Kernel Smoothing of Dependent Data by using Time Series Cross-Validation
 
-- Markdown: `extracted/jrsssb_56_3_529.md`
-- PDF: `pdf/jrsssb_56_3_529.pdf`
+- Markdown: `extracted/Hart_1994_time-series-cross-validation.md`
+- PDF: `pdf/Hart_1994_time-series-cross-validation.pdf`
 - Extraction: `full-page-ocr`
 - Quality: `excellent` (106.0)
-- References: `references/jrsssb_56_3_529.references.md`
+- References: `references/Hart_1994_time-series-cross-validation.references.md`
 - Sections:
   - SUMMARY
   - 1. INTRODUCTION
@@ -550,8 +550,8 @@
 
 ### Appendix to "Low Frequency Filtering and Real Business Cycles,
 
-- Markdown: `extracted/LFF-Appendix.md`
-- PDF: `pdf/LFF-Appendix.pdf`
+- Markdown: `extracted/King_1993_low-frequency-filtering-appendix.md`
+- PDF: `pdf/King_1993_low-frequency-filtering-appendix.pdf`
 - Extraction: `full-page-ocr`
 - Quality: `excellent` (98.0)
 - Sections:
@@ -563,11 +563,11 @@
 
 ### Abstract
 
-- Markdown: `extracted/OutofSampleTests2000.md`
-- PDF: `pdf/OutofSampleTests2000.pdf`
+- Markdown: `extracted/Tashman_2000_out-of-sample-forecast-accuracy.md`
+- PDF: `pdf/Tashman_2000_out-of-sample-forecast-accuracy.pdf`
 - Extraction: `hybrid`
 - Quality: `excellent` (108.0)
-- References: `references/OutofSampleTests2000.references.md`
+- References: `references/Tashman_2000_out-of-sample-forecast-accuracy.references.md`
 - Sections:
   - 1. Introduction
   - Out-of-sample tests of forecasting accuracy: an analysis and review
@@ -581,11 +581,11 @@
 
 ### FORECASTING REMITTANCES TO MEXICO WITH A MULTI-STATE MARKOVSWITCHING MODEL APPLIED TO THE TREND WITH CONTROLLED 3.
 
-- Markdown: `extracted/rjef1_2019p38-56.md`
-- PDF: `pdf/rjef1_2019p38-56.pdf`
+- Markdown: `extracted/Islas-Camargo_2019_forecasting-remittances-mexico-rjef.md`
+- PDF: `pdf/Islas-Camargo_2019_forecasting-remittances-mexico-rjef.pdf`
 - Extraction: `hybrid`
 - Quality: `excellent` (106.0)
-- References: `references/rjef1_2019p38-56.references.md`
+- References: `references/Islas-Camargo_2019_forecasting-remittances-mexico-rjef.references.md`
 - Sections:
   - SMOOTHNESS
   - A. ISLAS 1 Víctor M. GUERRERO 2 Eliud SILVA 3
@@ -599,11 +599,11 @@
 
 ### A Data-Driven Method to Determine the Smoothing Parameter in the Hodrick-Prescott Filter
 
-- Markdown: `extracted/s10614-026-11378-9 (2).md`
-- PDF: `pdf/s10614-026-11378-9 (2).pdf`
+- Markdown: `extracted/Franke_2026_data-driven-hp-smoothing-parameter.md`
+- PDF: `pdf/Franke_2026_data-driven-hp-smoothing-parameter.pdf`
 - Extraction: `hybrid`
 - Quality: `excellent` (106.0)
-- References: `references/s10614-026-11378-9 (2).references.md`
+- References: `references/Franke_2026_data-driven-hp-smoothing-parameter.references.md`
 - Sections:
   - Abstract
   - 1 Introduction
@@ -617,11 +617,11 @@
 
 ### Whittaker-Henderson Smoothing Revisited: A Modern Statistical Framework for Practical Use
 
-- Markdown: `extracted/WH_revisited_2025_09_03_with_appendix.md`
-- PDF: `pdf/WH_revisited_2025_09_03_with_appendix.pdf`
+- Markdown: `extracted/Biessy_2025_whittaker-henderson-smoothing-revisited-appendix.md`
+- PDF: `pdf/Biessy_2025_whittaker-henderson-smoothing-revisited-appendix.pdf`
 - Extraction: `full-page-ocr`
 - Quality: `excellent` (108.0)
-- References: `references/WH_revisited_2025_09_03_with_appendix.references.md`
+- References: `references/Biessy_2025_whittaker-henderson-smoothing-revisited-appendix.references.md`
 - Sections:
   - Table of contents
   - Notations
@@ -635,11 +635,11 @@
 
 ### Whittaker-Henderson smoothing revisited: A modern statistical framework for practical use
 
-- Markdown: `extracted/whittaker-henderson-smoothing-revisited-a-modern-statistical-framework-for-practical-use.md`
-- PDF: `pdf/whittaker-henderson-smoothing-revisited-a-modern-statistical-framework-for-practical-use.pdf`
+- Markdown: `extracted/Biessy_2025_whittaker-henderson-smoothing-revisited.md`
+- PDF: `pdf/Biessy_2025_whittaker-henderson-smoothing-revisited.pdf`
 - Extraction: `full-page-ocr`
 - Quality: `excellent` (108.0)
-- References: `references/whittaker-henderson-smoothing-revisited-a-modern-statistical-framework-for-practical-use.references.md`
+- References: `references/Biessy_2025_whittaker-henderson-smoothing-revisited.references.md`
 - Sections:
   - Abstract
   - Notations
@@ -653,8 +653,8 @@
 
 ### Forecasting Exchange Rates: The Multi-State Markov-Switching Model with Smoothing
 
-- Markdown: `extracted/wp_09_115.md`
-- PDF: `pdf/wp_09_115.pdf`
+- Markdown: `extracted/Yuan_2011_forecasting-exchange-rates-markov-switching.md`
+- PDF: `pdf/Yuan_2011_forecasting-exchange-rates-markov-switching.pdf`
 - Extraction: `hybrid`
 - Quality: `excellent` (108.0)
 - Sections:

@@ -6,11 +6,17 @@ This directory is the metadata/RAG entry point for the Trend Estimation research
 
 - `manifest.csv` — master list of target references and reading status.
 - `references.bib` — shared BibTeX used by manuscripts.
-- `pdfs/` — original paper PDFs used by the research project; intentionally
+- `pdf/` — original paper PDFs used by the research project; intentionally
   versioned in Git.
 - `extracted/` — text/Markdown extracted from papers for RAG; intentionally
   versioned in Git.
 - `notes/` — per-paper structured reading notes when a paper needs more than metadata.
+
+## Naming convention
+
+Paper artifacts use the same canonical basename across subfolders:
+`Author_Year_short-title` (for example, `Guerrero_2007_time-series-smoothing-penalized-least-squares`).
+The PDF is the canonical source for identifying author, publication year, and short title; matching extracted and references Markdown files reuse that basename.
 
 ## PDF policy
 
@@ -21,7 +27,7 @@ workstations.
 
 When adding a paper:
 
-1. keep the original PDF under `literature/pdfs/`;
+1. keep the original PDF under `literature/pdf/`;
 2. keep the extracted representation under `literature/extracted/` when
    available;
 3. record DOI/title/authors/source metadata in `manifest.csv`;
