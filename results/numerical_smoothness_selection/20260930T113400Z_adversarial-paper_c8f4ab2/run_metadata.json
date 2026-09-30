@@ -1,0 +1,42 @@
+{
+  "created_at_utc": "2026-09-30T11:34:15.065663+00:00",
+  "git_commit": "c8f4ab2",
+  "suite": "adversarial_smoothness",
+  "preset": "paper",
+  "endpoint_policy": "exact",
+  "case_names": [
+    "near_zero",
+    "near_one",
+    "close_pair",
+    "close_upper_pair",
+    "flat_minimum",
+    "stationary_inflection",
+    "five_minima",
+    "boundary_zero",
+    "boundary_one"
+  ],
+  "n_obs_values": [
+    63,
+    126,
+    252,
+    504
+  ],
+  "orders": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "dense_grid_size": 20001,
+  "log_grid_size": 257,
+  "adaptive_initial_grid_size": 9,
+  "adaptive_max_depth": 8,
+  "adaptive_min_interval": 0.001,
+  "adaptive_endpoint_refinement_levels": 6,
+  "adaptive_boundary_margin": 1e-06,
+  "log_s_lower": 1e-06,
+  "log_s_upper": 0.9999,
+  "elapsed_seconds": 14.23048030002974,
+  "n_configurations": 144,
+  "n_method_rows": 432
+}

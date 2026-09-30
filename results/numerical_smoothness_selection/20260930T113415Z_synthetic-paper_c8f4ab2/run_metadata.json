@@ -1,0 +1,77 @@
+{
+  "created_at_utc": "2026-09-30T12:00:03.121664+00:00",
+  "git_commit": "c8f4ab2",
+  "preset": "paper",
+  "endpoint_policy": "exact",
+  "n_obs": 800,
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "orders": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "windows": [
+    63,
+    126,
+    252,
+    504
+  ],
+  "horizons": [
+    1,
+    5,
+    20,
+    60
+  ],
+  "scenarios": [
+    "baseline",
+    "persistent",
+    "rough"
+  ],
+  "scenario_parameters": {
+    "baseline": {
+      "slope_noise_std": 0.01,
+      "observation_noise_std": 0.5,
+      "ar1_phi": 0.3
+    },
+    "persistent": {
+      "slope_noise_std": 0.01,
+      "observation_noise_std": 0.5,
+      "ar1_phi": 0.8
+    },
+    "rough": {
+      "slope_noise_std": 0.03,
+      "observation_noise_std": 0.5,
+      "ar1_phi": 0.3
+    }
+  },
+  "step": 5,
+  "max_origins": 30,
+  "initial_grid_size": 9,
+  "max_depth": 8,
+  "min_interval": 0.001,
+  "endpoint_refinement_levels": 6,
+  "max_candidates": 5,
+  "epsilons": [
+    0.0,
+    0.02,
+    0.05,
+    0.1,
+    0.15
+  ],
+  "dense_grid_size": 5001,
+  "max_cases": null,
+  "elapsed_seconds": 1547.126494999975,
+  "n_cases": 1920
+}
