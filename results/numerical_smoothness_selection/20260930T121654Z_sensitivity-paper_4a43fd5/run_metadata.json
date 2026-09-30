@@ -1,0 +1,49 @@
+{
+  "created_at_utc": "2026-09-30T12:19:53.396472+00:00",
+  "git_commit": "4a43fd5",
+  "suite": "search_design_sensitivity",
+  "preset": "paper",
+  "primary_spec": {
+    "initial_grid_size": 9,
+    "max_depth": 8,
+    "min_interval": 0.001,
+    "endpoint_refinement_levels": 6,
+    "derivative_tol": 1e-08,
+    "curvature_tol": 1e-08,
+    "near_zero_ratio": 0.2,
+    "root_xtol": 1e-10,
+    "boundary_margin": 1e-06
+  },
+  "sensitivity_values": {
+    "initial_grid_size": [
+      5,
+      7,
+      13
+    ],
+    "max_depth": [
+      4,
+      6,
+      10
+    ],
+    "endpoint_refinement_levels": [
+      0,
+      2,
+      4,
+      8
+    ],
+    "min_interval": [
+      0.0005,
+      0.002,
+      0.005
+    ],
+    "near_zero_ratio": [
+      0.1,
+      0.5
+    ]
+  },
+  "n_obs": 800,
+  "dense_grid_size": 5001,
+  "n_cases": 216,
+  "n_specifications": 16,
+  "elapsed_seconds": 178.69573799998034
+}
