@@ -20,7 +20,8 @@ experiments for the other research papers until this one reaches Phase 7.
 - [x] add synthetic multimodal tests;
 - [x] implement exact \(S=1\leftrightarrow\lambda=\infty\) semantics;
 - [x] verify exact \(S=0\) and limiting \(S=1\) objectives;
-- [ ] benchmark numerical conditioning near both endpoints.
+- [ ] benchmark numerical conditioning near both endpoints;
+- [x] canonicalize the theoretical nullity of \(D_d^\top D_d\) to remove LAPACK/platform noise at large \(\lambda\).
 
 **Stop condition:** endpoint behavior and interior derivatives are numerically
 consistent to frozen tolerances.
@@ -45,8 +46,8 @@ frozen tolerances, including adversarial near-flat cases.
 - [x] create an initial reproducible benchmark runner;
 - [x] replace the old mixed-paper runner with an active-paper runner under
   experiments/numerical_smoothness_selection/;
-- [ ] run smoke benchmark;
-- [ ] run quick benchmark;
+- [x] run smoke benchmark;
+- [ ] rerun quick benchmark after nullspace canonicalization (the first quick run is diagnostic/pre-fix);
 - [ ] inspect every disagreement with the dense reference;
 - [ ] run paper-scale benchmark.
 
