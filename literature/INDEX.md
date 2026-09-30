@@ -408,3 +408,262 @@
   - 3.3. Stationarity and Cross-validation
   - 3.4. Cross-validation and Related Methods for Time Series
   - 4. Design of the Experiments
+
+
+### ROBERT J. HODRICK EDWARD C. PRESCOTT
+
+- Markdown: `extracted/post-war.md`
+- PDF: `pdf/post-war.pdf`
+- Extraction: `hybrid`
+- Quality: `excellent` (106.0)
+- References: `references/post-war.references.md`
+- Sections:
+  - 1. DECOMPOSITION PROCEDURE
+  - 2. VARIABILITY AND COVARIABILITY OF THE SERIES
+  - Aggregate Demand Components
+  - Factors of Production
+  - TABLE 3
+  - Monetary Variables
+  - 3. SERIAL CORRELATION PROPERTIES OF DATA SERIES
+  - APPENDIX
+  - TABLE A3
+
+### Theoretical Computer Science
+
+- Markdown: `extracted/1-s2.0-S0304397502001809-main.md`
+- PDF: `pdf/1-s2.0-S0304397502001809-main.pdf`
+- Extraction: `hybrid`
+- Quality: `excellent` (108.0)
+- References: `references/1-s2.0-S0304397502001809-main.references.md`
+- Sections:
+  - Smoothness prior approach to explore mean structure in large-scale time series
+  - Abstract
+  - 1. Introduction
+  - 2. Smoothness prior modeling
+  - 2.1. Flexible semi-parametric modeling
+  - 2.2. Automatic parameter determination via Bayesian interpretation
+  - 2.3. Time series interpretation and state space modeling
+  - 2.4. Modeling of space-time data
+  - 3. Applications
+
+### Exchange rate predictability: Multi-State Markov-Switching model and trend with controlled smoothness
+
+- Markdown: `extracted/6+-+Alejandro+Islas+e+Juan+A.+Zumaya+GALVÁN+(3).md`
+- PDF: `pdf/6+-+Alejandro+Islas+e+Juan+A.+Zumaya+GALVÁN+(3).pdf`
+- Extraction: `full-page-ocr`
+- Quality: `excellent` (108.0)
+- References: `references/6+-+Alejandro+Islas+e+Juan+A.+Zumaya+GALVÁN+(3).references.md`
+- Sections:
+  - Alejandro Islas CAMARGO1
+  - Juan A. Zumaya GALVÁN2
+  - Previsibilidade da taxa de câmbio: modelo de Markov-Switching multi-estado e tendência com suavidade controlada
+  - Resumo
+  - 1. Introduction
+  - 2. Literature review
+  - 3. The Method
+  - 3.1. Markov-Switching model
+  - 3.2. Underlying trend with controlled smoothness
+
+### A cross-validatory method for dependent data
+
+- Markdown: `extracted/A_cross-validatory_method_for_dependent_data.md`
+- PDF: `pdf/A_cross-validatory_method_for_dependent_data.pdf`
+- Extraction: `hybrid`
+- Quality: `excellent` (108.0)
+- References: `references/A_cross-validatory_method_for_dependent_data.references.md`
+- Sections:
+  - EDMOND CHOW AND DEBORAH NOLAN
+  - SUMMARY
+  - 1. INTRODUCTION
+  - 2. THE TECHNIQUE
+  - 3. EXAMPLES
+  - 4. SIMULATION STUDY
+  - xi= θ0 + θ1xi−1+θ2xi−2.
+  - ACKNOWLEDGEMENT
+
+### Predicting Excess Stock Returns Out of Sample: Can Anything Beat the Historical Average?
+
+- Markdown: `extracted/Campbell_Predicting.md`
+- PDF: `pdf/Campbell_Predicting.pdf`
+- Extraction: `hybrid`
+- Quality: `excellent` (108.0)
+- Sections:
+  - Citation
+  - Published version
+  - Link
+  - Terms of use
+  - Accessibility
+  - Share Your Story
+  - Predicting Excess Stock Returns Out of Sample:
+  - Can Anything Beat the Historical Average?
+  - 1 Theoretical Restrictions on Predictive Regressions
+
+### COMPUTATIONAL STATISTICS & DATA ANALYSIS
+
+- Markdown: `extracted/Efficient_computation_for_Whittaker-Henderson_smoo.md`
+- PDF: `pdf/Efficient_computation_for_Whittaker-Henderson_smoo.pdf`
+- Extraction: `full-page-ocr`
+- Quality: `excellent` (98.0)
+- References: `references/Efficient_computation_for_Whittaker-Henderson_smoo.references.md`
+- Sections:
+  - Available online at www.sciencedirect.com
+  - Efficient computation for Whittaker-Henderson smoothing
+  - Abstract
+  - 1. Introduction
+  - 2. Factorization algorithm
+  - 3. State space algorithm
+  - 4. Truncated factorization algorithm
+  - 5. Algorithm performance
+  - 6. Frequency response of the steady-state smoother
+
+### BY JAMES D. HAMILTON1
+
+- Markdown: `extracted/Hamilton1989.md`
+- PDF: `pdf/Hamilton1989.pdf`
+- Extraction: `hybrid`
+- Quality: `excellent` (98.0)
+- Sections:
+  - 1. INTRODUCTION AND SUMMARY
+  - 2. A MARKOV MODEL OF TREND
+  - 3. FORECASTING AND PRESENT VALUE CALCULATIONS
+  - 3.1. Markov Trend in Levels
+  - 3.2. Markov Trend in Logs
+  - 4.1. Stochastic Specification
+  - 4.2. Filtering
+  - 4.3. Smoothing
+  - 5. MAXIMUM LIKELIHOOD ESTIMATES FOR U.S. GNP DATA
+
+### Automated Kernel Smoothing of Dependent Data by using Time Series Cross-Validation
+
+- Markdown: `extracted/jrsssb_56_3_529.md`
+- PDF: `pdf/jrsssb_56_3_529.pdf`
+- Extraction: `full-page-ocr`
+- Quality: `excellent` (106.0)
+- References: `references/jrsssb_56_3_529.references.md`
+- Sections:
+  - SUMMARY
+  - 1. INTRODUCTION
+  - 2. TIME SERIES CROSS-VALIDATION
+  - 3. THEORETICAL RESULTS
+  - 4. SIMULATION STUDY AND DATA ANALYSIS
+  - ACKNOWLEDGEMENTS
+
+### Appendix to "Low Frequency Filtering and Real Business Cycles,
+
+- Markdown: `extracted/LFF-Appendix.md`
+- PDF: `pdf/LFF-Appendix.pdf`
+- Extraction: `full-page-ocr`
+- Quality: `excellent` (98.0)
+- Sections:
+  - A.2. Inverting F(B) and Related Matters
+  - Appendix A
+  - A.3. Coefficients in the Growth Filter
+  - Appendix B
+  - Matching the HP Cyclical Filter
+
+### Abstract
+
+- Markdown: `extracted/OutofSampleTests2000.md`
+- PDF: `pdf/OutofSampleTests2000.pdf`
+- Extraction: `hybrid`
+- Quality: `excellent` (108.0)
+- References: `references/OutofSampleTests2000.references.md`
+- Sections:
+  - 1. Introduction
+  - Out-of-sample tests of forecasting accuracy: an analysis and review
+  - Leonard J. Tashman
+  - 2. In-sample versus out-of-sample evaluation
+  - 3. Fixed-origin versus rolling-origin procedures
+  - 3.1. Fixed - origin evaluations
+  - 3.2. Rolling - origin evaluations
+  - 3.3. Analysis of forecasting errors by lead time
+  - 4. Issues in implementing out-of-sample evaluations
+
+### FORECASTING REMITTANCES TO MEXICO WITH A MULTI-STATE MARKOVSWITCHING MODEL APPLIED TO THE TREND WITH CONTROLLED 3.
+
+- Markdown: `extracted/rjef1_2019p38-56.md`
+- PDF: `pdf/rjef1_2019p38-56.pdf`
+- Extraction: `hybrid`
+- Quality: `excellent` (106.0)
+- References: `references/rjef1_2019p38-56.references.md`
+- Sections:
+  - SMOOTHNESS
+  - A. ISLAS 1 Víctor M. GUERRERO 2 Eliud SILVA 3
+  - Abstract
+  - 1. Introduction
+  - (Millions of U.S. Dollars)
+  - 2. Statistical Methodology
+  - 2.1 The Markov-Switching Model
+  - 2.2 Underlying Trend with Controlled Smoothness
+  - 3. Empirical Results
+
+### A Data-Driven Method to Determine the Smoothing Parameter in the Hodrick-Prescott Filter
+
+- Markdown: `extracted/s10614-026-11378-9 (2).md`
+- PDF: `pdf/s10614-026-11378-9 (2).pdf`
+- Extraction: `hybrid`
+- Quality: `excellent` (106.0)
+- References: `references/s10614-026-11378-9 (2).references.md`
+- Sections:
+  - Abstract
+  - 1 Introduction
+  - 2 Two versions of Hodrick-Prescott detrending
+  - 3 Generation of the artificial data
+  - 3.1 Three growth regimes
+  - 3.2 Justifying our non-standard approach to the cyclical component
+  - 3.3 The cyclical component
+  - 3.4 Calibration of the numerical coefficients
+  - 4 Choosing the smoothing parameters
+
+### Whittaker-Henderson Smoothing Revisited: A Modern Statistical Framework for Practical Use
+
+- Markdown: `extracted/WH_revisited_2025_09_03_with_appendix.md`
+- PDF: `pdf/WH_revisited_2025_09_03_with_appendix.pdf`
+- Extraction: `full-page-ocr`
+- Quality: `excellent` (108.0)
+- References: `references/WH_revisited_2025_09_03_with_appendix.references.md`
+- Sections:
+  - Table of contents
+  - Notations
+  - 1 Introduction
+  - 1.1 A brief reminder of WH smoothing mathematical formulation
+  - The one-dimensional case
+  - The two-dimensional case
+  - An explicit solution
+  - 1.2 Structure of the paper
+  - How to measure uncertainty in smoothing results?
+
+### Whittaker-Henderson smoothing revisited: A modern statistical framework for practical use
+
+- Markdown: `extracted/whittaker-henderson-smoothing-revisited-a-modern-statistical-framework-for-practical-use.md`
+- PDF: `pdf/whittaker-henderson-smoothing-revisited-a-modern-statistical-framework-for-practical-use.pdf`
+- Extraction: `full-page-ocr`
+- Quality: `excellent` (108.0)
+- References: `references/whittaker-henderson-smoothing-revisited-a-modern-statistical-framework-for-practical-use.references.md`
+- Sections:
+  - Abstract
+  - Notations
+  - 1. Introduction
+  - 2 Guillaume Biessy
+  - 1.1. A brief reminder of WH smoothing mathematical formulation
+  - The two-dimensional case
+  - An explicit solution
+  - 1.2. Structure of the paper
+  - How to measure uncertainty in smoothing results?
+
+### Forecasting Exchange Rates: The Multi-State Markov-Switching Model with Smoothing
+
+- Markdown: `extracted/wp_09_115.md`
+- PDF: `pdf/wp_09_115.pdf`
+- Extraction: `hybrid`
+- Quality: `excellent` (108.0)
+- Sections:
+  - Abstract
+  - 1. Introduction
+  - 2. Model Specification
+  - 2.1 The Standard Markov-Switching Model
+  - 2.2 The Markov-Switching Model with Smoothing
+  - 2.2.1 The HP-Filter
+  - 2.2.2 The Smoothing Parameter  of the HP-Filter
+  - 2.2.3 The End-of-Sample Problem of the HP-Filter
+  - 3. Estimation
