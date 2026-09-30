@@ -59,6 +59,7 @@ class PreparedRollingPureForecastObjective:
     targets: np.ndarray
     n_origins: int
     n_scored: int
+    nullity: int
 
     def evaluate(self, lambda_: float) -> RollingForecastLossDerivatives:
         """Evaluate pooled loss and first two derivatives at one lambda."""
@@ -68,9 +69,15 @@ class PreparedRollingPureForecastObjective:
             raise ValueError("lambda_ must be nonnegative.")
 
         delta = self.eigvals
-        alpha = 1.0 / (1.0 + lambda_ * delta)
-        first_weight = -delta * alpha**2
-        second_weight = 2.0 * delta**2 * alpha**3
+        if np.isinf(lambda_):
+            alpha = np.zeros_like(delta)
+            alpha[: self.nullity] = 1.0
+            first_weight = np.zeros_like(delta)
+            second_weight = np.zeros_like(delta)
+        else:
+            alpha = 1.0 / (1.0 + lambda_ * delta)
+            first_weight = -delta * alpha**2
+            second_weight = 2.0 * delta**2 * alpha**3
 
         prediction = (
             (self.spectral_history * alpha) @ self.spectral_to_future.T
@@ -194,6 +201,7 @@ def prepare_rolling_pure_forecast_objective(
         targets=targets,
         n_origins=len(split_list),
         n_scored=int(targets.size),
+        nullity=int(order),
     )
 
 
