@@ -11,6 +11,21 @@ Selection and optimization
 
 .. autofunction:: trend_estimation.find_stationary_points_log_lambda
 
+.. autofunction:: trend_estimation.find_stationary_points_smoothness
+
+.. autofunction:: trend_estimation.select_spaced_smoothness_minima
+
+.. autofunction:: trend_estimation.sweep_spaced_smoothness_minima
+
+.. autoclass:: trend_estimation.SmoothnessStationaryPoint
+   :members:
+
+.. autoclass:: trend_estimation.SmoothnessStationaryPointSearchResult
+   :members:
+
+.. autoclass:: trend_estimation.SmoothnessCandidateSet
+   :members:
+
 .. autoclass:: trend_estimation.StationaryPoint
    :members:
 
