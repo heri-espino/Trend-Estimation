@@ -9819,3 +9819,5384 @@ considerable discussion. That the phenomenon is more pronounced in the lower fre
 <!-- END SOURCE 10/40: Christiano_2003_band-pass-filter.md -->
 
 ---
+
+<!-- BEGIN SOURCE 11/40: Cortes-Toto_2017_trend-smoothness-optimality-criteria.md -->
+
+# Source: `Cortes-Toto_2017_trend-smoothness-optimality-criteria.md`
+
+---
+id: "Cortes-Toto_2017_trend-smoothness-optimality-criteria"
+source_pdf: "../pdf/Cortes-Toto_2017_trend-smoothness-optimality-criteria.pdf"
+source_filename: "Cortes-Toto_2017_trend-smoothness-optimality-criteria.pdf"
+format: "academic-paper"
+extraction_profile: "text-math-tables-high-fidelity"
+extraction_mode: "hybrid"
+extraction_quality: "excellent"
+extraction_score: 106.0
+visual_assets: "disabled"
+references_file: "../references/Cortes-Toto_2017_trend-smoothness-optimality-criteria.references.md"
+---
+
+<!-- p:1 -->
+
+### Communications in Statistics - Simulation and Computation
+
+ISSN: 0361-0918 (Print) 1532-4141 (Online) Journal homepage: http://www.tandfonline.com/loi/lssp20
+
+## Trend smoothness achieved by penalized least squares with the smoothing parameter chosen by optimality criteria
+
+##### Daniela Cortés-Toto, Víctor M. Guerrero &amp; Hortensia J. Reyes
+
+To cite this article: Daniela Cortés-Toto, Víctor M. Guerrero &amp; Hortensia J. Reyes (2017) Trend smoothness achieved by penalized least squares with the smoothing parameter chosen by optimality criteria, Communications in Statistics - Simulation and Computation, 46:2, 1492-1507, DOI: 10.1080/03610918.2015.1005236
+
+To link to this article:
+
+[http://dx.doi.org/10.1080/03610918.2015.1005236](http://dx.doi.org/10.1080/03610918.2015.1005236)
+
+CrossMark Accepted author version posted online: 01 Apr 2015. Published online: 01 Apr 2015.
+
+[Submit your article to this journal](http://www.tandfonline.com/action/authorSubmission?journalCode=lssp20&show=instructions)
+
+Article views: 26
+
+[View related articles](http://www.tandfonline.com/doi/mlt/10.1080/03610918.2015.1005236)
+
+[View Crossmark data](http://crossmark.crossref.org/dialog/?doi=10.1080/03610918.2015.1005236&domain=pdf&date_stamp=2015-04-01)
+
+Full Terms &amp; Conditions of access and use can be found at
+
+<!-- p:2 -->
+
+#### Trend smoothness achieved by penalized least squares with the smoothing parameter chosen by optimality criteria
+
+Daniela Cortés-Toto a , Víctor M. Guerrero b , and Hortensia J. Reyes a
+
+a Facultad de Ciencias Físico Matemáticas, Benemérita Universidad Autónoma de Puebla. Puebla, Puebla, México; b Departamento de Estadística, Instituto Tecnológico Autónomo de México (ITAM). México, D.F., México
+
+## ABSTRACT
+
+This work presents a study about the smoothness attained by the methods more frequently used to choose the smoothing parameter in the context of splines: Cross Validation, Generalized Cross Validation, and corrected Akaike and Bayesian Information Criteria, implemented with Penalized Least Squares. It is concluded that the amount of smoothness strongly depends on the length of the series and on the type of underlying trend, while the presence of seasonality even though statistically significant is less relevant. The intrinsic variability of the series is not statistically significant and its effect is taken into account only through the smoothing parameter.
+
+## 1. Introduction
+
+When analyzing time series, it is usually interesting to study its trend component, which can be interpreted as an underlying element that reflects the smooth long-term behavior of the series; see Kaiser and Maravall (2001) and White and Granger (2011) for some references on this topic. A model to represent the observed series that encompasses the trend component has the form of an additive decomposition expressed as follows:
+
+$$y _ { t } = \tau _ { t } + \xi _ { t } + \eta _ { t } , \text { for } t = 1 , \dots , N ,$$
+
+where yt represents the observed values of the series at time t , τ t is its trend, η t is a random noise, and ξ t represents the seasonality of the series, if present. In what follows, the noise is assumed to be nonautocorrelated, with E (η t ) = 0 and Var (η t ) = σ 2 η for all t . In this section we assume that there are no seasonal effects, but the simulation will take those effects into account as a form of model misspecification. Representation (1) does not necessarily imply that we consider it a model for the true data-generating process, but only as a means to capture the empirical regularities typically observed in practice.
+
+Penalized Least Squares (PLS) is a method to estimate the trend of a time series. It seeks to minimize a function of sums of squares that considers fidelity to the data, plus a penalization for the lack of smoothness. This function includes a smoothing parameter that trades off
+
+## ARTICLE HISTORY
+
+Received  October  Accepted  January 
+
+####### KEYWORDS
+
+Hodrick-Prescott filter; Penalized least squares; Percentage of smoothness; Smoothing parameter; Time series decomposition; Trend estimation
+
+MATHEMATICSSUBJECT
+
+CLASSIFICATION
+
+M
+
+
+<!-- p:3 -->
+
+
+goodness of fit against smoothness. Thus, the problem is defined as follows:
+
+$$\text {mises or not against smoothness.  This, the problem is defined as follows:} \\ \min _ { \{ \tau _ { t } \} } \left [ \sum _ { t = 1 } ^ { N } ( y _ { t } - \tau _ { t } ) ^ { 2 } + \lambda \sum _ { t = d + 1 } ^ { N } ( \nabla ^ { d } \tau _ { t } - \mu ) ^ { 2 } \right ] , \text { with } \lambda > 0 , \quad ( 2 ) \\ \text {are } d \text { is nonnegative integer} \text { such } \text {by the onevalst $D^{q}$} \text { is the difference operator of order} \text { for } \text {order}$$
+
+where d is a nonnegative integer chosen by the analyst, ∇ d τ t is the difference operator of order d applied to { τ t } , that is, ∇ 0 τ t = τ t , ∇ τ t = τ t - τ t - 1 , ∇ 2 τ t = ∇ ( ∇ τ t ) , and so forth, while μ is a reference level for {∇ d τ t } and λ is the smoothing parameter. If λ → 0, there is basically no smoothness and the trend gets closer to the observed series, i.e., the fit is maximized by the observed data. On the other hand, by allowing λ →∞ priority is given to smoothness over fit and the series tends to behave like a polynomial expressed as ∇ d τ t = μ .
+
+For d = 1 and d = 2, the PLS solutions with μ = 0 are known as Exponential Smoothing filter and Hodrick-Prescott (HP) filter, respectively, e.g., King and Rebelo (1993) and Hodrick and Prescott (1997). The former filter is used to smooth time series whose level changes along time, as it happens with financial series. The latter is employed in economics to smooth a time series on the assumption that its trend is locally linear. The usual application of the HP filter is for the analysis of economic cycles, since the cyclical component can be estimated as the difference between the observed series and its estimated trend; for details see Kaiser and Maravall (2001).
+
+In an earlier use of (2), Whittaker (1923) and Henderson (1924) posed the minimization problem when smoothing actuarial data with μ = 0 and d = 2 or d = 3. When data is not equidistant, the problem has also arisen in a more general context, known as smoothing spline functions; see Wahba (1990).
+
+The problem behind the HP filter gets solved by finding the vector τ that minimizes the function
+
+$$M ( \lambda ) = ( \mathbf y - \tau ) ^ { \prime } ( \mathbf y - \tau ) + \lambda ( K _ { 2 } \tau ) ^ { \prime } ( K _ { 2 } \tau ) ,$$
+
+with y = ( y 1 , . . . , yN ) ′ and τ = (τ 1 , . . . , τ N ) ′ . Where λ is fixed and K 2 is the matrix representation of the second-order difference operator, defined as the following matrix of size ( N - 2 ) × N
+
+The solution is given by
+
+where
+
+is known as the smoothing matrix.
+
+Ageneralsolution for the minimization problem (2) with d ≥ 0and μ = 0is found in Kitagawa and Gersch (1996), where it is focused from a least squares computational perspective. Instead, King and Rebelo (1993) employed optimal linear filtering tools to obtain essentially the same results for d = 1 and d = 2. A slightly more general solution was given by Guerrero (2007), where μ ̸= 0 was considered in problem (2).
+
+$$K _ { 2 } = \begin{pmatrix} 2 ) \times N & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & &$$
+
+$$\widehat { \tau } = S _ { \lambda } y$$
+
+$$S _ { \lambda } = ( I _ { N } + \lambda K _ { 2 } ^ { \prime } K _ { 2 } ) ^ { - 1 }$$
+
+
+<!-- p:4 -->
+
+
+and
+
+The solution found by PLS for d = 2 keeps a close resemblance with the smoothing cubic spline estimator, since the function to be minimized within a cubic spline context is
+
+$$\sum _ { i = 1 } ^ { N } \{ y _ { i } - \widehat { f } ( x _ { i } ) \} ^ { 2 } + \lambda \int _ { a } ^ { b } \{ \widehat { f } ^ { ( 2 ) } ( x ) \} ^ { 2 } d x, \text { with } \lambda > 0 , \\ \intertext { f i s an unknown regression function to be estimated from the pairs of observations }$$
+
+where f is an unknown regression function to be estimated from the pairs of observations ( xi , yi ) , i = 1 , . . . , N , related as
+
+$$y _ { i } = f ( x _ { i } ) + \epsilon _ { i } , \text { with } E ( \epsilon _ { i } ) = 0$$
+
+$$f ( x ) = E ( y | x ) , \\$$
+
+while the ε i are independent random errors with common variance σ 2 .
+
+Weinert (2012) developed algorithms to calculate the smoothing cubic spline based on Cholesky's decomposition and considered the function (2) with d = 2 and μ = 0, as a discretization of (6). This fact turns out to be important, since the usual methods to choose the smoothing parameter have been developed in the context of splines. Such is the case of Cross Validation (CV) and Generalized Cross Validation (GCV), introduced by Craven and Wahba (1979). The said methods propose to choose the smoothing parameter by minimizing a criterion that approximates the Mean Square Error (MSE). Other criteria commonly used to select the smoothing parameter are: Akaike Information Criterion (AIC; see Akaike 1973), its biascorrected version (AICc) proposed by Hurvich et al. (1998), and the Bayesian Information Criterion (BIC; see Schwarz 1978). These methods will be briefly described in the following section.
+
+Guerrero (2007) proposed to follow a controlled smoothness approach with the aid of an index that measures smoothness and serves to choose the smoothing parameter. The smoothness index can be expressed as a percentage and is interpreted as a desired percentage of smoothnessfortheestimated trend; this method offers flexibility to the user, since the smoothness index depends only on the number of observations and the smoothing parameter.
+
+The objective of this article is to analyze the effects of some factors assumed to affect the smoothing parameter selection, in terms of the smoothness attained by the aforementioned methods within the context of PLS, that is, CV , GCV , AICc, and BIC. Four factors are considered, with two levels each: (1) type of trend (linear or nonlinear); (2) seasonality in the series (absent or present); (3) variability of the data (high or low); and (4) number of observations (small sample or large sample). Several time series are simulated based on the additive decomposition model, reproducing all possible combinations that the factors and their levels can take on. Afterwards, the CV , GCV , AICc, and BIC methods are used in the context of PLS to choose the smoothing parameter, and the corresponding smoothed series is then obtained. The experiment carried out is a 2 4 factorial design with one and two replicates for each method, and the response variable is the smoothness achieved, as measured by the smoothness index. Thus, this work is motivated by the idea of measuring smoothness, since the methods for choosing the smoothing parameter have already been studied and compared in other contexts, e.g., Aydin and Tuzemen (2012) and Lee (2003).
+
+This article is organized as follows. Section 2 presents the methods used for choosing the smoothing parameter, while Section 3 is devoted to the specification of the simulated time series, the implementation of the methods in the PLS context, and to describe the factorial design. The results of the analysis and some graphical summaries are included in Section 4.
+
+
+<!-- p:5 -->
+
+
+Finally, Section 5 presents some conclusions; for instance: all interactions among the factors were insignificant, so that the main effects can be interpreted in a direct and easy way. The type of trend was found significant at the 1% level and its effect diminishes the smoothness whenmovingfromlinear to nonlinear. The sample size was also significant at the 1% level and smoothness increases when the sample size grows larger. Seasonality was significant at the 5% level and its effect increases the amount of smoothness. The variability effect was insignificant even at the 10% level.
+
+## 2. AReview of methods to choose the parameter λ
+
+The smoothing parameter λ plays a fundamental role in the solution of the PLS problem, because it serves to trade off goodness of fit to the observed data against trend smoothness, in such a way that the estimated trend depends to a great extent on the selection of that parameter. The range of possibilities for choosing the smoothing parameter is wide and here we briefly describe some of the most frequently used methods. We start with the controlled smoothness method and then present some methods that could be considered as classical, within the context of splines: CV , GCV , AIC, AICc, and BIC. Later on, the AIC method will be discarded because it did not produce reliable results in some situations.
+
+### 2.1. Controlled smoothness approach
+
+Guerrero (2007) presented a method to estimate trends within the PLS framework, allowing the user to impose beforehand a desired percentage of smoothness for the trend. A smoothness index related in a direct way with the parameter λ is first defined, then by fixing the percentage of smoothness we implicitly select the value of the smoothing parameter. The smoothness index is given by
+
+$$\text {thickness index is given by} & & \left \{ \lambda ( 1 + \lambda ) ^ { - 1 } & \text { if } d = 0 \\ S _ { d } ( \lambda ; N ) = \begin{cases} \lambda ( 1 + \lambda ) ^ { - 1 } & \text { if } d = 0 \\ 1 - t r [ ( I _ { N } + \lambda K _ { d } ^ { \prime } K _ { d } ) ^ { - 1 } ] / N & \text { if } d \geq 1 \\ \end{cases} \\ \intertext { t r ( \cdot ) denotes the trace of a matrix. } \text {is index depends only on the values of } \lambda \text { and } N , \text { since } d \text { is supposed to be fixed before}$$
+
+where tr ( · ) denotes the trace of a matrix.
+
+This index depends only on the values of λ and N , since d is supposed to be fixed beforehand, for example d = 2 with the HP filter that will be considered in the simulation study. Notice that Sd (λ ; N ) → 0 when λ → 0 and Sd (λ ; N ) → 1 - d N when λ →∞ ; this result follows by expressing the trace involved in (9) as a function of the eigenvalues of K ′ d Kd , d of which are zero, as shown by Eilers and Marx (1996). Therefore, given a value of λ we can calculate the amount of smoothness to be achieved with that selection. The index expressed in percentage terms is interpreted as a percentage of smoothness; thus the value of λ can be decided by first fixing a desired percentage of smoothness and then obtaining λ as the value that satisfies such a condition.
+
+To deduce the smoothness index, Guerrero (2007) employed the statistical solution presented next for the PLS problem. Consider the following model for { τ t }
+
+$$\nabla ^ { d } \tau _ { t } & = \mu + \varepsilon _ { t } \text { for } t = d + 1 , \dots , N , \\ \\ \intertext { t h e r } \varphi & = \begin{matrix} \nabla ^ { d } \tau _ { t } = \mu + \varepsilon _ { t } \text { for } t = d + 1 , \dots , N , \\ \end{matrix}$$
+
+with { ε t } a sequence of noncorrelated random errors, identically distributed with mean zero and Var (ε t ) = σ 2 ε .
+
+The following arrays are defined: Z = ( Z 1 , . . . , ZN ) ′ , τ = (τ 1 , . . . , τ N ) ′ , and η = (η 1 , . . . , η N ) ′ ; these are N × 1 vectors. ε = (ε d + 1 , . . . , ε N ) ′ and 1 N - d = ( 1 , . . . , 1 ) ′ are
+
+
+<!-- p:6 -->
+
+
+( N - d ) × 1 vectors and Kd is the matrix representation of the difference operator ∇ d , given by
+
+$$K _ { d } = \left ( \begin{array} { c c c c } 0 & & k _ { d } & & 0 _ { N - d - 1 } \\ & & & k _ { d } & 0 _ { N - d - 2 } \\ & & 0 _ { N - d - 1 } & & k _ { d } \end{array} \right ) .$$
+
+$$k _ { d } = \left ( ( - 1 ) ^ { d } \left ( \begin{matrix} d \\ d \end{matrix} \right ) , ( - 1 ) ^ { d - 1 } \left ( \begin{matrix} d \\ d - 1 \end{matrix} \right ) , \dots , ( - 1 ) \left ( \begin{matrix} d \\ 1 \end{matrix} \right ) , \left ( \begin{matrix} d \\ 0 \end{matrix} \right ) \right )$$
+
+This is a matrix of size ( N - d ) × N , with k d the 1 × ( d + 1 ) vector given by
+
+whose elements are binomial coefficients, i.e., ( d i ) = d ! / [ ( d - i ) ! i !] for i = 0 , ..., d and 0 m is a zero vector of size m × 1.
+
+The vector of observed data Z can be expressed as follows:
+
+$$Z & = \tau + \eta , \\$$
+
+where the trend component is represented by
+
+$$K _ { d } \tau = \mu 1 _ { N - d } + \varepsilon , \\$$
+
+with μ a scalar that denotes the level of the differenced trend, while η and ε are random vectors with E ( η ) = 0 N , Var ( η ) = σ 2 η V , E ( ε ) = 0 N - d , Var ( ε ) = σ 2 ε IN - d , and E ( ηε ′ ) = 0, where V is a known symmetric positive definite matrix.
+
+The linear estimator, with minimum MSE of the trend, is given by
+
+with MSE matrix
+
+$$\widehat { \tau } = ( V ^ { - 1 } + \lambda K _ { d } ^ { \prime } K _ { d } ) ^ { - 1 } ( V ^ { - 1 } Z + \lambda \mu K _ { d } ^ { \prime } \mathbf 1 _ { N - d } ) , \\ \text {matrix} \\ \Sigma \equiv \sigma ^ { 2 } ( V ^ { - 1 } + \lambda K _ { d } ^ { \prime } K _ { d } ) ^ { - 1 }$$
+
+$$\Sigma = \sigma _ { \eta } ^ { 2 } ( V ^ { - 1 } + \lambda K _ { d } ^ { \prime } K _ { d } ) ^ { - 1 } , \\ \intertext { \Sigma } \Sigma = \sigma _ { \eta } ^ { 2 } ( V ^ { - 1 } + \lambda K _ { d } ^ { \prime } K _ { d } ) ^ { - 1 } , \\$$
+
+where λ = σ 2 η /σ 2 ε , as shown by Guerrero (2007). Moreover, the precision matrix of ̂ τ can be written as
+
+$$\Sigma ^ { - 1 } = \sigma _ { \eta } ^ { - 2 } V + \sigma _ { \varepsilon } ^ { - 2 } K _ { d } ^ { \prime } K _ { d } , \\ \\ \sigma _ { \varepsilon } + \sigma _ { \eta } = \sigma _ { \eta } ^ { - 1 } V + \sigma _ { \varepsilon } ^ { - 2 } K _ { d } ^ { \prime } K _ { d } ,$$
+
+where we see that total precision is the sum of two precision matrices, σ - 2 η V associated with model (11) for the observations and σ - 2 ε K ′ d Kd associated with model (12) for the smoothness component of the series. From (15) it is possible to measure the proportion of precision attributable to the smoothness component, with respect to total precision. This can be done with the aid of an index originally derived by Theil (1963) to quantify the proportion of a matrix P in ( P + Q ) - 1 , where P and Q are positive definite matrices of size N × N . The resulting measure is
+
+$$\Lambda ( P ; P + Q ) = t r [ P ( P + Q ) ^ { - 1 } ] / N . \\$$
+
+Theil demonstrated that this measure of relative precision takes on values in the interval [0,1], is invariant under linear nonsingular transformations of the variable involved, it behaves linearly, and Lambda1( P ; P + Q ) + Lambda1( Q ; P + Q ) = 1.
+
+The smoothness index (9) has been used to select the smoothing parameter when estimating trends for economic time series in Guerrero (2008) and for financial time series in Guerrero and Galicia-Vázquez (2010).
+
+
+<!-- p:7 -->
+
+
+### 2.2. Choosing the smoothing parameter in the context of splines
+
+There is a vast bibliography on the topic of splines, e.g., Wahba (1990) and Green and Silverman (1994), among others. The methods for choosing the smoothing parameter, presented next, were introduced and are mainly implemented in the context of smoothing splines.
+
+####### ... Cross validation and generalized cross validation
+
+Craven and Wahba (1979) introduced CV and GCV for smoothing cubic splines, where λ is selected in such a way that the Residual Sum of Squares (RSS) is minimized. Thus, the CV and GCV seek to minimize the following score functions of λ ,
+
+$$C V ( \lambda ) = \sum _ { i = 1 } ^ { N } \left ( \frac { y _ { i } - \widehat { f } ( x _ { i } ) } { 1 - S _ { \lambda , i i } } \right ) ^ { 2 } \\ \sum _ { i = 1 } ^ { N } \left ( \sum _ { \nu _ { i } = \widehat { f } ( x _ { i } ) } \widehat { x } _ { i } \right ) ^ { 2 }$$
+
+$$\frac { \sum _ { i = 1 } ^ { N } \left ( 1 - S _ { \lambda , i i } \right ) } { G C V ( \lambda ) = \sum _ { i = 1 } ^ { N } \left ( \frac { y _ { i } - \widehat { f } ( x _ { i } ) } { 1 - N ^ { - 1 } t r ( S _ { \lambda } ) } \right ) ^ { 2 } , } \\ \intertext { i t h a n t r y i n g t h e d i m a l o f t h e a m o o t h i n g m a t r i v i n g o w n o n d i n g t o ( F ) }$$
+
+where S λ, ii is the i th entry in the diagonal of the smoothing matrix corresponding to (5), for the case of splines, i.e.,
+
+$$S _ { \lambda } = ( I _ { N } + \lambda K _ { 2 } ^ { \prime } P ^ { \prime } K _ { 2 } ) ^ { - 1 } ,$$
+
+where P is a Toeplitz tridiagonal symmetric matrix, with values 2/3 and 1/6 in the diagonal and subdiagonal, respectively.
+
+####### ... Akaike, corrected akaike, and bayesian information criteria
+
+AIC and BIC are similar in form and both try to achieve a balance between the logged RSS and the degrees of freedom, which are penalized differently by each method. They search for the smoothing parameter that minimizes the following functions:
+
+$$A I C ( \lambda ) & = \log \{ R S S ( \lambda ) \} + 2 d f ( \lambda ) / N , \\ B I C ( \lambda ) & = \log \{ R S S ( \lambda ) \} - \log ( N ) + d f ( \lambda ) \log ( N ) / N$$
+
+$$B I C ( \lambda ) = l o g \{ R S S ( \lambda ) \} - l o g ( N ) + d f ( \lambda ) l o g ( N ) / N ,$$
+
+where log denotes natural logarithm and
+
+$$R S S ( \lambda ) = \sum _ { i = 1 } ^ { N } \{ y _ { i } - \widehat { f } ( x _ { i } ; \lambda ) \} ^ { 2 } \\ \text {g the nonparametric estimation at the point}$$
+
+with ̂ f ( xi ; λ) representing the nonparametric estimation at the point xi that arises when using λ , whereas d f (λ) denotes the degrees of freedom of the smoothing, i.e., the trace of the smoothing matrix (5).
+
+Abias corrected form of the AIC criterion leads to AICc, which corrects the penalization of the AIC to adjust it for bias. Hurvich et al. (1998) demonstrated the superiority of AICc over AICinsmall samples and justified the use of AICc for nonlinear regression and autoregressive models; see also Cavanaugh (1997). The score function to be minimized now is
+
+$$A I C c ( \lambda ) = \log \{ R S S ( \lambda ) \} + \frac { 2 d f ( \lambda ) + 1 } { N - d f ( \lambda ) - 2 } .$$
+
+
+<!-- p:8 -->
+
+## 3. Asimulation study with emphasis on smoothness
+
+This section describes the model specifications considered by the simulations. The computational implementation was carried out in R.
+
+### 3.1. Time series simulation
+
+The time series were simulated with an additive decomposition model of type (1). The linear trend was generated as
+
+$$\tau _ { t } = \frac { 4 t } { N } , \ t = 1 , \dots , N ,$$
+
+while the nonlinear trend function was
+
+$$\tau _ { t } = 0 . 6 \beta _ { 3 0 , 1 7 } ( t ) + 0 . 4 \beta _ { 3 , 1 1 } ( t ) , \ 0 \leq t \leq 1 , \\ \Gamma ( p + q ) _ { t } = 1 + \dots + 1$$
+
+The nonlinear function (24) was used originally by Wahba (1985) in her simulation study with splines, and it was used also by Krivobokova (2013) for the study and comparison of the asymptotic properties of two particular smoothing parameter estimators for penalized splines. The linear trend function was chosen in such a way that it produces a range of values similar to that of the nonlinear function. The range of 'time' values was obtained by partitioning the interval [0,1] into N parts. Seasonality in the series was included with the following function:
+
+where β p , q ( t ) = Gamma1( p + q ) Gamma1( p )Gamma1( q ) t p - 1 ( 1 - t ) q - 1 , 0 ≤ t ≤ 1.
+
+$$\xi _ { t } = D _ { 1 , t } - 0 . 5 D _ { 2 , t } - 2 . 5 D _ { 3 , t } + 2 D _ { 4 , t } , \\ \\ \ t a l _ { 0 } + \ t a l _ { 1 } = D _ { 1 , t } - 0 . 5 D _ { 2 , t } - 2 . 5 D _ { 3 , t } + 2 D _ { 4 , t } ,$$
+
+where Di , t = 1 if t = i , 4 + i , 8 + i , . . . and Di , t = 0 otherwise, for i = 1 , . . . , 4, trying to resemble a quarterly time series.
+
+We should recall that the smoothing method presupposes that there is no seasonality in the series, so that the presence of seasonality can be interpreted as a misspecification in the underlying model of the smoothing technique. We consider this fact as a realistic possibility when working with observed series, since the absence of seasonality should be considered an assumption, not a given fact. So, by considering the seasonality in the simulated series we have the opportunity to verify the robustness of the method against this misspecification error.
+
+Two levels were considered for the variability of the data, the low level with σ = 0 . 5 and the high level with σ = 2. In the same way, for the length of the series we considered two levels; low level with sample size N = 50 and the high level with N = 200.
+
+### 3.2. Implementation of CV, GCV, AICc, and BIC methods with PLS
+
+The CV and GCV methods are already implemented in various softwares within the context of splines and it is easy to use them for estimating trends. For instance, the algorithms implemented by Weinert (2012) to solve the PLS problem in its discrete and continuous versions are programmed in MATLAB (R2012a, 64 bit) and allow for selection of the smoothing parameter with GCV. One can also find various packages in R that include functions to smooth curves through splines, e.g., 'pspline, ' 'stats, ' and 'assist, ' among others. These packages include such functions as 'sm.spline' , 'smoothing.spline' , and 'ssr' , respectively, allowing for the fitting of curves by means of smoothing cubic splines and choosing the smoothing parameter by means of GCV or CV. The use of these already implemented algorithms is not convenient for our study because, on the one hand, in the splines context the estimated trend minimizes expression (6), not the appropiate one for PLS, which is given by (2) with d = 2 and μ = 0. On
+
+
+<!-- p:9 -->
+
+(a)AIC score function Lambda
+
+(b)AICe score function
+
+Figure . Score functions of AIC and AICc.
+
+the other hand, the algorithms carry out the estimation and produce the degrees of freedom, but tend to round this number, so that it cannot be transformed into an appropriate amount of attained smoothness. Thus, we decided to implement the methods in the context of PLS explicitly.
+
+To implement CV, GCV, AICc, and BIC in the context of PLS, expression (5) was used to calculate the trace of the smoothing matrix in the respective score functions. The AIC criteria was also implemented in the context of PLS; nevertheless, it produced several unreliable results that prevented us from using it to smooth some of the simulated series. This problem could be due to the fact that the command used to minimize the score function requires an initial approximation, and the score function of the AIC sometimes reaches its maximum for a very small value of λ , as seen in Fig. 1, while this defective behavior is corrected by the AICc.
+
+### 3.3. Statistical analysis of the 2 4 factorial design
+
+The experiment was carried out with a 2 4 factorial design model, that is,
+
+$$T _ { i j k l m } = \theta _ { i j k l } + \gamma _ { i j k l m } , \text { with } \gamma _ { i j k l m } \sim i i d \ N ( 0 , \sigma _ { \gamma } ^ { 2 } )$$
+
+with m replicates and where iid stands for independent and identically distributed.
+
+The response variable is the smoothness index transformed to avoid its boundedness, since it lies between 0 and 1. The transformation employed was the logit that transforms the interval (0,1) into the whole real line. Thus, the response variable Tijklm is given by
+
+$$T ( \lambda ; N ) = \log \left [ \frac { S _ { 2 } ( \lambda , N ) } { 1 - S _ { 2 } ( \lambda , N ) } \right ] = \log \left [ \left ( \frac { N - d f ( \lambda ) } { d f ( \lambda ) } \right ) \right ] , \\ \intertext { r e d f ( \lambda ) is the number of degrees of freedom used to estimate the trend for each simulated }$$
+
+where df (λ) is the number of degrees of freedom used to estimate the trend for each simulated series. We also have
+
+$$\theta _ { i j k l } & = \beta _ { 0 } + \beta _ { 1 } X 1 _ { i } + \dots + \beta _ { 4 } X 4 _ { l } + \beta _ { 5 } X 5 _ { i j } + \dots + \beta _ { 1 0 } X 1 0 _ { k l } \\ & \quad + \beta _ { 1 1 } X 1 1 _ { i j k } + \dots + \beta _ { 1 4 } X 1 4 _ { i k l } + \beta _ { 1 5 } X 1 5 _ { i j k l } , \\ \dots & \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \quad \dots \qu$$
+
+with the variable specification shown in Table 1 and where the β ' s are parameters to be estimated by Ordinary Least Squares.
+
+
+<!-- p:10 -->
+
+Table . Factors and levels used in the 2 4 factorial design.
+
+| Factors                      | Low level -    | High level    |
+|------------------------------|-----------------|----------------|
+| X 1 : Trend                  | Linear          | Nonlinear      |
+| X 2 : Seasonality            | Absent          | Present        |
+| X 3 : Variability            | σ = 0 . 5       | σ = 2          |
+| X 4 : Number of observations | N =           | N =         |
+
+We specify the following interactions, first order: X 5 i j = X 1 iX 2 j , . . . , X 10 kl = X 3 kX 4 l ; second order: X 11 i jk = X 1 iX 2 jX 3 k , . . . , X 14 jkl = X 2 jX 3 kX 4 l ; and third order: X 15 i jkl = X 1 iX 2 jX 3 kX 4 l . To interpret the estimated effects we require to transform back the estimated values from the logit scale to the original scale of the smoothness index. The inverse transformation of (26) becomes
+
+Figure . Half normal plot for the effects.
+
+<!-- p:11 -->
+
+
+Table . Estimation results of 2 4 factorial analysis for CV and GCV.
+
+| Type of effect Average   | CV - Estimate .   | CV - t statistic . ∗∗   | GCV - Estimate .   | GCV - t statistic . ∗∗   |
+|--------------------------|------------------------|-----------------------------|-------------------------|------------------------------|
+| X 1                      | - .               | - . ∗∗                  | - .                | - . ∗∗                   |
+| X 2                      | .                 | . ∗                      | .                  | . ∗                       |
+| X 3                      | .                 | .                        | .                  | .                         |
+| X 4                      | .                 | . ∗∗                     | .                  | . ∗∗                      |
+| X 5                      | - .               | - .                      | - .                | - .                       |
+| X 6                      | .                 | .                        | .                  | .                         |
+| X 7                      | .                 | .                        | .                  | .                         |
+| X 8                      | - .               | - .                      | - .                | - .                       |
+| X 9                      | .                 | .                        | .                  | .                         |
+| X 10                     | - .               | - .                      | - .                | - .                       |
+| X 11                     | -.                | - .                      | - .                | - .                       |
+| X 12                     | - .               | - .                      | - .                | - .                       |
+| X 13                     | - .               | - .                      | - .                | - .                       |
+| X 14                     | - .               | - .                      | - .                | - .                       |
+| X 15                     | - .               | - .                      | - .                | - .                       |
+
+$$\widehat { S } _ { 2 } ( \lambda ; N ) = e ^ { \widehat { T } ( \lambda ; N ) } / ( 1 + e ^ { \widehat { T } ( \lambda ; N ) } ) . \\$$
+
+## 4. Experimental results
+
+Apreliminary analysis was carried out without replication and deciding statistical significance visually by comparing the estimated effects with a half normal plot, as shown in Fig. 2. In that figure we appreciate that the effects of X 1 (trend) and X 4 (number of observations) are evidently different from zero, and perhaps the effect associated to X 2 (seasonality) too, while no interaction is seen to have a notorious effect.
+
+Since the 2 4 factorial design is supported by a linear model with 16 parameters, we performed the analysis again with two replicates, so that 32 observations were available for parameter estimation. Besides, now we are able to estimate the variance σ 2 γ and therefore calculate standard errors of the estimates to assign statistical significance. The results were basically the same as those obtained without replication and we decided that two replicates were enough to justify our conclusions. The results for each of the four methods entertained are summarized in Tables 2-5. We used the lm' function of the 'stats' package implemented in R to perform the numerical computations.
+
+Tables 2-5 use the notation of Table 1, with reference to model (27). We should notice that the t statistic is the ratio of the estimated effect divided by its standard error and its significance is denoted by: ∗∗ 1%, ∗ 5%, and · 10%.
+
+Table . Results of the reduced 2 4 factorial analysis for CV and GCV.
+
+| Type of effect Average   | CV - Estimate .   | CV - t statistic . ∗∗   | GCV - Estimate .   | GCV - t statistic . ∗∗   |
+|--------------------------|------------------------|-----------------------------|-------------------------|------------------------------|
+| X 1                      | - .               | - . ∗∗                  | - .                | - . ∗∗                   |
+| X 2                      | .                 | . ∗                      | .                  | . ∗                       |
+| X 4                      | .                 | . ∗∗                    | .                  | . ∗∗                     |
+
+
+<!-- p:12 -->
+
+Table . Estimation results of the 2 4 factorial for AICc and BIC.
+
+| Type of effect Average   | AICc - Estimate .   | AICc - t statistic . ∗∗   | BIC - Estimate .   | BIC - t statistic . ∗∗   |
+|--------------------------|--------------------------|-------------------------------|-------------------------|------------------------------|
+| X 1                      | - .                 | - . ∗∗                    | - .                | - . ∗∗                   |
+| X 2                      | .                   | . ∗∗                       | .                  | . ∗                       |
+| X 3                      | .                   | .                          | .                  | .                         |
+| X 4                      | .                   | . ∗∗                       | .                  | · . ∗∗                   |
+| X 5                      | .                   | .                          | .                  | . ∗                       |
+| X 6                      | .                   | . ·                        | .                  | . ∗                       |
+| X 7                      | - .                 | - .                        | - .                | - .                       |
+| X 8                      | .                   | .                          | - .                | - .                       |
+| X 9                      | .                   | .                          | - .                | - .                       |
+| X 10                     | - .                 | - .                        | - .                | - .                       |
+| X 11                     | - .                 | - .                        | - .                | - .                       |
+| X 12                     | - .                 | - .                        | - .                | - .                       |
+| X 13                     | - .                 | - .                        | - .                | - .                       |
+| X 14                     | - .                 | - .                        | - .                | - .                       |
+| X 15                     | - .                 | - .                        | - .                | - .                       |
+
+In Table 2 we can see that with the CV and GCV methods, none of the interactions turned out to be significant at the 10% level; therefore, it is adequate to interpret the main effects individually. To that end, we considered the estimated effects of the reduced model shown in Table 3, that only considers the significant effects, and brought these values back to the smoothness scale. The average values for CV and GCV (2.9975 and 2.9965, respectively) are transformed into average percentages of smoothness of 95.25% for CV and 95.24% for GCV . The 1% significant main effects are type of trend and number of observations and the 5% significant main effect is seasonality. For the type of trend, smoothness decreases with both methods when the model changes from linear to nonlinear; the change from 50 to 200 observations results in an increment of smoothness and the presence of seasonality in the series causes an increase of smoothness. These effects can be interpreted in terms of percentage of smoothness when they are related to models (25)-(27).
+
+To measure the change in the percentage of smoothness when going from a low level to a high one in the trend factor, in seasonality and the number of observations, we calculated the difference between the percentage of smoothness for the high and low levels of each factor. For example, to measure the increase in smoothness by changing from N = 50 to N = 200 observations with the CV method, we first calculated the effects in the logit scale, that is, 2 . 9975 - 0 . 6176 = 2 . 3799 and 2 . 9975 + 0 . 6176 = 3 . 6151, then by transforming theses values to the smoothness scale we obtained the following percentages of smoothness: 91.53% and 97.38%. The difference between these percentages provides the increase in smoothness attributable to increasing the number of observations from 50 to 200. In the CV and GCV
+
+Table . Results of the reduced 2 4 factorial analysis for AICc and BIC.
+
+| Type of effect Average   | AICc - Estimate .   | AICc - t statistic . ∗∗   | BIC - Estimate .   | BIC - t statistic . ∗∗   |
+|--------------------------|--------------------------|-------------------------------|-------------------------|------------------------------|
+| X 1                      | - .                 | - . ∗∗                    | - .                | - . ∗∗                   |
+| X 2                      | .                   | . ∗∗                       | .                  | . ∗                       |
+| X 4                      | .                   | . ∗∗                       | .                  | . ∗∗                     |
+| X 5                      | -                        | -                             | .                  | . ∗                       |
+| X 6                      | -                        | -                             | .                  | . ·                       |
+
+
+<!-- p:13 -->
+
+
+Figure . Time series with linear trend. Method to choose λ : CV.
+
+cases, this increase was of 5.8 percentage points. In a similar way, the increased smoothness produced by the seasonality factor was of 1.4 percentage points. The reduction of smoothness by changing from a linear model to a nonlinear one is of 6.7 percentage points in both methods. In Table 4, we see that the interaction between type of trend and variability for the AICc is significant at the 10% level but we did not consider such an interaction relevant. With BIC the effect of two interactions appear to be significant at the 5% level (trend with seasonality and trend with variability); nonetheless, the variability effect is significant just at the 10% level individually, while seasonality would be significant at the 5% level. Thus, we did not consider trend with variability as an interaction truly significant. Therefore, for both methods, the effects that we interpreted individually are the number of observations and type of trend, both significant at the 1% level.
+
+<!-- p:14 -->
+
+Figure . Time series with nonlinear trend. Method to choose λ : CV.
+
+<!-- p:15 -->
+
+
+From the reduced model results shown in Table 5, we calculated as before the average values of the percentages of smoothness produced by the AICc and BIC methods: 95.73% and 96.37%, respectively (corresponding to the average estimates 3.1111 and 3.2777). Then by increasing the observations from 50 to 200, smoothness increases 4.4 and 4.6 percentage points for AICc and BIC, respectively, while the presence of seasonality increases 1.6 and the type of trend decreases 5.4 percentage points from linear to nonlinear for AICc.
+
+### 4.1. Someillustrative time series smoothed with λ chosen by CV
+
+The graphs presented here allow us to visualize the effect of the number of observations and the type of trend, both factors with significant effects at the 1% level. The latter factor is irrelevant in practice, since there is nothing we can do to control for this factor during the smoothing process. Nevertheless, we should be aware that higher percentages of smoothness can be attained when the time series under study shows a linear rather than a nonlinear behavior. Just for illustrative purposes, we only present graphs for the CV method that produces the lowest smoothness of the four methods entertained.
+
+Plots (a),(b) and (c),(d) in Figs. 3 and 4 illustrate the increase in smoothness corresponding to an increase in the number of observations from 50 to 200, in series with the same kind of trend, same conditions of seasonality, and same standard deviation. The estimated trend is greatly improved in all cases. Let us notice that when the trend, seasonality, and number of observations are fixed at a given level (low or high), and the standard deviation is changed, the smoothness does not present a clear pattern. This fact corroborates the numerical results shown in Tables 2 and 4, so that variability does not affect smoothness significantly.
+
+Thus, we obtained the following main results: smoothness gets larger when the number of observations increases; it gets smaller when moving from a linear to a nonlinear type of trend for the series; to a lesser degree, the presence of seasonality increases the amount of smoothness; and the variability of the observed time series does not affect the estimated trend smoothness.
+
+It turns out that CV produces on average around 95% smoothness for series with linear trends and N = 50, which increases to 98% when N = 200. While for nonlinear trends and N = 50, the smoothness attained is about 86%, which increases approximately to 95% when N = 200. In similar fashion, BIC produces on average almost 96% smoothness when the trend is linear and N = 50, increasing to 99% when N = 200. Moreover, for nonlinear trends, the smoothness reduces to about 89% when N = 50 and to 96% when N = 200. This is a useful finding for analysts that want to use the controlled smoothness approach, since we can set in advance a desired percentage of smoothness around these values in order to produce comparable trends for different datasets, depending on the type of trend and sample size of the time series.
+
+## 5. Conclusions
+
+Out of the methods used here to choose the smoothing parameter, we can say that on average CV and BIC provide the lowest and highest smoothness for the trend, respectively. CV and GCVproduced in most cases approximately the same smoothness, while AICc and BIC vary a little more in the amount of smoothness of the estimated trends. The four methods are relatively easy to implement and they are already implemented in packages such as R or MATLAB, although in some cases the results provided are not exact. Rounding the number of degrees of freedom to the nearest digit tends to distort the corresponding amount of smoothness.
+
+
+<!-- p:16 -->
+
+
+From the results obtained with the factorial experimental design we conclude that the significant factors at the 1% level are only type of trend and number of observations. The trend effect decreases the amount of smoothness when changing from a linear to a nonlinear type of trend, while an increase in smoothness is observed when the number of observations changes from 50 to 200. Seasonality was significant at the 5% level and its presence causes an increase in smoothness. Finally, no significant effect attributable to variability was found and therefore, we conclude that it does not play a role in the amount of smoothness provided by each technique. This may be explained by the fact that the variability effect is implicitly taken into account by the smoothing parameter, since this parameter can be interpreted as a noise to signal variance-ratio.
+
+Finally, the main conclusion is that the number of observations is the main factor affecting the amount of smoothness for each of the four methods used to select the smoothing parameter. This is useful because we can anticipate the effect of this factor before smoothing a time series. Moreover, this result lends empirical support to the use of the smoothness index associated with the controlled smoothness approach, since such an index depends basically on the sample size. A future investigation should analyze how much smoothness is obtained when the number of observations is increased, not just by considering two levels of sample size.
+
+## Funding
+
+Daniela Cortés-Toto thanks CONACYT for financial support to this work (Scholarship application: 231040), and Julián Francisco Ariza for his support in the computational part. Víctor M. Guerrero thanks Asociación Mexicana de Cultura A.C. for the support granted to work in this project.
+
+<!-- END SOURCE 11/40: Cortes-Toto_2017_trend-smoothness-optimality-criteria.md -->
+
+---
+
+<!-- BEGIN SOURCE 12/40: Craven_1979_smoothing-noisy-data-spline-functions.md -->
+
+# Source: `Craven_1979_smoothing-noisy-data-spline-functions.md`
+
+---
+id: "Craven_1979_smoothing-noisy-data-spline-functions"
+source_pdf: "../pdf/Craven_1979_smoothing-noisy-data-spline-functions.pdf"
+source_filename: "Craven_1979_smoothing-noisy-data-spline-functions.pdf"
+format: "academic-paper"
+extraction_profile: "text-math-tables-high-fidelity"
+extraction_mode: "hybrid"
+extraction_quality: "excellent"
+extraction_score: 98.0
+visual_assets: "disabled"
+references_file: "../references/Craven_1979_smoothing-noisy-data-spline-functions.references.md"
+---
+
+<!-- p:1 -->
+
+## Smoothing Noisy Data with Spline Functions
+
+Estimating the Correct Degree of Smoothing by the Method of Generalized Cross-Validation*
+
+Peter Craven1 and Grace Wahba2**
+
+1 The Computer Laboratory, The University of Liverpool, Liverpool, England
+
+2 Department of Statistics, University of Wisconsin, Madison, WI 53706, USA
+
+Summary. Smoothing splines are well known to provide nice curves which smooth discrete, noisy data. We obtain a practical, effective method for estimating the optimum amount of smoothing from the data. Derivatives can be estimated from the data by differentiating the resulting (nearly) optimally smoothed spline.
+
+with Eεi=0, Eεεj=σ2 δij. The error variance σ2 may be unknown. As an estimate of g we take the solution gn, λ to the problem: Find f∈ W(TM) to minimize 1 u 1 ∑ (f (t j) − yj)2 + λ ∫ ( f(m) (u))2 du. The function gn, λ is a smoothing polynomial n j=1 0 spline of degree 2m-1. Theparameter λ controls the tradeoff between the "roughness" of the solution, as measured by ∫ [f(m) (u)]2 du, and the infidelity to
+
+We consider the model y = g(ti) + ε, i= 1, 2, .., n, t∈[0, 1], where g∈ W(m) = { f: f, f′,..., f(m− 1) abs. cont., f(m)∈ L2 [0, 1]}, and the {εi} are random errors
+
+0
+
+1 u the data as measured by 二 ∑ (f(tj)− yj)2, and so governs the average square nj=1 error R(λ; g)= R(λ) defined by
+
+$$R ( \lambda ) = & \frac { 1 } { n } \sum _ { j = 1 } ^ { n } \left ( g _ { n , \, \lambda } ( t _ { j } ) - g ( t _ { j } ) \right ) ^ { 2 } .$$
+
+We provide an estimate λ, called the generalized cross-validation estimate, for the minimizer of R(λ). The estimate λ is the minimizer of V(λ) defined by V(λ)
+
+$$\underset { n } { \text {Unclear} } \intertext { t h e c h s c r { I N I M } 2 C 1 $ o r $ K ( \lambda ) $ i n $ t r a c h s c r { I N O } $ o r $ V $ ( n ) $ o r $ A $ ( n ) $ e q $ ( n ) } & = \frac { 1 } { n } \| ( I - A ( \lambda ) ) \, y \| ^ { 2 } / \left [ \frac { 1 } { n } T r a c ( I - A ( \lambda ) ) \right ] ^ { 2 } , \text { where } y = ( y _ { 1 } , \dots , y _ { n } ) ^ { t } \text { and } A ( \lambda ) \text { is the } n \\ & = \frac { 1 } { n } \| ( I - A ( \lambda ) ) \, y \| ^ { 2 } / \left [ \frac { 1 } { n } T r a c ( I - A ( \lambda ) ) \right ] ^ { 2 } , \text { where } y = ( y _ { 1 } , \dots , y _ { n } ) ^ { t } \text { and } A ( \lambda ) \text { is the } n \\ & \quad n \\ & \quad \intertext { t h e c h s c r { I N I M } 2 C 2 $ o r $ K ( \lambda ) $ i n $ t r a c h s c r { I N O } $ o r $ V $ ( n ) $ o r $ A $ ( n ) }$$
+
+× n matrix satisfying (gn(t1), ., gn, λ(t)) = A(λ) y. We prove that there exist a sequence of minimizers λ= λ(n) of EV (λ), such that as the (regular) mesh {ti}i= 1
+
+¥ Research supported in part under U.S. Air Force Grant AF-AFOSR-77-3272 and by the Science Research Council (GB)
+
+** To whom offprint requests should be sent
+
+
+<!-- p:2 -->
+
+
+9
+
+becomes finer, lim ER(λ)/min ER(λ)↓1. A Monte Carlo experiment with n→8 λ several smooth g's was tried with m = 2, n = 50 and several values of σ2, and typical values of R(λ)/min R(λ) were found to be in the range 1.01–1.4. The λ derivative g' of g can be estimated by g', λ(t). In the Monte Carlo examples tried, 1 n the minimizer of R(λ)=− ∑ (g'n, λ(tj)-g′(tj)) tended to be close to the nj=1 minimizer of R(λ), so that Î was also a good value of the smoothing parameter for estimating the derivative. , '
+
+Subject Classifications. MOS:65D10; CR: 5.17; MOS: 65D25.
+
+### 1. Introduction
+
+We consider the model
+
+$$y ( t ) = g ( t ) + \varepsilon ( t ) , \quad t \in [ 0 , 1 ]$$
+
+where g(t) is a "smooth" curve, and ε(t) is a white noise process, E ε(t) = 0, E ε(s) ε(t) = σ2, s=t, =0, otherwise (E is mathematical expectation). y(t) is observed for t=t1, t2, ..., tn, 0≤t1 &lt;t2 &lt; ... &lt;tn ≤1. It is desired to reconstruct g from the data y(t j) ≡ yj, j= 1,2, ..,n. We assume that g∈ Wim), where
+
+$$W _ { 2 } ^ { ( m ) } = \{ g \colon ^ { ( \nu ) } \text {abs. cont., } \nu = 0 , 1 , \dots , m - 1 , \ g ^ { ( m ) } \in \mathcal { L } _ { 2 } \left [ 0 , 1 \right ] \} .$$
+
+Our estimate of g is gn, , where gn, λ is the solution to the problem: Find f∈ W(m) to minimize
+
+$$\frac { 1 } { n } \sum _ { j = 1 } ^ { n } \left ( f ( t _ { j } ) - y _ { j } \right ) ^ { 2 } + \lambda \int _ { 0 } ^ { 1 } \left ( f ^ { ( m ) } ( u ) \right ) ^ { 2 } d u .$$
+
+The function gn, a is well known to be a polynomial smoothing spline of degree 2m — 1. See Reinsch [9, 10], Schoenberg [11], Wahba [13] for properties of smoothing splines. A Bayesian argument that the use of smoothing splines is appropriate when a certain prior distribution is attached to the {g(t)}= , may be obtained from the discussion in Kimeldorf and Wahba [7], see also [18].
+
+The parameter λ, which must be chosen, controls the tradeoff between the "roughness" of the solution, as measured by
+
+$$\begin{smallmatrix} 1 \\ \int [ f ^ { ( m ) } ( u ) ] ^ { 2 } \, d u \end{smallmatrix}$$
+
+and the infidelity to the data as measured by
+
+$$\frac { 1 } { n } \sum _ { j = 1 } ^ { n } \left ( f ( t _ { j } ) - y _ { j } \right ) ^ { 2 } .$$
+
+The problem is to obtain a good value of λ. Reinsch [9] suggests, roughly, that if σ2
+
+
+<!-- p:3 -->
+
+
+is known, then λ should be chosen so that the infidelity satisfies
+
+$$\frac { 1 } { n } \sum _ { j = 1 } ^ { n } ( g _ { n , \lambda } ( t _ { j } ) - y _ { j } ) ^ { 2 } = & \sigma ^ { 2 } .$$
+
+Wahba [13] obtains theoretical results for the optimum choice of λ in the equally spaced data case when certain further smoothness and periodicity conditions are imposed. The optimum λ is defined as the λ which minimizes the true mean square error averaged over the data points. This true mean square error is defined as R(λ), given by
+
+$$R ( \lambda ) = & \frac { 1 } { n } \sum _ { j = 1 } ^ { n } \left ( g _ { n , \, \lambda } ( t _ { j } ) - g ( t _ { j } ) \right ) ^ { 2 } .$$
+
+The results in [13] show that λ should be chosen so that the infidelity defined by the left-hand side of (1.4), is actually slightly less than σ2. However, this result is not practical, in that how much less depends on n as well as on the unknown g and on σ2, which may also be unknown.
+
+If σ2 is known, then a good value of λ may be obtained from the data as follows: Define A(λ) as the n × n matrix depending on {ti}i=1 and λ satisfying
+
+$$\begin{pmatrix} g _ { n , \, \lambda } ( t _ { 1 } ) \\ \vdots \\ g _ { n , \, \lambda } ( t _ { n } ) \end{pmatrix} = A ( \lambda ) \begin{pmatrix} y _ { 1 } \\ \vdots \\ y _ { n } \end{pmatrix} .$$
+
+Since gn, λ(t) is a linear function of y1, y2, ..., y for each t, such A(λ) exists. Then
+
+$$E R ( \lambda ) = E _ { n } ^ { \frac { 1 } { \| } } \| A ( \lambda ) \, y - g \| ^ { 2 }$$
+
+where y=(y1, ..., yn)', g =(g(t1), ..., g(tn))', and "t" is transpose. The norm is the Euclidean norm. It follows from elementary calculations on (1.6) using the assumed mean and covariance properties of ε=(ε(t1), ..., ε(t)), that
+
+$$E R ( \lambda ) = & \frac { 1 } { n } \| ( I - A ( \lambda ) ) \, g \| ^ { 2 } + \frac { \sigma ^ { 2 } } { n } \text {Trace} \, A ^ { 2 } ( \lambda ) .$$
+
+It is then trivial to demonstrate the following
+
+Theorem 1.1. An unbiassed estimate of ER(λ) is given by Ř(λ) defined by
+
+$$\hat { R } ( \lambda ) = & \frac { 1 } { n } \| ( I - A ( \lambda ) ) \, y \| ^ { 2 } - \frac { \sigma ^ { 2 } } { n } \text {Tr} ( I - A ( \lambda ) ) ^ { 2 } + \frac { \sigma ^ { 2 } } { n } \text {Tr} \, A ^ { 2 } ( \lambda ) ,$$
+
+that is
+
+$$E \hat { R } ( \lambda ) = E R ( \lambda ) .$$
+
+Therefore, the minimizer of Ř(λ) can be taken as a good choice of λ. An estimate of this type has been proposed by Mallows [8] in the context of ridge regression, see also Hudson [6].
+
+
+<!-- p:4 -->
+
+
+The main result of this paper is to obtain a good estimate of the minimizer of ER(λ) from the data which does not require knowledge of σ2. This estimate, to be called the generalized cross-validation (GCV) estimate, takes as the estimațe of λ, the minimizer of V(λ) defined by
+
+$$V ( \lambda ) = & \frac { 1 } { n } \| ( I - A ( \lambda ) ) \, y \| ^ { 2 } / \left [ \frac { 1 } { n } T r ( I - A ( \lambda ) ) \right ] ^ { 2 } .$$
+
+We will demonstrate, under general conditions (to be given) on g, and on the mesh sequence {ti}i= 1 ≡ {tin}i= 1, n = 1, 2, ..., that, for large n, EV (λ) − σ2 ≈ ER(λ) ftor λ in the neighborhood of the minimizer of ER(λ).
+
+As a consequence of this, we have the following:
+
+Theorem 4.3. For g∈ W(m) and mild conditions on the mesh sequence {tn}= 1, there exists a sequence λ= λ(n) of minimizers of EV(λ) with the property that
+
+$$\lim _ { \substack { n \to \infty \\ \lambda } } \frac { E R ( \tilde { \lambda } ) } { \min _ { \lambda } E R ( \lambda ) } = & 1 . \\ T I \colon _ { \substack { n = 0 \\ \lambda } }$$
+
+This theorem says that the expected mean square error using λ tends to the minimum possible expected mean square error, as n→ ∞.
+
+We now describe the origin of the GCV estimate. The intuitive idea of crossvalidation is quite simple and goes as follows: Let gn, be the smoothing spline using 8n, λ data point yk, as a measure of the goodnels of λ. Formally, let g,. be the function f∈ W() which minimizes
+
+$$\frac { 1 } { n } \sum _ { j = 1 } ^ { n } \left ( f ( t _ { j } ) - y _ { j } \right ) ^ { 2 } + \lambda \int _ { 0 } ^ { 1 } \left ( f ^ { ( m ) } ( u ) \right ) ^ { 2 } d u ,$$
+
+and let
+
+$$V _ { o } ( \lambda ) = & \frac { 1 } { n } \sum _ { k = 1 } ^ { n } \left ( g _ { n , \lambda } ^ { [ k ] } ( t _ { k } ) - y _ { k } \right ) ^ { 2 } .$$
+
+The (ordinary) cross-validation estimate of λ is defined to be the minimizer of V0(λ). The equally spaced data points case was considered in Wahba and Wold [15, 16], where the (ordinary) cross-validation estimate of λ was introduced. Fairly extensive Monte Carlo experiments [15] showed that the minimizer of V0(λ) was an amazingly good estimate of the minimizer of R(λ) over a variety of g and σ2 tried. Theoretical results related to the optimality of the minimizer of V0(λ) were also obtained for a special case equivalent to constraining g and g, ¿ to be periodic and requiring tj=j/n, j= 1, 2, ..., n. We shall call this the symmetric case.
+
+Note that in the symmetric case all data points are treated symmetrically. That is, the prediction error at tk is weighted the same as at any other t j. In the general case, we let
+
+$$V ( \lambda ) = \frac { 1 } { n } \sum _ { k = 1 } ^ { n } \left ( g _ { n , \, \lambda } ^ { [ k ] } ( t _ { k } ) - y _ { k } \right ) ^ { 2 } w _ { k } ( \lambda ) ,$$
+
+
+<!-- p:5 -->
+
+
+where the weights wk(λ) are to compensate for nonequally spaced data points and the possible nonperiodicity of g. If
+
+$$w _ { k } ( \lambda ) = \left [ ( 1 - a _ { k k } ( \lambda ) ) \left / \frac { 1 } { n } T r ( I - A ( \lambda ) ) \right ] ^ { 2 } ,$$
+
+k = 1, 2, ..., n, where the {ak(λ)} are the diagonal elements of A(λ), then V(λ) of (1.13) becomes V(λ) of (1.9), and then (1.10) hols.
+
+That is, we have obtained {wk} so that (1.10) holds. A different intuitive argument for the choice of V(λ) as in (1.9) is given in [17], and involves finding a rotation of Euclidean n-space which transforms the general problem into one equivalent to the symmetric problem and then doing ordinary cross validation. This point will be discussed further in Sect. 3.
+
+In the process of proving (1.10) we have obtained a basis for the smoothing spline gr,  in terms of n periodic functions which are piecewise shifted Bernoulli polynomials with one knot, plus m + 1 polynomials of degree ≤m. (See Golomb [3] for earlier results on periodic splines.) An interesting fact about the n piecewise shifted Bernoulli polynomials is that, in the equally spaced data case their n × n Gram matrix is a circulant matrix. This representation will illuminate the remark that the smoothing spline for unequally spaced sampled non-periodic data is the natural generalization of the output of a low pass filter with the data as input.
+
+In Sect. 2, we obtain the aforementioned representation of gn,λ in terms of polynomials plus periodic piecewise shifted Bernoulli polynomials, and we obtain the explicit formula for A(λ) that will be used in the proof of (1.10). In Sect. 3 we obtain a simplified form of V0(λ) of (1.11) and show that V(λ) of (1.13) with the weights {wk(λ)} given by (1.14) is equal to V(λ) of (1.9). In Sect. 4, we prove the main theorem, namely (1.10). In Sect. 5, we present some Monte Carlo examples illustrating the effectiveness of the method. Data according to the model (1.1) was generated with several smooth g's and range of values of σ2. Typical values of R(λ)/min R(λ) are to be found in the range 1.01–1.4 where Î is the minimizer of V(λ).
+
+The minimizer of Ř(λ) of (1.8) and the value of λ satisfying (1.4) were also computed. The use of the minimizer of V(λ) was found to be roughly about as good as the minimizer of Ř(λ), while the use of (1.4) gave estimates of λ that were consistently too large.
+
+We note that the method of generalized cross-validation is also applicable to choosing the regularization parameter in the method of regularization for solving Fredholm integral equations of the first kind, see [14].
+
+### 2. Bernoulli Polynomials and Smoothing Splines
+
+Let B,(t), r =0, 1, ... be the Bernoulli polynomials on t∈[0, 1]. The {B,} are defined 1 by letting B0(t)≡1, Br+1(t)=B,(t), and choosing the constant of in(r+1) dt tegration so that ∫ B,(u) d u =0, r = 1, 2, ... Letting [x] be the fractional part of x, 1
+
+0
+
+
+<!-- p:6 -->
+
+
+we define
+
+$$k _ { r } ( t ) = B _ { r } ( [ t ] ) / r ! .$$
+
+Let Lk, k=0, 1, ... be the linear functionals
+
+$$L _ { 0 } f & = \int _ { 0 } ^ { 1 } f ( u ) \, d u \\ L _ { k } f & = f ^ { ( k - 1 ) } ( 1 ) - f ^ { ( k - 1 ) } ( 0 ) \equiv \int _ { 0 } ^ { 1 } f ^ { ( k ) } ( u ) \, d u , \quad k = 1 , 2 , \dots \\$$
+
+Then
+
+$$L _ { k } ( k , ) & = 1 , \quad k = r \\ & = 0 , \quad k \neq r , \ k , r = 0 , 1 , 2 , \dots \ .$$
+
+Define the "Bernoulli kernel" k,(s, t) by
+
+$$k _ { r } ( s , t ) = - \sum _ { \nu = \frac { \infty } { v * 0 } } ^ { \infty } \frac { 1 } { ( 2 \pi i v ) ^ { \gamma } } e ^ { 2 \pi i v ( s - t ) } , \quad r = 1 , 2 , \dots$$
+
+It is known (see Abramowitz and Stegun [1], p. 805), that
+
+$$k _ { r } ( s , t ) = & \frac { 1 } { r ! } \, B _ { r } ( [ s - t ] ) = k _ { r } ( [ s - t ] ) ,$$
+
+and it can be verified from the definition of k,(s, t) that
+
+$$\frac { \partial ^ { p } } { \partial s ^ { p } } k _ { r } ( s , t ) = & k _ { r - p } ( s , t ) & p = & 1 , 2 , \dots , r - 2 \\ & \partial ^ { p }$$
+
+$$and it can be verified from the definition of k , ( s , t ) \text { that} \\ \frac { \partial ^ { p } } { \partial s ^ { p } } k , ( s , t ) = & k _ { r - p } ( s , t ) \\ & p = 1 , 2 , \dots , r - 2 \\ \frac { \partial ^ { p } } { \partial t ^ { p } } k , ( s , t ) = & ( - ) ^ { p } k _ { r - p } ( s , t ) , \quad s , t \in [ 0 , 1 ] \\ \frac { \partial ^ { r - 1 } } { \partial s ^ { r - 1 } } k _ { r } , ( s , t ) = & k _ { 1 } ( s , t ) \\ & s , t \in [ 0 , 1 ] , \ s \neq t . \\ \frac { \partial ^ { r - 1 } } { \partial t ^ { r - 1 } } k _ { r } , ( s , t ) = & ( - 1 ) ^ { r - 1 } k _ { 1 } ( s , t ) \\ & 1 - \partial ^ { m } \\ \int _ { 0 } ^ { \frac { \partial ^ { m } } { 2 } } k _ { 2 m } ( s , u ) \frac { \partial ^ { m } } { \partial t ^ { m } } k _ { 2 m } ( t , u ) \, d u = ( - 1 ) ^ { m - 1 } \, k _ { 2 m } ( s , t ) . \\ \intertext { f u r e a n d w i s e d y o b t a i n a r e p r e s e n tation for g _ { n , \lambda } in t e r m s o f w i c e w i s } \text {Bernoulli polynomials}$$
+
+We are now ready to obtain a representation for gn,  in terms of piecewise Bernoulli polynomials.
+
+Theorem 2.1. The solution gn, λ, to the problem: Find f∈ W(TM) to minimize
+
+$$\frac { 1 } { n } \sum _ { j = 1 } ^ { n } \left ( f ( t _ { j } ) - y _ { j } \right ) ^ { 2 } + \lambda \int _ { 0 } ^ { 1 } \left ( f ^ { ( m ) } ( u ) \right ) ^ { 2 } d u$$
+
+
+<!-- p:7 -->
+
+
+is, for n≥m, unique, and has the representation
+
+$$g _ { n , \lambda } ( t ) = \sum _ { r = 0 } ^ { m } \theta _ { r } k _ { r } ( t ) + ( - 1 ) ^ { m - 1 } \sum _ { j = 1 } ^ { n } \alpha _ { j } k _ { 2 m } ( t , t _ { j } ) ,$$
+
+where θ=(θ0, θ1, ...,θm) and α=(α1, α2, ...,α) are given by
+
+$$\theta = & ( T ^ { t } M ^ { - 1 } T + \Delta ) ^ { - 1 } T ^ { t } M ^ { - 1 } y \\ \alpha = & M ^ { - 1 } ( y - T \theta ) \\ y = & ( y _ { 1 } , y _ { 2 } , \dots , y _ { n } ) ^ { t } ,$$
+
+T is the n ×(m + 1) dimensional matrix with jrth entry
+
+$$T _ { j , r } = & k _ { r } ( t _ { j } ) , \quad r = 0 , 1 , \dots , m \\ & j = 1 , 2 , \dots , n ,$$
+
+Δ is the (m + 1) ×(m + 1) dimensional matrix of all zeroes except 1 in the (m + 1), (m + 1) position, M is given by
+
+M=K+nλI
+
+where K is the n ×n matrix with jkth entry Kjk,
+
+$$K _ { j k } = ( - 1 ) ^ { m - 1 } \, k _ { 2 m } ( t _ { j } , t _ { k } )$$
+
+and I is the n ×n identity matrix. The matrix A(λ) is given by
+
+$$A ( \lambda ) = K M ^ { - 1 } \left [ I - T ( T ^ { \prime } M ^ { - 1 } T + \Delta ) ^ { - 1 } \, T ^ { t } \, M ^ { - 1 } \right ] + T ( T ^ { t } M ^ { - 1 } \, T + \Delta ) ^ { - 1 } \, T ^ { t } \, M ^ { - 1 } .$$
+
+Proof. The expression for A(λ) follows immediately from (2.8). We first show that gn,λ∈span {{k,(·)}r=0{k2m(·, tj)}j=1}. This demonstration can be carried out a number of ways using known results on splines. We rely on the arguments in Kimeldorf and Wahba [7]. The reproducing kernel Q(s,t) for W(TM) endowed with the inner product
+
+$$\langle f , g \rangle = \sum _ { r = 0 } ^ { m \wedge 1 } \left ( L _ { r } \, f \right ) ( L _ { r } \, g ) + \int _ { 0 } ^ { 1 } f ^ { ( m ) } \left ( u \right ) g ^ { ( m ) } ( u ) \, d u$$
+
+is shown in Lemma 2.1, of the Appendix, to be
+
+$$Q ( s , t ) = \sum _ { r = 0 } ^ { m } k _ { r } ( s ) \, k _ { r } ( t ) + ( - 1 ) ^ { m - 1 } \, k _ { 2 m } ( s , t ) .$$
+
+It then follows from the arguments in [7] that gn, λ must lie in
+
+$$\mathcal { S } = \text {span} \left \{ \{ k _ { r } ( \cdot ) \} _ { r = 0 } ^ { m - 1 } \cup \{ Q _ { t } , \} _ { j _ { r } = 1 } ^ { m } \right \} \text { where } Q _ { t _ { f } } ( \cdot ) \equiv Q ( \cdot , t _ { j } ) .$$
+
+However S is contained in span {{k,(·)}r= 0 {k2m(·, tj)}j= 1} so that gn, λ has the representation (2.8a) for some θ, α. Substituting (2.8a) into (2.7), and using (2.6) gives
+
+
+<!-- p:8 -->
+
+
+384
+
+$$\sum _ { j = 1 } ^ { n } ( g _ { n , \lambda } ( t _ { j } ) - y _ { j } ) ^ { 2 } + & n \lambda \int _ { 0 } ^ { 1 } \left ( g _ { n , 2 } ^ { ( m ) } ( u ) \right ) ^ { 2 } d u \\ & = \sum _ { j = 1 } ^ { n } \left [ \sum _ { \theta = 0 } ^ { m } \theta , k , ( t _ { j } ) + ( - 1 ) ^ { m - 1 } \sum _ { k = 1 } ^ { n } \alpha _ { k } k _ { 2 m } ( t _ { j } , t _ { k } ) - y _ { j } \right ] ^ { 2 } \\ & + n \lambda \left [ \sum _ { j = 1 } ^ { n } \sum _ { 1 \, k = 1 } ^ { n } \alpha _ { j } \alpha _ { k } ( - 1 ) ^ { m - 1 } k _ { 2 m } ( t _ { j } , t _ { k } ) + \theta _ { m } ^ { 2 } \right ] \\ & \equiv \| T \theta + K \alpha - y \| ^ { 2 } + n \lambda ( \alpha ^ { t } \, K \alpha + \theta _ { m } ^ { 2 } ) . \\ \intertext { The vectors } \intertext { The vectors } & \theta \, \text {and} \, \alpha \, \text {are to be chosen to minimize this expression. By differentiating}$$
+
+The vectors θ and α are to be chosen to minimize this expression. By differentiating the right hand side of (2.11) with respect to θ and α and setting the result equal to 0 we obtain the Theorem.
+
+We remark that (—)m− 1 k2m(t, tk), considered as a function of t is a monospline
+
+so that g, λ is a polynomial spline of degree 2 m— 1, as is well known.
+
+of degree 2m, that is, the sum of the monomial t2TM plus a polynomial spline of n degree 2m—1 (with a single knot at tk). However, it can be checked that ∑αj=0, j=1
+
+When the knots {t j} are equally spaced, K, and hence M, are circulant matrices. The details are given in the (well-known)
+
+$$L e m m a \, 2 . 2 \, \left \{ ( - 1 ) ^ { m - 1 } \, k _ { 2 m } \left ( \frac { j } { n } , \frac { k } { n } \right ) \right \} _ { j , k = 1 , \dots , n } = W D W ^ { * }$$
+
+where "*" denotes complex conjugate transpose and W is the n × n unitary matrix with rsth entry Wrs given by
+
+$$W _ { r s } = \frac { 1 } { \sqrt { n } } \, e ^ { 2 \pi i r s / n } ,$$
+
+D is the diagonal matrix with vvth entry Dv given by
+
+$$D \text { is the diagonal matrix with } v \text { with } D _ { v v } \text { given by} \\ D _ { v v } = \lambda _ { n } ^ { 2 m } \\ \text {where} \\ \lambda _ { n } ^ { r } = n \sum _ { \xi = - \infty } ^ { \infty } \frac { 1 } { [ 2 \pi ( v + \xi n ) ] ^ { r } } \quad ( \lambda _ { v n } ^ { r } \equiv \lambda _ { n - v , n } ^ { r } ) \\ \lambda _ { n n } ^ { r } = n \sum _ { \xi \neq 0 } ^ { \infty } \frac { 1 } { [ 2 \pi \xi n ] ^ { r } } . \\ \text {Proof.}$$
+
+Proof.
+
+$$P r o f . & & P r o f . & & ( - 1 ) ^ { m - 1 } \, k _ { 2 m } \left ( \frac { j } { n } , \frac { k } { n } \right ) = \sum _ { \substack { v _ { v } = - \infty \\ v \neq 0 } } ^ { \infty } \frac { 1 } { ( 2 \pi v ) ^ { 2 } m } \, e ^ { 2 \pi i v ( j - k ) / n } \\ & & = \sum _ { \substack { v = 1 \\ ( v , \xi ) \neq ( n , - 1 ) } } ^ { n } \frac { \infty } { \sum _ { \substack { v = 1 \\ ( v , \xi ) \neq ( n , - 1 ) } } ^ { 1 } } \frac { 1 } { e ^ { 2 \pi i v ( j - k + \xi n ) / n } } \\ & & = \sum _ { \substack { v = 1 \\ ( v , \xi ) \neq ( n , - 1 ) } } ^ { n } \frac { \infty } { \sum _ { \substack { v = 1 \\ ( v , \xi ) \neq ( n , - 1 ) } } ^ { 1 } } \frac { 1 } { e ^ { 2 \pi i v ( j - k ) / n } } \\$$
+
+
+<!-- p:9 -->
+
+
+The λ'' can be expressed in terms of the polygamma function, see Abramowitz and Stegun [1], Sect. 6.4. However, sufficient computational accuracy will usually be obtained with only a few terms in (2.12).
+
+### 3. The Generalized Cross-Validation Function V(λ)
+
+We first obtain a simplified representation for the (ordinary) cross-validation function V0(λ) defined by
+
+$$V _ { 0 } ( \lambda ) = \frac { 1 } { n } \sum _ { k = 1 } ^ { n } \left ( g _ { 1 } ^ { 1 } \right )$$
+
+Recall that ,[k] is the solution to the problem: Find f∈ W(m) to minimize
+
+$$\frac { 1 } { n } \sum _ { \substack { j = 1 \\ j + k } } ^ { n } ( f ( t _ { j } ) - y _ { j } ) ^ { 2 } + \lambda \int _ { 0 } ^ { 1 } ( f ^ { ( m ) } ( u ) ) ^ { 2 } \, d u .$$
+
+original (n-data point) minimization problem (1.2) with the data y1, y2, .., yk– 1, gn,λ(t), k+ 1 ., y, we get g g[k] g[k] for the solution. This is the content of 8n, λ
+
+Lemma 3.1. Let n≥m and let gn, λ(t; k, zk) be the solution to the problem: Find f∈ Wm) to minimize
+
+$$\frac { 1 } { n } \left [ ( f ( t _ { k } ) - z _ { k } ) ^ { 2 } + \sum _ { \substack { j = 1 \\ j \neq k } } ^ { n } ( f ( t _ { j } ) - y _ { j } ) ^ { 2 } \right ] + \lambda \int _ { 0 } ^ { 1 } ( f ^ { ( m ) } ( u ) ) ^ { 2 } \, d u .$$
+
+Then
+
+$$g _ { n , \lambda } ( t ; k , g _ { n , \lambda } ^ { [ k ] } ( t _ { k } ) ) = g _ { n , \lambda } ^ { [ k ] } ( t ) .$$
+
+Proof. Let h=8 [k] [k] (tk) and let f be any element of W(TM) different from h. gn, λ Then let
+
+$$1$$
+
+$$\text {Then} \\ \frac { 1 } { n } \left [ \sum _ { j \neq k } ^ { n } ( h ( t _ { j } ) - y _ { j } ) ^ { 2 } + ( h ( t _ { k } ) - z _ { k } ) ^ { 2 } \right ] + \lambda \int _ { 0 } ^ { 1 } ( h ^ { ( m ) } ( u ) ) ^ { 2 } \, d u \\ = - \left [ \sum _ { j \neq k } ^ { 1 } ( h ( t _ { j } ) - y _ { j } ) ^ { 2 } + \lambda \int _ { 0 } ^ { 1 } ( h ^ { ( m ) } ( u ) ) ^ { 2 } \, d u \right ] \\ \quad \ \ 1 \\ \quad \ < - \left [ \sum _ { j \neq k } ^ { n } ( f ( t _ { j } ) - y _ { j } ) ^ { 2 } + \lambda \int _ { 0 } ^ { 1 } ( f ^ { ( m ) } ( u ) ) ^ { 2 } \, d u \right ] \\ \leq \frac { 1 } { n } \left [ \sum _ { j \neq k } ^ { n } ( f ( t _ { j } ) - y _ { j } ) ^ { 2 } + ( f ( t _ { k } ) - z _ { k } ) ^ { 2 } \right ] + \lambda \int _ { 0 } ^ { 1 } ( f ^ { ( m ) } ( u ) ) ^ { 2 } \, d u .$$
+
+
+<!-- p:10 -->
+
+
+Comparing the left and rightmost expressions, we see that h solves the n-data point minimization problem with yk replaced by zk.
+
+The results of Lemma 3.1 allow us to prove
+
+#### Lemma 3.2.
+
+$$g _ { n , \, \lambda } ^ { [ k ] } \left ( t _ { k } \right ) - y _ { k } = & \left ( g _ { n , \, \lambda } ( t _ { k } ) - y _ { k } \right ) / \left ( 1 - \frac { \partial } { \partial y _ { k } } \, g _ { n , \, \lambda } ( t _ { k } ) \right ) .$$
+
+Proof. Let zk = g,λ (t). Then Lemma 3.1 and the fact that for each t, gn, (t) depends [k] linearly on yk, gives
+
+$$\text {linearly on } y _ { k } , \text { gives} \\ z _ { k } = g _ { n , \lambda } ( t ; k , z _ { k } ) = g _ { n , \lambda } ( t _ { k } ; k , y _ { k } ) + ( z _ { k } - y _ { k } ) \frac { \partial g _ { n , \lambda } ( t _ { k } ) } { \partial y _ { k } } . \\ = & g _ { n , \lambda } ( t _ { k } ) + ( z _ { k } - y _ { k } ) \frac { \partial g _ { n , \lambda } ( t _ { k } ) } { \partial y _ { k } } \\$$
+
+and the result follows after some algebraic manipulation.
+
+Denoting the entries of A(λ) by ajk, we have
+
+$$g _ { n , \lambda } ( t _ { k } ) \dot { = } \sum _ { j = 1 } ^ { n } a _ { k j } y _ { j }$$
+
+and so
+
+$$\frac { \partial g _ { n , \lambda } ( t _ { k } ) } { \partial y _ { k } } = a _ { k k }$$
+
+and it follows from Lemma 3.2 that
+
+$$V _ { 0 } ( \lambda ) = \frac { 1 } { n } \sum _ { k = 1 } ^ { n } \left \{ \left ( \sum _ { j = 1 } ^ { \prime } a _ { k , j } y _ { j } - y _ { k } \right ) ^ { 2 } / ( 1 - a _ { k } ) ^ { 2 } \right \} .$$
+
+To motivate the definition of V(λ) consider the periodic version of the smoothing problem: it is: Find g∈ W(m), periodic and with integral 0, to minimize
+
+$$\frac { 1 } { n } \sum _ { j = 1 } ^ { n } \left ( f ( t _ { j } ) - y _ { j } \right ) ^ { 2 } + \lambda \, \int _ { 0 } ^ { 1 } \left ( f ^ { ( m ) } ( u ) \right ) ^ { 2 } \, d u .$$
+
+The function g periodic with integral 0 in this context means
+
+$$L _ { k } g = 0 , \quad k = 0 , 1 , \dots , m .$$
+
+It can be shown that the solution hn, λ is given by
+
+$$n$$
+
+$$h _ { n , \lambda } ( t ) & = \sum _ { j = 1 } ^ { n } \, \alpha _ { j } ( - 1 ) ^ { m - 1 } \, k _ { 2 m } ( t , t _ { j } ) \\ \text {where} & \\ & \alpha = ( K + n \lambda I ) ^ { - 1 } \, y \equiv M ^ { - 1 } \, y .$$
+
+
+<!-- p:11 -->
+
+
+Here the role of A is played by KM−1. If tj=j/n, j=1, 2, .., n, then KM−1 is 1 n circulant for every λ and hence constant down the diagonals, akk 三 nj=1 一 ∑ ajj
+
+$$\equiv \frac { 1 } { n } \text {Trace} \, A \text { and } V _ { 0 } ( \lambda ) \text { becomes}$$
+
+1
+
+$$n & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & &$$
+
+(This expression is given in Wahba and Wold [16] for the periodic, equally spaced case considered there.)
+
+To obtain generalized cross-validation from "ordinary" cross-validation in general, one rotates the coordinate system so the matrix, call it Ä(λ), which plays the role in the new coordinate system of the prediction matrix A(λ), is circulant. Since A is symmetric this can always be done by writing A(λ)= UD2(λ) Ut where D2 is diagonal and U is orthogonal. Then, letting Γ = WUt, Ā(λ) = ΓA(λ) Γ is circulant. Let y = Γ y. Then the " smoothed" y is (gn, λ(t1) . .., gn, (t,)t = Γ A(λ) y = Å(λ) y, say. oo     ,   oa- io o n
+
+We remark that inspection of h,  [Eq. (3.2)] reveals the "low pass filter" character of the smoothing spline in the periodic, equally spaced data case. From Lemma 2.2 and Eq. (3.2) we find that the sample Fourier coefficients {hn, λ, v} of hn, a,
+
+$$h _ { n , \lambda , \nu } \dot { \underline { = } } _ { n } ^ { 1 } \sum _ { j = 1 } ^ { n } h _ { n , \lambda } \left ( \frac { j } { n } \right ) e ^ { - 2 \pi i \nu j / n }$$
+
+are related to the Fourier coefficients {h} of the data
+
+$$\hat { h } _ { \nu } \dot { = } \frac { 1 } { n } \sum _ { j = 1 } ^ { n } y \left ( \frac { j } { n } \right ) e ^ { - 2 \pi i v j / n }$$
+
+by the equations
+
+$$h _ { n , \, \lambda , \, \nu } = f _ { \nu } \hat { h } _ { \nu } , \quad v = 1 , 2 , \dots , n ,$$
+
+where
+
+$$f _ { v } = & \frac { 1 } { 1 + n \lambda / \lambda _ { v n } ^ { 2 m } } . \\$$
+
+When v «n we may approximate the summation for λ in (2.12) by the ξ=0 term and so obtain
+
+$$f _ { \nu } \approx & \frac { 1 } { 1 + n \, \lambda ( 2 \pi \, v ) ^ { 2 m } } = B \left ( \frac { v } { v _ { 0 } } \right ) B ^ { * } \left ( \frac { \nu } { v _ { 0 } } \right )$$
+
+where B ν is the Butterworth filter, well known to electrical engineers, having vo 1 half power point v0 = 2π(nλ)1/2m
+
+
+<!-- p:12 -->
+
+
+### 4. Optimal Properties of the Generalized Cross-Validation Estimate of λ
+
+Recall that the true mean square error is given by
+
+$$R ( \lambda ) = & \frac { 1 } { n } \sum _ { i = 1 } ^ { n } \left ( g _ { n , \lambda } ( t _ { i } ) - g ( t _ { i } ) \right ) ^ { 2 } \\ = & \frac { 1 } { n } \left \| A ( \lambda ) \, y - g \right \| ^ { 2 }$$
+
+and the cross-validation function V(λ) is given by
+
+$$V ( \lambda ) = \frac { \lim _ { \substack { n \\ \left ( 1 - - T r A ( \lambda ) \right ) Y \right | ^ { 2 } } } ^ { 1 } } { \left ( 1 - - T r A ( \lambda ) \right ) ^ { 2 } } .$$
+
+The general idea is that one wishes to choose λ to minimize R(λ). This cannot be done directly, of course, since R(λ) involves the unknown g. If σ2 is known, then the minimizer of Ř (λ) of (1.8) can be used to estimate the λ which minimizes R(λ). If σ2 is not known, we will show that the minimizer of V(λ) can be used.
+
+To demonstrate the usefulness of V(λ), we must distinguish two cases. If g(·)∈πm- 1, where πm-1 are the polynomials of degree m-1 or less, we shall first show that ER(λ) and EV(λ) are both minimized for λ = ∞. (Recall that fn,  is the m-1st degree polynomial best fitting the data in the least squares sense.) In general, we will show that if λ is the minimizer of EV(λ), then the inefficiency I* of the method of generalized cross validation, defined by
+
+$$I ^ { * } = \frac { E R ( \tilde { \lambda } ) } { \min _ { \tilde { \lambda } } E R ( \tilde { \lambda } ) }$$
+
+tends to 1 as n→ ∞. Thus, the mean square error when λ is estimated by minimizing V should be close to the minimum possible mean square error.
+
+It follows immediately that I* = 1 if g∈πm- 1, since ER(·) and EV(·) have the same minimizer. In the general case g∈ W(TM), gπm– 1, it will turn out that λ and λ*, the minimizers of EV(λ) and ER(λ) respectively, must satisfy λ→0, λ*→0, 1n     d  dd        d. First we show that
+
+$$\left | \frac { E R ( \lambda ) + \sigma ^ { 2 } - E V ( \lambda ) } { E R ( \lambda ) } \right | \leq & h ( \lambda )$$
+
+where h(λ) is a small quantity to be defined. We will then show that
+
+$$I ^ { * } \equiv \frac { R ( \tilde { \lambda } ) } { R ( \lambda ^ { * } ) } \leqq \frac { 1 + h ( \lambda ^ { * } ) } { 1 - h ( \tilde { \lambda } ) } .$$
+
+Finally we show that h(λ) = O(1/n λ1/2m) and that λ*, λ must satisfy 1/n(λ*)1/2m → 0,
+
+
+<!-- p:13 -->
+
+
+1/n(λ)1/2m → 0, from which it will follow that (1 + h(λ*))/(1 − h(λ)) ↓ 1 and hence I* ↓ 1. Let
+
+$$L \text { } & \quad \text {Let} \\ b ^ { 2 } ( \lambda ) = & \frac { 1 } { n } g ^ { t } ( I - A ( \lambda ) ) ^ { 2 } \, g = & \frac { 1 } { n } \left \| ( I - A ( \lambda ) ) \, g \right \| ^ { 2 } \\ \mu _ { 1 } ( \lambda ) = & \frac { 1 } { n } T r \, A ( \lambda ) \\ \mu _ { 2 } ( \lambda ) = & \frac { 1 } { n } T r \, A ^ { 2 } ( \lambda ) .$$
+
+Then
+
+$$E R ( \lambda ) = & b ^ { 2 } ( \lambda ) + \sigma ^ { 2 } \, \mu _ { 2 } ( \lambda ) \\ E V ( \lambda ) = & \frac { b ^ { 2 } ( \lambda ) + \sigma ^ { 2 } ( 1 - 2 \mu _ { 1 } ( \lambda ) + \mu _ { 2 } ( \lambda ) ) } { [ 1 - \mu _ { 1 } ( \lambda ) ] ^ { 2 } } .$$
+
+We first consider the case g(·)∈πm− 1. In this case g = (g(t1), g(t2), ..., g(t)) is a linear combination of the first m columns of T and so (I — A(λ)) g = 0 for all λ and b(λ)≡0. Thus the minimization of ER(λ) reduces to the minimization of Tr A2(λ), which is clearly minimized for λ= ∞. Similarly EV(λ) becomes
+
+$$E V ( \lambda ) = ( 1 - 2 \, \mu _ { 1 } ( \lambda ) + \mu _ { 2 } ( \lambda ) ) / ( 1 - \mu _ { 1 } ( \lambda ) ) ^ { 2 } .$$
+
+Now I – A(λ) has m zero eigenvalues, and the remaining n –m eigenvalues can be shown to be of the form nλ(nλ+ξv)-1, y=1,2,..,n-m where ξ1m details), and so the above expression for EV(λ) becomes
+
+$$d e t a l s ) , \, a n d \, s o \, t h e \, a b o v e \, e x p r e s s l i o n \, f o r \, E V ( \lambda ) \, \text { becomes} \\ E V ( \lambda ) = \frac { 1 } { n } \sum _ { v = 1 } ^ { n - m } \left ( \frac { n \, \lambda } { n \, \lambda + \xi _ { v n } } \right ) ^ { 2 } \Big / \left ( \frac { 1 } { n } \sum _ { v = 1 } ^ { n - m } \frac { n \, \lambda } { n \, \lambda + \xi _ { v n } } \right ) ^ { 2 } \\ \frac { 1 } { n } \sum _ { v = 1 } ^ { n - m } \left ( \frac { n \, \lambda } { n - m } \sum _ { v = 1 } ^ { 2 } \left ( \frac { n \, \lambda } { n \, \lambda + \xi _ { v n } } \right ) ^ { 2 } \right ) \\ = \frac { 1 } { \left ( \frac { n - m } { n } \right ) } \frac { 1 } { \left [ \frac { 1 } { n - m } \sum _ { v = 1 } ^ { n - m } \left ( \frac { n \, \lambda } { n \, \lambda + \xi _ { v n } } \right ) \right ] ^ { 2 } } \geq \frac { 1 } { \left ( \frac { n - m } { n } \right ) } , \\ \intertext { a n d \, the \, minimum \, is \, a t t a i n e d \, if \, a n d \, \text { only if } \lambda = \infty . }$$
+
+and the minimum is attained if and only if λ = ∞. We now proceed to the general case. We have
+
+Theorem 4.1.
+
+$$\frac { E R ( \lambda ) + \sigma ^ { 2 } - E V ( \lambda ) } { E R ( \lambda ) } = \frac { - \mu _ { 1 } ( 2 - \mu _ { 1 } ) } { ( 1 - \mu _ { 1 } ) ^ { 2 } } + \frac { \sigma ^ { 2 } } { b ^ { 2 } + \sigma ^ { 2 } \, \mu _ { 2 } } \cdot \frac { \mu _ { 1 } ^ { 2 } } { ( 1 - \mu _ { 1 } ) ^ { 2 } } \\$$
+
+and so
+
+$$\underline { | E R ( \lambda ) + \sigma ^ { 2 } - E V ( \lambda ) | } _ { < h ( \lambda ) }$$
+
+
+<!-- p:14 -->
+
+
+where
+
+$$h ( \lambda ) = \left [ 2 \, \mu _ { 1 } ( \lambda ) + \frac { \mu _ { 1 } ^ { 2 } ( \lambda ) } { \mu _ { 2 } ( \lambda ) } \right ] \, \frac { 1 } { ( 1 - \mu _ { 1 } \, ( \lambda ) ) ^ { 2 } } \, .$$
+
+Proof of Theorem. The result follows trivially from
+
+$$E R \left ( \lambda \right ) + \sigma ^ { 2 } - E V ( \lambda ) = E R ( \lambda ) \left ( 1 - \frac { 1 } { ( 1 - \mu _ { 1 } ( \lambda ) ) ^ { 2 } } \right ) + \sigma ^ { 2 } \frac { \mu _ { 1 } ^ { 2 } ( \lambda ) } { ( 1 - \mu _ { 1 } ( \lambda ) ) ^ { 2 } } .$$
+
+From Theorem 4.1 one can deduce
+
+Theorem 4.2. Let λ* be the minimizer of ER (λ). Then EV (λ) has a minimum λ so that the "expectation inefficiency" I* defined by
+
+$$I ^ { * } = \frac { E R ( \tilde { \lambda } ) } { E R ( \lambda ^ { * } ) }$$
+
+satisfies
+
+$$I ^ { * } \leq & \frac { 1 + h ( \lambda ^ { * } ) } { 1 - h ( \hat { \lambda } ) } .$$
+
+Proof. Let Λ={λ: 0≤λ≤∞, EV(λ)−σ2≤R(λ*)(1 + h(λ*))}.
+
+Since
+
+$$E R ( \lambda ) ( 1 - h ( \lambda ) ) < E V ( \lambda ) - \sigma ^ { 2 } < E R ( \lambda ) ( 1 + h ( \lambda ) ) , \quad 0 \leq \lambda < \infty \, ,$$
+
+and ER, EV, and h are continuous functions of λ, then A is a non-empty closed set. If 0 is not a boundary point of A, then EV(λ) has a minimum in the interior of A, (or possibly at ∞) call it λ (see Fig. 1). Now by Theorem 4.1
+
+$$E R ( \tilde { \lambda } ) ( 1 - h ( \tilde { \lambda } ) ) < E V ( \tilde { \lambda } ) - \sigma ^ { 2 } < E R ( \lambda ^ { * } ) ( 1 + h ( \lambda ^ { * } ) )$$
+
+If A includes 0, then λ may be on the boundary of A, i.e., λ =0, but the above bound on I* still holds. Our aim now is to prove that h(λ*) and h(λ) →0 as n → ∞. We will use several lemmas, whose proofs we relegate to the Appendix.
+
+~jr Lemma 4.1. If g∈ W(m),
+
+Fig. 1. Graphical suggestion of the proof of Theorem 4.2
+
+<!-- p:15 -->
+
+
+$$b ^ { 2 } ( \lambda ) \leqq \lambda \int _ { 0 } ^ { 1 } \left ( g ^ { ( m ) } ( u ) \right ) ^ { 2 } d u$$
+
+Lemma 4.2. Let {ti}i= 1 ≡ {tin}i= 1 satisfy
+
+$$\int _ { 0 } ^ { \imath _ { n } } w ( u ) \, d u = i / n , \quad i = 1 , 2 , 3 , \dots , n , \ n = 1 , 2 , \dots$$
+
+where w(u) is a continuous strictly positive weight function. Then if g∉πm\_ 1, (and not identically 0) and λ is bounded away from 0 as n→ ∞, then b2(λ) is also bounded away from 0.
+
+Lemma4.3. Let {tin}i=1 satisfy the hypothesis of Lemma 4.2 with 0&lt;α≤w(t) ≤β&lt;∞.Then
+
+$$\leq & \beta < \infty . \text { Then } \\ & \frac { k _ { m } } { \beta ^ { 1 / 2 m } } + o ( 1 ) \leq n \lambda ^ { 1 / 2 m } \mu _ { 1 } ( \lambda ) \leq & \frac { k _ { m } } { \alpha ^ { 1 / 2 m } } + o ( 1 ) \\ & \frac { l _ { m } } { \beta ^ { 1 / 2 m } } + o ( 1 ) \leq & n \lambda ^ { 1 / 2 m } \mu _ { 2 } ( \lambda ) \leq & \frac { l _ { m } } { \alpha ^ { 1 / 2 m } } + o ( 1 ) , \\ \intertext { w h e r e } o ( 1 ) = & O ( \lambda ) + O ( 1 / n \lambda ^ { 1 / 2 m } ) , \quad \text {as } \lambda \to 0 , \ n \lambda ^ { 1 / 2 m } \to \infty \\ \text {and} \\ & k _ { m } = \int \frac { \infty } { \Gamma } \int \frac { d x } { \Gamma } , \quad l _ { m } = \int \left ( \frac { \infty } { \Gamma } \frac { d x } { \Gamma } \right ) ,$$
+
+$$k _ { m } = \int _ { 0 } ^ { \infty } \frac { d x } { ( 1 + x ^ { 2 m } ) } , \quad l _ { m } = \int _ { 0 } ^ { \infty } \frac { d x } { ( 1 + x ^ { 2 m } ) ^ { 2 } } .$$
+
+Conversely, if n λ1/2m is bounded away from 0, then so are μ1(λ) and μ2(λ). We remark that it is a consequence of Lemma 4.3 that μ2(λ)/μ2(λ) →0. We conclude from Lemmas 4.1-4.3 that if g(·)∉πm−1, then, as λ→0, n λ1/2m→∞,
+
+$$E R ( \lambda ) = b ^ { 2 } ( \lambda ) + \sigma ^ { 2 } \, \mu _ { 2 } ( \lambda ) = O ( \lambda ) + O ( 1 / n \, \lambda ^ { 1 / 2 \, m } ) \to 0 ,$$
+
+and if either λ or 1/n λ1/2m is bounded away from 0, ER(λ) does not tend to 0. Thus, to minimize ER(λ), we must have λ* →0, n(λ*)1/2m→ ∞, so that h(λ*)→0. Now it can be checked that EV(λ)≥σ2. Furthermore EV(λ)↓σ2 since EV(λ)-σ2 ≤ER(λ*)(1 +h(λ*))→0. If g∉πm−1, it is necessary that λ→0, n(λ)1/2m→∞ in order that EV(λ) ↓σ2, and so it can be concluded that h(λ) →0 as n→ ∞.
+
+Combining the above arguments with Theorem 4.2 gives the following main
+
+i tin Theorem 4.3. Let g(·)∈W{m), and let {tin}i=1 satisfy 一 w(u) du, where w(u) is a n 0 strictly positive continuous weight function. Then there exist a sequence λ = λ(n) of minima of EV(λ) such that
+
+$$\lim _ { n \to \infty } \frac { E R ( \tilde { \lambda } ) } { E R ( \lambda ^ { * } ) } = 1 .$$
+
+
+<!-- p:16 -->
+
+
+### 5. Numerical Results
+
+We have tried the method on artificial data of the form y(ti) = g(ti) + ε, where ε are normally distributed pseudo-random numbers with mean 0 and variance σ2, and m =2. For m = 2, g, λ is a cubic smoothing spline.
+
+In the m =2 case, it can be established from Reinsch [9], p. 179, that
+
+$$I - A ( \lambda ) = \tilde { Q } ( \tilde { Q } ^ { t } \tilde { Q } + p \, \tilde { T } ) ^ { - 1 } \, \tilde { Q } ^ { t }$$
+
+where
+
+$$p = 1 / n \dot { \lambda } ,$$
+
+Q is the n ×(n−2) dimensional tridiagonal matrix with entries ij, i= 1, 2, ..., n, j= 1, 2, ..., n − 2, given by
+
+$$\tilde { q } _ { i , i + 1 } = & i / h _ { i + 1 } , \quad \tilde { q } _ { i i } = - 1 / h _ { i } - 1 / h _ { i + 1 } , \quad \tilde { q } _ { i + 1 , i } = 1 / h _ { i + 1 } ,$$
+
+where hi = ti + 1 − ti, and Ī is the (n − 2) × (n − 2) dimensional tridiagonal matrix with entries tij, i, j = 1, 2, ..., n − 2 given by
+
+$$\tilde { t } _ { i i } = 2 ( h _ { i } + h _ { i + 1 } ) / 3 , \quad \tilde { t } _ { i , i + 1 } = \tilde { t } _ { i + 1 , i } = h _ { i + 1 } / 3 .$$
+
+The matrix  is strictly positive definite (assuming h&gt; 0). Let F = Qĩ − 1/2, where 1 − 1/2 is the symmetric square root of T− 1. When hi ≡−, i ,i=1, 2, ..., n, τ − 1/2 can n
+
+be found analytically from the formula
+
+$$\begin{pmatrix} \beta & \beta & 0 \\ \beta & \cdot & \cdot \\ \cdot & \cdot & \cdot \\ \cdot & \cdot & \cdot \\ \cdot & \cdot & \beta \\ \beta & \alpha \end{pmatrix} = \dot { R } D r ^ { \prime }$$
+
+where
+
+$$\Gamma _ { j k } = \sqrt { \frac { 2 } { n + 1 } } \sin \frac { j k \pi } { n + 1 }$$
+
+jπ and D is the diagonal matrix with jjth entry α+2βcos thus n+1'
+
+$$\tilde { T } ^ { - 1 / 2 } = \Gamma D ^ { - 1 / 2 } \, \Gamma ^ { t } .$$
+
+Then
+
+$$I - A = F ( F ^ { t } F + p I ) ^ { - 1 } \, F ^ { t } .$$
+
+
+<!-- p:17 -->
+
+
+Let the singular value decomposition of F be (see [5])
+
+$$F = U D V ^ { T }$$
+
+where U and V are n × (n−2) and (n-2) × (n-2) orthogonal matrices and D has the (non-zero) singular values of F, call them d1, d2, ., d\_2 on the diagonal and zeroes elsewhere. Then
+
+$$I - A = U \begin{pmatrix} \frac { d _ { 1 } ^ { 2 } } { d _ { 1 } ^ { 2 } + p } & 0 \\ & \ddots \\ 0 & \cdot \frac { d _ { n - 2 } ^ { 2 } } { d _ { n - 2 } ^ { 2 } + p } \end{pmatrix} U ^ { t }$$
+
+and
+
+$$V ( p ) = & - \sum _ { n } ^ { 1 - n - 2 } \left ( \frac { d _ { j } ^ { 2 } } { d _ { j } ^ { 2 } + p } \right ) ^ { 2 } z _ { j } ^ { 2 } / \left [ \frac { 1 } { n } \sum _ { j = 1 } ^ { n - 2 } \left ( \frac { d _ { j } ^ { 2 } } { d _ { j } ^ { 2 } + p } \right ) \right ] ^ { 2 } \\$$
+
+where
+
+$$z = ( z _ { 1 } , \dots , z _ { n - 2 } ) ^ { t } = U ^ { t } \, y$$
+
+The numerical experiments were conducted as follows: To conform to Reinsch's formulae, λ is everywhere replaced by p = 1/n λ. For given g, σ2, and n, data y, i= 1, 2, ..., n, were generated by
+
+$$y _ { i } = g \left ( \frac { i - 1 } { n } \right ) + \varepsilon _ { i } , \quad i = 1 , 2 , \dots , n ,$$
+
+where the ε are pseudo-random variates with mean 0 and variance σ2. V(p) is computed using (5.5), for log1o p in increments of 1/9, and the minimizing p, call it p, was obtained by global search. Then gn, λ for λ= 1/np is computed using Reinsch [9], (Eqs. 8, 9, 13 and 14), and R(p),
+
+$$R ( p ) = & \frac { 1 } { n } \sum _ { i = 1 } ^ { n } \left ( g ( t _ { i } ) - g _ { n , \, \lambda } ( t _ { i } ) \right ) ^ { 2 }$$
+
+is obtained for comparison.
+
+Test functions of the form
+
+$$g ( t ) = \sum _ { j = 1 } ^ { r } w _ { j } \beta _ { p _ { j } , q _ { j } } ( t ) ,$$
+
+where
+
+$$\beta _ { p q } ( t ) = & \frac { \Gamma ( p + q ) } { \Gamma ( p ) \, \Gamma ( q ) } \, t ^ { p - 1 } \, ( 1 - t ) ^ { q - 1 }$$
+
+and Γ is the gamma function were used.
+
+
+<!-- p:18 -->
+
+
+Fig. 2. Examples I, II, and III, g, gn, λ, and the data
+
+The examples are
+
+| Example I   | r = 3   | wl =0.2   | pa = 4   | q1=15   |
+|-------------|---------|-----------|----------|---------|
+|             |         | w2=0.7    | p2 = 5   | q2 = 7  |
+|             |         | w3 =0.1   | p3=12    | q3= 5   |
+| Example II  | r = 2   | wl =0.4   | pt=12    | ql= 7   |
+|             |         | w/=0.6    | p2 = 4   | q2=ll   |
+| Example III | r=3     | w 1 =0.5  | pl=10    | q1=30   |
+|             |         | w 2 =0.2  | P2 =20   | q2 =20  |
+|             |         | w3 =0.3   | P3=30    | q3=10   |
+
+i Figure2 gives plots of the original function g(t), the data y=g + εi, n i = 1, 2, ..., n, and gn, (t), λ = 1/n p, and p is the minimizer of V (p). Here σ = 0.1 and the number of data points n = 50. Figure 3 gives plots of V(p), Ř(p), and R(p).
+
+Ř(p) is defined by (1.8) and is computed by
+
+$$\hat { R } ( p ) = & \frac { 1 } { n } \sum _ { j = 1 } ^ { n - 2 } \left ( \frac { d _ { j } ^ { 2 } } { d _ { j } ^ { 2 } + p } \right ) ^ { 2 } z _ { j } ^ { 2 } + \frac { 2 \sigma ^ { 2 } } { n } \sum _ { j = 1 } ^ { n - 2 } \left ( \frac { d _ { j } ^ { 2 } } { d _ { j } ^ { 2 } + p } \right ) - \sigma ^ { 2 } .$$
+
+The minima of each of these curves is marked with a circle. Reinsch's suggestion for choosing p [Eq. (1.4)] when σ2 is known, was also implemented. In our notation, his suggestion becomes: Choose p so that S(p)/σ2=1. To evaluate this suggestion, S(p) is also plotted, and the point S(p)=σ2 is also marked with a circle.
+
+In each example I, II, III it is seen that R(p) tracks R(p), and in the neighborhood of the minimum of R(p), V(p)≈R(p) + constant, where the constant is around σ2. (Note that Σε/σ2 is a pseudo random X2 variate.) It is seen that the p obtained by setting S(p)=σ2 consistently results in p too small, confirming the theoretical results to this effect in [13]. We caution the reader that a good value of σ2 is required in order that the minimizer of Ř(p) be near that of R(p). In the computations, σ2 is taken as the variance used to generate pseudo random numbers ε.
+
+
+<!-- p:19 -->
+
+
+Fig. 3
+
+Table 1. Inefficiencies associated with V, Ř and S
+
+|             | a=0.1 - R (/~) min R (p) P   | a=0.01 - R (/~R) min R (p) P   | a=0.01 - R (/~s) min R (p) P   | a=0.01 - R (/~) min R (p) P   | R (/~R) min R P   | (p)     | R (/~s) min R (p) P   |
+|-------------|------------------------------|--------------------------------|--------------------------------|-------------------------------|-------------------|---------|-----------------------|
+| Example I   | 1.01                         | 1.00                           | 1.21                           | 1.02                          | 1.06              | 2.38    |                       |
+| Example II  | 1.04                         | 1.10                           | 1.14                           | 1.01                          | 1.04              | 1.07    |                       |
+| Example III | 1.42                         | 1.01                           | 2.02                           | 1.22                          | 1.00              | 2.06    |                       |
+|             | a=0.001                      | a=0.001                        | a=0.001                        | a=0.001                       | a=0.001           | a=0.001 | a=0.001               |
+| Example II  | 1.12                         | 1.04                           | 1.97                           |                               |                   |         |                       |
+
+Letting p, ê and ês be the estimates of p using Generalized Cross-Validation, the minimizer of Ř(p), and Reinsch's suggestion respectively, the first three columns of the top of Table 1 gives the observed inefficiencies
+
+$$\frac { R ( \hat { p } ) } { \min _ { p } R ( p ) } , \, \frac { R ( \hat { p } _ { R } ) } { \min _ { p } R ( p ) } \text { \ and \ } \frac { R ( \hat { p } _ { S } ) } { \min _ { p } R ( p ) } .$$
+
+These experiments were replicated for σ= 0.01 and σ = 0.001. Plots of V, ê, R and S for the σ=0.01 case appear in Fig. 4, and the inefficiencies appear in the third through sixth columns of Table 1. The functions g and g, λ in the σ=0.01 case (which is roughly 1 % of the average g) are nearly visually indistinguishable and are not plotted. Good estimates of the derivative of g can be obtained by differentiating gn, λ. The functions g' and g', λ are plotted in Fig. 5, and it can be seen that at this signal to noise ratio the results are impressive. The mean square error R(p) in estimating the derivative,
+
+
+<!-- p:20 -->
+
+$$R _ { D } ( p ) = \frac { 1 } { n } \sum _ { j = 1 } ^ { n } \left ( g ^ { \prime } \left ( \frac { j } { n } \right ) - g _ { n , \lambda } ^ { \prime } \left ( \frac { j } { n } \right ) \right ) ^ { 2 }$$
+
+is also plotted in Fig.4. Note that the minimum of Rp(p) is close to the minimum of R(p), so that in these examples both the GCV estimate and the minimizer of Ř(p) are good from the point of view of minimizing Rp(p). This phenomena also obtained for the noisier data with σ=0.1, however the best derivative estimate with this 10% noise is fairly crude.
+
+
+<!-- p:21 -->
+
+As σ2 →0 R(p) will flatten out so that the optimum p → ∞, and Ř(p) and V(p) also display this behavior. To illustrate what can happen as σ2→0 we present Note that, while V(p) appears to have its minimum at p = ∞, R and Ř have finite minima. Judged from the point of view of inefficiency, however, ê and êr are not bad. The estimate ês becomes very inefficient in the σ2 small case (again agreeing with the theoretical results in [13], Eq. (1.3b) there says that as σ2 →0, Reinsch's suggestion becomes progressively worse).
+
+### 6. Conclusions
+
+The method of generalized cross validation has been shown both theoretically, and by example, to be an effective method for estimating that value of the spline smoothing parameter which minimizes the mean square error. Excellent estimates of the derivative are also obtained in examples involving roughly 1% and of 1% noise. 10
+
+## Appendix
+
+In this Appendix we give proofs of Lemmas 2.1 and 4.1 through 4.3.
+
+Lemma 2.1. Q(s, t) given by
+
+$$Q ( s , t ) = \sum _ { r = 0 } ^ { m } k _ { r } ( s ) \, k _ { r } ( t ) + ( - 1 ) ^ { m - 1 } \, k _ { 2 m } ( s , t )$$
+
+
+<!-- p:22 -->
+
+
+is the reproducing kernel for W(m) endowed with the inner product
+
+$$\langle f , g \rangle = \sum _ { r = 0 } ^ { m - 1 } \left ( L _ { r } , f \right ) ( L _ { r } , g ) + \sum _ { 0 } ^ { 1 } f ^ { ( m ) } ( u ) \, g ^ { ( m ) } ( u ) \, d u .$$
+
+Proof. Let Q(·)≡Q(t, ·). We have to show
+
+$$\begin{array} { r l } & { i ) \ Q _ { t } \in W _ { 2 } ^ { ( m ) } \quad \text {for each } t } \\ & { i i ) \ \langle Q _ { t } , f \rangle = f ( t ) , \quad f \in W _ { 2 } ^ { ( m ) } , \ t \in [ 0 , 1 ] . } \end{array}$$
+
+iods  dor ns e keis  o ts or and Wahba [7].) Part i) is obvious upon noting that Q, is a monospline of degree 2m and hence has 2m-2 continuous derivatives. To verify ii), we calculate
+
+$$L _ { r } \, Q _ { t } = & k _ { r } ( t ) , \quad r = 0 , 1 , \dots , m - 1 \\ \frac { \partial m } { \partial u ^ { m } } \, Q _ { t } ( u ) = & k _ { m } ( t ) + ( - 1 ) ^ { 2 m - 1 } \, k _ { m } ( t , u )$$
+
+and so
+
+$$\langle Q _ { r } , f \rangle = & \sum _ { r = 0 } ^ { m - 1 } k _ { r } ( t ) ( L _ { r } , f ) + \int _ { 0 } ^ { 1 } ( k _ { m } ( t ) - k _ { m } ( t , u ) ) \, f ^ { ( m ) } ( u ) \, d u \\ = & \sum _ { r = 0 } ^ { m } k _ { r } ( t ) ( L _ { r } , f ) - \int _ { 0 } ^ { 1 } k _ { m } ( t , u ) \, f ^ { ( m ) } ( u ) \, d u \\ = & h ( t ) , \, \text { say.} \\ \intertext { w e w h o s w h o w } \intertext { W e w h o s w h o w }$$
+
+We wish to show that h(t)≡ f(t). We are allowed to differentiate (A2.1) m—1 times under the integral sign, giving
+
+$$h ^ { ( m ) } ( t ) = ( L _ { m } f ) - \frac { \partial } { \partial t } \int _ { 0 } ^ { 1 } k _ { 1 } ( t , u ) \, f ^ { ( m ) } ( u ) \, d u .$$
+
+Since B1(t) =t − 1/2, k1(t, u) =(t −u) − 1/2, u &lt;t, =(t− u) + 1/2, u&gt;t, and hence, if t is a point of continuity of f(m),
+
+$$t \text { is a point of community } 0 ^ { \prime } \text { } ; \\ h ^ { ( m ) } ( t ) = & ( L _ { m } f ) - \left [ \int _ { 0 } ^ { 1 } \frac { \partial } { \partial t } k _ { 1 } ( t , u ) \, f ^ { ( m ) } ( u ) \, d u + k _ { 1 } ( t , t _ { \_ } ) \, f ^ { ( m ) } ( t ) \\ & + \int _ { 0 } ^ { 1 } \frac { \partial } { \partial t } k _ { 1 } ( t , u ) \, f ^ { ( m ) } ( u ) \, d u - k _ { 1 } ( t , t _ { \_ } ) \, f ^ { ( m ) } ( t ) \right ] \\ = & ( L _ { m } f ) - \int _ { 0 } ^ { 1 } f ^ { ( m ) } ( u ) \, d u + f ^ { ( m ) } ( t ) \\ = & f ^ { ( m ) } ( t ) . \\ \intertext { t i s e y o s e t h a t L _ { r } ( f - h ) = 0 f r = 0 , 1 , \dots , m - 1 s o t h a t }$$
+
+It is easy to see that L,(f−h)=0 for r=0,1, ...,m-1 so that f =h. (This lemma corrects an error in [13], p. 391, line 2.)
+
+
+<!-- p:23 -->
+
+
+Lemma 4.1. For any g∈ W(m),
+
+$$b ^ { 2 } ( \lambda ) \equiv & \frac { 1 } { n } \| ( I - A ( \lambda ) ) \, g \| ^ { 2 } \leq \lambda \int _ { 0 } ^ { 1 } \left ( g ^ { ( m ) } ( u ) \right ) ^ { 2 } d u .$$
+
+is the solution to the problem; Find f∈ Wm) to minimize * g,, z,  which
+
+$$\frac { 1 } { n } \sum _ { j = 1 } ^ { n } \left ( g ( t _ { j } ) - f ( t _ { j } ) \right ) ^ { 2 } + \lambda \int _ { 0 } ^ { 1 } \left ( f ^ { ( m ) } ( u ) \right ) ^ { 2 } d u .$$
+
+Therefore,
+
+$$\text {Here,} \\ \frac { 1 } { n } \sum _ { j = 1 } ^ { n } \left ( g ( t _ { j } ) - g _ { n , \lambda } ^ { * } ( t _ { j } ) \right ) ^ { 2 } + \lambda \int _ { 0 } ^ { 1 } \left ( g _ { n , \lambda } ^ { * } ( u ) \right ) ^ { 2 } \, d u \\ = \frac { 1 } { n } \left \| ( I - A ( \lambda ) ) \, g \right \| ^ { 2 } + \lambda \int _ { 0 } ^ { 1 } \left ( g _ { n , \lambda } ^ { * } ( u ) \right ) ^ { 2 } \, d u \\ \leqq \frac { 1 } { n } \sum _ { j = 1 } ^ { n } \left ( g ( t _ { j } ) - g ( t _ { j } ) \right ) ^ { 2 } + \lambda \int _ { 0 } ^ { 1 } \left ( g ^ { ( m ) } ( u ) \right ) ^ { 2 } \, d u = \lambda \int _ { 0 } ^ { 1 } \left ( g ^ { ( m ) } ( u ) \right ) ^ { 2 } \, d u . \\ \text {Lemma 4.2. Let } \{ t _ { j } \} _ { i = 1 } ^ { n } \, \text {satisfy}$$
+
+Lemma 4.2. Let {tin}i=1 ul satisfy
+
+$$\int _ { 0 } ^ { t _ { n } } w ( u ) \, d u = i / n , \quad i = 1 , 2 , \dots , n , \ n = 1 , 2 , \dots$$
+
+where w(u) is a strictly positive continuous weight function. Then if g(·)∉πm-1 1 (and not identically 0), and λ is bounded away from 0 as n→∞ then 一 g'(I n − A(λ))2 g is also bounded away from 0 as n→ ∞.
+
+Proof. Let gn, be as in the proof of Lemma 4.1. Then converges in W{(m), as n→ ∞, to the minimizer, call it of i,
+
+$$J _ { \infty , \, \mathfrak { g } } ( f ) = \int _ { 0 } ^ { 1 } \frac { ( g ( u ) - f ( u ) ) ^ { 2 } } { \omega ( u ) } \, d u + \lambda \int _ { 0 } ^ { 1 } \left ( f ^ { ( m ) } ( u ) \right ) ^ { 2 } \, d u .$$
+
+Now if g∈πm-1, it is easy to see that g* =g, since, in that case J∞,g(g)=0. However, if g∉πm-1 then
+
+$$J _ { \infty , \, g } ( \theta \, g ) < J _ { \infty , \, g } ( g )$$
+
+lo
+
+$$\text {for} \\ \theta = \frac { \int \frac { g ^ { 2 } ( u ) } { \omega ( u ) } d u } { \int \frac { g ^ { 2 } ( u ) } { \omega ( u ) } d u + \lambda \int g ^ { ( m ) } ( u ) \, d u } . \\$$
+
+so that g is not equal to g. Furthermore
+
+
+<!-- p:24 -->
+
+
+```
+P. Craven and G. Wahba
+    _ = g' (I - A (lambda))^2 = _ = \sum _ { j = 1 } ^ { n } (g (t _ ) - g _ ^ { n } (t _ ) ) ^ { 2 } - \inf _ { j = 1 } ^ { ( g (u ) - g _ ^ { n } (u ) ) ^ { 2 } } \quad \text {for } \lambda > 0
+    n
+
+Lemma 4.3.  Let  {t _ } , f _ = 1,  satisfy  the  hypothesis  of  Lemma 4.2  with   0 < \alpha \leq w ( t )
+  \leq \beta < \infty.  Then
+
+      \frac { k _ { m } - + O ( \lambda ) + O ( 1 / n \lambda / 2 ) } { \beta ^ { 1 / 2 m } } \leq \frac { n \lambda ^ { 1 / 2 m } } { n } \left ( \frac { 1 } { n } T r \, A ( \lambda ) \right ) = n \lambda ^ { 1 / 2 m } \, \mu _ { 1 } ( \lambda )
+
+      \leq \frac { k _ { m } - + O ( \lambda ) + O ( 1 / n \lambda / 2 m ) } { \beta ^ { 1 / 2 m } } \leq \frac { n \lambda ^ { 1 / 2 m } } { n } \left ( \frac { 1 } { n } T r \, A ^ { 2 } ( \lambda ) \right ) = n \lambda ^ { 1 / 2 m } \, \mu _ { 2 } ( \lambda )
+
+      \leq \frac { l _ { m } - + O ( \lambda ) + O ( 1 / n \lambda / 2 m ) } { \alpha ^ { 1 / 2 m } }
+
+as \lambda \to 0, n \lambda ^ { 1 / 2 m } \to \infty
+where
+      k _ { m } = \frac { 1 } { n } \int _ { \Omega _ { 0 } } \frac { 1 } { n } \int _ { \Omega _ { 0 } ^ { - 1 } } \frac { d x } { ( 1 + x ^ { 2 m } ) ^ { 2 } } .
+
+Conversely,  if  n \lambda ^ { 1 / 2 m }  is  bounded  away  from  0  as  n \to \infty,  then  so  are  - Tr A ( \lambda )
+        1
+and  = Tr A ^ { 2 } ( \lambda).
+      n
+Proof.
+
+      A ( \lambda ) = ( n \lambda + K ) M - 1 .
+
+where
+
+      M = K + n \lambda I
+
+and
+
+      P = M - ' T ( T ^ { M - 1 } T + A ) - 1 T .
+
+Let
+      n \hat { M } - 1 = E
+            K M - 1 = A _ { 0 } .
+
+Now,  since  0 < A _ { 0 } < A = A _ { 0 } + E < I,  ( where  B \prec C  means  C - B  is  non-negative
+definite)  and  0 < E < I,  with  E  of  rank  m + 1,  we  have
+
+      Tr A _ { 0 } \leq Tr A \leq Tr A _ { 0 } + ( m + 1 )
+      Tr A _ { 0 } ^ { 2 } \leq Tr A ^ { 2 } - 2 Tr A _ { 0 } E + T r E ^ { 2 }
+
+                      \leq T r A _ { 0 } ^ { 2 } + 3 T r E
+                      \leq Tr A _ { 0 } ^ { 2 } + ( m + 1 )
+```
+
+
+<!-- p:25 -->
+
+
+and so
+
+$$\lambda ^ { 1 / 2 } \sum _ { \nu = 1 } ^ { n } \left ( \frac { \lambda _ { \nu n } } { \lambda _ { \nu n } + n \lambda } \right ) \leqq n \lambda ^ { 1 / 2 m } \left [ \frac { 1 } { n } \text {Tr} \, A ( \lambda ) \right ] \leqq \lambda ^ { 1 / 2 m } \sum _ { \nu = 1 } ^ { n } \left ( \frac { \lambda _ { \nu n } } { \lambda _ { \nu n } + n \lambda } \right ) + \hat { \lambda } ^ { 1 / 2 m } ( m + 1 ) ,$$
+
+where λyn, v= 1, 2, ..., n, are the eigenvalues of K. We continue the proof under the assumption that the eigenvalues λy satisfy
+
+$$\alpha \frac { ( \pi v ) ^ { 2 m } } { n } \leqq \lambda _ { v n } ^ { - 1 } \leqq \beta \frac { ( \pi v ) ^ { 2 m } } { n }$$
+
+for some α, β, 0&lt;α≤β&lt;∞. Then we give an outline of an argument to show that the hypothesis of the theorem on {t} guarantees that (A4.3.1) holds with α, β given by
+
+$$\alpha = & \min _ { t } w ( t ) ( 1 + o ( 1 ) ) \\ \beta = & \max _ { t } w ( t ) ( 1 + o ( 1 ) )$$
+
+where o(1)→0 as n→ ∞. Using (A4.3.1) gives
+
+$$\lambda ^ { 1 / 2 m } \sum _ { \nu = 1 } ^ { n } \frac { 1 } { ( 1 + \lambda \beta ( \pi v ) ^ { 2 m } ) } \leq \lambda ^ { 1 / 2 m } \sum _ { \nu = 1 } ^ { n } \left ( \frac { 1 } { 1 + n \lambda \lambda _ { \nu n } ^ { - 1 } } \right ) ^ { 2 } \leq \lambda ^ { 1 / 2 m } \sum _ { \nu = 1 } ^ { n } \frac { 1 } { ( 1 + \lambda \alpha ( \pi v ) ^ { 2 m } ) }$$
+
+Since, for any fixed γ&gt;0 we have
+
+$$( \mathfrak { m } - 1 ) ( \mathfrak { y } \lambda ) ^ { 1 / 2 m } \pi & = d x \\ \int _ { ( \mathfrak { y } \lambda ) ^ { 1 / 2 m } \pi } \frac { \int _ { ( 1 + x ^ { 2 m } ) ^ { 2 } } \leq ( \gamma \lambda ) ^ { 1 / 2 m } \pi \sum _ { \nu = 1 } ^ { n } \frac { 1 } { ( 1 + \lambda \gamma ( \pi ) ^ { 2 m } \nu ^ { 2 m } ) ^ { 2 } } \leq \sum _ { 0 } ^ { \infty } \frac { d x } { ( 1 + x ^ { 2 m } ) ^ { 2 } } ,$$
+
+we obtain
+
+$$\frac { 1 } { \beta ^ { 1 / 2 m } \pi } \sum _ { ( \beta , \lambda ) ^ { 1 / 2 m } , \pi _ { m } } ^ { ( n - 1 ) ( \beta \lambda ) ^ { 1 / 2 m } } \frac { d x } { ( 1 + x ^ { 2 m } ) } \leq & n \lambda ^ { 1 / 2 m } \left [ \frac { 1 } { n } T r \, A ( \lambda ) \right ] \\ & \leq \frac { 1 } { \alpha ^ { 1 / 2 m } \pi } \int \frac { x } { 0 } \frac { d x } { ( 1 + x ^ { 2 m } ) ^ { 2 } } + \lambda ^ { 1 / 2 m } ( m + 1 ) ,$$
+
+and so
+
+$$\frac { k _ { m } } { \beta ^ { 1 / 2 m } } + O ( \lambda ) + O ( 1 / n \, \lambda ^ { 1 / 2 m } ) & \leqq n \, \lambda ^ { 1 / 2 m } \left [ \frac { 1 } { n } \, T r \, A ( \lambda ) \right ] \\ & \leqq \frac { k _ { m } } { \alpha ^ { 1 / 2 m } } + O ( \lambda ) + O ( 1 / n \, \lambda ^ { 1 / 2 m } ) .$$
+
+A similar argument gives the inequality involving TrA2(λ). We now give a heuristic argument to show that A.4.3.1 holds with α, β given by A.4.3.2. The jkth entry Kjk of K is given (n even) by
+
+
+<!-- p:26 -->
+
+
+$$K _ { j k } = & ( - 1 ) ^ { m - 1 } \, k _ { 2 m } ( t _ { j } , t _ { k } ) = \sum _ { \substack { v = - \infty \\ v \neq 0 } } ^ { \infty } \frac { 1 } { ( 2 \pi \, v ) ^ { 2 m } } \, e ^ { 2 \pi i v ( t _ { j } - t _ { k } ) } \\ & \simeq \sum _ { \substack { v = - \infty \\ v \neq 0 } } ^ { n / 2 } \frac { 1 } { ( 2 \pi \, v ) ^ { 2 m } } \, e ^ { 2 \pi i v ( t _ { j } - t _ { k } ) } , \\ \intertext { a n d s o }$$
+
+and so
+
+K≈ΦDΦ*
+
+1 where Φ is the n×n matrix with jvth entry e2πivtjn and D is a diagonal √n
+
+matrix with vvth entry D, vv ≈ (2π v)2m) n v= −n/2, ..., n/2, v≠0, (n even). Since
+
+1 tj+1,n−tjn , for some t ∈[t jn, t j+1,n] we have nw(t)'
+
+$$\frac { 1 } { n } \sum _ { j = 1 } ^ { n } e ^ { 2 \pi i t _ { j } n } e ^ { - 2 \pi i \mu _ { j } n } \frac { 1 } { w ( t _ { j n } ) } \approx & \left \{ \int e ^ { 2 \pi i ( \nu - \mu ) s } d s = 1 , \quad \mu = v \\ = & 0 \quad \text {otherwise}$$
+
+1 and so, letting D be the diagonal matrix with jjth entry we have w(t jn)'
+
+Φ*DwΦ≈1.
+
+Letting U = D 1/2 Φ, we have that U is (approximately) unitary w
+
+$$K \approx D _ { w } ^ { - 1 / 2 } \ U D U ^ { * } D _ { w } ^ { - 1 / 2 } .$$
+
+If equality were to hold in (A4.4.3) and U were unitary, then we would have that the eigenvalues λv of K satisfy
+
+$$\min _ { t } \left ( \frac { 1 } { w ( t ) } \right ) D _ { v v } \leq \lambda _ { v n } \leq \max _ { t } \left ( \frac { 1 } { w ( t ) } \right ) D _ { v v } ,$$
+
+$$\min _ { t } w ( t ) \, D _ { \nu \nu } \leqq \lambda _ { \nu \nu } ^ { - 1 } \leqq \max _ { t } w ( t ) \, D _ { \nu \nu } .$$
+
+Since the 2vth and the 2v-1st largest Dvv are n we then would have (2πv)2m, (A4.3.1) with α, β as in (A4.3.2).
+
+It remains to show that if 1/(n λ1/2m) is bounded below away from 0 as n→ ∞, 1 then so is −Tr A2(λ). We have n
+
+$$\frac { 1 } { n } \sum _ { \nu = 1 } ^ { n } \frac { 1 } { ( 1 + \beta \pi ^ { 2 m } \lambda v ^ { 2 m } ) ^ { 2 } } \leq & \frac { 1 } { n } T r \, A ^ { 2 } ( \lambda ) .$$
+
+or Let λ= λ(n) satisfy n λ1/2m=c1/2m, equivalently λ= c/n2m. Then
+
+
+<!-- p:27 -->
+
+
+$$\frac { 1 } { ( 1 + \beta \pi ^ { 2 m } c ) ^ { 2 } } \leq & \frac { 1 } { n } \sum _ { \nu = 1 } ^ { n } \frac { 1 } { ( 1 + \beta \pi ^ { 2 m } c ( v ^ { 2 m } / n ^ { 2 m } ) ) ^ { 2 } } \leq & \frac { 1 } { n } T r \, A ^ { 2 } ( \lambda ) .$$
+
+Acknowledgements. This work originated in the Common Room at the Oxford University Mathematical Institute, and the ministrations of the tea lady are remembered fondly by the American author (GW). She wishes to express her sincere appreciation for the hospitality of the Oxford University Mathematical Institute and St. Cross College, Oxford, and the support of the Science Research Council of Great Britain. We are grateful to Professor Gene Golub for several helpful discussions which led to the computational approach of Sect. 5.
+
+<!-- END SOURCE 12/40: Craven_1979_smoothing-noisy-data-spline-functions.md -->
+
+---
+
+<!-- BEGIN SOURCE 13/40: Diebold_1995_comparing-predictive-accuracy.md -->
+
+# Source: `Diebold_1995_comparing-predictive-accuracy.md`
+
+---
+id: "Diebold_1995_comparing-predictive-accuracy"
+source_pdf: "../pdf/Diebold_1995_comparing-predictive-accuracy.pdf"
+source_filename: "Diebold_1995_comparing-predictive-accuracy.pdf"
+format: "academic-paper"
+extraction_profile: "text-math-tables-high-fidelity"
+extraction_mode: "hybrid"
+extraction_quality: "excellent"
+extraction_score: 108.0
+visual_assets: "disabled"
+references_file: "../references/Diebold_1995_comparing-predictive-accuracy.references.md"
+---
+
+<!-- p:1 -->
+
+##### Comparing predictive accuracy
+
+Diebold, Francis X; Mariano, Roberto S
+
+Journal of Business &amp; Economic Statistics;
+
+pg. 253
+
+Jul 1995; 13, 3; ABI/INFORM Global
+
+©1995 American Statistical Association Journal of Business &amp; Economic Statistics, July 1995, Vol. 13, No. 3
+
+## Comparing Predictive Accuracy
+
+##### Francis X. DIEBOLD
+
+Department of Economics, University of Pennsylvania, Philadelphia, PA 19104-6297, and National Bureau of Economic Research, Cambridge, MA 02138
+
+### Roberto S. MARIANO
+
+Department of Economics, University of Pennsylvania, Philadelphia, PA 19104-6297
+
+We propose and evaluate explicit tests of the null hypothesis of no difference in the accuracy of two competing forecasts. In contrast to previously developed tests, a wide variety of accuracy measures can be used (in particular, the loss function need not be quadratic and need not even be symmetric), and forecast errors can be non-Gaussian, nonzero mean, serially correlated, and contemporaneously correlated. Asymptotic and exact finite-sample tests are proposed, evaluated, and illustrated.
+
+KEY WORDS: Economic loss function; Exchange rates; Forecast evaluation; Forecasting; Nonparametric tests; Sign test.
+
+Prediction is of fundamental importance in all of the sciences, including economics. Forecast accuracy is of obvious importance to users of forecasts because forecasts are used to guide decisions. Forecast accuracy is also of obvious importance to producers of forecasts, whose reputations (and fortunes) rise and fall with forecast accuracy. Comparisons of forecast accuracy are also of importance to economists more generally who are interested in discriminating among competing economic hypotheses (models). Predictive performance and model adequacy are inextricably linked—predictive failure implies model inadequacy.
+
+In this article we propose widely applicable tests of the null hypothesis of no difference in the accuracy of two competing forecasts. Our approach is similar in spirit to that of Vuong (1989) in the sense that we propose methods for measuring and assessing the significance of divergences between models and data. Our approach, however, is based directly on predictive performance, and we entertain a wide class of accuracy measures that users can tailor to particular decision-making situations. This is important because, as is well known, realistic economic loss functions frequently do not conform to stylized textbook favorites like mean squared prediction error (MSPE). [For example, Leitch and Tanner (1991)
+
+and Chinn and Meese (1991) stressed direction of change, Cumby and Modest (1987) stressed market and country timing, McCulloch and Rossi (1990), and West, Edison, and Cho (1993) stressed utility-based criteria, and Clements and Hendry (1993) proposed a new accuracy measure, the generalized forecast-error second moment.] Moreover, we allow for forecast errors that are potentially non-Gaussian, nonzero mean, serially correlated, and contemporaneously correlated.
+
+We proceed by detailing our test procedures in Section 1. Then, in Section 2, we review the small extant literature to provide necessary background for the finite-sample evaluation of our tests in Section 3. In Section 4 we provide an illustrative application, and in Section 5 we offer conclusions and directions for future research.
+
+## 1. TESTING EQUALITY OF FORECAST ACCURACY
+
+Consider two forecasts, {yi}t1 and { }1, of the time and {e}. We wish to assess the expected loss associated with each of the forecasts (or its negative, accuracy). Of great importance, and almost always ignored, is the fact that the economic loss associated with a forecast may be poorly assessed by the usual statistical metrics. That is, forecasts are used to guide decisions, and the loss associated with a forecast error of a particular sign and size is induced directly by the nature of the decision problem at hand. When one considers the variety of decisions undertaken by economic agents guided by forecasts (e.g., risk-hedging decisions, inventorystocking decisions, policy decisions, advertising-expenditure decisions, public-utility rate-setting decisions, etc.), it is clear that the loss associated with a particular forecast error is in general an asymmetric function of the error and, even if symmetric, certainly need not conform to stylized textbook examples like MSPE.
+
+Given the obvious desirability of a formal statistical procedure for forecast-accuracy comparisons, one is struck by the casual manner in which such comparisons are typically carried out. The literature contains literally thousands of forecast-accuracy comparisons; almost without exception, point estimates of forecast accuracy are examined, with no attempt to assess their sampling uncertainty. On reflection, the reason for the casual approach is clear: Correlation of forecast errors across space and time, as well as several additional complications, makes formal comparison of forecast accuracy difficult. Dhrymes et al. (1972) and Howrey, Klein, and McCarthy (1974), for example, offered pessimistic assessments of the possibilities for formal testing.
+
+
+<!-- p:2 -->
+
+
+Thus, we allow the time-t loss associated with a forecast (say i) to be an arbitrary function of the realization and prediction, g(y, ). In many applications, the loss function will be a direct function of the forecast error; that is, g(y, ) = g(e). To economize on notation, we write g(e) from this point on, recognizing that certain loss functions (like direction-of-change) do not collapse to g(e) form, in which case the full g(y, y) form would be used. The null hypothesis of equal forecast accuracy for two forecasts is E[g(e)] = E[g(ej)], or E[d,] = 0, where d, ≡ [g(eit) − g(e,t)] is the loss differential. Thus, the "equal accuracy" null hypothesis is equivalent to the null hypothesis that the population mean of the loss-differential series is O.
+
+### 1.1 An Asymptotic Test
+
+Consider a sample path {d, }7=, of a loss-differential series. If the loss-differential series is covariance stationary and short memory, then standard results may be used to deduce the asymptotic distribution of the sample mean loss differential. We have
+
+$$\sqrt { T } ( \bar { d } - \mu ) \stackrel { d } { \rightarrow } N ( 0 , 2 \pi f _ { d } ( 0 ) ) ,$$
+
+where where
+
+$$\bar { d } = \frac { 1 } { T } \sum _ { t = 1 } ^ { T } | g ( e _ { t } ) - g ( e _ { j _ { t } } ) |$$
+
+is the sample mean loss differential,
+
+$$f _ { d } ( 0 ) = \frac { 1 } { 2 \pi } \sum _ { \tau = - \infty } ^ { \infty } \gamma _ { d } ( \tau )$$
+
+is the spectral density of the loss differential at frequency O, γd(τ) = E[(d, − μ)(d,\_τ − μ)] is the autocovariance of the loss differential at displacement τ, and μ is the population mean loss differential. The formula for f&amp;(0) shows that the correction for serial correlation can be substantial, even if the loss differential is only weakly serially correlated, due to cumulation of the autocovariance terms.
+
+Because in large samples the sample mean loss differential à is approximately normally distributed with mean μ and variance 2πfa(0)/T, the obvious large-sample N(0, 1) statistic for testing the null hypothesis of equal forecast accuracy is
+
+$$S _ { i } = - \frac { \ddot { d } } { \sqrt { \frac { 2 \pi \hat { f } ( 0 ) } { T } } } ,$$
+
+where fa(0) is a consistent estimate of fa(0).
+
+Following standard practice, we obtain a consistent estimate of 2πf&amp;(0) by taking a weighted sum of the available sample autocovariances,
+
+$$2 \pi \widehat { f } _ { d } ( 0 ) = \sum _ { \tau = \sim ( T - 1 ) } ^ { ( T - 1 ) } 1 \left ( \frac { \tau } { \overline { S ( T ) } } \right ) \widehat { \gamma } _ { d } ( \tau ) ,$$
+
+where where
+
+$$\widehat { \gamma } _ { d } ( \tau ) = \frac { 1 } { T } \sum _ { t = | \tau | + 1 } ^ { r } ( d _ { t } - \bar { d } ) ( d _ { t - 1 } - \bar { d } ) ,$$
+
+1(τ/S(T)) is the lag window, and S(T) is the truncation lag.
+
+To motivate a choice of lag window and truncation lag that we have often found useful in practice, recall the familiar result that optimal k-step-ahead forecast errors are at most (k – 1)-dependent. In practical applications, of course, (k – 1)-dependence may be violated for a variety of reasons. Nevertheless, it seems reasonable to take (k – 1)-dependence as a reasonable benchmark for a k-step-ahead forecast error (and the assumption may be readily assessed empirically). This suggests the attractiveness of the uniform, or rectangular, lag window, defined by
+
+$$1 \left ( \frac { \tau } { S ( T ) } \right ) & = 1 \quad \text {for } \left | \frac { \tau } { S ( T ) } \right | \leq 1 \\ & = 0 \quad \text {otherwise} .$$
+
+(k – 1)-dependence implies that only (k – 1) sample autocovariances need be used in the estimation of f&amp;(0) because all the others are 0, so S(T) = (k – 1). This is legitimate (i.e., the estimator is consistent) under (k — 1)-dependence so long as a uniform window is used because the uniform window assigns unit weight to all included autocovariances.
+
+Because the Dirichlet spectral window associated with the rectangular lag window dips below 0 at certain locations, the resulting estimator of the spectral density function is not guaranteed to be positive semidefinite. The large positive weight near the origin associated with the Dirichlet kernel, however, makes it unlikely to obtain a negative estimate of f&amp;(0). In applications, in the rare event that a negative estimate arises, we treat it as 0 and automatically reject the null hypothesis of equal forecast accuracy. If it is viewed as particularly important to impose nonnegativity of the estimated spectral density, it may be enforced by using a Bartlett lag window, with corresponding nonnegative Fejer spectral window, as in the work of Newey and West (1987), at the cost of having to increase the truncation lag "appropriately" with sample size. Other lag windows and truncation lag selection procedures are of course possible as well. Andrews (1991), for example, suggested using a quadratic spectral lag window, together with a "plug-in" automatic bandwidth selection procedure.
+
+### 1.2 Exact Finite-Sample Tests
+
+Sometimes only a few forecast-error observations are available in practice. One approach in such situations is to bootstrap our asymptotic test statistic, as done by Mark (1995). Ashley's (1994) work is also very much in that spirit. Little is known about the first-order asymptotic validity of the bootstrap in this situation, however, let alone higher-order asymptotics or actual finite-sample performance. Therefore, it is useful to have available exact finite-sample tests of predictive accuracy, to complement the asymptotic test presented previously. Two powerful such tests are based on the observed loss differentials (the sign test) or their ranks (Wilcoxon's signed-rank test). [These tests are standard, so our discussion is terse. See, for example, Lehmann (1975) for details.]
+
+1.2./ The Sign Test. The null hypothesis is a zeromedian loss differential: med(g(e) - g(et)) = (). Note that the null of a zero-median loss differential is not the same as the null of zero difference between median losses; that is, med(g(ei) − g(ejt)) ≠ med(g(ei)) − med(g(ejt)). For that reason, the null differs slightly in spirit from that associated with our earlier discussed asymptotic test statistic S, but it nevertheless has an intuitive and meaningful interpretation— namely, that P(g(eit) &gt; g(ejt)) = P(g(ei) &lt; g(ejt)).
+
+
+<!-- p:3 -->
+
+
+If, however, the loss differential is symmetrically distributed, then the null hypothesis of a zero-median loss differential corresponds precisely to the earlier null because in that case the median and mean are equal. Symmetry of the loss differential will obtain, for example, if the distributions of g(e) and g(ej) are the same up to a location shift. Symmetry is ultimately an empirical matter and may be assessed using standard procedures. We have found roughly symmetric loss-differential series to be quite common in practice.
+
+The construction and intuition of a test statistic are straightforward. Assuming that the loss-differential series is iid (and we shall relax that assumption shortly), the number of positive loss-differential observations in a sample of size T has null hypothesis. The test statistic is therefore simply
+
+where where
+
+$$S _ { 2 } = \sum _ { r = 1 } ^ { T } I _ { + } ( d _ { t } ) ,$$
+
+$$I _ { * } ( d _ { t } ) & = 1 \quad \text {if } d _ { t } > 0 \\ & = 0 \quad \text {otherwise} .$$
+
+Significance may be assessed using a table of the cumulative binomial distribution. In large samples, the studentized version of the sign-test statistic is standard normal:
+
+$$S _ { 2 a } = \frac { S _ { 2 } - . 5 T } { \sqrt { . 2 5 T } } \stackrel { a } { \sim } N ( 0 , 1 ) .$$
+
+1.2.2 Wilcoxon's Signed-Rank Test. A related distribution-free procedure that requires symmetry of the loss differential (but can be more powerful than the sign test in that case) is Wilcoxon's signed-rank test. We again assume for the moment that the loss-differential series is iid. The test statistic is
+
+$$S _ { 3 } = \sum _ { t = 1 } ^ { T } I _ { + } ( d _ { t } ) \, \text {rank} ( | d _ { t } | ) , \\$$
+
+the sum of the ranks of the absolute values of the positive observations. The exact finite-sample critical values of the test statistic are invariant to the distribution of the loss differential—it need be only zero-mean and symmetric——and have been tabulated. Moreover, its studentized version is asymptotically standard normal,
+
+$$S _ { 3 a } = \frac { S _ { 3 } - \frac { \tau ( T + 1 ) } { 4 } } { \sqrt { \frac { R ( T + 1 ) ( 2 T + 1 ) } { 2 4 } } } \sim N ( 0 , 1 ) .$$
+
+### 1.3 Discussion
+
+Here we highlight some of the virtues and limitations of our tests. First, as we have stressed repeatedly, our tests are valid for a very wide class of loss functions. In particular, the loss function need not be quadratic and need not even be symmetric or continuous.
+
+Second, a variety of realistic features of forecast errors are readily accommodated. The forecast errors can be nonzeromean, non-Gaussian, and contemporaneously correlated. Allowance for contemporaneous correlation, in particular, is important because the forecasts being compared are forecasts of the same economic time series and because the information sets of forecasters are largely overlapping so that forecast errors tend to be strongly contemporaneously correlated.
+
+Moreover, the asymptotic test statistic S, can of course handle a serially correlated loss differential. This is potentially important because, as discussed earlier, even optimal forecast errors are serially correlated in general. Serial correlation presents more of a problem for the exact finite-sample test statistics S2 and S3 and their asymptotic counterparts S2a and S3e because the elements of the set of all possible rearrangements of the sample loss differential series are not equally likely when the data are serially correlated, which violates the assumptions on which such randomization tests are based. Nevertheless, serial correlation may be handled via Bonferroni bounds, as suggested in a different context by Campbell and Ghysels (1995). Under the assumption that the forecast errors and hence the loss differential are (k – 1)- dependent, each of the following k sets of loss differentials will be free of serial correlation: {dij,1, dij,1+k, dij,1+2k, . . .}, {dij,2, dij,2+k, dij,2+2k, . . .}, . . . , {dj,k, dij,2k, dij,3k, . . .}. Thus, a test with size bounded by α can be obtained by performing k tests, each of size α/k, on each of the k loss-differential sequences and rejecting the null hypothesis if the null is rejected for any of the k samples. Finally, it is interesting to note that, in multistep forecast comparisons, forecast-error serial correlation may be a "common feature," in the terminology of Engle and Kozicki (1993), because it is induced largely by the fact that the forecast horizon is longer than the interval at which the data are sampled and may therefore not be present in loss differentials even if present in the forecast errors themselves. This possibility can of course be checked empirically.
+
+## 2. EXTANT TESTS
+
+In this section we provide a brief description of three existing tests of forecast accuracy that have appeared in the literature and will be used in our subsequent Monte Carlo comparison.
+
+### 2.1 The Simple F Test: A Naive Benchmark
+
+If (1) loss is quadratic and (2) the forecast errors are (a) zero mean, (b) Gaussian, (c) serially uncorrelated, or (d) contemporaneously uncorrelated, then the null hypothesis of equal forecast accuracy corresponds to equal forecast error variances [by (1) and (2a)], and by (2b)–(2d), the ratio of sample variances has the usual F distribution under the null hypothesis. More precisely, the test statistic
+
+$$\frac { e _ { i } ^ { \prime } e _ { i } } { e _ { i } ^ { \prime } e _ { i } }$$
+
+
+<!-- p:4 -->
+
+
+is distributed as F(T, T), where the forecast error series have been stacked into the (T × 1) vectors e and ej.
+
+Test statistic F is of little use in practice, however, because the conditions required to obtain its distribution are too restrictive. Assumption (2d) is particularly unpalatable for reasons discussed earlier. Its violation produces correlation between the numerator and denominator of F, which will not then have the F distribution.
+
+### 2.2 The Morgan-Granger-Newbold Test
+
+The contemporaneous correlation problem led Granger and Newbold (1977) to apply an orthogonalizing transformation due to Morgan (1939–1940) that enables relaxation of Assumption (2d). Let x, = (eit + ejt) and z, = (et − ejt), and let x = (e + ej) and z = (e, − ej). Then, under the maintained Assumptions (1) and (2a)–(2c), the null hypothesis of equal forecast accuracy is equivalent to zero correlation between x and z (i.e., ρxz = 0) and the test statistic
+
+$$M G N = \frac { \widehat { \rho } _ { x } } { \sqrt { \frac { 1 - \widehat { \rho } _ { x } ^ { 2 } } { T - 1 } } }$$
+
+is distributed as Student's t with T — 1 df, where
+
+$$\widehat { \rho } _ { x } = \frac { x ^ { \prime } z } { \sqrt { ( x ^ { \prime } x ) ( z ^ { \prime } z ) } }$$
+
+(e.g., see Hogg and Craig 1978, pp. 300–303).
+
+Let us now consider relaxing the Assumptions (1) and (2a)–(2c) underlying the Morgan-Granger-Newbold (MGN) test. It is clear that the entire framework depends crucially on the assumption of quadratic loss (1), which cannot be relaxed. The remaining assumptions, however, can be weakened in varying degrees; we shall consider them in turn.
+
+First, it is not difficult to relax the unbiasedness Assumption (2a), while maintaining Assumptions (1), (2b), and (2c). Second, the normality Assumption (2b) may be relaxed, while maintaining (1), (2a), and (2c), at the cost of substantial tedium involved with accounting for the higher-order moments that then enter the distribution of the sample correlation coefficient (e.g., see Kendall and Stuart 1979, chap. 26). Finally, the no-serial-correlation Assumption (2c) may be relaxed in addition to the no-contemporaneous-correlation Assumption (2d) while maintaining (1), (2a), and (2b), as discussed in Subsection 2.3.
+
+### 2.3 The Meese-Rogoff Test
+
+Under Assumptions (1), (2a), and (2b), Meese and Rogoff (1988) showed that
+
+$$\sqrt { T } \widehat { \gamma } _ { x z } \stackrel { d } { \rightarrow } N ( 0 , \Sigma ) ,$$
+
+where γx = x′z/T, Σ = ∑=-∞[γxx(τ)γz(τ) + γx(τ)γα(τ)], γx(τ) = cov(x1, zr-τ), γz(τ) = cov(z,x{-τ), γxx(τ) = cov(x,, x,−τ), and γz(τ) = cov(zr, z−τ). This is a well-known result (e.g., Priestley 1981, pp. 692–693) for the distribution of the sample cross-covariance function, cov(γx(s), γx(u)), specialized to a displacement of 0.
+
+$$\Omega _ { 1 } \hat { \sim } ( \pi _ { 1 } ) _ { 2 } = \Gamma ^ { 1 } ( 1 ) ^ { \tau } \Omega _ { 2 } ( 1 ) _ { 1 } \hat { \sim } ( 1 ) _ { 2 }$$
+
+A consistent estimator of Σ is
+
+$$\hat { \Sigma } & = \sum _ { \tau = - s ( \tau ) } ^ { s ( \tau ) } \left [ 1 - \frac { | \tau | } { T } \right ] \left [ \widehat { \gamma } _ { x x } ( \tau ) \widehat { \gamma } _ { z z } ( \tau ) + \widehat { \gamma } _ { x z } ( \tau ) \widehat { \gamma } _ { z x } ( \tau ) \right ] ,$$
+
+where
+
+$$\tau = - S ( T ) \left [ 1 \right ] \\ \widehat { \gamma } _ { x } ( \tau ) = \frac { 1 } { T } \sum _ { t = \tau + 1 } ^ { r } x _ { t - \tau } , \quad \tau \geq 0 \\ = \widehat { \gamma } _ { x } ( - \tau ) \quad \text {otherwise} , \\ \widehat { \gamma } _ { x } ( \tau ) = \frac { 1 } { T } \sum _ { t = \tau + 1 } ^ { T } z _ { t } x _ { t - \tau } , \quad \tau \geq 0 \\ = \widehat { \gamma } _ { x } ( - \tau ) \quad \text {otherwise} , \\ \widehat { \gamma } _ { x } ( \tau ) = \frac { 1 } { T } \sum _ { t = \tau + 1 } ^ { T } x _ { t } x _ { t - \tau } , \\ \widehat { \gamma } _ { x } ( \tau ) = \frac { 1 } { T } \sum _ { t = \tau + 1 } ^ { T } z _ { t - \tau } , \\ \text {truncation flag S(T) grows with the sample size} b \\ \text {rate. Alternative, following Diebold and Rude}$$
+
+and the truncation lag S(T) grows with the sample size but at a slower rate. Alternatively, following Diebold and Rudebusch (1991), one may use the closely related covariance matrix estimator,
+
+$$\widehat { \Sigma } ^ { * } & = \sum _ { \tau = - S ( T ) } ^ { S ( T ) } [ \widehat { \gamma } _ { x x } ( \tau ) \widehat { \gamma } _ { z z } ( \tau ) + \widehat { \gamma } _ { x \tau } ( \tau ) \widehat { \gamma } _ { z s } ( \tau ) | . \\$$
+
+Either way, the test statistic is
+
+$$M R = \frac { \widehat { \gamma } _ { x } } { \sqrt { \widehat { \Sigma } / T } } . \\$$
+
+Under the null hypothesis and the maintained Assumptions (1), (2a), and (2b), MR (Meese-Rogoff) is asymptotically distributed as standard normal.
+
+It is easy to show that, if the null hypothesis and Assumptions (1), (2a), (2b), and (2c) are satisfied, then all terms in Σ are 0 except γ(0) and γz(0) so that MR coincides asymptotically with MGN. It is interesting to note also that reformulation of the test in terms of correlation rather than covariance would have enabled Meese and Rogoff to dispense with the normality assumption because the sample autocorrelations are asymptotically normal even for non-Gaussian time series (e.g., Brockwell and Davis 1992, pp. 221–222).
+
+### 2.4 Additional Extensions
+
+In Subsection 2.3, we considered relaxation of Assumptions (2a)–(2c), one at a time, while consistently maintaining Assumption (1) and consistently relaxing Assumption (2d). Simultaneous relaxation of multiple assumptions is possible within the MGN orthogonalizing transformation framework but much more tedious. The distribution theory required for joint relaxation of (2b) and (2c), for example, is complicated by the presence of fourth-order cumulants in the distribution of the the sample autocovariances, as shown, for example, by Hannan (1970, p. 209) and Mizrach (1991). More importantly, however, any procedure based on the MGN orthogonalizing transformation is inextricably wed to the assumption of quadratic loss.
+
+
+<!-- p:5 -->
+
+
+## 3. MONTE CARLO ANALYSIS
+
+##### 3.1Experimental Design
+
+We evaluate the finite-sample size of test statistics F, MGN, MR, S1, S2, S2a, S3, and S3a under the null hypothesis and various of the maintained assumptions. The design includes a variety of specifications of forecast-error contemporaneous correlation, forecast-error serial correlation, and forecast-error distributions. To maintain applicability of all test statistics for comparison purposes, we use quadratic loss; that is, the null hypothesis is an equality of MSPE's. We emphasize again, however, that an important advantage of test statistics S1, S2, S2a, S3, and S3a in substantive economic applications----and one not shared by the others—is their direct applicability to analyses with nonquadratic loss functions.
+
+Consider first the case of Gaussian forecast errors. We draw realizations of the bivariate forecast-error process, {e, ej}, with varying degrees of contemporaneous and serial correlation in the generated forecast errors. This is achieved in two steps. First, we build in the desired degree of contemporaneous correlation by drawing a (2 × 1) forecast error innovation vector u, from a bivariate standard normal distribution, u,~ N(O2, I2), and then premultiplying by the Choleski factor of the desired contemporaneous innovation correlation matrix. Let the desired correlation matrix be
+
+$$R = \begin{bmatrix} 1 & \rho \\ \rho & 1 \end{bmatrix} , \quad \rho \in [ 0 , 1 ) .$$
+
+Then the Choleski factor is
+
+$$P = \begin{bmatrix} 1 & 0 \\ \rho & \sqrt { 1 - \rho ^ { \widetilde { \vec { r } } } } \end{bmatrix} .$$
+
+Thus, the transformed (2 × 1) vector ν, = Pu, ∼ N(O2, R).
+
+Second, (moving average) MA(1) serial correlation (with parameter θ) is introduced by taking
+
+$$\begin{bmatrix} e _ { i j } \\ e _ { j j } \end{bmatrix} = \left [ \begin{array} { c c } \frac { 1 + \theta L } { \sqrt { 1 + \theta ^ { 2 } } } & 0 \\ 0 & \frac { i + \theta L } { \sqrt { 1 + \theta ^ { 2 } } } \end{array} \right ] \left [ \begin{array} { c } \nu _ { i r } \\ \nu _ { j r } \end{array} \right ] , \quad t = 1 , \dots , T .$$
+
+We use ν0 = 0. Multiplication by (1 + θ2)−1/2 is done to keep the unconditional variance normalized to 1.
+
+We consider sample sizes of T = 8, 16, 32, 64, 128, 256, and 512, contemporaneous correlation parameters of ρ = 0, .5, and .9, and MA parameters of θ = 0, .5, .9. Simple calculations reveal that ρ is not only the correlation between ν; and ν, but also the correlation between the forecast errors e and e so that varying the correlation of ν and νj through [0, .9] effectively varies the correlation of the observed forecast errors through the same range.
+
+We also consider non-Gaussian forecast errors. The design is the same as for the Gaussian case described previously but driven by fat-tailed variates (u, uj)' [rather than (ur, u)'], which are independent standardized t random variables with 6 df. The variance of a t(6) random variable is 3/2. Thus, standardization amounts to dividing the t(6) random variable by √3/2.
+
+Throughout, we perform tests at the α = .1 level. When using the exact sign and signed-rank tests, restriction of nominal size to precisely 10% is impossible (without introducing randomization), so we use the obtainable exact size closest to 10%, as specified in the tables. We perform at least 5,000 Monte Carlo replications. The truncation lag is set at 1, reflecting the fact that the experiment is designed to mimic the comparison of two-step-ahead forecast errors, with associated MA(1) structure.
+
+### 3.2 Results
+
+Results appear in Tables 1-6, which show the empirical size of the various test statistics in cases of Gaussian and nonGaussian forecast errors as the degree of contemporaneous correlation, the degree of serial correlation, and sample size are varied.
+
+Let us first discuss the case of Gaussian forecast errors. The results may be summarized as follows:
+
+1. F is correctly sized in the absence of both contemporaneous and serial correlation but is missized in the presence of either contemporaneous or serial correlation. Serial correlation pushes empirical size above nominal size, but contemporaneous correlation pushes empirical size drastically below nominal size. In combination, and particularly for large ρ and θ, contemporaneous correlation dominates and F is undersized.
+2. MGN is designed to remain unaffected by contemporaneous correlation and therefore remains correctly sized so long as θ = 0. Serial correlation, however, pushes empirical size above nominal size.
+3. As expected, MR is robust to contemporaneous and serial correlation in large samples, but it is oversized in small samples in the presence of serial correlation. The asymptotic distribution obtains rather quickly, however, resulting in approximately correct size for T &gt; 64.
+4. The behavior of S, is similar to that of MR. S, is robust to contemporaneous and serial correlation in large samples, but it is oversized in small samples, with nominal and empirical size converging a bit more slowly than for MR.
+5. The Bonferroni bounds associated with S2 and S3 work well, with nominal and empirical size in close agreement throughout. Moreover, the asymptotics on which S2a and S3 depend obtain quickly.
+
+Now consider the case of non-Gaussian forecast errors. The striking and readily apparent result is that F, MGN, and MR are drastically missized in large as well as small samples. S1, S2a, and S3a, on the other hand, maintain approximately correct size for all but the very small sample sizes. In those cases, S2 and S3 continue to perform well. The results are well summarized by Figure 1, p. 261, which charts the dependence of F, MGN, MR, and S, on T for the non-Gaussian case with ρ = θ = .5.
+
+
+<!-- p:6 -->
+
+
+Table 1. Empirical Size Under Quadratic Loss, Test Statistic F
+
+|   T |   ρ | θ =.0   |   Gaussian θ = .5 |   θ = 9 |   Fat-tailed - θ = .0 |   Fat-tailed - θ = .5 |   Fat-tailed - θ =.9 |
+|-----|-----|---------|-------------------|---------|-----------------------|-----------------------|----------------------|
+|   8 |  .0 | 9.85    |             12.14 |   14.10 |                 14.28 |                 15.76 |                17.21 |
+|   8 |  .5 | 7.02    |              9.49 |   11.42 |                  9.61 |                 11.64 |                13.02 |
+|   8 |  .9 | .58     |              1.26 |    1.86 |                   .57 |                  1.13 |                 1.79 |
+|  16 |  .0 | 9.83    |             12.97 |   14.85 |                 16.47 |                 18.59 |                19.78 |
+|  16 |  .5 | 7.30    |             10.11 |   11.89 |                 11.14 |                 13.55 |                14.94 |
+|  16 |  .9 | 47      |               .99 |    1.55 |                   .34 |                   .70 |                 1.13 |
+|  32 |  .0 | 9.88    |             12.68 |   14.34 |                 18.06 |                 19.55 |                20.35 |
+|  32 |  .5 | 6.9B    |              9.50 |   11.22 |                 21.30 |                 21.00 |                21.37 |
+|  32 |  .9 | .23     |               .55 |    1.00 |                   .01 |                   .07 |                  .23 |
+|  64 |  .0 | 9.71    |             13.05 |   14.62 |                 29.84 |                 29.72 |                29.96 |
+|  64 |  .5 | 6.48    |              9.25 |   10.62 |                 23.48 |                 23.93 |                24.15 |
+|  64 |  .9 | .16     |               .47 |     .79 |                   .02 |                   .12 |                  .29 |
+| 128 |  .0 | 10.30   |             13.41 |   14.99 |                 30.34 |                 30.95 |                31.26 |
+| 128 |  .5 | 7.01    |             10.13 |   11.64 |                 24.89 |                 25.01 |                25.16 |
+| 128 |  .9 | .16     |               .50 |      74 |                   .11 |                   .44 |                  .73 |
+| 256 |  .0 | 10.01   |             13.05 |   14.65 |                 31.07 |                 31.12 |                31.24 |
+| 256 |  .5 | 7.37    |             10.31 |   11.78 |                 25.48 |                 25.45 |                25.70 |
+| 256 |  .9 | .19     |               .51 |     .80 |                   .51 |                  1.13 |                 1.44 |
+| 512 |  .0 | 10.22   |             13.51 |   15.25 |                 31.45 |                 32.38 |                32.60 |
+| 512 |  .5 | 7.53    |             10.16 |   11.49 |                 26.35 |                 26.92 |                16.95 |
+| 512 |  .9 | 18      |               .50 |     .85 |                   .81 |                  1.58 |                 2.06 |
+
+Nor   n   t n  t  o n t s  s s   ohe coefficient of the MA(1) forecast error. All tests are at the 10% level. 10,000 Monte Carlo replications are performed.
+
+Table 2. Empirical Size Under Quadratic Loss, Test Statistic MGN
+
+|   T |   ρ |   Gaussian - θ = .0 |   Gaussian - θ = .5 |   Gaussian - θ = 9 |   Fat-tailed - θ = .0 |   Fat-tailed - θ = .5 |   Fat-tailed - θ = .9 |
+|-----|-----|---------------------|---------------------|--------------------|-----------------------|-----------------------|-----------------------|
+|   8 |  .0 |               10.19 |               14.14 |              17.94 |                 18.10 |                 21.89 |                 25.65 |
+|   8 |  .5 |                9.96 |               14.66 |              18.61 |                 16.00 |                 20.51 |                 24.19 |
+|   8 |  .9 |                9.75 |               14.53 |              18.67 |                 11.76 |                 16.31 |                 20.00 |
+|  16 |  .0 |               10.07 |               14.34 |              17.54 |                 20.33 |                 24.54 |                 27.08 |
+|  16 |  .5 |                9.56 |               14.37 |              17.95 |                 37.15 |                 36.18 |                 25.66 |
+|  16 |  .9 |               10.02 |               14.70 |              18.20 |                 12.01 |                 16.76 |                 19.81 |
+|  32 |  .0 |                 686 |               15.04 |              18.00 |                 22.94 |                 26.32 |                 28.72 |
+|  32 |  .5 |               10.08 |               15.11 |              17.95 |                 20.23 |                 23.76 |                 26.20 |
+|  32 |  .9 |                9.59 |               15.32 |              18.25 |                 12.75 |                 17.78 |                 20.54 |
+|  64 |  .0 |               10.09 |               15.37 |              17.99 |                 24.56 |                 28.15 |                 30.00 |
+|  64 |  .5 |                9.95 |               15.18 |              18.15 |                 21.10 |                 25.18 |                 27.28 |
+|  64 |  .9 |               10.26 |               15.67 |              18.49 |                 12.98 |                 18.09 |                 20.53 |
+| 128 |  .0 |                9.96 |               15.09 |              17.59 |                 26.47 |                 29.50 |                 30.94 |
+| 128 |  .5 |               10.23 |               15.07 |              17.48 |                 23.62 |                 26.82 |                 28.51 |
+| 128 |  .9 |               10.11 |               15.05 |              18.05 |                 14.34 |                 18.89 |                 21.56 |
+| 256 |  .0 |               10.28 |               15.62 |              18.37 |                 27.39 |                 30.74 |                 32.46 |
+| 256 |  .5 |               10.60 |               16.02 |              18.44 |                 23.81 |                 28.38 |                 30.31 |
+| 256 |  .9 |               10.11 |               15.48 |              17.91 |                 14.15 |                 19.43 |                 22.03 |
+| 512 |  .0 |               10.12 |               15.34 |              17.68 |                 27.64 |                 30.55 |                 32.14 |
+| 512 |  .5 |               10.05 |               14.96 |              17.66 |                 24.10 |                 27.40 |                 29.28 |
+| 512 |  .9 |                9.90 |               15.09 |              17.53 |                 14.78 |                 19.16 |                 21.49 |
+
+NOTE: T is sample size, p is the contemporaneous correlation between the innovations underlying the forecast errors, and θ is the coefficient of the MA(1) forecast error. All tests are at the 10% level. 10,000 Monte Carlo replications are performed.
+
+
+<!-- p:7 -->
+
+
+Table 3. Empirical Size Under Quadratic Loss, Test Statistic MR
+
+|   T |   ρ |   Gaussian - θ = .0 |   Gaussian - θ =.5 |   Gaussian - θ = .9 |   Fat-tailed - θ =.0 |   Fat-tailed - θ =.5 |   Fat-tailed - θ = .9 |
+|-----|-----|---------------------|--------------------|---------------------|----------------------|----------------------|-----------------------|
+|   8 |  .0 |                9.67 |              19.33 |               22.45 |                16.16 |                25.26 |                 27.62 |
+|   8 |  .5 |                9.50 |              19.00 |               22.07 |                14.81 |                24.50 |                 26.99 |
+|   8 |  .9 |                9.66 |              19.51 |               22.85 |                11.23 |                21.28 |                 24.14 |
+|  16 |  .0 |                9.62 |              13.92 |               14.72 |                19.94 |                22.56 |                 23.06 |
+|  16 |  .5 |               10.02 |              13.88 |               14.96 |                17.70 |                21.04 |                 21.26 |
+|  16 |  .9 |               10.04 |              13.82 |               14.94 |                11.76 |                15.68 |                 16.70 |
+|  32 |  .0 |                9.96 |              10.98 |               11.12 |                22.78 |                22.86 |                 21.72 |
+|  32 |  .5 |                9.68 |              11.46 |               11.66 |                19.78 |                20.32 |                 20.14 |
+|  32 |  .9 |                9.86 |              11.62 |               11.96 |                12.42 |                13.54 |                 13.46 |
+|  64 |  .0 |               10.32 |              11.02 |               11.04 |                24.50 |                22.60 |                 21.58 |
+|  64 |  .5 |                9.84 |              10.56 |               10.64 |                21.44 |                19.48 |                 18.84 |
+|  64 |  .9 |                9.58 |              10.58 |               10.34 |                13.38 |                13.38 |                 13.20 |
+| 128 |  .0 |                9.78 |              10.54 |               10.44 |                25.86 |                22.90 |                 21.54 |
+| 128 |  .5 |               10.02 |              11.04 |               11.18 |                22.76 |                20.26 |                 19.44 |
+| 128 |  .9 |               10.76 |              11.28 |               11.38 |                13.44 |                13.52 |                 12.92 |
+| 256 |  .0 |               10.04 |               9.90 |                9.58 |                27.16 |                23.74 |                 22.70 |
+| 256 |  .5 |               10.32 |               9.92 |                9.82 |                24.00 |                20.50 |                 19.18 |
+| 256 |  .9 |                9.92 |              10.16 |               10.34 |                13.38 |                12.70 |                 12.24 |
+| 512 |  .0 |                9.94 |              10.48 |               10.56 |                26.92 |                23.40 |                 21.78 |
+| 512 |  .5 |                9.52 |              10.56 |               10.48 |                23.56 |                20.52 |                 19.36 |
+| 512 |  .9 |                9.80 |               9.82 |                9.88 |                13.96 |                12.98 |                 12.74 |
+
+NOTE: T is sample size, ρ is the contemporaneous correlation between the innovations underlying the forecast errors, and θ is the coefficient of the MA(1) forecast error. All tests are at the 10% level. At least 5,000 Monte Cario replications are performed.
+
+Table 4. Empirical Size Under Quadratic Loss, Test Statistic S,
+
+|   T |   ρ |   Gaussian - θ = .0 |   Gaussian - θ = .5 |   Gaussian - θ=.9 |   Fat-tailed - θ = .0 |   Fat-tailed - θ = .5 |   Fat-tailed - θ =.9 |
+|-----|-----|---------------------|---------------------|-------------------|-----------------------|-----------------------|----------------------|
+|   8 |  .0 |               31.39 |               31.10 |             31.03 |                 31.62 |                 29.51 |                29.07 |
+|   8 |  .5 |               31.37 |               30.39 |             29.93 |                 31.21 |                 29.71 |                29.36 |
+|   8 |  .9 |               31.08 |               30.19 |             30.18 |                 31.18 |                 30.12 |                29.75 |
+|  16 |  .0 |               20.39 |               19.11 |             18.94 |                 19.26 |                 18.50 |                18.32 |
+|  16 |  .5 |               20.43 |               19.52 |             18.86 |                 19.57 |                 17.67 |                17.63 |
+|  16 |  .9 |               20.90 |               19.55 |             19.59 |                 20.15 |                 18.38 |                18.16 |
+|  32 |  .0 |               12.42 |               12.28 |             12.18 |                 11.30 |                 11.64 |                11.56 |
+|  32 |  .5 |               13.32 |               13.22 |             12.94 |                 11.54 |                 10.66 |                10.84 |
+|  32 |  .9 |               12.60 |               13.38 |             13.22 |                 11.16 |                 11.22 |                11.50 |
+|  64 |  .0 |               12.47 |               12.11 |             11.94 |                 12.44 |                 11.62 |                11.36 |
+|  64 |  .5 |               12.76 |               12.49 |             12.35 |                 12.10 |                 12.26 |                12.10 |
+|  64 |  .9 |               12.21 |               12.23 |             12.03 |                 13.00 |                 12.36 |                12.16 |
+| 128 |  .0 |               11.72 |               11.94 |             12.04 |                 11.48 |                 10.72 |                10.28 |
+| 128 |  .5 |               11.44 |               11.72 |             11.60 |                 10.84 |                 10.96 |                10.96 |
+| 128 |  .9 |               11.76 |               11.26 |             11.34 |                 11.50 |                 10.66 |                10.86 |
+| 256 |  .0 |               11.11 |               10.65 |             10.66 |                 12.06 |                 11.67 |                11.79 |
+| 256 |  .5 |               10.90 |               10.39 |             10.48 |                 12.16 |                 11.46 |                11.60 |
+| 256 |  .9 |               10.69 |               10.79 |             10.75 |                 11.51 |                 11.59 |                11.16 |
+| 512 |  .0 |               11.15 |               10.67 |             10.63 |                 10.06 |                  9.46 |                 9.62 |
+| 512 |  .5 |               10.90 |               10.39 |             10.49 |                  9.94 |                  9.66 |                 9.76 |
+| 512 |  .9 |               10.31 |               10.09 |             10.05 |                 10.12 |                 10.12 |                10.06 |
+
+NOTE: T is sample size, p is the contemporaneous correlation between the innovations underlying the forecast errors, and θ is the coefficient of the MA(1) forecast error. Al tests are at the 10% level. At least 5,000 Monte Carlo replications are performed.
+
+
+<!-- p:8 -->
+
+
+Table 5. Empirical Size Under Quadratic Loss, Test Statistics S2 and Sza
+
+| T                         | ρ                         | Gaussian - θ = .0         | Gaussian - θ =.5          | Gaussian - θ = .9         | Fat-tailed - θ = .0       | Fat-tailed - θ = .5       | Fat-tailed - θ = .9       |
+|---------------------------|---------------------------|---------------------------|---------------------------|---------------------------|---------------------------|---------------------------|---------------------------|
+| S2, nominal size = 25%    | S2, nominal size = 25%    | S2, nominal size = 25%    | S2, nominal size = 25%    | S2, nominal size = 25%    | S2, nominal size = 25%    | S2, nominal size = 25%    | S2, nominal size = 25%    |
+| 8                         | .0                        | 22.24                     | 22.48                     | 22.38                     | 23.94                     | 23.46                     | 23.34                     |
+| 8                         | .5                        | 22.14                     | 23.46                     | 22.16                     | 23.08                     | 24.80                     | 23.06                     |
+| 8                         | .9                        | 22.24                     | 23.02                     | 22 66                     | 22.92                     | 23.26                     | 22.86                     |
+| S2, nominal size = 14.08% | S2, nominal size = 14.08% | S2, nominal size = 14.08% | S2, nominal size = 14.08% | S2, nominal size = 14.08% | S2, nominal size = 14.08% | S2, nominal size = 14.08% | S2, nominal size = 14.08% |
+| 16                        | .0                        | 13.46                     | 13.26                     | 13 14                     | 13.62                     | 13.06                     | 13.76                     |
+| 16                        | .5                        | 14.22                     | 13.46                     | 12.92                     | 13.70                     | 13.24                     | 13.62                     |
+| 16                        | .9                        | 13.08                     | 13.84                     | 13.28                     | 12.86                     | 13.06                     | 13.20                     |
+| S2, nominal size = 15.36% | S2, nominal size = 15.36% | S2, nominal size = 15.36% | S2, nominal size = 15.36% | S2, nominal size = 15.36% | S2, nominal size = 15.36% | S2, nominal size = 15.36% | S2, nominal size = 15.36% |
+| 32                        | .0                        | 14.36                     | 14.52                     | 14.28                     | 14.54                     | 14.32                     | 14.30                     |
+| 32                        | .5                        | 14.36                     | 14.06                     | 13.94                     | 15.08                     | 14.36                     | 15.02                     |
+| 32                        | .9                        | 14.68                     | 14.62                     | 13.46                     | 14.94                     | 14.76                     | 14.52                     |
+| S2a, nominal size = 10%   | S2a, nominal size = 10%   | S2a, nominal size = 10%   | S2a, nominal size = 10%   | S2a, nominal size = 10%   | S2a, nominal size = 10%   | S2a, nominal size = 10%   | S2a, nominal size = 10%   |
+| 64                        | .0                        | 9.72                      | 9.92                      | 9.42                      | 9.68                      | 10.36                     | 10.44                     |
+| 64                        | .5                        | 9.66                      | 10.34                     | 9.68                      | 9.52                      | 10.06                     | 10.00                     |
+| 64                        | .9                        | 10.84                     | 9.46                      | 10.34                     | 9.40                      | 8.98                      | 10.02                     |
+| S2a, nominal size =: 10%  | S2a, nominal size =: 10%  | S2a, nominal size =: 10%  | S2a, nominal size =: 10%  | S2a, nominal size =: 10%  | S2a, nominal size =: 10%  | S2a, nominal size =: 10%  | S2a, nominal size =: 10%  |
+| 128                       | .0                        | 11.62                     | 11.62                     | 11.84                     | 12.22                     | 12.20                     | 11.42                     |
+| 128                       | .5                        | 11.66                     | 11.62                     | 11.90                     | 12.06                     | 11.94                     | 11.44                     |
+| 128                       | .9                        | 11.22                     | 11.72                     | 11.28                     | 12.06                     | 10.76                     | 11.40                     |
+
+NOTE: T is sample size, ρ is the contemporaneous correlation between the innovations underlying the forecast errors, and θ is the coefficient of the MA(1) forecast errar. At least 5,000 Monte Carlo replications are performed.
+
+Table 6. Empirical Size Under Quadratic Loss, Test Statistics S3 and S3a
+
+| T                         | ρ                         | θ = .0                    | Gaussian θ = .5           | θ = .9                    | Fat-tailed - θ = .0       | Fat-tailed - θ = .5       | Fat-tailed - θ = .9       |
+|---------------------------|---------------------------|---------------------------|---------------------------|---------------------------|---------------------------|---------------------------|---------------------------|
+| S3, nominal size = 25%    | S3, nominal size = 25%    | S3, nominal size = 25%    | S3, nominal size = 25%    | S3, nominal size = 25%    | S3, nominal size = 25%    | S3, nominal size = 25%    | S3, nominal size = 25%    |
+| 8                         | .0                        | 22.50                     | 22.92                     | 22.90                     | 23.26                     | 23.34                     | 21.96                     |
+| 8                         | .5                        | 22.98                     | 22.26                     | 23.06                     | 23.42                     | 23.86                     | 22.88                     |
+| 8                         | .9                        | 23.16                     | 22.36                     | 24.24                     | 24.26                     | 23.32                     | 23.34                     |
+| S3, nominal size = 10.92% | S3, nominal size = 10.92% | S3, nominal size = 10.92% | S3, nominal size = 10.92% | S3, nominal size = 10.92% | S3, nominal size = 10.92% | S3, nominal size = 10.92% | S3, nominal size = 10.92% |
+| 16                        | .0                        | 10.62                     | 10.06                     | 10.40                     | 10.16                     | 10.42                     | 9.84                      |
+| 16                        | .5                        | 10.38                     | 10.92                     | 10.32                     | 10.54                     | 10.94                     | 10.34                     |
+| 16                        | .9                        | 10.64                     | 10.18                     | 9.62                      | 10.58                     | 10.96                     | 10.64                     |
+| S3, nominal size = 10.12% | S3, nominal size = 10.12% | S3, nominal size = 10.12% | S3, nominal size = 10.12% | S3, nominal size = 10.12% | S3, nominal size = 10.12% | S3, nominal size = 10.12% | S3, nominal size = 10.12% |
+| 32                        | .0                        | 10.72                     | 10.28                     | 9.30                      | 9.90                      | 10.00                     | 866                       |
+| 32                        | .5                        | 10.56                     | 10.00                     | 10.02                     | 10.40                     | 10.64                     | 10.30                     |
+| 32                        | .9                        | 10.92                     | 10.44                     | 10.30                     | 10.46                     | 9.96                      | 10.70                     |
+| S3a, nominal size 10%     | S3a, nominal size 10%     | S3a, nominal size 10%     | S3a, nominal size 10%     | S3a, nominal size 10%     | S3a, nominal size 10%     | S3a, nominal size 10%     | S3a, nominal size 10%     |
+| 64                        | .0                        | 9.38                      | 9.54                      | 9.16                      | 9.64                      | 9.24                      | 8.84                      |
+| 64                        | .5                        | 9.80                      | 10.02                     | 9.66                      | 9.58                      | 8.82                      | 8.78                      |
+| 64                        | .9                        | 9.90                      | 9.24                      | 9.68                      | 9.92                      | 9.78                      | 10.00                     |
+| S3a, nominal size = 10%   | S3a, nominal size = 10%   | S3a, nominal size = 10%   | S3a, nominal size = 10%   | S3a, nominal size = 10%   | S3a, nominal size = 10%   | S3a, nominal size = 10%   | S3a, nominal size = 10%   |
+| 128                       | .0                        | 9.94                      | 9.70                      | 9.12                      | 9.82                      | 9.04                      | 8.46                      |
+| 128                       | .5                        | 9.52                      | 10.00                     | 9.32                      | 10.08                     | 9.24                      | 9.20                      |
+| 128                       | .9                        | 9.46                      | 9.64                      | 9.42                      | 9.28                      | 9.22                      | 9.26                      |
+
+NOTE: T is sample size, ρ is the contemporaneous correlation between the innovations underlying the forecast errors, and θ is the coefficient of the MA(1) forecast error. At least 5,000 Monte Carlo replications are pertormed.
+
+
+<!-- p:9 -->
+
+
+Figure 1. Empirical Size, Four Test Statistics: Fat-Tailed Case; Theta = Rho = .5.
+
+## 4. AN EMPIRICAL EXAMPLE
+
+We shall illustrate the practical use of the tests with an application to exchange-rate forecasting. The series to be forecast, measured monthly, is the three-month change in the nominal dollar/Dutch guilder end-of-month spot exchange rate (in U.S. cents, noon, New York interbank), from 1977.01 to 1991.12. We assess two forecasts, the "no change" (0) forecast associated with a random-walk model and the forecast implicit in the three-month forward rate (the difference between the three-month forward rate and the spot rate).
+
+We shall assess the forecasts' accuracy under absolute error loss. In terms of point estimates, the random-walk forecast is more accurate. The mean absolute error of the random-walk forecast is 1.42, as opposed to 1.53 for the forward market forecast; as one hears so often, "The random walk wins." The
+
+The actual and predicted changes are shown in Figure 2. The random-walk forecast, of course, is just constant at 0, whereas the forward market forecast moves over time. The movements in both forecasts, however, are dwarfed by the realized movements in exchange rates.
+
+Figure 2. Actual and Predicted Exchange-Rate Changes. The solid line is the actual exchange-rate change. The short dashed line is the predicted change from the random-walk model, and the long dashed line is the predicted change implied by the forward rate.
+
+Figure 3. Loss Differential (forward—random walk). Figure 3. Loss Differential (forward—random walk).
+
+loss-differential series is shown in Figure 3, in which no obvious nonstationarities are visually apparently. Approximate stationarity is also supported by the sample autocorrelation function of the loss differential, shown in Figure 4, which decays quickly.
+
+We now proceed to test the null of equal expected loss. F, MGN, and MR are inapplicable because one or more of their
+
+Because the forecasts are three-step-ahead, our earlier arguments suggest the need to allow for at least two-dependent forecast errors, which may translate into a two-dependent loss differential. This intuition is confirmed by the sample autocorrelation function of the loss differential, in which sizable and significant sample autocorrelations appear at lags 1 and 2 and nowhere else. The Box-Pierce χ2 test of jointly zero autocorrelations at lags 1 through 15 is 51.12, which is highly significant relative to its asymptotic null distribution of X5. Conversely, the Box-Pierce χ2 test of jointly zero autocorrelations at lags 3 through 15 is 12.79, which is insignificant relative to its null distribution of X23.
+
+Figure 4. Loss Differential Autocorrelations. The first eight sample autocorrelations are graphed, together with Bartlett's approximate 95% confidence interval.
+
+<!-- p:10 -->
+
+
+maintained assumptions are explicitly violated. We therefore focus on our test statistic S, setting the truncation lag at two in light of the preceding discussion. We obtain S1 = —1.3, implying a p value of .19. Thus, for the sample at hand, we do not reject at conventional levels the hypothesis of equal expected absolute error—-the forward rate is not a statistically significantly worse predictor of the future spot rate than is the current spot rate.
+
+## 5. CONCLUSIONS AND DIRECTIONS FOR FUTURE RESEARCH
+
+We have proposed several tests of the null hypothesis of equal forecast accuracy. We: allow the forecast errors to be non-Gaussian, nonzero mean, serially correlated, and contemporaneously correlated. Perhaps most importantly, our tests are applicable under a very wide variety of loss structures.
+
+We hasten to add that comparison of forecast accuracy is but one of many diagnostics that should be examined when comparing models. Moreover, the superiority of a particular model in terms of forecast accuracy does not necessarily imply that forecasts from other models contain no additional information. That, of course, is the well-known message of the forecast combination and encompassing literatures; see, for example, Clemen (1989), Chong and Hendry (1986), and Fair and Shiller (1990).
+
+Several extensions of the results presented here appear to be promising directions for future research. Some are obvious, such as generalization to comparison of more than two forecasts or, perhaps most generally, multiple forecasts for each of multiple variables. Others are less obvious and more interesting. We shall list just a few:
+
+1. Our framework may be broadened to examine not only whether forecast loss differentials have nonzero mean but also whether other variables may explain loss differentials. For example, one could regress the loss differential not only on a constant but also on a "stage of the business cycle" indicator to assess the extent to which relative predictive performance differs over the cycle.
+2. The ability to formally compare predictive accuracy afforded by our tests may prove useful as a modelspecification diagnostic, as well as a means to test both nested and nonnested hypotheses under nonstandard conditions, in the tradition of Ashley, Granger, and Schmalensee (1980) and Mariano and Brown (1983).
+3. Explicit account may be taken of the effects of uncertainty associated with estimated model parameters on the behavior of the test statistics, as shown by West (1994).
+
+Let us provide some examples of the ideas sketched in 2. First, consider the development of a test of exclusion restrictions in time series regression that is valid regardless of whether the data are stationary or cointegrated. The desirability of such a test is apparent from works like those of Stock and Watson (1989), Christiano and Eichenbaum (1990), Rudebusch (1993), and Toda and Phillips (1993), in which it is simultaneously apparent that (a) it is difficult to determine reliably the integration status of macroeconomic time series and (b) the conclusions of macroeconometric studies are often critically dependent on the integration status of the relevant time series. One may proceed by noting that tests of exclusion restrictions amount to comparisons of restricted and unrestricted sums of squares. This suggests estimating the restricted and unrestricted models using part of the available data and then using our test of equality of the mean squared errors of the respective one-step-ahead forecasts.
+
+As a second example, it would appear that our test is applicable in nonstandard testing situations, such as when a nuisance parameter is not identified under the null. This occurs, for example, when testing for the appropriate number of states in Hamilton's (1989) Markov-switching model. In spite of the fact that standard tests are inapplicable, certainly the null and alternative models may be estimated and their out-of-sample forecasting performance compared rigorously, as shown by Engel (1994).
+
+In closing, we note that this article is part of a larger research program aimed at doing model selection, estimation, prediction, and evaluation using the relevant loss function, whatever that loss function may be. This article has addressed evaluation. Granger (1969) and Christoffersen and Diebold (1994) addressed prediction. These results, together with those of Weiss and Andersen (1984) and Weiss (1991, 1994) on estimation under the relevant loss function will make feasible recursive, real-time, prediction-based model selection under the relevant loss function.
+
+###### ACKNOWLEDGMENTS
+
+We thank the editor, associate editor, and two referees for constructive comments. Seminar participants at Chicago, Cornell, the Federal Reserve Board, London School of Economics, Maryland, the Model Comparison Seminar, Oxford, Pennsylvania, Pittsburgh, and Santa Cruz provided helpful input, as did Rob Engle, Jim Hamilton, Hashem Pesaran, Ingmar Prucha, Peter Robinson, and Ken West, but all errors are ours alone. Portions of this article were written while the first author visited the Financial Markets Group at the London School of Economics, whose hospitality is gratefully acknowledged. Financial support from the National Science Foundation, the Sloan Foundation, and the University of Pennsylvania Research Foundation is gratefully acknowledged. Ralph Bradley, José A. Lopez, and Gretchen Weinbach provided research assistance.
+
+[Received March 1994. Revised December 1994.]
+
+<!-- END SOURCE 13/40: Diebold_1995_comparing-predictive-accuracy.md -->
+
+---
+
+<!-- BEGIN SOURCE 14/40: Eilers_1996_flexible-smoothing-b-splines.md -->
+
+# Source: `Eilers_1996_flexible-smoothing-b-splines.md`
+
+---
+id: "Eilers_1996_flexible-smoothing-b-splines"
+source_pdf: "../pdf/Eilers_1996_flexible-smoothing-b-splines.pdf"
+source_filename: "Eilers_1996_flexible-smoothing-b-splines.pdf"
+format: "academic-paper"
+extraction_profile: "text-math-tables-high-fidelity"
+extraction_mode: "full-page-ocr"
+extraction_quality: "excellent"
+extraction_score: 108.0
+visual_assets: "disabled"
+---
+
+<!-- p:1 -->
+
+## Flexible Smoothing with B-splines and Penalties
+
+####### Paul H. C. Eilers and Brian D. Marx
+
+Abstract. B-splines are attractive for nonparametric modelling, but choosing the optimal number and positions of knots is a complex task. Equidistant knots can be used, but their small and discrete number allows only limited control over smoothness and fit. We propose to use a relatively large number of knots and a difference penalty on coefficients of adjacent B-splines. We show connections to the familiar spline penalty on the integral of the squared second derivative. A short overview of Bsplines, of their construction and of penalized likelihood is presented. We discuss properties of penalized B-splines and propose various criteria for the choice of an optimal penalty parameter. Nonparametric logistic regression, density estimation and scatterplot smoothing are used as examples. Some details of the computations are presented.
+
+Key words and phrases: Generalized linear models, smoothing, nonparametric models, splines, density estimation.
+
+### 1. INTRODUCTION
+
+There can be little doubt that smoothing has a respectable place in statistics today. Many papers and a number of books have appeared (Silverman, 1986; Eubank, 1988; Hastie and Tibshirani, 1990; Härdle, 1990; Wahba, 1990; Wand and Jones, 1993; Green and Silverman, 1994). There are several reasons for this popularity: many data sets are too "rich" to be fully modeled with parametric models; graphical presentation has become increasingly more important and easier to use; and exploratory analysis of data has become more common.
+
+Actually, the name nonparametric is not always well chosen. It might apply to kernel smoothers and running statistics, but spline smoothers are described by parameters, although their number can be large. It might be better to talk about "overparametric" techniques or "anonymous" models; the parameters have no scientific interpretation.
+
+Paul H. C. Eilers is Department Head in the computing section of DCMR Milieudienst Rijnmond,'sGravelandseweg 565, 3119XT Schiedam, The Netherlands (e-mail: paul@dcmr.nl). Brian D. Marx is Associate Professor, Department of Experimental Statistics, Louisiana State University, Baton Rouge, LA 70803-5606 (e-mail: brian@stat.lsu.edu).
+
+There exist several refinements of running statistics, like kernel smoothers (Silverman, 1986; Härdle, 1990) and LOWESS (Cleveland, 1979). Splines come in several varieties: smoothing splines, regression splines (Eubank, 1988) and B-splines (de Boor, 1978; Dierckx, 1993). With so many techniques available, why should we propose a new one? We believe that a combination of B-splines and difference penalties (on the estimated coefficients), which we call P-splines, has very attractive properties. P-splines have no boundary effects, they are a straightforward extension of (generalized) linear regression models, conserve moments (means, variances) of the data and have polynomial curve fits as limits. The computations, including those for cross-validation, are relatively inexpensive and easily incorporated into standard software.
+
+B-splines are constructed from polynomial pieces, joined at certain values of x, the knots. Once the knots are given, it is easy to compute the B-splines recursively, for any desired degree of the polynomial; see de Boor (1977, 1978), Cox (1981) or Dierckx (1993). The choice of knots has been a subject of much research: too many knots lead to overfitting of the data, too few knots lead to underfitting. Some authors have proposed automatic schemes for optimizing the number and the positions of the knots (Friedman and Silverman, 1989; Kooperberg and Stone, 1991, 1992). This is a difficult numerical problem and, to our knowledge, no attractive all-purpose scheme exists.
+
+
+<!-- p:2 -->
+
+
+A different track was chosen by O'Sullivan (1986, 1988). He proposed to use a relatively large number of knots. To prevent overfitting, a penalty on the second derivative restricts the flexibility of the fitted curve, similar to the penalty pioneered for smoothing splines by Reinsch (1967) and that has become the standard in much of the spline literature; see, for example, Eubank (1988), Wahba (1990) and Green and Silverman (1994). In this paper we simplify and generalize the approach of O'Sullivan, in such a way that it can be applied in any context where regression on B-splines is useful. Only small modifications of the regression equations are necessary.
+
+The basic idea is not to use the integral of a squared higher derivative of the fitted curve in the penalty, but instead to use a simple difference penalty on the coefficients themselves of adjacent B-splines. We show that both approaches are very similar for second-order differences. In some applications, however, it can be useful to use differences of a smaller or higher order in the penalty. With our approach it is simple to incorporate a penalty of any order in the (generalized) regression equations.
+
+A major problem of any smoothing technique is the choice of the optimal amount of smoothing, in our case the optimal weight of the penalty. We use cross-validation and the Akaike information criterion (AIC). In the latter the effective dimension, that is, the effective number of parameters, of a model plays a crucial role. We follow Hastie and Tibshirani (1990) in using the trace of the smoother matrix as the effective dimension. Because we use standard regression techniques, this quantity can be computed easily. We find the trace very useful to compare the effective amount of smoothing for different numbers of knots, different degrees of the B-splines and different orders of penalties.
+
+We investigate the conservation of moments of different order, in relation to the degree of the B-splines and the order of the differences in the penalty. To illustrate the use of P-splines, we present the following as applications: smoothing of scatterplots; modeling of dose-response curves; and density estimation.
+
+### 2. B-SPLINES IN A NUTSHELL
+
+Not all readers will be familiar with B-splines. Basic references are de Boor (1978) and Dierckx (1993), but, to illustrate the basic simplicity of the ideas, we explain some essential background here. A B-spline consists of polynomial pieces, connected in a special way. A very simple example is shown at the left of Figure 1(a): one B-spline of degree 1. It consists of two linear pieces; one piece from x1 to x2, the other from x2 to x3. The knots are x1, x2 and x3. To the left of x1 and to the right of x3 this B-spline is zero. In the right part of Figure 1(a), three more B-splines of degree 1 are shown: each one based on three knots. Of course, we can construct as large a set of B-splines as we like, by introducing more knots.
+
+In the left part of Figure 1(b), a B-spline of degree 2 is shown. It consists of three quadratic pieces, joined at two knots. At the joining points not only the ordinates of the polynomial pieces match, but also their first derivatives are equal (but not their second derivatives). The B-spline is based on four adjacent knots: x1,..., x4. In the right part Figure 1(b), three more B-splines of degree 2 are shown.
+
+Note that the B-splines overlap each other. First-degree B-splines overlap with two neighbors, second-degree B-splines with four neighbors and so on. Of course, the leftmost and rightmost splines have less overlap. At a given x, two first-degree (or three second-degree) B-splines are nonzero.
+
+These examples illustrate the general properties of a B-spline of degree q:
+
+- it consists of q + 1 polynomial pieces, each of degree q;
+- the polynomial pieces join at q inner knots;
+- at the joining points, derivatives up to order q – 1 are continuous;
+- the B-spline is positive on a domain spanned by q + 2 knots; everywhere else it is zero;
+- except at the boundaries, it overlaps with 2q polynomial pieces of its neighbors;
+- at a given x, q + 1 B-splines are nonzero.
+
+Let the domain from xmin to xmax be divided into n' equal intervals by n′+ 1 knots. Each interval will be covered by q + 1 B-splines of degree q. The total number of knots for construction of the B-splines will be n' + 2q + 1. The number of B-splines in the regression is n = n' + q. This is easily verified by constructing graphs like those in Figure 1.
+
+B-splines are very attractive as base functions for ("nonparametric") univariate regression. A linear combination of (say) third-degree B-splines gives a smooth curve. Once one can compute the B-splines themselves, their application is no more difficult than polynomial regression.
+
+De Boor (1978) gave an algorithm to compute Bsplines of any degree from B-splines of lower degree. Because a zero-degree B-spline is just a constant on one interval between two knots, it is simple to compute B-splines of any degree. In this paper we use only equidistant knots, but de Boor's algorithm also works for any placement of knots. For equidistant knots, the algorithm can be further simplified, as is illustrated by a small MATLAB function in the Appendix.
+
+
+<!-- p:3 -->
+
+
+FIG. 1. Illustrations of one isolated B-spline and several overlapping ones (a) degree 1; (b) degree 2.
+
+a:
+
+x1
+
+x2
+
+X3
+
+x5
+
+x6
+
+x7
+
+x8
+
+6X
+
+xi0
+
+b:
+
+x1
+
+x2
+
+X3
+
+xx4
+
+x5
+
+x6
+
+x7
+
+x8
+
+x9
+
+xio
+
+The indexing of B-splines needs some care, especially when we are going to use derivatives. The indexing connects a B-spline to a knot; that is, it gives the index of the knot that characterizes the position of the B-spline. Our choice is to take the leftmost knot, the knot at which the B-spline starts to become nonzero. In Figure 1(a), x1 is the positioning knot for the first B-spline. This choice of indexing demands that we introduce q knots to the left of the domain of x. In the formulas that follow for derivatives, the exact bounds of the index in the sums are immaterial, so we have left them out.
+
+Let Bj(x; q) denote the value at x of the jth Bspline of degree q for a given equidistant grid of knots. A fitted curve  to data (x, y) is the linear combination y(x) = Σn=1  jB j(x; q). When the degree of the B-splines is clear from the context, or immaterial, we use B j(x) instead of B j(x; q).
+
+De Boor (1978) gives a simple formula for derivatives of B-splines:
+
+$$t i v e s \, o r \, B { - s p i n e s } \colon \\ h \sum _ { j } a _ { j } B _ { j } ^ { \prime } ( x ; q ) = \sum _ { j } a _ { j } B _ { j } ( x ; q - 1 ) \\ - \sum _ { j } a _ { j + 1 } B _ { j + 1 } ( x ; q - 1 ) \\ = - \sum _ { j } \Delta a _ { j + 1 } B _ { j } ( x ; q - 1 ) , \\ \intertext { ( 1 ) } = - \sum _ { j } \Delta a _ { j + 1 } B _ { j } ( x ; q - 1 ) , \\ \intertext { w h e r e } \intertext { s u n t a r g h e r e } b e t w h e r e \, k n o t s \, a n d \, \Delta q \, = \, -$$
+
+where h is the distance between knots and ∆a j = a j − a j−1.
+
+By induction we find the following for the second derivative:
+
+$$( 2 ) \quad h ^ { 2 } \sum _ { j } a _ { j } B _ { j } ^ { \prime \prime } ( x ; q ) = \sum _ { j } \Delta ^ { 2 } a _ { j } B _ { j } ( x ; q - 2 ) ,$$
+
+where ∆2a j = ∆∆a j = a j − 2a j−1 + a j−2. This fact will prove very useful when we compare continuous and discrete roughness penalties in the next section.
+
+### 3. PENALTIES
+
+Consider the regression of m data points (xi, yi) on a set of n B-splines B(·). The least squares objective function to minimize is
+
+$$\begin{array} { r l } { a r } & { S = \sum _ { i = 1 } ^ { m } \left \{ y _ { i } - \sum _ { j = 1 } ^ { n } a _ { j } B _ { j } ( x _ { i } ) \right \} ^ { 2 } . } \\ { o r } & { S = \sum _ { i = 1 } ^ { n } \left \{ y _ { i } - \sum _ { j = 1 } ^ { n } a _ { j } B _ { j } ( x _ { i } ) \right \} ^ { 2 } . } \end{array}$$
+
+Let the number of knots be relatively large, such that the fitted curve will show more variation than is justified by the data. To make the result less flexible, O'Sullivan (1986, 1988) introduced a penalty on the second derivative of the fitted curve and so formed the objective function
+
+$$\text {bed} & \quad \text {forming the objective function} \\ \text {ing} & \quad S = \sum _ { i = 1 } ^ { m } \left \{ y _ { i } - \sum _ { j = 1 } ^ { n } a _ { j } B _ { j } ( x _ { i } ) \right \} ^ { 2 } \\ \text {the} & \quad ( 4 ) \\ \text {va-} & \quad + \lambda \int _ { x _ { \min } } ^ { x _ { \max } } \left \{ \sum _ { j = 1 } ^ { n } a _ { j } B _ { j } ^ { \prime \prime } ( x ) \right \} ^ { 2 } d x . \\ & \quad \text {The integral of the square of the second derivative}$$
+
+The integral of the square of the second derivative of a fitted function has become common as a smoothness penalty, since the seminal work on smoothing splines by Reinsch (1967). There is nothing special about the second derivative; in fact, lower or higher orders might be used as well. In the context of smoothing splines, the first derivative leads to simple equations, and a piecewise linear fit, while higher derivatives lead to rather complex mathematics, systems of equations with a high bandwidth, and a very smooth fit.
+
+We propose to base the penalty on (higher-order) finite differences of the coefficients of adjacent Bsplines:
+
+$$S = \sum _ { i = 1 } ^ { m } \left \{ y _ { i } - \sum _ { j = 1 } ^ { n } a _ { j } B _ { j } ( x _ { i } ) \right \} ^ { 2 } + \lambda \sum _ { j = k + 1 } ^ { n } ( \Delta ^ { k } a _ { j } ) ^ { 2 } .$$
+
+
+<!-- p:4 -->
+
+
+This approach reduces the dimensionality of the problem to n, the number of B-splines, instead of m, the number of observations, with smoothing splines. We still have a parameter λ for continuous control over smoothness of the fit. The difference penalty is a good discrete approximation to the integrated square of the kth derivative. What is more important: with this penalty moments of the data are conserved and polynomial regression models occur as limits for large values of λ. See Section 5 for details.
+
+We will show below that there is a very strong connection between a penalty on second-order differences of the B-spline coefficients and O'Sullivan's choice of a penalty on the second derivative of the fitted function. However, our penalty can be handled mechanically for any order of the differences (see the implementation in the Appendix).
+
+Difference penalties have a long history that goes back at least to Whittaker (1923); recent applications have been described by Green and Yandell (1985) and Eilers (1989, 1991a, b, 1995).
+
+The difference penalty is easily introduced into the regression equations. That makes it possible to experiment with different orders of the differences. In some cases it is useful to work with even the fourth or higher order. This stems from the fact that for high values of λ the fitted curve approaches a parametric (polynomial) model, as will be shown below.
+
+O'Sullivan (1986, 1988) used third-degree Bsplines and the following penalty:
+
+$$h ^ { 2 } P = \lambda \int _ { x _ { \min } } ^ { x _ { \max } } \left \{ \sum _ { j } a _ { j } B _ { j } ^ { \prime \prime } ( x ; 3 ) \right \} ^ { 2 } d x .$$
+
+From the derivative properties of B-splines it follows that
+
+$$h ^ { 2 } P = \lambda \int _ { x _ { \min } } ^ { x _ { \max } } \left \{ \sum _ { j } \Delta ^ { 2 } a _ { j } B _ { j } ( x ; 1 ) \right \} ^ { 2 } d x .$$
+
+This can be written as
+
+$$h ^ { 2 } P & = \lambda \int _ { x _ { \min } } ^ { x _ { \max } } \sum _ { j } \sum _ { k } \Delta ^ { 2 } a _ { j } \, \Delta ^ { 2 } a _ { k } \\ & \quad \cdot B _ { j } ( x ; 1 ) B _ { k } ( x ; 1 ) \, d x .$$
+
+Most of the cross products of Bj(x; 1) and Bk(x; 1) disappear, because B-splines of degree 1 only overlap when j is k − 1, k or k + 1. We thus have that
+
+$$\begin{matrix} \text {of} & & h ^ { 2 } P = \lambda \int _ { x _ { \min } } ^ { x _ { \max } } \left [ \left \{ \sum _ { j } \Delta ^ { 2 } a _ { j } B _ { j } ( x ; 1 ) \right \} ^ { 2 } \\ & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & &$$
+
+· Bj(x; 1)Bj−1(x; 1)| dx,
+
+or
+
+$$\text { for } & \quad \text { or } & h ^ { 2 } P = \lambda \sum _ { j } ( \Delta ^ { 2 } a _ { j } ) ^ { 2 } \int _ { x _ { \min } } ^ { x _ { \max } } B _ { j } ^ { 2 } ( x ; 1 ) \, d x \\ \text {and} & \quad ( 1 0 ) & & + 2 \lambda \sum _ { j } \Delta ^ { 2 } a _ { j } \, \Delta ^ { 2 } a _ { j - 1 } \\ \text {the} & & \cdot \int _ { x _ { \min } } ^ { x _ { \max } } B _ { j } ( x ; 1 ) B _ { j - 1 } ( x ; 1 ) \, d x , \\ & \quad \text { which can be written as } & &$$
+
+which can be written as
+
+$$\ p l i c a { \cdot } \quad ( 1 1 ) \ \ h ^ { 2 } P = \lambda \left \{ c _ { 1 } \sum _ { j } ( \Delta ^ { 2 } a _ { j } ) ^ { 2 } + c _ { 2 } \sum _ { j } \Delta ^ { 2 } a _ { j } \, \Delta ^ { 2 } a _ { j - 1 } \right \} ,$$
+
+where c1 and c2 are constants for given (equidistant) knots:
+
+$$\ k n o t s & \colon & \ k n o t s & \colon & c _ { 1 } = \int _ { x _ { \min } } ^ { x _ { \max } } B _ { j } ^ { 2 } ( x ; 1 ) \, d x ; \\ \text {fact} & & c _ { 2 } = \int _ { x _ { \min } } ^ { x _ { \max } } B _ { j } ( x ; 1 ) B _ { j - 1 } ( x ; 1 ) \, d x . \\ \text {wn} & & \text {The first term in (11) is equivalent to our second}$$
+
+The first term in (11) is equivalent to our secondorder difference penalty, the second term contains cross products of neighboring second differences. This leads to more complex equations when minimizing the penalized likelihood (equations in which seven adjacent a j's occur, compared to five if only squares of second differences occur in the penalty). The higher complexity of the penalty equations stems from the overlapping of B-splines. With higher order differences and/or higher degrees of the B-splines, the complications grow rapidly and make it rather difficult to construct an automatic procedure for incorporating the penalty in the likelihood equations. With the use of a difference penalty on the coefficients of the B-splines this problem disappears.
+
+### 4. PENALIZED LIKELIHOOD
+
+For least squares smoothing we have to minimize S in (5). The system of equations that follows from the minimization of S can be written as:
+
+$$( 1 3 ) \quad B ^ { T } y = ( B ^ { T } B + \lambda D _ { k } ^ { T } D _ { k } ) a ,$$
+
+where Dk is the matrix representation of the difference operator ∆k, and the elements of B are bij = B j(xi). When λ = 0, we have the standard normal equations of linear regression with a B-spline basis. With k = 0 we have a special case of ridge regression. When λ &gt; 0, the penalty only influences the main diagonal and k subdiagonals (on both sides of the main diagonal) of the system of equations. This system has a banded structure because of the limited overlap of the B-splines. It is seldom worth the trouble to exploit this special structure, as the number of equations is equal to the number of splines, which is generally moderate (10–20).
+
+
+<!-- p:5 -->
+
+
+In a generalized linear model (GLM), we introduce a linear predictor ηi = Σj=1 bija j and a (canonical) link function ηi = g(μi), where μi is the expectation of yi. The penalty now is subtracted from the log-likelihood l(y; a) to form the penalized likelihood function
+
+$$L = l ( y ; a ) - \frac { \lambda } { 2 } \sum _ { j = k + 1 } ^ { n } ( \Delta ^ { k } a _ { j } ) ^ { 2 } . \\$$
+
+The optimization of L leads to the following system of equations:
+
+$$B ^ { T } ( y - \mu ) = \lambda D _ { k } ^ { T } D _ { k } a .$$
+
+These are solved as usual with iterative weighted linear regressions with the system
+
+$$B ^ { T } \tilde { W } ( y - \tilde { \mu } ) + B ^ { T } \tilde { W } B \tilde { a } \\ = ( B ^ { T } \tilde { W } B + \lambda D _ { k } ^ { T } D _ { k } ) a , \\ \tilde { a } , \tilde { b } , \tilde { a } , \tilde { b } , \tilde { a } , \dots , \tilde { a }$$
+
+where ã and μ are current approximations to the solution and W is a diagonal matrix of weights
+
+$$w _ { i i } = \frac { 1 } { v _ { i } } \left ( \frac { \partial \mu _ { i } } { \partial \eta _ { i } } \right ) ^ { 2 } , \\$$
+
+where vi is the variance of yi, given μi. The only difference with the standard procedure for fitting of GLM's (McCullagh and Nelder, 1989), with B-splines\_as regressors, is the modification of BT B by λDk Dk (which itself is constant for fixed λ) at each iteration.
+
+### 5. PROPERTIES OF P-SPLINES
+
+P-splines have a number of useful properties, partially inherited from B-splines. We give a short overview, with somewhat informal proofs.
+
+In the first place: P-splines show no boundary effects, as many types of kernel smoothers do. By this we mean the spreading of a fitted curve or density outside of the (physical) domain of the data, generally accompanied by bending toward zero. In Section 8 this aspect is considered in some detail, in the context of density smoothing.
+
+P-splines can fit polynomial data exactly. Let data (xi, yi) be given. If the yi are a polynomial in x of degree k, then B-splines of degree k or higher will exactly fit the data (de Boor, 1977). The same is true for P-splines, if the order of the penalty is k + 1 or higher, whatever the value of λ. To see that this is true, take the case of a first-order penalty and the fit to data y that are constant (a polynomial of degree 0). Because Σn=1 â jB j(x) = c, we have that Σμ=1 â jB'j(xi) = 0, for all x. Then it follows from the relationship between differences and derivatives in (1) that all ∆a j are zero, and thus that Σn=2 ∆a j = 0. Consequently, the penalty has no effect and the fit is the same as for unpenalized B-splines. This reasoning can easily be extended by induction to data with a linear relationship between x and y, and a second order difference penalty.
+
+P-splines can conserve moments of the data. For a linear model with P-splines of degree k + 1 and a penalty of order k + 1, or higher, it holds that
+
+$$\sum _ { i = 1 } ^ { m } x ^ { k } y _ { i } = \sum _ { i = 1 } ^ { m } x ^ { k } \hat { y } _ { i } ,$$
+
+for all values of λ, where yi = Σj=1 bijâ j are the fitted values. For GLM's with canonical links it holds that
+
+$$\sum _ { i = 1 } ^ { m } x ^ { k } y _ { i } = \sum _ { i = 1 } ^ { m } x ^ { k } \hat { \mu } _ { i } .$$
+
+This property is especially useful in the context of density smoothing: the mean and variance of the estimated density will be equal to mean and variance of the data, for any amount of smoothing. This is an advantage compared to kernel smoothers: these inflate the variance increasingly with stronger smoothing.
+
+The limit of a P-splines fit with strong smoothing is a polynomial. For large values of λ and a penalty of order k, the fitted series will approach a polynomial of degree k – 1, if the degree of the B-splines is equal to, or higher than, k. Once again, the relationships between derivatives of a B-spline fit and differences of coefficients, as in (1) and (2), are the key. Take the example of a second-order difference penalty: when λ is large, Σj=3(∆2a j)2 has to be very near zero. Thus each of the second differences has to be near zero, and thus the second derivative of the fit has to be near zero everywhere. In view of these very useful results, it seems that B-splines and difference penalties are the ideal marriage.
+
+It is important to focus on the linearized smoothing problem that is solved at each iteration, because we will make use of properties of the smoothing matrix. From (16) follows for the hat matrix H:
+
+$$H = B ( B ^ { T } \tilde { W } B + \lambda D _ { k } ^ { T } D _ { k } ) ^ { - 1 } B ^ { T } \tilde { W } .$$
+
+
+<!-- p:6 -->
+
+
+The trace of H will approach k as λ increases. A proof goes as follows. Let As tr(AB) = tr(BA) (for conformable matrices), it is computationally advantageous to use
+
+$$Q _ { B } = B ^ { T } \tilde { W } B \quad \text {and} \quad Q _ { \lambda } = \lambda D ^ { T } D .$$
+
+Write tr(H) as
+
+$$t r [ H ] & = t r \{ ( Q _ { B } + Q _ { \lambda } ) ^ { - 1 } Q _ { B } \} \\ & = t r \{ Q _ { B } ^ { 1 / 2 } ( Q _ { B } + Q _ { \lambda } ) ^ { - 1 } Q _ { B } ^ { 1 / 2 } \} \\ & = t r \{ ( I + Q _ { B } ^ { - 1 / 2 } Q _ { \lambda } Q _ { B } ^ { - 1 / 2 } ) ^ { - 1 } \} .$$
+
+This can be written as
+
+$$( 2 3 ) \quad t r ( H ) = t r \{ ( I + \lambda L ) ^ { - 1 } \} = \sum _ { j = 1 } ^ { n } \frac { 1 } { 1 + \lambda \gamma _ { j } } ,$$
+
+where
+
+$$L = Q _ { B } ^ { - 1 / 2 } Q _ { \lambda } Q _ { B } ^ { - 1 / 2 }$$
+
+and γj, for j = 1, . . . , n, are the eigenvalues of L. Because k eigenvalues of Qλ are zero, L has k zero eigenvalues. When λ is large, only the (k) terms with γj = 0 contribute to the leftmost term, and thus to the trace of H. Hence tr(H) approaches k for large λ.
+
+### 6. OPTIMAL SMOOTHING, AIC AND CROSS-VALIDATION
+
+Now that we can easily influence the smoothness of a fitted curve with λ, we need some way to choose an "optimal" value for it. We propose to use the Akaike information criterion (AIC).
+
+The basic idea of AIC is to correct the loglikelihood of a fitted model for the effective number of parameters. An extensive discussion and applications can be found in Sakamoto, Ishiguro and Kitagawa (1986). Instead of the log-likelihood, the deviance is easier to use. The definition of AIC is equivalent to
+
+$$t r ( H ) & = t r \{ B ( B ^ { T } W B + \lambda D _ { k } ^ { T } D _ { k } ) ^ { - 1 } B ^ { T } W \} \\ & = t r \{ ( B ^ { T } W B + \lambda D _ { k } ^ { T } D _ { k } ) ^ { - 1 } B ^ { T } W B \} .$$
+
+The latter expression involves only n-by-n matrices, whereas H is an m-by-m matrix.
+
+In some GLM's, the scale of the data is known, as for counts with a Poisson distribution and for binomial data; then the deviance can be computed directly. For linear data, an estimate of the variance is needed. One approach is to take the variance of the residuals from the i that are computed when λ = 0, say, ^2:
+
+$$A I C = \sum _ { i = 1 } ^ { m } \frac { ( y _ { i } - \hat { \mu } _ { i } ) ^ { 2 } } { \hat { \sigma } _ { 0 } ^ { 2 } } + 2 \, t r ( H ) \\ - 2 m \ln \hat { \sigma } _ { 0 } - m \ln 2 \pi .$$
+
+This choice for the variance is rather arbitrary, as it depends on the numer of knots. Alternatives can be based on (generalized) cross-validation. For ordinary cross-validation we compute
+
+$$k = \sum _ { i = 1 } ^ { m } \left ( \frac { y _ { i } - \hat { y } _ { i } } { 1 - h _ { i i } } \right ) ^ { 2 } ,$$
+
+where the hii are the diagonal elements of the hat matrix H. For generalized cross-validation (Wahba, 1990), we compute
+
+$$G C V ( \lambda ) = \sum _ { i = 1 } ^ { m } \frac { ( y _ { i } - \hat { y } _ { i } ) ^ { 2 } } { ( m - \sum _ { i = 1 } ^ { m } h _ { i i } ) ^ { 2 } } .$$
+
+The difference between both quantities is generally small. The best λ is the value that minimizes CV(λ) or GCV(λ). The variance of the residuals at the optimal λ is a natural choice to use as an estimate of σ2 for the computation of AIC(λ). It is practical to work with modified versions of CV(λ) and GCV(λ), with values that can be interpreted as estimates of the cross-validation standard deviation:
+
+$$( 2 5 ) \quad A I C ( \lambda ) = \text {dev} ( y ; \, a , \, \lambda ) + 2 * \dim ( a , \, \lambda ) ,$$
+
+where dim(a, λ) is the (effective) dimension of the vector of parameters, α, and dev(y; a, λ) is the deviance.
+
+Computation of the deviance is straightforward, but how shall we determine the effective dimension of our P-spline fit? We find a solution in Hastie and Tibshirani (1990). They discuss the effective dimensions of linear smoothers and propose to use the trace of the smoother matrix as an approximation. In our case that means dim(a) = tr(H). Note that tr(H) = n when λ = 0, as in (nonsingular) standard linear regression.
+
+$$\overline { C V ( \lambda ) } & = \sqrt { C V ( \lambda ) / m } ; \\ \overline { G C V ( \lambda ) } & = \sqrt { m \, G C V ( \lambda ) } .$$
+
+The two terms in AIC(λ) represent the deviance and the trace of the smoother matrix. The latter term, say T(λ) = tr{H(λ)}, is of interest on its own, because it can be interpreted as the effective dimension of the fitted curve.
+
+T(λ) is useful to compare fits for different numbers of knots and orders of penalties, whereas λ can vary over a large range of values and has no clear intuitive appeal. We will show in an example below that a plot of AIC against T is a useful diagnostic tool.
+
+
+<!-- p:7 -->
+
+
+TABLE 1 Values of several diagnostics for the motorcycle impact data, for several values of λ
+
+|      |   0.001 |   0.01 |   0.1 |   0.2 |   0.5 |     1 |     2 |     5 |    10 |
+|------|---------|--------|-------|-------|-------|-------|-------|-------|-------|
+| CV   |   24.77 |  24.02 | 23.52 | 23.37 | 23.26 | 23.38 | 23.90 | 25.50 | 27.49 |
+| GCV  |   25.32 |  24.93 | 24.17 | 23.94 | 23.74 | 23.81 | 24.28 | 25.87 | 27.85 |
+| AIC  |   159.6 |  156.2 | 149.0 | 146.7 | 144.7 | 145.4 | 150.6 | 169.1 | 194.3 |
+| tr H |    21.2 |   19.4 | 15.13 |  13.6 |  11.7 |  10.4 |   9.2 |   7.7 |   6.8 |
+
+Our second example concerns logistic regression. The model is
+
+In the case of P-splines, the maximum value that T(λ) can attain is equal to the number of B-splines (when λ = 0). The actual maximum depends on the number and the distributions of the data points. The minimum value of T(λ) occurs when λ goes to infinity; it is equal to the order of the difference penalty. This agrees with the fact that for high values of λ the fit of P-splines approaches a polynomial of degree k − 1.
+
+### 7. APPLICATIONS TO GENERALIZED LINEAR MODELLING
+
+In this section we apply P-splines to a number of nonparametric modelling situations, with normal as well as nonnormal data.
+
+First we look at a problem with additive errors. Silverman (1985) used motorcycle crash helmet impact data to illustrate smoothing of a scatterplot with splines; the data can be found in Härdle (1990) and (also on diskette) in Hand et al. (1994). The data give head acceleration in units of g, at different times after impact in simulated accidents. We smooth with B-splines of degree 3 and a secondorder penalty. The chosen knots divide the domain of x (0–60) into 20 intervals of equal width. When we vary λ on an approximately geometric grid, we get the results in Table 1, where î0 is computed from GCV(λ) at the optimal value of λ. At the optimal value of λ as determined by GCV, we get the results as plotted in Figure 2.
+
+It is interesting to note that the amount of work to investigate several values of λ is largely independent of the number of data points when using GCV. The system to be solved is
+
+$$( 3 1 ) \quad ( B ^ { T } B + \lambda D _ { k } ^ { T } D _ { k } ) a = B ^ { T } y .$$
+
+The sum of squares is
+
+$$( 3 2 ) \ \ S = | y - B a | ^ { 2 } = y ^ { T } y - 2 a ^ { T } B ^ { T } y + a ^ { T } B ^ { T } B a . \quad \text {as} \quad \begin{matrix} \text {as} \\ 1 9 \end{matrix} .$$
+
+So BT B and BT y have to be computed only once. The hat matrix H is m by m, but for its trace we found an expression in (26) that involves only BT B and Dπ Dk. So we do not need the original data for cross-validation at any value of λ.
+
+$$\text {hat} n \colon \quad \ln \left ( \frac { p _ { i } } { 1 - p _ { i } } \right ) = \eta _ { i } = \sum _ { j = 1 } ^ { n } a _ { j } B _ { j } ( x _ { i } ) .$$
+
+The observations are triples (xi, ti, yi), where ti is the number of individuals under study at dose xi, and yi is the number of "successes." We assume that yi has a binomial distribution with probability pi and ti trials. The expected value of yi is ti pi and the variance is ti pi(1 − pi).
+
+Figure 3 shows data from Ashford and Walker (1972) on the numbers of Trypanosome organisms killed at different doses of a certain poison. The data points and two fitted curves are shown. For the thick line curve λ = 1 and AIC = 13.4; this value of λ is optimal for the chosen B-splines of degree 3 and a penalty of order 2. The thin line curve shows the fit for λ = 108 (AIC = 27.8). With a second-order penalty, this essentially a logistic fit.
+
+Figure 4 shows curves of AIC(λ) against T(λ) at different values of k, the order of the penalty. We find that k = 3 can give a lower value of AIC (for λ = 5, AIC = 11.8). For k = 4 we find that a very high value of λ is allowed; then AIC = 11.4, hardly different from the lowest possible value (11.1). A large value of λ with a fourth-order penalty means that effectively the fitted curve for η is a third-order polynomial. The limit of the fit with P-splines thus indicates a cubic logistic fit as a good parametric model. Here we have seen an application where a fourth-order penalty is useful.
+
+Our third example is a time series of counts yi, which we will model with a Poisson distribution with smoothly changing expectation:
+
+$$\ln \mu _ { i } = \eta _ { i } = \sum _ { j = 1 } ^ { n } a _ { j } B _ { j } ( x _ { i } ) .$$
+
+In this special case the xi are equidistant, but this is immaterial. Figure 5 shows the numbers of disasters in British coal mines for the years 18501962, as presented in (Diggle and Marron, 1988). The counts are drawn as narrow vertical bars, the line is the fitted trend. The number of intervals is 20, the B-splines have degree 3 and the order of the penalty is 2. An optimal value of λ was searched on the approximately geometric grid 1, 2, 5, 10 and
+
+
+<!-- p:8 -->
+
+100
+
+0
+
+8
+
+50-
+
+00
+
+800
+
+0
+
+
+00
+
+0
+
+
+89
+
+o0
+
+o
+
+0
+
+8
+
+oo
+
+0
+
+00
+
+o
+
+
+0
+
+o
+
+-50-
+
+0
+
+
+-100-
+
+8
+
+0
+
+
+o
+
+
+8
+
+0
+
+-150
+
+0
+
+10
+
+20
+
+30
+
+40
+
+50
+
+60
+
+FIG. 2. Motorcycle crash helmet impact data: optimal fit with B-splines of third degree, a second-order penalty and λ = 0.5.
+
+1.0
+
+0.8-
+
+0.6-
+
+0.4
+
+0.2
+
+D
+
+0.0
+
+4.5
+
+4.6
+
+4.7
+
+4.8
+
+4.9
+
+5.0
+
+5.1
+
+5.2
+
+5.3
+
+5.4
+
+5.5
+
+FIG. 3. Nonparametric logistic regression of Trypanosome data: P-splines of order 3 with 13 knots, difference penalty of order 2, λ = 1 and AIC = 13.4 (thick line); the thin line is effectively the logistic fit (λ = 108 and AIC = 27.8).
+
+30
+
+k=2
+
+k=3
+
+25-
+
+20-
+
+15-
+
+k=4-
+
+10-
+
+5-
+
+-0
+
+0
+
+2
+
+4
+
+-6
+
+8
+
+10
+
+FIG. 4. AIC(λ) versus T(λ), the effective dimension, for several orders of the penalty (k).
+
+so on. The minimum of AIC (126.0) was found for λ = 1,000.
+
+The raw data of the coal mining accidents presumably were the dates on which they occurred. So the data we use here are in fact a histogram with one-year-wide bins. With events on a time scale it seems natural to smooth counts over intervals, but the same idea applies to any form of histogram (bin counts) or density smoothing. This was already noted by Diggle and Marron (1988). In the next section we take a detailed look at density smoothing with P-splines.
+
+### 8. DENSITY SMOOTHING
+
+In the preceding section we noted that a time series of counts is just a histogram on the time axis. Any other histogram might be smoothed in the same way. However, it is our experience that this idea is hard to swallow for many colleagues. They see the construction of a frequency histogram as an unallowable discretization of the data and as a prelude to disaster. Perhaps this feeling stems from the well-known fact that maximum likelihood estimation of histograms leads to pathological results, namely, delta functions at the observations (Scott, 1992). However, if we optimize a penalized likelihood, we arrive at stable and very useful results, as we will show below.
+
+
+<!-- p:9 -->
+
+
+FIG. 5. Numbers of severe accidents in British coal mines: number per year shown as vertical lines; fitted trend of the expectation of the Poisson distribution; B-splines of degree 3, penalty of order 3, 20 intervals between 1850 and 1970, λ = 1,000 and AIC = 126.0.
+
+6
+
+5-
+
+4
+
+3
+
+2-
+
+1
+
+1850
+
+1860
+
+1870
+
+1880
+
+1890
+
+1900
+
+1910
+
+1920
+
+1930
+
+1940
+
+1950
+
+1960
+
+1970
+
+Let yi, i = 1, . . . , m, be a histogram. Let the origin of x be chosen in such a way that the midpoints of the bins are xi = ih; thus yi is the number of raw observations with xi − h/2 ≤ x &lt; xi + h/2. If pi is the probability of finding a raw observation in cell i, then the likelihood of the given histogram is proporalently (see Bishop, Fienberg and Holland, 1975, Chapter 13), one can work with the likelihood of m Poisson distributions with expectations μi = pi y+, where y+ = ∑i=1 yi.
+
+To smooth the histogram, we again use a generalized linear model with the canonical log link (which guarantees positive μ):
+
+$$\ln \mu _ { i } = \eta _ { i } = \sum _ { j = 1 } ^ { n } a _ { j } B _ { j } ( x _ { i } )$$
+
+and construct the penalized log likelihood
+
+$$( 3 6 ) \ L = \sum _ { i = 1 } ^ { m } y _ { i } \ln \mu _ { i } - \sum _ { i = 1 } ^ { m } \mu _ { i } - \lambda \sum _ { j = k + 1 } ^ { n } \frac { ( \Delta ^ { k } a _ { j } ) ^ { 2 } } { 2 } ,$$
+
+with n a suitable (i.e., relatively large) number of knots for the B-splines. The penalized likelihood equations follow from the minimization of L:
+
+$$\sum _ { i = 1 } ^ { m } ( y _ { i } - \mu _ { i } ) B _ { j } ( x _ { i } ) = \lambda \sum _ { l = k + 1 } ^ { n } d _ { j l } a _ { l } .$$
+
+These equations are solved with iteratively reweighted regression, as described in Section 4.
+
+Now we let h, the width of the cells of the histogram, shrink to a very small value. If the raw data are given to infinite precision, we will eventually arrive at a situation in which each cell of the histogram has at most one observation. In other words, we have a very large number (m) of cells, of which y+ are 1 and all others 0. Let I be the set of indices of cells for which yi = 1. Then
+
+$$\ r i { \cdot } \quad ( 3 8 ) \quad \sum _ { i = 1 } ^ { m } y _ { i } B _ { j } ( x _ { i } ) = \sum _ { i \in I } B _ { j } ( x _ { i } ) .$$
+
+If the raw observations are ut for t = 1, . . . , r, with r = y+, then we can write
+
+$$\begin{array} { c c } \text {or} \cdot & ( 3 9 ) \\ \text {iv} \cdot & \\ 7 5 , \end{array} \quad ( 3 9 ) \quad \sum _ { i \in I } B _ { j } ( x _ { i } ) = \sum _ { t = 1 } ^ { r } B _ { j } ( u _ { t } ) = B _ { j } ^ { + } ,$$
+
+and the penalized likelihood equations in (37) change to
+
+$$B _ { j } ^ { + } - \sum _ { i = 1 } ^ { m } \mu _ { i } B _ { j } ( x _ { i } ) = \lambda \sum _ { l = k + 1 } ^ { n } d _ { j l } a _ { l } .$$
+
+For any j, the first term on the left-hand side of -  a n,, e    a spline j, while the second term on the left can be interpreted as the "expected sum" of that B-spline for the fitted density. When λ = 0, these terms have to be equal to each other for each j.
+
+Note that the second term on the left-hand side of (40) is in fact a numerical approximation of an integral:
+
+$$\begin{array} { r l } & { \text { integer.} } \\ { r o f } & { \sum _ { i = 1 } ^ { m } \mu _ { i } B _ { j } ( x _ { i } ) / y _ { + } } \\ & { \quad \approx \int _ { x _ { \min } } ^ { x _ { \max } } B _ { j } ( x ) \exp \left \{ \sum _ { l = 1 } ^ { n } a _ { l } B _ { l } ( x ) \right \} d x . } \end{array}$$
+
+
+<!-- p:10 -->
+
+
+TABLE 2 The value of AIC at several values of lambda for the Old Faithful density estimate
+
+|     |   0.001 |   0.01 |   0.02 |   0.05 |   0.1 |   0.2 |   0.5 |     1 |    10 |
+|-----|---------|--------|--------|--------|-------|-------|-------|-------|-------|
+| AIC |   50.79 |  48.21 |  47.67 |  47.37 | 47.70 | 48.61 | 50.59 | 52.81 | 65.66 |
+
+The smaller h (the larger m), the better the appproximation. In other words: the discretization is only needed to solve an integral numerically for which, as far as we know, no closed form solution exists. For practical purposes the simple sum is sufficient, but a more sophisticated integration scheme is possible. Note that the sums to calculate B+ involve all raw observations, but in fact at each of these only q + 1 terms Bj(ut) add to their corresponding Bj.
+
+The necessary computations can be done in terms of the sufficient statistics B+: we have seen their role in the penalized likelihood equations above. But also the deviance and thus AIC can be computed directly:
+
+$$d i c t r i y \colon & & \quad \text {n} { x } \\ & \quad \text {dev} ( y ; a ) = 2 \sum _ { i = 1 } ^ { m } y _ { i } \ln ( y _ { i } / \mu _ { i } ) & & \quad \text {a} ; & & \quad \text {a} , & & \quad \text {w} \\ & \quad = 2 \sum _ { i = 1 } ^ { m } y _ { i } \ln y _ { i } - 2 \sum _ { i = 1 } ^ { m } y _ { i } \sum _ { j = 1 } ^ { n } a _ { j } B _ { j } ( x _ { i } ) & & \quad \text {t} \\ & \quad = 2 \sum _ { i = 1 } ^ { m } y _ { i } \ln y _ { i } - 2 \sum _ { j = 1 } ^ { n } a _ { j } B _ { j } ^ { + } . & & \quad \text {d} \\ \text {In the extreme case, when the } & y _ { i } \text { are either } 0 \text { or } & a$$
+
+In the extreme case, when the yi are either 0 or 1, the term Σ yi ln yi vanishes. In any case it is independent of the fitted density.
+
+The density smoother with P-splines is very attractive: the estimated density is positive and continuous, it can be described relatively parsimoniously in terms of the coefficients of the B-splines, and it is a proper density. Moments are conserved, as follows from (19). This implies that with thirddegree B-splines and a third-order penalty, mean and variance of the estimated distribution are equal to those of the raw data, whatever the amount of smoothing; the limit for high λ is a normal distribution.
+
+The P-spline density smoother is not troubled by boundary effects, as for instance kernel smoothers are. Marron and Ruppert (1994) give examples and a rather complicated remedy, based on transformations. With P-splines no special precautions are necessary, but it is important to specify the domain of the data correctly. We will present an example below.
+
+We now take as a first example a data set from (Silverman, 1986). The data are durations of 107 eruptions of the Old Faithful geyser. Third-degree B-splines were used, with a third-order penalty. The domain from 0 to 6 was divided into 20 intervals to determine the knots. In the figure two fits are shown, for λ = 0.001 and for λ = 0.05. The latter value gives the minimum of AIC, as Table 2 shows. We see that of the two clearly separated humps, the right one seems to be a mixture of two peaks.
+
+The second example also comes from (Silverman, 1986). The data are lengths of spells of psychiatric treatments in a suicide study. Figure 7 shows the raw data and the estimated density when the domain is chosen from 0 to 1,000. Third-degree Bsplines were used, with a second-order penalty. A fairly large amount of smoothing (λ = 100) is indicated by AIC; the fitted density is nearly exponential. In fact, if one considers only the domain from 0 to 500, then λ can become arbitrarily large and a pure exponential density results. However, if we choose the domain from -200 to 800 we get a quite different fit, as Figure 8 shows. By extending the domain we force the estimated density also to cover negative values of x, where there are no data (which means zero counts). Consequently, it has to drop toward zero, missing the peak for small positive values. The optimal value of λ now is 0.01 and a much more wiggly fit results, with an appreciably higher value of AIC. This nicely illustrates how, with a proper choice of the domain, the P-spline density smoother can be free from the boundary effects that give so much trouble with kernel smoothers.
+
+### 9. DISCUSSION
+
+We believe that P-splines come near to being the ideal smoother. With their grounding in classic regression methods and generalized linear models, their properties are easy to verify and understand. Moments of the data are conserved and the limiting behavior with a strong penalty is well defined and gives a connection to polynomial models. Boundary effects do not occur if the domain of the data is properly specified.
+
+The necessary computations, including crossvalidation, are comparable in size to those for a medium sized regression problem. The regression context makes it natural to extend P-splines to semiparametric models, in which additional explanatory variables occur. The computed fit is described compactly by the coefficients of the Bsplines.
+
+
+<!-- p:11 -->
+
+
+FIG. 6. Density smoothing of durations of Old Faithful geyser eruptions: density histogram and fitted densities; thin line, third-order penalty with λ = 0.001(AIC = 84.05); thick line, optimal λ = 0.05, with AIC = 80.17; B-splines of degree 3 with 20 intervals on the domain from 1 to 6.
+
+150-
+
+120-
+
+-06
+
+-09
+
+30-
+
+0
+
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+FIG. 7. Density smoothing of suicide data: positive domain (0–1,000); B-splines of degree 3, penalty of order 2, 20 intervals, λ = 100, AIC = 69.9.
+
+1.2-
+
+1.0-
+
+0.8-
+
+0.6
+
+0.4-
+
+0.2
+
+0.0-
+
+0
+
+100
+
+200
+
+300
+
+400
+
+500
+
+600
+
+700
+
+800
+
+900
+
+1000
+
+FIG. 8. Density smoothing of suicide data: the domain includes negative values (−200–800); B-splines of degree 3, penalty of order 2, 20 intervals, λ = 0.01, AIC = 83.6.
+
+1.27
+
+1.0-
+
+0.8-
+
+0.6-
+
+0.4-
+
+0.2
+
+0.0
+
+-200
+
+-100
+
+0
+
+100
+
+200
+
+300
+
+400
+
+500
+
+600
+
+700
+
+800
+
+P-splines can be very useful in (generalized) additive models. For each dimension a B-spline basis and a penalty are introduced. With n knots in each base and d dimensions, a system of nd-by-nd (weighted) regression equations results. Backfitting, the iterative smoothing for each separate dimension, is eliminated. We have reported on this application elsewhere (Marx and Eilers, 1994, 1996).
+
+Penalized likelihood is a subject with a growing popularity. We already mentioned the work of O'Sullivan. In the book by Green and Silverman (1994), many applications and references can be found. Almost exclusively, penalties are defined in terms of the square of the second derivative of the fitted curve. Generalizations to penalties on higher derivatives have been mentioned in the literature, but to our knowledge, practical applications are very rare. The shift from the continuous penalty to the discrete penalty in terms of the coefficents of the B-splines is not spectacular in itself. But we have seen that it leads to very useful results, while giving a mechanical way to work with higher-order penalties. The modelling of binomial dose-response in Section 7 showed the usefulness of higher-order penalties.
+
+
+<!-- p:12 -->
+
+
+A remarkable property of AIC is that it is easier to compute it for certain nonnormal distributions, like the Poisson and binomial, than for normal distributions. This is so because for these distributions the relationship between mean and variance is known. We should warn the reader that AIC may lead to undersmoothing when the data are overdispersed, since the assumed variance of the data may then be too low. We are presently investigating smoothing with P-splines and overdispersed distributions like the negative binomial and the beta-binomial. Also ideas of quasilikelihood will be incorporated.
+
+We have paid extra attention to density smoothing, because we feel that in this area the advantages of P-splines really shine. Traditionally, kernel smoothers have been popular in this field, but they inflate the variance and have troubles with boundaries of data domains; their computation is expensive, cross-validation even more so, and one cannot report an estimated density in a compact way.
+
+Possibly kernel smoothers still have advantages in two or more dimensions, but it seems that P-splines can also be used for two-dimensional smoothing with Kronecker products of B-splines. With a grid of, say, 10 by 10 knots and a third-order penalty, a system of 130 equations results, with half bandwidth of approximately 30. This can easily be handled on a personal computer. The automatic construction of the equations will be more difficult than in one dimension. First experiments with this approach look promising; we will report on them in due time.
+
+We have not touched on many obvious and interesting extensions to P-splines. Robustness can be obtained with any nonlinear reweighting scheme that can be used with regression models. Circular domains can be handled by wrapping the B-splines and the penalty around the origin. The penalty can be extended with weights, to give a fit with nonconstant stiffness. It this way it will be easy to specify a varying stiffness, but it is quite another matter to estimate the weights from the data.
+
+Finally, we like to remark that P-splines form a bridge between the purely discrete smoothing problem, as set forth originally by Whittaker (1923) and continuous smoothing. B-splines of degree zero are constant on an interval between two knots, and zero elsewhere; they have no overlap. Thus the fitted function gives for each interval the value of the coefficient of the corresponding B-spline.
+
+## APPENDIX: COMPUTATIONAL DETAILS
+
+Here we look at the computation of B-splines and derivatives of the penalty. We use S-PLUS and MATLAB as example languages because of their widespread use. Also we give some impressions of the speed of the computations.
+
+In the linear case we have to solve the system of equations
+
+$$\begin{array} { c c } \ t o & ( 4 3 ) \\ \ e d , & ( B ^ { T } B + \lambda D _ { k } ^ { T } D _ { k } ) \hat { a } = B ^ { T } y \end{array}$$
+
+and to compute |y − B|2 and tr{(BT B + λDT D)−1 . BTB}. We need a function to compute B, the Bspline base matrix. In S-PLUS, this is a simple matter, as there is a built-in function spline. des() that computes (derivatives) of B-splines. We only have to construct the sequence of knots. Let us assume that x1 is the left of the x-domain, xr the right, and that there are ndx intervals on that domain. To compute B for a given vector x, based on B-splines of degree bdeg, we can use the following function:
+
+```
+open-
+nnot         bspline <- function(x, xl, xr, ndx, bdeg) {
+         dx <- (xr - xl) / ndx
+ages         knots <- seq(xl - bdeg * dx, xr + bdeg * dx, by = dx)
+that          B <- spline.des(knots, x, bdeg + 1 , 0 * x) $design
+onal         B
+mes.          }
+order
+
+```
+
+Note that S-PLUS works with the order of Bsplines, following the original definition of de Boor (1977): the order is the degree plus 1.
+
+The matrix Dk can also be computed easily. The an nt   s  i  ttr tii diag(n) and there is a built-in function diff() to difference it. With a short loop we arrive at Dk. The computations thus are given as (with pord the order of the penalty) follows:
+
+```
+real
+ 	B <- bspline(x, xl, xr, ndx, bdeg)
+ 	D <- diag(ncol(B))
+ 	plan
+    for (k in 1:portd) D <- diff(D)
+    a <- solve(t(B) %%% B + lambda * t(D) %% D ,
+              t(B) %% y)
+
+```
+
+
+<!-- p:13 -->
+
+
+```
+yhat <- B %*% a
+    s <- sum((y - yhat)^2)
+    Q <- solve(t(B) %% B + lambda * t(D) %*% D)
+                # matrix inversion
+    t <- sum(diag(Q %% (t(B) %% B)))
+    gcv <- s / (nrow(B) - t)^2
+```
+
+There is room to optimize the computations above by storing and reusing intermediate results.
+
+MATLAB has no built-in function to compute Bsplines, so we have to program the recursions ourself. We start with the recurrence relation that is given in de Boor (1978, Chapter 10):
+
+$$\frac { B _ { j , \, k } ( x ) } { t _ { j + k } - t _ { j } } & = \frac { x - t _ { j } } { t _ { j + k - 1 } - t _ { j } } \frac { B _ { j , \, k - 1 } ( x ) } { t _ { j + k - 1 } - t _ { j } } \\ & + \frac { t _ { j _ { k } } - x } { t _ { j + k } - t _ { j } } \frac { B _ { j + 1 , \, k - 1 } ( x ) } { t _ { j + k } - t _ { j + 1 } } , \\$$
+
+where B j, k(x) in de Boor's notation is our B j(x; k − 1) (de Boor uses order 1 for the constant B-splines, whereas we use degree 0). The use of a uniform grid of knots at distances dx = (xmax − xmin)/n' greatly simplifies the formulas. If we define p = (x − xmin)/dx, we arrive at the following recurrence formula:
+
+$$B _ { j } ( x ; k ) = \frac { k + p - j + 1 } { k } B _ { j - 1 } ( x ; k - 1 ) \\ + \frac { j - p } { k } B _ { j } ( x ; k - 1 ) .$$
+
+The recursion can be started with k = 0, because Bj(x; 0) = 1 when (j − 1)dx &lt; x − xmin ≤ jd, and zero for all other j. Also, B j(x; k) = 0 for j &lt; 0 and j &gt; n. This leads to the following function:
+
+```
+j > n. This leads to the following function:
+
+      function B = bspline(x, xl, xr, ndx, bdeg)
+        dx = (xr - xl) / ndx;
+        t = xl + dx * [-bdeg:ndx-1];
+        T = (0 * x + 1) * t;
+        X = x * (0 * t + 1);
+        P = (X - T) / dx;
+        B = (T <= X) & (X < (T + dx)) ;
+        r = [2:length(t) 1];
+        for k = 1:bdeg
+          B = (P .* B + (k + 1 - P) . * B(:, r)) / k;
+        end;
+
+        The computation of D_k is a little simpler, because
+```
+
+The computation of Dk is a little simpler, because there is the built-in function diff() that accepts a parameter for the order of the difference. Consequently, in MATLAB the computations look like the following:
+
+```
+following:'
+
+            B = bspline(x, xl, xr, ndx, bdeg);
+            [m n] = size(B);
+            D = diff(eye(n), portd);
+            a = (B' * B + lambda * D' * D) \ (B' * y) ;
+            yhat = B * a;
+            Q = inv(B' * B + lambda * D' * D) ;
+            s = sum((y - yhat) .^ 2)
+            t = sum(diag(Q * (B' * B))) );
+        gcv = s / (m - t)^2;
+        is
+            The formulas for the penalized likelihood equal
+```
+
+The formulas for the penalized likelihood equations describe how to incorporate the penalty when one has access to all the individual steps of the regression computations. If this is not the case, data augmentation can help. Instead of working with the matrices B of B-splines regressors and Dk of the -pen     s odd ucts, augmented data can be constructed as follows:
+
+$$\bar { 5 } , \quad ( 4 6 ) \, \int _ { 0 } ^ { y } \, \left \{ \begin{array} { c } y \\ 0 \end{array} \right \} \approx \left \lceil \begin{array} { c } B \\ \sqrt { \lambda } D _ { y } \end{array} \right \rceil ,$$
+
+where ≈ indicates regression of the left-hand vector on the right-hand matrix. For linear problems, it is enough to do this only one time. In generalized linear models, data augmentation has to be done anew in each of the iterations with weighted linear regressions.
+
+We tested the above program fragments on a PC with 75-MHz Pentium processor, with S-PLUS 3.3 and MATLAB 4.2, both operating under Windows for Workgroups. The data were those from the motorcycle helmet experiment, as presented in Figure 2. There are 133 data points and we used 20 intervals on the x-domain. S-PLUS took about 0.9 second, Matlab about 0.2 second (for one value of λ). These times can be reduced to 0.6 second and 0.1 second, respectively, by storing and reusing some intermediate results (BT B and the inverse of BT B + λDT Dk).
+
+Functions for generalized linear estimation can be obtained from the first author. We are preparing a submission to Statlib.
+
+####### ACKNOWLEDGMENTS
+
+Our initial research, as presented in Eilers and Marx (1992), did not point out that O'Sullivan's work (O'Sullivan, 1986, 1988) implicitly used a modified second-order difference penalty. We are grateful to Professor Wahba for drawing attention to this connection and our oversight. We also thank the anonymous referee for many suggestions to improve our presentation.
+
+
+<!-- p:14 -->
+
+
+####### REFERENCES
+
+- AsHFORD, R. and WALKER, P. J. (1972). Quantal response analysis for a mixture of populations. Biometrics 28 981–988.
+- BISHOP, Y. M. M., FIENBERG, S. E. and HOLLAND, P. W. (1975). Discrete Multivariate Analysis: Theory and Practice. MIT Press.
+- CLEVELAND, W. S. (1979). Robust locally weighted regression and smoothing scatter plots. J. Amer. Statist. Assoc. 74 829–836.
+- Cox, M. G. (1981). Practical spline approximation. In Topics in Numerical Analysis (P. R. Turner, ed.). Springer, Berlin.
+- DE BoOR, C. (1977). Package for calculating with B-splines. SIAM J. Numer. Anal. 14 441–472.
+- DE BoOR, C. (1978). A Practical Guide to Splines. Springer, Berlin.
+- DIERCKx, P. (1993). Curve and Surface Fitting with Splines. Clarendon, Oxford.
+- DIGGLE P. and MARRON J. S. (1988). Equivalence of smoothing parameter selectors in density and intensity estimation. J. Amer. Statist. Assoc. 83 793–800.
+- EILERs, P. H. C. (1990). Smoothing and interpolation with generalized linear models. Quaderni di Statistica e Matematica Applicata alle Scienze Economico-Sociali 12 21–32.
+- EILERS, P. H. C. (1991a). Penalized regression in action: estimating pollution roses from daily averages. Environmetrics 2 25-48.
+- EILERS, P. H. C. (1991b). Nonparametric density estimation with grouped observations. Statist. Neerlandica 45 255–270.
+- EILERS, P. H. C. (1995). Indirect observations, composite link models and penalized likelihood. In Statistical Modelling (G. U. H. Seeber et al., eds.). Springer, New York.
+- EILERS, P. H. C. and MARX, B. D. (1992). Generalized linear models with P-splines. In Advances in GLIM and Statistical Modelling (L. Fahrmeir et al., eds.). Springer, New York.
+- EUBANK, R. L. (1988). Spline Smoothing and Nonparametric Regression. Dekker, New York.
+- FRIEDMAN, J. and SILVERMAN, B. W. (1989). Flexible parsimonious smoothing and additive modeling (with discussion). Technometrics 31 3–39.
+- GREEN, P. J. and SILVERMAN, B. W. (1994). Nonparametric Regression and Generalized Linear Models. Chapman and Hall, London.
+- GREEN, P. J. and YANDELL, B. S. (1985). Semi-parametric generalized linear models. In Generalized Linear Models (B. Gilchrist et al., eds.). Springer, New York.
+
+### Comment
+
+####### S-T. Chiu
+
+Authors Paul Eilers and Brian Marx provide a very interesting approach to nonparametric curve fitting. They give a brief but very concise review of
+
+S-T. Chiu is with the Department of Statistics, Colorado State University, Fort Collins, Colorado 80523-0001.
+
+- HAND, D. J., DALY, F., LUNN, A. D., McCONWAY, K. J. and OsTROwSKI, E. (1994). A Handbook of Small Data Sets. Chapman and Hall, London.
+- HÄRDLE, W. (1990). Applied Nonparametric Regression. Cambridge Univ. Press.
+- HASTIE, T. and TIBSHIRANI, R. (1990). Generalized Additive Models. Chapman and Hall, London.
+- KoOPERBERG, C. and STONE, C. J. (1991). A study of logspline density estimation. Comput. Statist. Data Anal. 12 327–347.
+- KoOPERBERG, C. and STONE, C. J. (1992). Logspline density estimation for censored data. J. Comput. Graph. Statist. 1 301– 328.
+- MARRON, J. S. and RUPPERT, D. (1994). Transformations to reduce boundary bias in kernel density estimation. J. Roy. Statist. Soc. Ser. B 56 653–671.
+- MARX, B. D. and EILERS, P. H. C. (1994). Direct generalized additive modelling with penalized likelihood. Paper presented at the 9th Workshop on Statistical Modelling, Exeter, 1994.
+- MARX, B. D. and EILERS, P. H. C. (1996). Direct generalized additive modelling with penalized likelihood. Unpublished manuscript.
+- McCULLAGH, P. and NELDER, J. A. (1989). Generalized Linear Models, 2nd ed. Chapman and Hall, London.
+- O'SULLIVAN, F. (1986). A statistical perspective on ill-posed inverse problems (with discussion). Statist. Sci. 1 505–527.
+- O'SULLIVAN, F. (1988). Fast computation of fully automated logdensity and log-hazard estimators. SIAM J. Sci. Statist. Comput. 9 363–379.
+- REINSCH, C. (1967). Smoothing by spline functions. Numer. Math. 10 177–183.
+- SAKAMOTO, Y., ISHIGURO, M. and KITAGAWA, G. (1986). Akaike Information Criterion Statistics. Reidel, Dordrecht.
+- ScoTT, D. W. (1992). Multivariate Density Estimation: Theory, Practice, and Visualization. Wiley, New York.
+- SILVERMAN, B. W. (1985). Some aspects of the spline smoothing approach to nonparametric regression curve fitting (with discussion). J. Roy. Statist. Soc. Ser. B 47 1–52.
+- SILVERMAN, B. W. (1986). Density Estimation for Statistics and Data Analysis. Chapman and Hall, London.
+- WAHBA, G. (1990). Spline Models for Observational Data. SIAM, Philadelphia.
+- WAND, M. P. and JoNES, M. C. (1993). Kernel Smoothing. Chapman and Hall, London.
+- WHITTAKER, E. T. (1923). On a new method of graduation. Proc. Edinburgh Math. Soc. 41 63–75.
+
+B-splines. I also enjoyed reading the part where the authors applied their procedure to some examples. As shown in the paper, the approach has several merits which deserve to be studied in more detail.
+
+Similar to any nonparametric smoother, the proposed procedure needs a smoothing parameter λ to control the smoothness of the fitting curve. My comments mainly concern the selection of the smoothing parameter.
+
+
+<!-- p:15 -->
+
+
+By using the Fourier transform, (1) and (2) could be written, respectively, as
+
+It is well known that the classical selectors such as AIC, GCV, Mallows's C p and so on do not give a satisfactory result. For the regression case, more details about the defects can be found in Rice (1984) and Chiu (1991a). Scott and Terrell (1987) and Chiu (1991b) discuss the case of density estimation. The classical selectors have a large sample variation and a tendency to select a small smoothing parameter, thus producing a very rough curve estimate. It is natural to expect that they have a similar problem when applied to selecting the smoothing parameter for P-splines.
+
+Several procedures have been suggested to remedy the defects of the classical procedures. Chiu (1996) provides a survey of some of these newer selectors for density estimation. For the regression case, some procedures are suggested in Chiu (1991a), Hall and Johnstone (1992) and Hall, Marron and Park (1992).
+
+In the following, I provide a brief review to explain the defects and some remedy to the classical selectors for kernel regression estimate. Let us assume the simplest model of a circular design with equally spaced design points. yt = μ(xt) + εt, where εt are i.i.d. noise. For the kernel estimate ββ with a bandwidth β, we often use the mean of sum of squared errors
+
+$$R ( \beta ) = E \left [ \sum \{ \hat { \mu } _ { \beta } ( x _ { t } ) - \mu ( x _ { j } ) \} ^ { 2 } \right ]$$
+
+to measure the closeness between β(x) and μ(x).
+
+The goal of bandwidth selection is to select the optimal bandwidth which minimizes R(β). Since in practice μ is unknown, we have to estimate R(β) and use the minimizer of the estimated R(λ) as an estimate of the optimal bandwidth. For example, Mallows's C p has the form
+
+$$\hat { R } ( \beta ) = R S S ( \beta ) - T \sigma ^ { 2 } + 2 \sigma ^ { 2 } w ( 0 ) / \beta .$$
+
+Here w(x) is the kernel and σ2 is the error variance. Other classical procedures such as AIC and GCV have a similar form and were shown to be asymptotically equivalent in Rice (1984). All of these procedures rely on the residual sum of squares RSS(β).
+
+Mallows (1973) proposed the procedure based on the observation that
+
+$$R ( \beta ) = E \{ R S S ( \beta ) \} - T \sigma ^ { 2 } + 2 \sigma ^ { 2 } w ( 0 ) / \beta .$$
+
+As we will explain later, the main problem here is that RSS(β) is not a good estimate of its expected value.
+
+$$\text {be written, respectively, as} \\ \text {such} \\ \text {give} & & R ( \beta ) = 4 \pi \sum _ { j = 1 } ^ { N } I _ { S } ( \lambda _ { j } ) \{ 1 - W _ { \beta } ( \lambda _ { j } ) \} ^ { 2 } \\ \text {hui} & & + \sigma ^ { 2 } \sum _ { j = 1 } ^ { N } W _ { \beta } ( \lambda ) ^ { 2 } + \sigma ^ { 2 } \\ \text {and} & &$$
+
+$$\begin{array} { r l } { a n d } & a n d } \\ { \tilde { t } e r , } \\ { I t i s } & \hat { R } ( \beta ) = 4 \pi \sum _ { j = 1 } ^ { N } \left \{ I _ { Y } ( \lambda _ { j } ) - \frac { \sigma ^ { 2 } } { 2 \pi } \right \} \{ 1 - W _ { \beta } ( \lambda _ { j } ) \} ^ { 2 } } \end{array}$$
+
+$$r , & & \text {and} \\ \text {is} & & \hat { R } ( \beta ) = 4 \pi \sum _ { j = 1 } ^ { N } \left \{ I _ { Y } ( \lambda _ { j } ) - \frac { \sigma ^ { 2 } } { 2 \pi } \right \} \{ 1 - W _ { \Gamma } \\ & & + \sigma ^ { 2 } \sum _ { j = 1 } ^ { N } W _ { \beta } ( \lambda ) ^ { 2 } + \sigma ^ { 2 } , \\ \text {ui} & & \text {where } I _ { Y } \text { and } I _ { S } \text { are the periodomorphism of } Y$$
+
+where Iγ and Is are the periodograms of Yt and the signal St = μ(t/T), respectively, and λj = 2π j/T, j = 1, . . . , N = [T/2]. Also, W β(λ) is the transfer function of w{t/(βT)}/(βT).
+
+Comparing (3) and (4), we see that Ř attempts to use IY(λ)−σ2/(2π) to estimate Is(λ). The difficulty is that at high frequency, Iy is dominated by the noise and thus does not give a good estimate of Is.
+
+Chiu (1991a) suggested truncating the highfrequency portion when we estimate R(β),
+
+$$\text {where} \quad & \text { frequently portion when we estimate } R ( \beta ) , \\ \text {with} \quad & \quad & \tilde { R } ( \beta ) = 4 \pi \sum _ { j = 1 } ^ { J } \left \{ I _ { Y } ( \lambda _ { j } ) - \frac { \sigma ^ { 2 } } { 2 \pi } \right \} \{ 1 - W _ { \beta } ( \lambda _ { j } ) \} ^ { 2 } \\ & \quad & + \sigma ^ { 2 } \sum _ { j = 1 } ^ { N } W _ { \beta } ( \lambda ) ^ { 2 } + \sigma ^ { 2 } . \\ \text {x} \cdot \text { } & \quad & \\ & \quad & \text {Here } J \text { is selected in such a way that there is no sig-}$$
+
+Here J is selected in such a way that there is no significant Is beyond frequency λJ. The selector Ř(β) has a much better performance than the classical ones. Hall, Marron and Park (1992) proposed another procedure which downweights the contribution from the high-frequency part.
+
+It is clear that the bases of the kernel regression are the sinusoid waves. The primary reason of success of criterion (5) is that most information about μ concentrates at low frequency. In other words, we just need quite a few bases to approximate the true curve well.
+
+However, since each basis of the B-spline is very local to a certain interval, we cannot use just a few bases to approximate the curve over the whole region. In my opinion, this could be a big obstacle to the understanding and improvement of the classical smoothing parameter selectors.
+
+####### REFERENCES
+
+CHIU, S.-T. (1991a). Some stabilized bandwidth selectors for nonparametric regression. Ann. Statist. 19 1528–1546.
+
+
+<!-- p:16 -->
+
+
+- CHIU, S.-T. (1991b). Bandwidth selection for kernel density estimation. Ann. Statist. 19 1883–1905.
+
+MALLOws, C. (1973). Some comments on C p. Technometrics 15 661-675.
+
+CHIU, S.-T. (1996). A comparative review of bandwidth selection for kernel density estimation. Statist. Sinica 6 129–145.
+
+RICE, J. (1984). Bandwidth choice for nonparametric regression. Ann. Statist. 12 1215–1230.
+
+HALL, P., MARRON, J. S. and PARK, B. U. (1992). Smoothed crossvalidation. Probab. Theory Related Fields 92 1–20.
+
+HALL, P. and JoHNSTONE, I. (1992). Empirical functionals and efficient smoothing parameter selection. J. Roy. Statist. Soc. Ser. B 54 519–521.
+
+SCOTT, D. W. and TERRELL, G. R. (1987). Biased and unbiased cross-validation in density estimation. J. Amer. Statist. Assoc. 82 1131–1146.
+
+### Comment
+
+###### Douglas Nychka and David Cummins
+
+One strength of the authors's presentation is the simple ridge regression formulas that result for the estimator. We would like to point out a decomposition using a different set of basis functions that helps to interpret this smoother. This alternative basis, derived from B-splines, facilitates the computation of the GCV function and confidence bands for the estimated curve.
+
+To simplify this discussion assume that W = I so that the hat matrix is
+
+$$H = B ( B ^ { T } B + \lambda D ^ { T } D ) ^ { - 1 } B ^ { T } = G ( I + \lambda \Gamma ) ^ { - 1 } G ^ { T } ,$$
+
+G = BQ−1/2U, Q2 = BT B U, Γ = diag(γ) and U is UΓUT. The columns of G can be identified with a new set of functions known as the DemmlerReinsch (DR) basis. Specifically these are piecewise polynomial functions, {ψν} so that the elements of G satisfy ψν(xi) = Giv. Besides having useful orthogonality properties the DR basis can be ordered by frequency and larger values of γν will exhibit more oscillations (in fact ν – 1 zero crossings). Figure 1(a) plots several of the basis functions for m = 133 equally spaced x's and 20 equally spaced interior knots. Figure 1(b) illustrates the expected polynomial increase in the size of γν as a function of ν.
+
+The Demmler-Reinsch basis provides an informative interpretation of the spline estimate. Let f de-
+
+Douglas Nychka is Professor of Statistics and David Cummins is with the Department of Statistics, North Carolina State University, Raleigh, North Carolina 27695-8203.
+
+note the P-spline and let α = GT y denote the least squares coefficients from regressing y on the DR basis functions:
+
+$$\hat { f } ( x _ { i } ) & = [ H y ] _ { i } = [ G ( I + \lambda \Gamma ) ^ { - 1 } G ^ { T } y ] _ { i } \\ & = \sum _ { \nu = 1 } ^ { m } \psi _ { \nu } ( x _ { i } ) \frac { \alpha _ { \nu } } { 1 + \lambda \gamma _ { \nu } } .$$
+
+Note that the smoother is just a linear combination of the DR basis functions using coefficients that are downweighted (or tapered) by the factor 1/(1 + λγν) from the least squares estimates. Because of the relationship between γν and ψν (see Figure 1), the basis functions that represent higher-frequency structure will have coefficients that are more severely downweighted. In this way the smoother is a low-pass filter, tending to preserve low-frequency structure and downweighting higherfrequency terms. The residual sum of squares and the trace of H can be computed rapidly (order n) using the DR representation. Thus the GCV function can also be evaluated in order n operations for a given value of λ.
+
+Another application of the DR form is in computing a confidence band. Consider a set of candidate functions that contain the true function with the correct level of confidence. The confidence band is then the envelope implied by considering all functions in this set. For example, let f denote the function estimate and for C1, C2 &gt; 0 let
+
+$$\mathcal { D } a v i d \quad & \mathcal { D } = \left \{ h \colon h \text { is a } B \text {-spline with coefficients} \, b , \\ N o r t h \quad & \sum _ { i = 1 } ^ { n } ( \hat { f } ( x _ { i } ) - h ( x _ { i } ) ) ^ { 2 } \leq C _ { 1 } \text { and } b ^ { T } D ^ { T } D \, b \leq C _ { 2 } \right \}$$
+
+
+<!-- p:17 -->
+
+
+FIG. 1. Illustration of several Demmler-Reinsch basis functions and the associated eigenvalues for 20 equally spaced knots, 133 equally spaced observations and second divided differences (k = 2): the upper plot (a) is {ψν} for ν = (3, 5, 10, 15); the numerals identify the order of these basis functions and in the second plot (b) identify the eigenvalues for these functions.
+
+###### Some Demmler Reinsch basis functions
+
+01
+
+00
+
+-0.1
+
+10
+
+0.0
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+1.0
+
+(a)
+
+Eigenvalues from DR decomposition
+
+10.000
+
+.15
+
+eigenvalue
+
+10
+
+0.100
+
+5
+
+0.001
+
+3
+
+5
+
+10
+
+index
+
+(b)
+
+The constants C1 and C2 are determined so that P{f ∈ ∅} equals the desired confidence level. The upper and lower boundaries of the confidence band are then
+
+$$U ( x ) = \max \{ h ( x ) \colon h \in \mathcal { B } \}$$
+
+and
+
+$$L ( x ) = \min \{ h ( x ) \colon h \in \mathcal { B } \}$$
+
+In practice we work with the coefficients and thus the computation of U and L at each x is a minimization problem with two quadratic constraints. Using the DR basis reduces both constraints to quadratic forms with diagonal matrices and thus both are computable in order n operations. Moreover this strategy does not depend on the roughness penalty being divided differences but will work for any nonnegative matrix used as a penalty (e.g., thin plate splines). Currently we are investigating the choice of C1 and C2 based on the GCV estimate of f.
+
+####### ACKNOWLEDGMENT
+
+This work was supported by NSF Grant DMS-9217866.
+
+
+<!-- p:18 -->
+
+
+### Comment
+
+##### Chong Gu
+
+I would like to begin by congratulating the authors Eilers and Marx for a clear exposition of an interesting variant of penalized regression splines. My comments center around three questions: Are P-splines really better? What does optimal smoothing stand for? And what does the future hold for nonparametric function estimation?
+
+####### ARE P-SPLINES REALLY BETTER?
+
+P-splines can certainly be as useful as other variants of penalized regression splines, but I am not sure that they are really advantageous over the others. It is true that with huge sample sizes, one may choose n much smaller than m to save on computation without sacrificing performance, but other variants of regression splines also share the same advantage. The mechanical handling of the difference penalty is certainly very interesting computationally, but as far as the end users are concerned, I do not see why the discrete penalties are necessarily advantageous over the continuous ones. Higherorder derivative penalties are certainly as feasible as discrete penalties computationally, albeit more difficult to implement, but the difference is irrelevant to the end users whose main interest is the interface.
+
+The users may be more interested in what the program computes rather than how it computes, however, and in this respect, I only see P-splines lose out to penalized regression splines with the usual derivative penalties that everyone can understand. Being told that B-splines provide a good basis for function approximation, the users may simply ignore whatever other properties B-splines have and still have a clear picture about what they are getting from derivative penalties or, for that matter, from Whittaker's discrete penalties which use the differences of adjacent function values. With the P-splines, however, the intuition is unfortunately taken away from the users, and even with a thorough knowledge of all the properties of Bsplines, I am not sure one can easily perceive what
+
+Chong Gu is Assistant Professor, Department of Statistics, Purdue University, West Lafayette, Indiana 47907.
+
+the penalty is really doing, other than that it is reducing the effective dimension in some not so easily comprehensible way.
+
+Penalized smoothers with quadratic penalties are known to be equivalent to Bayes estimates with Gaussian priors. When Q = Dk Dk is of full rank, the corresponding prior for the B-spline coefficients α has mean 0 and covariance proportional to Q−1. When Q is rank-deficient, the prior has a "fixed effect" component diffuse in the null space of Q and a "random effect" component with mean 0 and covariance proportional to Q+, the Moore-Penrose inverse of Q. From this perspective, P-splines differ from other variants of penalized regression splines only in the specification of Q.
+
+####### WHAT DOES OPTIMAL SMOOTHING STAND FOR?
+
+One probably can never overstate the importance
+
+of smoothing parameter selection for any successful practical application of any smoothing method. AIC and cross-validation are among the most accepted (and successful) working criteria for model selection, yet their optimalities are established, theoretically or empirically, only for specific problem settings under appropriate conditions. Naive adaptations of these criteria in new problem settings do not necessarily deliver fits that are nearly optimal. Specifically, I am somewhat worried about the "optimality" of the naive adaptations of these criteria proclaimed in Section 6. First, it is not clear in what sense these criteria are "optimal" in the problem settings to which they are applied; second, there is no empirical (or theoretical) evidence illustrating the presumed "optimality." AIC or cross-validation may deliver nearly optimal fits, but they surely do not by themselves define the notion of optimality. My worries stem from previous empirical experiments with smoothing parameter selection by myself and by others, especially in non-Gaussian regression problems (commonly referred to as generalized linear models). Using Kullback-Leibler discrepancy or its symmetrized version to define optimality, it has been found that a naive adaptation of GCV in non-Gaussian regression, which appears similar to what the authors suggest in Section 7, may return anything but nearly optimal fits.
+
+See, for example, Cox and Chang (1990), Gu (1992)
+
+
+<!-- p:19 -->
+
+
+and Xiang and Wahba (1996). For the density estimation problem in Section 8, I could not find the definition of the H matrix to understand the AIC proposed, but whatever it is, it should be subject to the same scrutiny before being recommended as "optimal."
+
+In ordinary Gaussian regression, the optimality of GCV is well established in the literature. For the AIC score presented in (27), however, I would like some empirical evidence to be convinced of its optimality. The skepticism is partly due to some empirical evidence suggesting that the trace of H may not be a consistent characterization of the effective dimension of the model. Such evidence can be found in Gu (1996), available online at http:// www.stat.lsa.umich.edu/~chong/ps/modl.ps.
+
+####### WHAT DOES THE FUTURE HOLD FOR FUNCTION ESTIMATION?
+
+In response to Statistical Science's desideration for speculations regarding future research directions, I would like to take this opportunity to offer some of my thoughts.
+
+It has long been said that all smoothing methods perform similarly in one dimension, provided that the smoothing parameter selection is done properly, yet time and again new and not so new methods keep being invented. The real challenge, however, seems to lie in multivariate problems. Amid the curse of dimensionality and potential structures associated with multivariate problems, the choice of methods can make a real difference in multidimension, in the ease of computation and smoothing parameter selection, in the convenience of incorporation of structures, and so on. Among methods with the most potential are the adaptive regression splines developed by Friedman, Stone and coworkers, and the smoothing splines developed by the Wisconsin spline school lead by Wahba. The penalized regression spline approach, however, seems somewhat handicapped by the lack of effective basis, say in dimensions beyond two or three.
+
+More challenging still, an important line of research that has been largely neglected is inference. What one usually gets from the function estimation literature are point estimates possibly with asymptotic convergence rates, and intuitive smoothing parameter selectors not always accompanied by justifications. Besides a few entries based on the Bayes model of smoothing splines by Wahba (1983), Cox, Koh, Wahba and Yandell (1988), Barry (1993) and some follow-ups, practical procedures that offer interval estimates, test of hypothesis, and so on, are largely missing in the literature. To guard against the danger of overinterpreting data by the use of nonparametric methods, such inferential tools should be a top priority in future research. Under a Bayes model where the target function is treated as a realization of a stochastic process, the development may proceed within the conventional inferential framework. Under the traditional setting where the target function is considered fixed, however, one may have to turn his back on the conventional Neyman-Pearson thinking before he can call any useful inferential tools non-ad-hoc.
+
+####### REFERENCES
+
+BARRY, D. (1993). Testing for additivity of a regression function. Ann. Statist. 21 235–254.
+
+COX, D. D., KOH, E., WAHBA, G. and YANDELL, B. S. (1988). Testing the (parametric) null model hypothesis in (semiparametric) partial and generalized spline models. Ann. Statist. 16 113-119.
+
+Cox, D. D. and CHANG, Y.-F. (1990). Iterated state space algorithms and cross validation for generalized smoothing splines. Technical Report 49, Dept. Statistics, Univ. Illinois.
+
+GU, C. (1992). Cross validating non Gaussian data. Journal of Computational and Graphical Statistics 1 169–179.
+
+GU, C. (1996). Model indexing and smoothing parameter selection in nonparametric function estimation. Technical Report 93-55 (rev.), Dept. Statistics, Purdue Univ.
+
+WAHBA, G. (1983). Bayesian "confidence intervals" for the crossvalidated smoothing spline. J. Roy. Statist. Soc. Ser. B 45 133-150.
+
+XIANG, D. and WAHBA, G. (1996). A generalized approximate cross validation for smoothing splines with non-Gaussian date. Statist. Sinica. To appear.
+
+
+<!-- p:20 -->
+
+
+### Comment
+
+#### M. C. Jones
+
+Eilers and Marx present a clear and interesting account of their P-spline smoothing methodology. Clearly, P-splines constitute another respectable approach to smoothing. However, their good properties appear to be, broadly, on a par with those of various other approaches; the method is no nearer to, or further from, "being the ideal smoother" than others.
+
+"P-splines have no boundary effects, they are a straightforward extension of (generalized) linear regression models, conserve moments (means, variances) of the data, and have polynomial curve fits as limits." Except for the third point, the same claims can be made of spline smoothing (Green and Silverman, 1994) or local polynomial fitting (Fan and Gijbels, 1996).
+
+Conservation of moments seems unimportant. In regression, I do not see the desirability. In density estimation, simple corrections of kernel density estimates for variance inflation exist, but make little difference away from the normal density (Jones, 1991). Indeed, getting means and variances right is a normality-based concept, so corrected kernel estimators act in a normal-driven semiparametric manner. Efron and Tibshirani (1996) propose more sophisticated moment conservation, but initial indications are that this is no better nor worse than alternative semiparametric density estimators (Hjort, 1996).
+
+"The computations, including those for crossvalidation, are relatively inexpensive and easily incorporated into standard software." Again, proponents of the two competing methods I have mentioned would claim the same for the first half of this and advocates of regression splines would claim the lot.
+
+The authors make no particularly novel contribution to automatic bandwidth selection. Crossvalidation and AIC are in a class of methods (e.g., Härdle, 1990, pages 166–167) which, while not being downright bad, allow scope for improvement.
+
+M.C. Jones is Reader in Statistical Science, Department of Statistics, The Open University, Walton Hall, Milton Keynes, MK7 6AA, United Kingdom.
+
+Calculating thesebandwidth selectors quickly is less important than developing better selectors. For local polynomials, improvements are offered (for normal errors) by Fan and Gijbels (1995) and Ruppert, Sheather and Wand (1995) and unpublished work extends these to more general situations.
+
+The comparison of (5) with (11) focusses on the small extra complexity of the latter. But which is more interpretable: a roughness penalty on a curve or on a series of coefficients? Changing the penalty in a smoothing spline setup allows different parametric limits (e.g., Ansley, Kohn and Wong, 1993); how can P-splines cope with this?
+
+-Aaes a-s  ae  oh es is the lack of straightforward (asymptotic) mean squared error-type results to indicate theoretical performance relative to kernel/local polynomial approaches for which such results are simply obtained and, within limitations, informative. I doubt whether P-splines can facilitate such developments (reason given below).
+
+It seems that P-splines have no particular attractiveness for multivariate applications. The examples are noteworthy only for looking like results obtainable by other methods too.
+
+The idea behind density estimation P-splines is to treat a fine binning as Poisson regression data. OK, but again equally applicable to other -pd     oa dly nomial smoothing. Simonoff (1996, Section 6.4) and Jones (1996) explain how such regression approaches to density estimation are discretized versions of certain "direct" local likelihood density estimation methods (Hjort and Jones, 1996; Loader, 1996). Binning is the major computational device of all kernel-type estimators (Fan and Marron, 1994). The local likelihood approach is already deeply understood theoretically.
+
+Comparison of P-splines's reasonable boundary performance with local polynomials's reasonable boundary performance is not yet available through theory or simulations.
+
+An interesting point mentioned in the paper is the apparent continuum between few-parameter parauri, i r r   i i techniques at the other, with many-parameter parametric models and semiparametric approaches in between: a dichotomy into parametric and nonparametric is inappropriate, and there is a huge grey area of overlap. The equivalent degrees-of-freedom ideas of Hastie and Tibshirani (1990) provide a fine (but possibly improveable?) attempt to give this continuum a scale. Theoretical development might be made more difficult by P-splines for reasons associated with quantifying the "nonparametricness" of intermediate methods.
+
+
+<!-- p:21 -->
+
+
+Finally, we come back to my main point. In an admirable "personal view of smoothing and statistics," Marron (1996) gives a list of smoothing methods and another of factors (to which I might add others) involved in the choice between methods. Marron says "All of the methods ... listed... have differing strengths and weaknesses in...divergent senses. None of these methods dominates any other in all of the senses. ...Since these factors are so different, almost any method can be 'best', simply by an appropriate personal weighting of the various factors involved." P-splines are a reasonable addition to Marron's first list, but have no special status with respect to his second.
+
+#### Comment
+
+###### Joachim Engel and Alois Kneip
+
+Paul Eilers and Brian Marx have provided us with a nice and flexible addition to the smoother's toolkit. Their proposed P-spline estimator can be considered as some compromise between the usual B-spline estimation and the smoothing spline approach. Different from many papers on B-splines, however, they do not consider the delicate problem of optimal knot selection. Instead, they propose to use a large number of equidistant knots. Smoothing is introduced by a roughness penalty on the difference of spline coefficients.
+
+P-spline estimation is equivalent to smoothing splines when choosing as many knots as there are
+
+Joachim Engel is with Wirtschaftstheorie II, Universität Bonn, and Department of Mathematics, PH Ludwigsburg, Germany. Alois Kneip is with Institut de Statistique, Université Catholique de Louvain, Belgium.
+
+####### REFERENCES
+
+ANSLEY, C. F., KoHN, R. and WoNG, C. M. (1993). Nonparametric spline regression with prior information. Biometrika 80 75– 88.
+
+EFRON, B. and TIBSHIRANI, R. (1996). Using specially designed exponential families for density estimation. Ann. Statist. 24 000-000.
+
+FAN, J. and GIJBELS, I. (1996). Local Polynomial Modelling and Its Applications. Chapman and Hall, London.
+
+FAN, J. and MARRON, J. S. (1994). Fast implementations of nonparametric curve estimators. J. Comput. Graph. Statist. 3 35–56.
+
+HJORT, N. L. (1996). Performance of Efron and Tibshirani's semiparametric denisty estimator. Unpublished manuscript.
+
+HJORT, N. L. and JoNES, M. C. (1996). Locally parametric nonparametric density estimation. Ann. Statist. 24 1619–1647.
+
+JoNES, M. C. (1991). On correcting for variance inflation in kernel density estimation. Comput. Statist. Data Anal. 11 3-15.
+
+JoNEs, M. C. (1996). On close relations of local likelihood density estimation. Unpublished manuscript.
+
+LoADER, C. R. (1996). Local likelihood density estimation. Ann. Statist. 24 1602–1618
+
+MARRON, J. S. (1996). A personal view of smoothing and statistics (with discussion). Comput. Statist. To appear.
+
+RUPPERT, D., SHEATHER, S. J. and WAND, M. P. (1995). An effective bandwidth selector for local least squares regression. J. Amer. Statist. Assoc. 90 1257–1270.
+
+SIMONOFF, J. S. (1996). Smoothing Methods in Statistics. Springer, New York.
+
+observations (n = m) with a knot placed at each data point. However, this is not the situation the authors have in mind. They propose to choose a large number n of knots, but n &lt; m. Such an approach is of considerable interest. We know from personal experience that nonparametric regression fits based on B-splines are often visually more appealing than, for example, kernel estimates. The same seems to be true for P-splines if a moderate number of knots is used. Furthermore, as the authors indicate, P-splines together with the difference penalty enjoy many important practical advantages and are flexible enough to be applied in different modelling situations, for example, in additive models or self-modelling regression where the backfitting algorithm is used.
+
+Nevertheless, we do not yet see much evidence u , s  u   toa being the ideal smoother." For example, local polynomial regression is known to exhibit no boundary problems (in first order) and to possess certain optimality and minimax properties (Fan, 1993). For density estimation Engel and Gasser (1995) show a minimax property of the fixed bandwith kernel method within a large class of estimators containing penalized likelihood estimators. The presented paper does not provide any argument, neither theo-retns   ss s o or ity of P-splines over their many competitors.
+
+
+<!-- p:22 -->
+
+
+might be very different if n  m. Indeed, the estimate might crucially depend on n. Therefore, why not determine λ and n by cross-validation or a related method? The following theoretical arguments may suggest that such a procedure will work. Note that AIC and cross-validation are very close to unbiased risk estimation which consists of estimating the optimal values of λ and n by minimizing
+
+In the regression case, the theoretical properties of P-splines might be evaluated by combining arguments of de Boor (1978) on the asymptotic bias and variance of B-splines in (dependence on m, the spline order k and the smoothness of the underlying function) with the well-known results on smoothing splines.
+
+The authors propose to use AIC or crossvalidation to select the smoothing parameter λ. However, a careful look at their method reveals that there are in fact two free parameters: λ and the number n of knots. If n ≈ m, then we essentially obtain a smoothing spline fit, while results
+
+### Comment
+
+##### Charles Kooperberg
+
+Eilers and Marx present an interesting approach to spline modeling. While function estimation based on smoothing splines often yields reasonable results, the computational burden can be very large. If the number of basis functions is limited, however, the computations become much easier, and when the knots are equally spaced, the solution indeed becomes rather elegant. To increase the credibility of the claim that P-splines are close to the "ideal smoother," several issues need to be addressed:
+
+1. In density estimation, when the range of the data is R (R+), it is useful that a density estimate be positive on R (R+), for example, for resampling. Some methods can estimate densities on bounded or unbounded intervals. P-splines do not seem to have this property: lower and upper bounds have to be specified and there seems to be no natural
+
+Charles Kooperberg is Assistant Professor, Department of Statistics, University of Washington, Seattle, Washington 98195-0001.
+
+$$\sum _ { i = 1 } ^ { m } ( y _ { i } - \hat { \mu } _ { i } ) ^ { 2 } + 2 \sigma ^ { 2 } \, t r ( H _ { \lambda , \, n } ) , \\$$
+
+where H ≡ Hλ, n is the corresponding smoother matrix. Let ASE(λ, n) denote the average squared error of the fit obtained by using some parameters λ and n. Under some technical conditions, it then follows from results of Kneip (1994) that, as m → ∞,
+
+$$A S E ( \hat { \lambda } , \hat { m } ) / A S E ( \lambda _ { o p t } , m _ { o p t } ) \rightarrow _ { P } 1 .$$
+
+Here λ and m are the parameters estimated by unbiased risk estimation, while λopt and mopt represent the optimal choice of the parameters minimizing ASE.
+
+way to extrapolate beyond these bounds. Is there any way around that? Can infinity be a bound?
+
+How would one specify the bounds? From the suicide example it appears that this may influence the results considerably.
+
+2. To use P-splines, additional choices need to be made. How many knots should one use? Is the procedure insensitive to the number of knots provided that there are enough of them? If so, how many is enough? How does the computational burden depend on the number of knots?
+
+What order of penalty should be used? Do you advocate examining several possible penalties, as in the logistic regression example, or do you have another recommendation, such as using k = 3 for density estimation so that the limit of your estimate as λ → ∞ is a normal density? Since many smoothing and density estimation procedures are used as EDA tools, good defaults are very worthwhile.
+
+3. It would be interesting to see an application of the P-spline methodology to more challenging data, such as the income data described below,
+
+
+<!-- p:23 -->
+
+
+which involves thousands of cases, a narrow peak and a severe outlier.
+
+(1996) provide an overview of polynomial splines and their applications.
+
+How would the P-spline algorithm, where knots are positioned equidistantly, behave when there are severe outliers, which would dominate the positioning of the knots? Is it possible to position knots nonequidistantly, for example, based on order statistics?
+
+4. Are there theoretical results about the large sample behavior of P-splines?
+
+####### POLYNOMIAL SPLINES AND LOGSPLINE DENSITY ESTIMATION
+
+Besides the penalized likelihood approach, there is an entirely different approach to function estimation based on splines. Whereas for P-splines both the number and the locations of the knots are fixed in advance and the smoothness is governed by a smoothing parameter, in the polynomial spline framework the number and location of the knots are determined adaptively using a stepwise algorithm and no smoothing parameter is needed. Such polynomial spline methods have been used for regression (Friedman, 1991), density estimation (Kooperberg and Stone, 1992), polychotomous (multiple logistic) regression (Kooperberg, Bose and Stone, 1997), survival analysis (Kooperberg, Stone and Truong, 1995a) and spectral density estimation (Kooperberg, Stone and Truong, 1995b).
+
+In univariate polynomial spline methodologies the algorithm starts with a fairly small number of knots. It then adds knots in those regions where an added knot would have the most influence, using Rao (score) statistics to decide on the best location; after a prespecified maximum number of knots is reached, knots are deleted one at a time, using Wald statistics to decide which knot to remove. Out of the sequence of fitted models, the one having the smallest value for the BIC criterion is selected.
+
+Polynomial spline algorithms for multivariate function estimation are similar, except that at each addition step the algorithm adds either a knot in one variable or a tensor product of two or more univariate basis functions. We have successfully applied such methodologies to data sets as small as 50 for one-dimensional density estimation and as large as 112,000 for a 63-dimensional polychotomous regression problem with 46 classes. For nonadaptive polynomial spline methodologies theoretical results regarding the L2-rate of convergence are established. Stone, Hansen, Kooperberg and Truong Logspline density estimation, in which a (univariate) log-density is modeled by a cubic spline, is discussed in Kooperberg and Stone (1992) and Stone et al. (1996). Software for the 1992 version, written in C and interfaced to S-PLUS, is publically available from Statlib. (The 1992 version of LOGSPLINE employs only knot deletion; here, however, we focus on the 1996 version, which uses both knot addition and knot deletion.) LOGSPLINE can provide estimates on both finite and infinite intervals, and it can handle censored data.
+
+The results of LOGSPLINE on the Old Faithful data and the suicide data are very similar to the corresponding results of P-splines [the suicide data is an example in Kooperberg and Stone (1992)]. Here we consider a much more challenging data set. The solid line in Figure 1 shows the logspline density estimate based on a random sample of 7,125 annual net incomes in the United Kingdom [Family Expenditure Survey (1968-1983)]. (The data have been rescaled to have mean 1.) The nine knots that were selected by LOGSPLINE are indicated. Note that four of these knots are extremely close to the peak near 0.24. This peak is due to the UK old age pension, which caused many people to have nearly identical incomes. In Kooperberg and Stone (1992) we concluded that the height and location of this peak are accurately estimated by LOGSPLINE. There are several reasons why this data is more challenging than the Old Faithful and suicide data: the data set is much larger, so that it is more of a challenge to computing resources (the LOGSPLINE estimate took 9 seconds on a Sparc 10 workstation); the width of the peak is about 0.02, compared to the range 11.5 of the data; there is a severe outlier (the largest observation is 11.5, the second largest is 7.8); and the rise of the density to the left of the peak is very steep.
+
+To get an impression of what the P-splines procedure would yield for this data, I first removed the largest observation so that there would not be any long gaps in the data, reducing the maximum observation to 7.8. The dashed line in Figure 1 is the LOGSPLINE estimate to the data with fixed knots at (i/20) × 7.8, for i = 0, 1, . . . , 20 (using 20 intervals, as in most P-spline examples.) The resulting fit should be similar to a P-spline fit with λ = 0. In this estimate it appears that the narrow peak is completely missed and that, because of the steep rise of the density to the left of the peak and the lack of sufficiently many knots near the peak, two modes are estimated where only one mode exists.
+
+
+<!-- p:24 -->
+
+
+FIG. 1. Logspline density estimate for the income data (solid line); the x indicate the locations of the knots; logspline approximation of the P-spline estimate with penalty parameter 0 (dashed line).
+
+1.0
+
+0.8
+
+0.6
+
+40
+
+2
+
+00
+
+0
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+x
+
+
+It would be very much of interest to see how the P-spline methodology behaves on this data, and in particular whether it can accurately represent the sharp peak near 0.24.
+
+### Comment
+
+###### Dennis D. Cox
+
+The main new idea in this paper is a roughness penalty based on the B-spline coefficients. There will be critics—I give some criticisms below—but there is considerable appeal in the simplicity of the idea. If I had to develop the software ab initio, it is clear that the roughness penalties proposed here would require less effort to implement than the standard ones based on L2-norm of a second derivative.
+
+There is a precedent for the use of the B-spline coefficients in such a direct way, from computer
+
+Dennis D. Cox is with Department of Statistics, Rice University, P.O. Box 1892, Houston, Texas 77251.
+
+####### ACKNOWLEDGMENT
+
+Research supported in part by NSF Grant DMS94-03371.
+
+graphics (CG) and computer aided design (CAD). The "control point" typically used in parametric Bspline representations of curves and surfaces basically consists of the B-spline coefficients. See Foley and van Dam (1995, Section 11.2.3). This is demonstrated in Figure 1, where the control points for the solid curve are just random uniform added to a linear trend, and the same points are shrunk toward 0.5 before adding the trend to obtain the control points for the dashed curve. The ordinate of each control point is the cubic cardinal B-spline coefficient and the abscissa is the midpoint of support. In CG/CAD applications, the control points are manipulated to obtain a curve or surface with desirable shape or smoothness. The CG/CAD practitioners become familiar with these control points and develop a feel for their influence on the curve or surface. Similarly, statisticians may find after some effort that B-spline coefficients are very natural.
+
+
+<!-- p:25 -->
+
+
+FIG. 1. Example of control points: the solid curve derives from the solid control points, and the dashed curve from the triangular control points.
+
+5
+
+1.0
+
+Δ
+
+55
+
+Δ
+
+0.0
+
+-0.2
+
+0.0
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+1.0
+
+1.2
+
+If I had equally easy to use software for smoothing splines or P-splines, I would prefer the former, partially from Bayesian considerations. The Bayesian interpretation of P-splines (i.e., the differenced Bspline coefficients are a Gaussian white noise under the prior) is more artificial than the usual priors as in Wahba (1978). In particular, the usual priors are specified independently of sample size, whereas one would want to use more B-splines with a larger sample. Furthermore, the integral of the second derivative squared is easier to interpret from a non-Bayesian perspective than the sum of squares of second differences of B-spline coefficients.
+
+I take issue with the authors's claim that their method does not have boundary problems. P-splines are approximately equivalent to smoothing splines which do have boundary effects (Speckman, 1983). To explain, consider minimizing from equation (5),
+
+$$S ( a ) = \sum _ { i = 1 } ^ { m } \left \{ y _ { i } - \sum _ { j = 1 } ^ { n } a _ { j } B _ { j } ( x _ { i } ) \right \} ^ { 2 } + \lambda \sum _ { j = 3 } ^ { n } ( \Delta ^ { 2 } a _ { j } ) ^ { 2 } .$$
+
+A discrete form of the variational derivation in Speckman (1983) leads to the system Notice that the equations for coefficients near the end involve lower-order differencing so there is less smoothness imposed.
+
+$$λ∆2a3 +∑B1(xi)∑ajBj(xi) i j = ∑yiB1(xi), i λ∆3a4 − λ∆2a3 +∑B2(xi)∑ajBj(xi) i j =∑yiB2(xi), i λ∆4ak +∑Bk(xi)∑ajBj(xi) i j = ∑ yiBk(xi), 3 ≤ k ≤ n − 2, i −λ∆3an − λ∆2an +∑Bn−1(xi)∑ajBj(xi) i j =∑yiBn−1(xi), i λ∆2an +∑Bn(xi)∑ajBj(xi) i j =∑yiBn(xi). i$$
+
+
+<!-- p:26 -->
+
+
+### Comment
+
+###### Stephan R. Sain and David W. Scott
+
+We have been interested in formulations of the smoothing problem that are simultaneously global in nature with locally adaptive behavior. Roughness penalties based on functionals such as the integral of squared second derivatives of the fitted curve have enjoyed much popularity. The solution to such optimization problems is often a spline. The authors are to be congratulated for introducing the idea of penalizing on the smoothness of the spline coefficients, which reduces the dimensionality of the problem as well as reducing the complexity of the calculations. There is much to say for this approach.
+
+####### ACKNOWLEDGMENT
+
+Research supported by NSF Grant DMS-9001726.
+
+well as local adaptive features. That is, the bandwidths for some data points, particularly in the tails, are very large. This was rather unexpected since Terrell and Scott (1992) discussed the negative consequences of such large bandwidths when hi = h/√f(xi), an idea suggested by Abramson (1982) and studied extensively in the literature. Furthermore, Sain and Scott (1996) showed that this "square-root law," in practice, lacks flexibility due to the dependence solely on the level of the underlying density. We refer the interested reader to those articles.
+
+It is generally of interest to try to work out the equivalent kernel formulation of all smoothing methods. This was done for Nadarya-Watson regression smoothing by Silverman (1984), who demonstrated the asymptotic manner in which the estimator adapted locally.
+
+In the density estimation setting, we have been investigating the nature of the best locally adaptive density estimator along the lines of the BreimanMeisel–Purcell estimator (Breiman, Meisel and Purcell, 1977)
+
+$$( 1 ) \ \hat { f } ( x ) = \frac { 1 } { n } \sum _ { i = 1 } ^ { n } \frac { 1 } { h _ { i } } K \left ( \frac { x - x _ { i } } { h _ { i } } \right ) = \frac { 1 } { n } \sum _ { i = 1 } ^ { n } K _ { h _ { i } } ( x - x _ { i } ) .$$
+
+The goal is to find an optimal set of bandwidths hi, i = 1,..., n, without restrictions on the functional form. Sain and Scott (1996) explore an approach using a binned version of (1) where the bandwidths were found numerically by optimizing over a variation of the least-squares or unbiased crossvalidation (UCV) criterion.
+
+The surprising finding of our research is that the optimal estimator contains distinctly nonlocal as In Figure 1 we show three densities of the geyser data: (1) our optimal locally adaptive estimate; (2) a fixed kernel estimate (bandwidth also chosen by UCV); and (3) the authors's P-spline. The fixed bandwidth approach cannot find a single bandwidth to smooth both modes appropriately, leaving the right mode undersmoothed. The more flexible adaptive estimator recognizes the local structure of the underlying density and gives a clear representation of the two modes in the data (rejecting the possibility of a third mode) without excessive noise. The P-spline estimator yields an estimate lying somewhere between the two approaches. It is interesting to note that the adaptive approach is not oversmoothed as the heights of the two modes are not affected.
+
+Stephan R. Sain is with Southern Methodist University. David W. Scott is Professor of Statistics, Rice University, Houston, Texas 77251-1892.
+
+FIG. 1. Estimated densities using the Old Faithful geyser data.
+
+8
+
+adaptive
+
+fixed
+
+6.6
+
+pspline
+
+40
+
+02
+
+00
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+
+<!-- p:27 -->
+
+
+The P-spline (and other similar estimators) allow some local adaptiveness through the penalty mechanism and the restrictions on the roughness of the fitted curve. However, the choice of knots (in this case a     r  ts can also affect the local nature of the P-spline estimator. It would be interesting to see more on how to choose the knots, including an "adaptive" approach that might lead to a more parsimonious model as well as better local behavior. Finally, one must wonder how the choice of the bin width for the initial
+
+## Rejoinder
+
+####### Paul H. C. Eilers and Brian D. Marx
+
+####### INTRODUCTION
+
+Do P-splines deserve a place in the spotlight? We claimed so, generating a lot of discussion. We are grateful for the many careful, positive and detailed comments. For our rejoinder, we group them as follows:
+
+- extensions and clarifications, especially concerning optimal smoothing;
+- challenges to the performance of P-splines;
+- doubts about our claim that P-splines come near to the ideal smoother.
+
+We will react in the same order, first commenting on the extensions. Then we will show analyses and examples to show that we can meet all challenges with standard P-splines, except adaptive flexibility (but the need for that is less than one might think). After that we present a kind of "consumer test," with a scoring table, to compare P-splines to the competition. Finally, we will conclude that P-splines meet nearly all challenges and summarize why they are attractive to use.
+
+####### OPTIMAL SMOOTHING
+
+We did not mean to imply that AIC and crossvalidation are the final word on optimal smoothing. We advocated their use because they can be computed easily and fast, and because we have had good experiences in many real-life applications. But the search for optimal criteria has to continue, and histogram affects the resulting P-spline estimate. In our experience, reliance on such pilot estimators can lead to poor results as well as difficulties in automatic implementation.
+
+We would be very interested to see a more thorough study of how P-splines behave vis-à-vis some notion of optimal local adaptiveness, and how the penalty and AIC criterion, as well as other parameters, can be set to achieve such behavior.
+
+####### ACKNOWLEDGMENT
+
+This research (second author) was supported in part by Grant DMS-96-26187.
+
+there is no obstacle in P-splines to prevent the use of more sophisticated methods.
+
+Chiu's filtering approach is interesting. However, it seems limited to equidistantly sampled data, because a (fast) Fourier transform is needed.
+
+Nychka and Cummins introduce an interesting interpretation of P-spline smoothing as a projection on the Demmler-Reinsch basis. They use an equispaced x-vector implictly. For sparse designs, some of the columns of B may become empty, making BTB singular. We suspect that additional restrictions (like a small ridge penalty) then will be needed to make the construction of G possible. The advantages of the Demmler-Reinsch basis are mainly conceptual: the computation the trace of the hat matrix and GCV can already be done efficiently with P-splines.
+
+While we are on this subject we would like to add that we do not understand the widespread preoccupation with the sum of squares functional ∫(f − f)2 dx as a measure of performance in density estimation, and the detailed analyses that have been made. One would expect some deviance-like functional, or Kullback-Leibler distance, such as Gu is using. After all, no one fits a density to a histogram with least squares. It seems that mathematical tractability is the driving force behind it, reminding us of the drunkard searching under a street lantern for the keys he lost elsewhere in the dark. To help him, bright mathematicians hook up a metal detector to the lantern.
+
+
+<!-- p:28 -->
+
+
+We note that for so-called second-generation criteria (Jones, Marron and Sheather, 1996), P-splines can be very useful when one has to estimate (integrals of squared) third or higher derivatives, because of the ease of generating high-degree Bsplines. But we are very content about AIC. Figure 1 shows data from Cook and Weisberg (1994), giving the lean body mass of Australian athletes. These data were used as a test bed by Jones, Marron and Sheather (1996). We use AIC and get essentially the same amount of smoothing, "a second generation result at a first generation price." Again, we do not wish to imply that AIC is the final answer, but show that it is more useful than sometimes suggested.
+
+####### THE KNOTS
+
+In our paper we were rather conservative in the number of knots we used and advised to use. Yet many variations are possible. Below we will see examples with very many knots, even more than there are data points, giving a counterexample to Engel and Kneip's assumption. They are right that, with as many knots as there are data points, we come very near to the smoothing spline, if the x's are equidistant. If this is not the case, we need knots on a non-equidistant grid. But then the penalty has to change too: divided differences, like (a j−α j−1)/(t j− t j-1) in the case of a first-order penalty, have to be used. We have not yet fully analyzed this situation, but we suspect some interesting results, because Bsplines on an arbitrary grid are computed with a divided difference scheme.
+
+12+
+
+10
+
+8
+
+6
+
+4
+
+2
+
+20
+
+30
+
+40
+
+50
+
+60
+
+T0
+
+80
+
+90
+
+100
+
+110
+
+120
+
+FIG. 1. Histogram and density estimate of lean body mass of Australian athletes (male and female); 20 P-splines of degree 3, penalty of order 3, λ = 10.
+
+The number of knots is largely immaterial, as long as it is large enough. Yet the sugestion of Engel and Kneip to optimize both λ and n can have value when striving for parsimony. With λ = 0, we can change n until we find that for optimal smoothing a number between a certain n' – 1 and n' appears needed. Take n = n′ and increase λ for the last part of the road to optimality. However, problems may arise with sparse designs, in which case nonidentifiablity may occur without a penalty.
+
+####### BOUNDARIES
+
+Regarding Kooperberg's concern in choosing boundaries, we must discern "physical" from "technical" boundaries. A physical boundary is determined by the nature of the variable under study. In the suicide example, zero is a physical left boundary, because time intervals cannot have negative length, and so there can be no density below zero. If we choose as a technical boundary a certain negative value, we say that there can be negative data, that we did not observe them, but that it is reasonable to estimate a density in that region. In the same example the upper boundary is technical, beyears or so). It does not matter much which value we take, a practical choice is 2 times the highest observed value.
+
+Kooperberg asks how we extrapolate. We do not do that: we choose the boundaries (when physically meaningful) wide enough to include the domain where "extrapolation" is wanted.
+
+Cox shows that there is indeed a boundary effect, but of a more subtle kind than we were considering in our paper, where we meant the unpleasant property of kernels to distribute probability mass outside the (physical) boundaries in density estimation, or tending toward zero in kernel regression.
+
+####### DEFAULT PARAMETER VALUES
+
+As Kooperberg rightly remarks, we were vague in giving default values for some parameters. Rules of thumb might be the following: take the interval between knots as half the width of the narrowest peak that should be visible in a fitted curve; use B-splines of degree 3 and a penalty of order 3. We recommend plots of AIC or GCV against effective dimension, for the orders 1, 2 and 3 of the difference penalty. For density estimation by histogram smoothing we recommend 100 bins or more. It can do no harm to take a large number of B-splines, such as 50 or 100, because the penalty takes care of any overfitting. Of course, for faster computation it is best to have a small number of B-splines.
+
+
+<!-- p:29 -->
+
+
+In some cases B-splines of degree zero, which are just constant between two knots, and zero elswhere, are sufficient. If we take the number of knots equal to the number of (equidistantly sampled) data, B is the identity matrix. We cannot resist the temptation to show how simple smoothing becomes that way. Let the vector y be the data and w be a vector of 0-1 weights to indicate missing data. Then the three MATLAB lines
+
+```
+I = eye(length(y));
+        D = diff(I, 3);
+        mu = (diag(w) + lambda * D' * D) \ (diag(w) * y);
+```
+
+do the trick. In fact this is just Whittaker's (1923) "graduation" algorithm.
+
+####### ASYMPTOTICS
+
+We did not yet have any asymptotic results on rates of convergence. However, borrowing from the asymptotic GLM theory, upon convergence with fixed λ, the asymptotic variance-covariance matrix of the P-splines coefficients is  = (QB + Qλ)−1QB(QB + Qλ)−1. This result is particularly useful for straightforward construction of twice standard error bands for g(), that is, var{g()} = BBT. Other asymptotic theory follows regarding variance and bias of the P-spline coefficients. Of course, these have to be translated to propeties of the estimated curve, because the coeffients themselves have a limited interpretation.
+
+####### ADAPTIVE SMOOTHING
+
+P-splines have constant flexibility. Kooperberg, Sain and Scott discuss adaptive estimation, in which non-constant flexibility is needed. First we will analyze the income data, then Old Faithful.
+
+We have to admit right from the start that Psplines in their present form cannot challenge the extreme control on flexibility that LOGSPLINE offers. Yet we can come a long way with constant flexibility. Figure 2 shows a histogram of the data with bin width 0.1 (because of the large number of bins, the counts are drawn as vertical lines in the midpoint of each bin). The same interval is used for the knots of the B-splines of degree 3, giving 153 of them. You cannot have such a large number without a penalty, because of severe identifiability problems. We see that the optimal fit is very near to the histogram itself, giving too wiggly a right tail. Without the outlier, we get nearly the same result, which is to be expected with a small amount of smoothing. Figure 3 is based on a part of the data, using smaller bins. The left peak is recovered rather well, but again the right part seems too wiggly. We conclude that the high number of observations and the outlier do not wreak havoc on P-splines, but that their fixed flexibility leads to a small amount of smoothing.
+
+Incomes are positive and show a large ratio between maximum and minimum. Data of that type should always be studied also on a logarithmic scale. This is done in Figure 4. The estimated density looks very reasonable. An inflection between the two peaks is indicated that LOGSPLINE does not pick up.
+
+600
+
+500
+
+400
+
+300
+
+200
+
+100
+
+0
+
+2
+
+4
+
+6
+
+8
+
+10
+
+12
+
+FIG. 2. Histogram (bin width 0.1) and minimum AIC fit of 153 P-splines to the income data; λ = 10−6.
+
+150+
+
+100
+
+50
+
+0
+
+0.2
+
+0.4
+
+0.6
+
+0.08
+
+1.2
+
+1.4
+
+1.6
+
+1.8
+
+2
+
+FIG. 3. Histogram (bin width 0.1) of income data with x &lt; 2 and minimum AIC fit of 53 P-splines to the income data; λ = 10−6.
+
+
+<!-- p:30 -->
+
+300
+
+250
+
+200
+
+150
+
+100
+
+50
+
+-1
+
+0
+
+0.5
+
+1
+
+1.5
+
+2
+
+-2
+
+-1.5
+
+-0.5
+
+FIG. 4. Histogram (bin width 0.1) and minimum AIC fit of 53 P-splines to the logarithm of the income data; λ = 10−6.
+
+Logarithms also work well for the Old Faithful data, as Figure 5 shows. We estimated a density for the logarithms of the data and transformed that back to the linear scale. Note that the tail at the right side is much shorter than the one Sain and Scott present in their figure; is it variance inflation by the kernel smoother? Sain and Scott mention that they found unexpectedly larger kernel band widths in the tails. The left tail of that curve is rather strange, being appreciably larger than zero over a long stretch.
+
+It is interesting to note that the effective dimension we computed is 10.8 for the linear data and 8.2 for the logarithmic data, indicating that on the latter scale appreciably stronger smoothing is allowed.
+
+6.0
+
+0.8
+
+07
+
+0.6
+
+0.5
+
+04
+
+0.3
+
+0.2
+
+0.1
+
+0
+
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+Of course, there will be situations in which a simple transformation will not work. A nonconstant flexibility might be realized by using suitable weights in the penalty, like Σ vj(∆da j)2. A simple way of adaptive estimation might be borrowed from Fan and Gijbels (1995): divide the support in a number of (overlapping) intervals, do the smoothing for each of these separately, giving a number of optimal λ's. These can be interpolated to give a smooth curve of λ. The v's in the weighted penalty can be set proportional to the values of that curve at the knots.
+
+Fan et al. (1996) studied kernel smoothing with continuously varying band width b(x) by smooth interpolation of a low-dimensional set of points (x j, b j), and optimizing the b j's. One can imagine optimizing the elements of v in a similar way.
+
+####### DERIVATIVE OR DIFFERENCES?
+
+Several discussants suggest that a penalty on the second derivative is more clear than one on the coefficients of B-splines. We think not. Those coefficients are the heights of the B-splines that build the fitted curve and so they have a direct intuitive interpretation. Smoothness demands that the heights of neighboring B-splines may not differ to much. The penalty lets the B-splines "hold hands" to withstand erratic fluctuations in the data.
+
+Figure 6 shows simulated data and a B-spline fit without a penalty, while in Figure 7 a strong penalty (λ = 2, with second-order differences) is used. Note the smooth envelope that is suggested by the tops of the B-splines.
+
+FIG. 5. Histogram and minimum AIC fit of the Old Faithful data, on both a linear and a (back-transformed) logarithmic scale; the curve with two modes on the right is based on the linear scale.
+
+1.5
+
+0.5
+
+0
+
+-0.5-
+
+-1-
+
+-1.5-
+
+o
+
+-2
+
+0
+
+0.1
+
+0.2
+
+1
+
+0.3
+
+0.4
+
+0.5
+
+0.6
+
+0.7
+
+0.8
+
+0.9
+
+FIG. 6. Simulated data, individual B-splines and the fitted curve (thick line) without a penalty.
+
+
+<!-- p:31 -->
+
+
+FIG. 7. Simulated data, individual B-splines and the fitted curve (thick line) with a second order penalty and λ = 2.
+
+1.5
+
+0.5
+
+-0
+
+-0.5
+
+-1
+
+o
+
+-1.5-
+
+-2
+
+0
+
+0.1
+
+0.2
+
+0.3
+
+0.4
+
+0.5
+
+0.6
+
+0.7
+
+0.8
+
+0.9
+
+1
+
+25+
+
+20
+
+15
+
+10
+
+o
+
+5
+
+0-
+
+-5-
+
+-10
+
+-15-
+
+-20
+
+-25
+
+6
+
+7
+
+8
+
+9
+
+5.5
+
+6.5
+
+7.5
+
+8.5
+
+9.5
+
+10
+
+FIG. 8. Velocities of a variable star (dots) and fit of 50 P-splines with a specialized penalty that forces the fit toward a sine curve.
+
+The parametric limit can be illustrated in the same way: when the tops of the B-splines are on a straight line (a parabola), the fitted curve is linear (quadratic).
+
+As Cox rightly judges from CAD experience, with some practice one can develop a good intuitive understanding of B-splines.
+
+We agree with Gu that the (very liberally stated) "the penalty is the prior." We also must admit that there the connection to derivatives is much clearer than one to differences of B-spline heights. At present we can only point to the near equivalence of both criteria, as shown in the paper, but we will search for a more intuitive understanding.
+
+####### SPECIALIZED PENALTIES
+
+We now come to penalties for special parametric limits and use an example to make our point. Suppose that we change the penalty λΣ(aj - 2a j−1 + a j−2)2 to λ Σ(a j − 2ca j−1 + a j−2)2, with c = cos(2πt/p), and t the distance between knots, then for high λ the series a tends to a sine function with period p: a j = a0 cos(2π jt/ p + φ), with α0 and φ determined by the data. This forces the fitted series toward a sine signal, interpolated by B-splines. With t small compared to p, this will effectively be a sine curve. Figure 8 shows a part of a series of measurements of velocities of a variable star, centered to have zero mean; the data were provided by Conny Aerts of Leuven University. The assumed value for the period p is 0.161 day.
+
+The figure also shows that extreme holes in the data can be handled with P-splines. With the difference penalty this would work too, but there would be very large and very smooth swings up and down in regions without data, because there it is only smoothness that counts. This can be remedied by adding a small ridge penalty, another example of specializing the penalty to the problem.
+
+For completeness we note that Eilers (1991a) used mixed penalties in a regression problem with ordered regressors. Eilers (1988) proposed to use penalized least squares to estimate autoregressive models for noisy signals with possibly missing data.
+
+####### CONSERVATION OF MOMENTS
+
+Jones does not see the need for conservation of moments in regression. We think it is important: if they were not conserved, the parametric model that is approached with strong smoothing would be different from the one obtained with polynomial regression. In density estimation, variance inflation is undesirable. The work of several first-class statisticians, including Jones himself, testifies to this.
+
+####### MULTIVARIATE APPLICATIONS
+
+As for multivariate applications, we have efficient MATLAB functions for two-dimensional P-splines, based on tensor products of one-dimenional Bsplines. In two dimensions the probability of sparse data is high. To prevent identifiability problems, a penalty is nearly mandatory. We are not optimistic about generalizations to higher dimensions. In theory it is not so difficult, but the organization of the computations is difficult. Also the number of the basis functions may easily become larger than the number of observations.
+
+
+<!-- p:32 -->
+
+
+Consumer test of smoothing methods; the abbreviations stand for the following: KS, kernel smoother; KSB, kernel smoother with binning; LR, local regression; LRB, local regression with binning; SS, smoothing splines; SSB, smoothing splines with band solver; RSF, regression splines with fixed knots; RSA, regression splines with adaptive knots; PS, P-splines. The row "Adaptive flexibility available" means
+
+TABLE 1 that a software implementation is readily available
+
+| Aspect                       | KS     | KSB    | LR     | LRB    | SS     | SSB    | RSF    | RSA    | PS     |
+|------------------------------|--------|--------|--------|--------|--------|--------|--------|--------|--------|
+| Speed of tting               | &#124; | +      | &#124; | +      | &#124; | +      | +      | +      | +      |
+| Speed of optimization        | &#124; | +      | &#124; | +      | &#124; | +      | &#124; | &#124; | +      |
+| Boundary effects             | &#124; | &#124; | +      | +      | +      | +      | +      | +      | +      |
+| Sparse designs               | &#124; | &#124; | &#124; | &#124; | +      | +      | &#124; | +      | +      |
+| Semi parametric models       | &#124; | &#124; | &#124; | &#124; | +      | &#124; | +      | +      | +      |
+| Non-normal data              | +      | +      | +      | +      | +      | +      | +      | +      | +      |
+| Easy implementation          | +      | &#124; | +      | &#124; | +      | &#124; | +      | &#124; | +      |
+| Parametric limit             | &#124; | &#124; | +      | +      | +      | +      | +      | +      | +      |
+| Specialized limits           | &#124; | &#124; | &#124; | &#124; | +      | +      | &#124; | &#124; | +      |
+| Variance in ation            | &#124; | &#124; | +      | +      | +      | +      | +      | +      | +      |
+| Adaptive exibility possible  | +      | +      | +      | +      | +      | +      | &#124; | +      | +      |
+| Adaptive exibility available | &#124; | &#124; | &#124; | &#124; | &#124; | &#124; | &#124; | +      | &#124; |
+| Compact result               | &#124; | &#124; | &#124; | &#124; | &#124; | &#124; | +      | +      | +      |
+| Conservation of moments      | &#124; | &#124; | +      | +      | +      | +      | +      | +      | +      |
+| Easy standard errors         | &#124; | &#124; | +      | +      | &#124; | +      | +      | +      | +      |
+
+####### BIN WIDTH OF HISTOGRAMS
+
+Sain and Scott like to see an investigation of how much the bin width of a histogram influences the Pspline density estimate. We do that empirically with the Old Faithful (that name gets a new meaning here) data. In Figure 9 we plot the estimated density for five values of the bin width: 0.2, 0.1, 0.05, 0.02 and 0.01. The optimal value λopt was found by trying a decreasing series of integer powers of 10, starting at 104, stopping when AIC started to rise. To the last three pairs (log λ, AIC), a parabola was fitted; the location of its minimum gave log λopt. It appears that bins of 0.2 are too coarse, but for the other values the curves are practically the same. As a rule of thumb we might derive that a histogram with 100 or more bins is a good choice.
+
+FIG. 9. Five estimated densities for the Old Faithful data, based on histograms with bin widths 0.2, 0.1, 0.05, 0.02, 0.01; the curve with the lowest peaks is for bin width 0.2.
+
+6.0
+
+0.8
+
+0.7
+
+0.6
+
+0.5
+
+0.4
+
+0.3
+
+0.2
+
+0.1
+
+-0
+
+0
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+####### A CONSUMER TEST
+
+Several discussants doubt whether P-splines come as near to the ideal smoother as we claim. Every good property we mentioned can also be found in one or more other methods. In Table 1 we have constructed a "consumer test" of smoothers to make comparison easier. We have neglected most ad-hoc changes that have been published to remedy troubles like boundary effects and sparse designs, because they have not yet appeared in readily available software. The meaning of "specialized limits" will be explained below. Of course one can argue about some of the pluses or minuses of the competing methods, but the advantages of P-splines have a firm basis. Anyone wishing to use them can be on track in a few hours, in any language that supports matrix operations and/or regression, starting from the algorithms in our Appendix.
+
+####### A HAPPY ENDING
+
+Yes, we think that P-splines deserve a place in the spotlight. They are easy to use, easy to program and easy to understand. They respect boundaries, have no problems with sparse designs and give compact results. Polynomial and exponential
+
+
+<!-- p:33 -->
+
+
+(sinusoidal) limits can be forced with almost trivial changes to the difference operator in the penalty.
+
+Yet there remains a lot to be done, especially on optimizing the weight of the penalty and on adaptive flexibility. A better understanding of the Bayesian interpretation of the penalty is needed. We will continue our research in these areas. We hope to meet many others there who also have recognized the charm of P-splines.
+
+####### ACKNOWLEDGMENTS
+
+Once again we thank the discussants for their inspiring comments. We also acknowledge the advice of (anonymous) referees and the support of Associate Editor David Scott (with extra thanks for organizing the discussion) and Editor Paul Switzer on our long trail to a paper in print.
+
+####### ADDITIONAL REFERENCES
+
+- CoOK, R. D. and WEISBERG, S. (1994). Regression Graphics. Wiley, New York.
+- EILERs, P. H. C. (1988). Autoregressive models with latent variables. In COMPSTAT 1988 Proceedings (D. Edwards and N. E. Raun, eds.). Physica-Verlag.
+- ENGEL, J. and GASSER, T. (1995). A minimax result for a class of nonparametric density estimators. Nonparametric Statistics 4 327-334.
+
+FAMILY EXPENDITURE SURVEY (1968–1983). Annual base tapes and reports (1968–1983). Dept. Employment, Statistics Division, Her Majesty's Stationary Office, London.
+
+- FAN, J. (1993). Local linear regression smoothers and their minimax efficiency. Ann. Statist. 21 196–216.
+- FAN, J. and GIJBELS, I. (1995). Data-driven bandwidth selection in local polynomial fitting: variable bandwidth and spatial adaptation. J. Roy. Statist. Soc. Ser. B 57 371–394.
+- FAN, J., HALL, P., MARTIN, M. A. and PATIL, P. (1996). On local smoothing of nonparametric curve estimators. J. Amer. Statist. Assoc. 91 258–266.
+- FOLEY, J. D., VAN DAM, A., FEINER, S. K. and HUGHES, J. F. (1996). Computer Graphics: Principles and Practice. Addison-Wesley, Reading, MA.
+- FRIEDMAN, J. H. (1991). Multivariate adaptive regression splines (with discussion). Ann. Statist. 19 1-141.
+
+JONES, M. C., MARRON, J. S. and SHEATHER, S. J. (1996). A brief survey of bandwidth selection for density estimation. J. Amer. Statist. Assoc. To appear.
+
+- KNEIP, A. (1994). Ordered linear smoothers. Ann. Statist. 22 835-866.
+- KoOPERBERG, C., BOSE, S. and STONE, C. J. (1997). Polychotomous regression. J. Amer. Statist. Assoc. To appear.
+- KOOPERBERG, C., STONE, C. J. and TRUONG, Y. K. (1995a). Hazard regression. J. Amer. Statist. Assoc. 90 78–94.
+- KOOPERBERG, C., STONE, C. J. and TRUONG, Y. K. (1995b). Logspline estimation of a possibly mixed spectral distribution. J. Time Ser. Anal. 16 359–388.
+- SPECKMAN, P. L. (1983). Spline smoothing and optimal rates of convergence in nonparametric regression models. Ann. Statist. 13 970–983.
+- STONE, C. J., HANSEN, M., KOOPERBERG, C. and TRUONG, Y. K. (1996). Polynomial splines and their tensor products in extended linear modeling. Ann. Statist. To appear.
+
+WAHBA, G. (1978). Improper priors, spline smoothing and the problem of guarding against model errors in regression. J. Roy. Statist. Soc. Ser. B 40 364–372.
+
+<!-- END SOURCE 14/40: Eilers_1996_flexible-smoothing-b-splines.md -->
+
+---
+
+<!-- BEGIN SOURCE 15/40: Franke_2026_data-driven-hp-smoothing-parameter.md -->
+
+# Source: `Franke_2026_data-driven-hp-smoothing-parameter.md`
+
+---
+id: "Franke_2026_data-driven-hp-smoothing-parameter"
+source_pdf: "../pdf/Franke_2026_data-driven-hp-smoothing-parameter.pdf"
+source_filename: "Franke_2026_data-driven-hp-smoothing-parameter.pdf"
+format: "academic-paper"
+extraction_profile: "text-math-tables-high-fidelity"
+extraction_mode: "hybrid"
+extraction_quality: "excellent"
+extraction_score: 106.0
+visual_assets: "disabled"
+references_file: "../references/Franke_2026_data-driven-hp-smoothing-parameter.references.md"
+---
+
+<!-- p:1 -->
+
+## A Data-Driven Method to Determine the Smoothing Parameter in the Hodrick-Prescott Filter
+
+Reiner Franke 1 · Jiri Kukacka 2,3 · Stephen Sacht 1,4
+
+Received: 4 February 2025 / Accepted: 31 May 2026 © The Author(s) 2026
+
+### Abstract
+
+The paper reconsiders the Hodrick-Prescott filter and the issue of a suitable choice of its  smoothing parameter λ for  quarterly  data.  Stochastic  processes  generate artificial  data  with  a  known  growth  trend  and  cyclical  component,  and  a  battery  of Monte Carlo  experiments  tests  what  values  of λ yield  the  best  approximation  of the true trend. Specifically, the main summary statistics of the first differences are required to closely match those of the real gross value added in the US, while the average length of their cyclical fluctuations is largely compatible with the spectro - grams of other business cycle data. Regarding the trend component, we distinguish between a deterministic and a stochastic trend. We find that appropriate values of λ are seven to twelve times higher than the conventional λ = 1600 . To make it more intuitive, the paper further proposes a slight modification of the filter that yields a segmented linear trend. Finally, we provide suitable values for its tuning parameter that determines the endogenous break points.
+
+Keywords Business cycles · Trend concept · l 1 trend filter · Growth regimes
+
+Jiri Kukacka
+
+[jiri.kukacka@fsv.cuni.cz](mailto:jiri.kukacka@fsv.cuni.cz)
+
+Reiner Franke franke@uni-bremen.de Stephen Sacht sacht@hwwi.org
+
+1 Institute of Economics, Kiel University, Christian-Albrechts-Platz 4, Kiel 24118, Germany
+
+2 Institute of Economic Studies, Faculty of Social Sciences, Charles University, Opletalova 26, Prague 1 110 00, Czechia
+
+3 Institute of Information Theory and Automation, Czech Academy of Sciences, Pod Vodarenskou vezi 4, Prague 8 182 00, Czechia
+
+4 Research Area Macroeconomic Analyses, Hamburg Institute of International Economics, Mönkedamm 9, Hamburg 20457, Germany
+
+<!-- p:2 -->
+
+
+### 1  Introduction
+
+Macroeconomic  business  cycle  research  concerned  with  data  exhibiting  long-run growth often needs to decompose these time series into a component capturing a trend, which may possibly show some flexibility or some breaks, and a cyclical com - ponent, which is stationary. For many economists, detrending is a routine task and they prefer not to engage with the finer details. Instead, they are content to rely on a broadly accepted, low-effort procedure. A method that meets these requirements while remaining reasonably transparent is the Hodrick-Prescott (HP) filter. It is there - fore widely applied in academic research and practical business cycle analysis.
+
+The filter is not without problems, though. Before we turn to the paper's central con - cern, a few words should be said about the most common (and usually unanswered) criticism of HP. It contends that the filter may produce spurious dynamic regularities in the cyclical component that are unrelated to the underlying data generation process. 1 There are two reasons why we do not consider this objection to be a concern. First, the criticism is based on elaborate mathematical arguments of mainly asymptotic character, but it is unclear how significant they could be for the finite and rather small empirical samples of hardly more than 250 quarters. Second and more importantly, entertaining the idea of the business cycle as a combination of recurrent phenomena (Lucas, 1977, p. 10), a theoretical possibility that a filter might introduce regularities where actually there are none would be pointless for us. We rather do expect to find waves of expansions and contractions in the data, and it is the purpose of a filter to let them emerge without being spoiled by influences that are not at the heart of the economic wave mechanisms. 2
+
+Thus, in principle, we consider HP detrending as a convenient and useful method (at  least  as  a  first  step  in  an  investigation,  it  may  then  be  supplemented  by  other and perhaps more elaborate devices). However, this does not mean that we are not aware of another problem with the HP filter, which is the choice of the coefficient λ that governs the smoothing of the trend. 3 In this respect we will be solely concerned with quarterly data as the by far most relevant frequency. 4 Here researchers almost exclusively stick to λ = 1600 , the value that was originally proposed by Hodrick and Prescott (1980, 1997) themselves.
+
+A rare exception is Gordon (2003). Studying the long-run evolution of labour productivity he expresses a profound scepticism, when he characterizes λ = 1600 as implying 'implausibly large accelerations and decelerations of the trend within each business cycle' (p. 218, emphasis added). In other words, Gordon argues that the conventional choice λ = 1600 is definitely too low because it sweeps too much of the cycle into the trend. 5
+
+1 With its elaboration on previous work by Harvey (1985); Clark (1987); Cogley (1990), a basic reference in this respect is Harvey and Jaeger (1993).
+
+2 End-of-sample distortions (or inefficiencies, to be more precise) are another criticism put forward against the HP filter (though it concerns any two-sided filter). These effects could be mitigated by applying the filter to a forecast-augmented series (see, e.g., Garratt et al., 2008). In order to avoid opening up a new topic, our investigations will content themselves with discarding a few periods of the time series at the beginning and end of thesample.
+
+3 Danthine and Girardin (1989, p. 37) speak of the 'arbitrariness in the choice of λ [as] the Achilles' heel of this method'.
+
+4 A  treatment  of  alternative  frequencies  would  overload the paper, given that our main interest is in a method of determining the smoothing parameter, not in a final list of its values across different situations. Besides, if the method is found sufficiently satisfactory, it might be applied to any frequency, although setting it up would require some effort.
+
+<!-- p:3 -->
+
+
+In fact, most studies working with λ = 1600 do not even present and discuss possible variations in the slope of their trend lines. The paper takes this issue as a point of departure to question the validity of λ = 1600 more systematically. Investigations in alternative values of λ commonly use elaborated econometric arguments. Also because they are based on asymptotic theory, their results are, however, hard to asses for nonspecialists. We therefore employ an alternative approach, which requires less technical expertise and tries to follow the KISS principle: 'Keep it sophisticatedly simple'. In essence, we run a large number of Monte Carlo simulations, for which we posit stochastic processes that generate artificial data with a known trend. We can then apply HP with alternative values of λ to these series and see which values will on average yield the best approximation of the true trend line, and also how satisfied we would be with it.
+
+Of course, much hinges on the specific generation of the artificial time series and its  resemblance  to  empirical  data.  Working  with  too  general  a  class  of  stochastic processes could result in such a wide range of optimal values for λ across different realizations that they become uninformative. Regarding the cyclical component of our artificial series, we therefore bear upon their first differences and require that a number of elementary summary statistics tend to match those of an empirical reference series which is central to any business cycle research (this will be the quarterly real gross value added of the nonfinancial business sector in the US). In addition, evidence from other sources (like the spectrograms of stationary data) give us information about the average length of the period in the cyclical component. As concerns the artificial trend, because researchers may have different views on this issue and a priori we cannot be sure whether or not it would make a difference, we will impose our cyclical fluctuations on both a deterministic and a stochastic trend.
+
+The aim of these experiments is that in the end they provide us with a basis for recommending a possibly more appropriate smoothing parameter than λ = 1600 . In the end we will come up with proposals for a value that may be used in practical work with time series that typically grow like GDP or similar macroeconomic variables, if researchers have some faith in the assumptions underlying our Monte Carlo investigations. 6
+
+It goes without saying that any proposal can only approximate the true trend of a given empirical series, which after all is a theoretical construct only. But the simulations of our stochastic processes allow us some insights into the small sample properties of the trend estimations, and they give some impression of how good these approximations may turn out to be. In detail,  our  experiments  will  provide  some observations from which we can conclude that our estimations are fairly robust. That is, even though the smoothing parameters that we propose are different from a value that would be optimal for a given series, we can expect that the deterioration in fitting the trend would not be very serious. 7
+
+5 Gordon illustrates this property of too much flexibility in the trend by quoting Hodrick and Prescott's (1997, p. 9) conclusion that the entire economic boom of the 1960s resulted from an acceleration of trend, rather than a deviation of actual output above trend. He argues that this evaluation neglects external information, 'such as the fact that the unemployment rate was unusually low and the capacity utilization rate was unusually high' (Gordon, 2003, p. 218). This example illustrates that the choice of λ is not innocuous and can materially influence important economic judgments.
+
+6 The  paper  could  still  be  of  benefit  to  other  researchers,  if  they  conduct  similar  (though  perhaps  less costly) Monte Carlo experiments with artificial series that are constructed from their own, alternative assumptions.
+
+<!-- p:4 -->
+
+
+Furthermore, the paper takes a wider perspective than the usual HP filter. Based on a very similar principle, it also proposes an alternative to it, or rather a complementary concept. To introduce the main idea, recall that the trend line of the HP filter derives from minimizing a function that contains the squared differences between trend and data. In addition, weighted by the parameter λ it penalizes the sum of the squared changes in the slope of the trend. This is an intuitive and straightforward specification of a trade-off in the trend between smoothness and still keeping track of the data. While working with the squared changes is mathematically advantageous, one can also consider the absolute values of these changes. This specification is hardly known in economics but prevalent in  other  scientific  fields  (references  will  be  given  later  on).  It  will  be  convenient  to use the acronym 'HP2' for the original Hodrick-Prescott filter (because of the squared changes), and 'HP1' for its alternative (because of the absolute changes). 8
+
+The interesting point in this distinction is that HP1 implies a qualitative change in the nature of the trend. While an HP2 filter yields a smoothly varying curve, the outcome of HP1 is a segmented linear line with endogenous break points. When HP1 is applied to the log of an output variable growing over time, the slopes of the different linear segments of the trend can therefore be interpreted as different growth regimes  over  endogenously  determined  subperiods.  Such  a  clear-cut  statement  as the by-product of the method may be a rather appealing feature of HP1. Of course, the number and dates of the break points will depend on the specific value of the coefficient attached to the absolute changes in the trend (which will be differently scaled from the λ in HP2). The problem is that for economic time series there are as yet practically no hints about a suitable range of its numerical value. Thus, a second purpose of the paper is to subject HP1 to the same Monte Carlo experiments as HP2 and so build up some experience regarding the other smoothing parameter.
+
+Because of their common methodology it will not be expected that one HP version is systematically superior to the other. However, with the acquired knowledge about the smoothing coefficients a researcher may opt for the filter that tends to produce a trend line whose shape is more to their taste or preference.
+
+The remainder of the paper is organized as follows. The next section introduces the two versions of Hodrick-Prescott detrending. Section 3 puts forward the stochastic  processes  with  which  we  generate  our  artificial  data.  Because  our  approach  is somewhat different from standard time series analysis, it also contains a justification of our choice. A battery of simulation experiments with our data is conducted in Section 4. They serve to derive numerical values for the smoothing parameters that yield a good approximation of the true trend. Some remarks will also give an impression of their robustness. Section 5 concludes, while complementary experiments on an alternative set of artificial data are described in an Appendix.
+
+7 One might want to compare our approach to the one presented by Ravn and Uhlig (2002) who, in a different and more abstract analytical framework, ask how the HP smoothing parameter should be adjusted for different observation frequencies. It may, however, be noted that their investigation starts out from λ = 1600 , whereas our concern is just the appropriateness of this value and not general rescaling rules for other frequencies.
+
+8 It is worth noting that Wolf et al. (2023) use similar denomination, namely HP-1s and HP-2s, to refer to one-sided and two-sided HP filters, respectively.
+
+<!-- p:5 -->
+
+
+### 2  Two versions of Hodrick-Prescott detrending
+
+Let us first recapitulate the construction of HP2, the classical Hodrick-Prescott fil - ter.  Its  idea  is  actually  older  than  its  first  applications  in  economics  in  the  1980s. Its  origin  dates  back to Leser (1961), who in turn drew on early contributions by Whittaker (1922) and Henderson (1924). 9 The filter's decomposition of a given data series y t into its trend y ⋆ t and a cyclical component c t ( y t = y ⋆ t + c t ) is formulated as a minimization problem that aims to obtain the former as a smooth series which, on the other hand, does not differ too much from the observed data. It is well-known that even if y t is systematically growing in the long term, the detrended component is ensured to be stationary as long as the fourth differences of y t are stationary (King &amp; Rebelo, 1993).
+
+The trade-off between smoothness and proximity to the data is represented by the renowned coefficient λ ,  which  governs  how severely a raggedness in the trend is penalized. For a better distinction from the discussion below it may here be denoted as λ 2 .  As indicated in the Introduction, we will question its standard value of 1600 for quarterly data, asking what multiple μ 2 of it may possibly be more appropriate. This issue will be made explicit in the notation as HP2 = HP2( μ 2 ). The optimization problem minimizes the variance of c t = y t - y ⋆ t over t = 1 , . . . , t max quarters, subject to a penalty for the variation in the second differences of the trend y ⋆ t :
+
+$$H P 2 & = H P 2 ( \mu _ { 2 } ) \colon \\ & \quad \min _ { \{ y ^ { * } \} _ { t = 1 } ^ { t _ { m a x } } } \sum _ { t = 3 } ^ { t _ { m a x } } \left \{ \left ( y _ { t } - y _ { t } ^ { * } \right ) ^ { 2 } + \lambda _ { 2 } \left [ ( y _ { t } ^ { * } - y _ { t - 1 } ^ { * } ) \right ) _ { t - 1 } ( y _ { t - 1 } ^ { * } - y _ { t - 2 } ^ { * } ) \right ] ^ { 2 } \right \} , \\ & \lambda _ { 2 } = \mu _ { 2 } \cdot 1 6 0 0 .$$
+
+$$\lambda _ { 2 } = \mu _ { 2 } \cdot 1$$
+
+Clearly, μ 2 &lt; 1 makes the trend more flexible and μ 2 &gt; 1 introduces a higher degree of smoothness. Going to the limit, λ 2 →∞ , the trend would approximate a straight line. It is important to note that the choice λ 2 = 1600 contained a subjective factor, as it is based on prior beliefs about the magnitude of changes in the cyclical component relative to the trend component. Specifically, formulating the detrending as an opti - mal filter in a structural time series framework yields the relationship λ 2 = σ 2 c / σ 2 d , where σ 2 c is the variance of the cyclical component c t and σ 2 d the variance of the second differences in the square bracket of Eq. 1 . With the idea that a five per cent cyclical component is moderately large as is a one-eighth of one per cent change in the growth rate of a quarter, √ λ 2 = 5 / (1 / 8) = 40 is obtained, i.e. λ 2 = 1600 (Harvey &amp; Jaeger, 1993; Hodrick &amp; Prescott, 1980; King &amp; Rebelo, 1993).
+
+9 We found this historical information in a blog on the web, https://davegiles.blogspot.com/2011/ 12 /con fidenc e-ban ds- for-hod rick-pre scott.html .
+
+<!-- p:6 -->
+
+
+It should not be neglected that, more particularly, this reasoning rests on the simplifying assumption that both the second differences in the trend as well as the cycli - cal component itself are normally distributed (so that the latter is not cyclical at all).
+
+Hodrick and Prescott (1997) themselves explicitly mentioned that their probability model was false and so were sensitive to the fact that other values of λ 2 could possibly be more appropriate. It is, on the other hand, remarkable that λ 2 = 1600 finds  more  elaborate  support  by  a  different  approach,  which  is  based  on  Fourier analysis  with  its  series  of  trigonometric  functions.  It  invokes  the  concept  of  the gain  function  for  HP2  and  formulates  it  as  a  function  of λ 2 and  the  periodicity T of  a  cycle.  Setting  the  gain  equal  to  one-half  and  solving  the  equation  for λ 2 yields the expression λ 2 = [ 2 sin( π/T ) ] - 4 . Accordingly, employing HP2 with that λ 2 approximates the ideal low-pass filter that passes components with periods less than T quarters (Gomez, 2001). λ 2 = 1600 is then obtained by choosing T = 39 . 7 quarters (rounded). The familiar HP filter would thus be almost perfectly suited to deal with business cycle data. 10
+
+While we already mentioned Gordon's ( 2003) severe doubts that this value would be definitely too low, Hamilton ( 2018, pp. 835f) takes a decidedly opposite view. To get a feel for an appropriate value, he maintains the assumption that the cyclical component and the second differences in the trend are normally distributed. This allows him to determine the aforementioned variances σ 2 c and σ 2 d as the solution of a maximum likelihood problem. Doing this for a number of macroeconomic time series he obtains values of λ 2 below ten, and most of them even below unity! Hamilton's simplification is certainly helpful to solve his estimation problem, but apparently it neglects any possible persistence in the cyclical component that could be interpreted as a business cycle. His implicit hope is that the error in this procedure will not be too serious (Franke et al., 2025). It is a main purpose of this paper to put his and the other conclusions about λ 2 under closer scrutiny.
+
+Another issue of trend estimations is the recognition of possible structural breaks. Suppose one has prior beliefs or information from other sources that over a relatively short period of time there are large changes with permanent effects, giving rise to what might be called a new regime. Such a break or kink in a trend line would be typically smoothed over by HP2, moderating it when it occurs and spreading its effect forward and backward over several quarters or years (Giorno et al., 1995, p. 172). Regarding output data, in particular, it may be fruitful to distinguish different growth regimes, which in a stylized manner are characterized by different but piecewise con - stant slopes in log output. This conception can be conveniently captured by a slight modification of the classical Hodrick-Prescott approach. A good presentation for our purpose is Kim et al. (2009).
+
+10 In  this  respect  it  is  also  worth  noting  that  already  (Prescott,  1986)  himself  described  the  generally employed HP filter as an approximation to a band pass filter that eliminates all frequencies lower than eight years. Such an approximation would be better the longer the time series. So one could ask the question if samples of 240 quarters, say, are long enough.
+
+<!-- p:7 -->
+
+
+The approach is mostly called l 1 trend filtering. The motivation for this label is that the sum of the squared second differences in the objective function ( 1), mathematically also referred to as their squared l 2 norm, is replaced with the sum of their absolute values, which is the l 1 norm of this vector. In our context we prefer the notation HP1 for this filter. Analogously to λ 2 for HP2, its penalty coefficient may be designated λ 1 . For a reason to become clear in a moment, we decompose it into the product μ 1 · λ 1 ,max , where the symbol λ 1 ,max will also be explained shortly. In this way the optimization problem becomes:
+
+$$H P 1 & = H 1 ( \mu _ { 1 } ) \colon \\ & \quad \min _ { \{ y ^ { * } \} _ { t = 1 } ^ { t _ { m a x } } } \sum _ { t = 3 } ^ { t _ { m a x } } \left \{ \, ( y _ { t } - y _ { t } ^ { * } ) ^ { 2 } \, + \, \lambda _ { 1 } \, | \, ( y _ { t } ^ { * } - y _ { t - 1 } ^ { * } ) \, - \, ( y _ { t - 1 } ^ { * } - y _ { t - 2 } ^ { * } ) \, | \right \} , \ \ ( 2 ) \\ & \lambda _ { 1 } = \mu _ { 1 } \cdot \lambda _ { 1 , m a x } .$$
+
+$$\lambda _ { 1 } = \mu _ { 1 } \cdot \lambda _ { 1 , m a x } .$$
+
+The  solution  is  uniquely  determined  and  has  the  attractive  feature  that  geometrically the trend is a piecewise linear function of time with endogenous break points. Accordingly, one can identify different 'regimes' of the economy. Their timing may not be taken literally, but the method could be useful to arrive without great technical effort at a clear and pronounced statement, and to relate this information to other and perhaps more informal sources on the issue of structural change. The solution y ⋆ t is also relatively robust, in the sense that adding a new observation y t max +1 to the data does not change the slope of its last segment if that value is inside a certain interval (Kim et al., 2009, p. 343). 11
+
+In  contrast  to  the  HP2  minimization problem, there is no analytical expression available for solving HP1. Hence this problem has to be treated numerically in an iterative procedure. 12 Another difference from HP2 is that there is no conventional value of λ 1 that applied research has largely agreed on. In fact, it has to be noted that because of the combination of an l 2 and l 1 norm in Eq. 2, applying HP1 with the same λ 1 to two different series may produce rather unequal matches of their true trend. This general property is the reason why we introduce the coefficient μ 1 in Eq. 2 , as the normalization with a 'maximal' λ 1 promises to make the results for different time series better comparable.
+
+11 A referee made us aware of a more general point of view. He or she states that 'HP1 is indeed a special case of Steidl et al. (2006) and Kim et al. (2009). In general, the penalty function is expressed as the total variation of the trend function's k -th derivative. This specification has a notable advantage: the fitted trend is piece-wise k -th polynomial. Here, HP1 corresponds to k = 1 . A further reference is Tibshirani (2022), who further connects (Kim et al., 2009 )'s setup to discrete splines.' Interestingly, the referee also suggests to set k = 2 to make the fitted trend piece-wise quadratic. While pursuing this proposal would overextend the present paper, we are really gratefully for thus widening our horizon.
+
+12 Over a linear segment, the differences ( y ⋆ t - y ⋆ t - 1 ) and ( y ⋆ t - 1 - y ⋆ t - 2 ) are  therefore only approximately equal. The procedure is described by Kim et al. (2009) in Section 6; for more mathematical background of convex optimization problems of this type, see Arias (2016). A software code for Matlab and C can be downloaded from https://web.stanford.edu/~boyd/l1\_tf/ (the first character 'l' in 'l1\_tf' is an 'ell', the second '1' is the number one).
+
+<!-- p:8 -->
+
+
+Regarding a discussion of the effects of λ 1 , let us begin with the elementary observation that the penalty coefficient has an impact on the number of break points in the estimated trend. While for λ 1 = 0 it would trivially coincide with the data points, the kinks in y ⋆ t will typically decrease in number as λ 1 is increased (although this relationship need not necessarily be everywhere monotonic; Kim et al., 2009, p. 344). All of the kinks disappear and the trend is given by one straight line when λ 1 gets large enough. As opposed to HP2, there is here a finite value λ 1 = λ 1 ,max for this to happen, which can also be explicitly computed (Kim et al., 2009, p. 343). A straight line also comes about for all λ 1 &gt; λ 1 ,max .
+
+One has, however, to be aware that it is in the first instance this benchmark value that may be different for different series y t , even if they originate from the same stochastic process. 13
+
+As a more detailed information we can add what we learnt from some explorations at the beginning of our investigations, namely that, given a regularly oscillating cyclical  component c t ,  the  value  of λ 1 ,max is  mainly  dependent  on  how  much  the true trend changes, and far less so on the amplitude or period of c t .  For example, a purely linear trend over 60 years yields λ 1 ,max ≈ 16 regardless of its slope. By contrast, a segmented linear trend with subsequent growth rates of 5, 3.5 and 2 per cent (or only two segments with 5 and 3.5 per cent growth) gives rise to λ 1 ,max ≈ 393 (or λ 1 ,max ≈ 260 ).  For  comparison, when doubling the amplitude of the cyclical component in the scenario with the three growth regimes from 0.05 to 0.10, λ 1 ,max only changes from 393 to λ 1 ,max ≈ 380 , while reducing the period of c t from 9.50 to 8.00 years yields λ 1 ,max ≈ 389 . Since at the same time suitable values of μ 1 were found to remain within a relatively limited interval, already these few cases underline the importance of decomposing the coefficient λ 1 in Eq. 2 into the two factors μ 1 and λ 1 ,max .
+
+Back to the Hodrick-Prescott approach to detrending in general, its characteristic feature is the so-called regularization principle, which refers to the second term in the curly brackets in Eqs. 1 and 2. An l 1 regularization is given when an l 1 norm term is added to an objective that is to be minimized. Solutions to this type of problems typically have the form of, somewhat informally speaking, piecewise linear functions. This knowledge is by no means new and it has been made use of in various research fields such as geophysics and, more generally, signal processing (Kim et al., 2009, p. 344, give a large number of references in this respect).
+
+Regarding  economics,  we  only  know  of  one  application  by  Yamada  and  Jin (2013). They employ this method to detrend the real GDP of the Japanese economy. For us it is interesting to note that, regarding the number of break points, they invoke prior research according to which there are three growth regimes in the postwar era until 2011; first rapid growth, then a slow-down, and ultra-slow growth in the third stage. With this view, the authors tune λ 1 such as to obtain two break points where, however,  the  dates  of  their  occurrence  are  not  imposed  but  endogenously  determined. Another idea, for which Yamada (2018) provides some analytical insights, is to select λ 1 = μ 1 · λ max such that the sum of the squared residuals of HP1( μ 1 ) and of HP2(1.00) may be equivalent.
+
+13 It would thus have been more precise to write λ 1 ,max = λ 1 ,max ( { y t } t max t =1 ) in Eq. 2. We avoid this notation because it is visually cumbersome.
+
+<!-- p:9 -->
+
+
+### 3  Generation of the artificial data
+
+There is a simple and easily reproducible experiment that is suited to cast elementary doubts on the conventional HP filter. Generate artificial quarterly data by positing a linear 60-year trend and an idealized cyclical motion around it. A prototype of the latter is an ordinary sine wave with a period of 8 or 10 years, say. In fact, numerical simulations of small-scale business cycle models frequently yield trajectories of their (normalized) state variables that show a rather similar behaviour. The trend estimated by HP2(1.00) and the true trend can then be best compared by plotting their slopes against time, which should just be a horizontal line. However, HP2(1.00) fails to filter out the oscillations; typically, the sine waves are still clearly visible in these plots.
+
+We adopt the same approach in the present section but work with more 'realistic' data. 14 In this way we can test the ability of HP1 and HP2 to recover the true trend set up by us. Accordingly, we first have to specify a statistic, designated d , that measures the distance between the true trend y ⋆ of the data y and an estimated trend y ⋆, HP j ( μ j ) (in obvious notation). In view of an end-of-sample bias mentioned in the Introduction, we provide for the possibility of discarding the first and last q quarters of the sample. To begin with, let { y t } , { z t } be two time series observed at quarters t = 1 , 2 , . . . , t max and denote their root mean squared deviation as
+
+$$t = 1 , 2 , \dots , t \quad \text {and} \ \text {decide then} \ \text {root mean squared deviation as} \\ \text {RMSD} \ ( y , z ; q ) \coloneqq & \sqrt { \frac { 1 } { t ^ { \max } - 2 q } \sum _ { t = 1 + q } ^ { t ^ { \max } - q } ( y _ { t } - z _ { t } ) ^ { 2 } } \ \ . \\ \text {Concretely, we work with } q = 4 \ \text {quarters. To make the distance between } y ^ { * } \text { and}$$
+
+Concretely,  we  work  with q = 4 quarters.  To  make  the  distance  between y ⋆ and y ⋆, HP j ( μ j ) independent  of  the  size  of  the  variations  in  the  cyclical  component c t = y t - y ⋆ t , we scale their RMSD by the latter's standard deviation, which equals RMSD ( y, y ⋆ ; 4) . For an estimation y ⋆, HP j ( μ j ) we therefore define our distance measure d as
+
+$$d \div R M S D \, \left ( y ^ { * , \, H P \, j ( \mu _ { j } ) } , y ^ { * } ; 4 \right ) \, / \, \ R M S D \, ( y , y ^ { * } ; 4 ) .$$
+
+Hence d measures the deviations of the estimated from the true trend in per cent of the  cyclical  component's variability, so that values of d considerably below unity will certainly be desirable. This normalization will help us put our later quantitative results into perspective. Depending on the context and the feature that we want to stress, we may conveniently write d = d HP j or d = d ( μ j ) . Note that the distance between y ⋆ and an estimated trend y est is the same as the distance between the corresponding cyclical components c = y - y ⋆ and c est = y - y est .
+
+14 Our methodology is thus essentially the same as in Hodrick (2020, Section 10). However, while for the generation of artificial data he uses several (estimated) stochastic standard processes, ours will be geared towards more specific features of the data and, in particular, a typical period of its fluctuations. In addition, we will not be limited to a stochastic trend concept, and we will also check our results with one of the more elaborate processes considered by Hodrick.
+
+<!-- p:10 -->
+
+
+Let us thus turn to the generation of the artificial data with which we want to test the trend estimations. We will distinguish several versions of dynamic processes to simulate these data, but all of them are composed of a trend and a cyclical component and all of them include random elements. To obtain conclusive results we will therefore have to run a great number of simulations. As another aspect to make our ambition of 'more realistic' data more concrete, we will calibrate the simulated series to an empirical business cycle variable. Here, instead of GDP, we refer to the quarterly real gross value added (GVA) of the US nonfinancial corporate business, measured in logs of course. 15 The basic idea is to determine the parameters in the stochastic processes such that the resulting data share some general key features with GVA. Essentially, this will be moment conditions. The finer details will, however, be given as we are going along.
+
+We make two kinds of distinction in the specification of the data generation pro - cesses; one regarding the trend that we postulate and one regarding the cyclical component. For each of them two cases are considered, so that on the whole we will study four scenarios. For the remainder of the paper, please note that the underlying time unit will be a year instead of a quarter. The time horizon will in all cases be 60 years.
+
+#### 3.1  Three growth regimes
+
+Let us begin with the specification of the output trend, where we take account of an important divide in economic theory: the notion of a deterministic versus a stochastic trend. The former is commonly represented by an increasing line with a fixed slope, the  latter  by  a  random  walk  with  a  constant  drift.  For  the  post-war  US  economy (and not only for that), however, the supposition of a constant growth trend cannot be maintained; undoubtedly growth rates were systematically falling over time. A stylized narrative distinguishes between three growth regimes. Concretely we may draw on a recent discussion by Hall (2020), which incidentally did not primarily take place in an economic context. It charts changes in post-war growth in the following regimes. The first one is an era of modernization stretching from 1950 to 1975, the second an era of liberalism running from 1980 to 2000, and subsequently an era of knowledge-based growth. Connected to the keyword of the productivity slow-down, the growth rates are declining from one regime to the other.
+
+Correspondingly, we postulate three regimes of 20 years each, exhibiting growth rates of 5, 3.5 and 2 per cent, respectively. In order not to put HP2 at an undue disadvantage, the discontinuous jumps from one period to the next are smoothed by a moving average around the break dates. To this end, let MA ( x t , 4) be the two-sided moving average of a series with an extension of 4 quarters on each side of a value x t . Applying it to the step function of the three growth rates, a continuous relationship of (actual or expected) trend growth rates g e t in periods t = 0 , 0 . 25 , 0 . 50 , . . . , 60 . 00 is obtained (though with kinks when the regimes change):
+
+15 The series was downloaded from https: //fr ed.stlouis fed .org/s eries/B4 55RX1Q027SBEA, and the period 1960:1 - 2018:1 extracted. If we just speak of 'GVA' in the following, it may be understood that its real values are meant. GVA is chosen rather than GDP because it is closer to the output variable in most of the small-scale macro models, which is usually the output of only the firm sector. The general cyclical features of GVA and GDP are nevertheless fairly similar.
+
+<!-- p:11 -->
+
+
+$$\tilde { g } _ { t } ^ { e } = \begin{cases} & 0 . 0 5 0 & \text {if } t < 2 0 , \\ & 0 . 0 3 5 & \text {if } 2 0 \leq t < 4 0 , \\ & 0 . 0 2 0 & \text {if } t \geq 4 0 . \end{cases}$$
+
+$$g _ { t } ^ { e } = M A \, \left ( \tilde { g } _ { t } ^ { e } , 4 \right ) .$$
+
+Surely, g e t =  ̃ g e t most of the time. We use the acronyms DT and ST to refer to the deterministic  and  the  stochastic  trend  concept,  respectively.  With  an  initialization y ⋆ 0 = 0 and a variance σ 2 ε for the random walk, the two trend series are given by:
+
+$$y _ { t } ^ { * } = y _ { t - 0 . 2 5 } ^ { * } \, + \, 0 . 2 5 \, g _ { t } ^ { e } .$$
+
+$$y _ { t } ^ { * } = y _ { t - 0 . 2 5 } ^ { * } \, + \, 0 . 2 5 \, g _ { t } ^ { e } \, + \, \varepsilon _ { t } \, , \quad \varepsilon _ { t } \sim N ( 0 , \sigma _ { e } ^ { 2 } ) .$$
+
+It goes without saying that the innovations ε t in (ST) are independently and identically distributed.
+
+#### 3.2  Justifying our non-standard approach to the cyclical component
+
+In a general description of our approach to test HP with artificial data from a sto - chastic  process,  it  is  similar  to  two  recent  papers  by  Hodrick  (2020,  Section  10) and Schüler (2021, Section 4). They conduct such comparisons between alternative detrending procedures on the basis of several processes which are rather standard in time series analysis and, roughly saying, differ in their complexity. However, while the processes are estimated on US output data, the authors do not discuss whether the resulting cyclical component is also capable of bringing out what we consider a principal characteristic of the business cycle. This is its periodicity as it is inferred from a pronounced peak in the spectrograms of cycle-related data with no long-run growth. Experimenting with estimations of similar processes ourselves, we suspect that a reasonable order of magnitude between, say, 8 and 10 years for their cyclical component may not be automatically guaranteed.
+
+To corroborate our scepticism without going into too much detail, we took an example of a cyclical component in Hodrick's ( 2020) study. This is an AR(2) process as it was estimated by Hodrick as part of Clark's ( 1987) Unobserved Components Model. 16 To begin with, these series do not quite look to the naked eye like what one would be willing to recognize as a typical business cycle pattern. As an illustration consider Fig. 1. As a reference, its top-left panel shows a quarterly US output gap series for the non-farm business. It is given by the percentage deviations of the actual output from an estimation of the potential output by the Congressional Budget Office (CBO). One glance suffices to capture the kind of regularity in these fluctuations. By contrast, the bottom-left panel presents a sample run of the cyclical component of Clark's model. Obviously, its pattern is rather distinct from the empirical series. We may add that this stochastic example is not particularly special; other samples can easily exhibit even more irregularity.
+
+16 The model is described in the Appendix.
+
+<!-- p:12 -->
+
+
+Fig. 1 The CBO output gap, a sample of Clark's cyclical component, and two samples of (C1), (C2). Note: The shaded areas in the top-left panel indicate the NBER peaks and troughs
+
+Regarding the more objective criterion of a peak in the spectrograms of Clark's AR(2) process, we computed 5000 samples over a time horizon of 240 quarters. It turned out that the frequencies at which their major peaks occurred show an extremely wide dispersion. Their distribution was even bimodal, one mode associated with a period of more than 100 years (apparently reflecting a weak spurious trend in such a relatively small sample), and the other and higher mode characterizing a period of less than 4 years. Hence at least this process does not reliably produce fluctuations at a typical business cycle frequency. Nevertheless, to put our results for HP2 into perspective, we will run our experiments on it, too.
+
+As another check, we specified the cyclical component c t as an  ARMA( p , q ) process, combined it with a trend y ⋆ t from DT or ST above, and as described in the next subsection estimated the sum y t = y ⋆ t + c t on moments of the first differences of a US output series. A choice p = 2 and q = 3 proved to be good enough in this respect. Again, we looked at the resulting spectrograms of the simulations of c t , and again they failed to establish a reliable tendency towards a peak at a typical business cycle frequency.
+
+These explorations induced us not to rely on hopes that a process yields a desired periodicity as a side result. Instead, we stepped away from the standard time series processes and imposed such a periodicity on the cyclical component in a more direct, though unconventional, way. In this sense we believe the following experiments are more appropriate to study business cycle data. Indeed, their results may be viewed as complementary to the investigations by Hodrick (2020) and Schüler (2021).
+
+<!-- p:13 -->
+
+
+#### 3.3  The cyclical component
+
+The desired periodicity in the spectrogram of the cyclical component is most conveniently ensured by specifying c t as a sine wave. While on its own this simple device will not be sufficient to meet the moment conditions that will be introduced below, incorporating suitable random disturbances will do the trick.
+
+Two  sources  of  noise  are  considered  in  this  respect;  one  randomly  varies  the period of a sine wave from one full cycle run to the next, the other adds a moving average process to these waves. Let us begin with the description of the first concept of an oscillatory motion, designated s t . It has a constant amplitude α and an average period T .  The random periods of one single cycle are drawn from an interval [ T - ∆ T, T +∆ T ] with equal probabilities. If U denotes the uniform distribution and φ is a parameter that may shift the waves in times, we have s t = s t ( T, ∆ T, φ, α ) . The idea is simple but the precise formal specification is more cumbersome:
+
+$$\cdot \text {The idea is simple but the precise formal specification is more cumbersome.} \\ s _ { t } ( T , \Delta T , \phi , \alpha ) & = \alpha \sin [ \omega _ { t } \left ( t - \tau _ { t } \right ) + \phi ] , \quad \text {where} \colon \\ \omega _ { t } & = 2 \pi / T ( k ) \quad \text {for } t _ { k - 1 } \leq t < t _ { k } , \\ T ( j ) & \sim U ( T - \Delta T , T + \Delta T ) \quad j = 1 , 2 , \dots , \\ t _ { k } & = \sum _ { j = 1 } ^ { k } T ( j ) \quad t _ { 0 } = 0 , \\ \tau _ { t } & = t _ { k - 1 } \quad \text {for } t _ { k - 1 } \leq t < t _ { k } . \\$$
+
+To understand this patchwork, consider the motion in continuous time and put φ = 0 for a short moment. A cycle with period T ( k ) begins with a zero value at t = t k - 1 , when the argument of the sine function in the first row is ω t ( t - t k - 1 ) = 0 . Note that t k - t k - 1 = T ( k ) . Thus, as t approaches t k from the left, the argument tends towards ω t ( t k - t k - 1 ) = [2 π/T ( k )] T ( k ) = 2 π and the function converges to sin(2 π ) = 0 , from whereon the next cycle starts. With a nonzero shift factor φ , we have sin( φ ) at these connection points. Of course, the function s t is only evaluated in the quarterly intervals at t = 0 , 0 . 25 , 0 . 50 , . . . , 60 .
+
+Function (7 ) leads us to the question of what period to choose for a 'typical' busi - ness cycle. According to much of the discussion around Hodrick-Prescott detrending, it is not longer than 8 years. Recent evidence provided by Beaudry et al. (2020) and by Barrales-Ruiz and von Arnim (2021), however, contradicts this view. Independently of possible problems with particular detrending devices, they compute spectograms of cycle-related empirical variables with no long-run growth (such as working hours per capita or job finding rates, for example). Here they find a pronounced peak between 38 and 40 quarters. This is also the order of magnitude that will be normative for our investigation.
+
+Motions s t form the basis for our cyclical component. Even when adding some noise to s t , however, it may be expected that one such motion would be too regular and thus make the task for HP unduly easy. For this reason two cases will be distinguished, one being based on one oscillation s t and the other on a superimposition of two of them. The cases will be referred to as C1 and C2, respectively. For C1 we assume that the periods vary with ∆ T = ± 1 around T = 9 . 50 years. In the second scenario we add a second but less important motion s t . Its periods lie between 6 and 8 years and its amplitude is half as wide. This choice is motivated by a second minor peak in several of the aforementioned spectrograms.
+
+<!-- p:14 -->
+
+
+Regarding the additional random noise imposed on these constituent oscillations, it turns out that a moving average process with three lags, MA(3), is sufficient for our purpose. 17 Thus, with respect to an amplitude α , the MA coefficients θ 1 , θ 2 , θ 3 , and the variance σ 2 η of its innovations η t , our two cyclical scenarios are given by:
+
+$$c _ { t } & = s _ { t } ( 9 . 5 0 , \Delta T , \phi , \alpha ) \\ & + \, \eta _ { t } \, + \, \sum _ { j = 1 } ^ { 3 } \theta _ { j } \, \eta _ { t - 0 . 2 5 \, j } \, , \quad \eta _ { t } \sim N \left ( 0 , \sigma _ { \eta } ^ { 2 } \right ) \, , \quad \Delta T = 1 . 0 0 , \, \phi = 0 . \\$$
+
+$$c _ { t } & = s _ { t } ( 9 . 5 0 , 0 . 0 0 , 0 , \alpha ) \ + \ s _ { t } ( 7 . 0 0 , 1 . 0 0 , 0 . 7 0 \cdot 7 . 0 0 , \alpha / 2 ) \\ & \quad + \ \eta _ { t } \ + \ \sum _ { j = 1 } ^ { 3 } \theta _ { j } \, \eta _ { t - 0 . 2 5 \, j } \ , \quad \eta _ { t } \sim N \left ( 0 , \sigma _ { \eta } ^ { 2 } \right ) \ , \quad \Delta T = 1 . 0 0 . \quad ( C 2 ) \\ \intertext { t h e f t } \ The s h i f t \, \phi = 0 . 7 0 \colon 7 0 \, \text {in the second sine wave in } ( C 2 ) \text { introduces more irregular- }$$
+
+The shift φ = 0 . 70 · 7 . 00 in the second sine wave in (C2) introduces more irregularity in the composite motion than, for example, φ = 0 . 50 · 7 . 00 . Note that the parameters θ 1 , θ 2 , θ 3 , σ 2 η will generally be different across C1 and C2. Before turning to their  determination, we should give a visual impression of the somewhat abstract description of C1 and C2. This is done in Fig. 1, which is based on the numerical calibration presented in a moment. The MA parts of the two scenarios use the same sequence of random numbers drawn from the unit normal (which are then multiplied by the specific standard deviation σ η for  (C1)  and  (C2),  respectively). The  series (C1) is seen to exhibit no great differences in the amplitudes of the single cycles. Especially the behaviour around the upper and lower turning points can be rather diverse, though. This equally holds true for the series (C2). In addition, however, there is now a noticeable variability in the amplitudes, too. On the whole, this series seems to constitute a good example of what detrending procedures qualitatively tend to produce in empirical work.
+
+#### 3.4  Calibration of the numerical coefficients
+
+Combining the trend scenarios (DT) and (ST) with the cyclical scenarios (C1) and (C2) yields our artificial data y t = y ⋆ t + c t . On the whole this gives us four scenarios with which we can test the Hodrick-Prescott filters and the choice of their smoothing parameters. That is, we will apply the filters to the data alternatively generated by (DT-C1), (DT-C2), (ST-C1), (ST-C2).
+
+Even though the thus estimated cyclical components c est t will not coincide with the true c t , their spectrograms will not substantially differ. So the spectrogram crite rion for the artificial data can be safely considered satisfied. The other features that, as announced above, we want the data to share with the empirical GVA are more concise and refer to their first differences. In detail, we consider the five moments of their standard deviation and the first four autocorrelations. For each scenario we settle down on a parameter set β := ( α, θ 1 , θ 2 , θ 3 , σ η , σ ε ) such that, 'on average', the simulated moments come as 'close' as possible to their empirical counterparts. With respect to a random seed b = 1 , . . . , B , 'closeness' is described by a loss function L = L ( β, b ) that computes the mean of a quadratic distance between the moments across 10 simulation runs. 18 For each such b , parameters ˆ β b are computed that minimize this loss over all admissible β .
+
+17 It is unnecessary to include an autoregressive part because its role is already taken on by the sine waves.
+
+<!-- p:15 -->
+
+
+It actually turns out that, in each case, all of the empirical moments are (almost) perfectly matched, L ( ˆ β b , b ) ≈ 0 for all b . For the two stochastic trend scenarios this holds for fixing σ ε at values less or equal to 0.0050, while raising σ ε above it would increasingly deteriorate the match. We choose σ ε = 0 . 0050 for our calibration, which in this sense acknowledges a maximal role to the randomness in the trend.
+
+Now, it has to be taken into account that a single ˆ β b is only tailored to a particular random seed b , and that employing the same parameters for a different seed will spoil the optimal match L ( ˆ β b , b ) ≈ 0 .  In  other  words, a given parameter vector ˆ β b may prove more or less lucky in this extended context. To 'average' across the cases of good and bad luck, we opt for the random seed b o that, across all of the realizations of the stochastic processes that we considered, yields the lowest mean loss. Correspondingly, with respect to a given scenario (DT-C1), (DT-C2), etc., we generate the artificial data with the following parameter vector:
+
+$$\beta ^ { o } = \hat { \beta } ^ { o } , \quad \text {where} \quad b ^ { o } \colon = \arg \min _ { b } \ \left \{ \frac { 1 } { B } \ \sum _ { c = 1 } ^ { B } \ L \left ( \hat { \beta } ^ { b } , c \right ) \right \} . \\ \\ \\ \\ \text {The outcome of the optimization} \ \quad \arg \sum _ { b } \ 1 - \log 1 _ { B } \log 1 _ { C } \ L \log 1 _ { B } \ L \log 1 _ { C } .$$
+
+The outcome of the optimization procedure (8) is reported in Table 1. It does not seem very fruitful to compare the coefficients across the four scenarios, except per - haps for the observation that a lower amplitude α tends to be compensated by higher values of θ 1 , indicating a stronger role for the stochastic MA process (given that their variance σ 2 η does not greatly vary).
+
+The minimum losses (1 /B ) ∑ c L ( β o , c ) in Eq. 8 are not very different across the scenarios. Hence all four scenarios would be suitable dynamic processes to generate the artificial data with which, in the next section, we can test HP1 and HP2 in a context of GVA cyclical growth. The statistics with which we want to evaluate these Monte Carlo experiments will be reported for all of the scenarios. For reasons of space, on the other hand, our graphical illustrations will concentrate on ST-C2 and DT-C2. In this way account may be taken of both believers in a deterministic and believers in a stochastic trend.
+
+18 In a rigorous econometric framework such an averaging would increase the precision of the parameter estimates vis-à-vis the ideal case when the expected moments could be determined analytically; for details see, e.g., Duffie and Singleton ( 1993, p. 945).
+
+<!-- p:16 -->
+
+
+ε
+
+| Table 1 Numerical coefficients β o from optimization (8) for the four scenarios (rounded) - α   |    θ 1 |    θ 2 |    θ 3 |   100 · σ η | 100 · σ   |
+|-------------------------------------------------------------------------------------------------|--------|--------|--------|-------------|-----------|
+| DT-C1: 0.0450                                                                                   | 1.4055 | 0.7221 | 0.6534 |      0.7256 | -         |
+| DT-C2: 0.0433                                                                                   | 1.3885 | 0.7083 | 0.6475 |      0.7175 | -         |
+| ST-C1: 0.0514                                                                                   | 1.1682 | 0.7497 | 0.5940 |      0.7383 | 0.500     |
+| ST-C2: 0.0421                                                                                   | 1.2354 | 0.7515 | 0.6310 |      0.7117 | 0.500     |
+
+### 4  Choosing the smoothing parameters
+
+With  the  design  of  the  four  scenarios  for  our  artificial  data  and  their  numerical specification in Table 1, we have now laid the groundwork for the comprehensive Monte Carlo experiments in this section. In essence, for each scenario we generate b = 1 , . . . , B = 1000 samples of data and, applying HP1 and HP2 to each of them, determine the values μ opt j ( b ) , that minimize the distance d ( μ j , b ) between the estimated and the true trend ( j = 1 , 2 ). We can then study the distributions of these optimal values more closely.
+
+Beforehand,  we  should  have  a  look  at  the  shape  of  the  single  functions μ j ↦→ d ( μ j , b ) . In particular, the minimization results would appear more reliable if we could mostly be sure that we will not have to face multiple local minima in these functions. Furthermore, by checking how sensitively the distances may react to minor changes in μ j , we would get a first impression of the robustness of the results below.
+
+To this end, Fig. 2 picks out two sample runs over 60 years from scenario DT-C2 and ST-C2, respectively, and plots these functions over a relevant range. 19 The overall idea that the plots convey is that the functions are relatively well-behaved. In fact, from our explorations of many other examples we can say that these examples are qualitatively fairly representative. We nevertheless do not conceal a possible exception with the occurrence of two local minima (the bold (blue) line in the upper-left panel), but even though, the distances to which these values of μ 1 give rise are not very different. We can thus have some confidence that multiple minima are not a great problem in the minimization problems.
+
+Another important observation is that small and even somewhat wider deviations from the optimal μ 's have rather limited effects. This holds for the performance of HP1 as well as HP2. It may in this context be emphasized that even a performance of d ( μ 1 ) = 0 . 30 versus d ( μ 1 ) = 0 . 26 , which visually does not seem negligible in the lower-left panel, would still be acceptable and need not necessarily suggest a rejection of the inferior μ 1 : when plotting the two corresponding cyclical components of these estimations in one diagram, this outcome will be assessed as practically the same. As a first and general result we can therefore state: 20
+
+Remark 1 Regarding the choice of their smoothing parameters, the performance of the two HP detrending devices features a substantial robustness.
+
+19 The samples have been chosen such that their distances d ( · ) are in a similar range.
+
+20 It will also be supported by some observations that we can make in connection with the battery of Monte Carlo experiments below.
+
+<!-- p:17 -->
+
+
+Fig. 2 Distance d ( μ 1 ) , d ( μ 2 ) from HP1, HP2 for two sample runs from scenario DT-C2 and ST-C2, respectively. Note: Underlying the bold (blue) and thinner (red) lines on the left and on the right is the same cyclical component. The distance is minimized at the vertical dotted lines
+
+As another result it comes as no great surprise that for both procedures HP1 and HP2 it is much harder to approximate the flexible stochastic trend than the segmented deterministic trend, as it is evidenced by the former's considerably higher distance statistics. Also, given the greater flexibility in the stochastic trend it makes sense that the optimal values of μ 1 and μ 2 tend be lower in this case than for the deterministic trend (see the vertical dotted lines). Nevertheless, more than this only casual information will have to be acquired on this issue.
+
+Regarding a comparison of the performance of HP1 versus HP2, that one might be superior to the other, merely on the basis of the evidence in Fig. 2 one will not dare to formulate a general hypothesis.
+
+For a more systematic investigation of the questions we have touched on it is thus time to turn to the experiments described at the beginning of this section. An overall picture is obtained by looking at the frequency distributions of the optimal parameters μ opt j ( b ) and the corresponding distances d ( μ opt j ( b )) ; j = 1 , 2 , b = 1 , . . . B = 1000 . Figure 3 does this for the two more important scenarios that combine the cyclical component C2 with a stochastic or deterministic trend. 21
+
+Collecting the results, let us begin with HP2 and the question whether μ 2 ≈ 1 (i.e. λ ≈ 1600 for the ordinary HP filter) could be a suitable smoothing parameter. The answer is unequivocally in the negative, already visually. Numerically, across all scenarios and simulation runs, no μ 2 ≤ 3 was found that would minimize the distance. We may set this check off from the main text:
+
+21 Regarding the lower-left panel, we have no convincing explanation for the kink in the distribution of
+
+μ opt 2 ( b ) for DT-C2 at about μ 2 = 11 . 5 . It is perhaps more than accidental, because a similar phenomenon was found for DT-C1 and also in previous experiments with somewhat different artificial data.
+
+<!-- p:18 -->
+
+
+Fig. 3 Frequency distribution of the optimal smoothing parameters and their performance. Note: The vertical dotted lines in the left column (right column) indicate the median values  ̄ μ med 1 ,  ̄ μ med 2 of the distributions of the optimal parameters μ opt 1 ( b ) , μ opt 2 ( b ) (the medians of the corresponding distances d ( μ opt 1 ( b )) , d ( μ opt 2 ( b )) ); b = 1 , . . . 1000 . The dashed curves in the right column are the distributions d ( ̄ μ med 1 , b ) and d ( ̄ μ med 2 , b ) ,  respectively (the (blue) dashed line representing d ( ̄ μ med 2 , b ) for scenario DT-C2 in the lower-right panel is almost entirely covered by the bolder line representing d ( μ opt 2 ( b )) )
+
+Remark 2 For HP2 and all of the artificial data series that we considered, the optimal parameters μ opt 2 are larger than and distinctly bounded away from unity.
+
+What leaps to the eye in the diagram when generally comparing the distributions is a confirmation of the conjecture from Fig. 2, that suitable smoothing parameters tend to be lower for the stochastic trend than for the deterministic trend. Comparing, across  these  cases,  the  median  values  of  the  distributions  of μ opt 1 ( b ) and μ opt 2 ( b ) , respectively, Table 2 tells us that this does not only hold for scenario ST-C2 versus DT-C2 but also (though in weaker form) for ST-C1 versus DT-C1. Given the large number of the underlying simulation runs, these differences are highly significant. The following important message should therefore be kept in mind:
+
+Remark 3 Before researchers planning to employ HP1 or HP2 for a particular value of μ 1 or μ 2 , they should make up their mind whether they tend to believe in a deterministic or rather a stochastic trend. That is, HP detrending is not a purely technical issue but requires a prior economic judgement, which may better be made explicit.
+
+<!-- p:19 -->
+
+
+Table 2 Smoothing parameters and their performance: statistics of the MC frequency distributions
+
+|               |   μ opt 1 |   d ( μ opt 1 ) |   d ( ̄ μ med 1 ) |   d ( ̄ μ med 2 ) |   d ( μ opt 2 ) |   μ opt 2 |
+|---------------|-----------|-----------------|------------------|------------------|-----------------|-----------|
+| DT-C1: median |     0.881 |           19.56 |            20.09 |            21.52 |           21.40 |     12.24 |
+| std           |     0.327 |            4.13 |             4.19 |             3.40 |            3.41 |      2.78 |
+| DT-C2: median |     0.938 |           18.64 |            19.13 |            19.93 |           19.85 |     11.71 |
+| std           |     0.221 |            3.48 |             3.46 |             2.88 |            2.91 |      2.31 |
+| ST-C1: median |     0.707 |           29.59 |            30.36 |            30.14 |           29.76 |      8.95 |
+| std           |     0.275 |            3.60 |             3.60 |             3.64 |            3.61 |      5.70 |
+| ST-C2: median |     0.641 |           30.39 |            31.20 |            30.39 |           30.08 |      7.51 |
+| std           |     0.222 |            3.63 |             3.64 |             3.56 |            3.53 |      4.91 |
+
+Note: μ opt 1 and  all  distances d ( · ) are  multiplied  by  100,  'std'  reports  the  standard  deviation  of  the distributions. Boldface figures may be taken as benchmark values for believers in a deterministic or stochastic trend, respectively
+
+In  greater  detail  we  can  observe  (and  confirm  by  the  corresponding  statistics) that the distributions of μ opt 1 ( b ) and μ opt 2 ( b ) are significantly skewed to the right. 22 Because mean values are sensitive to outliers, this is also the reason why for any scenario we only report the medians. The skewness could be explained by a certain tendency for the functions μ j ↦→ d ( μ j ) to be flatter for higher than for lower values of μ j ( j = 1 , 2 ).
+
+The two panels in the right column of Fig. 3, the solid lines in which plot the distributions of the distances resulting from μ opt j ( b ) , make it unequivocally clear that, despite their optimality in each and every simulation run, the deterministic trend can be much better approximated than the stochastic trends. As it is already indicated by the small overlapping areas of DT-C2 and ST-C2, the medians of d ( μ opt j ( b )) are indeed significantly lower for the former scenario ( j = 1 , 2 ).
+
+While Fig. 3 shows clear tendencies in the comparisons between the deterministic and  stochastic  trend  scenarios,  the  distributions  of μ opt j ( b ) and  the  corresponding distances d ( μ opt j ( b )) ( j = 1 , 2 )  exhibit a certain, nonnegligible dispersion. Table 2 expresses it quantitatively in terms of the standard deviations. Hence given the fact that in practical applications, where one is dealing with a specific time series, we do not know the best value of μ j , it is all the more urgent to ask for the implications if instead, by necessity, inferior values are chosen. Certainly, with respect to a given scenario, the most reasonable option if one has to decide on a specific parameter value would be to resort to the median values  ̄ μ med j := median { m opt j ( b ) } . 23 The dashed lines in the panels on the right-hand side of Fig. 3 plot the distributions of the thus resulting distances d ( ̄ μ med j , b ) and so give us an overall impression of how inferior this choice would be.
+
+22 The standard error for skewness is solely a function of the sample size N , regardless of the values of the statistic themselves. Its variance is computed as: V = 6 N ( N - 1) / [( N - 2) ( N +1)( N +3)] .
+
+23 We add a bar in order to emphasize that it is a fixed value.
+
+Accordingly, the standard error s is approximately s ≈ √ 6 / 1000 = 0 . 077 , whereas the (by far) lowest skewness that we computed is 0.34 (for HP1 in scenario DT-C2).
+
+<!-- p:20 -->
+
+
+Comparing these distributions to those from the optimal values μ j , the deterioration appears to be rather limited. As a quantitative characterization by a single number, Table 2 also juxtaposes the median values of d ( ̄ μ med j , b ) and d ( μ opt j ( b )) . What is additionally seen in this way is that generally these differences are smaller for HP2 than for HP1. 24 For  the  application  of  HP2  in  scenario  DT-C2  in  the  lower-right panel of Fig. 3 ,  the deterioration by fixing the smoothing parameter at μ 2 =  ̄ μ med 2 is even negligible versus the optimal choice μ opt 2 ( b ) for each of the simulated time series. This is confirmed by a Wilcoxon-Mann-Whitney test, which yields a p -value far  above  the  5  per  cent  level  when  comparing  the  distributions  of d ( ̄ μ med 2 ) and d ( ̄ μ opt 2 ) . 25 It is also similarly high for HP2 and DT-C1.
+
+On the other hand, for all other combinations of applying HP1, HP2 to DT, ST and C1, C2, the two distributions d ( ̄ μ med j , b ) and d ( μ opt j ( b )) , j = 1 , 2 ,  are  statistically told apart, though at possibly very different orders of magnitude (which, however, is a detailed issue that would lead us too far astray). Practically, however, this may not be rated too highly. So, for a general judgement, let us summarize (where the last sentence is based on observations like that mentioned in the presentation of Remark 1):
+
+Remark 4 When in applied work with a given empirical time series, the best one can do is to resort to a fixed parameter like μ j =  ̄ μ med j , it can (but need not) be that the deterioration of d ( ̄ μ med j ) versus d ( μ opt j ) from an (unknown) optimal choice is statistical significant (this depends on which of the scenarios may approximately underly the series). That possibility should not, however, be overstated, since the resulting differences  in  the  corresponding  cyclical  components  are  typically  negligible  for most practical purposes. In other words, the conclusions drawn from a poorer (though informed) choice of μ j are unlikely to be seriously misleading.
+
+Next, we may return to the question whether, on average, one of the two versions HP1 and HP2 may turn out to be superior to the other. If to this end we compare the medians of the distributions d ( ̄ μ med 1 , b ) and d ( ̄ μ med 2 , b ) ,  the  differences appear negligible.  Perhaps  somewhat  surprisingly,  bootstrapping  the  distribution  of  these medians, some of them can be statistically told apart (for DT-C1 and DT-C2, the median of d ( ̄ μ med 1 , b ) is significantly lower than that of d ( ̄ μ med 2 , b ) , whereas for STC2 it is the other way around). However, given the dispersion of the two distributions d ( ̄ μ med j , b ) , this seems a somewhat academic conclusion. So we may point out:
+
+24 Tentatively, this regularity might be explained by the flatter shape of the functions μ 2 ↦→ d ( μ 2 ) that we meant to observe in Fig. 2.
+
+25 It is p = 44 . 14 per cent, to be exact. The Wilcoxon-Mann-Whitney test, low p -values of which indicate that two distributions are significantly different, makes no parametric assumptions about them (more often the more general Kruskal-Wallis test is mentioned in this context). If the random events are identically distributed and the distributions have a similar shape and standard deviations, the p -value can be more specifically interpreted as testing for a difference between the medians of the distributions.
+
+<!-- p:21 -->
+
+
+Remark 5 None of the two detrending procedures HP1 and HP2 is systematically superior to the other. Hence a researcher may choose one of them on the ground of other considerations.
+
+We can thus conclude with the main message of Table 2, which is a recommendation of suitable values for the smoothing parameters μ 1 or μ 2 . For the sake of brevity and because the cyclical component C1 may perhaps be considered to be too stylized, it only takes the more general component C2 into account.
+
+Remark 6 If there are no other reasons, believers in a deterministic trend covering several growth regimes may settle for μ 1 ≈ 0 . 01 · 0 . 94 if  they  prefer  HP1,  or  for μ 2 ≈ 11 . 7 (i.e. λ = λ 2 = 11 . 7 · 1600 = 18720 )  if  they  prefer  HP2.  On  the  other hand, believers in a stochastic trend may choose μ 1 = 0 . 01 · 0 . 64 in the first case and μ 2 ≈ 7 . 5 (i.e. λ = λ 2 = 7 . 5 · 1600 = 12000 ) in the second.
+
+When somewhat in doubt over these figures, a higher rather than a lower value may be chosen. This is motivated by the skewed distribution of the optimal μ 1 , μ 2 in Fig. 3 . Regarding HP2, additional confidence in high values of μ 2 might be gained from the experiments that we conducted on an estimation of Clark's ( 1987) Unobserved Components Model, which we already mentioned in Section 3 when justifying our non-standard approach to the generation of artificial data. For this process the optimal values of μ 2 were even considerably higher than the ones in Remark 6. The details are given in an Appendix.
+
+The reason for our own interest in detrending is the resulting cyclical component and their main summary statistics, the standard deviation and the first four autocorre - lations-which the output gap of a small theoretical model should try to approximate. Intuitively, a good estimation of the trend should imply a good estimation of these empirical moments. Studying this issue in the extended version of this paper, a general downward bias was found. In all cases, however, it was less than 8 per cent. So it may be neglected, or the coefficients may be correspondingly corrected.
+
+### 5  Conclusion
+
+The paper reconsidered the widely employed Hodrick-Prescott filter and, with respect to quarterly data, put the common choice λ = 1600 for its smoothing parameter into question. Our interest originated with occasional remarks in the literature that this choice may tend to sweep too much of the cycle into the trend. We inquired into this issue by generating a battery of artificial data with a known trend and cyclical com - ponent, and checking how well different values of the smoothing parameters would be able to recover the true trend line.
+
+Instead of considering rather general stochastic processes to produce the data, we constructed them with a view to the growth and business cycle characteristics of the real gross value added (GVA) in the US nonfinancial corporate business over the last 60 years. This means the trend exhibits positive but declining growth rates over this period, the fluctuations show a dominant cycle period of, on average, almost ten years in their spectrogram, and the main moments of the first differences of the growth series are required to come close to those of the empirical GVA. In addition, it proved relevant to distinguish between a deterministic (segmented linear) growth trend and a stochastic trend.
+
+<!-- p:22 -->
+
+
+As an alternative, or rather a complement, to the Hodrick-Prescott (HP) filter as it is known in economics, we furthermore offered a procedure known in geophysics and other scientific fields which, however, can also be viewed as a slight modification of HP. The specification details motivated us to denote it as HP1 and the original filter as HP2. The attractive feature of HP1 is the fact that it yields a segmented linear trend line with endogenous break points. This can be an easy way without presuppositions to identify different growth regimes. The number and dates of these points depend, nevertheless, on the tuning parameter of this procedure. Regarding the ability of the two filters to approximate the true trend, they turned out to be largely equivalent.
+
+The upshot of the Monte Carlo experiments was a recommendation of suitable values of the smoothing parameters. Here it is, in particular, noteworthy that the one for HP2 is definitely several times higher than the familiar λ = 1600 .  It  was  also pointed out that deterioration in the trend estimates by suboptimal parameters are fairly limited, that is, the estimates are rather robust.
+
+Regarding the generality of our results, it may not be disregarded that the smoothing parameters proposed by us are suitable for real GVA and time series (like GDP, consumption or investment) that behave similarly. We have, however, to be prepared that things might be different for variables that are not systematically growing over a longer time horizon, like unemployment rates, wage shares, or profit rates. In prin - ciple, one could address these cases in the same way as in our Monte Carlo study. In practice, however, most researchers will prefer to avoid that effort and instead apply a ready-made procedure. While we do not offer a panacea for this demand, we can at least sketch an approach that would substantially reduce the workload.
+
+Concretely, with business cycle variables, one may begin with gaining an impression of different phases, or regimes, in their trend. Employing HP1 and trying a few values of its smoothing parameter should be good enough for this purpose. These explorations (or additional outside information) can also give an idea of a typical cycle period. In a second step, based on such a segmented linear trend and a researcher's view of the economy, a stylized deterministic or stochastic trend concept may be postulated, and subsequently a stochastic process for the cyclical component. The latter's specification may be the same or similar to our formulation for C1 or C2. Once such a data generation process is established, already three or four attempts (based on three or four different random seeds) to estimate the main moments of the first differences of the simulated series will be sufficient to decide on the numerical coefficients involved. In a third step, a few hundred time series can be sampled from the data generation process and for each one the optimal smoothing parameter be determined. This will be less effort than it might seem because Matlab, for example, is surprisingly fast in this respect. Finally one may choose the median of the collection of parameters thus obtained. Given the robustness of the approximations of the true trend that we observed on several occasions, there are good reasons to expect that such a result will be satisfactorily close to what a full-fledged simulation study would be able to offer us.
+
+
+<!-- p:23 -->
+
+
+### Appendix: Clark's Unobserved Components Model
+
+In some personal discussions the high values of the optimal μ 2 in Table 2 were called into question. Suspected as responsible for this outcome were the segmented linear trend or perhaps also the only mildly randomly disturbed sine waves in our cyclical component. To check these doubts we ran our experiments on additional artificial data that were generated by a more standard and commonly accepted time series process. To this end we made convenient use of Clark's ( 1987) unobserved components model as it was already estimated by Hodrick (2020, Section 4). The model postulates that GDP is the sum of a stochastic trend y ⋆ t and a stochastic cycle c t , where the change in the trend is modelled with a slowly time-varying conditional mean d t - 1 and a homoskedastic innovation. With the overall three innovations following the standard normal and being mutually uncorrelated, the two components were estimated as follows (the time unit being a quarter here):
+
+```
+\Delta y _ { t } ^ { * } & = d _ { t - 1 } \, + \, 0 . 5 4 5 \, \varepsilon _ { y , t } , \\ d _ { t } & = d _ { t - 1 } \, + \, 0 . 0 2 1 \, \varepsilon _ { d , t } , \\ c _ { t } & = 1 . 5 1 0 \, c _ { t - 1 } \, - \, 0 . 5 6 5 \, c _ { t - 2 } \, + \, 0 . 6 0 3 \, \varepsilon _ { c , t } .
+```
+
+Again we simulated 1000 samples of this process over the same time horizon as in our other experiments.
+
+The different cyclical pattern of c t compared to our sine waves was already illustrated in Fig. 1 . It is also obvious that Clark's trend is much more variable than, in particular, our deterministic trend line. The expectation, however, that these features would lead to considerably lower values of μ 2 proves wrong. A juxtaposition of the statistics of HP2 for DT-C2 from above and for Clark's model in Table 3 shows quite the contrary.
+
+It  may especially be noted that the dispersion of the optimal μ 2 across the different realizations of Clark's process is extremely wide. This is due to the fact that typically the difference in the distance d ( · ) between, say, μ 2 = 10 and μ 2 = 15 is larger than the distance between μ 2 = 100 and μ 2 = 150 . Considering the optimal distances numerically it is seen that the higher irregularity in Clark's model makes it also much harder for HP2 to recover the true trend. Incidentally, in equal measure this is true for HP1).
+
+
+<!-- p:24 -->
+
+
+Table 3 Optimal smoothing parameters μ 2 for Clark's ( 1987) unobserved component model
+
+|              |   μ opt 2 |   100 × d ( μ opt 2 ) |
+|--------------|-----------|-----------------------|
+| DT-C2:       |           |                       |
+| median       |     11.71 |                 19.85 |
+| std.dev.     |      2.31 |                  2.91 |
+| Clark's UCM: |           |                       |
+| median       |     34.56 |                 63.25 |
+| std.dev.     |    217.37 |                 10.26 |
+
+We can thus summarize that, if anything, Table 3 is only further evidence that for quarterly business cycle data Hodrick-Prescott's smoothing parameter λ 2 = 1600 is too low.
+
+Author Contributions All authors contributed to the study conception and design. Material preparation, data collection and analysis were performed by Reiner Franke, Jiri Kukacka and Stephen Sacht. The first draft of the manuscript was written by Reiner Franke and all authors commented on previous versions of the manuscript. All authors read and approved the final manuscript.
+
+Funding Open access publishing supported by the institutions participating in the CzechELib Transformative Agreement. This work was supported by the Czech Science Foundation under the project 'Linking financial and economic agent-based models: An econometric approach' [grant number 20-14817S]; Charles  University  UNCE  program  [grant  number  UNCE/HUM/035];  Cooperatio  Program  at  Charles University, research area Economics.
+
+##### Declarations
+
+Competing interests The authors have no relevant financial or non-financial interests to disclose.
+
+Open Access This article is licensed under a Creative Commons Attribution 4.0 International License, which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as  you  give  appropriate  credit  to  the  original  author(s)  and  the  source,  provide  a  link  to  the  Creative Commons licence, and indicate if changes were made. The images or other third party material in this article are included in the article's Creative Commons licence, unless indicated otherwise in a credit line to the material. If material is not included in the article's Creative Commons licence and your intended use is not permitted by statutory regulation or exceeds the permitted use, you will need to obtain permission directly from the copyright holder. To view a copy of this licence, visit  h t t p : / / c r e a t i v e c o m m o n s . o r g / l i c e n s e s / b y / 4 . 0 / .
+
+<!-- END SOURCE 15/40: Franke_2026_data-driven-hp-smoothing-parameter.md -->
+
+---
+
+<!-- BEGIN SOURCE 16/40: Giacomini_2006_conditional-predictive-ability.md -->
+
+# Source: `Giacomini_2006_conditional-predictive-ability.md`
+
+---
+id: "Giacomini_2006_conditional-predictive-ability"
+source_pdf: "../pdf/Giacomini_2006_conditional-predictive-ability.pdf"
+source_filename: "Giacomini_2006_conditional-predictive-ability.pdf"
+format: "academic-paper"
+extraction_profile: "text-math-tables-high-fidelity"
+extraction_mode: "full-page-ocr"
+extraction_quality: "excellent"
+extraction_score: 108.0
+visual_assets: "disabled"
+references_file: "../references/Giacomini_2006_conditional-predictive-ability.references.md"
+---
+
+<!-- p:1 -->
+
+## Tests of conditional predictive ability
+
+Raffaella Giacomini and Halbert White*
+
+University of California, San Diego
+
+This version: April 2003
+
+###### Abstract
+
+We argue that the current framework for predictive ability testing (e.g.,West, 1996) is not necessarily useful for real-time forecast selection, i.e., for assessing which of two competing forecasting methods will perform better in the future. We propose an alternative framework for out-of-sample comparison of predictive ability which delivers more practically relevant conclusions. Our approach is based on inference about conditional expectations of forecasts and forecast errors rather than the unconditional expectations that are the focus of the existing literature. We capture important determinants of forecast performance that are neglected in the existing literature by evaluating what we call the forecasting method (the model and the parameter estimation procedure), rather than just the forecasting model. Compared to previous approaches, our tests are valid under more general data assumptions (heterogeneity rather than stationarity) and estimation methods, and they can handle comparison of both nested and non-nested models, which is not currently possible. To illustrate the usefulness of the proposed tests, we compare the forecast performance of three leading parameter-reduction methods for macroeconomic forecasting using a large number of predictors: a sequential model selection approach, the "diffusion indexes" approach of Stock and Watson (2002), and the use of Bayesian shrinkage estimators.
+
+*Discussions with Clive Granger, Graham Elliott and Andrew Patton were essential to the paper. We also wish to
+
+h t   d s   d r  ut d d z se
+
+LSE, University of Exeter, University of Warwick, University of Manchester, Cass Business School, North Carolina
+
+State University, Boston College, Texas A&amp;M, University of Chicago GSB, the International Finance Division of the
+
+Federal Reserve Board and the 2002 EC2 conference in Bologna, Italy for helpful comments. The computations in
+
+the paper were carried out in the UCSD Experimental and Computational Laboratory, for which we thank Vince
+
+Crawford. Corresponding author: Raffaella Giacomini, Department of Economics, University of California, San
+
+Diego, 9500 Gilman Dr., La Jolla, CA 92093-0508, U.S.A. Web page: http://www.econ.ucsd.edu/~rgiacomi. E-mail:
+
+rgiacomini@ucsd.edu.
+
+
+<!-- p:2 -->
+
+
+##### 1Introduction
+
+Forecasting is central to economic decision-making. Government institutions and regulatory authorities often base policy decisions on forecasts of major economic variables, and firms rely on forecasting for inventory management and production planning decisions. A problem that economic forecasters often face is how to select the best forecasting method from a set of two (or more) alternatives. The econometric answer to this problem is to develop tests for comparing the predictive ability of two alternative forecast methods, given the forecaster's loss function. The literature on forecast comparison has witnessed a renaissance in recent years, and a number of authors have proposed econometric techniques for forecast comparison under general loss functions, known as out-of-sample predictive ability testing. This literature was initiated by Diebold and Mariano (1995) and further formalized by West (1996), West and McCracken (1998), McCracken (2000), Clark and McCracken (2001), Corradi, Swanson and Olivetti (2001), Chao, Corradi and Swanson (2001), among others, and it represents a generalization of several existing evaluation techniques which typically restricted attention to a particular loss function (e.g., Granger and Newbold 1977, McCulloch and Rossi 1990, Leitch and Tanner 1991, West, Edison and Cho 1993, Harvey, Leybourne and Newbold 1997).
+
+In this paper, we argue that the current framework for out-of-sample predictive ability testing (which in the remainder of the paper we consider to be represented by West, 1996) is not necessarily appropriate for real-time forecast selection, i.e., for assessing which of two competing forecasting methods will give better forecasts in the future. We propose an alternative approach to outof-sample predictive ability testing that delivers inferences that are more relevant to economic forecasters. Our tests can be applied to multi-step point, interval, probability or density forecasting, and they can be viewed as a generalization of the tests of West (1996) since they are applicable in all cases in which his tests are applicable and in many more besides.
+
+From a methodological point of view, the main idea of the paper is to view the problem of forecast evaluation as a problem in inference about conditional expectations of forecasts and forecast errors rather than the unconditional expectations that are the focus of the approach of West (1996).
+
+An important distinction between our approach and the existing literature is that we consider the object of the evaluation to be what we call the "forecasting method", which includes not only the forecast model but also a number of choices that must be made by the forecaster at the time of the prediction, such as which estimation procedure to choose and which data to use for estimation. The current approach to forecast evaluation focuses instead solely on the forecast model. The reason for evaluating the forecasting method and not just the model is that all elements of the method can affect future forecast performance: a good model can produce bad forecasts if its parameters are not precisely estimated or if they change over time. The fact that we consider the forecasting method rather than the model implies that our tests can lead to a different conclusion than West's (1996) tests. Suppose for example that one of the two models is correctly specified but has a large number of parameters, while the competitor is a simpler, misspecified model. West's (1996) test will tend to choose the large model, while our tests may choose the forecasting method that uses the small model, especially if we are in the presence of high estimation uncertainty.
+
+
+<!-- p:3 -->
+
+
+Our approach is applicable in many situations where the tests of West (1996) are not valid. One such case is when the data are heterogeneous, in the form of time-varying underlying processes for the series of interest. As emphasized by Clements and Hendry (1998, 1999), this is a more realistic assumption for economic forecasting contexts than the assumption of stationarity that is typically made in the literature. The assumption of heterogeneity also affects the approach to estimation. In this context, instead of considering a recursive forecasting scheme, where the estimation window expands over time, it makes sense to consider a rolling window forecast procedure where the forecasts are based on a moving window of the data which discards old observations. The size of the estimation window can itself be time-varying, as in the procedure suggested by Pesaran and Timmermann (2002). A fundamental difference with the existing literature is that here we consider the estimation window to be a component of the forecasting method under evaluation. In the existing literature, instead, the sample split between estimation and evaluation samples is arr e t    o   e   e e
+
+Another situation where the tests of West (1996) are not applicable is in comparing forecasts based on nested models. This is an important comparison because many models considered for forecasting are naturally derived as generalizations of existing models and it is often of interest to test if a larger, more sophisticated model can outperform a simple, nested benchmark model. Our framework permits a unified treatment of nested and non-nested models.
+
+Finally, the current framework for predictive ability testing is not valid when the forecasts are obtained by using estimation methods such as Bayesian estimation, semi-parametric, or nonparametric estimation. Our framework, instead, can accommodate such estimation procedures and can thus be used to compare the impact on forecast performance of using different estimation techniques, a question that cannot be answered within the current framework.
+
+A final, practical advantage of our tests is that they are easily computed using standard regression packages, whereas the existing tests can be quite difficult to compute or have limiting distributions that are context-specific (e.g., Clark and McCracken, 2001).
+
+To illustrate the usefulness of the conditional predictive ability tests, we consider the problem of macroeconomic forecasting using a large number of predictors and compare forecasts of eight macroeconomic variables obtained by employing leading methods for parameter reduction: a sequential procedure which is a simplified version of the general-to-specific model selection approach implemented by Hoover and Perez (1999), the "diffusion indexes" approach of Stock and Watson
+
+
+<!-- p:4 -->
+
+
+(2002) and the use of Bayesian shrinkage estimators (Litterman, 1986). We use the data set of Stock and Watson (2002), including monthly U.S. data on 146 macroeconomic variables and evaluate 1-, 6- and 12-month ahead forecasts of four measures of real activity and four price indexes obtained using the different forecasting methods. The general conclusion is that for the price indexes the forecast performance of the three methods is indistinguishable from that of a univariate autoregression. For the real variables, instead, Bayesian shrinkage appears to be the preferred method. Finally, the sequential model selection approach performs poorly for most variables and forecast horizons, and it is often outperformed by the naive autoregressive and random walk benchmarks.
+
+### 2 Unconditional and conditional approaches to predictive ability testing
+
+To illustrate the differences between conditional and unconditional out-of-sample predictive ability testing, suppose we are interested in comparing the accuracy of two competing forecasting models ft(β1) and gt(β2) for the conditional mean of the variable of interest Yt+1, given a squared error loss function. The dependence of the forecasts on parameters β1 and β2 indicates that in this example s ots  os (is   r  g ors os t tul hypothesis of equal accuracy of the two forecasts formulated as
+
+$$H _ { 0 } \colon E [ ( Y _ { t + 1 } - f _ { t } ( \beta _ { 1 } ^ { * } ) ) ^ { 2 } - ( Y _ { t + 1 } - g _ { t } ( \beta _ { 2 } ^ { * } ) ) ^ { 2 } ] = 0 ,$$
+
+where β1 and β2 are population values of the parameters (i.e., probability limits of the parameter estimates). The null hypothesis (1) can be interpreted as saying that the two forecast models are equally accurate on average. If the null hypothesis is rejected, one would choose the model yielding the lower loss. Notice that a test of the null hypothesis (1) will tend to choose a forecast based on a correctly specified model (i.e., the test will choose the correctly specified model asymptotically with probability 1 − α, where α is the level of the test).1 A focus on the null hypothesis (1) is thus justifiable if one is interested in establishing which of two models better approximates the datagenerating process. However, even a model that well approximates the data-generating process may forecast poorly, for example in the case that its parameters are imprecisely estimated. If the question is which model will give better forecasts in the future, therefore, it is not clear that (1) is in fact the appropriate null hypothesis.
+
+The central idea of this paper is to test a null hypothesis different than (1), where the expectation is conditional on the information set Ft available at time t and the losses depend on the parameter estimates at time t, β1t and β2t, rather than on their probability limits:
+
+1To see why, suppose forecast 1 is based on a correctly specified model, which implies that ft(β1) is the true conditional mean of Yt+1. Also assume for simplicity that the two forecasts are based on the same information set. Sn o   t  o   o   o  mt l o cted loss: E[(Yt+1 − ft(β1))2] &lt; E[(Yt+1 − ft)2] for any other forecast ft, and thus in particular for gt(β2).
+
+
+<!-- p:5 -->
+
+
+$$H _ { 0 } \colon E [ ( Y _ { t + 1 } - f _ { t } ( \hat { \beta } _ { 1 t } ) ) ^ { 2 } - ( Y _ { t + 1 } - g _ { t } ( \hat { \beta } _ { 2 t } ) ) ^ { 2 } | \mathcal { F } _ { t } ] = 0 \ \text {almost surely, } t = 1 , 2 , \dots \quad ( 2 )$$
+
+We call a test of the hypothesis (2) a test of equal conditional predictive ability. The motivation for conducting inference about a conditional, rather than an unconditional, expectation is that it more closely represents the real-time problem of a forecaster. In particular, we can view this hypothesis as saying that the forecaster cannot predict which of the two forecasts will be more accurate, given what is known today.
+
+Further motivation for expressing the null hypothesis in terms of time-t parameter estimates rather than probability limits is that they are more relevant for the forecaster: since the population parameters are not known and must be estimated, it is the actual future loss that is of interest to the forecaster, rather than that based on some population value that is only attained in the limit. As a result, whereas the unconditional tests restrict attention to the forecast model, the conditional approach allows evaluation of the forecasting method, which includes the model, the estimation procedure and the possible choice of estimation window. Viewed this way, it appears obvious that considering the forecasting method as a whole is appropriate, as each of its components can have a potential impact on future forecast performance.
+
+In the following subsections, we outline in detail the directions along which the conditional testing framework represents a more realistic environment for forecast evaluation and discuss how it directly accounts for different determinants of forecast performance that are neglected by the unconditional framework.
+
+## 2.1 Heterogeneity of economic data
+
+One of the conclusions of Clements and Hendry (1998, 1999) is that the main explanation for systematic forecast failure in economics is a non-constant underlying process generating the series to be forecast. It is thus of fundamental importance to develop evaluation techniques that take into account the possibly heterogeneous nature of economic variables. In this paper, we therefore work with the assumption that the data generating process is heterogeneous rather than stationary.2 In our view, this is a realistic and practical assumption for economic forecasting contexts and more plausible than the perhaps idealistic assumption of stationarity typically made in the unconditional predictive ability literature. Specific sources for heterogeneity in the series that economists forecast are several. First, even if the underlying economic processes were stationary, heterogeneity in the observed time series can arise from changes in the measurement process. This source of heterogeneity is one that macroeconomic variables are particularly sensitive to; among other things: the definition of the measured variables may change from time to time; which entities are measured in constructing the variables measured changes; budgets for the economic, demographic, and statistical agencies measuring the processes of interest change, leading to the possibility of greater or lesser care in producing the official numbers on strict time schedules; and directors and other key personnel of these agencies regularly join and leave, leading to intentional or unintentional variations in the processes and procedures that produce the official time series. Heterogeneity in even one of these sources would produce heterogeneity in the observed series. These sources of heterogeneity are plausibly less a concern for non-aggregated time series, such as the prices of welldefined commodities, as in financial economics. Nevertheless, the underlying economic processes themselves are comprised of a variety of forces that operate as further sources of heterogeneity, affecting either the nature of the commodity itself, or the way the commodity is traded. With regard to the latter, the laws and regulations governing trade change, and the technologies used by buyers and sellers of the commodities change. (The onward march of both computing and software technology is an obvious example.) With regard to the former, the laws and regulations governing for example the behavior of firms represented by equity assets change, as do market conditions and technologies used by such firms. Taken together, these factors make it plausible in our view that the relations between variables of interest this month and next relevant for forecasting are somewhat different now than they were last year, let alone five, ten, or twenty years ago, and are not plausibly identical, as stationarity would require.
+
+2The type of non-stationarity we consider here is that induced by a distribution that changes over time. We also assume short memory, thus ruling out non-stationarity due to the presence of unit roots.
+
+
+<!-- p:6 -->
+
+
+If heterogeneity is accepted as an accurate description of economic time series, appropriate methods for model-based forecasting and forecast evaluation need to be applied. In general, it seems appropriate in a time-varying environment to consider estimators with finite memory, rather than basing forecasts on an expanding window of data. An example is the practice of specifying and estimating forecast models over a rolling window of the data, as a way to accommodate a data generating process that varies slowly over time (e.g., Fama and McBeth, 1973, Gonedes, 1973). The size of the estimation window may itself be time-varying, as was recently suggested by Pesaran and Timmermann (2002), who propose a recursive procedure which detects breaks in real time and then uses an appropriate subset of the data for estimation. Further, the estimators can usefully incorporate time weights which may assign decreasing importance to observations from the more distant past. The use of these methods in the production of forecasts has important implications for the evaluation procedure. The approach to out-of-sample testing in the unconditional predictive ability framework is to arbitrarily split the data into an estimation and an evaluation sample, and to obtain the asymptotic distribution of the test statistic under the assumption that both the insample and the out-of-sample sizes diverge to infinity. The choice of sample split is thus a finite sample artifice. In contrast, in our conditional framework the size of the estimation window and the possible time weighting are treated as choice variables of the forecast method, and as such they can be evaluated along with the forecast model and the estimation procedure as parts of the forecasting method under analysis.
+
+
+<!-- p:7 -->
+
+
+## 2.2 Estimation uncertainty
+
+As emphasized by Clements and Hendry (1998, 1999) and Ericsson (2002), parameter estimation uncertainty is an important determinant of forecast performance. Our conditional tests directly account for the effects of estimation uncertainty on forecast performance by expressing the null hypothesis in terms of parameter estimates and by considering finite window estimation, which leads to asymptotically non-vanishing estimation uncertainty. In contrast, the unconditional framework does not take into account differing model complexities, unless explicitly incorporated into the accuracy measure (e.g., AIC or BIC); further, the presence of probability limits in the unconditional null hypothesis (1) means that different estimators that converge to the same limit will lead to the same conclusion. As a result, the unconditional tests are not able to detect superior forecasting performance which is due to reduced estimation uncertainty. For example, consider the case of comparing the accuracy of nested models in the unconditional framework. If the smaller model is correctly specified, the forecast errors from the two models calculated at the probability limits of the parameters are identical, and the null hypothesis (1) is automatically satisfied (this would hold for any loss function). In other words, one would conclude that the two models yield equally accurate forecasts, regardless of the number of excess parameters contained in the larger model. A test of this sort may thus lead to misleading conclusions if the goal is real-time forecast selection.
+
+##### 2.3Out-of-sample versus in-sample testing
+
+The literature on forecast evaluation has long argued that out-of-sample, rather than in-sample, testing is the "true" test of a forecast model. As Granger (1999, p. 65) observes, the potentially large number of parameters compared with the relative scarcity of macroeconomic data "leads to worries that a model presented for consideration is the result of considerable specification searching ..., data mining, or data snooping (in which data are used several times). Such a model might well appear to fit the data, in sample, rather well but will often not perform satisfactorily out-of-sample". This is related to the problem of overfitting: a good fit may result from explaining not only the stable relationships that are useful for forecasting but also possible accidental relationships that are specific to the sample. Out-of-sample evaluation of forecast performance, on the contrary, simulates a real-time forecast scenario where the quality of a forecasting method is directly measured against the actual data. The unreliability of in-sample testing is particularly evident if the data in the sample are generated by a time-varying process, whereas out-of-sample testing can incorporate this heterogeneity through recursive specification and estimation of the model. Our conditional testing framework is fully congruent with this motivation for out-of-sample testing: it is valid under heterogeneity of the data-generating process, and it is based on the forecasts and forecast errors actually observed, rather than viewing them as estimates of some population quantities. In the unconditional predictive ability framework, on the other hand, it is less clear why one should use out-of-sample rather than in-sample testing if the goal is to test hypotheses about population parameters under the assumption of stationarity. This point is well made by Inoue and Kilian (2002), who argue that if the goal of the testing procedure is to assess population predictability (corresponding to testing a null hypothesis of equal unconditional predictive ability of two nested models, e.g., as in (1)), the use of out-of-sample testing involves an unnecessary loss of information, whereas the in-sample test of the same hypothesis utilizes all the information available and thus leads to power gains in finite samples.
+
+
+<!-- p:8 -->
+
+
+## 2.4 Practical advantages of the conditional tests
+
+In addition to the methodological considerations just articulated, there are also significant practical advantages to the approach advocated here. The main benefit of our approach is that it allows a unified treatment of nested and non-nested models, while the existing testing framework of West (1996) is only valid under non-nestedness. Unconditional tests of predictive ability for nested models have been proposed by Clark and McCracken (2001), among others, but they lack the general applicability of West (1996)'s results, as the test statistics have complicated limiting distributions that are context-specific. As discussed in section 3.2, the different treatment of nested and nonnested models in the unconditional framework is due to the fact that the asymptotic distribution of the test statistic relies on convergence of the parameter estimates to their probability limits, and this limiting behavior differs in the two cases. The fact that we don't rely on such convergence in the conditional approach instead makes it possible to consider nested and non-nested models in the same framework. A second advantage of the conditional tests is that they do not impose restrictions on the estimation procedure utilized to produce the forecasts, while the approach of West (1996) rules out, e.g., Bayesian, semi-parametric, and non-parametric estimation. Finally, our tests are simple to compute due to the imposition of a particular time dependence structure under the null hypothesis (e.g., martingale difference sequences for the one-step-ahead forecasts), which leads to a computationally simple expression for the asymptotic variance estimator.
+
+### 3Theory
+
+##### 3.1Description of the environment
+
+Consider a stochastic process W ≡ {Wt : Ω — Rs+1, s ∈ N, t = 1, . . . , T} defined on a complete probability space (Ω, F, P). We partition the observed vector Wt as Wt ≡ (Yt, Xt)', where Yt : Ω → R is the variable of interest and Xt : Ω → Rs is a vector of predictor variables, and we define Ft = σ(W1, ..., Wt, Xt+1)' (as in, e.g., White, 1994, pg. 96). We adopt the standard convention of denoting random variables by upper case letters and realizations by lower case letters.
+
+
+<!-- p:9 -->
+
+
+We focus for simplicity on univariate forecasts. Consider a situation where two alternative models are used to forecast the variable of interest τ steps ahead, Yt+r. The forecasts are formulated at time t and are based on the information set Ft. Denote the two forecasts by fm,t ≡ f (wt, wt−1, ..., wt−m+1; βm,t) and Îm,t ≡ g(wt, wt−1, ..., wt−m+1; βm,t), where f and g are measurable functions. The subscripts indicate that the forecast formulated at time t is a measurable function of a sample of at most size m, consisting of the m most recent observations. Recall that we do not restrict attention to point forecasting. Our framework accommodates evaluation of point, interval, probability, and density forecasts. If the forecasts are based on parametric models, the parameter estimates from the two models are collected in the k × 1 vector βm,t. Otherwise, βm,t represents whatever semi-parametric or non-parametric estimators are used in constructing forecasts. The estimator βm,t can be further selected to minimize a weighted loss function over the estimation period, where smaller weights are typically assigned to observations from the more distant past. For example, for a linear model Yt = Xtβ + ut and a quadratic loss function, we can consider the a sequence of weights assigned to the observations in the estimation sample that can be selected by the user (for example one may assign exponentially decreasing weights to the observations further away from t).
+
+We emphasize that the estimators may be parametric, semi-parametric or non-parametric. The only requirement here is that m (the maximum estimation window size) must be finite. All of the elements listed above - the model, the estimation procedure, the size of the estimation window and the estimation weight function - are treated as dimensions of choice by the user and are part of what we call the "forecasting method" under evaluation.
+
+The evaluation is performed in a simulated out-of-sample fashion. Let T be the size of the sample available. Since the data indexed 1, ..., m are used for estimation of the first set of parameters, the first τ-step ahead forecasts are formulated at time m and compared to the realization ym+τ. The second set of forecasts is produced by moving the estimation window forward one step and estimating the parameters on data indexed 2, ..., m + 1. These forecasts are compared to the realization ym+1+r. The procedure is thus iterated and the last forecasts are generated at time T − τ, by estimating the parameters on data indexed T − τ − m + 1, .., T − τ, and they are compared to yT. This rolling window procedure yields a sequence of n ≡ T − τ − m + 1 forecasts and relative forecast errors.
+
+The sequence of out-of-sample forecasts thus produced is evaluated by selecting a loss function Lt+τ(Yt+τ, fm,t), which depends on the forecasts and on the realizations of the variable. This loss function is either an economically meaningful criterion such as utility or profits (e.g., Leitch and Tanner 1991, West, Edison, and Cho 1993) or a statistical measure of accuracy. The following are some examples of statistical loss functions that have been considered in the forecast evaluation literature. Examples of appropriate loss functions for the evaluation of quantile, probability, and density forecasts are also discussed in Diebold and Lopez (1996), Lopez (2001), Giacomini and Komunjer (2002) and Giacomini (2002). For simplicity, let ft ≡ fm,t and consider τ = 1.
+
+
+<!-- p:10 -->
+
+
+1. Squared error loss function: Lt+1(Yt+1, ft) = (Yt+1 − ft)2.
+2. Absolute error loss function: Lt+1(Yt+1, ft) = |Yt+1 − ft|.
+3. Asymmetric linear cost function of order α (also known as the lin-lin or "tick function"):
+4. Lt+1(Yt+1, ft) = (α − 1(Yt+1 − ft &lt; 0))(Yt+1 − ft), for α ∈ (0, 1).
+4. Linex loss function: Lt+1(Yt+1, ft) = exp(a(Yt+1 − ft)) − a(Yt+1 − ft) − 1, a ∈ R.
+5. Direction-of-change loss function: Lt+1(Yt+1, ft) = 1{sign(Yt+1 − Yt) ≠ sign(ft − Yt)}.
+6. Predictive log-likelihood: Lt+1(Yt+1, ft) = log ft(Yt+1), where ft is in this case the density forecast of Yt+1
+
+## 3.2 One-step conditional predictive ability test
+
+For a given loss function, we write the null hypothesis of equal conditional predictive ability of forecasts f and g as
+
+$$H _ { 0 } \ & \colon \ E [ L _ { t + \tau } ( Y _ { t + \tau } , \hat { f } _ { m , t } ) - L _ { t + \tau } ( Y _ { t + \tau } , \hat { g } _ { m , t } ) | \mathcal { F } _ { t } ] \\ & \equiv \ E [ \Delta L _ { m , t + \tau } | \mathcal { F } _ { t } ] = 0 \ \text {almost surely} \ t = 1 , 2 , \dots \, .$$
+
+Due to certain computational issues, we consider separately the cases of one-step and multi-step forecast horizons.
+
+### 3.2.1 Null hypothesis
+
+When τ = 1, the null hypothesis claims that the out-of-sample sequence {∆Lm,t+1, Ft} is a martingale difference sequence (mds). In this case, the conditional moment restriction (3) is equivalent to stating that E[ht∆Lm,t+1] = 0, for all Ft— measurable functions ht. Let us restrict attention to a given subset of such functions, which we collectively denote by the q × 1 Ft- measurable vector ht and follow Stinchcombe and White (1998) by referring to this as the "test function". For a given choice of test function ht, we construct a test exploiting the consequence of the mds property that H0,h : E[ht∆Lm,t+1] = 0. The standard unconditional approach to predictive ability testing corresponds to testing the hypothesis H0,h with ht = 1 and with the parameter estimate βm,t replaced with its probability limit β*.
+
+
+<!-- p:11 -->
+
+
+For fixed m, standard asymptotic normality arguments suggest using a Wald-type test statistic of the form
+
+$$T _ { n , m } ^ { h } = n ( n ^ { - 1 } \sum _ { t = m } ^ { T - 1 } h _ { t } \Delta L _ { m , t + 1 } ) ^ { \prime } \hat { \Omega } _ { n } ^ { - 1 } ( n ^ { - 1 } \sum _ { t = m } ^ { T - 1 } h _ { t } \Delta L _ { m , t + 1 } ) = n \bar { Z } _ { m , n } ^ { \prime } \hat { \Omega } _ { n } ^ { - 1 } \bar { Z } _ { m , n }$$
+
+Z 1−1 1−u ≡   1+q ≡ I+'z I+7z 1−1 1−u ≡ 'z an− Zm,t+1Zm,t+1′ is a q × q matrix consistently estimating the variance of Zm,t+1.
+
+A level α test can be conducted by rejecting the null hypothesis of equal conditional predictive ability whenever Th,n 2 distribution. The asymptotic justification for the test is provided in the following theorem, which characterizes the behavior of the test statistic (4) under the null hypothesis.
+
+Theorem 1 (Conditional predictive accuracy test) For forecast horizon τ = 1, maximum estimation window size m &lt; ∞ and q × 1 test function sequence {ht} suppose:
+
+(i) {Wt}, {ht} are mixing sequences with φ of size −r/(2r − 1), r ≥ 1 or α of size −r/(r − 1), r &gt; 1;
+
+(ii) E|Zm,t+1,i|2(r+δ) &lt; ∆ &lt; ∞ for some δ &gt; 0, i = 1, ., and for all t; E[Zm,t+1Z'm,t+1] is uniformly positive definite. Then, under H0 in (3), Th, d a χq 2 as n → ∞. n,m
+
+Comments: 1. Assumption (i) is mild, allowing the data to be characterized by considerable heterogeneity as well as dependence. This is in contrast with the existing literature, which typically assumes stationarity of the loss differences.
+
+2. The asymptotic distribution is obtained for the number of out-of-sample observations going to infinity, whereas the estimation sample size m remains finite. This leads to asymptotically non-vanishing estimation uncertainty. In contrast, in the unconditional framework of West (1996), both the in-sample and the out-of-sample sizes grow, causing estimation uncertainty to vanish asymptotically. A result of letting both m and n grow is that the choice of how to split the available sample into in-sample and out-of-sample portions is arbitrary, while in our framework the choice of estimation window (up to some maximum m) is part of the forecasting method under evaluation. Also notice that the requirement of finite estimation window rules out the use of a recursive forecasting scheme, which utilizes an expanding estimation window.
+
+3. Assumption (iii), imposing positive definiteness of the asymptotic variance of the test statistic, is related to a similar requirement made in the existing literature about predictive ability testing (e.g., West, 1996, McCracken, 2000), but it differs in a fundamental way. In that literature, the size of the estimation window is assumed to grow at the same rate or faster than the out-of-sample size, which means that the asymptotic variance of the test statistic is computed at the probability limits of the parameters. Because of the focus on this limiting behavior, the asymptotic variance matrix may be singular when the forecasts are based on nested models. In contrast, in the conditional framework the size of the estimation window remains finite as the prediction sample size n grows to infinity, which prevents the parameter estimates from reaching their probability limits. This makes our tests applicable to both nested and non-nested models.
+
+
+<!-- p:12 -->
+
+
+4. The test statistic for conditional predictive ability test is straightforward to compute. A further simplifying feature is the fact that the null hypothesis imposes a particular time dependence structure (in this case that of a martingale difference sequence), which implies that the asymptotic variance can be consistently estimated by the sample variance.
+
+The following results provide computationally convenient ways to obtain the test statistic for the conditional predictive ability test using standard regression packages.
+
+computed as nR2, where R2 is the uncentered squared multiple correlation coefficient for the artificial regression of the constant unity on the 1 × q vector (ht∆Lm,t+1)' for t = m, ..., T − 1.
+
+Corollary 3 Let assumptions (i), (iii) and (iv) of Theorem 1 hold and further assume
+
+(ii)′ E|∆Lm,t+1|2(r+δ1) &lt; ∆1 &lt; ∞ and E|hti|2(r+δ2) &lt; ∆2 &lt; ∞ for some δ1, δ2 &gt; 0, i = 1,..., q and for all t;
+
+(v) E[(∆Lm,t+1)2|Ft] = σ2 for all t and some σ2 &gt; 0.
+
+Then the conditional predictive ability test can be alternatively based on the test statistic nR2, where R2 is the uncentered squared multiple correlation coefficient for the artificial regression of ∆Lm,t+1 on the 1 × q vector ht, for t = m, ..., T − 1. A level α test can be conducted by rejecting is the (1 − α)−quantile of a χ2 distribution.
+
+If the conditional homoskedasticity assumption (v) can be reasonably expected to hold in a given application, the true distribution of the regression-based test statistic in Corollary 3 may be better approximated by its asymptotic distribution than the statistic of Corollary 2, and it might thus deliver better inference.
+
+### 3.2.2 Alternative hypothesis
+
+We now analyze the behavior of the test statistic Th,n under a form of global alternative to the null hypothesis H0. Because we do not impose the requirement of identical distribution, we must exercise care in specifying the global alternative in this context. In fact, we will be able to obtain tests consistent against
+
+
+<!-- p:13 -->
+
+
+$$H _ { A , h } \colon E [ \bar { Z } ^ { \prime } _ { m , n } ] E [ \bar { Z } _ { m , n } ] \geq \delta > 0 \text { for all } n \text { sufficiently large} .$$
+
+under the global alternative HA,h.
+
+Theorem 4 Given Assumptions (i), (ii) and (iii) of Theorem 1, under HA,h in (5) for any constant c ∈ R, P[Tn,m &gt; c] → 1 as n → ∞.
+
+Notice that H0 and HA,h are not necessarily exhaustive. For a given test function sequence {ht}, it may in fact happen that E[Ž′,n]E[Žm,n'] = 0 for some sequence {n′}, without {∆Lm,t+1} being an mds. The resulting test may thus have no power against alternatives for which ∆Lm,t+1 is uncorrelated with the chosen test function (and thus E[Żm,n]E[Żm,n'] = 0) but it is correlated with some element of the information set Ft that is not contained in ht. In other words, the properties of the test will depend on the chosen test function. The flexibility in the choice of test function is both a shortcoming and an advantage of our testing framework. On the one hand, for any given selection of ht the test may have no power against possibly important alternatives. On the other hand, one is left free to choose which test function is more relevant in any situation and thus focus power in that specific direction. Further, using methods developed recently in the statistics literature, one wo e dtk oe  e e   os i t o e  et of the null hypothesis using the notion of False Discovery Rate for multiple comparison testing procedures (Benjamini and Hochberg, 1995).
+
+In practice, the test function is chosen by the researcher to embed elements of the information set Ft that are believed to have potential explanatory power for the future difference in predictive ability. Examples are, e.g., indicators of past relative performance or other variables that may help distinguish between the forecast performance of the two methods, such as business cycle indicators that may capture possible asymmetries in relative performance during booms and recessions. When choosing the number of elements for the test function ht, it is important to keep in mind that the properties of the test will be altered if one either includes too few or too many elements. If ht leaves out elements of the information set Ft that are correlated with ∆Lm,t+1, the test may have little or no power against the alternative for which ∆Lm,t+1 is not mds. As a consequence, the test would incorrectly "accept" a false null hypothesis. On the other hand, the inclusion of a number of elements that are either uncorrelated or weakly correlated with ∆Lm,t+1 will in some sense dilute the significance of the truly important elements and thus erode the power of the test. A possible way to confront this difficulty is to apply the approaches advocated by Bierens (1990) or Stinchcombe and White (1998), which deliver consistent tests.
+
+
+<!-- p:14 -->
+
+
+## 3.3 Multi-step conditional predictive ability test
+
+For a forecast horizon τ &gt; 1, the null hypothesis (3) of equal conditional predictive ability of forecasts f and g implies in particular that for all Ft-measurable test functions ht the sequence {ht∆Lm,t+τ} is "finitely correlated", so that cov(ht∆Lm,t+r, ht−j∆Lt+τ−j(βm,t-j)) = 0 for all j ≥ τ. Similarly to the previous section, we are able to exploit this simplifying feature in the derivation of the test statistic. Using reasoning that mirrors the development of the test for the one-step horizon, we construct a test of
+
+$$H _ { 0 , \tau } \colon E [ \Delta L _ { m , t + \tau } | \mathcal { F } _ { t } ] = 0$$
+
+against the global alternative
+
+$$H _ { A , h , \tau } \colon E [ \bar { Z } _ { m , n } ^ { \prime } ] E [ \bar { Z } _ { m , n } ] \geq \delta > 0 \text { for all } n \text { sufficiently large} ,$$
+
+ht∆Lm,t+τ. For a fixed maximum estimation window length m, the test is based on the statistic
+
+$$\ t i c \\ T _ { n , m , \tau } ^ { h } & = n ( n ^ { - 1 } \sum _ { t = m } ^ { T - \tau } h _ { t } \Delta L _ { m , t + \tau } ) ^ { \prime } \tilde { \Omega } _ { n } ^ { - 1 } ( n ^ { - 1 } \sum _ { t = m } ^ { T - \tau } h _ { t } \Delta L _ { m , t + \tau } ) = n \bar { Z } _ { m , n } ^ { \prime } \tilde { \Omega } _ { n } ^ { - 1 } \bar { Z } _ { m , n } \\ \tilde { \Gamma } & = \Gamma _ { n } ^ { T }$$
+
+with wn,j a weight function such that wn,j → 1 as n → ∞ for each j = 1, ..., τ − 1 (see, e.g., Newey and West, 1987 and Andrews, 1991).
+
+A level α test rejects the null hypothesis of equal conditional predictive ability whenever Th,r n,m,τ &gt; χ2,1-α, where χ2,1-α is the (1 − α)-quantile of a χ2 distribution. The following result is the equivalent of Theorems 1 and 4 for the multi-step forecast horizon case.
+
+Theorem 5 (Multi-step conditional predictive accuracy test) For given forecast horizon τ &gt; 1, maximum estimation window size m &lt; ∞ and a q × 1 test function sequence {ht} suppose:
+
+(i) {Wt}, {ht} are mixing sequences with φ of size −r/(2r − 2), r ≥ 2 or α of size −r/(r − 2), r &gt; 2;
+
+(ii) E|Zm,t+1,i|r+δ &lt; ∆ &lt; ∞ for some δ &gt; 0, i = 1,.., q and forall t;t is uniformly positive deinite.
+
+Then, (a) under H0,τ in (6), Th,r d as n → ∞ and (b) under HA,h,τ in (7), for any n,m,τ constant c ∈ R, P[Th,m,r &gt; c] → 1 as n → ∞.
+
+## 3.4 A decision rule for forecast selection
+
+If the null hypothesis of equal conditional predictive ability of forecast methods f and g is rejected, this raises the possibility that one might be able to select at time T a best forecasting method for time T + τ. Rejection of the null hypothesis is caused by the fact that the test functions {ht} have predictive power for the loss differences {∆Lm,t+τ} over the out-of-sample period. This suggests that the test function at time T, hT, can be used to predict which forecast method will yield lower loss at time T + τ, resulting, for example, in the following decision rule:
+
+
+<!-- p:15 -->
+
+
+- Let n denote the coefficient obtained by regressing ∆Lm,t+τ = Lt+τ(Yt+r, fm,t)−Lt+τ(Yt+τ, Îm,t) on ht over the out-of-sample period t = m, ..., T − τ. Then choose g if htn &gt; c and choose f if hpn &lt; c, where c is a user-specified threshold.
+
+In general, the plot of the predicted loss differences over the out-of-sample period {htân}t-τ T−τ contains useful information for assessing the relative performance of f and g. For example, one taking the value 1 if A is true and 0 otherwise. In,c represents the proportion of times that the above decision rule would have chosen forecast method g over the out-of-sample period. In the empirical application in section 5, we utilize the indicator In,c with c = 0 to summarize the relative performance of the forecast methods under analysis.
+
+### 4 Monte Carlo evidence
+
+In this section, we investigate the size and power properties of our conditional predictive ability test in finite samples of the sizes typically available in macroeconomic forecasting applications. For simplicity, we restrict attention to a squared error loss function and to the one-step forecast horizon.
+
+## 4.1 Size properties
+
+In order to construct a series of data and forecasts that satisfy the null hypothesis, we exploit the following result.
+
+Proposition 6 E[(Yt+1 − fm,t)2 − (Yt+1 − Îm,t)2|Ft] = 0 if and only if either fm,t = Îm,t a.s. or E[Yt+1|Ft] = (fm,t + Îm,t)/2.
+
+We can thus generate data under the null hypothesis
+
+$$H _ { 0 } \colon E [ ( Y _ { t + 1 } - \hat { f } _ { m , t } ) ^ { 2 } - ( Y _ { t + 1 } - \hat { g } _ { m , t } ) ^ { 2 } | \mathcal { F } _ { t } ] = E [ \Delta L _ { m , t + 1 } | \mathcal { F } _ { t } ] = 0$$
+
+by first constructing forecasts {fm,t, Îm,t} and then letting Yt+1 = (fm,t + Îm,t)/2 + εt+1, where εt+1 ~ i.i.d. N(0, σ2). One of the important features of our testing framework is its ability to handle heterogeneous data. To create data that exhibits interesting behavior we consider an actual macroeconomic time series {Wt}, which corresponds to one of the measures of inflation that we ont   (       e e e t  one monthly U.S. Consumer Price Index measured over the period 1959:1-1998:12, for a total sample size T = 468. We construct the forecasts fm,t and Îm,t by a rolling window procedure; the first forecast is simply the unconditional mean of the estimation sample, while the second is the forecast implied by an AR(1) model for Wt:
+
+
+<!-- p:16 -->
+
+
+$$\hat { f } _ { m , t } \ & = \ ( W _ { t } + \dots + W _ { t - m + 1 } ) / m \\ \hat { g } _ { m , t } \ & = \ \hat { \alpha } _ { m , t } + \hat { \beta } _ { m , t } W _ { t } .$$
+
+We consider a range of values for the size of the estimation sample m and for the variance of the disturbances σ2 : m = (36, 60, 120, 240, 360) and σ2 = (.1, 1, 3). For each pair (m, σ2) we generate 10, 000 Monte Carlo replications of the time series {Yt+1, fm,t, Îm,t} and compute the proportion of rejections of the null hypothesis (9) at the 10% nominal level. The test function is ht = (1, ∆Lm,t)'. The results are collected in Table 1.
+
+#### [TABLE 1 HERE]
+
+From the analysis of Table 1, the test appears to be reasonably well-sized, with a mild tendency to under-reject. The size properties of the test are seemingly unaffected by varying the length of the estimation window and the error variances.
+
+## 4.2 Power properties
+
+We investigate the power of the CPA test against serially correlated alternatives. In particular, we consider the following alternative hypothesis
+
+$$H _ { a , \rho } \colon E [ \Delta L _ { m , t + 1 } | \mathcal { F } _ { t } ] = \rho \Delta L _ { m , t } ,$$
+
+which occurs when E[Yt+1|Ft] = (fm,t + Îm,t)/2 − ρ∆Lm,t/(2(fm,t − Îm,t)). We consider a number of different values for the AR coefficient ρ, ranging from ρ = 0.05 to ρ = 0.5, at increments of 0.05. For a given ρ, we generate data under the alternative hypothesis (11) by first constructing the forecasts {fm,t, Îm,t} as in (10) and then letting Yt+1 = (fm,t + Îm,t)/2 − ρ∆Lm,t/(2(fm,t − Îm,t)) + εt+1, where εt+1~i.i.d. N(0, 1) and the initial value ∆Lm,m is drawn from a standard normal distribution. For each parameterization, we generate 10, 000 Monte Carlo replications of the time series {Yt+1, fm,t, Îm,t} and compute the proportion of rejections of the null hypothesis (9) at the 10% nominal level.3 Figure 1 plots the power curves for m = (60, 120, 240).
+
+e ep   n   } ss t e   s 1oe sne  o n e the initial observation, which leaves us with a total sample size T = 368.
+
+
+<!-- p:17 -->
+
+
+#### [FIGURE 1 HERE]
+
+e o  t   o t o p os    s  o able to detect the presence of moderately low serial correlation (i.e., an AR coefficient between 0.15 and 0.2). As expected, the power of the test increases as the size of the out-of-sample evaluation data set increases.
+
+### 5 Application: comparing parameter-reduction methods in macroeconomic forecasting
+
+A problem that often arises in macroeconomic forecasting is the selection of a manageable subset of predictors from a large number of potentially useful variables. In this situation, one key determinant of the resulting forecast performance is the trade-off between the information content of each series and the estimation uncertainty introduced. The goal of our application is to analyze and compare the forecast performance of several parameter-reduction schemes that have been considered in the literature to overcome this so-called "curse of dimensionality". We will consider three leading methods; a sequential model-selection approach based on a simplified general-to-specific modelling strategy (see the overview of Mizon, 1995), the "diffusion indexes" approach of Stock and Watson (2002) and the use of Bayesian shrinkage estimation (Litterman, 1986, Sims and Zha, 1998). We also compare each method to benchmark forecasts. The existing framework for comparison of predictive ability is not appropriate for addressing these issues, since it does not easily accommodate, for example, Bayesian estimation or the presence of estimated regressors. Further, some of the comparisons are between nested models, in which case the existing techniques are not readily applicable. In contrast, our conditional predictive ability approach is naturally well suited for comparison of nested models and for detecting differences in predictive ability arising from use of different modelling and estimation techniques.
+
+We consider the "balanced panel" subset of the data set of Stock and Watson (2002) (henceforth SW), including 146 monthly economic time series measured over the period 1959:1-1998:12. We use the different parameter reduction methods to construct 1-, 6- and 12- month-ahead forecasts for eight U.S. macroeconomic variables: four measures of aggregate real activity and four price indexes. The first group includes the components of the Index of Coincident Economic Indicators maintained by the Conference Board: total industrial production; real personal income less transfers; real manufacturing and trade sales and number of employees on nonagricultural payrolls. The price indexes are: consumer price index; consumer price index less food; personal consumption expenditure implicit price deflator and producer price index.4 We refer the reader to SW for a complete description of the data.
+
+4These variables coincide with the variables forecasted by SW, with the exception of the consumer price index
+
+
+<!-- p:18 -->
+
+
+## 5.1 Parameter-reduction methods
+
+Following SW, our approach to multistep-ahead forecasting is to consider forecast models that project the τ-step ahead variable Yt+τ onto predictor variables measured at time t. Both the dependent variable and the predictors are transformations of the original data that render these variables I(0). In particular, the real variables are modeled as being I(1) in logarithms and the price indexes as I(2) in logarithms. If RAWt is the original datum at time t, this implies that Yt+τ is generated as
+
+$$R e a l { \text { variables } } \ \colon \ Y _ { t + \tau } ^ { \tau } = ( 1 2 0 0 / \tau ) \log ( R A W _ { t + \tau } / R A W _ { t } )$$
+
+For ease of notation, we denote the one-step ahead variable Yt1+1 as Yt+1.We consider the following forecasting methods.
+
+### 5.1.1 Sequential model selection
+
+This method considers the entire set of 145 predictors, together with lags of the dependent variable and performs a sequential selection search on each estimation sample that retains only variables that are statistically significant. The subset of significant variables is then used for forecasting. The initial model specification is
+
+$$Y _ { t + \tau } ^ { \tau } = \alpha + \beta ^ { \prime } X _ { t } + \gamma ( L ) Y _ { t } + \varepsilon _ { t + \tau } .$$
+
+where Xt indicates the vector containing the 145 predictors and γ(L) is an autoregressive polynomial of order 6. We overcome the problem of multicollinearity in the original Xt matrix by removing a    s   v v s vot v a  sd g of all the highly correlated variables. After this procedure, the new matrix Xt contains a total of 130 regressors. Our sequential modeling approach begins by estimating the full model and then applies a series of sequential tests until a more parsimonious restriction is found that conveys most of the information contained in the initial model.5 We apply a simplified version of the search algorithm described by Hoover and Perez (1999, p.175), which consists of reducing the number of regressors in the model by performing a sequence of stability tests, residual autocorrelation tests and t— and F— tests of significance of the regressor's coefficients. The simplification adopted here considers only one reduction path rather than multiple paths and performs only a subset of the sequential tests in Hoover and Perez (1999). As suggested by these authors, we use a significance level α = 0.01 for all the tests, which should encourage parsimony of the final model. A complete description of the particular algorithm that we utilize is contained in Appendix B.
+
+less food which replaces the consumer price index less food and energy series considered by SW (not included in the data set available to the authors).
+
+5See Hoover and Perez, (1999) and the ensuing discussion for relevant references, a thorough description of the methodology, and an account of the heated debate about the merits and shortcomings of the so-called LSE approach to econometric modeling.
+
+
+<!-- p:19 -->
+
+
+### 5.1.2 Diffusion indexes
+
+This is a new method proposed by SW. The forecasts are constructed using a two-step procedure. First, the method of principal components is used to estimate the factors Ft from the predictors Xt. Second, the forecasting model is constructed as
+
+$$Y _ { t + \tau } ^ { \tau } = \alpha + \beta ^ { \prime } \hat { F } _ { t } + \gamma ( L ) Y _ { t } + \varepsilon _ { t + \tau } ,$$
+
+where both the number of factors k retained in t and the order p of γ(L) are selected by BIC, with 1 ≤ k ≤ 12 and 0 ≤ p ≤ 6.
+
+### 5.1.3 Bayesian shrinkage estimation
+
+We consider the full model (13) and apply Bayesian estimation of its coefficients using the Litterman (1986) prior. The Litterman prior, when applied to variables expressed in differences, shrinks all coefficients in (13) towards zero, except that for the intercept term a diffuse prior is used. Formally, the variance-covariance matrix V for the prior distribution of θ ≡ (α, β′, γ′)′ is diagonal, with α ∼ N(0, 108), βi ∼ N(0, (w · λ · ôy/ôxi)2), i = 1, ..., k and γj ∼ N (0, (λ/j))2), j = 1, .., p. There are two hyperparameters that must be selected a priori: λ and w. The parameter λ is the prior standard deviation of the first autoregressive coefficient (that is, the coefficient of Yt). The prior standard deviation of the subsequent lags of Yt is further divided by the lag length to reflect an increasing confidence in the prior mean for longer lags. The parameter w is a number between zero and one that reflects the belief that the predictors collected in Xt are less useful for forecasting than lagged values of the dependent variable. Further, the prior standard deviation of βi is multiplied by the ratio of the sample standard deviations of the dependent variable and of the ith regressor ôy/ôxi, to eliminate the effects of differences in scale. The Bayesian estimate of θ is then given by
+
+$$\theta ^ { B } = ( X ^ { \prime } X + \hat { \sigma } ^ { 2 } V ^ { - 1 } ) ^ { - 1 } ( X ^ { \prime } Y ^ { \tau } ) ,$$
+
+where X is the m×151 matrix (m is the size of the estimation sample) with rows (Xt, Yt, Yt–1, ..., Yt–5), Yτ is the m × 1 vector with rows Yt+τ and ô is the estimated standard error of the residuals in a univariate autoregression for Yt+τ. As suggested by Litterman (1986), we set w = 0.2 and λ = 0.2.6
+
+6The results were generally robust to a number of different choices for w and λ.
+
+
+<!-- p:20 -->
+
+
+## 5.1.4Benchmarks
+
+In addition to the three methods above, we consider two benchmarks. The first is a forecasting method based on an autoregressive (AR) model
+
+$$Y _ { t + \tau } ^ { \tau } = \alpha + \gamma ( L ) Y _ { t } + \varepsilon _ { t + \tau } ,$$
+
+os o         s  ( od s       od benchmark is based on a random walk hypothesis for the levels of the variable; this amounts to specifying the following forecast equation for the variable in differences:
+
+$$Y _ { t + \tau } ^ { \tau } = \alpha + \varepsilon _ { t + \tau } .$$
+
+## 5.2 Real-time forecasting experiment
+
+The five methods described above are used to simulate real-time forecasting. The available sample has size T = 468, and we choose a maximum estimation window m = 150 + τ, which is the minimal length that allows us to estimate and test the full model in the sequential model selection approach. For comparability, we apply the same transformations to the original series as those documented in Appendix B of SW. The first estimation sample we consider ranges from 1960:1 through 1972:6 + τ (the first 12 data were used as initial observations). The data in this sample are first screened for outliers, which we replace with the unconditional mean of the corresponding variable. We then standardize the regressors, estimate the diffusion indexes and select the autoregressive lag lengths and number of diffusion indexes by BIC. Finally, we run the regressions (13), (14), (16), (17) and apply the Bayesian shrinkage method for t =1960:1,...,1972:6. We use the values of the regressors at time t =1972:6 + τ to generate a set of forecasts for Y1972:6+2r. We then move the estimation window forward one period and repeat all of the above steps (outlier detection, standardization, specification, estimation and so forth) on data from 1960:2 through 1972:7 + τ. This generates the set of forecasts for Y1972:7+2r. The final forecasts are produced at t =1998:12 – τ for the variable Y1998:12.
+
+## 5.3 Results of the conditional predictive ability tests
+
+We apply the conditional predictive ability test of Theorem 1 to evaluate the accuracy of the different forecast methods. We take the series of 1-, 6- and 12-month-ahead forecast errors e calculated above for each of the five models and conduct a number of pairwise tests using absolute error and squared error loss functions: L1(e) = |e| and L2(e) = e2. For τ = 1, 6 and 12, the null hypotheses of equal conditional predictive ability for the two loss functions are given by
+
+$$H _ { 0 } ^ { 1 } & \ \colon \ E [ | Y _ { t + \tau } - \hat { f } _ { m , t } | - | Y _ { t + \tau } - \hat { g } _ { m , t } | \ | \mathcal { F } _ { t } ] \equiv E [ \Delta L _ { 1 t + \tau } | \mathcal { F } _ { t } ] = 0 \text { and } \\ H _ { 0 } ^ { 2 } & \ \colon \ E [ ( Y _ { t + \tau } - \hat { f } _ { m , t } ) ^ { 2 } - ( Y _ { t + \tau } - \hat { g } _ { m , t } ) ^ { 2 } | \mathcal { F } _ { t } ] \equiv E [ \Delta L _ { 2 t + \tau } | \mathcal { F } _ { t } ] = 0 .$$
+
+
+<!-- p:21 -->
+
+
+The hypothesis test H makes use of test function: ht = (1, ∆Lit)', i = 1, 2. As discussed in section 3.4, in case of rejection of the null hypothesis of equal conditional predictive ability, we consider which method would have been selected at each point in time by the decision rule described in that section. To illustrate, Figure 2 plots the sequence of predicted absolute error loss differences ood s  o o od od sd  od  o- del selection versus AR and Bayesian shrinkage versus AR.
+
+#### [FIGURE 2 HERE]
+
+The predicted loss for the sequential method is greater than the predicted loss for the AR for the vast majority of the sample dates, while the predicted loss for the Bayesian shrinkage is always smaller than that of the AR. Further, notice that the predicted loss differences for the pair sequential-AR are several orders of magnitude higher and more volatile than those for the pair Bayesian shrinkage-AR. Provided the test rejects the null hypothesis of equal conditional predictive ability, these considerations lead to the conclusion that Bayesian shrinkage would have been invariably a better method than the AR for forecasting one-month ahead industrial production over the years 1972-1998.
+
+The results of the test for all pairwise comparisons, loss functions, and forecast horizons are contained in Tables 2-5. Tables 2 and 3 present the results for the real variables forecasts, whereas Tables 4 and 5 consider the price indexes forecasts. The entries in each table are the p-values of the tests of equal conditional predictive ability of the two methods. The number within parentheses below each entry is the indicator In,c discussed in section 3.4 (for c = 0) which represents the proportion of times the method in the column would have been preferred to the method in the row over the out-of-sample period using the decision rule described in that section. To facilitate interpretation of the tables, we use a plus sign to indicate rejection of the null hypothesis of equal conditional predictive ability of the two methods at the 10% level and to signal that the method in the column would have been chosen more often than the method in the row (as suggested by an entry In,c &gt; .5). Similarly, a minus sign denotes rejection of the null hypothesis at the 10% level and it indicates that the method in the column would have been chosen more often than the method in the row (i.e., In,c &lt; .5).
+
+#### [TABLES 2 - 5 HERE]
+
+A sharp result that emerges from Tables 2-5 is that the sequential model selection method is characterized by the worst performance across all forecast horizons, especially for the real variables. In the majority of cases, it is outperformed by every other method, including the naive random walk forecast. The likely explanation for this is the tendency of the method to select over-parameterized models (cases with 40 or more predictors in the final model were not uncommon), in spite of the use of a small confidence level for the sequential tests. Further, performing a new sequential search on each of the rolling estimation windows means that we typically select a different model at each iteration, in spite of the fact that consecutive windows only differ by two observations. This suggests that improvements on the performance of the sequential method may be obtained by updating the model less frequently than every month.
+
+
+<!-- p:22 -->
+
+
+A second general observation is that the information contained in the predictors seems to be less useful for forecasting price indexes than real variables. For the price indexes, there are only a few cases where the AR benchmark is outperformed (by the diffusion index method). In the majority of cases, the parameter-reduction methods, while outperforming the naive random walk forecasts, are indistinguishable from the AR benchmark. Further, the Bayesian shrinkage method is outperformed by the diffusion indexes and by the AR method mainly at the 6- and 12-month forecast horizons.
+
+The Bayesian shrinkage and the diffusion indexes methods appear to fare better for forecasting real variables. Bayesian shrinkage, in particular, outperforms the AR in 11 of the 12 comparisons, while the diffusion indexes method outperforms the AR in 7 of the 12 comparisons. It is interesting to note that for the majority of variables and forecast horizons the AR forecasts are not distinguishable from the random walk forecasts. This suggests that the predictors do contain useful information for forecasting real variables beyond what can be captured by the variable's own lags. Bayesian shrinkage emerges in this case as the best method for reducing the estimation uncertainty of the system, while still conveying its information content.
+
+### 6Conclusion
+
+We propose a general framework for out-of-sample predictive ability testing which, as we argue, represents a more realistic setting for economic forecasting than the existing framework, exemplified by West (1996). We start from the premise that the forecaster not only cares about whether two competing forecasts do equally well on average, but also whether she can predict which forecast will do better tomorrow. We implement this different focus by conducting inference about conditional, rather than unconditional moments of forecasts and forecast errors. Recognizing that even a good model may produce bad forecasts due to estimation uncertainty or model instability, we make the object of evaluation the entire forecasting method (including the model, the estimation procedure and the size of the estimation window), whereas the existing literature concentrates solely on the model. In so doing, we are also able to handle more general data assumptions (heterogeneity rather than stationarity) and estimation methods, as well as providing a unified framework for comparing forecasts based on nested or non-nested models, which was not previously available.
+
+
+<!-- p:23 -->
+
+
+One useful application of the conditional predictive ability tests is in evaluating different methods for model selection and parameter estimation. We considered in particular the case of macroeconomic forecasting with a large number of predictors and compared the forecast performance of different parameter-reduction methods: a sequential model selection approach, the "diffusion indexes" approach of Stock and Watson (2002) and the use of Bayesian shrinkage estimation. Using the data set of Stock and Watson (2002), including monthly U.S. data on a large number of macroeconomic variables, we generated 1-, 6- and 12-month ahead forecasts of four measures of real activity and four price indexes using the different forecast methods. The conditional predictive ability tests led to the conclusion that the sequential model selection was the worst performing method, probably due to its tendency to select large models. A second general result was that the information contained in the predictors appeared to be less useful for forecasting price indexes than real variables. For the price indexes, the performance of the various methods was mostly indistinguishable from the one of a simple autoregression. For the real variables, instead, we found that the predictors did contain useful information beyond what is contained in the variable's own lags. For these variables Bayesian shrinkage seemed to be the best method for reducing the estimation uncertainty of the system. We emphasize that the results of the empirical application are specific to the situation where the number of parameters is very large relative to the sample size and thus one should be careful in generalizing our conclusions to other situations. The fact that shrinkage estimation methods work best in such an environment should come as no surprise. Likewise, it could be argued that the sequential model selection approach was originally conceived for the case where there are enough observations per parameter to make the results of the sequential tests credible. Viewed in this light, our experiments may be unduly hard on the sequential methodology.
+
+Much work remains to be done. A refinement that we are currently exploring is to consider a richer set of decision rules for selecting the best forecasting method or for optimally combining the information embedded in each method once the null hypothesis of equal conditional predictive ability is rejected. A further natural generalization of the tests proposed in the paper is to consider multiple comparisons, for example by adapting the approach of White (2000) to our conditional framework. Finally, it may be possible to obtain asymptotic refinements of the tests presented here by using bootstrap resampling techniques, for example by establishing whether the results of Andrews (2002) can be extended to the case of heterogeneous data.
+
+
+<!-- p:24 -->
+
+
+### 7 Appendix A. Proofs
+
+Proof of Theorem 1. Under the null hypothesis H0 in (3), {Zm,t+1, Ft} is an mds, and we can apply an mds central limit theorem (CLT) to show that
+
+$$\hat { \Omega } _ { n } ^ { - 1 / 2 } \sqrt { n } \bar { Z } _ { m , n } \stackrel { d } { \rightarrow } N ( 0 , I )$$
+
+as n → ∞, from which it follows that Th,n d as n → ∞. The mds CLT we use requires n,m conditions such that the sample variance Ôn is a consistent estimator of Ωn = var(√nŽm,n), i.e., such that Ωn − Ωn  0. Write Zm,t+1Zm,t+1 = f(ht, Wt+1, .., Wt−m), where f(·) is a measurable function. Since {Wt} and {ht} are mixing from (i), and f is a function of only a finite number of leads and lags of Wt and ht, it follows from Lemma 2.1 of White and Domowitz (1984) that {Zm,t+1Z′m,t+1} is also mixing of the same size as Wt. To apply a law of large numbers (LLN) to Zm,t+1Z'm,t+1, we further need to ensure that each of its elements has absolute r + δ mo++z+z  (   ze-     nk q t [E|Zm,t+1,i|t+δ]1/2[E|Z2m,t+1,j|r+]1/2 &lt; ∆1/2∆1/2 &lt; ∞, i, j =1, ..,q and for all . that Ωn−Ωn 0 then follows from McLeish (1975)'s LLN as in Corollary 3.48 of White (2001). Ωn is finite by (ii) and it is uniformly positive definite by (iii).
+
+N(0, 1), which implies that Ω−1/2√nŽm,n d N(0, I). Consider
+
+$$\lambda ^ { \prime } \Omega _ { n } ^ { - 1 / 2 } \sqrt { n } \bar { Z } _ { m , n } = n ^ { - 1 / 2 } \sum _ { t = m } ^ { T - 1 } \lambda ^ { \prime } \Omega _ { n } ^ { - 1 / 2 } Z _ { m , t + 1 }$$
+
+and write λ'Ω−1/2 Zm,t+1 = Σi=1 λZm,t+1,i. The variable λZm,t+1,i is measurable with respect to Ft, and the linearity of conditional expectations implies that
+
+$$E [ \lambda ^ { \prime } \Omega _ { n } ^ { - 1 / 2 } Z _ { m , t + 1 } | \mathcal { F } _ { t } ] = \sum _ { i = 1 } ^ { q } \tilde { \lambda } _ { i } E [ Z _ { m , t + 1 , i } | \mathcal { F } _ { t } ] = 0 ,$$
+
+i = var(λ′Ω−1/2√nZm,n) = XΩ−1/2var(√n ̄m,n)Ω−1/2λ = 1 for all sufficiently large. We have that
+
+$$n ^ { - 1 } \sum _ { t = m } ^ { T - 1 } \lambda ^ { \prime } \Omega _ { n } ^ { - 1 / 2 } Z _ { m , t + 1 } Z _ { m , t + 1 } ^ { \prime } \Omega _ { n } ^ { - 1 / 2 } \lambda - 1 = \lambda ^ { \prime } \Omega _ { n } ^ { - 1 / 2 } \hat { \Omega } _ { n } \Omega _ { n } ^ { - 1 / 2 } \lambda - \lambda ^ { \prime } \Omega _ { n } ^ { - 1 / 2 } \Omega _ { n } \Omega _ { n } ^ { - 1 / 2 } \lambda = g ( \hat { \Omega } _ { n } ) - g ( \Omega _ { n } ) \stackrel { p } { \rightarrow } 0 ,$$
+
+since Ωn — Ωn  0 and by Proposition 2.30 of White (2001). Further, by Minkowski's inequality,
+
+$$E | \lambda ^ { \prime } \Omega _ { n } ^ { - 1 / 2 } Z _ { m , t + 1 } | ^ { 2 + \delta } = E | \sum _ { i = 1 } ^ { q } \tilde { \lambda } _ { i } Z _ { m , t + 1 , i } | ^ { 2 + \delta } \leq [ \sum _ { i = 1 } ^ { q } \tilde { \lambda } _ { i } ( E | Z _ { m , t + 1 , i } | ^ { 2 + \delta } ) ^ { 1 / ( 2 + \delta ) } ] ^ { 2 + \delta } < \infty ,$$
+
+the last inequality following from (ii). Hence, the sequence {λ'Ω−1/2 Zm,t+1, Ft} satisfies the condi- N(0, 1). By the Cramér-Wold device (e.g., Proposition 5.1 of White, 2001), Ω−1/2 √nZm,n N(0, I), from which (19) follows by consistency of Ôn for Ωn. ■
+
+
+<!-- p:25 -->
+
+
+Proof of Corollary 2. The (constant unadjusted) R2 for the regression of the constant unity on the variables Zm,t+1 ≡ (ht ∆Lm,t+1)′ can be written as R2 = t′Zm[ZmZm]−1Zmt/t′t, where t is an n × 1 vector of ones and Zm is the n × q matrix with rows Zm,t+1· Since Ôn = ZmZm/n, it thus ■
+
+Proof of Corollary 3. The (constant unadjusted) R2 for the regression of ∆Lm,t+1 on ht can be written as R2 = ∆L'h[h'h]−1h′∆L/∆L'∆L, where ∆L is the n × 1 vector with elements ∆Lm,t+1 and h is the n × q matrix with rows ht. We thus have nR2 = nŽm,n(ônVn)−1Žm,n, where ôn = ∆L'∆L/n and Vn = h′h/n. We will show that ônVn − Ωn  0, which implies that the two statistics T,n and nR2 are asymptotically equivalent and thus the conditional predictive ability test can be alternatively based on the statistic nR2. By the law of iterated expectations
+
+$$\Omega _ { n } = n ^ { - 1 } \sum _ { t = m } ^ { T - 1 } E [ h _ { t } ( \Delta L _ { m , t + 1 } ) ^ { 2 } h _ { t } ^ { \prime } ] & = n ^ { - 1 } \sum _ { t = m } ^ { T - 1 } E [ h _ { t } E [ ( \Delta L _ { m , t + 1 } ) ^ { 2 } | \mathcal { F } _ { t } ] ] h _ { t } ^ { \prime } ] = \sigma ^ { 2 } E [ h ^ { \prime } h / n ] , \\$$
+
+where the last equality follows from assumption (v). Given assumptions (i) and (ii)', the sequences {htht} and {(∆Lm,t+1)2} satisfy a LLN and it thus follows that Vn − E[h′h/n]  0 and ôn − σ2 = ôn− E[ôn]  0, where the last equality is implied by (v). Hence, ônVn−Ωn = ônVn−σ2 E[h′h/n] 0, and the proof is complete. ■
+
+Proof of Theorem 4. Given Assumption (i), it follows from Lemma 2.1 of White and Domowitz (1984) that {Zm,t+1} is mixing of the same size as Wt, since it is a function of only a finite number of leads and lags of Wt and ht. Further, each element of Zm,t+1 is bounded uniformly in t by (ii). McLeish (1975)'s LLN (as in Corollary 3.48 of White, 2001) then implies that Žm,n− E[Żm,n] D 0. By definition, under HA,h there exists ε &gt; 0 such that E[Ž′,n]E[Žm,n] &gt; 2ε for all n sufficiently large. We then have that
+
+$$P [ \bar { Z } _ { m , n } ^ { \prime } \bar { Z } _ { m , n } > \varepsilon ] & \geq P [ \bar { Z } _ { m , n } ^ { \prime } \bar { Z } _ { m , n } - E [ \bar { Z } _ { m , n } ^ { \prime } ] E [ \bar { Z } _ { m , n } ] > - \varepsilon ] \geq P [ | \bar { Z } _ { m , n } ^ { \prime } \bar { Z } _ { m , n } - E [ \bar { Z } _ { m , n } ^ { \prime } ] E [ \bar { Z } _ { m , n } ] | < \varepsilon ] \to 1 . \\ \\ \\ P [ \bar { Z } _ { m , n } ^ { \prime } \bar { Z } _ { m , n } > \varepsilon ] & \geq P [ \bar { Z } _ { m , n } ^ { \prime } \bar { Z } _ { m , n } - E [ \bar { Z } _ { m , n } ^ { \prime } ] E [ \bar { Z } _ { m , n } ] > - \varepsilon ] \geq P [ | \bar { Z } _ { m , n } ^ { \prime } \bar { Z } _ { m , n } - E [ \bar { Z } _ { m , n } ^ { \prime } ] E [ \bar { Z } _ { m , n } ] | < \varepsilon ] \to 1 . \\$$
+
+By arguments identical to those used in the proof of Theorem 1, {Zm,t+1Zm,t+1} is mixing of the (            (    s s LLN then implies that Ôn − Ωn  0, with Ωn uniformly positive definite by (iii). The conditions of Theorem 8.13 of White (1994) are then satisfied, and the theorem implies that for any constant c ∈ R, P[Th,m &gt; c] → 1 as n → ∞. ■
+
+Proof of Theorem 5. (a) Under the null hypothesis H0 in (3), we show that
+
+$$\tilde { \Omega } _ { n } ^ { - 1 / 2 } \sqrt { n } \bar { Z } _ { m , n } \stackrel { d } { \rightarrow } N ( 0 , I )$$
+
+as n → ∞, from which (a) follows. First, we apply the Cramér-Wold device and show that for all λ ∈ R9, λ′λ = 1, λ'Ω−1/2√nŽm,n d N(0, 1), where Ωn = var(√nŽm,n), using the fact that E[Zm,t+τ|Ft] = 0. The asymptotic variance Ωn is finite by (ii) and it is uniformly positive definite by (i), Write 'Ω−1/2 √nZm,n = n−1/2 ∑t=-τ λ'Ω−1/2 Zm,t+r and consider the scalar sequence {λ'Ω−1/2 Zm,t+τ}. We verify that the sequence satisfies the conditions of the Wooldridge and White (1988) CLT for mixing processes. For each t, 'Ω−1/2 Zm,t+r = f(ht, Wt+τ, .., Wt−m), where f(·) is a measurable function. Since { Wt} and {ht} are mixing from (i), and f is a function of only a finite number of leads and lags of Wt and ht, it follows from Lemma 2.1 of White and Domowitz (1984) that {λ'Ω−1/2 Zm,t+τ} is also mixing of the same size as Wt. Further, σ2 = var(λ′Ω−1/2√nŽm,n) = X'Ω−1/2var(√nžm,n)Ω−1/2λ = 1 &gt; 0 for all n suffciently large. Finally, by Minkowski's inequality,
+
+
+<!-- p:26 -->
+
+
+$$E | \lambda ^ { \prime } \Omega _ { n } ^ { - 1 / 2 } Z _ { m , t + \tau } | ^ { 2 + \delta } = E | \sum _ { i = 1 } ^ { q } \tilde { \lambda } _ { i } Z _ { m , t + \tau i } | ^ { 2 + \delta } \leq [ \sum _ { i = 1 } ^ { q } \tilde { \lambda } _ { i } ( E | Z _ { m , t + \tau i } | ^ { 2 + \delta } ) ^ { 1 / ( 2 + \delta ) } ] ^ { 2 + \delta } < \infty ,$$
+
+the last inequality following from (ii). Hence, the sequence {λ'Ω−1/2Zm,t+τ} satisfies the conditions of Corollary 3.1 of Wooldridge and White (1988), which implies that λ'Ω−1/2√nžm,n d N(0, 1). By the Cramér-Wold device (e.g., Proposition 5.1 of White, 2001), we then conclude that Ω−1/2√nŽm,n d N(0, I). It remains to show that Ωn − Ωn  0, from which (21) follows. We have that
+
+$$\text {that} & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & &$$
+
+For j = 0, ..., τ − 1, {Zm,t+τZm,t+τ−j} is mixing of the same size as Wt and each of its elements is bounded uniformly in t by (ii). Applying McLeish (1975)'s LLN (e.g., Corollary 3.48 of White, 2001) E(Zm,t+τZm,t+τ−j)]  0 for each j = 0, ..,τ − 1 (with wn,0 ≡ 1), which in turn implies that ñn − Ωn  0 and the proof is complete.
+
+(b) Given Assumption (i), it follows from Lemma 2.1 of White and Domowitz (1984) that nd y    n e s  s e se s s    s ad} and lags of Wt and ht. Further, each element of Zm,t+τ is bounded uniformly in t by (ii). McLeish (1975)'s LLN (as in Corollary 3.48 of White, 2001) then implies that Žm,n − E[Żm,n]  0. By definition, under HA,h,τ there exists ε &gt; 0 such that E[Žm,n]E[Żm,n] &gt; 2ε for all n sufficiently large. We then have that
+
+$$P [ \bar { Z } _ { m , n } ^ { \prime } \bar { Z } _ { m , n } > \varepsilon ] \geq P [ \bar { Z } _ { m , n } ^ { \prime } \bar { Z } _ { m , n } - E [ \bar { Z } _ { m , n } ^ { \prime } ] E [ \bar { Z } _ { m , n } ] > - \varepsilon ] \geq P [ | \bar { Z } _ { m , n } ^ { \prime } \bar { Z } _ { m , n } - E [ \bar { Z } _ { m , n } ^ { \prime } ] E [ \bar { Z } _ { m , n } ] | < \varepsilon ] \to 1 .$$
+
+
+<!-- p:27 -->
+
+
+By arguments identical to those used in part (a) - which for this particular result did not necessitate the time dependence structure imposed under the null hypothesis - it follows that ñn — Ωn  0, with Ωn uniformly positive definite by (iii). Theorem 8.13 of White (1994) then implies that for
+
+Proof of Proposition 6. We have E[(Yt+1 − fm,t)2 − (Yt+1 − Îm,t)2|Ft] = E[−2Yt+1(fm,t − Îm,t) + fm,t − gm,t|Ft] = −2(fm,t − Îm,t)E[Yt+1|Ft] + fm,t − g2,t = (fm,t − Îm,t)(−2E[Yt+1|Ft] + fm,t + Îm,t) which is zero (a.s.) if and only if either one of the two factors is zero (a.s.).
+
+### 8 Appendix B. Sequential model selection algorithm
+
+The following is our modification of the search algorithm described by Hoover and Perez (1999, pp.175-176). All the tests are conducted for a significance level α = 0.01 and use heteroskedasticity and autocorrelation consistent standard errors and covariance matrices (e.g., Newey and West, 1987, Andrews, 1991).
+
+1. Estimate the full model on the available sample and run the following tests:
+
+a. Autocorrelation of residuals up to sixth order (LM test; see Breusch and Pagan, 1980).
+
+b. Stability test (Chow predictive test leaving out the last 10 observations in the sample; see Fisher, 1970).
+
+If the full model fails any one of the tests (i.e., autocorrelation and/or structural breaks are detected), do not use this test in the following steps.
+
+2. Eliminate the variable of the general specification that has the lowest t-statistic and reestimate the model, which becomes the current model.
+3. On each current model, perform the two tests in step 1 together with c. F-test of the hypothesis that the coefficients of the variables in the full model that are not
+
+included in the current model are jointly insignificant. If the hypothesis cannot be rejected, the current model can be considered a valid restriction of the full model (in this case we say that the model passes the test).
+
+4. If the current model passes all three tests, eliminate the variable with the next lowest t-statistic and perform the tests on the new current model. If this model fails any one of the tests, restore the last variable eliminated and remove the variable with the next lowest t—statistic. Continue in this fashion until the current model passes all the tests and either all the variables are significant or the elimination of any residual insignificant variable would lead to failing one of the tests.
+
+
+<!-- p:28 -->
+
+
+5. Estimate the final model from step 4.
+
+5.1. If all remaining variables are significant terminate the algorithm.
+
+5.2. If there are remaining insignificant variables, remove all of them and perform the three tests on the restricted model.
+
+a. If the restricted model passes all the tests and all the variables are significant, terminate the algorithm.
+
+b. If the restricted model fails any of the tests, restore the block of eliminated insignificant variables and terminate the algorithm.
+
+c. If the restricted model passes all the tests but there are some remaining insignificant variables, go back to step 5.2.
+
+
+<!-- p:29 -->
+
+<!-- END SOURCE 16/40: Giacomini_2006_conditional-predictive-ability.md -->
+
+---
+
+<!-- BEGIN SOURCE 17/40: Golub_1979_generalized-cross-validation-ridge.md -->
+
+# Source: `Golub_1979_generalized-cross-validation-ridge.md`
+
+---
+id: "Golub_1979_generalized-cross-validation-ridge"
+source_pdf: "../pdf/Golub_1979_generalized-cross-validation-ridge.pdf"
+source_filename: "Golub_1979_generalized-cross-validation-ridge.pdf"
+format: "academic-paper"
+extraction_profile: "text-math-tables-high-fidelity"
+extraction_mode: "hybrid"
+extraction_quality: "excellent"
+extraction_score: 108.0
+visual_assets: "disabled"
+---
+
+<!-- p:1 -->
+
+## Generalized d Cross-Validation as a Method for Choosing a Good Ridge Parameter
+
+#### Gene H. Golub
+
+Department of Computer Science Stanford University Stanford, CA 94303
+
+###### Michael Heath
+
+Computer Sciences Division Oak Ridge National Laboratory Oak Ridge, TN 37830
+
+###### Grace Wahba
+
+Department of Statistics University of Wisconsin Madison, WI 53705
+
+Consider the ridge estimate β(λ) for β in the model y = Xβ + €, € ∼ N(0, σ21), σ2 unknown, β(λ) = (XTX + nλI)-1 XTy. We study the method of generalized cross-validation (GCV) for choosing a good value  for λ, from the data. The estimate λ is the minimizer of V(λ) given by
+
+$$V ( \lambda ) = \frac { \frac { 1 } { } \left \| ( I - A ( \lambda ) ) y \right \| ^ { 2 } } { n } \Big / \left \lfloor \frac { 1 } { n } T r a c e \left ( I - A ( \lambda ) \right ) \right \rfloor ^ { 2 } ,$$
+
+where A(λ) = X(XX + nλ/)-1XT. This estimate is a rotation-invariant version of Allen's PRESS, or ordinary cross-validation. This estimate behaves like a risk improvement estimator, but does not require an estimate of σ2, so can be used when n – p is small, or even if p ≥ n in certain cases. The GCV method can also be used in subset selection and singular value truncation methods for regression, and even to choose from among mixtures of these methods.
+
+= (XTX)-1 XTy. (See Berger [8], Thisted [39], for recent results and references to the earlier literature.) Allowing a bias may reduce the variance tremendously.
+
+In this paper we primarily consider the (one parameter) family of ridge estimates β(λ) given by
+
+$$\hat { \beta } ( \lambda ) = ( X ^ { T } X + n \lambda I ) ^ { - 1 } X ^ { T } y .$$
+
+The estimate β(λ) is the posterior mean of β if β has the prior β ∼ Q(0, aI), and λ = σ2/na. β(λ) is also the solution to the problem:
+
+Find β which satisfies the constraint
+
+$$\| \beta \| = \gamma$$
+
+and for which
+
+$$\frac { 1 } { n } \left \| y - X \beta \right \| = \min .$$
+
+Here  ·‖ indicates the Euclidean norm and we use this norm throughout the paper. Introducing the
+
+KEY WORDS
+
+Ridge regression Cross-validation Ridge parameter
+
+## 1. INTRODUCTION
+
+Consider the standard regression model
+
+$$y = X \beta + \epsilon \quad \quad ( 1 . 1 )$$
+
+where y and € are column n-vectors, β is a p-vector and X is an n × p matrix; € is random with Ee = 0, Eεe = σ2I, where I is the n × n identity.
+
+For p ≥ 3, it is known that there exist estimates of β with smaller mean square error than the minimum variance unbiased, or Gauss-Markov, estimate β(0) 11 n
+
+Received June 1977; revised April 1978
+
+
+<!-- p:2 -->
+
+
+Lagrangian we find that the above problem is equivalent to finding the minimum over β of
+
+$$\frac { 1 } { n } \left \| y - X \beta \right \| ^ { 2 } + \lambda \left \| \beta \right \| ^ { 2 } & & ( 1 , 3 ) \\$$
+
+where λ is a Lagrange multiplier. Methods for computing λ given γ are given in [17]. See [29] for discussion of (1.3). The method of minimizing equation (1.3), or its Hilbert space generalizations, is called the method of regularization in the approximation theory literature (see [21, 44] for further references).
+
+It is known that for any problem there is a λ &gt; 0 for which the expected mean square error Eβ - β(λ) l 2 is less than the Gauss-Markov estimate; however the λ which minimizes, say Elβ - β(λ)∥, or any other given nontrivial quadratic loss function depends on σ2 and the unknown β.
+
+There has been a substantial amount of interest in estimating a good value of λ from the data. See [10, 11, 12, 15, 20, 22, 23, 25, 26, 27, 30, 31, 32, 35, 38, 39]. A conservative guess might put the number of published estimates for λ at several dozen.
+
+In this paper we examine the properties of the method of generalized cross-validation (GCV) for obtaining a good estimate of λ from the data. The GCV estimate of λ in the ridge estimate (1.2) is the minimizer of V(λ) given by
+
+$$V ( \lambda ) = \frac { 1 } { n } \left \| ( I - A ( \lambda ) y \right \| ^ { 2 } / \left [ \frac { 1 } { n } \, T r a c \left ( I - A ( \lambda ) \right ) \right ] ^ { 2 } , \quad \text {there} \quad \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \$$
+
+where
+
+$$A ( \lambda ) = X ( X ^ { T } X + n \lambda J ) ^ { - 1 } X ^ { T } . \quad ( 1 . 5 ) \quad \underset { \substack { n u \\ n u } } { \text {mul} }$$
+
+A discussion of the source of V(λ) will be given in Section 2. This estimate is a rotation-invariant version of Allen's PRESS or ordinary cross-validation, as described in Hocking's discussion to Stone's paper [36] (see also Allen [3], and Geisser [13]). A discussion of the source of V(λ) will be given in Section 2. This estimate is a rotation-invariant version of Allen's PRESS or ordinary cross-validation, as described in Hocking's discussion to Stone's paper [36] (see also Allen [3], and Geisser [13]).
+
+Let T(λ) be the mean square error in estimating Xβ, that is, Let T(λ) be the mean square error in estimating Xβ, that is,
+
+$$\mathcal { T } ( \lambda ) = \frac { 1 } { n } \ \| X \beta - X \hat { \beta } ( \lambda ) \| ^ { 2 } . \quad ( 1 . 6 )$$
+
+It is straightforward to show that It is straightforward to show that
+
+$$E T ( \lambda ) = \frac { 1 } { n } \| ( I - A ( \lambda ) ) g \| ^ { 2 } + \frac { \sigma ^ { 2 } } { n } T r \, A ^ { 2 } ( \lambda ) \quad ( 1 . 7 )$$
+
+where where
+
+$$g = X \beta .$$
+
+An unbiased estimator (λ) of ET(λ), for n &gt; p, is given by An unbiased estimator T(λ) of ET(λ), for n &gt; p, is given by
+
+$$\hat { T } ( \lambda ) = \frac { 1 } { n } \left \| ( I - A ( \lambda ) ) y \right \| ^ { 2 } - \frac { 2 \hat { \sigma } ^ { 2 } } { n } T r ( I - A ( \lambda ) ) + \hat { \sigma } ^ { 2 } , \\$$
+
+where
+
+$$\hat { \sigma } ^ { 2 } = \frac { 1 } { n - p } \, \| ( I - X ( X ^ { T } X ) ^ { - 1 } X ^ { T } ) y \| ^ { 2 } .$$
+
+Mallows [28, p. 672] has suggested choosing λ to minimize Mallows' CL, which is equivalent to minimizing n T(λ)/2. (This follows from [28] upon noting that (I - A(λ))y2 is the "residual sum of squares.") The minimizer of T was also suggested by Hudson [25]. We shall call an estimate formed by minimizing T an RR ("range risk") estimate.
+
+We shall show that the GCV estimate is, for large n, an estimate for the λ which approximately minimizes ET(λ) of (1.7), without the necessity of estimating σ2. As a consequence of not needing an estimate of σ2, GCV can be used on problems where n − p is small, or (in certain circumstances), where the "real" model may be
+
+$$y _ { \iota } = \sum _ { j = 1 } ^ { \infty } \ x _ { \iota } \beta _ { j } + \epsilon _ { \iota } , \quad i = 1 , 2 , \cdots , n . \ ( 1 . 9 )$$
+
+It is also natural for solving regression-like problems that come from an attempt to solve ill-posed linear operator equations numerically. In these problems there is typically no way of estimating σ2 from the data. See Hanson [19], Hilgers [21], Varah [40] for descriptions of these problems. See Wahba [44] for the use of GCV in estimating λ in the context of ridge-type approximate solutions for ill-posed linear operator equations, and for further references to the numerical analysis literature. See Wahba, Wahba and Wold, and Craven and Wahba [9, 42, 43, 45, 46] for the use of GCV for curve smoothing, numerical dif ferentiation, and the optimal smoothing of density and spectral density estimates. At the time of this writing, the only other methods we know of for estimating λ from the data without either knowledge of or an estimate of σ2, are PRESS and maximum likelihood, to be described. We shall indicate why GCV can be expected to be generally better than either. (PRESS and GCV will coincide if XXT is a circulant matrix.)
+
+A fundamental tool in our analysis and in our computations is the singular value decomposition. Given any n × p matrix X, we may write
+
+$$X = U D V ^ { T }$$
+
+where U is an n × n orthogonal matrix, V is a p ×p orthogonal matrix, and D is an n ×p diagonal matrix whose entries are the square roots of the eigenvalues of XaX. The number of non-zero entries in D is equal to the rank of X. The singular value decomposition arises in a number of statistical applications [18]. Good numerical procedures are given in [16].
+
+
+<!-- p:3 -->
+
+
+In Section 2 we derive the GCV estimate as a rotation-invariant version of Allen's PRESS and discuss why it should be generally superior to PRESS. In Section 3 we give some theorems concerning its properties. In Section 4 we show how GCV can be used in other regression procedures, namely, subset selection, and eigenvalue truncation, or principal components. Indeed GCV can be used to compare between the best of the three different methods, or mixtures, of them, if you will. In Section 5 we present the results of a Monte Carlo example.
+
+## 2. THE GENERALIZED CROSS-VALIDATION ESTIMATE OF λ AS AN INVARIANT VERSION OF ALLEN'S PRESS
+
+The Allen's PRESS, or ordinary cross-validation estimate of λ, goes as follows. Let β()(λ) be the ridge estimate (1.2) of β with the kth data point y', omitted. The argument is that if λ is a good choice, then the kth component [Xβ(k)(λ)]k of Xβ(k)(λ) should be a good predictor of y. Therefore, the Allen's PRESS estimate of λ is the minimizer of
+
+$$P ( \lambda ) = \frac { 1 } { n } \sum _ { k = 1 } ^ { n } \left ( [ X \beta ^ { ( k ) } ( \lambda ) ] _ { k } - y _ { k } \right ) ^ { 2 } . \quad ( 2 . 1 ) \quad \begin{matrix} \text {circuit} \\ \text {nail} \\ \text {is } \end{matrix}$$
+
+It has been observed by one of the referees that P(λ) may be viewed as a direct sample estimate of kEy+∥y* − Xβ(λ)||2 ≡ T(λ) + σ2, where here β(λ) is supposed fixed, y* is a future hypothetical observation vector, and Ey· denotes expectation over the distribution of y*.
+
+It can be shown, by use of the Sherman-MorrisonWoodbury formula (see [24]), that
+
+$$P ( \lambda ) = \frac { 1 } { n } \left \| B ( \lambda ) ( I - A ) \right ) y \right \| ^ { 2 } ,$$
+
+where B(λ) is the diagonal matrix with jjth entry 1/(1 − a(λ)), a,(λ) being the jjth entry of A(λ) = X(XTX + nλI)−1XT.
+
+Although the idea of PRESS is intuitively appealing, it can be seen that in the extreme case where the entries of X are 0 except for x, i = 1, 2, · · ·, p, then [Xβ()(λ)] cannot be expected to be a good predictor of yk. In fact, in this case A(λ) is diagonal.
+
+$$P ( \lambda ) = \frac { 1 } { n } \sum _ { k = 1 } ^ { n } \, y _ { k } \, ^ { 2 } ,$$
+
+and so P(λ) does not have a unique minimizer. It is reasonable to conclude that PRESS would not do very well in the near diagonal case. If β and ε both have spherical normal priors, then various arguments can be brought to bear that any good estimate of λ should be invariant under rotations of the (measurement) coordinate system. The GCV estimate is a rotation-invariant form of ordinary cross-validation. It may be derived as follows: Let the singular value decomposition [16] of X be
+
+$$X = U D V ^ { t } .$$
+
+Let W be the unitary matrix which diagonalizes the circulants. (See Bellman [7], Wahba [41].) In complex form the jkth entry [W] of W is
+
+$$[ W ] _ { k } = \frac { 1 } { \sqrt { n } } \, e ^ { 2 \pi i j k / n } , \quad j , k = 1 , 2 , \cdots , n .$$
+
+The GCV estimate for λ can be defined as the result of using Allen's PRESS on the transformed model
+
+$$\tilde { y } = W U ^ { \tau } y = W D V ^ { \tau } \beta + W U ^ { \tau } \epsilon \\ \equiv \chi _ { \beta } + W U ^ { \tau } \epsilon .$$
+
+The new "data vector" is y = (1, ·  , yn), and the m   a = X   , ans complex conjugate transpose) is a circulant matrix (see [6,41]). Thus intuitively, [Xβ(k)(λ)] should contain a "maximal" amount of information about yk, on the average. By substituting X and y into (2.2), and observing that A(λ) ≡ X(X*X + nλI)−1X* is a circulant matrix and hence constant down the diagonals, and Ā(λ) and A(λ) have the same eigenvalues, it is seen that P(λ) becomes V(λ) (see (1.4)) given by
+
+$$t \text { that } & \quad \text {is seen that } P ( \lambda ) \text { becomes } V ( \lambda ) \text { (see (1.4)) } \text { given by } \\ \text {te of } & \quad V ( \lambda ) = \frac { 1 } { n } \left \| ( I - \tilde { A } ( \lambda ) ) \tilde { y } \right \| ^ { 2 } \Big / \\ \text {erva- } & \quad \text {the } & \quad \left [ \frac { 1 } { n } \text { Tr} ( I - \tilde { A } ( \lambda ) ) \right ] ^ { 2 } \\ \text {ison-} & \quad & \equiv \frac { 1 } { n } \sum _ { \nu = 1 } ^ { n } \left ( \frac { n \lambda } { \lambda _ { \nu n } + n \lambda } \right ) ^ { 2 } z _ { \nu } ^ { 2 } \Big / \\ ( 2 . 2 ) & & \left [ \frac { 1 } { n } \sum _ { \nu = 1 } ^ { p } \frac { n \lambda } { \lambda _ { \nu n } + n \lambda } + n - p \right ] ^ { 2 } & ( 2 . 3 ) \\ & 1 / ( 1 \\ ( X ^ { T } X \quad \text {where } z = ( z _ { \nu } , \cdots , z _ { n } ) ^ { T } = H ^ { T } v \text { and } \lambda _ { \nu } = 1 , 2 , \cdots , n$$
+
+where z = (z1, · · ·, zn)T = UT y and λvn, ν = 1, 2, · · · , n, are the eigenvalues of XXT, λ = 0, ν &gt; p.
+
+It can also be shown that V(λ) is a weighted version of P(λ), namely
+
+$$V ( \lambda ) \equiv \frac { 1 } { n } \sum _ { k = 1 } ^ { n } \left ( [ X \beta ^ { ( k ) } ( \lambda ) ] _ { k } - y _ { k } \right ) ^ { 2 } w _ { k } ^ { ( \lambda ) }$$
+
+where
+
+$$w _ { \kappa } ( \lambda ) = \frac { 1 - a _ { \kappa \kappa } ( \lambda ) } { 1 - \frac { 1 } { n } T r \, A ( \lambda ) } \cdot$$
+
+We define the GCV estimate of λ as the minimizer of (1.4), equivalently (2.3), and proceed to an investigation of its properties. We define the GCV estimate of λ as the minimizer of (1.4), equivalently (2.3), and proceed to an investigation of its properties.
+
+
+<!-- p:4 -->
+
+
+3. PROPERTIES OF THE GCV ESTIMATE OF λ
+
+satisfies
+
+Theorem 1 (The GCV Theorem).
+
+$$\left | T r ( A ( \lambda ) , \mu _ { 2 } = \frac { 1 } { n } \, T r \, A ^ { z } ( \lambda ) , \, b ^ { 2 } = \\ & \frac { 1 } { n } \left \| ( I - A ( \lambda ) ) g \right \| ^ { z } . \quad \text {are} \\$$
+
+Then
+
+$$\frac { E T ( \lambda ) - E V ( \lambda ) + \sigma ^ { 2 } } { E T ( \lambda ) } & = \frac { - \mu _ { 1 } ( 2 - \mu _ { 1 } ) } { ( 1 - \mu _ { 1 } ) ^ { 2 } } \\ & + \frac { \sigma ^ { 2 } } { b ^ { 2 } + \sigma ^ { 2 } \mu _ { 2 } } \frac { \mu _ { 1 } ^ { 2 } } { ( 1 - \mu _ { 1 } ) ^ { 2 } } \\$$
+
+and so
+
+$$\frac { | E T ( \lambda ) - E V ( \lambda ) + \sigma ^ { 2 } | } { E T ( \lambda ) } < \left ( 2 \mu _ { 1 } + \frac { \mu _ { 1 } ^ { 2 } } { \mu _ { 2 } } \right ) \frac { 1 } { ( 1 - \mu _ { 1 } ) ^ { 2 } }$$
+
+whenever 0 &lt; μ1 &lt; 1. Proof: Since ET = b2 + σ2μ22 EV = [b2 + σ2(1 − 2μ1 + μz)]/(1 − μ)2, the result follows from
+
+$$\mu _ { 2 } ) ] / ( 1 - \mu _ { 1 } ) ^ { 2 } , \, \text { the result follows from} \\ E T - E V = ( b ^ { 2 } + \sigma ^ { 2 } \mu _ { 2 } ) \left ( 1 - \frac { 1 } { ( 1 - \mu _ { 1 } ) ^ { 2 } } \right ) & & \text {and and so} \\ & & - \sigma ^ { 2 } \frac { ( 1 - 2 \mu _ { 1 } ) } { ( 1 - \mu _ { 1 } ) ^ { 2 } } \\ E T + \sigma ^ { 2 } - E V = E T \left ( 1 - \frac { 1 } { ( 1 - \mu _ { 1 } ) ^ { 2 } } \right ) + \sigma ^ { 2 } \frac { \mu _ { 1 } ^ { 2 } } { ( 1 - \mu _ { 1 } ) ^ { 2 } } & & \text {If $\Lambda$} \\ R e m a r k \colon \text {This theorem implies that if}$$
+
+Remark: This theorem implies that if
+
+$$\frac { 1 } { n } \, T r \, A ( \lambda ) = \mu _ { 1 } \rightarrow 0 & & \text {as } n \rightarrow \infty$$
+
+$$I ^ { o } \leq \frac { 1 + h ( \lambda ^ { o } ) } { 1 - h ( \tilde { \lambda } ) } \, .$$
+
+Remark: This corollary sa are small then the mean squa of EV(λ) is not much bigger sible mean square error mir Remark: This corollary says that if h(λo) and h(λ) are small then the mean square error at the minimizer of EV(λ) is not much bigger than the minimum possible mean square error min ET(λ).
+
+Proof: Let Λ = {λ: 0 ≤ (λ°)(1 + h(λ°))}. Since Proof: Let Λ = {λ: 0 ≤ λ ≤ ∞, EV(λ) − σ2 ≤ T(λ°)(1 + h(λ°))}. Since
+
+$$E T ( \lambda ) ( 1 - h ( \lambda ) ) & < E V ( \lambda ) - \sigma ^ { 2 } < E T ( \lambda ) ( 1 + h ( \lambda ) ) , \\ 0 & \leq \lambda < \infty ,$$
+
+and ET, EV and h are contin Λ is a non-empty closed set point of Λ, then EV(λ) − σ2 h in the interior of Λ, call it λ. the theorem and ET, EV and h are continuous functions of λ, then Λ is a non-empty closed set. If 0 is not a boundary point of Λ, then EV(λ) − σ2 has at least one minimum in the interior of Λ, call it λ. (See Figure 1.) Now by the theorem
+
+ET()(1 − h()) &lt; EV() − and so ET(λ)(1 − h(λ)) &lt; EV(λ) − σ2 &lt; ET(λ°)(1 + h(λ°)) and so
+
+$$I ^ { 0 } = \frac { T ( \tilde { \lambda } ) } { T ( \lambda ^ { 0 } ) } \leq \frac { 1 + h ( \lambda ^ { 0 } ) } { 1 - h ( \lambda ) } .$$
+
+If Λ includes 0, then λ may b i.e., λ = 0, but the above bo Example 1. Note that If Λ includes 0, then λ may be on the boundary of Λ, i.e., λ = 0, but the above bound on Io still holds. Example 1. Note that
+
+$$\mu _ { 1 } = \frac { 1 } { n } \, T r \, A = \frac { 1 } { n } \sum _ { \nu = 1 } ^ { p } \, \frac { \lambda _ { \nu n } } { \lambda _ { \nu n } + n \lambda } \leq \frac { p } { n }$$
+
+and
+
+$$\left ( \frac { 1 } { n } \ T r \, A ( \lambda ) \right ) ^ { 2 } / \left ( \frac { 1 } { n } \ T r \, A ^ { 2 } ( \lambda ) \right ) & = \frac { \mu _ { 1 } ^ { 2 } } { \mu _ { 2 } } \rightarrow 0 . \quad \text {as } n \rightarrow \infty \\$$
+
+then the difference between ET(λ) + σ2 and EV(λ) is small compared to ET(λ). This result and the fact that in the extreme diagonal case P(λ) does not have a unique minimum suggests that the minimizer of V(λ) is preferable to the minimizer of P(λ) if one wants to choose λ to minimize
+
+$$\frac { 1 } { n } \, E _ { y ^ { * } } \| y ^ { * } - X \beta ( \lambda ) \| ^ { 2 } .$$
+
+Corollary: Let
+
+$$h = \left ( 2 \mu _ { 1 } + \frac { \mu _ { 1 } ^ { 2 } } { \mu _ { 2 } } \right ) \frac { 1 } { ( 1 - \mu _ { 1 } ) ^ { 2 } }$$
+
+Let λo be the minimizer of ET(λ). Then EV(λ) always -as     mo ( l sl  e pectation inefficiency" Io defined by
+
+$$I ^ { o } = \frac { E T ( \tilde { \lambda } ) } { E T ( \lambda ^ { o } ) }$$
+
+TECHNOMETRICS ©, VOL. 21, NO. 2, MAY 1979
+
+$$\frac { \mu _ { 1 } ^ { 2 } } { \mu _ { 2 } } = \frac { \left ( \frac { 1 } { n } \, T r \, A \right ) ^ { 2 } } { \frac { 1 } { n } \, T r \, A ^ { 2 } } = \frac { 1 } { n } \, \frac { \left ( \sum _ { \nu = 1 } ^ { p } \, \frac { \lambda _ { \nu n } } { \lambda _ { \nu n } + \lambda } \right ) ^ { 2 } } { \sum _ { \nu = 1 } ^ { p } \left ( \frac { \lambda _ { \nu n } } { \lambda _ { \nu n } + \lambda } \right ) ^ { 2 } } \leq \frac { p } { n } .$$
+
+Then Then
+
+$$h \leq 3 \, \frac { P } { n } \, \frac { 1 } { \left ( 1 - \frac { P } { n } \right ) ^ { 2 } } \, .$$
+
+Hence for p fixed and n → that Hence for p fixed and n → ∞, it follows that
+
+$$I ^ { \circ } \leq 1 + 6 \, \frac { P } { n } + 0 \left ( \frac { P } { n } \right ) .$$
+
+Example 2. p &gt; n. Example 2. p &gt; n.
+
+It is not necessary that p this example suggests. Wha become ill conditioned for It is not necessary that p &lt;&lt; n for Io to tend to 1, as this example suggests. What is required is that XXT become ill conditioned for n large.
+
+
+<!-- p:5 -->
+
+
+Let
+
+with
+
+$$\sum _ { l = 1 } ^ { \infty } x _ { l } x _ { l } ^ { 2 } \leq k _ { 1 } < \infty , \ \ a l ] \quad i , \quad \sum _ { l = 1 } ^ { \infty } \beta _ { j } ^ { 2 } \leq k _ { 2 } < \infty .$$
+
+Suppose
+
+$$\lim _ { n \to \infty } \frac { 1 } { n } \, T r \, X X ^ { T } = \lim _ { n \to \infty } \frac { 1 } { n } \sum _ { l = 1 } ^ { n } \, \sum _ { J = 1 } ^ { \infty } \, x _ { l J } { ^ { 2 } } = k _ { \mathfrak { s } } < \infty$$
+
+and suppose the eigenvalues {λvn, ν = 1, 2, · · · , n} of XXT satisfy
+
+$$\lambda _ { \nu n } \simeq n \nu ^ { - m } ,$$
+
+8 say, for some m &gt; 1; (ks = ∑ v−m). 1=4
+
+Then
+
+$$T h e n \\ \mu _ { 1 } = \frac { 1 } { n } \sum _ { \nu = 1 } ^ { n } \frac { \lambda _ { \nu n } } { \lambda _ { \nu n } + n \lambda } \simeq \frac { 1 } { n } \sum _ { \nu = 1 } ^ { n } \frac { 1 } { 1 + \lambda \nu ^ { m } } \sum _ { \substack { P r o o \\ E _ { \beta } E _ { \beta } } } ^ { \substack { m i z e c h o l l \\ m i z e c h o l l } } \\ \simeq \frac { 1 } { n } \int _ { 0 } ^ { \infty } \frac { d x } { ( 1 + \lambda x ^ { m } ) } = \frac { 1 } { n \lambda ^ { 1 / m } } \int _ { 0 } ^ { \infty } \frac { d x } { ( 1 + x ^ { m } ) } \\ E _ { \beta } E _ { \beta } \\ \mu _ { 2 } = \frac { 1 } { n } \sum _ { \nu = 1 } ^ { n } \left ( \frac { \lambda _ { \nu n } } { \lambda _ { \nu n } + n \lambda } \right ) ^ { 2 } \simeq \frac { 1 } { n } \sum _ { \nu = 1 } ^ { n } \frac { 1 } { ( 1 + \lambda \nu ^ { m } ) ^ { 2 } } \\ \simeq \frac { 1 } { n } \int _ { 0 } ^ { \infty } \frac { d x } { ( 1 + \lambda x ^ { m } ) ^ { 2 } } = \frac { 1 } { n \lambda ^ { 1 / m } } \int _ { 0 } ^ { \infty } \frac { d x } { ( 1 + x ^ { m } ) ^ { 2 } } . \\ \intertext { a n d } \mu _ { 1 } \rightarrow 0 , \, \mu _ { 1 } ^ { 2 } / \mu _ { 2 } \rightarrow 0 \quad \text {if} \quad n \lambda ^ { 1 / m } \rightarrow \infty .$$
+
+and μ1 → 0, μ12/μ2 → 0 if nλ1/m →∞. Now
+
+b2(λ) = λ βT(XTX + nλI)−1(nλ)XTX(XTX + nλI)−1β
+
+$$\leq \frac { \lambda } { 2 } \left \| \beta \right \| ^ { 2 } \leq \frac { \lambda } { 2 } \, k _ { 2 } ,$$
+
+FIGURE 1. Graphical suggestion of the proof of the corollary to the GCV theorem.
+
+### Theorem 2. Theorem 2.
+
+Proof: Since Eg gT = E XββTXT = a XXT, Proof: Since Eg gT = E XββXT = a XXT,
+
+The minimizer of EβEV(λ) is the same as the minimizer of EβET(λ) and is λ = σ2/na. The minimizer of EβEV(λ) is the same as the minimizer of EβET(λ) and is λ = σ2/na.
+
+02
+
+$$E _ { \beta } E T ( \lambda ) & = \frac { \alpha } { n } \, T r \left ( I - A \right ) ^ { 2 } X X ^ { T } + \frac { \sigma ^ { 2 } } { n } \, T r \, A ^ { 2 } \\ E _ { \beta } E V ( \lambda ) & \equiv \left [ \frac { \alpha } { n } \, T r \left ( I - A \right ) ^ { 2 } X X ^ { T } + \frac { \sigma ^ { 2 } } { n } \, T r \, ( I - A ) ^ { 2 } \right ] \\ & / \left [ \frac { 1 } { n } \, T r \left ( I - A \right ) \right ] ^ { 2 } . \quad ( 3 . 3 ) \\ \text {The proof proceeds by differentiating} \, ( 3 . 3 ) \text { with } r \in \real .$$
+
+The proof proceeds by differentiating (3.3) with respect to λ and setting the remainder equal to 0. This calculation has appeared elsewhere [43 p. 8], and will be omitted. The proof proceeds by differentiating (3.3) with respect to λ and setting the remainder equal to 0. This calculation has appeared elsewhere [43 p. 8], and will be omitted.
+
+## 4. GCV IN SUBSET SELECTION AND GENERAL LINEAR MODEL BUILDING 4. GCV IN SUBSET SELECTION AND GENERAL LINEAR MODEL BUILDING
+
+since the largest eigenvalue of
+
+(XTX + nλI)−1(nλ)XTX(XTX + nλI)−1
+
+$$= \max _ { \nu } \frac { ( \lambda _ { \nu n } ) ( n \lambda ) } { ( \lambda _ { \nu n } ) ^ { 2 } + ( n \lambda ) ^ { 2 } } \leq \frac { 1 } { 2 } \cdot$$
+
+As n → ∞, the minimizing sequence λ° = λ(n) of ET(λ) = b2(λ) + σ2μz(λ) clearly must satisfy λ° → 0, n(λ°)i/m → ∞, so that the GCV Theorem may be applied. It is proved in [9, 44] in a different context that λ as well as λo satisfies (nλi/m) → ∞ so that h(λ) → 0, h(λ°) → 0 and Io ↓ 1 as n → ∞.
+
+Instead of viewing β as fixed but unknown, suppose that β has the prior β ∼ N(0, aI). Let Eβ be expectation with respect to the prior. (We reserve E for expectation with respect to €.) Then Let y = g + €, where g is a fixed (unknown) nvector and € ∼ N(0, σ2I), σ2 unknown. Let A(ν), ν in some index set, be a family of symmetric nonnegative definite n × n matrices and let Let y = g + €, where g is a fixed (unknown) nvector and ε ∼ N(0, σ2I), σ2 unknown. Let A(ν), ν in some index set, be a family of symmetric nonnegative definite n ×n matrices and let
+
+$$\underline { 1 }$$
+
+$$n$$
+
+$$\mu _ { 1 } ( \nu ) & = \frac { 1 } { n } \, T r \, A ( \nu ) \\ \mu _ { z } ( \nu ) & = \frac { 1 } { n } \, T r \, A ^ { 2 } ( \nu ) .$$
+
+Letting Letting
+
+$$T ( \nu ) \simeq \frac { 1 } { n } \left \| \ g - A ( \nu ) y \right \| ^ { 2 }$$
+
+and V(ν) as before with A(λ) replaced by A(ν), then (3.1) clearly holds irrespective of the nature of A. and V(ν) as before with A(λ) replaced by A(ν), then (3.1) clearly holds irrespective of the nature of A.
+
+A different way of dealing with ill conditioning in A different way of dealing with ill conditioning in
+
+$$y _ { \iota } = \sum _ { J = 1 } ^ { p } x _ { \iota J } \beta _ { J } + \epsilon _ { \iota } , \quad i = 1 , 2 , \cdots , \\ p > n$$
+
+
+<!-- p:6 -->
+
+
+the design matrix is to reduce the number of predictor variables by choosing a subset β, β   , β of the β's. Let v be an index on the 2a possible subsets of β1, , βp let X(TM) be the n × k(ν) design matrix corresponding to the yth subset, and let
+
+$$\hat { \beta } ( \nu ) & = ( X ^ { ( \nu ) \mathcal { T } } X ^ { ( \nu ) } ) ^ { - 1 } X ^ { ( \nu ) } y \\ A ( \nu ) & = \ X ^ { ( \nu ) } ( X ^ { ( \nu ) \mathcal { T } } X ^ { ( \nu ) } ) X ^ { ( \nu ) } y .$$
+
+Then Then
+
+$$\mu _ { 1 } = \, k / n , \quad \mu _ { 1 } ^ { 2 } / \mu _ { 2 } = k / n .$$
+
+Mallows [28] suggestion to choose the subset minimizing Cp becomes, in our notation, the equivalent of minimizing (·) of (1.8) with A(λ) replaced by A(ν), see also Allen [2]. This assumes that an estimate of σ2 is available. Parzen [33] has observed that, if one prefers to choose a subset without estimating σ2, (because one believed in the model (3.2), say), GCV can be used. The subset of size ≤ kmax with smallest V can be chosen, knowing that
+
+$$\left | \frac { E T ( \nu ) - E V ( \nu ) - \sigma ^ { x } } { E T ( \nu ) } \left \{ \leq \frac { k _ { \max } } { n } \ ,$$
+
+even if the model (3.2) is nontrivially true.
+
+In the subset selection case, GCV asymptotically coincides with the use of Akaike's information criterion AIC [1] since
+
+$$A I C & = ( - 2 ) \log \max i l i h o o d + 2 k \\ & = n \log \frac { 1 } { n } \left \| ( I - A ) y \right \| ^ { 2 } + 2 k$$
+
+and so
+
+$$\text { and so } & & \text { and so } & & \frac { 1 } { n } \left \| ( I - A ) y \right \| ^ { 2 } & \frac { 1 } { n } \left \| ( I - A ) y \right \| ^ { 2 } \\ e ^ { A I C / n } & = \frac { \frac { 1 } { n } } { \left ( e - \frac { k } { n } \right ) ^ { 2 } } \approx \frac { \frac { 1 } { n } } { \left ( 1 - \frac { k } { n } \right ) ^ { 2 } } = V \\ & \text { as } & & \frac { k } { n } \rightarrow 0 .$$
+
+$$n$$
+
+We thank E. Parzen for pointing this out. M. Stone, [37] has investigated the relations between AIC and (ordinary) cross-validation.
+
+Another approach, the principal components approach, is also popular in solving ill-posed linear operator equations, see Baker et al. [6], Hanson [19], Varah [40]). The method is to replace X by X(ν) defined by X(v) = U D(ν) VT, where D(ν) is the diagonal matrix of singular values of V with all but the yth subset of singular values set equal to 0. Then
+
+$$\begin{array} { r l } { \bar { \ } n u s b s e t o r s i g u a r v a r s e t e q u a r t i o n t o r . T h e n } \\ { A ( \nu ) = U \ D ( \nu ) \left ( D ( \nu ) D ( \nu ) ^ { T } \right ) ^ { + } \ D ( \nu ) \ U ^ { T } } \\ { = U \left ( \begin{matrix} 1 & \cdot & 0 \\ & & 1 \\ & & 0 \\ 0 & & 0 \end{matrix} \right ) \ U ^ { T } } \\ { \bar { \ } n u s b s e t o r s i g u a r v a r s e t e q u a r t i o n t o r . } \end{array}$$
+
+TECHNOMETRICS ©, VOL. 21, NO. 2, MAY 1979
+
+where the ones are located at positions of the th subset of singular values, and, again μ1 ≤ p/n, μ2/μ2 ≤ p/n, where p can be replaced by the number of singular values in the largest subset considered.
+
+In fact, it is reasonable to select from among any family {A(v)} of matrices for which the corresponding μ1 and μ2/μ2 are uniformly small, by choosing that member for which V(v) is smallest. Mixtures of the above methods, e.g. a ridge method on a subset, can be handled this way. Note that the conditions μ small, μ12/μ2 small are just those conditions which make it plausible that the "signal"g can be separated from the noise. These conditions say that the A matrix essentially maps the data vector (roughly) into some much smaller subspace than the whole space. Parzen [34] has also indicated how GCV can be used to choose the order of an autoregressive model to fit a stationary time series.
+
+## 5. A NUMERICAL EXAMPLE
+
+We choose a discretization of the Laplace transform as given in Varah, [40, p. 262] as an example in which XaX is very ill conditioned.
+
+We emphasize that the following is nothing more than a single example, with a single X and β. It does not indicate what may happen as X and β are varied. It is intended as an indication of the type of Monte Carlo evaluation study that an experimenter might perform with the particular X that he has at hand, and perhaps one or several β that represent the class of β's he believes he is likely to encounter. We suggest that an experimenter with particular design matrix at hand evaluate candidate methods (at least crudely), components, as well as ridge methods against his X perhaps including subset selection and/or principal and against a realistic set of β, before final selection of a method. The values for n and p in the experiment presented here were 21 and 10 and the condition number of X, namely the ratio of the largest to the smallest (non-zero) singular value, was 1.54 × 105. The value of Xβ||  was 370.84.
+
+Four values of σ2, namely σ2 = 10−8, 10−6, 10−4 and 10-2 were tried and for each value of σ2 the experiment was replicated four times, giving a total of 16 runs. The € were generated as pseudo-random 0, σ2) independent r.v.'s, V(λ) was computed using the right-hand side of (2.3) and the Golub-Reinsch singular value decomposition [16]. The minimizer  of V(λ) was determined by a global search. T(λ) was also computed and the relative inefficiencies fp and f of λ defined by
+
+$$I _ { D } & = \ \| \beta - \beta _ { \lambda } \| ^ { 2 } / ( \min _ { \lambda } \ \| \beta - \hat { \beta } _ { \lambda } \| ^ { 2 } ) \\ I _ { R } & = \ T ( \hat { \lambda } ) / \min _ { \lambda } T ( \lambda )$$
+
+were computed. (D = "domain", R = "range.")
+
+
+<!-- p:7 -->
+
+
+TABLE 1—Observed inefficiencies in sixteen Monte Carlo runs.
+
+|                       | Replication 1 - ID    | Replication 1 - IR    | Replication 2 - ID    | Replication 2 - R     | Replication 3 - ID    | Replication 3 - IR    | Replication 4 - ID    | Replication 4 - IR    |
+|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|
+| cr2=10 -8, S/N = 4200 | cr2=10 -8, S/N = 4200 | cr2=10 -8, S/N = 4200 | cr2=10 -8, S/N = 4200 | cr2=10 -8, S/N = 4200 | cr2=10 -8, S/N = 4200 | cr2=10 -8, S/N = 4200 | cr2=10 -8, S/N = 4200 | cr2=10 -8, S/N = 4200 |
+| GCV                   | 4.43                  | 1.06                  | 1.65                  | 1.03                  | 16.71                 | 1.10                  | 1.02                  | 1.01                  |
+| RR                    | 1.46                  | 1.00                  | 1.66                  | 1.03                  | 8.69                  | 1.01                  | 1.22                  | 1.03                  |
+| MLE                   | 1.67E3                | 1.31                  | 1.45E2                | 1.23                  | 2.00E3                | 1.53                  | 9.12E3                | 1.51                  |
+| PRESS                 | 2.31E3                | 4.8E4                 | 6.31E2                | 8.6E4                 | 3.84E3                | 2.1E5                 | 2.87E3                | 1.2E5                 |
+| Min Sol'n             | 1.00                  | 1.02                  | 1.00                  | 1.54                  | 1.00                  | 2.27                  | 1.00                  | 1.00                  |
+| Min Data              | 1.20                  | 1.00                  | 2.89                  | 1.00                  | 5.97                  | 1.00                  | 1.00                  | 1.00                  |
+| a2=10 -6, S/N = 420   | a2=10 -6, S/N = 420   | a2=10 -6, S/N = 420   | a2=10 -6, S/N = 420   | a2=10 -6, S/N = 420   | a2=10 -6, S/N = 420   | a2=10 -6, S/N = 420   | a2=10 -6, S/N = 420   | a2=10 -6, S/N = 420   |
+| GCV                   | 1.92                  | 1.05                  | 1.32                  | 1.00                  | 1.51E2                | 1.26                  | 2.20                  | 1.02                  |
+| RR                    | 1.83                  | 1.06                  | 1.90                  | 1.01                  | 7.03El                | 1.10                  | 1.18                  | 1.00                  |
+| MLE                   | 1.99E2                | 1.19                  | 1.70E2                | 1.45                  | 1.76E2                | 1.29                  | 1.49E2                | 1.32                  |
+| PRESS                 | 5.80                  | 1.01                  | 2.41E2                | 1.39E4                | 36.37                 | 2.43E3                | 67.00                 | 6.07E2                |
+| Min Sol'n             | 1.00                  | 1.38                  | 1.00                  | 1.02                  | 1.00                  | 1.20                  | 1.00                  | 1.03                  |
+| Min Data              | 3.56                  | 1.00                  | 1.28                  | 1.00                  | 7.85                  | 1.00                  | 41.29                 | 1.00                  |
+| 02=10-4, S/N = 42     | 02=10-4, S/N = 42     | 02=10-4, S/N = 42     | 02=10-4, S/N = 42     | 02=10-4, S/N = 42     | 02=10-4, S/N = 42     | 02=10-4, S/N = 42     | 02=10-4, S/N = 42     | 02=10-4, S/N = 42     |
+| GCV                   | 1.27                  | 1.07                  | 1.50                  | 2.58                  | 1.00                  | 1.11                  | 1.00                  | 1.03                  |
+| RR                    | 1.18                  | 1.08                  | 1.03                  | 2.27                  | 1.07                  | 1.13                  | 1.00                  | 1.03                  |
+| MLE                   | 1.56                  | 1.20                  | 12.16                 | 3.43                  | 1.90                  | 1.49                  | 2.97                  | 1.07                  |
+| PRESS                 | 3.53                  | 1.57                  | 2.03                  | 3.43                  | 8.66                  | 2.63                  | 2.90                  | 24.34                 |
+| Min Sol'n             | 1.00                  | 1.21                  | 1.00                  | 2.05                  | 1.00                  | 1.11                  | 1.00                  | 1.03                  |
+| Min Data              | 3.26                  | 1.00                  | 1.16                  | 1.00                  | 2.39                  | 1.00                  | 1.16                  | 1.00                  |
+| 02=10 -2, S/N z 4.2   | 02=10 -2, S/N z 4.2   | 02=10 -2, S/N z 4.2   | 02=10 -2, S/N z 4.2   | 02=10 -2, S/N z 4.2   | 02=10 -2, S/N z 4.2   | 02=10 -2, S/N z 4.2   | 02=10 -2, S/N z 4.2   | 02=10 -2, S/N z 4.2   |
+| GCV                   | 1.40                  | 2.47                  | 2.01                  | 1.60                  | 1.59                  | 1.01                  | 31.20                 | 17.2                  |
+| XR                    | 1.38                  | 2.39                  | 2.41                  | 1.70                  | 1.41                  | 1.02                  | 10.8                  | 10.6                  |
+| MLE                   | 2.13                  | 3.56                  | 3.81                  | 1.87                  | 2.00                  | 1.00                  | 28.8                  | 16.8                  |
+| PRESS                 | 1.04                  | 1.01                  | 2.02                  | 2.68                  | 1.00                  | 1.22                  | 2.16                  | 21.5                  |
+| Min Sol'n             | 1.00                  | 1.31                  | 1.00                  | 1.01                  | 1.00                  | 1.25                  | 1.00                  | 1.98                  |
+| Min Data              | 1.02                  | 1.00                  | 1.00                  | 1.00                  | 2.66                  | 1.00                  | 1.21                  | 1.00                  |
+
+The results of a comparison with three other methods are also presented. The methods are, respectively,
+
+2. Range risk, (RR) the minimizer of Î(λ).
+1. PRESS, the minimizer of P(λ).
+3. Maximum likelihood (MLE).
+
+The maximum likelihood estimate is obtained from the model
+
+$$y = X \beta + \epsilon$$
+
+with ε ~ X(0, σ2I) and β having the prior distribution β~ X0, al). Then the posterior distribution of y is
+
+$$y \sim N ( 0 , a ( X X ^ { T } + n \lambda I ) ) \quad ( 5 . 2 ) \quad t h$$
+
+where λ = σ2/na. The ML estimate for λ from the model (5.2) is then the minimizer of M(λ) given by
+
+$$M ( \lambda ) = \frac { 1 } { n } \, \frac { y ^ { r } ( I - A ( \lambda ) ) y } { [ \det ( I - A ( \lambda ) ) ] ^ { 1 / n } } \cdot \quad ( 5 . 3 ) \quad \begin{matrix} \text {res} \\ \text {fin} \end{matrix}$$
+
+This estimate is the general form of the maximum likelihood estimate suggested by Anderssen and Bloomfield in the context of numerical differentiation [4,5]. It can be shown that the minimizer of Eβ E M(λ) is σ2/na. However, it can also be shown that if β behaves as though it did not come from the prior
+
+$$\left ( e . g . \text { as in the model } ( 1 . 9 ) , \ \sum _ { i = 1 } ^ { \infty } \beta _ { i } ^ { 2 } < \infty \right )$$
+
+then the minimizer of E M(λ) may not be a good estimate of the minimizer of ER(λ).
+
+Ip and IR of (5.1) were determined for each of these three methods as well as GCV and the results are presented in Table 1. The entries next to "Min Sol'n" and "Min Data" are the inefficiencies (5.1) with λ replaced by the minimizers of β-β and T(λ) respectively. S/N, the "signal to noise ratio" is defined by S/N = [1/n∥Xβ∥2/σ2]1/2 Figure 2 gives a
+
+$$T E C H N O M E T R I C S \ \mathcal { O } , \, V O L . \, 2 1 , \, N O . \, 2 , \, M A Y \, 1 9 7 9$$
+
+
+<!-- p:8 -->
+
+
+FIGURE 2. V(λ), T(λ), f(λ), M(λ), P(λ) and ∥β−βλ||2.
+
+plot of V(λ), T(λ), M(λ), P(λ), ∥β−βλ∥2 and T(λ) for Replicate 2 of the σ2 = 10-° case. The V(λ), (λ) and T(λ) curves tend to follow each other as predicted. plot of V(λ), T(λ), M(λ), P(λ), ∥β−βλ∥2 and T(λ) for Replicate 2 of the σ2 = 10-° case. The V(λ), (λ) and T(λ) curves tend to follow each other as predicted.
+
+D. I. Gibbons [14] has recently completed a Monte Carlo comparison of 10 methods of choosing k. Three estimators, GCV, HKB (described in [23]), and RIDGM (described in [10,11]) were identified as the best performers in the examples studied. HKB and RIDGM use estimates of σ2. D. I. Gibbons [14] has recently completed a Monte Carlo comparison of 10 methods of choosing k. Three estimators, GCV, HKB (described in [23]), and RIDGM (described in [10,11]) were identified as the best performers in the examples studied. HKB and RIDGM use estimates of σ2.
+
+## 6. CONCLUSIONS 6. CONCLUSIONS
+
+The generalized cross-validation method for estimating the ridge parameter in ridge regression has been given. This estimate does not require an estimate of σ2, and thus may be used when the number of degrees of freedom for estimating σ2 is small or even; - l e , o  l  ? volves more than n parameters. The method may also be used to do subset selection or selection of principal components instead of ridge regression, or even to choose between various combinations of ridge, subset selection or principal components methods. A numerical example, briefly suggestive of the behavior of the method, has been carried out. It illustrates what an experimenter might wish to do to examine the properties of the method with respect to his/her design matrix. The generalized cross-validation method for estimating the ridge parameter in ridge regression has been given. This estimate does not require an estimate of σ2, and thus may be used when the number of degrees of freedom for estimating σ2 is small or even; -n l  l, o e l volves more than n parameters. The method may also be used to do subset selection or selection of principal components instead of ridge regression, or even to choose between various combinations of ridge, subset selection or principal components methods. A numerical example, briefly suggestive of the behavior of the method, has been carried out. It illustrates what an experimenter might wish to do to examine the properties of the method with respect to his/her design matrix.
+
+## 7. ACKNOWLEDGMENTS 7. ACKNOWLEDGMENTS
+
+The work of Gene H. Golub was initiated while a guest of the Eidgenössische Technische Hochschule. The work of Gene H. Golub was initiated while a guest of the Eidgenössische Technische Hochschule.
+
+He is very pleased to acknowledge the gracious hospitality and stimulating environment provided by Professors Peter Henrici and Peter Huber. His research was supported in part under Energy Research and Development Administration Grant E(04-3) PA # 30, and in part under U.S. Army Grant DAHC04-75-G0185.
+
+Michael Heath's research was supported in part under Energy Research and Development Administration Grant E(04-3) 326 PA #30.
+
+The work of Grace Wahba was initiated while she was a visitor at the Oxford University Mathematical Institute at the invitation of Professor J. F. C. Kingman. The hospitality of Professor Kingman, the Mathematical Institute, and St. Cross College, Oxford, is gratefully acknowledged. Her research was supported by the Science Research Council (GB), and by U. S. Air Force Grant AF-AFOSR-2363-C.
+
+####### REFERENCES
+
+- [1] AKAIKE, H. (1974). A new look at the statistical model identification. IEEE Transaction on Automatic Control, AC19,6, 716–730.
+- [2] ALLEN, D. M. (1971). Mean square error of prediction as a criterion for selecting variables. Technometrics, 13. 469–475.
+- [3] ALLEN, D. M. (1974). The relationship between variable selection and data augmentation and a method for prediction. Technometrics, 16, 125–127.
+- [4] ANDERSSEN, B. and BLOOMFIELD, P. (1974). Numerical differentiation procedures for non-exact data. Numer. Math., 22, 157–182.
+- [5] ANDERSSEN, R. S. and BLOOMFIELD, P. (1974). A time series approach to numerical differentiation. Technometrics, 16, 69–75.
+- [7] BELLMAN, R. (1960). Introduction to Matrix Analysis. New York: McGraw-Hill.
+- [6] BAKER, C. T. H., FOX, L., MAYERS, D. F., and WRIGHT, K. (1964). Numerical solution of Fredholm integral equations of the first kind. Comp. J., 7, 141–148.
+- [8] BERGER, J. (1976). Minimax estimation of a multivariate normal mean under arbitrary quadratric loss. J. Multivariate Analysis, 6, 256–264.
+- [9] CRAVEN, P. and WAHBA, G. (1979). Smoothing noisy data with spline functions: estimating the correct degree of smoothing by the method of generalized cross-validation. Numer. Math., 31, 377–403.
+- [10] DEMPSTER, A. P. (1973). Alternatives to least squares in multiple regression, In Multivariate Statistical Conference, Proceedings of the Research Seminar at Dalhousie University, Halifax, March 23-25, 1972, ed. by D. G. Kabe and R. P. Gupta.
+- [11] DEMPSTER, A. P., SCHATZOFF, M., and WERMUTH, N. (1975). A simulation study of alternatives to ordinary least squares. J. Amer. Statist. Assoc., 70, 77–106.
+- [12] FAREBROTHER, R. W. (1975). The minimum mean square error linear estimator and ridge regression. Technometrics, 17, 127–128.
+- [13] GEISSER, S. (1975). The predictive sample reuse method with applications. J. Amer. Statist. Assoc., 70, 320–-328.
+- [14] GIBBONS, D. 1. (1978). A simulation study of some ridge estimators. General Motors Research Laboratories, Research Publication GMR-2659, Warren, Michigan.
+- [15] GOLDSTEIN, M., and SMITH, A. F. M. (1974). Ridge type estimators for regression analysis. J. Roy. Statist. Soc., Ser. B, 36, 284–291.
+
+
+<!-- p:9 -->
+
+
+- [16] GOLUB, G., and REINSCH, C. (1970). Singular value decomposition and least squares solutions. Numer. Math., 14, 403-420.
+- [32] OBENCHAIN, R. L. (1975). Ridge Analysis following a preliminary test of the shrunken hypothesis. Technometrics, 17, 431–446.
+- [17] GOLUB, G. H. (1973). Some modified matrix eigenvalue problems. SIAM Review, 15, 318–334.
+- [18] GOLUB, G. H. and LUK, F. T. (1977). Singular value decomposition: applications and computations. Transactions of the Twenty-Second Conference of Army Mathematicians, 577– 605.
+- [19] HANSON, R. J. (1971). A numerical method for solving Fredholm integral equations of the first kind using singular values. SIAM J. Num. Anal., 8, 616–622.
+- [20] HEMMERLE, W. J. (1975). An explicit solution for generalized ridge regression. Technometrics, 17, 309–313.
+- [21] HILGERS, J. W. (1976). On the equivalence of regularization and certain reproducing kernel Hilbert space approaches for solving first kind problems. SIAM J. Num. Anal., 13, 172– 184.
+- [22] HOERL, A. E., and KENNARD, R. W. (1976). Ridge regression: iterative estimation of the biasing parameter. Comm. in Statist., A5, 77–88.
+- [23] HOERL, A. E., KENNARD, R. W., and BALDWIN, K. F. (1975). Ridge regression: some simulations. Comm. in Statist., 4, 105–123.
+- [24] HOUSEHOLDER, A. (1964). The Theory of Matrices in Numerical Analysis. New York: Blaisdell.
+- [25] HUDSON, H. M. (1974). Empirical Bayes estimation. Technical Report No. 58, Stanford University, Department of Statistics, Stanford, CA.
+- [26] LAWLESS, J. F. and WANG, P. (1976). A simulation study of ridge and other regression estimators. Comm. in Statist., A5, 307-324.
+- [27] LINDLEY, D. V., and SMITH, A. F. M. (1972). Bayes estimate for the linear model (with discussion), part 1. J. Roy. Statist. Soc., B, 34, 1–41.
+- [28] MALLOWS, C. L. (1973). Some comments on Cp. Technometrics, 15, 661–675.
+- [29] MARQUARDT, D. W. (1970). Generalized inverses, ridge regression, biased linear estimation and nonlinear estimation. Technometrics, 12, 591–64.
+- [30] MARQUARDT, D. W., and SNEE, R. D. (1975). Ridge regression in practice. The American Statistician, 29, 3-20.
+- [31] MCDONALD, G. and GALARNEAU, D. (1975). A Monte Carlo evaluation of some ridge-type estimators. J. Amer. Statist. Assoc., 70, 407–416.
+- [33] PARZEN, E. (1976). Time series theoretic nonparametric statistical methods. Preliminary Report, Statistical Science Division, SUNY, Buffalo, New York.
+- [34] PARZEN, E. (1977). Forecasting and whitening filter estimation. Manuscript.
+- [35] ROLPH, J. E. (1976). Choosing shrinkage estimators for regression problems. Comm. in Statist., A5, 789–802.
+- [36] STONE, M. (1974). Cross-validatory choice and assessment of statistical prediction. J. Roy. Statist. Soc., B, 36, 111–147.
+- [37] STONE, M. (1977). An asymptotic equivalence of choice of model by cross-validation and Akaike's criterion. J. Roy. Statist. Soc., B., 39, 44–47.
+- [38] SWINDEL, B. F. (1976). Good ridge estimators based on prior information. Comm. in Statist., A5, 985–997.
+- [39] THISTED, R. A. (1976). Ridge regression, minimax estimation, and empirical Bayes methods. Division of Biostatistics, Stanford University, Tech. Report No. 28.
+- [40] VARAH, J. M. (1973). On the numerical solution of illconditioned linear systems with applications to ill posed problems. SIAM J. Num. Anal., 10, 257–267.
+- [41] WAHBA, G. (1968). On the distribution of some statistics useful in the analysis of jointly stationary time series. Ann. Math. Statist., 39, 1849–1862.
+- [42] WAHBA, G. (1976). A survey of some smoothing problems and the method of generalized cross-validation for solving them. In Proceedings of the Conference on the Applications of Statistics, held at Dayton, Ohio, June 14–17, 1976, ed. by P. R. Krishnaiah.
+- [43] WAHBA, G. (1976). Optimal smoothing of density estimates. Classification and Clustering, pp. 423–458, ed. by J. Van Ryzin. New York: Academic Press.
+- [44] WAHBA, G. (1977). The approximate solution of linear operator equations when the data are noisy. SIAM J. Num. Anal., 14, 651–667.
+- [45] WAHBA, G., and WOLD, S. (1975). Periodic splines for spectral density estimation: the use of cross-validation for determining the correct degree of smoothing. Comm. in Statist., 4, 125–141.
+- [46] WAHBA, G., and WOLD, S. (1975). A completely automatic French curve: fitting spline functions by cross-validation. Comm. in Statist., 4, 1–17.
+
+<!-- END SOURCE 17/40: Golub_1979_generalized-cross-validation-ridge.md -->
+
+---
