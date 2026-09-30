@@ -121,3 +121,52 @@ Use a progression:
 
 Reuse tracked snapshots when they satisfy the protocol. Universe changes after
 outcome inspection are exploratory.
+
+
+## 10. Forecasting the estimated trend
+
+Smoothness estimation and trend extrapolation are separate design choices.
+For a fitted trend \(\widehat\tau_{1:T}\), denote the forecast rule by
+\(m\). The validation object becomes
+
+\[
+CV_h(d,L,m,S).
+\]
+
+The first comparison should remain small and interpretable:
+
+1. **native finite-difference continuation**: continue the fitted trend by
+   imposing the order-\(d\) difference rule already used by the library;
+2. **local linear tail extrapolation**: fit a line to a pre-specified number of
+   final fitted-trend points and extrapolate it;
+3. **local quadratic tail extrapolation**: same idea with degree two;
+4. **no-change forecast**: simple external baseline.
+
+For each discrete \((d,L,m,h)\) configuration, search the smoothness domain for
+multiple local minima and retain up to five epsilon-separated candidates.
+
+The forecast method is selected using development/validation data only. The
+final test block remains untouched until the full protocol is frozen.
+
+## 11. Likelihood-based benchmark
+
+A likelihood comparison is required because difference-penalty smoothing has a
+probabilistic Gaussian/state-space interpretation.
+
+Use a Gaussian state-space trend model corresponding as closely as possible to
+the same difference order. Estimate its variance/smoothing parameters by
+maximum or restricted/marginal likelihood, obtain latent-trend estimates with
+the Kalman smoother, and generate h-step state-space forecasts.
+
+The comparison must distinguish two questions:
+
+- **forecast-selected PLS**: choose smoothness by chronological forecast error;
+- **likelihood-selected trend**: choose variance/smoothing parameters by
+  likelihood.
+
+Both are evaluated on the same validation origins and then on the same untouched
+test period.
+
+Do not call the comparator merely "MLE of the trend": maximum likelihood
+estimates the probabilistic model/variance parameters; the latent trend itself
+is obtained from the fitted state-space model (filter/smoother).
