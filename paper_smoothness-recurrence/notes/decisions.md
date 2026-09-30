@@ -83,3 +83,36 @@ The initial sensitivity set is
 
 The spacing rule is applied after stationary-point discovery, so changing
 epsilon does not change which stationary points the numerical solver finds.
+
+
+## D009 — Separate smoothing from extrapolation
+
+**Date:** 2026-09-29  
+**Status:** frozen conceptually; exact forecast-method set remains to be frozen.
+
+Estimating the historical trend and forecasting that trend h steps ahead are
+different operations. Introduce a discrete forecast rule m and write the
+selection objective as
+
+\[
+CV_h(d,L,m,S).
+\]
+
+The first comparison will include the native finite-difference continuation and
+a small number of simple tail-extrapolation rules. Avoid a large forecasting
+model zoo.
+
+## D010 — Likelihood/state-space benchmark
+
+**Date:** 2026-09-29  
+**Status:** frozen.
+
+The paper must compare forecast-selected smoothness with a likelihood-based
+trend model. The likelihood model estimates stochastic variance/smoothing
+parameters using ML/REML or marginal likelihood; its latent trend is then
+obtained by Kalman filtering/smoothing and forecast through the state-space
+model.
+
+This benchmark is evaluated on the same validation and untouched test periods
+as the proposed method. Likelihood selection itself must not use the final test
+block.
