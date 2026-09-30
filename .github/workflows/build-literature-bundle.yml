@@ -1,0 +1,61 @@
+name: Build literature bundle
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - tools/build_literature_bundle.py
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Build bundle
+        run: python tools/build_literature_bundle.py
+
+      - name: Validate bundle
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          extracted = sorted(Path("literature/extracted").rglob("*.md"))
+          bundle = Path("literature/bundle.md").read_text(encoding="utf-8")
+          begin_count = bundle.count("<!-- BEGIN SOURCE ")
+          end_count = bundle.count("<!-- END SOURCE ")
+
+          print(f"source_files={len(extracted)}")
+          print(f"begin_markers={begin_count}")
+          print(f"end_markers={end_count}")
+          print(f"bundle_bytes={Path('literature/bundle.md').stat().st_size}")
+
+          assert begin_count == len(extracted)
+          assert end_count == len(extracted)
+          assert f"> Source files: **{len(extracted)}**." in bundle
+          PY
+
+      - name: Upload bundle artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: literature-bundle
+          path: literature/bundle.md
+          if-no-files-found: error
+
+      - name: Commit regenerated bundle
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add literature/bundle.md
+          if git diff --cached --quiet; then
+            echo "bundle.md is already up to date"
+            exit 0
+          fi
+          git commit -m "literature: regenerate Markdown bundle"
+          git push
