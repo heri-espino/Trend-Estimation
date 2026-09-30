@@ -30,7 +30,9 @@ Selecting a smoothing parameter for penalized trend estimation becomes a numeric
 
 Quadratic penalized smoothers provide a simple way to estimate a slowly varying component from noisy observations. Their basic form goes back to Whittaker's graduation method \cite{whittaker1923graduation} and appears in time-series trend estimation as penalized least squares (PLS) \cite{guerrero2007penalized}. The smoothing parameter \(\lambda\) trades fidelity to the observed series against smoothness of the estimated trend. Small values allow the trend to follow the observations closely, whereas large values increasingly suppress penalized finite differences.
 
-The choice of \(\lambda\) has therefore received substantial attention. Classical approaches include cross-validation (CV) and generalized cross-validation (GCV) \cite{craven1979gcv}, while the controlled-smoothness line of work expresses the effect of \(\lambda\) through a smoothness index that can be interpreted in percentage terms \cite{guerrero2008smoothness,cortes2017smoothness}. Efficient numerical implementations have also been developed for Whittaker--Henderson smoothing and GCV \cite{weinert2007wh}. More recently, Biessy \cite{biessy2026wh} placed Whittaker--Henderson smoothing in a modern statistical framework and studied marginal-likelihood selection together with several numerical optimization strategies, while Franke et al. \cite{franke2026hp} proposed a simulation-based data-driven calibration of the Hodrick--Prescott smoothing parameter.
+The choice of \(\lambda\) has therefore received substantial attention. Classical approaches include cross-validation (CV) and generalized cross-validation (GCV) \cite{craven1979gcv}, while the controlled-smoothness line of work expresses the effect of \(\lambda\) through a smoothness index that can be interpreted in percentage terms \cite{guerrero2008smoothness,cortes2017smoothness}. Efficient numerical implementations have also been developed for Whittaker--Henderson smoothing and GCV \cite{weinert2007wh}. More recently, Biessy \cite{biessy2026wh} placed Whittaker--Henderson smoothing in a modern statistical framework and studied marginal-likelihood selection together with several numerical optimization strategies; the same study illustrates that a GCV profile may contain more than one local minimum. Franke et al. \cite{franke2026hp} instead proposed a simulation-based data-driven calibration of the Hodrick--Prescott smoothing parameter.
+
+These strands provide smoothing criteria, interpretable smoothness measures, forecast-evaluation designs, and scalar numerical solvers, but they address different objectives. The present problem begins when the smoothing parameter itself is defined by chronological future-block forecast loss and the resulting one-dimensional profile is searched without assuming a unique local minimum.
 
 These criteria answer different statistical questions. In particular, a parameter that is appropriate for reconstructing or smoothing the observed sample need not minimize future forecast error. Forecast evaluation also has a temporal structure: the forecast origin should move through time without using future observations, and fixed versus rolling windows and recalibration should be stated explicitly \cite{tashman2000oos,bergmeir2012cv}. This motivates a different selection problem: for a fixed difference order, training-window length, and forecast horizon, choose smoothness by minimizing chronological future forecast loss.
 
@@ -161,7 +163,7 @@ f_{d,L,h}(\lambda)
 \sum_{T\in\mathcal{O}}f_T(\lambda).
 \label{eq:rollingloss}
 \end{equation}
-All models are refit at every origin using only the \(L\) observations available at that origin. The selection problem is
+The trend estimator is refit at every origin using only the \(L\) observations available at that origin. The selection problem is
 \begin{equation}
 S^\star
 \in
