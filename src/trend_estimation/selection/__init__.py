@@ -15,6 +15,15 @@ from .numerical import (
     minimize_over_log_lambda,
     newton_stationary_log_lambda,
 )
+from .smoothness_numerical import (
+    DEFAULT_SPACING_EPSILONS,
+    SmoothnessCandidateSet,
+    SmoothnessStationaryPoint,
+    SmoothnessStationaryPointSearchResult,
+    find_stationary_points_smoothness,
+    select_spaced_smoothness_minima,
+    sweep_spaced_smoothness_minima,
+)
 from .recovery import (
     PreparedRollingPureRecoveryObjective,
     RecoveryLossDerivatives,
@@ -40,6 +49,13 @@ __all__ = [
     "minimize_over_log_lambda",
     "newton_stationary_log_lambda",
     "find_stationary_points_log_lambda",
+    "DEFAULT_SPACING_EPSILONS",
+    "SmoothnessCandidateSet",
+    "SmoothnessStationaryPoint",
+    "SmoothnessStationaryPointSearchResult",
+    "find_stationary_points_smoothness",
+    "select_spaced_smoothness_minima",
+    "sweep_spaced_smoothness_minima",
     "ForecastOptimalCandidate",
     "ForecastOptimalSelection",
     "select_fixed_window_pure_smoothness",
