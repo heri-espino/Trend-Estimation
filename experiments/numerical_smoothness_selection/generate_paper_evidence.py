@@ -218,7 +218,7 @@ def _latex_benchmark_table(frame: pd.DataFrame) -> str:
             "benchmark": "Benchmark",
             "surfaces": "Surfaces",
             "recovery": "Minima recovered",
-            "positive_regret_cases": "Positive regret",
+            "positive_regret_cases": "Positive-regret cases",
         }
     )
     return display.to_latex(
@@ -230,12 +230,20 @@ def _latex_benchmark_table(frame: pd.DataFrame) -> str:
 
 def _latex_sensitivity_table(frame: pd.DataFrame) -> str:
     display = frame.copy()
+    raw_specification = (
+        display["parameter"].astype(str)
+        + "="
+        + display["setting"].astype(str)
+    )
+    escaped_specification = raw_specification.str.replace(
+        "_",
+        r"\_",
+        regex=False,
+    )
     display["Specification"] = np.where(
         display["is_primary"],
         "Primary",
-        display["parameter"].astype(str)
-        + "="
-        + display["setting"].astype(str),
+        escaped_specification,
     )
     display["Mean evals"] = display["mean_evaluations"].map(
         lambda value: f"{value:.1f}"
