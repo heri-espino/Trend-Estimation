@@ -329,3 +329,76 @@ No further tuning of the primary search is permitted from these results.
 Remaining experiments are sensitivity analyses, controlled breadth, and real
 data stress tests.
 
+## 2026-09-30 — Search-design sensitivity
+
+The OFAT sensitivity analysis evaluated 216 common synthetic surfaces for the
+frozen primary specification and 15 one-factor alternatives.
+
+### Robust factors
+
+Changing the following factors preserved all 228 dense-reference minima and
+produced zero positive-regret cases over the sensitivity panel:
+
+- initial grid size \(5,7,9,13\);
+- maximum adaptive depth \(4,6,8,10\);
+- minimum interval width \(5\times10^{-4},10^{-3},2\times10^{-3},5\times10^{-3}\);
+- endpoint refinement levels \(2,4,6,8\);
+- near-zero derivative ratio \(0.2\) or \(0.5\).
+
+Several cheaper settings also passed this finite sensitivity panel, but the
+primary N009 specification remains frozen and is not retuned after the
+confirmatory benchmark.
+
+### Factors with observed failure modes
+
+Removing endpoint refinement entirely reproduced the previously diagnosed upper
+tail failure mode:
+
+- 5 missed minima in 5/216 surfaces;
+- 3 positive-regret cases;
+- maximum positive regret 0.11657;
+- maximum selected-\(S\) error 0.01849.
+
+Thus endpoint-aware refinement is not merely a performance optimization; it is
+empirically necessary for the tested compactified search geometry.
+
+Reducing the near-zero derivative ratio from 0.2 to 0.1 missed one secondary
+local minimum in 1/216 surfaces, although it did not change the selected global
+optimum. Increasing the ratio to 0.5 recovered all minima but increased mean
+evaluation count from 82.84 to 92.71.
+
+The frozen value 0.2 is therefore retained as a conservative compromise; this
+is a robustness interpretation, not post-hoc retuning.
+
+### Epsilon spacing
+
+The paper-scale candidate sweep already evaluated
+
+\[
+\varepsilon\in\{0,0.02,0.05,0.10,0.15\}.
+\]
+
+Among the 1588 surfaces with at least one detected interior minimum, the
+unspaced search produced 2108 interior candidates (mean 1.327 per surface,
+maximum 4).
+
+At \(\varepsilon=0.10\):
+
+- 330 surfaces had at least one nearby candidate suppressed;
+- 359 candidates were removed;
+- 1749 representative candidates remained;
+- mean representatives per affected candidate-bearing surface fell to 1.101;
+- the maximum number of representatives was 3.
+
+Because candidates are sorted by objective value before suppression, the
+best detected local minimum is never removed by the spacing rule. Epsilon is
+therefore treated as **post-processing for summarizing multiple minima**, not as
+part of the numerical optimization algorithm.
+
+### Sensitivity conclusion
+
+The primary search is robust over the tested one-factor perturbations, while
+the sensitivity experiment independently confirms why endpoint refinement and
+a nontrivial near-zero derivative heuristic are present. No primary parameter
+is changed after the frozen paper-scale benchmark.
+
