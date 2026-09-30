@@ -35,6 +35,7 @@ consistent to frozen tolerances.
 - [x] classify roots;
 - [x] implement epsilon-separated candidate selection;
 - [ ] strengthen flat/tangential stationary-point diagnostics;
+- [x] implement an adversarial analytic suite with known stationary points;
 - [ ] freeze derivative/curvature tolerances and maximum depth;
 - [ ] deduplicate roots robustly near numerical boundaries.
 
@@ -68,7 +69,7 @@ enough to support a precise claim.
 - [ ] compare initial grid sizes;
 - [ ] compare max depths;
 - [ ] compare near-zero/curvature heuristics;
-- [ ] compare with existing log-\(\lambda\) stationary search;
+- [ ] compare with existing log-\(\lambda\) stationary search using the adversarial suite;
 - [ ] evaluate epsilon set
   \[
   \{0,0.02,0.05,0.10,0.15\};
