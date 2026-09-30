@@ -6,7 +6,11 @@ from functools import lru_cache
 import numpy as np
 
 from .difference import difference_matrix
-from .smoothness import lambda_to_smoothness, smoothness_to_lambda
+from .smoothness import (
+    _canonicalize_penalty_eigenvalues,
+    lambda_to_smoothness,
+    smoothness_to_lambda,
+)
 from trend_estimation.utils.arrays import as_1d_float_array
 
 
@@ -40,7 +44,11 @@ class PurePenalizedSolver:
             raise ValueError("order must be nonnegative.")
         self.D = difference_matrix(self.n_obs, self.order)
         self.penalty = self.D.T @ self.D
-        self.eigvals, self.eigvecs = np.linalg.eigh(self.penalty)
+        eigvals, self.eigvecs = np.linalg.eigh(self.penalty)
+        self.eigvals = _canonicalize_penalty_eigenvalues(
+            eigvals,
+            self.order,
+        )
 
     def lambda_from_s(self, smoothness: float) -> float:
         return smoothness_to_lambda(smoothness, self.n_obs, self.order)
@@ -56,7 +64,11 @@ class PurePenalizedSolver:
         if lambda_ < 0:
             raise ValueError("lambda_ must be nonnegative.")
 
-        alpha = 1.0 / (1.0 + lambda_ * self.eigvals)
+        if np.isinf(lambda_):
+            alpha = np.zeros_like(self.eigvals)
+            alpha[: self.order] = 1.0
+        else:
+            alpha = 1.0 / (1.0 + lambda_ * self.eigvals)
         spectral_y = self.eigvecs.T @ y
         trend = self.eigvecs @ (alpha * spectral_y)
         diag_smoother = (self.eigvecs**2) @ alpha
