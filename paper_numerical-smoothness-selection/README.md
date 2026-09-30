@@ -1,6 +1,6 @@
 # Numerical Smoothness Selection
 
-**Status: ACTIVE — sole current research focus.**
+**Status: ACTIVE — manuscript drafting and review.**
 
 Working title:
 
@@ -28,18 +28,18 @@ use the normalized smoothness coordinate
 S=S_d(\lambda;N)\in[0,1].
 \]
 
-For fixed discrete choices \((d,L,m,h)\), where \(m\) is a pre-specified trend
-continuation rule, define
+For fixed discrete choices \((d,L,h)\), with the native finite-difference
+continuation rule fixed, define
 \[
-F_{d,L,m,h}(S)=CV_h(d,L,m,S).
+F_{d,L,h}(S)=CV_h(d,L,S).
 \]
 
 The numerical problem is to identify the relevant local minima of \(F\) and
 select
 \[
-S^\star_{d,L,m,h}
+S^\star_{d,L,h}
 \in
-\arg\min_{S\in[0,1]}F_{d,L,m,h}(S)
+\arg\min_{S\in[0,1]}F_{d,L,h}(S)
 \]
 without relying on an exhaustive dense grid.
 
@@ -71,8 +71,7 @@ The paper must be useful even if the financial application is removed.
 - adaptive stationary-point search;
 - Brent/root-refinement diagnostics;
 - spacing/suppression of nearby candidate minima;
-- sensitivity to \(d\in\{1,2,3,4\}\), a small set of \(L\), forecast horizon
-  \(h\), and a small number of simple continuation rules;
+- sensitivity to \(d\in\{1,2,3,4\}\), rolling-window length \(L\), and forecast horizon \(h\);
 - synthetic and selected real-series surfaces used to stress the numerical
   method.
 
@@ -88,19 +87,20 @@ The paper must be useful even if the financial application is removed.
 
 Those topics belong to the other two research papers.
 
-## Success criteria
+## Current experimental status
 
-The paper is ready to write to completion when:
+The primary numerical protocol is frozen and the principal experiments are
+complete:
 
-1. exact endpoint semantics are implemented;
-2. the adaptive search matches the dense-reference global optimum to frozen
-   tolerances across the benchmark suite;
-3. missed-local-minimum behavior is measured and honestly characterized;
-4. evaluation-count and runtime savings are quantified;
-5. sensitivity to the epsilon-spacing rule is understood;
-6. comparisons with the existing log-\(\lambda\) search are complete;
-7. the numerical protocol is frozen and reproducible;
-8. the manuscript states only claims supported by those experiments.
+- 240/240 relevant adversarial minima/boundary optima recovered;
+- 2105/2105 synthetic dense-reference interior minima recovered across 1920
+  forecast-validation surfaces;
+- 473/473 financial dense-reference interior minima recovered across 384
+  real-data geometry stress surfaces;
+- one-factor sensitivity and epsilon post-processing sensitivity completed.
+
+The remaining work is manuscript refinement, literature/claim audit, SMCCA
+compilation, and referee-style review.
 
 ## Read first
 
@@ -108,6 +108,7 @@ The paper is ready to write to completion when:
 2. notes/scope.md
 3. notes/roadmap.md
 4. notes/decisions.md
+5. notes/submission_positioning.md
 
 Reusable implementation belongs in src/trend_estimation/.
 
@@ -117,8 +118,14 @@ outputs in results/numerical_smoothness_selection/.
 
 ## Build
 
+The manuscript uses the SMCCA class copied into this directory. Compile from
+the paper directory so that the class, figures, tables, and bibliography resolve
+relative paths correctly:
+
 ~~~bash
-latexmk -pdf -interaction=nonstopmode \
-  -outdir=paper_numerical-smoothness-selection/build \
-  paper_numerical-smoothness-selection/main.tex
+cd paper_numerical-smoothness-selection
+latexmk -pdf -interaction=nonstopmode -outdir=build main.tex
 ~~~
+
+The repository's heavy paper-build workflow remains manual
+(`workflow_dispatch`) with target `numerical`.
