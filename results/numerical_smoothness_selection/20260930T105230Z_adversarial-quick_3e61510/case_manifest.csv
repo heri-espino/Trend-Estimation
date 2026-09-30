@@ -1,0 +1,10 @@
+case,description,true_minima,true_flat_minima,true_boundary_minima,true_other_stationary,true_global_value,true_global_s
+near_zero,Quadratic minimum very near the lower endpoint.,0.001,,,,2.117582368135751e-22,0.001
+near_one,Quadratic minimum very near the upper endpoint.,0.999,,,,3.3306690738754696e-16,0.999
+close_pair,Two equal minima separated by only 0.02 in smoothness.,0.45;0.47,,,,5.551115123125783e-16,0.45;0.47
+close_upper_pair,Two close minima concentrated in the upper tail.,0.97;0.995,,,,9.992007221626409e-16,0.97;0.995
+flat_minimum,Quartic minimum with zero second derivative at the optimum.,,0.733,,,4.440892098500626e-16,0.733
+stationary_inflection,Stationary inflection: derivative touches zero without changing sign.,,,0.0,0.537,-1.0,0.0
+five_minima,Five separated equal local/global minima.,0.1;0.25;0.45;0.7;0.9,,,,-2.220446049250313e-15,0.1;0.25;0.45;0.7;0.9
+boundary_zero,Exact global minimum at S=0.,,,0.0,,0.0,0.0
+boundary_one,Exact global minimum at S=1.,,,1.0,,0.0,1.0
