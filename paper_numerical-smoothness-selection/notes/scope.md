@@ -24,7 +24,7 @@ several estimation windows \(L\), several forecast horizons \(h\), and a small
 number of simple trend-continuation rules \(m\).
 
 These are benchmark dimensions, not the paper's substantive contribution. The
-paper does not propose an adaptive joint optimizer over \((d,L,m,S)\).
+paper does not propose an adaptive joint optimizer over \((d,L,S)\).
 
 ## This paper does not own
 
