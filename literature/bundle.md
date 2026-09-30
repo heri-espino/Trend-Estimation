@@ -4177,3 +4177,6007 @@ The  authors  gratefully  acknowledge  the  comments  and  suggestion  of  two  
 <!-- END SOURCE 24/40: Islas-Camargo_2019_forecasting-remittances-mexico-rjef.md -->
 
 ---
+
+<!-- BEGIN SOURCE 25/40: Islas-Camargo_2019_forecasting-remittances-mexico.md -->
+
+# Source: `Islas-Camargo_2019_forecasting-remittances-mexico.md`
+
+---
+id: "Islas-Camargo_2019_forecasting-remittances-mexico"
+source_pdf: "../pdf/Islas-Camargo_2019_forecasting-remittances-mexico.pdf"
+source_filename: "Islas-Camargo_2019_forecasting-remittances-mexico.pdf"
+format: "academic-paper"
+extraction_profile: "text-math-tables-high-fidelity"
+extraction_mode: "hybrid"
+extraction_quality: "excellent"
+extraction_score: 106.0
+visual_assets: "disabled"
+references_file: "../references/Islas-Camargo_2019_forecasting-remittances-mexico.references.md"
+---
+
+<!-- p:1 -->
+
+## FORECASTING REMITTANCES TO MEXICO WITH A MULTI-STATE MARKOVSWITCHING MODEL APPLIED TO THE TREND WITH CONTROLLED 3.
+
+## SMOOTHNESS
+
+#### A. ISLAS 1 Víctor M. GUERRERO 2 Eliud SILVA 3
+
+### Abstract
+
+Remittances  inflows  have  been  associated  with  a  reduction  in  the  level  and  severity  of poverty.  They contribute to higher human capital accumulation, to improved access to formal financial sector services, to enhanced small business investment and to more entrepreneurship. Remittances play also an important role in contributing to the livelihoods of less prosperous people. Considering these facts, this paper proposes a statistical model to  forecast  remittances  flows  to  Mexico  in  order  to  provide  information  for  the  design  of policies that can help attract remittances inflows and use them productively. Here, we apply a  statistical  methodology  based  on  the  Multi-State  Markov-Switching  model  with  three different specifications. The model is applied to the trend of the time series data instead of the original observations with the aim of mitigating the effect of outliers and transitory blips. The filtering technique employed to estimate the trend allows us to control the amount of smoothness in the resulting trend. This method is also useful to take into account an implicit adjustment of the data at both extremes of the time series, thus providing better results than conventional  filtering  techniques  such  as  the  Hodrick-Prescott  filter.  Thus,  the  MarkovSwitching  approach  captures  more  precisely  the  trend  persistence  of  remittances  and enhances both in-sample and out-of-sample forecast performance.
+
+Keywords : remittances,  migration,  forecast,  Markov-switching,  penalized  least  squares, controlled smoothing
+
+JEL Classification : C32 , C53 , F24, F47, J21, O15
+
+1  Corresponding author. Department of Statistics, ITAM Río Hondo No. 1, Col. Progreso Tizapán, 01080 México, D.F. E-mail: aislas@itam.mx.
+
+2  Department of Statistics, ITAM Río Hondo 1, Col. Progreso Tizapán, México 01080 México D.F. E-mail: guerrero@itam.mx.
+
+3  Universidad Anáhuac Mexico  Av. Universidad Anáhuac, Col. Lomas Anáhuac, Edo. de México 52786.
+
+
+<!-- p:2 -->
+
+
+## 1. Introduction
+
+Remittances  are  an  important  source  of  external  financing,  particularly  in  developing countries. They have been growing in both absolute volume and relative to other sources of external financing, becoming nowadays a major stable source of income for many countries, surpassing even income from exports, foreign direct investment and official development aid. In fact, they are also larger than or equal to foreign exchange reserves in many small countries  and  reach  more  than  a  quarter  of  Gross  Domestic  Product  (GDP)  in  several countries, see Ratha et al . (2010). They contribute to stabilizing the current account position and reduce output volatility of recipient countries, as pointed out by Ratha (2005, 2007), World Bank (2005), Bugamelli and Paterno (2009), Chami et al. (2009) and Gupta et al. (2009).  They  have  also  been  associated  with  reduction  in  poverty,  increased  household resources  devoted  to  investment,  improved  health  and  education  outcomes,  and  higher levels  of  entrepreneurship  (Adams  and  Page,  2005;  Hildebrandt  and  McKenzie,  2005; Fajnzylber and Lopez, 2007; Valero-Gil, 2009; Amuedo-Dorantes et al ., 2011). On the other hand, some studies have pointed out how remittances have affected the receiving economy by cultivating a culture of dependency that reduces labor supply and promotes conspicuous consumption.  At  a  macroeconomic  level,  remittances  have  been  found  to  hurt  prices  of domestically produced goods and exchange rates and the export sector through the socalled Dutch disease (Khurshid et al. , 2016, and 2018). Regarding the determinants of remittances flows, macroeconomic studies have emphasized the level of economic activity in the host and the home countries, the wage rate, inflation, interest  rate  differential,  or  the  efficiency  of  the  banking  system  (El-Sakka  and  McNabb, 1999; Russell, 1986). Real earnings of workers and the total number of migrants in the host country  were  consistently  found  to  have  a  significant  and  positive  effect  on  the  flow  of remittances (Chami et  al., 2005; Elbadawi and Rocha, 1992; Straubhaar, 1986; Swamy, 1981). In addition, factors such as remittances costs and migrants' vintage also play a role in influencing remittances flows. In a survey of Tongan migrants in New Zealand, Gibson et al. (2006) found that remittances would rise by 0.22% if costs fell by 1%. In a sample of five Mediterranean countries, Faini (1994) found evidence that the real exchange rate is also a significant  determinant  of  remittances.  Demographic  factors  like  the  share  of  female employment or high age-dependency ratio in the host country reduce remittances, while illiteracy rates affect them positively (Buch and Kuckulenz, 2004). Wahba (1991) suggests that political  stability  and  consistency in government policies and financial intermediation significantly affect the flow of remittances. Mexico's Central Bank (BANXICO)  estimates indicate that since the mid-nineties remittances flows to Mexico have grown continuously and steadily until 2007, reaching U.S. $6.5 billion in 2000. In the initial years of the current millennium, remittances grew strongly, reaching $15.1 billion by 2003, and peaking at $26 billion in 2007. However, from that year and until 2013, the flows of remittances to Mexico fell and stabilized at around $21 to $23 billion  per  year.    Remittances flows have trended upwards again since 2014, reaching a record amount of money in 2016, taking advantage of the strong U.S. labor market and a weakening Mexican peso amid worries about actions that the administration of the U.S. President Trump may take against immigrant or remittances. Figure 1 shows the quarterly remittances flows to Mexico over the period 1995:I - 2016:IV, where we appreciate three phases of the growth rate: medium during 1995:I - 1999:IV and
+
+2014:I - 206:IV, high during 2000:I - 2007:IV and low or negative during 2008:I -   2013:IV.
+
+
+<!-- p:3 -->
+
+
+Figure 1 Quarterly Remittances Received by Mexico, 1995:I - 2016:IV
+
+##### (Millions of U.S. Dollars)
+
+Source: BANXICO: http://www.banxico.org.mx.
+
+Tracking the dynamics of remittances flows to Mexico is a very important issue, since they represent  a  major  source  of  capital  resources  nationally,  regionally  and  locally.  In  this context, policymakers should consider the short and medium term trends of that variable to better  react  to  falls  in  remittances  flows,  which  could  adversely  impact  the  economy  of thousands  of  Mexican  households  that  heavily  depend  on  that  kind  of  income.  While remittances  are  influenced  by  the  aforementioned  factors,  using  them  in  a  forecasting exercise is constrained by the lack of reliable forecasts of their future evolution. Moreover, remittances  flows  could  be  affected  by  unpredictable  drastic  changes  in  both  U.S.  and Mexican government policies that add uncertainty to the forecast.
+
+To the best of our knowledge, the literature registers just one attempt to forecast remittances by  means  of  a  structural  model,  namely  the  work  of  Mohapatrand  and  Ratha  (2010). Nevertheless, these authors recognize that much remains to be done on the quality of the data to improve their forecast methodology. When we only have access to a time series of remittances,  we  face  basically  two  different  situations:  (i)  working  with  the  original  data, where such components as seasonality and cycle may appear, and apply a time series model, say a Seasonal Auto-Regressive Integrated Moving Average (SARIMA) model to produce short-term forecasts, and (ii) filtering the data to estimate the underlying trend and then forecast the trend to obtain medium-term forecasts. Of course, both sets of forecasts are valuable and interesting for their corresponding forecasting horizons, but they can be achieved with different analytical tools and here we concentrate on the second one.
+
+Thus,  we  propose  to  use  a  Multi-State  Markov-Switching  model  to  the  trend  in  order  to account for episodes of high, medium and slow growth in remittances. By doing that we expect to improve the model's forecasting ability. This idea is in line with that of Yuan's (2011),  who  suggested  using  time  series  filtering  techniques  to  smooth  out  outliers  and transitory  blips  from  the  original  data,  so  as  to  guarantee  that  the  Markov-Switching framework captures more precisely the trend persistence in remittances. We move one step forward since we apply a filter that produces a trend with controlled smoothness and that also takes into account an implicit adjustment to the observations at both extremes of the time series, as in Guerrero (2007).
+
+
+<!-- p:4 -->
+
+
+Using  quarterly  remittances  flows  to  Mexico  over  the  period  1995:I-2016:IV,  our  results reveal  that  the  proposed  forecasting  model  can  adequately  capture  the  movements  of remittances inflows. Therefore, it achieves considerable forecast ability improvement relative to the random walk, in terms of mean square forecast error. Specifically, the out of sample forecast precision gain, averaging over horizon of up to four quarters, is 37%.
+
+The remainder of this paper is organized as follows. Next section presents the statistical methodology to be used, i.e . the Markov-Switching model and the controlled smoothness filtering technique that takes into account an adjustment at both ends of the time series. The empirical  application  to  remittances  is  presented  in  the  third  section,  where  detailed summaries of the estimation results are shown, together with a forecast evaluation of the models employed. The last section concludes with some final remarks.
+
+## 2. Statistical Methodology
+
+### 2.1 The Markov-Switching Model
+
+Markov-Switching  has  become  one  of  the  most  popular  nonlinear  time  series  modeling approach. Roughly speaking, it involves multiple structures that characterize the time series behavior during different regimes. By allowing the model to switch between these structures, this representation is able to capture relatively complex dynamic patterns. A feature of this kind of model is that the switching mechanism is controlled by an unobservable state variable that  follows  a  first-order  Markov  chain  structure.  The  Markovian  property  regulates  the process in such a way that the current value of the state variable depends on its immediate past value. As such, a given structure may prevail for a random period of time, and it is replaced by another structure when switching takes place.
+
+In its broadest form, a Markov-Switching model for a time series { yt } can be written as follows
+
+$$y _ { t } = \mu ( s _ { t } ) + \sigma ( s _ { t } ) \varepsilon _ { t } \text { with } \varepsilon _ { t } \text { i} d \sim N ( 0 , 1 ) ,$$
+
+where:  { ε t }  is  a  sequence  of  random  errors, iid stands  for  independent  and  identically distributed and ሼs ௧ ሽ is an unobservable discrete-time Markov chain with a finite number of states, k . Given ሼs ௧ ሽ , the process ሼy ௧ ሽ follows an autoregressive structure whose parameters, μ and σ , depend on the state of the Markov chain for t =1,..., N . This model was introduced by Hamilton (1989) as an appropriate specification to capture changes in the time series behavior due to extraordinary events such as wars, financial panics, natural disasters and drastic changes in government policies. Hamilton's model has been subjected to a number of  refinements  in  order  to  accommodate  regime  shifts  in  intercepts,  in  autoregressive parameters and/or in variance.
+
+Given the variety of Markov-Switching models that one can choose from, the dilemma is to determine  which  one  is  adequate  for  the  data  at  hand.  It  is  not  necessary  that  all  the parameters  in  the  model  be  regime-dependent.  A  plausible  specification  for  empirical applications  allows  the  autoregressive  parameters  and  the  mean  or  the  intercepts  to  be regime-dependent, while the error term can be either hetero or homoskedastic. Regarding the selection of the k value , when modeling the dynamics of the observed process, there is virtually  no  standard  distributional  theory  that  can  be  applied  to  evaluate  the  MarkovSwitching model against alternatives such as a linear time series model. Nevertheless, some procedures have been suggested to test for the number of regimes. For instance, Hansen (1992) proposed to obtain the optimum of the likelihood surface through a grid search over the parameter space, but to some extent, the computational burden limits the applicability of this procedure. On the other hand, Cheung and Erlandsson (2005) suggested a simulated likelihood ratio test based on a Monte Carlo method, but as they admitted, their results are fairly sample-specific. In this work we follow our economic intuition and the visual inspection of the data to suggest a three-state model as an appropriate specification, so that k = 3. This way we capture the non linearity in the data generating process in which remittances flows to Mexico alternate between sustained periods of medium, high and low or negative growth rate.
+
+
+<!-- p:5 -->
+
+
+To  complete  the  description  of  the  Markov-Switching  model  we  point  out  that  the unobservable realization of the regime s ௧ ∈ ሼ1,2,3ሽ is governed by a discrete-time, discretestate Markov stochastic process, which is defined by transition probabilities as follows
+
+$$p _ { i j } = \Pr ( s _ { t + 1 } = j | s _ { t } = i ) , \ \ \sum _ { j = 1 } ^ { 3 } p _ { i j } = 1 \ \ \text {for all } \ i , j \ \in \{ 1 , 2 , 3 \}$$
+
+where: p௜௝ denotes  the  probability  that  state i will  be  followed  by  state j, and  these  are collected into a transition probability matrix P given by
+
+$$P & = \begin{bmatrix} p _ { 1 1 } & p _ { 1 2 } & p _ { 1 3 } \\ p _ { 2 1 } & p _ { 2 2 } & p _ { 2 3 } \\ p _ { 3 1 } & p _ { 3 2 } & p _ { 3 3 } \end{bmatrix} .$$
+
+The model is useful to make probabilistic inferences about the unobserved state s ௧ based on estimates of the transition probabilities, p௜௝ . Two types of inference can be made: (i) about the smoothed probability, Prሺs ௧ ൌ j|Iே ሻ , which is the probability of being in state j based on the  entire  observed  information  set,  and  (ii)  about  the  filtered  probability,  denoted  as Prሺs ௧ ൌ j|I ௧ ሻ, which is the best guess about s ௧ inferred from information in the sample data up to time t &lt; N .
+
+In this work, we model the dynamics of remittances through a Markov-Switching model with three regimes, to allow for episodes of medium, high and low growth. Because episodes of high growth are normally more volatile than periods of recession, which in turn are more volatile than periods of low growth, we consider a heteroskedastic error term in the model. We also consider a regime-dependent mean model instead of a regime-dependent intercept one, since the former implies that a permanent regime shift leads to an immediate jump in the mean growth rate of the process to its new level. For the latter, a once and for all regime shift in the intercept gives rise to a dynamic response of the growth rate of the observed variable that is identical to an equivalent shock in the white noise series (see Krolzing, 1997).
+
+### 2.2 Underlying Trend with Controlled Smoothness
+
+Rather than using the standard Markov-Switching model for the original time series,  we follow Yuan's (2011) suggestion of applying the Markov-Switching model to the trend of the variable of interest. Thus, we assume that the observed time series can be expressed as a signal-plus-noise model, not because we believe that the data were generated this way, but just to take into account the empirical regularities in the data, that is,
+
+$$y _ { t } = \tau _ { t } + \eta _ { t }$$
+
+where: ሼτ ௧ ሽ is the trend (or signal) and ሼη ௧ ሽ is the noise of ሼy ௧ ሽ , for t =1,..., N .
+
+
+<!-- p:6 -->
+
+
+Then,  we  can  use  Penalized  Least  Squares  (PLS)  to  estimate  the  trend  by  posing  the following minimization problem, as in Guerrero (2007)
+
+$$\min _ { \{ \tau _ { i } \} } \{ \sum _ { t \, 1 } ^ { N } ( y _ { t } - \tau _ { t } ) ^ { 2 } + \lambda \sum _ { t \, 3 } ^ { N } ( \tau _ { t } - 2 \tau _ { t - 1 } + \tau _ { t - 2 } - \mu ) ^ { 2 } \}$$
+
+where 0   is a constant that penalizes the lack of smoothness in the trend. That is, as 0,   the trend resembles more closely the original data, so that t t y τ  for all t , and no smoothness is achieved. The opposite occurs when   , in which case the trend follows  essentially  the  polynomial  model    2 1 2 ttt τ τ - τ which  represents  the  trend growth expressed as a second difference. Hence,  plays an important role in deciding the smoothness of the trend, while μ is  a  reference level for the trend growth. It should be noticed that the trend follows the second degree polynomial given by
+
+$$\tau _ { t } \, \quad \beta _ { 0 } + \beta _ { 1 } t + ( \mu \, / \, 2 ) t ^ { 2 } \, \text { when } \, \mu \neq 0 \, ,$$
+
+which becomes a straight line when 0  μ . Thus, using the reference level as 0, as is usual in practice ( e.g ., Yuan, 2011) has important consequences on the trend behavior, particularly at the end points of the time series, as it will be seen below.
+
+By solving the minimization problem (5) with 0  μ ,  we obtain the Hodrick-Prescott (HP) filter  which provides trend estimates of the series ሼy ௧ ሽ ,  where t  =1, ..., N .  Problem (5) is solved assuming that both the reference level μ and the smoothing parameter λ are known,
+
+but in practice we have to provide appropriate values of those parameters, keeping in mind that a small value of the latter yields a trend that resembles the original data and a large value produce a trend that behaves as a straight line. Below, we focus on this matter.
+
+Following Yuan's (2011) idea we employ the Markov-Switching representation for the trend rather than the original series, so that expression (1) is no longer valid for y ௧ , but for τ ௧ . Thus, let us consider the following unobserved-component model that underlies the minimization problem (5)
+
+$$y _ { t } = \tau _ { t } + \eta _ { t } \text { with } \eta _ { t } \sim ( 0 , \sigma _ { \eta } ^ { 2 } ) \text { \ for } t = 1 , \dots , N$$
+
+$$\tau _ { t } \quad \mu + 2 \tau _ { \varepsilon _ { - 1 } } - \tau _ { t \varepsilon _ { 2 } } + \varepsilon _ { t } \text { \ with } \varepsilon _ { t } \sim ( 0 , \sigma _ { \varepsilon } ^ { 2 } ) \text { \ for } t = 3 , \dots , N ,$$
+
+where we use  ~ ) (0 2 ν , σ to say that the random variable  has mean 0 and variance 2 ν σ .
+
+The  sequence  { t η }  contains  serially  uncorrelated  random  errors  and  { t ε }  is  another sequence of serially uncorrelated random errors that is also uncorrelated with the previous sequence.
+
+Solution of the minimization problem can be expressed in matrix notation by letting y , τ and η be vectors of size N containing the observations, trends and noises, respectively. Then we write equations (7) and (8) in matrix notation as
+
+and
+
+$$\begin{matrix} y & \tau + \eta , \end{matrix}$$
+
+
+<!-- p:7 -->
+
+
+$$K \tau \quad \mu 1 _ { _ { N - 2 } } + \varepsilon \, ,$$
+
+where: η and ε are random  vectors such that N E 0 η  ) ( , N I Var 2 ) (   η ,
+
+2 ) (   N E 0 ε , 2 2 ) (   N I Var   ε and 0 ' ) (  ηε E ,  with I M the M -dimensional  identity matrix. In (10) we use the following ( N2)× N matrix representation of the second difference operation appearing in (8)
+
+$$K \begin{pmatrix} 1 & - 2 & 1 & 0 & \dots & 0 & 0 \\ 0 & 1 & - 2 & 1 & \dots & 0 & 0 \\ & & & & \ddots & & & \\ 0 & 0 & 0 & & \dots & - 2 & 1 \end{pmatrix} .$$
+
+An application of Generalized Least Squares (GLS) to the system of equations (9) - (10) yields  the  Best  Linear  Unbiased  Estimator  (BLUE)  of  the  trend  vector,  given  by  (see Guerrero, 2007 for details)
+
+$$\hat { t } \ \ ( I _ { _ { N } } + \lambda K ^ { \prime } K ) ^ { - 1 } ( y + \lambda \mu K ^ { \prime } 1 _ { _ { N - 2 } } ) \, ,$$
+
+with 2 2 /      . GLS produces the Variance-Covariance matrix 1 2 ) ' (     K K I N    and  once  an  appropriate  value  of  is  given,  unbiased estimators of the error variances are obtained from 2 2 ˆ ˆ   λσ σ  and
+
+$$\hat { \sigma } _ { \eta } ^ { 2 } & \, \left [ \sum _ { t \, ^ { 1 } } ^ { N } ( y _ { t } - \hat { \tau } _ { t } ) ^ { 2 } + \lambda \sum _ { t \, ^ { d + 1 } } ^ { N } ( \hat { \tau } _ { t } - 2 \hat { \tau } _ { t - 1 } + \hat { \tau } _ { t - 2 } - \hat { \rho } ) ^ { 2 } \right ] / ( N - 3 ) \, \text {with} \, \hat { \rho } \text { the sample mean} \\ \text {of the obtained coords in some different ones} \, T & \, \text {the results about estimoting variance are not}$$
+
+of the observed series in second differences. The results about estimating variances are not used in the sequel, but are mentioned just for completeness of this procedure.
+
+To appreciate the effect of the constant μ , we should notice that the array 2 '  N K 1 appearing in (12) is an N -dimensional vector of zeros, except for the first two and last two elements, that is,   ' 1,  1, 0, ..., 0,  1, 1 ' 2   N K 1 . Therefore, the observed values of the original series } { t y enter the formula of the estimator τ  modified in both of its extremes by the value of μ , weighted by  . That is, (12) indicates applying the smoother matrix 1 ) ' (   K K I N  to
+
+$$y + \lambda \mu K ^ { \prime } 1 _ { _ { N - 2 } } \quad ( y _ { 1 } + \lambda \mu , \, y _ { 2 } + \lambda \mu , \, y _ { 3 } , \dots , y _ { _ { N - 2 } } , \, y _ { N - 1 } + \lambda \mu , \, y _ { \, N } + \lambda \mu ) ^ { \prime }$$
+
+and by doing that we are adjusting the first two and last two values of the series, in the spirit of Yuan (2011). However, our 'adjustment' comes out from the model specification for the trend  (10),  while  Yuan  solved  the  end-of-sample  problem  by  using  different  smoothing parameter values, that is, λ for t = 3 to N -2, 2 λ /3 for t = 2 and t = N -1, and λ /3 for t = 1 and t = N. That solution forces the trend to get closer to the original data at the end points, but the choice of λ values has no theoretical justification.
+
+
+<!-- p:8 -->
+
+
+Moreover,  we  should  notice  that  the  presence  of μ also  affects  the  results  when extrapolating the trend, as shown by expression (6) since 0   implies a trend that follows a quadratic polynomial and the extrapolated trend values depend critically on the last two estimated values. That is, if we call ) ( ˆ h N  the h -period ahead forecast of h N   , with origin at N , we get for 1  h
+
+$$\hat { \tau } _ { N } ( h ) = [ h ( h + 1 ) / 2 ] _ { \mu } + ( h + 1 ) \tau _ { N } - h \, \tau _ { N - 1 } \, .$$
+
+In order to apply (12), we follow Guerrero's (2007, 2008) proposal of choosing the smoothing parameter λ by first fixing the value of the index
+
+$$\text {by first fixing the value of the index} \\ S ( \lambda , N ) \quad 1 - t r \left [ ( I _ { N } + \lambda K ^ { \prime } \, K ) ^ { - 1 } \right ] / \, N$$
+
+that measures the smoothness achieved by the trend. Among other properties, this index takes on values between 0 and 1 ,  and  measures the proportion of precision induced by smoothing the data. Thus, we fix the amount of desired smoothness for the trend and solve equation (15) numerically for the corresponding λ value.
+
+An appropriate percentage of smoothness can be obtained from the following guidelines deduced by Guerrero et al . (2017) through a simulation study. In all cases, it is convenient to choose a large value for the index of smoothness, without exceeding the upper bound 12/N. This bound is obtained by noticing that the K matrix involved has rank N2, so that the matrix K'K has two eigenvalues equal to zero and the remaining N2 nonzero eigenvalues are 2 1 ,...,  N e e . Thus, the trace appearing in (15) can be written as     2 ) (1 ... ) (1 ' 1 2 1 1 1            N N e e K K I tr    and, therefore,   N N S 2 / 1 ,    as    . Then, from the results of the aforementioned simulation
+
+study we suggest:
+
+- (i) if  the  original  series  behaves  as  a  straight  line,  choose  a  large  value  of 100   N S ,  % , starting from 90% for N &gt; 48 , and increase it for larger values of N ;
+- (ii) when the series shows a non-straight line pattern, the percentage of smoothness should start at 85%, and increase its value for larger values of N &gt; 48 .
+
+It  is  important  to  emphasize  that  filters  are  designed  to  achieve  specific  goals, e.  g. , Fitzgerald and Christiano's (2003) band pass filter is useful when the focus of the study lies on business cycles. In the present case, we focus on the estimation of the underlying trend of the time series in order to apply Yuan's (2011) proposal, who used the usual HP filter (with the usual value for the smoothing parameter λ = 1600) to that end. We employed a databased approach that includes the HP filter as a special case. Thus, instead of fixing the value of λ we fix the percentage of smoothness to be achieved by the trend, in order to be able to establish valid comparisons for different sample sizes and different frequency of observations. Some robustness exercises of the approach followed here have been provided elsewhere (see Guerrero, 2008).
+
+
+<!-- p:9 -->
+
+
+## 3. Empirical Results
+
+The data for the empirical application is a quarterly series of workers' remittances in dollars received by Mexico and recorded by BANXICO from 1995:I through 2016:IV. We applied a first difference to the data expressed in logarithms and multiplied those values by 100 to work with percent growth rates. The resulting series runs from 1995:II to 2016:IV. We carried out the computations with the WinRATS package, version 9.0 (www.estima.com).
+
+To contrast the forecasting results for remittances obtained with the proposed smoothing technique,  we  used  three  models  in  our  analysis.  The  first  one  is  the  standard  MarkovSwitching  model,  namely  the  Markov-Switching-Mean-Heteroskedastic  model  with  3 regimes, called MSMH(3). The second one is the three-regime Markov-Switching-MeanHeteroskedastic-filtered  model  with  the  HP-filter  (HP-MSMH),  the  filtering  technique employed in this model is the standard Hodrick-Prescott filter with the value λ ൌ 1600 (that produces the smoothness index   N S ,  % = 93.18%, which lacks a practical interpretation).
+
+The third one is the three-regime Markov-Switching-Mean-Heteroskedastic-filtered model with Smoothing (S-MSMH), with the filtering technique proposed in this paper and   N S ,  % = 85% , so that λ ൌ 45.1 .  Figure 2 shows the logarithm of remittances flows to Mexico and its  trend  estimates.  Let us recall that the two filtered models are proposed because the standard Markov-Switching model is likely to overreact to irregular transitory blips in the data and such overreaction induces instability in parameter estimation and misclassification of regime shifts, which in turn undermines the model's forecasting ability.
+
+Figure 2 Logarithm of Remittances Flows to Mexico and Trend Estimates
+
+Note: Trends obtained with the HP filter ( λ ൌ 1600 ) and with 85% smoothness ( λ ൌ 45.15ሻ .
+
+Table 1 reports the maximum likelihood estimates based on the full sample of data. In the panel  at  the  bottom  of  Table  1  we  present  some  hypothesis  tests  for  model  selection. Because the conclusions drawn from the test results are unchanged for the S-MSM, HPMSM and MSMH models, we need only explain the test results based on the S-MSM. The notation  S-MSM(2)|S-MSM(3) in Table 1 denote the null hypothesis of model S-MSM(2) model against the alternative hypothesis of model S-MSM(3). The log likelihood values for models S-MSM(2) and S-MSM(3) are -163.8733 and -138.8753, respectively, and the LR statistic is 2 ∗ ሾെ138.8753 െ ሺെ163.8733 ሻሿ ൌ 49.996 ൐ χ ଶ ሺ2ሻ , which indicates that model SMSM(3) is preferable to model S-MSM(2). The LR test for model selection indicates that the three-state Markov-Switching model is preferable to the two-state Markov-Switching model in each case of the compared models.
+
+
+<!-- p:10 -->
+
+
+As Krolzing (1997) argues, there is no general test to compare two models with different number of regimes. The issue is that the asymptotic theory cannot be used here because there  are  unidentified  nuisance  parameters  as  well  as  violation  of  the  non-singularity conditions.  However,  most  researchers  still  use  the  LR  to  obtain  useful  supporting evidences. Throughout this paper, the LR tests are considered in this way.
+
+The three regimes considered are low or negative growth, medium growth and high growth, classified  as  regimes  1,  2  and  3,  respectively.  The  estimates  indicate  that  regime  1  is associated with a 3.83% quarterly downward trend predicted by the unfiltered MSMH model, while the HP-MSMH and S-MSMH models predict no growth of remittances in regime 1. The MSMH estimates a 2.47% quarterly downward trend for regime 2, while models HP-MSMH and S-MSMH estimate an upward trend for remittances of about 3.1% and 2.7%, for the same regime. The three models estimate an upward remittances trend of about 18.9%, 4.5% and 5.5% for regime 3, respectively.
+
+Table 1 Estimation Results for Each Model (Standard Errors in Parenthesis). Period 1995:II - 2016:IV
+
+| Parameter                         | Model - MSMH(3)             | Model - HP-MSMH(3)                 | Model - S-MSMH(3)                          |
+|-----------------------------------|-----------------------------|------------------------------------|--------------------------------------------|
+| μ ଵ μ ଶ μ ଷ σ ଵ σ ଶ σ ଷ p ଵଵ p ଶଶ | -3.835 (1.310)              | 0.385 (0.121)                      | -0.069 (0.216) 2.750 (0.108) 5.513 (0.201) |
+|                                   | -2.477 (1.225)              | 3.145 (0.008)                      |                                            |
+|                                   | 18.914 (1.130)              | 4.502 (0.147)                      |                                            |
+|                                   | 43.406 (12.360)             | 0.674 (0.222)                      | 1.918 (0.604)                              |
+|                                   | 29.655 (8.045)              | 0.0009 (0.000)                     | 0.460 (0.131)                              |
+|                                   | 24.923 (8.714)              | 0.917 (0.231)                      | 1.483 (0.414)                              |
+|                                   | 0.412 (0.109)               | 0.986 (0.231)                      | 0.963 (0.279)                              |
+|                                   | 0.299 (0.000)               | 0.967 (0.025)                      | 0.977 (0.026)                              |
+| p ଷଷ                              | 0.066 (0.000)               | 0.965 (0.012)                      | 0.952 (0.012)                              |
+| Model selection test              | Model selection test        | Model selection test               | Model selection test                       |
+| MSMH(2)&#124;MSMH(3) 19.63*       | MSMH(2)&#124;MSMH(3) 19.63* | HP-MSMH(2)&#124;HP-MSMH(3) 72.178* | S-MSMH(2)&#124;S-MSMH(3) 49.996*           |
+
+Note: MSMH(3) = 3-regime Markov-Switching Mean-Heteroskedastic model; HP-MSMH(3) = 3regime Markov-Switching Mean-Heteroskedastic filtered model with HP-filter; S-MSMH(3) = 3regime Markov-Switching Mean-Heteroskedastic filtered model with proposed Smoothing filter.
+
+*Significant at the 5% level.
+
+Table 1 also shows that according to the estimates of the HP-MSMH and S-MSMH models, remittances seem to be well-characterized by long swings with sustained low, medium and high growth regimes. This high persistence of regimes is represented by the large regimestaying probabilities, pଵଵ , pଶଶ and pଷଷ ; that is, the probability of staying in a regime once the process enters it. The expected duration of regime j is defined as 1/ ሺ1 െ p ௝௝ ሻ . Thus, the SMSMH and HP-MSMH models predict that the low-growth regime is expected to persist
+
+
+<!-- p:11 -->
+
+
+about 9 and 12 years on average, respectively; while the medium-growth regime is expected to  persist  about  7  and  6  years  on  average,  respectively;  and  the  high-growth  regime  is expected to persist about 5 and 6 years on average, respectively. These long persistence periods in each regime may be an appropriate depiction of the remittances' lengthy mediumgrowth rate during 1995:I-1999:IV and 2014:I-206:IV, high-growth rate during 2000:I-2007:IV and low or negative growth rate from 2008:I-2013:IV, which matches our visual inspection of Figure 1.
+
+On the other hand, no long swings are predicted by the unfiltered MSMH model. According to the regime staying probabilities, the low growth regime is expected to persist about two quarters; while the medium and high growth regimes are expected to persist about 1 quarter. This misidentification is corrected by the models with smoothing. On this regard, a merit of the use of filtering the data is that it enables the estimation procedure to compute more precisely the signals of genuine regime shifts.
+
+One  of  the  most  innovative  aspects  of  the  Markov-Switching  model  lies  in  its  ability  to objectively date the state of the process using the so-called smoothed probabilities. Panels (b), (c) and (d) of Figure 3 show plots of the smoothed probabilities that the process is in each of the three regimes at each date in the sample, estimated by the MSMH, HP-MSMH and S-MSMH models, respectively; while panel (a) plots the logarithm of remittances flows to Mexico. For comparison, the corresponding dates of each one of the three regimes, as identified by HP-MSMH and S-MSMH models, are presented in Table 2. The dates at which we conclude that the process had switched between regimes are based on the following cutoff point for the smoothed probabilities, pሺs ௧ ൌ i|Iே ሻ ≷ 0.5 .
+
+Figure 3 (a) Log-remittances; (b), (c) and (d) Smoothed Probabilities that the Process is in Each of the Three Regimes at Each Date in the Sample, Estimated by the MSMH, HP-MSMH and S-MSMH Models, Respectively
+
+The high-growth rate period identified by the S-MSMH model is particularly interesting, since it matches the period where the average transaction cost of money transfers fell more than 50%, also the inclusion of debit and credit cards as an option to transfer remittances to Mexico, and the single most important determinant of the increase of remittances after year 2000, namely, a better mechanism implemented by BANXICO to measure remittances.
+
+
+<!-- p:12 -->
+
+
+Although  the  HP-MSMH  and  S-MSMH  models  identified  almost  the  same  date  for  the beginning of the lower or negative growth rates period, they differ when identifying the end of this period; while the former identifies 2016:IV, the latter identifies 2013:IV. The lower or negative growth rates period identified by the S-MSMH model deserves special attention. This matches the period when the U.S. Government implemented a restrictive immigration policy that increased the number of Border Patrol agents in the South West border and the number of aircraft and ground surveillance systems to contain the flows of migrants. It also matches the beginning of the 2008 economic crisis that severely affected the U.S. economy and, hence, some economic sectors which traditionally employ Mexican immigrants.
+
+The smoothed probabilities estimated by the S-MSMH model at the end of the period of analysis also deserve special attention. Panels (c) and (d) in Figure 3 show the smoothed probabilities estimated by the HP-SMSH and S-MSMH models, respectively. As we can see, panel (d) shows that at the end of the period of analysis, S-MSMH model identifies another medium-growth rate regime. This behavior is not observed in the smoothed probabilities estimated with the HP-MSMH model and could be explained by the recovery of remittances flows to Mexico since the first quarter of 2014. The improvements noticed at the end of 2013 and the beginning of 2014 in the U.S. employment indicators, specifically in those states where Mexican immigrants typically reside, such as California and Texas, seem to explain the recent recovery of remittances to Mexico. Additionally, following the November 2016 Presidential election, there were increased fears among Mexicans in the U.S, both with and without legal immigration status that President Trump would fulfill his campaign promise to impose restrictions or taxes on remittances to Mexico. It is therefore possible that people fearing they might be affected by such measures increased their remittances in November and December 2016 to avoid future regulation or taxation. The depreciation of the Mexican peso  with  respect  to  the  U.S.  Dollar  is  another  factor  contributing  to  the  increase  in remittances in these two months.
+
+A close examination of these results reveals that the S-MSMH(3) model can adequately capture  the  movements  of  remittances  flows  to  Mexico  and,  therefore,  improve  its forecasting performance, as we show below.
+
+Table 2 Dates of the Regimes, as Identified by the HP-MSMH and S-MSMH Models
+
+| Regimes - Model   | Regimes - Medium-growth rate   | Regimes - High-growth rate   | Regimes - Low-growth rate   |
+|-------------------|--------------------------------|------------------------------|-----------------------------|
+| HP-MSMH           | 1995:II-1997:IV                | 1998:I-2006:II               | 2006:III-2016:IV            |
+| S-MSMH            | 1995:II-2001:I 2015:I-2016:IV  | 2000:II-2006:I               | 2006:II-2014:IV             |
+
+Note: The dates at which we conclude that the process had switched between regimes are based on the cutoff point, pሺs௧ ൌ i|I ே ሻ ≷ 0.5 .
+
+### 3.1 A Forecasting Exercise
+
+Remittances  have  had  a  significant  positive  effect  on  the  nation's  economy  and  on household well-being for those families that receive them. Studies have shown that workers' remittances  reduce  poverty  (Esquivel  and  Huerta-Pineda  2007),  increase  investment  in children's schooling (Borraz 2005; Hanson and Woodruff 2003), finance small business and increase access to financial services (Demirguc-Kunt et al ., 2011).  From a macroeconomic perspective, remittances can boost aggregate demand and thereby GDP as well as spur economic growth. However, remittances may also have adverse macroeconomic impacts by increasing prices of domestically produced goods and exchange rate as well as by creating moral hazard problems.
+
+
+<!-- p:13 -->
+
+
+Moral hazard problems are related to the potential reduction in labor supply, the development of conspicuous consumption patterns and the inability to develop a culture of saving that can enable future  investment and growth.  Another impact  of remittances flows  is  their  effect uplifting the prices in the recipient economy. There are some evidences that remittances flows to Mexico have significant positive effect on both inflation and relative price variability (Balderas and Nath, 2008).  Thus, policymakers are concerned about the effects of money transfers at a time when local economic growth is also slowing and needs forward-looking analyses of the sustainability of remittances, trying to foresee whether remittances flows would continue at their current or higher levels, in the short and medium term. Therefore, the need of generating forecasts is clear in this context.
+
+The  forecasting  exercise  described  below  could  be  used  by  policymakers  to  choose appropriate policies according to the different states of remittances growth. For example, if a negative or low grow rate is foreseen in the near future, policies like 'Directo a Mexico,' a mechanism implemented by the Mexican government to reduce average transaction costs of money transfers and the introduction of technology, including debit and credit cards, could be reinforced to avoid the slowdown of flows. Facilitating access to banking services lets migrants  take  advantage  of  the  more  secure  and  less  expensive  transmission  methods offered  by  banks  while  helping  them  build  a  relationship  with  the  bank.  Building  that relationship is key to gaining financial literacy and access to credit for asset accumulation and investment, and hence avoid the conspicuous consumption.
+
+On the other hand, if a medium or high growth rate is predicted for the near future, the financial intermediaries can take advantage of this information to be creative, channel these flows  towards  the  productive  sectors  through  the  banking  system,  thus  dampening  the effects of inflation. Remittances initiative programs like 'Your House in Mexico' designed by the Mexican government to help the migrant to get a property, by paying it through money transfers, could also be reinforced to give a better use of remittances inflows.
+
+The forecasting performance of Markov-Switching models heavily depends on the regime in which the forecast is made, so it requires only a small misclassification of which regime the process  will  be  in  to  lose  the  advantage  of  knowing  the  correct  model  specification.  A question of particular interest here is the following: Given that the filtered model works well in capturing the trend persistence of remittances flows to Mexico, can it outperform, in terms of  Mean  Squared  Error  (MSE),  some  linear  alternatives,  specifically  the  simple  random walk?
+
+It is quite standard to assume that the optimal predictor is given by the conditional mean for a  given  information  set Y௧ .  Nevertheless,  in  contrast  to  linear  models,  the  MSE  optimal predictor does not have the property of being a linear predictor if the true data generating process  is  nonlinear.  In  general,  the  derivation  of  the  optimal  predictor  may  be  quite complicated in empirical work. However, an attractive feature of Markov-Switching models as a class of nonlinear models is the simplicity of forecasting if the optimal predictor is the conditional expectation.
+
+Following Hamilton (1994), let ξ መ ௧|௧ be the k ൈ 1 vector of conditional probabilities, Pሼs ௧ ൌ j|Y ௧ ; θሽ , for j=1,2,...,k , which are estimates of the value of s ௧ based on data obtained through date t . Given the maximum likelihood estimator, θ ෠ , the h -period ahead forecast of y௧ା௛ is given by
+
+$$\hat { y } _ { t + h | t } = E [ y _ { t + h } | y _ { t } ; \hat { \theta } ] = \xi ^ { \prime } _ { t + h | t } * \hat { \mu } = \xi ^ { \prime } _ { t | t } * P ^ { h } * \hat { \mu } ,$$
+
+
+<!-- p:14 -->
+
+
+where: μ̂ ൌ ሺμ̂ ଵ , μ̂ ଶ , ... , μ̂ ௞ ሻ′ is  the  vector  of  estimates  of  the  mean-dependent  trends.  We generated h -period ahead forecasts of the level of log-remittances flows to Mexico as
+
+$$\hat { e } _ { t + h | t } = e _ { t } + \sum _ { j = 1 } ^ { h } \hat { y } _ { t + j | t } ,$$
+
+and calculated the average squared value of the forecast error as
+
+$$\sum _ { t = 1 } ^ { N - h } \left ( \hat { e } _ { t + h | t } - e _ { t + k } \right ) ^ { 2 } / ( N - h ) ,$$
+
+for forecast horizons h=1, ..., 4 .
+
+Table 3 presents the MSEs of the in-sample and out-of-sample forecasts and compares them with those of a random walk specification, whose forecasts are given by ê ௧ା௛|௧ ൌ e௧ ൅ hy ത , with y ത ൌ ∑ y௧ ே ௧ୀଵ /N . As we can see, the average improvement in the in-sample forecast precision is about 16.7% for the unfiltered MSMH model, while for the two filtered HP-MSMH and S-MSMH models it is about 16.8% and 18.9%, respectively, averaging over the fourquarter-ahead horizon. We further notice that the two filtered Markov-Switching models well outperform the unfiltered model during the forecast horizon considered.
+
+Table 3 In-sample and Out-of-sample MSE of the Forecasts at Horizons from One to Four Quarters
+
+| In-sample Mean Squared Forecast Error - Model   | In-sample Mean Squared Forecast Error - Forecast horizon - 1   | In-sample Mean Squared Forecast Error - Forecast horizon - 2   | In-sample Mean Squared Forecast Error - Forecast horizon - 3   | In-sample Mean Squared Forecast Error - Forecast horizon - 4   |
+|-------------------------------------------------|----------------------------------------------------------------|----------------------------------------------------------------|----------------------------------------------------------------|----------------------------------------------------------------|
+| Random walk                                     | 121.81713                                                      | 214.55569                                                      | 209.52447                                                      | 174.75727                                                      |
+| MSMH(3)                                         | 92.72398                                                       | 144.24375                                                      | 168.04381                                                      | 191.07547                                                      |
+| Percent improvement                             | 23.8%                                                          | 32.7%                                                          | 19.7%                                                          | -9.3%                                                          |
+| HP-MSMH(3)                                      | 117.63691                                                      | 199.67678                                                      | 174.21680                                                      | 108.39477                                                      |
+| Percent improvement                             | 3.4%                                                           | 6.9%                                                           | 16.8%                                                          | 37.9%                                                          |
+| S-MSMH(3)                                       | 116.74488                                                      | 194.66759                                                      | 166.24532                                                      | 101.86081                                                      |
+| Percent improvement                             | 4.1%                                                           | 9.2%                                                           | 20.6%                                                          | 41.7%                                                          |
+| Out-of-sample Mean Squared Forecast Error       | Out-of-sample Mean Squared Forecast Error                      | Out-of-sample Mean Squared Forecast Error                      | Out-of-sample Mean Squared Forecast Error                      | Out-of-sample Mean Squared Forecast Error                      |
+|                                                 | Forecast horizon                                               | Forecast horizon                                               | Forecast horizon                                               | Forecast horizon                                               |
+| Model                                           | 1                                                              | 2                                                              | 3                                                              | 4                                                              |
+| Random walk                                     | 103.86399                                                      | 190.50762                                                      | 256.25722                                                      | 328.23586                                                      |
+| MSMH(3)                                         | 98.72661                                                       | 175.40750                                                      | 227.60289                                                      | 256.26342                                                      |
+| Percent Improvement                             | 4.9%                                                           | 7.9%                                                           | 11.1%                                                          | 21.9%                                                          |
+| HP-MSMH(3)                                      | 91.28532                                                       | 142.97628                                                      | 145.63749                                                      | 126.45526                                                      |
+| Percent Improvement                             | 12.1%                                                          | 24.9%                                                          | 43.1%                                                          | 61.4%                                                          |
+| S-MSMH(3)                                       | 90.65535                                                       | 140.98101                                                      | 140.47951                                                      | 116.37265                                                      |
+| Percent Improvement                             | 12.7%                                                          | 25.9%                                                          | 45.1%                                                          | 64.5%                                                          |
+
+Notes :  In-sample  forecast  errors.  Estimation  sample  1995:II  -  2016:IV  and  MSEs  are  those
+
+associated with forecasts for dates t=1995:II+k  to 2015:II where k is the forecast horizon. Out-of-sample forecast errors. Estimation sample 1995:I - 2007:IV and MSEs are associated with
+
+forecasts for dates t=2008:I+k to 2016:IV where k is the forecast horizon.
+
+MSMH(3) = 3-regime Markov-Switching Mean-Heteroskedastic model;
+
+HP-MSMH(3) = 3-regime Markov-Switching Mean-Heteroskedastic filtered model with HP-filter; S-MSMH(3) = 3-regime Markov-Switching Mean-Heteroskedastic filtered model with proposed Smoothing filter.
+
+
+<!-- p:15 -->
+
+
+To evaluate the out-of-sample forecasting performance of the models, we re-estimated the parameters with data up to the end of 2007. We chose this date so as not to take into account the period prior to the beginning of the 2008 economic crisis, which severely affected the U.S.  economy.  Hence,  almost  the  entire  period  of  the  low  or  negative  growth  rate  of remittances was not used for parameter estimation. The lower panel of Table 3 compares the out-of-sample MSEs of the forecasts of the three models with that of the random walk. We can observe that the three models generally outperform the random walk, particularly at long forecasting horizons. The average improvement in out-of-sample forecast precision is about 11.4% for the unfiltered MSMH model, 35.3% for the filtered HP-MSMH model, and 37% for the filtered S-MSMH model, averaging over the forecast horizon up to four quarters. We further notice that the HP-MSMH and S-MSMH models well outperform the random walk and the unfiltered model, slightly more prominently the latter and in particular for the fourperiod-ahead forecast.
+
+### 3.2 Forecast Evaluation
+
+To  complement  the  previous  analysis  of  forecast  bias  and  precision  we  now  focus  on forecast accuracy. Table 4 presents Diebold-Mariano (DM) test statistics (see Diebold and Mariano, 1995) for the null hypothesis of no difference in the accuracy of two competing forecasts, that is, the unfiltered and the two filtered models versus the random walk. Each calculated  statistics  should  be  compared  with  a  standard  normal  distribution  in  order  to declare statistical significance. However, since the standard DM test is known to over-reject the null hypothesis in the context of finite samples, we applied here the modified DM test proposed by Harvey et al . (1997).
+
+The DM test results reported in Table 4 reinforce our findings in Table 3 lower panel, that the unfiltered and the two filtered models are generally significantly better than the random walk, in the context of out-of-sample forecasting.
+
+Table 4
+
+##### The Diebold-Mariano Test for Relative Forecasting Ability
+
+| Models             |   Forecast horizon - 1 |   Forecast horizon - 2 |   Forecast horizon - 3 |   Forecast horizon - 4 |
+|--------------------|------------------------|------------------------|------------------------|------------------------|
+| MSMH(3) vs . RW    |                        |                        |                        |                        |
+| MSE Ratio          |                 0.9583 |                 0.9220 |                 0.8884 |                 0.7843 |
+| DM-stat            |                 0.4407 |                 2.0814 |                 5.3450 |                 4.0376 |
+| p-value            |                 0.3297 |                 0.0187 |                 0.0000 |                 0.0000 |
+| HP-MSMH(3) vs . RW |                        |                        |                        |                        |
+| MSE Ratio          |                 0.8856 |                 0.7496 |                 0.5604 |                 0.3881 |
+| DM-stat            |                 1.5593 |                 2.2134 |                 3.6545 |                 3.1643 |
+| p-value            |                 0.0594 |                 0.0134 |                 0.0001 |                 0.0007 |
+| S-MSMH(3) vs. RW   |                        |                        |                        |                        |
+| MSE Ratio          |                 0.8799 |                 0.7386 |                 0.5384 |                 0.3563 |
+| DM-stat            |                 1.4826 |                 2.1242 |                 3.5121 |                 3.0408 |
+| p-value            |                 0.0690 |                 0.0168 |                 0.0002 |                 0.0011 |
+
+Note : RW = random walk; MSMH(3) = 3-regime Markov-Switching Mean-Heteroskedastic model; HP-MSMH(3) = 3-regime Markov-Switching Mean-Heteroskedastic filtered model with HP-filter; TS-MSMH(3) = 3-regime Markov-Switching Mean-Heteroskedastic filtered model with Smoothing filter.
+
+Forecasts are based on estimated period 1995:I-2007:IV and forecast periods 2008:I-2016:IV .
+
+
+<!-- p:16 -->
+
+## 4. Conclusions
+
+This paper proposes a new approach for estimating a trend with controlled smoothness in order  for  a  Markov-Switching  model  to  be  applied  more  appropriately  to  detect  different regimes in the time series of remittances flows to Mexico. Once those regimes are detected and the probabilities of staying in each of the regimes estimated, the model was used to predict remittances flows. The new approach allowed us to fix a desired percentage for the smoothness of the trend, so that valid comparisons can be obtained for different applications (with different time series or for different sample periods for the same series) as stressed by Guerrero (2008). Besides, the proposal also includes a new data-based and very simple way of taking care of the adjustment of the trend at the endpoints of the time series. We  show  that  combining  a  Multi-State  Markov-Switching  model  with  the  controlled smoothing  filter  technique  enhances  both  in  sample  and  out-of-sample  forecasting performance. Preliminary results obtained by applying the conventional model and filtering technique warned us that the existence of highly irregular components in the data tends to distort  the  estimation  procedure  of  the  Markov-Switching  model  and  undermines  its forecasting  power.  Our  proposed  specification  eliminates  this  modeling  nuisance  and reinforces  the  forecasting  superiority  of  the  Markov-Switching  model.  The  empirical application  was  carried  out  with  three  different  Multi-State  Markov-Switching  model specifications  and  the  one  based  on  our  proposal  was  seen  to  be  best  for  parameter estimation as well as for generating statistically better forecasts, so that strong empirical support was obtained for our proposed procedure. The results obtained in this particular application were clear in defining three different regimes associated with the speed of growth of  remittances  flows:  low-growth,  medium-growth  and  high-growth  that  can  be  easily appreciated visually in the data under study. Thus, the interpretation was very reasonable and  the  results  are  therefore  practically  free  of  misjudgments.    Our  results  shows  that correctly identifying the trend in the inflow remittances plays a key role in achieving superior forecasting ability with respect to the simple random walk. Although our model provides good forecasts in terms of the MSE, a forecast based on a structural model could provide more information for designing policies that can help attract remittances inflows and for using them productively. However, such a model is difficult to implement until the quality of data on the determinants of remittances improves. We believe that, even though research has expanded the understanding of remittances flows and their impacts, there is more to do about their prediction and understanding of how predictability of the flows may affect their impact. As a final conclusion, we stress that the HP-filtered model produces suboptimal results, even though the smoothed probabilities for staying in a particular regime, as well as the regime dates and the remittance forecasts, are similar to those produced with our proposal. Besides, our proposed procedure is basically data-based, hence more objective than that based on the HP filter, since the smoothing parameter involved comes out as a result of fixing a desired percentage of smoothness for the trend, which in turn can be decided from very easy-to-
+
+follow and data-based guidelines.
+
+### Acknowledgements
+
+The  authors  gratefully  acknowledge  the  comments  and  suggestion  of  two  anonymous referees and the editor of this journal. Islas and Guerrero thank the financial support provided by Asociación Mexicana de Cultura, A. C. to carry out this work. A. Islas also acknowledges support  from  the  National  Council  for  Science  and  Technology  of  Mexico  (CONACYT), sabbatical scholarship. This work was done whilst A. Islas was visiting the Department of Economics, Nepal Study Center, and the RWJF Center for Health Policy at the University of New Mexico, USA. Eliud Silva dedicates this article to his mother.
+
+
+<!-- p:17 -->
+
+<!-- END SOURCE 25/40: Islas-Camargo_2019_forecasting-remittances-mexico.md -->
+
+---
+
+<!-- BEGIN SOURCE 26/40: Islas-Camargo_2025_exchange-rate-predictability-controlled-smoothness.md -->
+
+# Source: `Islas-Camargo_2025_exchange-rate-predictability-controlled-smoothness.md`
+
+---
+id: "Islas-Camargo_2025_exchange-rate-predictability-controlled-smoothness"
+source_pdf: "../pdf/Islas-Camargo_2025_exchange-rate-predictability-controlled-smoothness.pdf"
+source_filename: "Islas-Camargo_2025_exchange-rate-predictability-controlled-smoothness.pdf"
+format: "academic-paper"
+extraction_profile: "text-math-tables-high-fidelity"
+extraction_mode: "full-page-ocr"
+extraction_quality: "excellent"
+extraction_score: 108.0
+visual_assets: "disabled"
+references_file: "../references/Islas-Camargo_2025_exchange-rate-predictability-controlled-smoothness.references.md"
+---
+
+<!-- p:1 -->
+
+ECONOMIA
+
+dsn-vaf
+
+## Exchange rate predictability: Multi-State Markov-Switching model and trend with controlled smoothness
+
+### Alejandro Islas CAMARGO1
+
+aislas@itam.mx D ORCID: https://orcid.org/0000-0003-0910-313X
+
+## Juan A. Zumaya GALVÁN2
+
+juan.abraham.zumaya@citi.com| iD ORCID: https://orcid.org/0009-0007-1032-661X
+
+####### Abstract
+
+This study presents an exchange rate (Mexican Pesos / U.S. Dollar) forecasting model. The statistical methodology used is based on the Multi-State Markov-Switching model with three different specifications. The model is applied to the trend of the time series data instead of the -ors ti s   rss  rn o  s ecs  t econ nique employed to estimate the trend allows us to control the amount of smoothness in the resulting trend. By doing this, the Markov-Switching approach captures the trend persistence oc c-s es aos-s  ss e aes as s a oo performance. Our results show that correctly identifying the trend in the exchange rate (Mexican Peoss g g g  ns g  r   s oipg g  pleg raans  c   s  d w  we  es we emphasize that when working with asset prices time series, a usual assumption is that the series behaves as a random walk, that is, as an I(1) process, and not as an I(2) process. Since we are interested in decomposing a financial time series into trend plus noise, we use the exponential smoothing (ES) filter rather than the Hodrick-Prescott (HP) filter, as other authors hads  p  y e rs (r e  s dh  d  on error in the sense that a sub-optimal procedure is used.
+
+####### Keywords
+
+Exchange rate, Forecasting, Exponential smoothing, Markov-Switching
+
+1 Autonomous Technological Institute of Mexico (ITAM), Department of Statistics, Mexico City, Mexico.
+
+2Autonomous Technological Institute of Mexico (ITAM), Mexico City, Mexico.
+
+cc
+
+1
+
+<!-- p:2 -->
+
+
+## Previsibilidade da taxa de câmbio: modelo de Markov-Switching multi-estado e tendência com suavidade controlada
+
+##### Resumo
+
+Este estudo apresenta um modelo de previsão da taxa de câmbio (pesos mexicanos/dólar americano). A metodologia estatística utilizada baseia-se no modelo Multi-State Markov-Switching com três especificações diferentes. O modelo é aplicado à tendência dos dados da série temporal em vez das observações originais para mitigar o efeito de outliers e blips transitórios. A técnica de filtragem empregada para estimar a tendência nos permite controlar a quantidade de suavidade na tendência resultante. Ao fazer isto, a abordagem Markov-Switching capta a per  o r  d s o   sa s   ssad pro ot  orns os osn o  ao  o onne De nn  (on aoa   d   x  D l fundamental na obtenção de capacidade superior de previsão em relação ao passeio aleatório simples. Além da nova abordagem para estimar uma tendência com suavidade controlada, enfatizamos que quando se trabalha com séries temporais financeiras, uma suposição usual c  ossro o oo 'es o ' ss o oo ro s so  o não como um processo I(2). Como estamos interessados em decompor uma série temporal financeira em tendência mais ruído, utilizamos o filtro de suavização exponencial (ES) em vez do filtro Hodrick-Prescott (HP), como fizeram outros autores. Aplicar o filtro HP a um processo I(1), como feito incorretamente, produz um erro de especificação no sentido de que um procedimento abaixo do ideal é usado.
+
+####### Palavras-chave
+
+Taxa de câmbio, Previsão, Suavização exponencial, Markov-Switching
+
+####### JEL Classification
+
+C32, C53, F31, F47
+
+## 1. Introduction
+
+Over the last two decades, exchange rates have become increasingly unpredictable while businesses have become more globalized. This means that many business decisions now consider forecasts of future exchange rates. Central banks in countries like Mexico, which heavily rely on importing and exporting commodities, need to forecast exchange rates as accurately as possible. Private businesses and forecasters will also want to predict exchange rates. Policymakers who rely on successful forecasts of macroeconomic indicators, mainly exchange rates, to make effective decisions need to pay attention to this topic (Wieland and Wolters, 2013 provides a detailed review of how forecasts are used in policymaking).
+
+cc
+
+1
+
+BY
+
+
+<!-- p:3 -->
+
+
+Modeling exchange rates is a significant challenge to economists, market practitioners, academics, and decision-makers. In this paper, we empirically analyze one of the puzzles in international economics stemming from the findings of Meese and Rogoff (1983), and Messe, Rogoff and Frenkel (1983), that macroeconomic fundamentals are weak predictors of exchange rate movements, especially at the short horizon. Subsequent research works suggest that a random walk model appears to be the most successful model in forecasting out-of-sample nominal exchange rates. As Meese and Rogoff (1983) pointed out, parameter instability is the possible explanation for the poor performance of exchange rate forecasts.
+
+As Sarno and Valente (2009) shows, it is possible that one variable is the critical predictor over a certain period but that it loses its predictive ability due to policy regime shifts, the agent's heterogeneity, or instabilities in exchange rate models. Based on this idea, after observing that the exchange rates tend to follow highly persistent trends and suggesting that the key to pea ( n      s    ss an extension of Engle and Hamilton's (1990) model. Such an extension allows, in addition to the appreciation and depreciation regimes, a trendless regime and a time series filtering technique to smooth out outliers and tranSit-b b t h   o b t s nsg framework captures the trend persistence in exchange rates more accurately.
+
+In fact, Dacco and Satchel (1999) showed that the misclassification of regime tends to make the Markov-switching model less effective in beating the random walk even if an excellent in-sample performance has been presented. Furthermore, Mash (2000) argued that Markov-Switching model generally offers sound in-sample fit but fails to deliver superior out-of-sample forecast due to parameter instability over time. Therefore, since exchange rates are often extremely noisy, the oversensitivity of the conventional Markov-Switching model tends to induce instability in parameter estimation and misclassification of regime shifts and, in turn, undermine its forecast ability. Our proposed model that combines the Markov-Switching model with the controlled smoothing filter corrects this drawback and enhances both in-sample and out-of-sample forecasting performance.
+
+Figure 1 shows the nominal monthly exchange rate (Mexican Pesos / U.S. Dollar) series. The sample period covers from January 1995 to August 2019. As it can be observed, assuming only two regimes, appreciation and depreciation, is inconsistent with the fact that the monthly exchange rate exhibits range-bound behavior for a sustained period, as shown on the shaded periods. Therefore, as in Yuan (2011), we suggest a third trendless regime is necessary to describe better the exchange rate behavior (Mexican Pesos / U.S. Dollar).
+
+1
+
+
+<!-- p:4 -->
+
+
+Figurel - Nominal monthly exchange rate (Mexican Pesos / U.S. Dollar). The sample period covers from January 1995 to August 2019.
+
+22.5
+
+20.0
+
+17.5
+
+15.0
+
+Mym
+
+12.5
+
+10.0
+
+7.5
+
+5.0
+
+1995
+
+1997
+
+1999
+
+2001
+
+2003
+
+2005
+
+2007
+
+2009
+
+2011
+
+2013
+
+2015
+
+2017
+
+2019
+
+Yuan (2011) argued that the standard two-state Markov-Switching model cannot provide strong evidence of outperforming the random walk. To tackle this issue, we suggest using a Multi-State Markov-Switching model to model the trend, including trendless periods and appreciation and depreciation in exchange rates. The goal is to enhance the model's forecasting ability. This approach aligns with Yuan's (2011) suggestion of using a time series filtering technique to eliminate outliers and transitor     os b g b b    bothg Markov-Switching framework accurately captures the trend persistence in exchange rates. Our proposed model goes one step forward, as it applies a filter that produces a trend with controlled smoothness and considers an implicit adjustment to the observations at both extremes of the time series, as in Guerrero (2007).
+
+Furthermore, when working with asset prices time series, a usual assumption is that the series behaves as a random walk, that is, as an I(1) process. For instance, Baillie and Bollerslev (1989) found that the exchange rates of several currencies against the U.S. Dollar behave as random walks. To be consistent with this idea, since we are interested in decomposing a financial time series into trend plus noise, we use the exponential smoothing (ES) filter (Guerrero and Galicia-Vazquez, 2010) rather than the HodrickPrescott (HP) filter as Yuan (2011) did. King and Robelo (1993) expose the distinction between these filters. For our purposes, it suffices to say that the ES filter employs an I(1) representation for the trend, while the HP filter uses an I(2) representation. Besides, as Tödter (2002) pointed out, the HP filter is optimal if the data follow an I(2) process. Applying the HP filter to an I(1) process yields a specification error because a sub-optimal procedure is used (Refer to Tödter 2002 for a clear explanation of the meaning of "filter" and "optimal results" used in this context. Additionally, you can find an explanation of the specification error made when using the HP Filter in an I(1) process).
+
+1
+
+BY
+
+
+<!-- p:5 -->
+
+
+Using monthly and quarterly exchange rates (Mexican Pesos / U.S. Dollar) over the period from January 1995 to August 2019 and 1995: I-2019:II, respectively, our results reveal that the proposed forecasting model with the exponential filter can adequately capture the movements of exchange rates. Therefore, it achieves considerable forecast ability improvement relative to the random walk and the model with the HP-filter proposed by Yuan (2011), in terms of mean square forecast error. Specifically, the out-of-sample forecast precision gain, averaging over a horizon of up to 12 months and four quarters are 8.74% and 11.68%, respectively.
+
+The remainder of this paper is organized as follows. The coming section presents the literature review. The second section presents the statistical methodology to be used, i.e., the Markov-Switching model and the controlled smoothness filtering technique that takes into account an adjustment at both ends of the time series, and that the exchange rates follow a process with just one unit root. The empirical application to exchange rate is presented in the fourth section, where detailed summaries of the estimation results are shown, together with a forecast evaluation of the models employed. The last section concludes with some final remarks.
+
+## 2. Literature review
+
+To bluster up the exchange rate forecast ability, various time-series models have been employed, where the coefficients of a given individual model change over time according to a rule. The Kalman filter approach (Wolff, 1987); Schinasi and Swamy (1989), the random walk coefficient model
+
+cc
+
+1
+
+
+<!-- p:6 -->
+
+
+(Stock and Watson, 1998), and the Markov switching model (Engel and Hamilton, 1990; Engel, 1994) are all examples of this approach. Some of these papers show out-of-sample forecast improvements over the random walk. This result, however, turns out to be fragile with an extended data set.
+
+Other studies attempt to forecast exchange rates with a range of different variables. See Cheung, Menzie and Pacual (2005, 2019) and Rossi (2013) for a survey of the literature on predicting exchange rates. These authors carefully reviewed the performance of the most popular exchange rate models highlighting that economic models occasionally possess forecasting power, especially at medium-term horizons, they also stressed that the results are extremely sensitive to small changes in the forecast evaluation settings. Among these papers, we find the monetary model considered by Meese and Rogoff (1983) and its subsequent papers derive the exchange rate either from money supplies and real outputs or its adjusted form, money minus output. Considering that exchange rates can be approximated by a unit root process, Rossi (2006) and Rossi and Sekhposyan (2011) employ the growth rate of these variables. Taylor rules fundamentals, such as the inflation rate and output gap, are used by Molodtsova and Papell (2009) and produce better out-of-sample forecasts at short-horizons. Chen -ods os dd   s od s poe (od ods pdie tor, but Chen, Rogoff and Rossi (2010) reveal that in-sample predictability of commodity price fails to translate into out-of-sample success.
+
+On the other hand, Engel, Mark and West. (2008), estimated the pace of Purchase Power Parity (PPP) adjustment with panel data techniques to minimize the role of estimation error. In a similar vein, Ca' Zorzi, Muck and Rubaszek (2016); Ca' Zorzi, Kolasa and Rubaszek (2017) proposed a calibrated half-life (HL) PPP model that bypasses the estimation error problem altogether. Recently, Ca'Zorzi and Rubaszek (2020) suggest that there are two regularities in foreign exchange markets only in advanced countries with flexible regimes. First, that real exchange rates are mean-reverting, and second, that the adjustment takes place via nominal exchange. With these regularities, the study concluded that the secret to beat the Random Walk (RW) is to impose a reasonable pace at which PPP is restored and assume that relative inflation is zero.
+
+1
+
+
+<!-- p:7 -->
+
+
+## 3. The Method
+
+### 3.1. Markov-Switching model
+
+Markov-Switching is a nonlinear time series model that captures complex dynamic patterns by allowing the model to switch between multiple structures that characterize different regimes. The switching mechanism is controlled by an unobservable state variable that follows a first-order Markov Chain structure, meaning a given structure may prevail for a random period of time before being replaced by another structure.
+
+In its broadest form, a Markov-Switching model for a time series {yt} can be written as follows:
+
+$$y _ { t } = \mu ( s _ { t } ) + \sigma ( s _ { t } ) \varepsilon _ { t } \text { with } \varepsilon _ { t } \text { i} d \sim N ( 0 , 1 )$$
+
+where {εt} is a sequence of random errors, iid stands for independent and identically distributed,{st} is an unobservable discrete-time Markov Chain with a finite number of states, k, while {yt} given {st}, follows an autoregressive process whose parameters, μ and σ, depend on the state of the Markov Chain. This model was introduced in the econometric literature by Hamilton (1989) and it is appropriate to capture changes in time series behavior due to extraordinary events such as wars, financial panics, natural disasters, and drastic changes in government policies. The original Hamilton model has been subject to several refinements to accommodate regime shifts in intercepts, autoregressive parameters, and variance (see, for example, Hamilton 1994, Krolzig 1997, Fruhwirth-Schnatter 2006, Koop G. 200).
+
+Given the variety of Markov-Switching models that one can choose from, the dilemma is to determine which one is appropriate for the data at hand. It is not necessary that all the parameters in the model be regime-dependent. As in Engel and Hamilton (1990) and Yuan (2011), in our empirical application, we allow the autoregressive parameters, the mean or the intercepts to be regime-dependent, and the error term to be either heteroscedastic or homoscedastic. Regarding the selection of the value of k, when modelling the dynamics of the observed process, there is virtually no standard distributional theory applicable for evaluating the MarkovSwitching model against alternatives such as linear time series models (Raymond and Rich 1997, Hamilton 1989, Carrasco, Hu and Poberger 2014). Nevertheless, some procedures have been suggested to test the number of regimes, for instance, Hansen (1992) proposed to obtain the optimum of the likelihood surface through a grid search over the parameter space, but to some extent, the computational burden limits its applicability. On the other hand, Cheung and Erlandsson (2005) suggested a simulated likelihood ratio test based on a Monte Carlo method, but as they admitted, their results were fairly sample-specific.
+
+cc
+
+1
+
+
+<!-- p:8 -->
+
+
+### 3.2. Underlying trend with controlled smoothness
+
+Instead of using the usual Markov-Switching model for the original time series, we opted to implement Yuan's (2011) recommendation of employing the Markov-Switching model for the trend of the relevant variable. This means that we suppose the observed time series can be represented as a signal-plus-noise model, not because we believe that this is the true data generating process, but just to take into account the empirical regularities in the data.
+
+Additionally, when working with asset prices time series, a usual assumption is that the series behaves as a random walk, that is, as an I(1) process. For instance, Baillie and Bollerslev (1989) found that the exchange rates of several currencies against the U.S. Dollar behave as random walks. Similarly, Narayan and Smyth (2005) showed that the stock prices of the OECD countries should be considered I(1) processes. Moreover, Tsay (2002) uses a random walk with drift as a conventional model for prices. To be consistent with this idea, since we are interested in decomposing a financial time series into trend plus noise, we used the exponential smoothing (ES) filter rather than the HP filter as Yuan (2011) did.
+
+Let us assume that an observed time series can be represented by the following unobserved component model:
+
+$$y _ { t } = g _ { t } + \nu _ { t }$$
+
+where {gt} is the trend (or signal) and {νt} is the noise of {yt}, for t =1,..., N. We will assume that the series {yt} is I(1) in such a way that its trend will also be I(1) and the noise process will be stationary. Then, we can use Penalized Least Squares (PLS) to estimate the trend by posing the following minimization problem as in Guerrero and Galicia-Vazquez (2010):
+
+$$\min _ { g _ { t } } \{ \sum _ { t = 1 } ^ { N } ( y _ { t } - g _ { t } ) ^ { 2 } + \lambda \sum _ { t = 2 } ^ { N } ( \nabla g _ { t } - \mu ) ^ { 2 } \}$$
+
+cc
+
+1
+
+BY
+
+
+<!-- p:9 -->
+
+
+Where ∇ denotes the difference operator given by ∇gt = gt - 9t-1 and λ &gt; 0 is a constant that penalizes the lack of smoothness in the trend. That is, as λ → 0, the trend resembles more closely the original data, i.e. gt → yt for all t, so that no smoothness is achieved, while the opposite occurs whenλ → ∞, in which case the trend follows essentially the polynomial model gt - gt-1 = μ which represents the trend growth expressed as a first difference. Hence, λ plays an important role in deciding the smoothness of the trend, while μ is a reference level for the trend growth. It should be noticed that the trend follows the first-degree polynomial given by:
+
+$$g _ { t } = \beta _ { 0 } + \mu t \text { when } \mu \neq 0$$
+
+which becomes a constant when μ = 0, so that using this reference level as 0, as is usual in practice (e.g. Yuan, 2011 in the case of the HP) has important consequences on the trend behavior, particularly at the endpoints of the series, as it will be seen below.
+
+By solving the minimization problem (3) with μ ≠ 0, we obtain the ES filter which provides trend estimates of the series {yt}, where t =1, ..., N. Once the problem (3) is solved, assuming that both the reference level μ and the smoothing parameter λ are known, we have to provide appropriate values of those parameters, keeping in mind that a small value of the latter yields a trend that resembles the original data, while a large value produces a trend that behaves as a straight line. Below we will focus on this matter.
+
+According to Yuan (2011), we should employ the Markov-Switching representation for the trend rather than the original series, so that expression (1) is no longer valid for yt, but for gt. Thus, let us consider the following unobserved-component model that underlies the minimization of (3).
+
+$$y _ { t } = g _ { t } + \nu _ { t } \text { with } \nu _ { t } \sim N ( 0 , \sigma _ { \nu } ^ { 2 } ) \text { for } t = 1 , \dots , N$$
+
+$$g _ { t } = \mu + g _ { t - 1 } + \varepsilon _ { t } \text { with } \varepsilon _ { t } \sim N ( 0 , \sigma _ { \varepsilon } ^ { 2 } ) \text { for } t = 2 , \dots , N ,$$
+
+where we use ζ~N(0,σ2) to say that the random variable ζ has mean 0 and variance σ2. The sequence {vt} contains serially uncorrelated random errors and {εt} is another sequence of serially uncorrelated random errors that is also uncorrelated with the previous sequence.
+
+1
+
+
+<!-- p:10 -->
+
+
+Solution of the minimization problem can be easily expressed in matrix notation by letting y, g and ν be vectors of size N containing the observations, trends and noises, respectively. Then we write equations (5) and (8) in matrix notation as
+
+$$y = g + \nu$$
+
+and
+
+$$K g = \mu 1 _ { N - 1 } + \varepsilon$$
+
+where ν and ε are random vectors such that E(v) = 0N, Var(v) = σγIN, E(ε) = 0N−1, Var(ε) = σ2 IN−1 and E(vε') = 0, with IM the M-dimensional identity matrix, and 1n-1 = (1, ..., 1). In (8) we use the following (N-1)×N matrix that represents the first difference operation appearing in (6)
+
+$$K = \begin{pmatrix} - 1 & 1 & 0 & 0 & \dots & 0 & 0 \\ 0 & - 1 & 1 & 0 & \dots & 0 & 0 \\ \dots & & & & & & \\ 0 & 0 & 0 & 0 & \dots & 1 & 0 \\ 0 & 0 & 0 & 0 & \dots & 0 & - 1 & 1 \end{pmatrix}$$
+
+An application of Generalized Least Squares (GLS) to the system of equations (7) – (8) yields the Best Linear Unbiased Estimator (BLUE) of the vector of trends, given by (see Guerrero, 2007 for details):
+
+$$\widehat { g } = ( I _ { N } + \lambda K ^ { \prime } K ) ^ { - 1 } ( y + \lambda \mu K ^ { \prime } 1 _ { N - 1 } )$$
+
+With λ = σ/σ2. GLS also produces the Variance-Covariance matrix Σ = σ2(IN + λK'K)−1. To appreciate the effect of the constant μ, we should notice that the array K ́1N-1 appearing in (10) is an N-dimensional et at t t  t t t ft t ct f cs K ́1N-1 = (1,0, ..., 0,1). Therefore, the observed values of the original series {yt} enter the formula of the estimator  modified in both of its extremes by the value of μ, weighted by λ. That is, (10) indicates to apply the smoother matrix (I + λK'K)−1 to:
+
+$$y + \lambda \mu K ^ { \prime } 1 _ { N - 1 } = ( y _ { 1 } + \lambda \mu , y _ { 2 } , \dots , y _ { N - , 1 } , y _ { N } + \lambda \mu )$$
+
+and by doing that we are adjusting the first and last values of the series, in the spirit of Yuan (2011). However, our "adjustment" comes out from the model specification for the trend (8), while Yuan solved the end-of-sample problem (for the HP filter) by using different smoothing parameter values. Yuan's solution forces the trend to get closer to the original data at the end points, but the choice of λ values has no theoretical justification. Likewise, let us recall that μ should be estimated as the mean of the series in first differences.
+
+1
+
+BY
+
+
+<!-- p:11 -->
+
+
+Moreover, μ also affects the results when extrapolating the trend, as is shown by expression (4) since μ ≠ 0 implies a trend that follows a linear polynomial and the extrapolated trend values critically depend on the last estimated value. That is, if we call μ ≠ 0 the h-period ahead forecast of 9N+h, with origin at N, we get for h ≥ 1.
+
+$$\hat { g } _ { N } ( h ) = h \mu + g _ { N }$$
+
+To apply (12) we follow Guerrero's (2007) proposal of choosing the smoothing parameter λ by fixing the value of the index first:
+
+$$S ( \lambda , N ) = 1 - t r \left [ ( I _ { N } + \lambda K ^ { \prime } K ) ^ { - 1 } \right ] / N$$
+
+that measures the smoothness achieved by the trend. Among other properties, this index takes on values between 0 and 1, and measures the proportion of precision induced by smoothing the data.
+
+An appropriated percentage of smoothness can be obtained from the following guidelines deduced by Guerrero et al. (2017) through simulation study1. Then we suggest:
+
+- (i) if the original series behaves as a straight line, the percentage of smoothness should start at 92.5% for N &gt; 48, and increasing for large value of N;
+
+Given that the simulation study in Guerrero, Islas-Camargo, and Ramirez-Ramirez (2017) was carried out assuming ∇2git = 0, that is assuming μ = 0, the trend will be given by git = α + βt, i = 1,2. On the other hand, in the exponential filter proposed in this paper we assume μ ≠ 0, in such a case, the trend will be given by gt = α + μt. Therefore, for ρ = 0 we can apply the guidelines suggested by Gerrero, Islas-Camargo, and Ramirez-Ramirez (2017). Besides, as pointed out in Guerrero, IslasCamargo, and Ramirez-Ramirez (2017) page 6712, when there is no correlation between any pair of series (ρ = 0), the multivariated smoothness index reduces to the univariated index. As in Guerrero, Cortes and Reyes (2018), the smoothness index, equation (13) in our text, solely depends on the values λ and N since K remains fixed. It is important to note that K is a matrix of rank N-1. Therefore, the matrix K'K has one eigenvalue equal to zero, while the remaining N-1 nonzero eigenvalues can be arranged in descending order as e1 ≥ e2 ≥ . ≥ en-1. Consequently, the expression in (13) for the trace can be expressed as such:
+
+$$t r ( I _ { N } + \lambda K ^ { \prime } _ { 2 } K _ { 2 } ) ^ { - 1 } = ( 1 + \lambda e _ { 1 } ) ^ { - 1 } + \dots \ ( 1 + \lambda e _ { n - 1 } ) ^ { - 1 } + 1$$
+
+and it can be observed that S(λ, N) → 0 as λ → 0 and S(λ, N) → 1 − 1/N as λ → ∞. Therefore, more smoothness can be achieved with a larger sample size (N). This is why, as seen in section 4, we exceeded Guerrero, Islas-Camargo, and Ramirez-Ramirez (2017) suggested upper smoothing limit.
+
+cc
+
+1
+
+
+<!-- p:12 -->
+
+
+- (ii) when the series shows a non-straight-line pattern, the percentage of smoothness should start at 80% for N &gt; 48 and increasing for large values N of after fixing the percentage of smoothness following the guidelines mentioned above, the value of the smoothness constant, λ, is determined using daily bases data and solving Guerrero and Galicia-Vazquez's (2010) equation 32.2
+
+It is important to emphasize that filters are designed to achieve specific goals. In the present case, we focus on estimating the underlying trend of the time series to apply Yuan's (2011) proposal. Still, we use the exponential smoothing (ES) filter rather than the HP filter, as Yuan (2011) did. Thus, instead of fixing the value of λ, we fix the percentage of smoothness to be achieved by the trend to establish valid comparisons for different sample sizes and frequencies of observations.
+
+## 4. Results and discussions
+
+We focus on monthly and quarterly exchange rate frequencies, as they are the ones of interest of economists; we did not consider very high frequency data analyses that are instead mostly of interest to risk management. Therefore, the data set used in our empirical analysis consists of monthly and quarterly nominal exchange rate (Mexican Pesos /U.S. Dollar) series. It is of particular interest to study if whether as a result of obtaining comparable trends, with the proposed filtering method, in exchange rates with different frequencies, the forecast performance through the MarkovSwitching model is robust. The sample period runs from January 1995 to September 2019 for the monthly series, while for the quarterly series it runs from 1995:I through 2019:II. We should stress that these series are formed
+
+As is well known, a time series with a lower frequency of observation is related to that with a higher frequency using some aggregation mechanism. In cases where time series are not nondaily, Guerrero and Galicia-Vazquez (2010) proposed a solution to find the smoothing constant λ that produces equivalent results on time series with different periodicities, from a frequency domain perspective. Their methodology considers the aggregation type that connects a lower-frequency series {Y} with a higher-frequency time series {Yt}. Guerrero and Galicia-Vazquez (2010) proposed equation (32) that permits the finding of a smoothing constant λ for a disaggregated series that is equivalent to the λk value for the aggregated data, as follows:
+
+$$\lambda = \begin{cases} ( k ^ { 2 } - 1 ) / 6 + k ^ { 2 } \lambda _ { k } ^ { * } & \text {for} \ f l o w s \\ k \lambda _ { k } ^ { * } & \text {for} \ s t o c s \end{cases}$$
+
+Therefore, if you know the smoothing constant λ for the disaggregated time series, you can use equation (32) to solve for the corresponding value of λk. k is the number of observations Yt between two successive observations YT
+
+cc
+
+1
+
+BY
+
+
+<!-- p:13 -->
+
+
+for the rate of the last day of the month and the last day of the quarter for the monthly and quarterly series, respectively. The exchange rates are from the Mexican Central Bank statistics (http://www.banxico.org.mx).
+
+To contrast the forecasting results for the exchange rate obtained with the proposed smoothing technique, we used three models in the analysis. The first model was the standard Markov-Switching-Mean-Heteroscedastic model with three-regimes, known as MSMH(3). The second model was the three-regime Markov-Switching-Mean-Heteroscedastic-filtered model with the HP-filter (HP-MSMH(3)). When analyzing quarterly data using the HP filter, it is generally accepted to use the value λ =1600. This value was initially proposed by Hodrick &amp; Prescott based on their assumption that ∇2gt and vt were independent random variables with a normal disti         ke appropriate values for σν = 5 and σε = 1/8 for the US macroeconomic series they were studying were 5 and 1/8, respectively, resulting in a value of λ = σ2/σ2 = 1600. They also tested the results with other values of λ, -n              tti! mated trend change significantly. Therefore, the value of λ = 1600 became the consensus for the smoothing constant when using the HP filter for quarterly data.
+
+However, consensus disappears when other frequencies of observations are used. For example, for monthly data, Dolado et al. (1993) use λ = 4800, while the econometric software E-views uses the default value 1 1 λm= 2λQ = 1600 = 14400. That is, the HP filter parameter λQ for α2 (1/3)2 quarterly data should be adjusted with the second power of the frequency change. In our analysis we will use λm = 14400 for monthly data.
+
+The third model was the three-regime Markov-Switching-MeanHeteroscedastic-filtered model with the exponential filter (ESMSMH(3)). Following Guerrero, Islas-Camargo, and Ramirez-Ramirez's guideline (2017), a smoothness percentage of S(λ,N)%=95% was set to select the corresponding smoothing parameter from equation (32) in Guerrero and Galicia-Vazquez (2010). For a sample size of N= 5920, the smoothing parameter for daily data is λa = 100.81. Therefore, given that our series of stocks was constructed from daily data, the sample now comprises N= 296 monthly observations and N= 90 quarterly observations, considering a twenty-day month and sixty-five-day quarter.
+
+cc
+
+1
+
+
+<!-- p:14 -->
+
+
+The smoothing constant for the monthly series is λ2o = 5.05, while for the quarterly series, it is λ65 = 1.55, for S% = 95%, as obtained from Guerrero and Galicia-Vazquez's (2010) equation (32) by λa = 20λ20 and λa = 65λ*65, respectively. Figure 2 depicts the monthly and quarterly exchange rate series and their trend estimates. We observed that the trends estimated with the exponential filter and the same smoothness percentage showed similar dynamic behavior, regardless of the data frequency. Therefore, comparable trends were obtained for monthly and quarterly data. For further details, refer to Guerrero and Galicia-Vazquez (2010).
+
+Figure 2 - Exchange rate (Mexican Peso/U.S. Dollar). Observed series and trend estimates with S% =95%. Left, monthly, λ = 5.04, N=296. Right, quarterly, λ = 1.55, N=98
+
+22.5
+
+22
+
+20.0
+
+20
+
+18
+
+17.5
+
+16
+
+15.0
+
+14
+
+12.5
+
+12
+
+10.0
+
+10
+
+7.5
+
+8
+
+5.0
+
+6
+
+1995
+
+1998 2001
+
+2004 2007 2010 2013 2016 2019
+
+1995
+
+1998
+
+2001
+
+2004 2007 2010 2013 2016 2019
+
+Observed series
+
+Trend ES
+
+Trend HP
+
+Observed series
+
+Trend ES
+
+Trend HP
+
+Table 1 reports maximum likelihood estimates based on the entire sample of data. At the bottom of panels A and B of Table 1, we present some hypothesis tests for model selection. Because the conclusions drawn from the test results are unchanged for the ES-MSMH, HP-MSMH, and MSMH models in monthly and quarterly exchange rates, we need only explain the test results based on the ES-MSMH model in the monthly data. In Table 1, the notation ES-MSMH(2)|ES-MSMH(3) represents the null hypothesis of model ES-MSMH(2) against the alternative hypothesis of model ES-MSMH(3). The log-likelihood values for models ES-MSMH(2) and ES-MSMH(3) are, respectively, 334.2934 and 304.0390, and the LR statistic is 2 * [334.2934 − 304.0390] = 60.5098 &gt; χ2(2), which indicates that model ES-MSMH(3) is preferable to model ES-MSMH(2). Based on the LR test for model selection, the three-state Markov-Switching model is preferred to the two-state Markov-Switching model in all cases.
+
+cc
+
+1
+
+BY
+
+
+<!-- p:15 -->
+
+
+According to Krolzig (1997), it is not possible to compare two models with different numbers of regimes using a general test. The reason for this is that the asymptotic theory cannot be applied in such cases due to unidentified nuisance parameters and violations of non-singularity conditions. Nevertheless, many researchers continue to use the LR test to obtain helpful supporting evidence. This paper considers the LR tests in this context.
+
+Table 1, panel A shows the maximum likelihood estimates associated with the three-regime Markov-switching models applying to the monthly exchange rate by imposing a regime of mean zero. The three regimes considered are low-depreciation or appreciation exchange rate, trendless and depreciation or high-depreciation exchange rate, classified as regimes 1, 2, and 3, respectively. The estimates indicate that regime 1 is associated with a 22.96% monthly appreciation predicted by the unfiltered MSMH(3) model, while the HP-MSMH(3) model predicts a low-depreciation of about 3.3% and the ES-MSMH(3) model predicts an 8.5% appreciation in regime 1, respectively. The three models estimate a depreciation exchange rate trend of about 67.2%, 9.2%, and 16.2%, respectively. The asymmetry in mean depreciation and appreciation estimated for models MSMH(3) and ES-MSMH(3) in the monthly exchange rate roughly reflects the shape of its plot. The models with filter moderately scale down the magnitude of means, both depreciation and appreciation trend in the monthly exchange rate. One partial explanation could be that smoothing techniques have filtered out trivial shifts but left the relatively true shifts in account for mean change.
+
+On the other hand, Table 1, panel B shows the estimated models for the quarterly exchange rate. Results indicate that regime 1 is associated with a 23.08% quarterly appreciation predicted by the unfiltered MSMH(3) model, while the HP-MSMH(3) model predicts a low-depreciation of about 14.5%, and the ES-MSMH(3) model predicts a 4.3% low-depreciation in regime 1, respectively. The MSMH(3) estimates an 18.9% quarterly medium-depreciation for regime 2, while models HP-MSMH(3) estimates a 7.5% medium-depreciation, and a zero-mean was imposed in model ES-MSMH(3). The three models estimate a high-depreciation of about 26.08%, 26.86%, and 52.49%, respectively.
+
+Table 1, panel A also shows that according to the estimates of the HPMSMH(3) model, the monthly exchange rate seems to be characterized by long swings with sustained low depreciation, trendless and high depreciation regimes. This high persistence of regimes is represented by the high regime-staying probabilities, p11, p22, and p33; that is, the probability of staying in a regime once the process enters it. The expected duration of regime j is defined as 1/(1 - pjj). Thus, while the trendless regime is e    s   s   s  d MSMH(3) predicts that the low-depreciation regime is expected to persist about 1 year and 9 months on average; and the high-depreciation regime is expected to persist about 3 years and 3 months on average. These long persistence periods in each regime may be an inappropriate depiction of the monthly exchange rate for the following reasons: First and most important, the model does not identify a depreciation regime, which contradicts our visual inspection of Figure 1. Second, as we can see from Figure 1, the trendless and high-appreciation regimes were shorter.
+
+cc
+
+1
+
+
+<!-- p:16 -->
+
+
+Table 1 - Estimation results for each model (standard errors in parenthesis). Sample period from January 1995 to September 2019 for the monthly exchange rate and from 1995:II – 2019:II for quarterly exchange rate
+
+| Parameter                      | Model: Monthly Exchange rate - MSMH(3)   | Model: Monthly Exchange rate - HP-MSMH(3)   | Model: Monthly Exchange rate - ES-MSMH(3)   |
+|--------------------------------|------------------------------------------|---------------------------------------------|---------------------------------------------|
+| μ 1                            | -0.22967 (0.0796)                        | 0.03389 (0.0008)                            | -0.08507 (0.0084)                           |
+| μ 2                            | 0.00000 (-)                              | 0.00000 (-)                                 | 0.00000 (-)                                 |
+| μ 3                            | 0.67244 (0.1078)                         | 0.09243 (0.0035)                            | 0.16216 (0.0126)                            |
+| σ 1                            | 0.22498 (0.0752)                         | 0.00014 (0.00002)                           | 0.00380 (0.0004)                            |
+| σ 2                            | 0.04165 (0.0051)                         | 0.00004 (0.000005)                          | 0.00106 (0.0002)                            |
+| σ 3                            | 0.24859 (0.0800)                         | 0.001362 (0.00024)                          | 0.01200 (0.0002)                            |
+| p 11                           | 0.523 (0.1115)                           | 0.955 (0.0242)                              | 0.866 (0.0008)                              |
+| p 22                           | 0.946 (0.0172)                           | 0.990 (0.0137)                              | 0.887 (0.0337)                              |
+| p 23                           | 0.304 (0.0365)                           | 0.975 (0.0231)                              | 0.878 (0.0032)                              |
+| Model selection test           | Model selection test                     | Model selection test                        | Model selection test                        |
+| MSMH(2)&#124;MSMH(3) 5.872***  | MSMH(2)&#124;MSMH(3) 5.872***            | HP-MSMH(2)&#124;HP-MSMH(3) 86.793*          | ES-MSMH(2)&#124;S-MSMH(3) 60.509*           |
+| Model: Quarterly Exchange rate | Model: Quarterly Exchange rate           | Model: Quarterly Exchange rate              | Model: Quarterly Exchange rate              |
+| μ 1                            | -0.23082 (0.0334)                        | 0.14540 (0.0029)                            | 0.04304 (0.0159)                            |
+| μ 2                            | 0.18915 (0.0653)                         | 0.07547 (0.0017)                            | 0.00000 (-)                                 |
+| μ 3                            | 0.26088 (0.1407)                         | 0.26867 (0.0071)                            | 0.52495 (0.0529)                            |
+| σ 1                            | 0.01427 (0.0071)                         | 0.00035 (0.00006)                           | 0.04454 (0.0153)                            |
+| σ 2                            | 0.07604 (0.0319)                         | 0.00021 (0.00003)                           | 0.00897 (0.0153)                            |
+| σ 3                            | 0.83489 (0.1765)                         | 0.00133 (0.0006)                            | 0.04713 (0.0132)                            |
+| p 11                           | 0.235 (0.0765)                           | 0.943 (0.0394)                              | 0.810 (0.0132)                              |
+| p 22                           | 0.476 (0.0654)                           | 0.992 (0.0191)                              | 0.879 (0.0549)                              |
+| p 23                           | 0.919 (0.0324)                           | 0.981 (0.0243)                              | 0.737 (0.0364)                              |
+| Model selection test           | Model selection test                     | Model selection test                        | Model selection test                        |
+| MSMH(2)&#124;MSMH(3) 6.981**   | MSMH(2)&#124;MSMH(3) 6.981**             | HP-MSMH(2)&#124;HP-MSMH(3) 72.888*          | S-MSMH(2)&#124;S-MSMH(3) 15.275*            |
+
+MSMH(3) = 3-regime Markov-Switching Mean-Heteroskedastic model; HP-MSMH(3) = 3-regime Markov-Switching Mean-Heteroskedastic filtered model with HP-filter; ES-MSMH(3) = 3-regime Markov-Switching Mean-Heteroskedastic filtered model with proposed Smoothing filter. ** *** Significant at the 1%, 5% and 10% level, respectively.
+
+cc
+
+1
+
+BY
+
+
+<!-- p:17 -->
+
+
+This misidentification is corrected by the ES-MSMH(3) model. First, the model identifies an appreciation regime. Second, estimates indicate that ES s p ts s d  d rid -sist about 7 months on average; while the trendless regime is expected to persist about 9 months on average, and the depreciation regime is expected to persist about 8 months on average. This least persistence in regimes may be a better depiction of the monthly exchange rate's trendless like the one during 2006:06-2008:05, followed by depreciation and an appreciation during the periods of 2008:06-2009:02 and 2009:03-2010:04, respectively, which matches our visual inspection of Figure 1.
+
+However, no long swings are predicted by the unfiltered MSMH(3) model. According to the regime staying probabilities, the appreciation regime is expected to persist for about 2 months; while the depreciation regime is expected to persist for about 1 month; and the trendless regime is expected to persist for about 1 year and 6 months on average. The ES-MS-MH(3) model for regime identification aligns more closely with the Central Bank of Mexico's analysis of exchange rate trends. Filtering the data improves the estimation procedure's accuracy in computing genuine regime shifts.
+
+Regarding the quarterly exchange rate, model HP-MSMH(3) identifies three regimes, namely, a low-depreciation regime, a medium-depreciation regime, and a high-depreciation regime. This model predicts that the low-depreciation regime is expected to persist about 4 years on average; while the medium-depreciation regime is expected to persist about 25 years on average, and the high-depreciation regime is expected to persist about 12 years on average. As in the monthly exchange rate, these long persistence periods in each regime may be an inappropriate depiction of the quarterly exchange rate, since as can be seen in Figure 2, the medium and high depreciation regimes were shorter.
+
+As in the monthly exchange rate, this misidentification is corrected by the ES-MSMH(3) model. First, the model identifies a trendless regime, which is evident from the visual inspection of Figure 2. Then, estimates indicate th ts t   t d   dted to persist about 1 year on average; while the trendless regime is expected to persist about 2 years on average, and the high-depreciation regime is expecet e s s  et  ram  et s  mes may be a better depiction of the quarterly exchange rate's low-depreciation like the one during 2002:IV-2004:I followed by a trendless and a high-depre  -:  :- r ich matches our visual inspection of Figure 2.
+
+cc
+
+1
+
+
+<!-- p:18 -->
+
+
+On the other hand, no long swings are predicted by the unfiltered MSMH(3) model. According to the regime staying probabilities, the appreciation regime is expected to persist for about 1 quarter; while the depreciation regime is expected to persist for about 2 quarters; and the medium-depreciation regime is expected to persist for about 2 and a half years on average.
+
+The Markov-Switching model has an innovative feature - it can accurately date the state of the process using smoothed probabilities. Panels (b), (c), and (d) of Figures 3 and 4 show plots of the smoothed probabilities that the process is in each of the three regimes at each date in the sample, estimated by the ES-MSMH(3), MSMH(3) and HP-MSMH(3) models, respectively. Panel (a) shows the monthly and quarterly exchange rates and trend estimates. For comparison, the corresponding dates of each one of the three regimes, as identified by models HP-MSMH(3) and ES-MSMH(3), are presented in Tables 2 and 3 for the monthly and quarterly exchange rates, respectively. The dates at which we conclude that the process had switched between regimes are based on the following cutoff point for the smoothed probabilities p(st = i|In) ≥ 0.5.
+
+Figure 3- (a) Monthly exchange rate and trend estimates; (b), (c), and (d) smoothed probabilities that the process is in each of the three regimes at each date in the sample, estimated by the ES-MSMH(3), MSMH(3), and HP-MSMH(3) models, respectively.
+
+(a)
+
+(b)
+
+22
+
+1.0
+
+20
+
+18
+
+0.6
+
+16
+
+14
+
+04
+
+12
+
+0.2
+
+10
+
+0.0
+
+8
+
+-0.2
+
+1995
+
+1997
+
+1999
+
+2001
+
+2003
+
+2005
+
+2007
+
+2009
+
+2011 2013 2015 2017 2019
+
+1995
+
+1997
+
+1999
+
+2001
+
+2003
+
+2005 2007 2009 2011 2013 2015 2017 2019
+
+Pmbability of the appreciation regime
+
+Pmbability of the depreciation regine
+
+Observed series
+
+Trao s
+
+Trend HP
+
+Protatbilty olf the stagnation regime
+
+(c)
+
+(d)
+
+1.00
+
+
+0.75
+
+
+0.50
+
+0.60
+
+0.25
+
+
+0.00
+
+
+1995
+
+1997
+
+1999
+
+20012003
+
+2005
+
+2007
+
+2009
+
+2011 2013 2015 2017 2019
+
+1995
+
+1997
+
+1999
+
+2001
+
+2003 2005
+
+2007 2009
+
+2011 2013 2015 2017 2019
+
+Prubability of the appreciation regime
+
+Probability of the depreciation regime
+
+Prutebiíty of the low-depreciation regime
+
+Prubability of the high-depreciation regime
+
+Probability of the stagnation regime
+
+Probebiity of the stagnation regime
+
+<!-- p:19 -->
+
+
+Figure 4 - (a) Quarterly exchange rate and trend estimates; (b), (c) and (d) smoothed probabilities that the process is in each of the three regimes at each date in the sample, estimated by the ES-MSMH(3), MSMH(3) and HP-MSMH(3) models, respectively.
+
+(a)
+
+(b)
+
+22
+
+1.0
+
+20
+
+0.8
+
+18
+
+0.6
+
+16
+
+14-
+
+0.4
+
+12
+
+02
+
+10
+
+00
+
+8
+
+0.2
+
+6
+
+1995
+
+1997
+
+1999
+
+2001
+
+2003
+
+2005
+
+2007
+
+2009
+
+2011
+
+2013
+
+2015
+
+2017
+
+2019
+
+1995
+
+1997
+
+Probabity of the low-deprecialion regime
+
+1999
+
+2001
+
+2003
+
+2005
+
+2007
+
+2009
+
+Probability of the high-depreciation regime
+
+2011
+
+2013
+
+2015
+
+2017
+
+2019
+
+Observed series
+
+Trend ES
+
+Trend HP
+
+(c)
+
+(d)
+
+1.0
+
+1.00
+
+0.8-
+
+0.75
+
+0.6
+
+0.4
+
+0.50
+
+0.2
+
+0.25
+
+0.0
+
+-0.2-
+
+0.00
+
+1995
+
+1997
+
+1999
+
+2001
+
+2003
+
+2005
+
+2007
+
+2009
+
+2011 2013
+
+2015
+
+207
+
+2019
+
+1995
+
+1997
+
+1999
+
+2001
+
+2003
+
+2005
+
+2007
+
+2009
+
+2011 2013
+
+2015
+
+2017
+
+209
+
+Probability of the arecialion regime
+
+Probability of the high-depreciation regime
+
+Probabiltyof the low-depreciation regime
+
+Probability of the high-deprciation regime
+
+Probability of the low-depreciation regime
+
+Probabityof the mediumn-deprecation regime
+
+Table 2 - Dates of the regimes, as identified by models HP-MSMH(3) and ESMSMH(3). Monthly exchange rates.
+
+| Regimes - Model   | Regimes - Low depreciation   | Regimes - Trendless   | Regimes - High depreciation   |
+|-------------------|------------------------------|-----------------------|-------------------------------|
+| HP-MSMH(3)        | 1998:05-1999:08              | 1999:09-2001:04       | 1995:02-1998:04               |
+|                   | 2001:05-2004:07              | 2004:08-2006:11       | 2008:02-2009:02               |
+|                   | 2006:12-2008:01              | 2010:02-2012:07       | 2013:08-2017:07               |
+|                   | 2009:03-2010:01              |                       |                               |
+|                   | 2012:08-2013:07              |                       |                               |
+|                   | 2017:08-2019:08              |                       |                               |
+| Regimes           | Regimes                      | Regimes               | Regimes                       |
+|                   | Appreciation                 | Trendless             | Depreciation                  |
+| ES-MSMH(3)        | 1998:12-1999:04              | 1995:04-1995:06       | 1995:02-1995:03               |
+|                   | 2004:11-2005:07              | 1996:02-1997:08       | 1995:07-1996:01               |
+|                   | 2009:03-2010:04              | 1999:05-2002:03       | 1997:09-1998:11               |
+|                   | 2010:08-2011:04              | 2003:03-2003:06       | 2002:04-2003:02               |
+|                   | 2012:01-2012:01              | 2003:12-2004:10       | 2003:07-2003:11               |
+|                   | 2012:06-2013:03              | 2005:08-2006:02       | 2006:04-2006:05               |
+|                   | 2017:01-2017:07              | 2006:06-2008:05       | 2008:06-2009:02               |
+|                   | 2018:12-2019:02              | 2010:05-2010:07       | 2011:06-2011:12               |
+|                   |                              | 2011:05-2011:05       | 2012:04-2012:05               |
+|                   |                              | 2012:02-2012:03       | 2013:05-2013:08               |
+|                   |                              | 2013:04-2013:04       | 2014:06-2016:12               |
+|                   |                              | 2013:09-2014:05       | 2018:04-2018:11               |
+|                   |                              | 2017:08-2017:08       | 2019:08-2019:08               |
+|                   |                              | 2018:01-2018:03       |                               |
+|                   |                              | 2019:03-2019:07       |                               |
+
+Note: The dates at which we conclude that the process had switched between regimes are based on the cutoff point p(st = i|IN) ≥ 0.5.
+
+<!-- p:20 -->
+
+
+Table 3 - Dates of the regimes, as identified by models HP-MSMH(3) and ES-MSMH(3). Quarterly exchange rates.
+
+| Regimes - Model   | Regimes - Low depreciation   | Regimes - Medium depreciation   | Regimes - High depreciation   |
+|-------------------|------------------------------|---------------------------------|-------------------------------|
+| HP-MSMH(3)        | 1995:II-1999:I               | 1999:II-2012:I                  | 2013:III-2019:II              |
+|                   | 2012:II-2013:II              |                                 |                               |
+| Regimes           | Regimes                      | Regimes                         | Regimes                       |
+|                   | Low depreciation             | Trendless                       | High depreciation             |
+| ES-MSMH(3)        | 1995:II-1996:II              | 1996:III-1997:III               | 1997:IV-1998:III              |
+|                   | 1998:IV-1998:IV              | 1999:I-2002:I                   | 2002:II-2002:III              |
+|                   | 2002:IV-2004:I               | 2004:II-2008:II                 | 2008:III-2009:I               |
+|                   | 2009:II-2010:II              | 2010:III-2011:II                | 2011:III-2011:III             |
+|                   | 2011:IV-2012:II              | 2012:III-2014:II                | 2014:III-2016:IV              |
+|                   | 2017:I-2018:IV               | 2019:I-2019:II                  |                               |
+
+Note: The dates at which we conclude that the process had switched between regimes are based on the cutoff point p(st = i|IN) ≥ 0.5.
+
+The monthly exchange rate trendless identified by the ES-MSMH(3) model during 2006:06-2008:05 followed by a depreciation and an appreciation durs  :-:0  20:-:00  0es special attention since this entire period includes the global financial crisis.
+
+As per the Mexican Central Bank's Annual Report of 2006, the exchange rate remained stable throughout the year, except for a brief depreciation - os      o   y o onn vironment, where the financial market witnessed a speculative phase because of the robust economic growth and high oil prices. The international financial market's uncertainty, in turn, led to increased volatility, which raised the domestic interest rates and caused a depreciation in Mexico's exchange rate. Besides, the uncertainty surrounding the presidential election also contributed to the exchange rate's depreciation. During electoral campaigns, economic agents received information from competing parties, which caused great uncertainty about who would win the election. Such periods are usually associated with policy modifications that may affect the government's involvement with the exchange rate, and the uncertainty in expectations related to political events during election periods contributed to a risk premium in the exchange rate market. However, the international financial uncertainty dwindled after the election, and the favorable conditions for the exchange rate prevailed until mid-2008.
+
+In 2008, the global economy and financial markets faced a crisis due to t s nse s s se .   ns ms aea financial crisis that affected various countries, including Mexico. The foreign exchange market in Mexico experienced liquidity problems because firms demanded more foreign currency derivatives. Mexico's Central Bank intervened by holding foreign currency auctions known as extraordinary auctions to address this issue. Figure 1 shows that the exchange rate depreciation began in June 2009, and it reached its maximum in March 2009, when the US Dollar-Mexican peso parity hit 15.6.
+
+1
+
+BY
+
+
+<!-- p:21 -->
+
+
+According to Benavides (2011), the Mexican currency depreciated nearly 5n   o      s al Bank to take action in the foreign exchange market by providing liquidity. Due to the high volatility in October 2008, Mexico's Central Bank conducted direct, non-coordinated interventions that amounted to USD 400 million. These interventions are publicly announced and are intended to influence exchange rates, and by December 15, USD 178 million had been sold in these auctions. Mexico's Central Bank also established a temporary currency agreement with the U.S. Federal Reserve on October 29, 2008, for up to USD 30 billion. This agreement was effective until oi  cs    cal institutions in Mexico. Benavides (2011) argues that during this period of high instability, the Central Bank's interventions were the only significant macroeconomic shocks.
+
+The Mexican Central Bank's 2009 Annual Report states that in the first two months of that year, a regime where the exchange rates depreciated and became more volatile because of the adverse international environment prevailed. 2009 was uncertain in the maneuver of public finances caused by the reduction in oil revenues and the expectations of non-oil revenues.
+
+Mexican authorities took coordinated actions to instill confidence and provide liquidity to the financial markets to reduce uncertainty. The Mexican Central Bank identified the following measures as the most significant: (i) The Foreign Exchange Commission, on three occasions, published assessments on the balance of payments for the year to build confidence. These assessments revealed that Mexico had no issues financing its current account deficit, which resulted in increased net exports and decreased the deficit. (ii) In 2009, the Mexican Central Bank provided liquidity to the foreign exchange markets by selling USD 16,246 million. (iii) On April 17, 2009, Mexico was granted a Flexible Credit Line up to USD 31,528 million in Special Drawing Rights by the International Monetary Fund, which helped boost confidence in the Mexican economy.
+
+cc
+
+1
+
+
+<!-- p:22 -->
+
+
+Because of these measures, the risk perception of the Mexican economy began to improve by March 2009. This improvement in risk perception generated better conditions in financial markets and economic growth. In response to the measures taken by financial authorities and the overall improvement in the global financial environment, the depreciation period and high volatility that started in June 2008 were reverted in March 2009. Consequently, the exchange rate of some emerging economies, including the Mexican, entered a period of appreciation that lasted until 2010 and later remained stable.
+
+A close examination of these results reveals that the ES-MSMH(3) model can adequately capture the movements of the exchange rate and, therefore, improve its forecasting performance, as shown below.
+
+### 4.1. A forecasting exercise
+
+The accuracy of Markov-Switching models' predictions highly relies on the regime in which the forecast is made, so it only requires a small misclassification of which regime the process will be in to lose the advantage of knowing the correct model specification. One important question to consider is: Given that the filtered model works well in capturing the trend persistence of exchange rate, can it outperform, in terms of Mean Squared Error (MSE), some linear alternatives, specifically the simple random walk? (Yuan, 2011)
+
+It is quite standard to assume that the optimal predictor is given by the conditional mean for a given information set Lt. Nevertheless, in contrast to linear models, the MSE optimal predictor does not have the property of being a linear predictor if the true data generating process is nonlinear. In general, the derivation of the optimal predictor may be quite complicated in empirical work. However, an attractive feature of Markov-Switching models as a class of nonlinear models is the simplicity of forecasting if the optimal predictor is the conditional expectation.
+
+Following Hamilton (1994), let ξt|t be the k×1 vector of conditional probabilities, P{st = j|Lt; θ}, for j= 1,2,...,k, which are estimates of the value of st based on data obtained through date t. Given the maximum likelihood estimator, ê, the h-period ahead forecast of yt+h is given by:
+
+$$\hat { y } _ { t + h | t } = E [ y _ { t + h } | \mathcal { L } _ { t } ; \hat { \theta } ] = \xi ^ { \prime } _ { t + h | t } * \hat { \mu } = \xi ^ { \prime } _ { t | t } * P ^ { h } * \hat { \mu }$$
+
+cc
+
+BY
+
+
+<!-- p:23 -->
+
+
+where β = (β1, 2, ..., Îk)′ is the vector of estimates of the mean-dependent trends. We generated h-period ahead forecasts of the level of exchange rates as:
+
+$$\hat { e } _ { t + h | t } = e _ { t } + \sum _ { j = 1 } ^ { h } \hat { y } _ { t + j | t }$$
+
+and calculated the average squared value of the forecast error as:
+
+$$\sum _ { t = 1 } ^ { N - h } \left ( \hat { e } _ { t + h | t } - e _ { t + k } \right ) ^ { 2 } / ( N - h )$$
+
+po  o on n  .  cn c ond h=1,2,3,..,12 for the monthly exchange rate.
+
+As is well known, the standard for measuring forecast ability in the context of exchange rate is whether the proposed model can do well in forecasting in relation to a random walk. Tables 4 and 5 present the MSEs of the in-sample and out-of-sample forecasts and compares them with those of a random walk specification, whose forecasts are given by êt+h|t = et + hy, with y = Σt=1 yt/N, for the monthly and quarterly exchange rates, respectively.
+
+To evaluate the out-of-sample forecasting performance of the models, we re-estimated the parameters with data up to the end of 2015. We chose this date so as not to consider the period prior to the 2016 U.S. presidential election where the Mexican peso had been under pressure given Trump's campaign promises to renegotiate the North American Free Trade Agreement (NAFTA). The Mexican peso had an inverse correlation to the -oe    h n Tr  n n   nnc tion the further the peso depreciated. There were a lot of unknowns about how the Trump presidency would unfold and how his trade and tariff agenda would impact NAFTA. Without a doubt, the uncertainty during this period of political potential change contributed to the existence of a risk premium in the exchange rate market. Hence, almost the entire period of Trump's administration where the Mexican exchange rate has been depreciated was not used for parameter estimation. Furthermore, with our out-of-sample forecast our model must meet the challenge of picking out this depreciation period. The parameter estimates for the truncated sample are similar to those of the full sample; using only data through 2015, there is also evidence in favor of the long swings movements.
+
+1
+
+
+<!-- p:24 -->
+
+
+Table 4 presents the in-sample and out-of-sample mean squared error of forecast. As it can be observed in Table 4, panel A, for the monthly exchange rate, the average loss in in-sample forecast accuracy is about -1.18% for the unfiltered model MSMH(3), while for the two filtered models HP-MSMH(3) and ES-MSMH(3) the improvement is about 10.8% and 11.63%, respectively, averaging over the 12 months-ahead horizons. We further notice that the two filtered Markov-Switching models well outperform the unfiltered model during the forecast horizon considered. The average improvement in out-of-sample forecast precision is about 1.21% for the unfiltered model MSMH(3), -6.4% loss accuracy for the filtered model HP-MSMH(3), and 8.74% improvement for the filtered model ESMSMH(3), averaging over the forecast horizon up to 12 months. We further notice that the MSMH(3) and ES-MSMH(3) models well outperform the random walk and the filtered model HP-MSMH(3). It is worth noting that ES-MSMH(3) model achieves forecast accuracy improvement from a trivial 0.93% at the one month horizon to a significant 21.50% at the six month horizon.
+
+On the other hand, Table 5 shows that for the quarterly exchange rate, the average loss in the in-sample forecast precision is about -1.50% for the unfiltered model MSMH(3), while for the two filtered models HPMSMH(3) and ES-MSMH(3) the improvement is about 4.41% and 9.63%, respectively, averaging over the four quarters-ahead horizons. We further notice that the two filtered Markov-Switching models well outperform the unfiltered model during the forecast horizon considered. The average improvement in out-of-sample forecast precision is about 11.68% for the filtered model ES-MSMH(3), while for the unfiltered model MSMH(3) and the filtered model HP-MSMH(3) the loss is about -1.16% and -8.37%, respectively, averaging over the forecast horizon up to four quarters. We further notice that the ES-MSMH(3) model well outperforms the random walk slightly more prominently in particular for the four-period-ahead forecast, with a significant 15.66% of accuracy improvement.
+
+Interestingly, introducing a trendless regime to the ES-MSMH(3) model, one can see that this forecast model is robust in beating the random walk across the monthly and quarterly (Mexican Pesos / U. S. Dollar) exchange rate.
+
+cc
+
+
+<!-- p:25 -->
+
+
+Table 4 - In-sample and out-of-sample MSE of the forecasts at horizons from one to twelve months.
+
+Ee es ord  o  soe-m -eg i- = (m-e. HP-MSMH(3) = 3-regime Markov-Switching Mean-Heteroskedastic filtered model with HP-filter; MSMH(3) = 3-regime Markov-Switching Mean-Heteroskedastic model;
+
+Out-of-sample Mean Squared Forecast Error where k is the forecast horizon.
+
+| In-sample Mean Squared Error Forecast horizon   | 12               | 1.43199   | 1.46115   | -2.03%   | 1.16561   | -1.74% 18.60%                   | 1.29322 9.69%                                              |
+|-------------------------------------------------|------------------|-----------|-----------|----------|-----------|---------------------------------|------------------------------------------------------------|
+|                                                 | 1.09414          | 11        | 1.33403   | 1.36268  | -2.14%    | 17.98%                          | 1.20535                                                    |
+|                                                 | 9.64%            |           | 10        | 1.25198  | 1.27983   | -2.22%                          | 1.0401 16.19%                                              |
+|                                                 | 1.00820 1.12818  | 9.88%     |           | 9        | 1.18939   | 1.21208                         | -1.90%                                                     |
+|                                                 | 15.23%           | 1.06908   | 10.11%    |          | 8         | 1.08884                         | 1.10779                                                    |
+| 0.93983                                         | 13.68%           | 0.96576   | 11.30%    |          | 7         | 0.99409                         | 1.00920                                                    |
+| 0.87842                                         | 0.77122 11.63%   | 0.87063   | 12.41%    | Forecast | 6         | 0.85595 -1.52%                  | 0.86750                                                    |
+| -1.34%                                          | 0.66575 9.89%    | 0.73707   | 13.88%    |          | 5         | 0.72340                         | 0.73064                                                    |
+| -1.00%                                          | 0.57566 7.96%    | 0.62126   | 14.11%    |          | 4         | 0.61130                         | 0.61437                                                    |
+| -0.50%                                          | 5.82%            | 0.52757   | 13.69%    |          | 3         | 0.47290                         | 0.47399                                                    |
+| -0.23% 0.45357                                  | 0.31414 4.08%    | 0.40855   | 13.60%    |          | 2         | 0.32236                         | 0.32217                                                    |
+| 0.05%                                           | 2.54%            | 0.28216   | 12.46%    |          | 1         | 0.16812                         | 0.16749                                                    |
+| 0.37% 0.16600                                   | HP-MSMH(3) 1.26% | 0.15340   | 8.75%     |          | Model     | Random walk Percent improvement | MSMH(3) Percent improvement ES-MSMH(3) Percent improvement |
+
+| 12         | 1.59302     | 1.57162   | 1.34%               | 1.95189                        | -22.5%     | 1.50421 5.57%       |
+|------------|-------------|-----------|---------------------|--------------------------------|------------|---------------------|
+| 11         | 1.78010     | 1.77876   | 0.07%               | 2.02585 -13.80%                | 1.60735    | 9.70%               |
+| 10         | 1.81443     | 1.80879   | 0.31%               | 2.03328 -12.0%                 | 1.61357    | 11.07%              |
+| 9          | 2.09929     | 2.09531   | 0.18%               | 2.28061 -8.63%                 | 1.87107    | 10.87%              |
+| 8          | 2.02347     | 2.02100   | 0.12%               | 2.16578 -7.03%                 | 1.79510    | 11.28%              |
+| horizon 7  | 1.84847     | 1.84908   | -0.03%              | 1.94699 -5.32%                 | 1.62922    | 11.86%              |
+| Forecast 6 | 1.49569     | 1.30932   | 12.46%              | 1.40786 5.87%                  | 1.1740     | 21.50%              |
+| 5          | 1.29732     | 1.29871   | -0.10%              | 1.34057 -3.33%                 | 1.15392    | 11.05%              |
+| 4          | 1.20637     | 1.20629   | 0.00%               | 1.23652 -2.49%                 | 1.12806    | 6.49%               |
+| 3          | 1.06824     | 1.06794   | 0.02%               | 1.09015 -2.05%                 | 1.03664    | 2.95%               |
+| 2          | 0.78711     | 0.78668   | 0.05%               | 0.79550 -1.06%                 | 0.77414    | 1.64%               |
+| 1          | 0.49089     | 0.49015   | 0.14%               | 0.49112 -0.04%                 | 0.48636    | 0.92%               |
+| Model      | Random walk | MSMH(3)   | Percent improvement | HP-MSMH(3) Percent improvement | ES-MSMH(3) | Percent improvement |
+
+No0:  + : =1  s e s se s e   :0 - 0:s s s   se - 08
+
+Out-of-sample forecast errors. Estimation sample 1995:02 - 2015:12 and MSEs are associated with forecasts for dates t=2016:01 +k to 2019:08 where k
+
+is the forecast horizon.
+
+
+<!-- p:26 -->
+
+
+Table 5 - In-sample and out-of-sample MSE of the forecasts at horizons from one to four quarters.
+
+| Model               | In-sample Mean Squared Forecast Error - Forecast horizon - 1   | In-sample Mean Squared Forecast Error - Forecast horizon - 2   | In-sample Mean Squared Forecast Error - Forecast horizon - 3   | In-sample Mean Squared Forecast Error - Forecast horizon - 4   |
+|---------------------|----------------------------------------------------------------|----------------------------------------------------------------|----------------------------------------------------------------|----------------------------------------------------------------|
+| Random walk         | 0.461369                                                       | 0.836660                                                       | 1.139401                                                       | 1.371647                                                       |
+| MSMH(3)             | 0.456362                                                       | 0.838754                                                       | 1.166974                                                       | 1.43230                                                        |
+| Percent improvement | 1.08%                                                          | -0.25%                                                         | -2.41%                                                         | -4.42%                                                         |
+| HP-MSMH(3)          | 0.455124                                                       | 0.834895                                                       | 1.06652                                                        | 1.238349                                                       |
+| Percent improvement | 1.35%                                                          | 0.21%                                                          | 6.39%                                                          | 9.71%                                                          |
+| ES-MSMH(3)          | 0.417206                                                       | 0.751467                                                       | 1.034488                                                       | 1.25331                                                        |
+| Percent improvement | 9.57%                                                          | 10.18%                                                         | 9.205%                                                         | 8.62%                                                          |
+
+| Model               | Forecast horizon - 1   | Forecast horizon - 2   | Forecast horizon - 3   | Forecast horizon - 4   |
+|---------------------|------------------------|------------------------|------------------------|------------------------|
+| Random walk         | 1.114498               | 1.550066               | 2.320946               | 1.743215               |
+| MSMH(3)             | 1.117218               | 1.559538               | 2.341984               | 1.794076               |
+| Percent Improvement | -0.24%                 | -0.61%                 | 0.90%                  | -2.91%                 |
+| HP-MSMH(3)          | 1.132383               | 1.59765                | 2.450035               | 2.148463               |
+| Percent Improvement | -1.60%                 | -3.06%                 | -5.56%                 | -23.24%                |
+| ES-MSMH(3)          | 1.068872               | 1.339254               | 2.011991               | 1.470084               |
+| Percent Improvement | 4.09%                  | 13.60%                 | 13.31%                 | 15.66%                 |
+
+Out-of-sample Mean Squared Forecast Error
+
+Notes: In-sample forecast errors. Estimation sample 1995:II - 2019:II and MSEs are those associated with forecasts for dates t=1995:II+k to 2019:II where k is the forecast horizon.
+
+Oss s     i - i os os sc s --ith forecasts for dates t=2016:I+k to 2019:II where k is the forecast horizon.
+
+MSMH(3) = 3-regime Markov-Switching Mean-Heteroskedastic model;
+
+HP-MSMH(3) = 3-regime Markov-Switching Mean-Heteroskedastic filtered model with HP-filter;
+
+ES-MSMH(3) = 3-regime Markov-Switching Mean-Heteroskedastic filtered model with proposed Smoothing filter.
+
+### 4.2. Forecast evaluation
+
+To complement the previous analysis of forecast bias and precision we now focus on forecast accuracy. Tables 6 and 7 present Diebold-Mariano (DM) test statistics (see Diebold and Mariano, 2002) for the null hypothesis of no difference in the accuracy of two competing forecasts, that is, the unfiltered and the two filtered models versus the random walk. Each calculated statistic should be compared with a standard normal distribution in order to declare statistical significance. However, since the standard DM test is known to over-reject the null hypothesis in the context of finite samples, we applied here the modified DM test proposed by Harvey, Leybourne and Newbold (1997).
+
+BY
+
+
+<!-- p:27 -->
+
+
+Table 6 - Diebold-Mariano test for relative forecasting ability. Monthly exchange rate.
+
+| 12         |                 | 0.9865    | 0.3912   | 0.3478   |                    | 1.2252    | -1.8400   | 0.9671                    | 0.9442    | 0.7729   | 0.2198   |
+|------------|-----------------|-----------|----------|----------|--------------------|-----------|-----------|---------------------------|-----------|----------|----------|
+| 11         |                 | 0.9992    | 0.0265   | 0.4894   |                    | 1.1380    | -1.2945   | 0.9022                    | 0.9029    | 1.4992   | 0.0669   |
+| 10         |                 | 0.9968    | 0.1329   | 0.4471   |                    | 1.1206    | -1.2591   | 0.8960                    | 0.8893    | 1.8861   | 0.0296   |
+| 9          |                 | 0.9981    | 0.1040   | 0.4585   |                    | 1.0863    | -1.0788   | 0.8596                    | 0.8912    | 2.2033   | 0.0137   |
+| 8          |                 | 0.9987    | 0.0815   | 0.4675   |                    | 1.0703    | -0.9709   | 0.8342                    | 0.8871    | 2.5115   | 0.0060   |
+| horizon 7  |                 | 1.0003    | -0.0268  | 0.5107   |                    | 1.0532    | -0.8039   | 0.7892                    | 0.8813    | 2.9854   | 0.0014   |
+| Forecast 6 |                 | 0.8754    | 0.8756   | 0.1906   |                    | 0.9412    | 0.3916    | 0.3476                    | 0.7849    | 1.5019   | 0.0665   |
+| 5          |                 | 1.0010    | -0.1493  | 0.5593   |                    | 1.0333    | -0.5900   | 0.7224                    | 0.8894    | 3.1186   | 0.0009   |
+| 4          |                 | 0.9999    | 0.0162   | 0.4935   |                    | 1.0249    | -0.5330   | 0.7029                    | 0.9350    | 2.3218   | 0.0101   |
+| 3          |                 | 0.9997    | 0.1242   | 0.4505   |                    | 1.0205    | -0.5486   | 0.7083                    | 0.9704    | 1.1182   | 0.1317   |
+| 2          |                 | 0.9994    | 0.3870   | 0.3493   |                    | 1.0106    | -0.3663   | 0.6429                    | 0.9835    | 0.6217   | 0.2670   |
+| 1          |                 | 0.9985    | 0.6803   | 0.2481   |                    | 1.0004    | -0.0263   | 0.5105                    | 0.9907    | 0.5388   | 0.2950   |
+| Models     | MSMH(3) vs . RW | MSE Ratio | DM-stat  | p-value  | HP-MSMH(3) vs . RW | MSE Ratio | DM-stat   | p-value ES-MSMH(3) vs. RW | MSE Ratio | DM-stat  | p-value  |
+
+ES-MSMH(3) = 3-regime Markov-Switching Mean-Heteroskedastic filtered model with Exponential hing filter. HP-MSMH(3) = 3-regime Markov-Switching Mean-Heteroskedastic filtered model with HP-filter; oe:-: d   0:-:6 d     0. RW = random walk; MSMH(3) = 3-regime Markov-Switching Mean-Heteroskedastic model;
+
+Cc
+
+
+<!-- p:28 -->
+
+
+Table 7 - Diebold-Mariano test for relative forecasting ability. Quarterly exchange rate.
+
+| Models             |   Forecast horizon - 1 |   Forecast horizon - 2 |   Forecast horizon - 3 |   Forecast horizon - 4 |
+|--------------------|------------------------|------------------------|------------------------|------------------------|
+| MSMH(3) vs . RW    |                        |                        |                        |                        |
+| MSE Ratio          |                 1.0024 |                 1.0061 |                 1.0090 |                 1.0291 |
+| DM-stat            |                -0.1259 |                -0.2378 |                -0.3711 |                -1.1034 |
+| p-value            |                 0.5500 |                 0.5939 |                 0.6447 |                 0.8650 |
+| HP-MSMH(3) vs . RW |                        |                        |                        |                        |
+| MSE Ratio          |                 1.0160 |                 1.0307 |                 1.0556 |                 1.2324 |
+| DM-stat            |                -0.2199 |                -0.2449 |                -0.3558 |                -0.9485 |
+| p-value            |                 0.5870 |                 0.5967 |                 0.0639 |                 0.8285 |
+| S-MSMH(3) vs. RW   |                        |                        |                        |                        |
+| MSE Ratio          |                 0.9590 |                 0.8640 |                 0.8668 |                 0.8432 |
+| DM-stat            |                 1.2426 |                 1.5314 |                 1.2773 |                 0.8350 |
+| p-value            |                 0.0690 |                 0.0683 |                 0.0687 |                 0.2018 |
+
+RW = random walk; MSMH(3) = 3-regime Markov-Switching Mean-Heteroskedastic model;
+
+HP-MSMH(3) = 3-regime Markov-Switching Mean-Heteroskedastic filtered model with HP-filter;
+
+ES-MSMH(3) = 3-regime Markov-Switching Mean-Heteroskedastic filtered model with Smoothing filter.
+
+Forecasts are based on estimated period 1995:I-2015:IV and forecast periods 2016:I-2019:II
+
+The DM test results reported in Tables 6 and 7 support our findings in the lower panels of Tables 4 and 5. In this context, the null hypothesis of no difference in the accuracy of our proposed model, ES-MSMH(3), and the Random Walk Model is rejected for 8 out of the 12 analyzed forecast horizons for monthly data and for 3 out of the 4 horizons for quarterly data at a 10% significance level. There is no other null hypothesis rejection for the competing models, except the HP-MSMH (3) model for the 3-quarters forecast horizon.
+
+## 5. Conclusions
+
+This paper proposes the ES filter for estimating a trend with controlled smoothness in order for a Markov-Switching model to be applied more appropriately to detect different regimes in the time series of exchange rates. After identifying the different regimes and the probabilities of staying in each of the regimes estimated, the model was utilized to predict the exchange rate. The ES filter also enables us to set a target percentage for the smoothness of the trend, making it possible to compare different applications with varying time series or sample periods of the same series, as highlighted by Guerrero and Galicia-Vazquez (2010). Our results have found that by using a Multi-State Markov-Switching model in conjunction with the controlled smoothing filter technique, we can improve both in-sample and out-of-sample forecasting performance. Preliminary results obtained by applying the conventional model without a filtering technique warned us that the existence of highly irregular components in the data tends to distort the estimation procedure of the Markov-Switching model and undermines its forecasting power. Our suggested specification eliminates the modeling nuisance and enhances the forecasting superiority of the Markov-Switching model. We conducted an empirical application using three Multi-State Markov-Switching model specifications and found that the one based on our proposal was superior for parameter estimation and generated statistically better forecasts. This strong empirical evidence supports our proposed procedure. The results obtained in this particular application were clear in defining three different regimes associated with the behavior of the exchange rate: appreciation, trendless, and depreciation which can be easily and visually appreciated in the data under study. Our results show that correctly identifying the trend in the exchange rate plays a crucial role in achieving superior forecasting ability concerning the simple random walk. As a final conclusion, we want to emphasize that applying the HP filter to an I(1) time series does not produce optimal results. Our proposed procedure is data-driven, making it more objective than the HP filter. The smoothing parameter is determined by selecting a desired level of smoothness for the trend, which can be easily determined by following data-based guidelines.
+
+cc
+
+BY
+
+
+<!-- p:29 -->
+
+<!-- END SOURCE 26/40: Islas-Camargo_2025_exchange-rate-predictability-controlled-smoothness.md -->
+
+---
+
+<!-- BEGIN SOURCE 27/40: Kim_2009_l1-trend-filtering.md -->
+
+# Source: `Kim_2009_l1-trend-filtering.md`
+
+---
+id: "Kim_2009_l1-trend-filtering"
+source_pdf: "../pdf/Kim_2009_l1-trend-filtering.pdf"
+source_filename: "Kim_2009_l1-trend-filtering.pdf"
+format: "academic-paper"
+extraction_profile: "text-math-tables-high-fidelity"
+extraction_mode: "full-page-ocr"
+extraction_quality: "excellent"
+extraction_score: 100.0
+visual_assets: "disabled"
+references_file: "../references/Kim_2009_l1-trend-filtering.references.md"
+---
+
+<!-- p:1 -->
+
+## l1 Trend Filtering *
+
+Seung-Jean Kim Kwangmoo Koh Stephen Boyd Dimitry Gorinevsky
+
+Abstract. The problem of estimating underlying trends in time series data arises in a variety of disciplines. In this paper we propose a variation on Hodrick-Prescott (H-P) filtering, a widely used method for trend estimation. The proposed l1 trend filtering method substitutes a sum of absolute values (i.e., l1 norm) for the sum of squares used in H-P filtering to penalize variations in the estimated trend. The l1 trend filtering method produces trend estimates that are piecewise linear, and therefore it is well suited to analyzing time series with an underlying piecewise linear trend. The kinks, knots, or changes in slope of the estimated trend can be interpreted as abrupt changes or events in the underlying dynamics of the time series. Using specialized interior-point methods, l1 trend filtering can be carried out with not much more effort than H-P filtering; in particular, the number of arithmetic operations required grows linearly with the number of data points. We describe the method and some of its basic properties and give some illustrative examples. We show how the method is related to l1 regularization-based methods in sparse signal recovery and feature selection, and we list some extensions of the basic method.
+
+Key words. detrending, l1 regularization, Hodrick-Prescott filtering, piecewise linear fitting, sparse signal recovery, feature selection, time series analysis, trend estimation
+
+AMS subject classifications. 37M10, 62P99
+
+DOI.10.1137/070690274
+
+## 1. Introduction.
+
+1.1. Trend Filtering. We are given a scalar time series yt, t = 1, . . . , n, assumed to consist of an underlying slowly varying trend xt and a more rapidly varying random component zt. Our goal is to estimate the trend component xt or, equivalently, estimate the random component zt = yt − xt. This can be considered as an optimization problem with two competing objectives: We want xt to be smooth, and we want zt (our estimate of the random component, sometimes called the residual) to be small. In some contexts, estimating xt is called smoothing or filtering.
+
+Trend filtering comes up in several applications and settings including macroeconomics (e.g., [52, 86]), geophysics (e.g., [1, 8, 9]), financial time series analysis (e.g., [97]), social sciences (e.g., [66]), revenue management (e.g., [91]), and biological and medical sciences (e.g., [43, 68]). Many trend filtering methods have been proposed, including Hodrick–Prescott (H-P) filtering [52, 64], moving average filtering [75], exponential smoothing [70], bandpass filtering [21, 4], smoothing splines [81], de-trending via rational square-wave filters [79], a jump process approach [106], median filtering [101], a linear programming (LP) approach with fixed kink points [72], and wavelet transform analysis [23]. (All these methods except for the jump process approach, the LP approach, and median filtering are linear filtering methods; see [4] for a survey of linear filtering methods in trend estimation.) The most widely used methods are moving average filtering, exponential smoothing, and H-P filtering, which is especially popular in economics and related disciplines due to its application to business cycle theory [52]. The idea behind H-P filtering can be found in several fields and can be traced back at least to work in 1961 by Leser [64] in statistics.
+
+*Received by the editors May 2, 2007; accepted for publication (in revised form) May 28, 2008; published electronically May 4, 2009. This work was funded in part by the Precourt Institute on Energy Efficiency, by Army award W911NF-07-1-0029, by NSF award 0529426, by NASA award NNX07AEIIA, by AFOSR award FA9550-06-1-0514, and by AFOSR award FA9550-06-1-0312.
+
+http://www.siam.org/journals/sirev/51-2/69027.html
+
+Information Systems Laboratory, Electrical Engineering Department, Stanford University, Stanford, CA 94305-9510 (sjkim@stanford.edu, deneb1@stanford.edu, boyd@stanford.edu, gorin@ stanford.edu).
+
+
+<!-- p:2 -->
+
+
+1.2. l1 Trend Filtering. In this paper we propose l1 trend filtering, a variation on H-P filtering which substitutes a sum of absolute values (i.e., an l1 norm) for the sum of squares used in H-P filtering to penalize variations in the estimated trend. (The term "filtering" is used in analogy with "H-P filtering." Like H-P filtering, l1 trend filtering is a batch method for estimating the trend component from the whole history of observations.)
+
+We will see that the proposed l1 trend filter method shares many properties with the H-P filter and has the same (linear) computational complexity. The principal difference is that the l1 trend filter produces trend estimates that are smooth in the sense of being piecewise linear. The l1 trend filter is thus well suited to analyzing time series with an underlying piecewise linear trend. The kinks, knots, or changes in slope of the estimated trend can be interpreted as abrupt changes or events in the underlying dynamics of the time series; the l1 trend filter can be interpreted as detecting or estimating changes in an underlying linear trend. Using specialized interior-point methods, l1 trend filtering can be carried out with not much more effort than H-P filtering; in particular, the number of arithmetic operations required grows linearly with the number of data points.
+
+1.3. Outline. In the next section we set up our notation and give a brief summary of H-P filtering, listing some properties for later comparison with our proposed l1 trend filter. The l1 trend filter is described in section 3 and compared to the H-P filter. We give some illustrative examples in section 4.
+
+In section 5 we give the optimality condition for the underlying optimization problem that defines the l1 trend filter, and we use it to derive some of the properties given in section 3. We also derive a Lagrange dual problem that is interesting on its own and is also used in a primal-dual interior-point method we describe in section 6. We list a number of extensions of the basic idea in section 7.
+
+2. Hodrick-Prescott Filtering. In H-P filtering, the trend estimate xt is chosen to minimize the weighted sum objective function
+
+$$( 1 ) \quad ( 1 / 2 ) \sum _ { t = 1 } ^ { n } ( y _ { t } - x _ { t } ) ^ { 2 } + \lambda \sum _ { t = 2 } ^ { n - 1 } ( x _ { t - 1 } - 2 x _ { t } + x _ { t + 1 } ) ^ { 2 } ,$$
+
+where λ ≥ 0 is the regularization parameter used to control the trade-off between smoothness of xt and the size of the residual yt − xt. The first term in the objective function measures the size of the residual; the second term measures the smoothness of the estimated trend. The argument appearing in the second term, xt−1 −2xt + xt+1, is the second difference of the time series at time t; it is zero when and only when the three points xt-1, xt, xt+1 are on a line. The second term in the objective is zero if and only if xt is affine, i.e., has the form xt = α + βt for some constants α and β. (In other words, the graph of xt is a straight line.) The weighted sum objective (1) is strictly convex and coercive in x, and so has a unique minimizer, which we denote xhp.
+
+
+<!-- p:3 -->
+
+
+We can write the objective (1) as
+
+$$( 1 / 2 ) \| y - x \| _ { 2 } ^ { 2 } + \lambda \| D x \| _ { 2 } ^ { 2 } ,$$
+
+where x = (x1, . . . , xn) ∈ Rn, y = (y1, . . , yn) ∈ Rn, u||2 = (Σi u2)1/2 is the Euclidean or l2 norm, and D ∈ R(n-2)×n is the second-order difference matrix
+
+$$1 -2 1 1 -2 1 (2) D = 1-2 1 1 -2 1$$
+
+(D is Toeplitz with first row [ 1 −2 1 0 . .. 0 ]; entries not shown above are zero.) The H-P trend estimate is
+
+$$x ^ { h p } = ( I + 2 \lambda D ^ { T } D ) ^ { - 1 } y .$$
+
+H-P filtering is supported in several standard software packages for statistical data analysis, e.g., SAS, R, and Stata.
+
+We list some basic properties of H-P filtering, which we refer to later when we compare it to our proposed trend estimation method.
+
+- Linear computational complexity. The H-P estimated trend xhp in (3) can be computed in O(n) arithmetic operations, since D is tridiagonal.
+- Linearity. From (3) we see that the H-P estimated trend xhp is a linear function of the time series data y.
+- Convergence to original data as λ → 0. The relative fitting error satisfies the inequality
+
+$$( 4 ) & & \frac { \| y - x ^ { h p } \| _ { 2 } & \leq \frac { 3 2 \lambda } { 1 + 3 2 \lambda } .$$
+
+This shows that as the regularization parameter λ decreases to zero, xhp converges to the original time series data y.
+
+- Convergence to best affine fit as λ → ∞. As λ → ∞, the H-P estimated trend converges to the best affine (straight-line) fit to the time series data,
+
+$$x ^ { b a } = \alpha ^ { b a } + \beta ^ { b a } t ,$$
+
+with intercept and slope
+
+$$\alpha ^ { b a } & = \frac { \sum _ { t = 1 } ^ { n } t ^ { 2 } \sum _ { t = 1 } ^ { n } y _ { t } - \sum _ { t = 1 } ^ { n } t \sum _ { t = 1 } ^ { n } t y _ { t } } { n \sum _ { t = 1 } ^ { n } t ^ { 2 } - ( \sum _ { t = 1 } ^ { n } t ) ^ { 2 } } , \\ \beta ^ { b a } & = \frac { n \sum _ { t = 1 } ^ { n } t y _ { t } - \sum _ { t = 1 } ^ { n } t \sum _ { t = 1 } ^ { n } y _ { t } } { n \sum _ { t = 1 } ^ { n } t ^ { 2 } - ( \sum _ { t = 1 } ^ { n } t ) ^ { 2 } } .$$
+
+
+<!-- p:4 -->
+
+
+- Commutability with affine adjustment. We can change the order of H-P filtering and affine adjustment of the original time series data, without affect: For ay α ad β, the H-P trend estimate of the time series data  ̄t = yt − α − βt is τhp xt with α = αba, β = βba, which corresponds to subtracting the best affine fit from the original data.)
+- Regularization path. The H-P trend estimate xhp is a smooth function of the regularization parameter λ, as it varies over [0, ∞). As λ decreases to zero, xhp converges to the original data y; as λ increases, xhp becomes smoother, and converges to xba, the best affine fit to the time series data.
+
+We can derive the relative fitting error inequality (4) as follows. From the optimality condition y − xhp = λDT Dxhp we obtain
+
+$$y - x ^ { h p } = 2 \lambda D ^ { T } D ( I + 2 \lambda D ^ { T } D ) ^ { - 1 } y .$$
+
+The spectral norm of D is no more than 4:
+
+$$\| D x \| _ { 2 } = \| x _ { 1 \colon n - 2 } - 2 x _ { 2 \colon n - 1 } + x _ { 3 \colon n } \| _ { 2 } \leq \| x _ { 1 \colon n - 2 } \| _ { 2 } + 2 \| x _ { 2 \colon n - 1 } \| _ { 2 } + \| x _ { 3 \colon n } \| _ { 2 } \leq 4 \| x \| _ { 2 } ,$$
+
+where xi:j = (xi, · . . , xj). The eigenvalues of DT D lie between 0 and 16, so the eigenvalues of 2λDT D(I + 2λDT D)−1 lie between 0 and 32λ/(1 + 32λ). It follows that
+
+$$\| y - x ^ { h p } \| _ { 2 } \leq ( 3 2 \lambda / ( 1 + 3 2 \lambda ) ) \| y \| _ { 2 } .$$
+
+3. l1 Trend Filtering. We propose the following variation on H-P filtering, which we call l1 trend filtering. We choose the trend estimate as the minimizer of the weighted sum objective function
+
+$$( 5 ) \quad ( 1 / 2 ) \sum _ { t = 1 } ^ { n } ( y _ { t } - x _ { t } ) ^ { 2 } + \lambda \sum _ { t = 2 } ^ { n - 1 } | x _ { t - 1 } - 2 x _ { t } + x _ { t + 1 } | ,$$
+
+which can be written in matrix form as
+
+$$( 1 / 2 ) \| y - x \| _ { 2 } ^ { 2 } + \lambda \| D x \| _ { 1 } ,$$
+
+where ∥u∥|1 = Σi |ui| denotes the l1 norm of the vector u. As in H-P filtering, λ is a nonnegative parameter used to control the trade-off between smoothness of x and size of the residual. The weighted sum objective (1) is strictly convex and coercive in x and so has a unique minimizer, which we denote xlt. (The superscript "lt" stands for "l1 trend.")
+
+We list some basic properties of l1 trend filtering, pointing out similarities and differences with H-P filtering.
+
+- Linear computational complexity. There is no analytic formula or expression for xlt, analogous to (3). But like xhp, xlt can be computed numerically in O(n) arithmetic operations. (We describe an efficient method for computing xlt in section 6. Its worst-case complexity is O(n1.5), but practically its computational effort is linear in n.)
+- Nonlinearity. The l1 trend estimate xlt is not a linear function of the original data y. (In contrast, xhp is a linear function of y.)
+
+
+<!-- p:5 -->
+
+
+- Convergence to original data as λ → 0. The maximum fitting error satisfies the bound
+
+$$\| y - x ^ { l t } \| _ { \infty } \leq 4 \lambda ,$$
+
+where ∥u∥|∞ = maxi |ui| denotes the l∞ norm of the vector u. (Cf. the analogous bound for H-P trend estimation, given in (4).) This implies that x t → y as λ → 0.
+
+- Finite convergence to best affine fit as λ → ∞. As in H-P filtering, xlt → xba as λ → ∞. For l1 trend estimation, however, the convergence occurs for a finite value of λ,
+
+$$\lambda _ { \max } = \| ( D D ^ { T } ) ^ { - 1 } D y \| _ { \infty } .$$
+
+For λ ≥ λmax, we have xlt = xba. (In contrast, xhp → xba only in the limit as λ → ∞.) This maximum value λmax is readily computed with O(n) arithmetic steps. (The derivation is given in section 5.1.)
+
+- Commutability with affine adjustment. As in H-P filtering, we can swap the order of affine adjustment and trend filtering, without affect.
+- Piecewise-linear regularization path. The l1 trend estimate xlt is a piecewiselinear function of the regularization parameter λ, as it varies over [0, ∞): There are values λ1 , . . . , λk, with 0 = λk &lt; · . . &lt; λ1 = λmax, for which
+
+$$x ^ { l t } = \frac { \lambda _ { i } - \lambda } { \lambda _ { i } - \lambda _ { i + 1 } } x ^ { ( i + 1 ) } + \frac { \lambda - \lambda _ { i + 1 } } { \lambda _ { i } - \lambda _ { i + 1 } } x ^ { ( i ) } , \ \lambda _ { i + 1 } \leq \lambda \leq \lambda _ { i } , \ \ i = 1 , \dots , k - 1 ,$$
+
+where x(i) is x1t with λ = λi. (So x(1) = xba, x(k) = y.)
+
+- Linear extension property. Let xlt denote the l1 trend estimate for (y1, . . . , Yn+1). There is an interval [l, u], with l &lt; u, for which
+
+$$\tilde { x } ^ { l t } = ( x ^ { l t } , 2 x _ { n } ^ { l t } - x _ { n } ^ { l }$$
+
+provided yn+1 ∈ [u, l]. In other words, if the new observation is inside an interval, the l1 trend estimate linearly extends the last affine segment.
+
+- 3.1. Piecewise Linearity. The basic reason the l1 trend estimate xlt might be preferred over the H-P trend estimate xhp is that it is piecewise linear in t: There are (integer) times 1 = t1 &lt; t2 &lt; · · · &lt; tp−1 &lt; tp = n for which
+
+$$x _ { t } ^ { \text {lt} } = \alpha _ { k } + \beta _ { k } t , \ \ t _ { k } \leq t \leq t _ { k + 1 } , \ \ k = 1 , \dots , p - 1 .$$
+
+In other words, over each (integer) interval [ti, ti+1], xlt is an affine function of t. We can interpret αk and βk as the local intercept and slope in the kth interval. These local trend parameters are not independent: they must give consistent values for xlt at the join or kink points, i.e.,
+
+$$\alpha _ { k } + \beta _ { k } t _ { k + 1 } = \alpha _ { k + 1 } + \beta _ { k + 1 } t _ { k + 1 } , \ \ k = 1 , \dots , p - 1 .$$
+
+The points t2, . . . , tp-1 are called kink points. We say that xlt is piecewise linear with p − 2 kink points. (The kink point tk can be eliminated if αk = αk−1, so we generally assume that αk ≠ αk−1.)
+
+In one extreme case, we have p = 2, which corresponds to no kink points. In this case t1 = 1, t2 = n, and xlt = xba is affine. In the other extreme case, there is a kink at every time point: we have ti = i, i = 1, . . . , p = n. In this case the piecewise linear form (8) is vacuous; it imposes no constraints on xlt. This corresponds to λ = 0, and x1t = y.
+
+
+<!-- p:6 -->
+
+
+The kink points correspond to changes in slope of the estimated trend and can be interpreted as abrupt changes or events in the underlying dynamics of the time series. The number of kinks in xlt typically decreases as the regularization parameter increases, but counterexamples show this need not happen.
+
+Piecewise linearity of the trend estimate is not surprising: It is well known when an l1 norm term is added to an objective to be minimized, or constrained, the solution typically has the argument of the l1 norm term sparse (i.e., with many zero elements). In this context, we would predict that Dx (the second-order difference of the estimated trend) will have many zero elements, which means that the estimated trend is piecewise linear.
+
+The general idea of l1 regularization for the purposes of sparse signal recovery or feature selection has been used in geophysics since the early 1970s; see, e.g., [22, 67, 92]. In signal processing, the idea of l1 regularization comes up in several contexts, including basis pursuit (denoising) [19, 20], image decomposition [31, 88], signal recovery from incomplete measurements [17, 16, 26, 27, 96], sensor selection [55], fault identification [108], and wavelet thresholding [28]. In statistics, the idea of l1 regularization is used in the well-known Lasso algorithm [93] for l1-regularized linear regression, its extensions such as the fused Lasso [94], the elastic net [107], the group Lasso [105], and the monotone Lasso [51], and l1-regularized logistic regression [61, 62, 77]. The idea of l1 regularization has been used in other contexts, including portfolio optimization [69], control design [48], computer-aided design of integrated circuits [13], decoding of linear codes [15], and machine learning (sparse principal ] os t red  l] snt ndso)
+
+We note that l1 trend filtering is related to segmented regression, a statistical regression method in which the variables are segmented into groups and regression analysis is performed on each segment. Segmented regression arises in a variety of contexts, including abrupt change detection and time series segmentation (especially as a preprocessing step for mining time series databases); the reader is referred to a survey [57] and the references therein. There are two types of time series segmentation. One does not require the fits for two consecutive segments to have consistent values at their join point; see, e.g., [71, 63, 87, 80, 102]. The other requires the fits for two consecutive segments to be consistent at their join point, which is often called joinpoint regression; see, e.g., [32, 35, 36, 58, 89, 104]. We can think of l1 trend filtering as producing a segmented linear regression, with an affine fit on each segment, and with consistent values at the join points. In l1 trend filtering, the segmentation and the affine fit on each segment are found by solving one optimization problem.
+
+In time series segmentation, we can use the principle of dynamic programming (DP) to find the best fit that minimizes the fitting error among all functions that consist of k affine segments, with or without the requirement of consistency at the join points. In an early paper [5, 6], Bellman showed how DP can be used for segmented linear regression without the requirement of consistency at the join points. The DP arst t ht ] n n (   t  t t  thm with the consistency requirement at the join points is, however, far more involved than in the case when it is absent. As a heuristic, l1 trend filtering produces a segmented linear regression in O(n) arithmetic operations. Another heuristic based on grid search is described in [58], and an implementation, called the Joinpoint Regression Program, is available from http://srab.cancer.gov/joinpoint/.
+
+
+<!-- p:7 -->
+
+
+3.2. l1 Trend Filtering and Sparse Approximation. To see the connection between l1 trend filtering and l1 regularization-based sparse approximation more clearly, we note that the l1 trend filtering problem is equivalent to the l1-regularized least squares problem:
+
+$$( 9 ) \quad \minimize _ { i = 3 } \ ( 1 / 2 ) \| A \theta - y \| _ { 2 } ^ { 2 } + \lambda \sum _ { i = 3 } ^ { n } | \theta _ { i } | ,$$
+
+where θ = (θ1, . . . , θn) ∈ Rn is the variable and A is the lower triangular matrix
+
+1
+
+
+2
+
+1
+
+A =
+
+∈Rn×n.
+
+1
+
+3
+
+2
+
+1
+
+1 n −1 n −2 . 2 1
+
+The solution θlt to this problem and the l1 trend estimate are related by
+
+$$( 1 0 ) ^ { ( 1 0 ) } = A \theta ^ { 1 t } .$$
+
+We can give a simple interpretation of the coefficients: θ1t is the offset (θ1t = x1t), − x1), and for t ≥ 3, θt is the second-order difference of x at t − 1 (θt = (Dxlt)t−2). This interpretation shows again the equivalence between the l1 trend filtering problem and the l1-regularized least squares problem (9). (This interpretation also shows that l1 trend filtering is a special type of basis pursuit denoising [20] and is related to multivariate adaptive regression splines (MARS) [37, 49, 50] that use truncated linear functions as basis functions.)
+
+From a standard result in l1-regularized least squares [30, 83], the solution θlt to (9) is a piecewise-linear function of the regularization parameter λ, as it varies over [0, ∞). From (10), we can see that the regularization path of l1 trend filtering is piecewise linear.
+
+4. Illustrative Examples. Our first example uses synthetic data, generated as
+
+$$y _ { t } = x _ { t } + z _ { t } , \ \ t = 1 , \dots , n , \quad x _ { t + 1 } = x _ { t } + v _ { t } , \ \ t = 1 , \dots , n - 1 ,$$
+
+with initial condition x1 = 0. Here xt is the "true" underlying trend, zt is the irregular component or noise, and vt is the trend slope. The noises zt are IID N(0, σ2). The trend slopes vt are chosen from a simple Markov process (independent of z). With probability p, we have vt+1 = vt, i.e., no slope change in the underlying trend. (Thus, the mean time between slope changes is 1/(1 − p).) With probability 1 − p, we choose vt+1 from a uniform distribution on [-b, b]. We choose the initial slope v1 from a uniform distribution on [-b, b]. The change in xt between two successive changes in slope is given by the product of two independent random variables: the time between changes (which is geometrically distributed with mean 1/(1 - p)) and the slope (which is uniform over [−b, b]). It has zero mean and variance (1 + p)(1 − p)−2b2/3. The standard deviation of the change in xt between successive changes in slope is thus √(1 + p)/3(b/(1 − p)).
+
+
+<!-- p:8 -->
+
+
+For our example, we use the parameter values
+
+$$n = 1 0 0 0 , \quad p = 0 . 9 9 , \quad \sigma = 2 0 , \quad b = 0 . 5 .$$
+
+Thus, the mean time between slope changes is 100, and the standard deviation of the change in xt between slope changes is 40.7. The particular sample we generated had 8 changes in slope.
+
+The l1 trend estimates were computed using two solvers: cvx [42], a MATLABbased modeling system for convex optimization (which calls SDPT3 [95] or SeDuMi [90], a MATLAB-based solver for convex problems), and a C implementation of the specialized primal-dual interior-point method described in section 6. The run times on a 3GHz Pentium IV were around a few seconds and 0.01 seconds, respectively.
+
+The results are shown in Figure 1. The top left plot shows the true trend xt, and the top right plot shows the noise corrupted time series yt. In the middle left plot, we show xlt for λ = 35000, which results in 4 kink points in the estimated trend. The middle right plot shows the H-P trend estimate with λ adjusted to give the same fitting error as xlt, i.e., ∥y − xlt∥2 = ∥y − xhp∥2. Even though xlt is not a particularly good estimate of xt, it has identified some of the slope change points fairly well. The bottom left plot shows xlt for λ = 5000, which yields 7 kink points in xlt. The bottom right plot shows xhp, with the same fitting error. In this case the estimate of the underlying trend is quite good. Note that the trend estimation error for xlt is better than xhp, especially around the kink points.
+
+Our next example uses real data, 2000 consecutive daily closing values of the S&amp;P 500 Index, from March 25, 1999, to March 9, 2007, after logarithmic transform. The data are shown in the top plot of Figure 2. In the middle plot, we show xlt for λ = 100, which results in 8 kink points in the estimated trend. The bottom plot shows the H-P trend estimate with the same fitting error.
+
+In this example (in contrast to the previous one) we cannot say that the l1 trend estimate is better than the H-P trend estimate. Each of the two trend estimates is a smoothed version of the original data; by construction, they have the same l2 fitting error. If for some reason you believe that the (log of the) S&amp;P 500 Index is driven by an underlying trend that is piecewise linear, you might prefer the l1 trend estimate over the H-P trend estimate.
+
+## 5. Optimality Condition and Dual Problem.
+
+5.1. Optimality Condition. The objective function (5) of the l1 trend filtering problem is convex but not differentiable, so we use a first-order optimality condition based on subdifferential calculus. We obtain the following necessary and sufficient condition for x to minimize (5): there exists ν ∈ Rn such that
+
+$$y - x = D ^ { T } \nu , \quad \nu _ { t } \in \left \{ \begin{array} { c c c } \{ + \lambda \} , & ( D x ) _ { t } > 0 , \\ \{ - \lambda \} , & ( D x ) _ { t } < 0 , & t = 1 , \dots , n - 2 . \\ [ - \lambda , \lambda ] , & ( D x ) _ { t } = 0 , \end{array}$$
+
+(Here, we use the chain rule for subdifferentials: If f is convex, then the subdifferential [4 ·d 2]   ( + x)fx = (x) q  s ( + x)f = (x) or [10, Chap. 2] for more on subdifferential calculus.) Since DDT is invertible, the optimality condition (12) can be written as
+
+$$( ( D D ^ { T } ) ^ { - 1 } D ( y - x ) ) _ { t } \in \left \{ \begin{array} { l l } { \{ + \lambda \} , } & { ( D x ) _ { t } > 0 , } \\ { \{ - \lambda \} , } & { ( D x ) _ { t } < 0 , } & { t = 1 , \dots , n - 2 . } \\ { [ - \lambda , \lambda ] , } & { ( D x ) _ { t } = 0 , } \end{array}$$
+
+
+<!-- p:9 -->
+
+
+Fig. I Trend estimation on synthetic data. Top left: The true trend xt. Top right: Observed time series data yt. Middle left: l1 trend estimate x1t with four total kinks (λ = 35000). Middle right: H-P trend estimate xhp with same fitting error. Bottom left: xlt with seven total kinks (λ = 5000). Bottom right: H-P trend estimate xhp with same fitting error.
+
+40
+
+
+0
+
+-40
+
+
+y
+
+-80
+
+
+-120
+
+
+0
+
+200
+
+400
+
+600
+
+800
+
+1000
+
+0
+
+200
+
+400
+
+600
+
+800
+
+1000
+
+40
+
+
+0
+
+1二
+
+40
+
+jqx
+
+40
+
+-80
+
+
+-120
+
+
+0
+
+200
+
+400
+
+600
+
+800
+
+1000
+
+0
+
+200
+
+400
+
+600
+
+800
+
+1000
+
+40
+
+
+-80
+
+
+-120
+
+
+0
+
+200
+
+400
+
+600
+
+800
+
+1000
+
+0
+
+200
+
+400
+
+600
+
+800
+
+1000
+
+t
+
+
+The maximum fitting error bound in (6) follows from the optimality condition above. For any ν ∈ Rn−2 with νt ∈ [−λ, λ],
+
+$$- 4 \lambda \leq ( D ^ { T } \nu ) _ { t } \leq 4 \lambda , \quad t = 1 , \dots , n .$$
+
+It follows from (12) that the minimizer x of (5) satisfies
+
+$$- 4 \lambda \leq x _ { t } - y _ { t } \leq 4 \lambda , \quad t = 1 , \dots , n .$$
+
+
+<!-- p:10 -->
+
+
+Fig. 2 Trend estimation results for the S&amp;P 500 Index for the period of March 25, 1999, to March 9, 2007. Top: Original data. Middle: l1 trend estimate xlt for λ = 100. Bottom: H-P trend estimate xhp with same fitting error.
+
+7.3
+
+7.2
+
+log-price
+
+7.1
+
+7.0
+
+6.9
+
+6.8
+
+6.7
+
+1/2000
+
+1/2002
+
+1/2004
+
+1/2006
+
+7.3
+
+7.2
+
+log-price
+
+7.1
+
+7.0
+
+6.9
+
+6.8
+
+6.7
+
+1/2000
+
+1/2002
+
+1/2004
+
+1/2006
+
+7.3
+
+7.2
+
+AN
+
+log-price
+
+7.1
+
+7.0
+
+6.9
+
+6.8
+
+6.7
+
+1/2000
+
+1/2002
+
+1/2004
+
+1/2006
+
+We can now derive the formula (7) for λmax. Since xba is affine, Dxba = 0, so the condition that xba is optimal is that ((DDT)−1D(y − xba))t ∈ [−λ, λ] for t = 1, . . . , n − 2, i.e.,
+
+$$\| ( D D ^ { T } ) ^ { - 1 } D ( y - x ^ { b a } ) \| _ { \infty } = \| ( D D ^ { T } ) ^ { - 1 } D y \| _ { \infty } \leq \lambda .$$
+
+
+<!-- p:11 -->
+
+
+We can use the optimality condition (12) to see whether the linear extension property holds for a new observation yn+1. From the optimality condition (12), we can see that if yn+1 satisfies
+
+$$2 x _ { n } ^ { l t } - x _ { n - 1 } ^ { l t } \, \right ] \right ) \right \| _ { \infty } \leq \lambda ,$$
+
+where D ∈ R(n-1)×(n+1) is the second-order difference matrix on Rn+1, then the inequality, we can easily find the bounds l and u such that if l ≤ yn+1 ≤ u, then the linear extension property holds.
+
+5.2. Dual Problem. To derive a Lagrange dual of the primal problem of minimizing (5), we first introduce a new variable z ∈ Rn-2, as well as a new equality constraint z = Dx, to obtain the equivalent formulation
+
+$$\begin{array} { r l } { \minimize } & ( 1 / 2 ) \| y - x \| _ { 2 } ^ { 2 } + \lambda \| z \| _ { 1 } } \\ { \subtext {subject to } } & z = D x . } \end{array}$$
+
+Associating a dual variable ν ∈ Rn-2 with the equality constraint, the Lagrangian is
+
+$$L ( x , z , \nu ) = ( 1 / 2 ) \| y - x \| _ { 2 } ^ { 2 } + \lambda \| z \| _ { 1 } + \nu ^ { T } ( D x - z ) .$$
+
+The dual function is
+
+$$\inf _ { x , z } L ( x , z , \nu ) = \left \{ \begin{array} { c c c } - ( 1 / 2 ) \nu ^ { T } D D ^ { T } \nu + y ^ { T } D ^ { T } \nu , & - \lambda 1 \leq \nu \leq \lambda 1 , \\ - \infty & \text {otherwise.} \end{array}$$
+
+The dual problem is
+
+$$\min \min i t s _ { \substack { \minimize \quad g ( \nu ) = ( 1 / 2 ) \nu ^ { T } D D ^ { T } \nu - y ^ { T } D ^ { T } \nu \\ \text {subject to } - \lambda 1 \leq \nu \leq \lambda 1 . }$$
+
+(Here a ≤ b means ai ≤ bi for all i.) The dual problem (13) is a (convex) quadratic program (QP) with variable ν ∈ Rn−2. We say that ν ∈ Rn−2 is strictly dual feasible if it satisfies −λ1 &lt; ν &lt; λ1.
+
+From the solution νlt of the dual (13), we can recover the l1 trend estimate via
+
+$$x ^ { \text {lt} } = y - D ^ { T } \nu ^ { \text {lt} } .$$
+
+6. A Primal-Dual Interior-Point Method. The QP (13) can be solved by standrr  d -d ns dds  nttod  od 74, 103] and more specialized methods such as path following [76, 30]. These methods can exploit the special structure of the problem, i.e., the bandedness of the quadratic form in the objective, to solve the problem very efficiently. To see how this can be done, we describe a simple primal-dual method in this section. For more detail on these (and related) methods, see, e.g., [12, section 11.7] or [103].
+
+The worst-case number of iterations in primal-dual interior-point methods for the QP (13) is O(n1/2) [73]. In practice, primal-dual interior-point methods solve QPs in a number of iterations that is just a few tens, almost independent of the problem size or data. Each iteration is dominated by the cost of computing the search direction, which, if done correctly for the particular QP (13), is O(n). It follows that the overall complexity is O(n), the same as for solving the H-P filtering problem (but with a larger constant hidden in the O(n) notation).
+
+
+<!-- p:12 -->
+
+
+The search direction is the Newton step for the system of nonlinear equations
+
+$$r _ { t } ( \nu , \mu _ { 1 } , \mu _ { 2 } ) = 0 ,$$
+
+where t &gt; 0 is a parameter and
+
+$$( 1 6 ) \ \ r _ { t } ( \nu , \mu _ { 1 } , \mu _ { 2 } ) = \left [ \begin{array} { c } \ r _ { d u a l } \\ \ r _ { c e n t } \end{array} \right ] = \left [ \begin{array} { c } \nabla g ( \nu ) + D ( \nu - \lambda 1 ) ^ { T } \mu _ { 1 } - D ( \nu + \lambda 1 ) ^ { T } \mu _ { 2 } \\ - \mu _ { 1 } ( \nu - \lambda 1 ) + \mu _ { 2 } ( \nu + \lambda 1 ) - ( 1 / t ) 1 \end{array} \right ]$$
+
+is the residual. (The first component is the dual feasibility residual, and the second is the centering residual.) Here μ1, μ2 ∈ Rn-2 are (positive) dual variables for the inequality constraints in (13), and ν is strictly dual feasible. As t → ∞, rt(ν, μ1, μ2) = .(   r o ( --s   sos e idea is to take Newton steps for solving the set of nonlinear equations rt(ν, μ1, μ2) = 0 for a sequence of increasing values of t.
+
+The Newton step is characterized by
+
+$$r _ { t } ( \nu + \Delta \nu , \mu _ { 1 } + \Delta \mu _ { 1 } , \mu _ { 1 } + \Delta \mu _ { 1 } ) \approx r _ { t } ( \nu , \mu _ { 1 } , \mu _ { 2 } ) + D r _ { t } ( \nu , \mu _ { 1 } , \mu _ { 2 } ) ( \Delta \nu , \Delta \mu _ { 1 } , \Delta \mu _ { 2 } ) = 0 ,$$
+
+where Drt is the derivative (Jacobian) of rt. This can be written as
+
+$$\left [ \begin{array} { c c c } \ D D ^ { T } & I & - I \\ I & J _ { 1 } & 0 \\ - I & 0 & J _ { 2 } \end{array} \right ] \left [ \begin{array} { c } \Delta \nu \\ \Delta \mu _ { 1 } \\ \Delta \mu _ { 2 } \end{array} \right ] = - \left [ \begin{array} { c } \ D D ^ { T } z - D y + \mu _ { 1 } - \mu _ { 2 } \\ f _ { 1 } + ( 1 / t ) \, \text {diag} ( \mu _ { 1 } ) ^ { - 1 } 1 \\ f _ { 2 } + ( 1 / t ) \, \text {diag} ( \mu _ { 2 } ) ^ { - 1 } 1 \end{array} \right ] ,$$
+
+where
+
+$$f _ { 1 } & = \nu - \lambda 1 \in R ^ { n - 2 } , \\ f _ { 2 } & = - \nu - \lambda 1 \in R ^ { n - 2 } , \\ J _ { i } & = d iag ( \mu _ { i } ) ^ { - 1 } \, d iag ( f _ { i } ) \in R ^ { ( n - 2 ) \times ( n - 2 ) } .$$
+
+(Here diag(w) is the diagonal matrix with diagonal entries w.) By eliminating (∆μ1, ∆μ2), we obtain the reduced system
+
+$$( D D ^ { T } - J _ { 1 } ^ { - 1 } J _ { 2 } ^ { - 1 } ) \, \Delta \nu = - \left ( D D ^ { T } \nu - D y - ( 1 / t ) \, \text {diag} ( f _ { 1 } ) ^ { - 1 } 1 + ( 1 / t ) \, \text {diag} ( f _ { 2 } ) ^ { - 1 } 1 \right ) .$$
+
+The matrix DDT — J−1 J−1 is banded (with bandwidth 5) so we can solve this reduced system in O(n) arithmetic operations. The other two components of the search step, ∆μ1 and ∆μ2, can be computed as
+
+$$\Delta \mu _ { 1 } & = - \left ( \mu _ { 1 } + ( 1 / t ) \, d i a g ( f _ { 1 } ) ^ { - 1 } 1 + J _ { 1 } ^ { - 1 } d \nu \right ) , \\ \Delta \mu _ { 2 } & = - \left ( \mu _ { 2 } + ( 1 / t ) \, d i a g ( f _ { 2 } ) ^ { - 1 } 1 - J _ { 2 } ^ { - 1 } d \nu \right )$$
+
+in O(n) arithmetic operations (since the matrices J1 and J2 are diagonal).
+
+A C implementation of a primal-dual interior-point method for l1 trend filtering is available online from www.stanford.edu/~boyd/11\_tf. For a typical problem with n = 10000 data points, it computes xlt in around one second on a 3GHz Pentium IV. Problems with one million data points require around 100 seconds, consistent with linear computational complexity in n.
+
+
+<!-- p:13 -->
+
+
+7. Extensions and Variations. The basic l1 trend estimation method described above can be extended in many ways, some of which we describe here. In each case, the computation reduces to solving one or a few convex optimization problems, and so is quite tractable; the interior-point method described above is readily extended to handle these problems.
+- 7.1. Polishing. One standard trick is to use the basic l1 filtering problem as a method to identify the kink points in the estimated trend. Once the kinks points {t1, . . . , tp} are identified, we use a standard least-squares method to fit the data over all piecewise-linear functions with the given kinks points:
+
+$$& \minimize \quad \sum _ { k = 1 } ^ { p - 1 } \sum _ { t _ { k } \leq t \leq t _ { k + 1 } } \| y - \alpha _ { k } - \beta _ { k } t \| _ { 2 } ^ { 2 } \\ & \text {subject to } \quad \alpha _ { k } + \beta _ { k } t _ { k + 1 } = \alpha _ { k + 1 } + \beta _ { k + 1 } t _ { k + 1 } , \quad k = 1 , \dots , p - 2 ,$$
+
+where the variables are the local trend parameters αk and βk. This technique is described (in another context) in, e.g., [12, sect. 6.5].
+
+- 7.2. Iterative Weighted l1 Heuristic. The basic l1 trend filtering method is equivalent to
+
+$$\min \min i t s _ { \substack { \minimize & \quad \| D x \| _ { 1 } \\ \text {subject to } & \| y - x \| _ { 2 } \leq s ,$$
+
+with an appropriate choice of parameter s. In this formulation, we minimize ∥Dx1 (our measure of smoothness of the estimated trend) subject to a budget on residual norm. This problem can be considered a heuristic for the problem of finding the piecewise-linear trend with the smallest number of kinks, subject to a budget on residual norm:
+
+$$\begin{array} { r l } { \minimize } & c a r d ( D x ) } \\ { s u b j e c t o } & \| y - x \| _ { 2 } \leq s , } \end{array}$$
+
+where card(z) is the number of nonzero elements in a vector z. Solving this problem exactly is intractable; all known methods require an exhaustive combinatorial search over all—or at least very many—possible combinations of kink points.
+
+The standard heuristic for solving this problem is to replace card(Dx) with ∥Dx‖1, which gives us our basic l1 trend filter, i.e., the solution to (18). This basic method can be improved by an iterative method that varies the individual weights on the second-order differences in xt. We start by solving (18). We then define a weight vector as
+
+$$w _ { t } \coloneqq 1 / ( \epsilon + | ( D x ) _ { t } | ) , \ \ t = 1 , \dots , n - 2 ,$$
+
+where € is a small positive constant. This assigns the largest weight, 1/e, when (Dx)t = 0; it assigns large weight when |(Dx)t| is small; and it assigns relatively small weight when |(Dx)t| is larger. We then recompute xt as the solution of problem
+
+```
+minimize       || diag(w) D x||_1
+    subject to      || y - x||_2 \leq s.
+
+```
+
+We then update the weights as above and repeat.
+
+
+<!-- p:14 -->
+
+
+This iteration typically converges in 10 or fewer steps. It often gives a modest decrease in the number of kink points card(Dx), for the same residual, compared to the basic l1 trend estimation method. The idea behind this heuristic has been used in portfolio optimization with transaction costs [69], where an interpretation of the heuristic for cardinality minimization is given. The reader is referred to [18] for a more extensive discussion on the iterative heuristic.
+
+7.3. Convex Constraints and Penalty Functions. We can add convex constraints on the estimated trend, or use a more general convex penalty function to measure the residual. In both cases, the resulting trend estimation problem is convex, and therefore tractable. We list a few examples here.
+
+Perhaps the simplest constraints are lower and upper bounds on xt, or the first or second differences of xt, as in
+
+$$| x _ { t } | \leq M , \ \ t = 1 , \dots , n , \quad | x _ { t + 1 } - x _ { t } | \leq S , \ \ t = 1 , \dots , n - 1 .$$
+
+Here we impose a magnitude limit M, and a maximum slew rate (or slope) S, on the estimated trend. Another interesting convex constraint that can be imposed on xt is monotonicity, i.e.,
+
+$$x _ { 1 } \leq x _ { 2 } \leq \cdots \leq x _ { n - 1 } \leq x _ { n } .$$
+
+Mions  o  s  om s  s ( nce regression, which has been extensively studied in statistics [3, 82]. (Related work on l1-regularized isotonic regression, in an engineering context, includes [40, 41].)
+
+We can also replace the square function used to penalize the residual term yt — xt with a more general convex function ψ. Thus, we compute our trend estimate xt as the minimizer of (the convex function)
+
+$$\sum _ { t = 1 } ^ { n } \psi ( y _ { t } - x _ { t } ) + \lambda \| D x \| _ { 1 } .$$
+
+For example, using ψ(u) = |u|, we assign a smaller penalty (compared to ψ(u) = (1/2)u2) to large residuals, but a larger penalty to small residuals. This results in a trend estimation method that is more robust to outliers than the basic l1 trend method since it allows large occasional errors in the residual. Another example is the Huber penalty function used in robust least squares, given by
+
+$$\psi _ { h u b } ( u ) = \left \{ \begin{array} { l l } { u ^ { 2 } , } & { | u | \leq M , } \\ { M ( 2 | u | - M ) , } & { | u | > M , } \end{array}$$
+
+where M ≥ 0 is a constant [53]. The use of an asymmetric linear penalty function of the form
+
+$$\psi _ { \tau } ( u ) = \left \{ \begin{array} { l l } { \tau u , } & { u > 0 , } \\ { - ( 1 - \tau ) u } & { o t h e r w i s e , } \end{array}$$
+
+where τ indicates the quantile of interest, is related to quantile smoothing splines. (The reader is referred to [59] for more on the use of this penalty function in quantile regression and [60] for more on quantile smoothing splines.)
+
+In all of these extensions, the resulting convex problem can be solved with a computational effort that is O(n), since the system of equations that must be solved at each step of an interior-point method is banded.
+
+
+<!-- p:15 -->
+
+
+7.4. Multiple Components. We can easily extend basic l1 trend filtering to analyze time series data that involve other components, e.g., occasional spikes (outliers), level shifts, seasonal components, cyclic (sinusoidal) components, or other regression components. The problem of decomposing given time series data into multiple components has been a topic of extensive research; see, e.g., [11, 29, 45, 46] and the references therein. Compared with standard decomposition methods, the extensions described here are well suited to the case when the underlying trend, once the other components have been subtracted out, is piecewise linear.
+
+Spikes. Suppose the time series data y has occasional spikes or outliers u in addition to trend and irregular components. Our prior information on the component u is that it is sparse. We can extract the underlying trend and the spike signal, by adding one more regularization term to (5), and minimizing the modified objective
+
+$$( 1 / 2 ) \| y - x - u \| _ { 2 } ^ { 2 } + \lambda \| D x \| _ { 1 } + \rho \| u \| _ { 1 } ,$$
+
+where the variables are x (the trend component) and u (the spike component). Here the parameter λ ≥ 0 is used to control the smoothness (or number of slope changes) of the estimated trend, and ρ ≥ 0 is used to control the number of spikes.
+
+Level Shifts. Suppose the time series data y has occasional abrupt level shifts. Level shifts can be modeled as a piecewise constant component w. To extract the level shift component w as well as the trend x, we add the scaled total variation of w, ρ∑t=2 |wt − wt-1|, to the weighted sum (5) and minimize the modified objective
+
+$$( 1 / 2 ) \| y - x - w \| _ { 2 } ^ { 2 } + \lambda \| D x \| _ { 1 } + \rho \sum _ { t = 2 } ^ { n } | w _ { t } - w _ { t - 1 } | ,$$
+
+over x ∈ Rn and w ∈ Rn. Here the parameter λ ≥ 0 is used to control the smoothness of the estimated trend x, and ρ ≥ 0 is used to control the frequency of level shifts in w.
+
+Periodic Components. Suppose the time series data y has an additive deterministic periodic component s with known period p:
+
+$$s _ { t + p } = s _ { t } , \ \ t = 1 , \dots , n - p .$$
+
+The periodic component s is called "seasonal" when it models seasonal fluctuations; removing effects of the seasonal component from y in order to better estimate the trend component is called seasonal adjustment. (The corresponding decomposition problem Hia              s )
+
+Seasonal adjustment is readily incorporated in l1 trend filtering: We simply solve the (convex) problem
+
+$$\min i m i z e \quad ( 1 / 2 ) \| y - x - s \| _ { 2 } ^ { 2 } + \lambda \| D x \| _ { 1 } \\ \text {subject to } \quad s _ { t + p } = s _ { t } , \quad t = 1 , \dots , n - p , \\ \sum _ { k = 1 } ^ { p } s _ { k } = 0 , \\$$
+
+where the variables are x (the estimated trend) and s (the estimated seasonal compo ns nt ont t tant dt nt t tsnt tt .n zero over the period; without this constraint, the decomposition is not unique [34, sect. 6.2.8]. To smooth the periodic component, we can add a penalty term to the objective, or impose a constraint on the variation of s. As a generalization of this formulation, the problem of jointly estimating multiple periodic components (with different periods) as well as a trend can be cast as a convex problem.
+
+
+<!-- p:16 -->
+
+
+When the periodic component is sinusoidal, i.e., st = a sin ωt + b cos ωt, where ω is the known frequency, the decomposition problem simplifies to
+
+$$\minimize \ ( 1 / 2 ) \sum _ { t = 1 } ^ { n } \| y _ { t } - x _ { t } - a \sin \omega t - b \cos \omega t \| _ { 2 } ^ { 2 } + \lambda \| D x \| _ { 1 } ,$$
+
+where the variables are x ∈ Rn and a, b ∈ R. (H-P filtering has also been extended to estimate trend and cyclic components; see, e.g., [39, 47].)
+
+Regression Components. Suppose that the time series data y has autoregressive (AR) components in addition to the trend x and the irregular component z:
+
+$$y _ { t } = x _ { t } + a _ { 1 } y _ { t - 1 } + \cdots + a _ { r } y _ { t - r } + z _ { t } ,$$
+
+where ai are model coefficients. (This model is a special type of multiple structural change time series model [100].) We can estimate the trend component and the AR model coefficients by solving the l1-regularized least squares problem
+
+$$\minimize \ ( 1 / 2 ) \sum _ { i = 1 } ^ { n } ( y _ { t } - x _ { t } - a _ { 1 } y _ { t - 1 } - \cdots - a _ { r } y _ { t - r } ) ^ { 2 } + \lambda \| D x \| _ { 1 } ,$$
+
+where the variables are xt ∈ Rn and a = (a1, ... , ar) ∈ R". (We assume that y1−r, . . , y0 are given.)
+
+7.5. Vector Time Series. The basic l1 trend estimation method can be generalized to handle vector time series data. Suppose that yt ∈ Rk for t = 1, . . . , n. We can find our trend estimate xt ∈ Rk, t = 1, . . . , k, as the minimizer of (the convex function)
+
+$$\sum _ { t = 1 } ^ { n } \| y _ { t } - x _ { t } \| _ { 2 } ^ { 2 } + \lambda \sum _ { t = 2 } ^ { n - 1 } \| x _ { t - 1 } - 2 x _ { t } + x _ { t + 1 } \| _ { 2 } ,$$
+
+where λ ≥ 0 is the usual parameter. Here we use the sum of the l2 norms of the second differences as our measure of smoothness. (If we use the sum of l1 norms, then the individual components of xt can be estimated separately.) Compared to estimating trends separately in each time series, this formulation couples together changes in the slopes of individual entries at the same time index, so the trend component found tends to show simultaneous trend changes, in all components of xt, at common kink points. (The idea behind this penalty is used in the group Lasso [105] and in compressed sensing involving complex quantities and related to total variation in two- or higherdimensional data [17, 84].) The common kink points can be interpreted as common abrupt changes or events in the underlying dynamics of the vector time series.
+
+7.6. Spatial Trend Estimation. Suppose we are given two-dimensional data yi,j , on a uniform grid (i, j) ∈ {1, . . . , m} × {1, . . . , n}, assumed to consist of a relatively slowly varying spatial trend component xi,j and a more rapidly varying component vi,j. The values of the trend component at node (i, j) and its 4 horizontally or vertically adjacent nodes are on a linear surface if both the horizontal and vertical second-order differences, xi−1,j − 2xij + xi+1j and xi,j−1 − 2xi,j + xi,j+1, are zero.
+
+
+<!-- p:17 -->
+
+
+As in the vector time series case, we minimize a weighted sum of the fitting error Σi=1 Σ =1 ji, i,j||2 ad thd pennalty
+
+$$\sum _ { i = 2 } ^ { m - 1 } \sum _ { j = 2 } ^ { n - 1 } [ ( x _ { i - 1 , j } - 2 x _ { i , j } + x _ { i + 1 , j } ) ^ { 2 } + ( x _ { i , j - 1 } - 2 x _ { i , j } + x _ { i , j - 1 } ) ^ { 2 } ] ^ { 1 / 2 }$$
+
+on slope changes in the horizontal and vertical directions. It is possible to use more sophisticated measures of the smoothness, for example, determined by a 9-point approximation that includes 4 diagonally adjacent nodes.
+
+The resulting trend estimates tend to be piecewise linear; i.e., there are regions over which xt is affine. The boundaries between regions can be interpreted as curves along which the underlying gradient changes rapidly.
+
+7.7. Continuous-Time Trend Filtering. Suppose that we have noisy measurements (ti, yi), i = 1, . . . , n, of a slowly varying continuous function at irregularly spaced ti (in increasing order). In this section we consider the problem of estimating the underlying continuous trend from the finite number of data points. This problem involves an infinite-dimensional set of functions, unlike the trend filtering problems considered above. (Related segmented regression problems have been studied in [38, 54, 63].)
+
+We first consider a penalized least squares problem of the form
+
+$$\min \min i { 2 ( 1 / 2 ) \sum _ { i = 1 } ^ { n } ( y _ { i } - x ( t _ { i } ) ) ^ { 2 } + \lambda } \int _ { t _ { 1 } } ^ { t _ { n } } ( x ( t ) ) ^ { 2 } \, d t$$
+
+over the space of all functions on the interval [t1, tn] with square integrable second derivative. Here, λ is a parameter used to control the smoothness of the solution. The solution is a cubic spline with knots at ti, i.e., a piecewise polynomial of degree 3 on R with continuous first and second derivatives; see, e.g., [33, 50, 98]. H-P filtering can be viewed as an approximate discretization of this continuous function estimation problem, when ti are regularly spaced: ti = t1 + (i − 1)h for some h &gt; 0. If the second derivative of x at ti is approximated as
+
+$$x ( t _ { i } ) \approx \frac { x ( t _ { i - 1 } ) - 2 x ( t _ { i } ) + x ( t _ { i + 1 } ) } { h } , \ \ i = 2 , \dots , n - 1 ,$$
+
+then the objective of the continuous-time problem (19) reduces to the weighted sum objective (1) of H-P filtering with regularization parameter λ/h.
+
+We next turn to the continuous time l1 trend filtering problem
+
+$$( 2 0 ) \quad \minimize _ { i = 1 } \ ( 1 / 2 ) \sum _ { i = 1 } ^ { n } ( y _ { i } - x ( t _ { i } ) ) ^ { 2 } + \lambda \int _ { t _ { 1 } } ^ { t _ { n } } | x ( t ) | \, d t$$
+
+over
+
+$$\chi = \left \{ x \colon [ t _ { 1 } , t _ { n } ] \to \mathbf R \, \Big | \, x ( t ) = \theta _ { 0 } + \theta _ { 1 } t + \int _ { t _ { 1 } } ^ { t _ { n } } \max ( t - s , 0 ) \, d \mu ( s ) , \, \theta _ { 0 } , \theta _ { 1 } \in \mathbf R , \, V ( \mu ) < \infty \right \} ,$$
+
+where V(μ) is the total variation of the measure μ on [t1, tn]. (This function space includes piecewise linear continuous functions with a finite number of knots; see [78].) The difference from (19) is that in the integral term the second derivative is penalized using the absolute value function.
+
+
+<!-- p:18 -->
+
+
+A standard result in interpolation theory [78] is that the solution of the interpolation problem
+
+$$\int ^ { t _ { n } }$$
+
+$$\minimize & \quad \int _ { t _ { 1 } } ^ { t _ { n } } | x ( t ) | \, d t \\ \text {subject to } & \quad x ( t _ { i } ) = y _ { i } , \quad i = 1 , \dots , n ,$$
+
+over X is continuous piecewise linear with knots at the points ti. From this, we can see that the solution to the continuous time l1 trend filtering problem (20) is also piecewise continuous linear with knots at the points ti; i.e., it is a linear spline. The second derivative of a piecewise linear function x with knots at the points ti is given by
+
+$$x ( t ) = \sum _ { i = 2 } ^ { n - 1 } \left ( \frac { x ( t _ { i + 1 } ) - x ( t _ { i } ) } { t _ { i + 1 } - t _ { i } } - \frac { x ( t _ { i } ) - x ( t _ { i - 1 } ) } { t _ { i } - t _ { i - 1 } } \right ) \delta ( t - t _ { i } ) ,$$
+
+where δ is the Dirac delta function. (The coefficients are slope changes at the kink points.) The integral of the absolute value of the second derivative is
+
+$$\int _ { t _ { 1 } } ^ { t _ { n } } | x ( t ) | \, d t = \sum _ { i = 2 } ^ { n - 1 } \left | \frac { x ( t _ { i + 1 } ) - x ( t _ { i } ) } { t _ { i + 1 } - t _ { i } } - \frac { x ( t _ { i } ) - x ( t _ { i - 1 } ) } { t _ { i } - t _ { i - 1 } } \right | .$$
+
+Thus the continuous l1 filtering problem (20) is equivalent to the (finite-dimensional) convex problem
+
+$$\minimize \ ( 1 / 2 ) \sum _ { i = 1 } ^ { n } ( y _ { i } - x _ { i } ) ^ { 2 } + \lambda \sum _ { i = 2 } ^ { n - 1 } \left | \frac { x _ { i + 1 } - x _ { i } } { t _ { i + 1 } - t _ { i } } - \frac { x _ { i } - x _ { i - 1 } } { t _ { i } - t _ { i - 1 } } \right |$$
+
+with variables (x1, . . . , xn) ∈ Rn. From the optimal points (ti, xi), we can easily recover the solution to the original continuous trend filtering problem: the piecewiselinear function that connects (ti, xi),
+
+$$x ^ { * } ( t ) = \frac { t - t _ { i } } { t _ { i + 1 } - t _ { i } } x _ { i + 1 } ^ { * } + \frac { t _ { i + 1 } - t } { t _ { i + 1 } - t _ { i } } x _ { i } ^ { * } , \quad t \in ( t _ { i } , t _ { i + 1 } ) ,$$
+
+is the optimal continuous trend that minimizes (20). When ti are regularly spaced, this problem reduces to the basic l1 trend filtering problem considered in section 3. For the same reason, we can solve (21) (and hence (20)) in O(n) arithmetic operations.
+
+7.8. Segmented Polynomial Regression. Thus far our focus has been on fitting a piecewise-linear function to the given data. We can extend the idea to fitting a piecewise polynomial of degree k-1 to the data. Using a weighted l1 norm of the kth-order difference of x as a penalty term, the extension can be formulated as
+
+$$\minimize \ ( 1 / 2 ) \sum _ { i = 1 } ^ { n } ( y _ { i } - x _ { i } ) ^ { 2 } + \lambda \| D ^ { ( k , n ) } x \| _ { 1 } .$$
+
+Here D(k,n) ∈ R(n−k)×n is the kth-order difference matrix on Rn, defined recursively as
+
+$$D ^ { ( k , n ) } = D ^ { ( 1 , n - k + 1 ) } D ^ { ( k - 1 , n ) } , \ \ k = 2 , 3 , \dots ,$$
+
+
+<!-- p:19 -->
+
+
+where D(1,p) ∈ R(p−1)×p is the first-order difference matrix on Rp,
+
+1 -1
+
+
+D(1,p) =
+
+·..
+
+1 -1
+
+
+nh      s    os o st t tnt s tt sns t ns '(  st tt tt ton et solved at each step of an interior-point method is banded with bandwidth linear in k.
+
+The resulting trend estimate xt tends to be piecewise polynomial of order k −1, i.e., there are regions over which xt is polynomial of order k − 1. The case of k = 1 corresponds to piecewise constant fitting and the case of k = 2 corresponds to piecewise-linear fitting.
+
+Acknowledgments. The authors thank Trevor Hastie, Johan Lim, Michael Lustig, Almir Mutapcic, and Robert Tibshirani for helpful comments and suggestions.
+
+<!-- END SOURCE 27/40: Kim_2009_l1-trend-filtering.md -->
+
+---
+
+<!-- BEGIN SOURCE 28/40: King_1993_low-frequency-filtering-appendix.md -->
+
+# Source: `King_1993_low-frequency-filtering-appendix.md`
+
+---
+id: "King_1993_low-frequency-filtering-appendix"
+source_pdf: "../pdf/King_1993_low-frequency-filtering-appendix.pdf"
+source_filename: "King_1993_low-frequency-filtering-appendix.pdf"
+format: "academic-paper"
+extraction_profile: "text-math-tables-high-fidelity"
+extraction_mode: "full-page-ocr"
+extraction_quality: "excellent"
+extraction_score: 98.0
+visual_assets: "disabled"
+---
+
+<!-- p:1 -->
+
+## Appendix to "Low Frequency Filtering and Real Business Cycles,
+
+Journal of Economic Dynamics and Control, 1993, 17: 207-231.
+
+Robert G. King and Sergio Rebelo where,
+
+
+<!-- p:2 -->
+
+
+$$F ( B ) & = \lambda \left [ B ^ { - 2 } - 4 B ^ { - 1 } + \left ( 6 + \frac { 1 } { \lambda } \right ) - 4 B + B ^ { 2 } \right ] \\ & = \lambda \left [ ( 1 - B ) ^ { 2 } \left ( 1 - B ^ { - 1 } \right ) ^ { 2 } + \frac { 1 } { \lambda } \right ] .$$
+
+A.1. Zeros of F Polynomial
+
+We develop properties of the polynomial F(z), especially the location of its zeros, establishing the claims made in the main text.
+
+(a) Reciprocal Character of Roots - since the polynomial F(z) is symmetric if z* is a root then 1/z* is also a root. To see this, it can be shown that F(z) = λ [(1 − z) (1 − 1)2 + −] for arbitrary z. Thus, if z* implies F(z*) = λ[(1 − z*)2 (1 − 1)2 + 1] = 0 then F(1) = λ[(1 − 1)2(1 − z*)2 + μ] = F(z*) = 0.
+
+- (b) Complex Character of Roots - For any real number z, F(z) &gt; 0. Thus, the roots must be complex. Further, it follows that z* and are complex 2* conjugates.
+
+### A.2. Inverting F(B) and Related Matters
+
+The previous results imply that we can express F(B) as:
+
+$$F ( B ) = \left ( \frac { \lambda } { \theta _ { 1 } \theta _ { 2 } } \right ) \left ( 1 - \theta _ { 1 } B \right ) \left ( 1 - \theta _ { 2 } B \right ) \left ( 1 - \theta _ { 1 } B ^ { - 1 } \right ) \left ( 1 - \theta _ { 2 } B ^ { - 1 } \right ) ,$$
+
+where |θi| &lt; 1, for i = 1, 2.
+
+Thus to determine a useful form for [F(B)]−1 = G(B), it is necessary to decompose:
+
+$$\underline { 1 } \cdot \underline { 1 } \cdot \underline { 1 } \cdot \underline { 1 } \cdot \underline { 1 }$$
+
+$$\frac { 1 } { 1 - \theta _ { 1 } z } \frac { 1 } { 1 - \theta _ { 2 } z } \frac { 1 } { 1 - \theta _ { 1 } z ^ { - 1 } } \frac { 1 } { 1 - \theta _ { 2 } z ^ { - 1 } } \\ \\ A _ { 0 } + \frac { A _ { 1 } } { 1 - \theta _ { 1 } z } + \frac { A _ { 2 } } { 1 - \theta _ { 2 } z } + \frac { A _ { 3 } } { 1 - \theta _ { 1 } z ^ { - 1 } } + \frac { A _ { 4 } } { 1 - \theta _ { 2 } z ^ { - 1 } } .$$
+
+into
+
+$$A _ { 0 } + \frac { A _ { 1 } } { 1 - \theta _ { 1 } z } + \frac { A _ { 2 } } { 1 - \theta _ { 2 } z } + \frac { A _ { 3 } } { 1 - \theta _ { 1 } z ^ { - 1 } } + \frac { A _ { 4 } } { 1 - \theta _ { 2 } z ^ { - 1 } } .$$
+
+To determine A0,A1, A2, A3, and A4 we require that:
+
+$$\begin{array} { r l r } { 1 } & { = } & { A _ { 0 } \left ( 1 - \theta _ { 1 } z \right ) \left ( 1 - \theta _ { 2 } z \right ) \left ( 1 - \theta _ { 1 } z ^ { - 1 } \right ) \left ( 1 - \theta _ { 2 } z ^ { - 1 } \right ) } \\ & { + A _ { 1 } \left ( 1 - \theta _ { 2 } z \right ) \left ( 1 - \theta _ { 1 } z ^ { - 1 } \right ) \left ( 1 - \theta _ { 2 } z ^ { - 1 } \right ) + A _ { 2 } \left ( 1 - \theta _ { 1 } z \right ) \left ( 1 - \theta _ { 1 } z ^ { - 1 } \right ) \left ( 1 - \theta _ { 2 } z ^ { - 1 } \right ) } \\ & { + A _ { 3 } \left ( 1 - \theta _ { 1 } z \right ) \left ( 1 - \theta _ { 2 } z \right ) \left ( 1 - \theta _ { 2 } z ^ { - 1 } \right ) + A _ { 4 } \left ( 1 - \theta _ { 1 } z \right ) \left ( 1 - \theta _ { 2 } z \right ) \left ( 1 - \theta _ { 1 } z ^ { - 1 } \right ) . } \end{array}$$
+
+## Appendix A
+
+Analysis of the HP Filter in Time Domain
+
+The starting point for our analysis is the (first order) condition/requirement that:
+
+$$y _ { t } = F ( B ) y _ { t } ^ { g }$$
+
+
+<!-- p:3 -->
+
+
+Evaluating this expression at z = 1 yields:
+
+$$1 1 1 1 A1 A2 A3 A4 1 − θ1 1 − θ2 1 − θ1 1 − θ2 = A0 + 1 − θ1 十 1 − θ2 十 1 − θ1 十 1 − θ2$$
+
+Evaluating this expression at z = 1 yields: θ1
+
+$$A _ { 1 } = \left [ \left ( 1 - \frac { \theta _ { 2 } } { \theta _ { 1 } } \right ) \left ( 1 - \theta _ { 1 } ^ { 2 } \right ) \left ( 1 - \theta _ { 2 } \theta _ { 1 } \right ) \right ] ^ { - 1 } , \\$$
+
+and evaluating at the other roots yields:
+
+$$A _ { 2 } & = \left [ \left ( 1 - \frac { \theta _ { 1 } } { \theta _ { 2 } } \right ) ( 1 - \theta _ { 1 } \theta _ { 2 } ) \left ( 1 - \theta _ { 2 } ^ { 2 } \right ) \right ] ^ { - 1 } , \\ A _ { 3 } & = \left [ \left ( 1 - \theta _ { 1 } ^ { 2 } \right ) ( 1 - \theta _ { 1 } \theta _ { 2 } ) \left ( 1 - \frac { \theta _ { 2 } } { \theta _ { 1 } } \right ) \right ] ^ { - 1 } , \\$$
+
+$$A _ { 4 } = \left [ ( 1 - \theta _ { 1 } \theta _ { 2 } ) \left ( 1 - \theta _ { 2 } ^ { 2 } \right ) \left ( 1 - \frac { \theta _ { 1 } } { \theta _ { 2 } } \right ) \right ] ^ { - 1 } .$$
+
+Some useful properties of these expressions are as follows. First, A1 = A3 and A2 = A4. Second, A1 and A2 are complex conjugates, as is most readily evident if we move to the (polar form) representation θ1 = r exp (im) and θ2 = r exp (—im) . Then, when we substitute these expressions for θ1 and θ2 into the preceding expressions for A1 and A2, we find that:
+
+$$A _ { 1 } = \left [ ( 1 - e x p \left ( - 2 i m \right ) ) \left ( 1 - r ^ { 2 } e x p \left ( 2 i m \right ) \right ) \left ( 1 - r ^ { 2 } \right ) \right ] ^ { - 1 }$$
+
+$$A _ { 2 } = \left [ ( 1 - e x p \left ( 2 i m \right ) ) \left ( 1 - r ^ { 2 } e x p \left ( - 2 i m \right ) \right ) \left ( 1 - r ^ { 2 } \right ) \right ] ^ { - 1 } ,$$
+
+so that the conjugate status of these coefficients becomes clear. Hence, combining the results of the forgoing, we can express the growth filter as:
+
+$$G ( B ) = [ F ( B ) ] ^ { - 1 }$$
+
+$$= & \left [ \frac { \theta _ { 1 } \theta _ { 2 } } { \lambda } \right ] \left \{ A _ { 0 } + \left [ \frac { A _ { 1 } } { 1 - \theta _ { 1 } B } + \frac { A _ { 2 } } { 1 - \theta _ { 2 } B } \right ] + \left [ \frac { A _ { 1 } } { 1 - \theta _ { 1 } B ^ { - 1 } } + \frac { A _ { 2 } } { 1 - \theta _ { 2 } B ^ { - 1 } } \right ] \right \} .$$
+
+### A.3. Coefficients in the Growth Filter
+
+To establish that the coefficients in the growth filter - which depend on A1θ1 + A2θ2 for j ≥ 0 - are real, it is again convenient to adopt the polar form representation:
+
+$$\theta _ { 1 } = r \ e x p \ ( i m )$$
+
+
+<!-- p:4 -->
+
+
+Then it follows that:
+
+$$\begin{array} { r l r } { \left [ A _ { 1 } \theta _ { 1 } ^ { j } + A _ { 2 } \theta _ { 2 } ^ { j } \right ] } & { = } & { R r ^ { j } \ e x p \ ( i \left ( M + j m \right ) ) + R r ^ { j } \ e x p \ ( - i \left ( M + j m \right ) ) } \\ & { = } & { 2 R r ^ { j } \, \cos \left ( M + j m \right ) . } \end{array}$$
+
+∞ Thus, we can write G(B) = ∑ gjBj as: j=-∞
+
+$$0 + 2 R \sum _ { j = 0 } ^ { \infty } r ^ { j } \cos \left ( M + j m \right ) B ^ { j } + 2 R \sum _ { j = 0 } ^ { \infty } r ^ { j } \cos \left [ 0 + 0 \right ]$$
+
+which indicates that the roots are real. Further, using cos (jm + M) = [cos (mj) cos (M) − sin (mj) sin (M)] it is direct to establish the form of the filter provided by Hodrick and Prescott (1980) and Singleton (1988). For this purpose, we note that A0 turns out to be -2R cos(M). Then, the previous expression for G(B) may be written as:
+
+$$G ( B ) = \sum _ { j = - \infty } ^ { \infty } g _ { j } B ^ { j }$$
+
+where
+
+$$\begin{array} { r c l } g _ { j } & = & r ^ { j } a _ { 1 } \cos ( b j ) + a _ { 2 } s i n ( b j ) & f o r \ j \geq 0 \\ g _ { j } & = & g _ { - j } & f o r \ j \leq 0 \end{array}$$
+
+with the constants a1 = [] 2R cos(M), a2 = 2R sin(M), b = |m| .
+
+$$\theta _ { 2 } = r \ e x p \ ( - i m )$$
+
+$$A _ { 1 } = R \ e x p \ ( i M )$$
+
+$$A _ { 2 } = R \ e x p \ ( - i M ) \, .$$
+
+
+<!-- p:5 -->
+
+
+## Appendix B
+
+Inverse Optimal Linear Filtering
+
+Taking as given a specific filter, the Hodrick and Prescott (1980) filter in our context, one can ask what the implicit model for the underlying series must be for this filter to be optimal, in the sense of minimizing the mean square error as in Wiener (1949) and Whittle (1963). In order to be possible for the HP filter to be optimal we start with a statistical representation of the underlying time series which is linear and in which growth and cycles are separate phenomena.
+
+Suppose that we view the growth and cyclical components as being generated by ARMA models:
+
+$$\begin{array} { r c l } A ^ { g } ( B ) \ y _ { t } ^ { g } & = & M ^ { g } ( B ) \ \epsilon _ { t } ^ { g } \\ A ^ { c } ( B ) \ y _ { t } ^ { c } & = & M ^ { c } ( B ) \ \epsilon _ { t } ^ { c } \end{array}$$
+
+where ea and ∈c are white noise processes whose variances are s2(εc) and s2(ε9). By assumption, the roots of the autoregressive polynomials lie outside the unit circle (stationarity) and the roots of the moving average polynomial lie outside the unit circle (invertibility). The innovations ea and ∈f are serially uncorrelated and, for simplicity, we assume that E[e¿ €] = 0. Further, for s2(∈c) convenience, we define the ratio of variances ψ = . (6∂)zs+(s)zs
+
+Whittle (1963, chapter V) shows that the optimal (two sided) signal extraction filter for the cyclical component is:
+
+$$C ^ { * } ( B ) = \frac { \Gamma _ { c c } ( B ) } { \Gamma _ { c c } ( B ) + \Gamma _ { g g } ( B ) }$$
+
+where Γcc(B) is the autocovariance generating function of the cyclical component and Γgg(B) is the autocovariance generating function of the growth component. From the ARMA structure it follows directly that:
+
+$$\begin{array} { r l } { \Gamma _ { c c } ( z ) } & { = } & { \frac { M ^ { c } ( z ) M ^ { c } ( z ^ { - 1 } ) } { A ^ { c } ( z ) A ^ { c } ( z ^ { - 1 } ) } s ^ { 2 } ( \epsilon _ { t } ^ { c } ) } \\ { \Gamma _ { g g } ( z ) } & { = } & { \frac { M ^ { g } ( z ) M ^ { g } ( z ^ { - 1 } ) } { A ^ { g } ( z ) A ^ { g } ( z ^ { - 1 } ) } s ^ { 2 } ( \epsilon _ { t } ^ { g } ) . } \end{array}$$
+
+Hence, it follows that the optimal filter may be expressed as:
+
+$$C ^ { A } ( B ) = \frac { \psi A ^ { g } ( B ) A ^ { g } ( B ^ { - 1 } ) } { \psi A ^ { g } ( B ) A ^ { g } ( B ^ { - 1 } ) + ( 1 - \psi ) Q ( B ) } \\ \text {where } Q ( B ) = \frac { [ A ^ { c } ( B ) A ^ { c } ( B ^ { - 1 } ) ] [ M ^ { g } ( B ) M ^ { g } ( B ^ { - 1 } ) ] } { M ^ { g } ( B ) M ^ { c } ( B ^ { - 1 } ) } . \\ \text {Whitel's} o n o l i v i o n ( 1 0 6 3 ) \text { is lifted to at optionuary } A \cap [ A \cap M ] \cap [ A \cap M ] \text { .}$$
+
+Whittle's analysis (1963) is limited to stationary ARMA processes. However, recent work extends these formulas to cases with unit roots (Watson (1986) provides a brief summary of Bell's (1984) work on these cases).
+
+
+<!-- p:6 -->
+
+
+#### Matching the HP Cyclical Filter
+
+The HP cyclical filter may be written as:
+
+$$C ( B ) = [ F ( B ) - 1 ] \left [ F ( B ) ^ { - 1 } \right ] = \frac { \lambda \left [ 1 - B \right ] ^ { 2 } \left [ 1 - B ^ { - 1 } \right ] ^ { 2 } } { 1 + \lambda \left [ 1 - B \right ] ^ { 2 } \left [ 1 - B ^ { - 1 } \right ] ^ { 2 } }$$
+
+The problem is to find AR and MA polynomials (Aa(B), Ac(B), M9(B), and Mc(B)) such that C(B) and C*(B) coincide.
+
+One example of such an inverse optimal filtering rule is discussed by Hodrick and Prescott (1980, p. 5) and involves assuming that:
+
+$$A ^ { g } ( B ) \ = \ ( 1 - B ) ^ { 2 }$$
+
+$$A ^ { c } ( B ) \ = \ M ^ { g } ( B ) = M ^ { c } ( B ) = 1 .$$
+
+That is, under this specification, the change in the growth rate is a white noise as is the cyclical component. Further, the parameter λ corresponds to ψ which is equal to the ratio of variances λ = s2(∈c) = (1/I) 1) s(∈c) Hodrick (h-1) s2(€9) s(e9) and Prescott (1980) use a "prior view that a five percent cyclical component is moderately large as is a one-eighth of one percent change in the rate of growth in a quarter. This led us to select λ(1/2) 5 or λ = 1600 as a value for the (1/8) smoothing parameter."
+
+Pursuing this line further, suppose that we require that A9(B) = (1 − B)2 so as to accommodate nonstationarity in the growth rate. Then, it follows that C(B) = C*(B) requires that:
+
+$$\frac { 1 } { \lambda } = \frac { 1 - \psi } { \psi } Q ( B ) .$$
+
+Thus, the optimality of the HP filter requires - apart from the constant terms - restrictions across the Ac(B), Mc(B), and Ma(B) polynomials. In particular it requires that:
+
+$$M ^ { c } ( B ) = \left [ \frac { \lambda ( 1 - \psi ) } { \psi } \right ] ^ { ( 1 / 2 ) } A ^ { c } ( B ) M ^ { g } ( B ) .$$
+
+In our view, these sorts of restrictions are unlikely to arise directly from the structure of dynamic economic models since in these models growth and cycles do not tend to arise as separate phenomena.
+
+<!-- END SOURCE 28/40: King_1993_low-frequency-filtering-appendix.md -->
+
+---
+
+<!-- BEGIN SOURCE 29/40: King_1993_low-frequency-filtering-real-business-cycles.md -->
+
+# Source: `King_1993_low-frequency-filtering-real-business-cycles.md`
+
+---
+id: "King_1993_low-frequency-filtering-real-business-cycles"
+source_pdf: "../pdf/King_1993_low-frequency-filtering-real-business-cycles.pdf"
+source_filename: "King_1993_low-frequency-filtering-real-business-cycles.pdf"
+format: "academic-paper"
+extraction_profile: "text-math-tables-high-fidelity"
+extraction_mode: "full-page-ocr"
+extraction_quality: "excellent"
+extraction_score: 108.0
+visual_assets: "disabled"
+references_file: "../references/King_1993_low-frequency-filtering-real-business-cycles.references.md"
+---
+
+<!-- p:1 -->
+
+## Low frequency filtering and real business cycles
+
+### Robert G. King and Sergio T. Rebelo*
+
+Rochester Center for Economic Research, Rochester, NY 14627, USA
+
+Received November 1989, final version received December 1991
+
+This paper discusses in detail the Hodrick-Prescott (1980) filter from time and frequency domain perspectives, motivating it as a generalization of the exponential smoothing filter. We show that the HP filter – when applied to large samples – contains a centered fourth difference and hence renders stationary time series that are difference-stationary' and, indeed, integrated of higher order.
+
+However, our application of the HP filter to U.S. time series and to the simulated outcomes of real business cycle models leads us to question its widespread use as a unique method of trend elimination. We provide examples of how HP filtering dramatically alters measures of persistence, variability, and comovement.
+
+## 1. Introduction
+
+A hallmark of modern equilibrium business cycle theory is the view that growth, business cycles, and seasonal variations are to be studied within a unified framework. Even though rational economic agents are presumed to respond differently to shocks of varying duration, dynamic economic theory generally imposes concrete and extensive restrictions across frequencies. For one example, the manner in which agents respond to varying seasonal opportunities provides information about how they will respond to temporary opportunities during the course of business cycles. For another, the manner
+
+*The authors are also affiliated with the University of Rochester (R. G. King) and Northwestern University, Portuguese Catholic University, and Bank of Portugal (S. T. Rebelo). They acknowledge financial support from the National Science Foundation. This research has benefited from discussions with Marianne Baxter, Gary Hansen, Robert Hodrick, Charles Plosser, Edward Prescott, Mark Watson, and David Wilcox. However, the authors are residual claimants with respect to errors of any sort.
+
+0165-1889/93/$05.00 © 1993—Elsevier Science Publishers B.V. All rights reserved in which labor supply responds to the permanent wage and wealth changes during economic growth restricts responses at business cycle frequencies.
+
+
+<!-- p:2 -->
+
+
+Yet, beginning with Kydland and Prescott (1982), many studies in the real business cycle research area apply the HP filter - due to Hodrick and Prescott (1980) – to both time series generated from an artificial economy and actual data before making conclusions about the properties of the model and its congruence with observations. This practice corresponds to an implicit definition of the business cycle frequencies' and a decision to downplay the implications of the model at other frequencies, generally on the grounds that these represent growth rather than business cycles.
+
+Reading the literature on real business cycles, one can easily come to the Gon  y y  , t o  a mno consequences for how one thinks about economic models and their consistency with observed time series. This paper demonstrates that the opposite conclusion is true: the practice of low frequency filtering has major consequences for both the stylized'facts of business cycles and the perceived operation of dynamic economic models. In fact, the mechanical application of the HP filter as a detrending procedure removes important time series o ru  s  s  ta es cycle phenomena.
+
+Our motivation for this investigation derived from two sources, which we provide to the reader as puzzles to be investigated in the paper.
+
+### 1.1. Implications for simulated time series
+
+Oue une Se he  one a   oe hirn nan attempt to replicate results in Hansen's (1985) analysis of alternative labor supply elasticities in a basic real business cycle model.1
+
+Table 1 provides population moments with and without HP filtering for an economy similar to the divisible labor model discussed in Hansen (1985). This model is one in which the single source of uncertainty is a trend-stationary technology shock to total factor productivity; it is detailed in King, Plosser, and Rebelo (1988a) and reviewed in section 5 below. From this table, it is clear that HP filtering alters the moment implications of the model in a quantitatively important manner, but that this influence is not constant across series. First, HP filtering, which extracts a component from the original series, lowers volatility as measured by the standard deviation columns in table 1. Second, HP filtering alters the relative volatilities (the standard deviation of a variable divided by that of output) of different series. In Table 1
+
+1We thank Gary Hansen for providing some simulation results for unfiltered versions of his model (1985) that confirmed our conjectures that filtering, not model solution methods or model parameter values, lay at the heart of major differences in moments.
+
+
+<!-- p:3 -->
+
+
+Effects of filtering on population moments.
+
+|                                                                        | I I I I I I I I                                      |
+|------------------------------------------------------------------------|------------------------------------------------------|
+|                                                                        | ~ ~5 c5 ~ ~5 c5 ~ ~5 I I I I I I I                   |
+|                                                                        | I I                                                  |
+| oO l~ l "~ ~ l ~ O~ ~ t~                                               | I                                                    |
+| c5 c5 ~ ~5 ~ ~ ~ c5                                                    | ~ ~5 ~ ~ c5 c5 ~ ~5 I                                |
+| eS ~ ~5 ¢5 ~5 ~5 ¢5 ~5                                                 | c5 ~5 c5 ~5 c5 c5 ~ ¢5                               |
+| ~ ~ ~ t'q o~ ~ t~ "~ " oo oo t ~ q'~ oo oO ~.~ r.~ ~ ~ e5 c5 ~ ¢5 eS ~ | q'~ l "~ "~" "~" ~4~ ~ t¢~ ¢¢) ~5 ~5 ¢5 c5 ~ ~ ¢5 ~5 |
+| "~" ~ t'q t~ ~t~ ~" t"q t ~ I                                          | I                                                    |
+| c5 ~ ~ c5 c5 ~ ~ c5 I                                                  | c5 c5 ~ c5 ~ ¢5 c5 c5 I I I I I                      |
+|                                                                        | c5 ~5 c5 c5 c5 ~ c5 c5 I I I I I I                   |
+|                                                                        | t~ 00 t¢5 Ig~ ~4~ tg~ ~ t~ ~5 ~5 c5 ¢5 ~5 ~5 ~ ~     |
+|                                                                        | c5 c5 c5 c5 c5 c5 c5¢5                               |
+| ,d ~ e4 c5c5 c5 c5 ~                                                   | ,~c5 eq ~ ~ c5 c5c5                                  |
+| t'q l ~ O0 ~ 0~ t'~ t ~ r'~ ,£-rq o~ t-,i eq eq ~ c5                   |                                                      |
+
+
+<!-- p:4 -->
+
+
+particular, it increases the relative volatility of investment and hours while lowering that of consumption, the real wage, and the capital stock. Third, the correlations between individual series and output – a measure of cyclical sensitivity – are generally altered by HP filtering. Notably, the cyclical variation in capital and labor input is dramatically altered by filtering. In the unfiltered economy, capital's correlation with output is 0.68 and labor's correlation with output is 0.79. With filtering, capital's correlation with output drops to 0.07 and labor's correlation with output rises to 0.98.
+
+### 1.2. HP filtering of some U.S. post-war time series
+
+Our second indication of the potential importance of HP filtering came from Marianne Baxter's empirical work [Baxter (1991) and Baxter and Stockman (1989)] on stylized facts of economic fluctuations in the United States and other countries.2 To provide some empirical background to our u b d b   n bi   hn snn unos a measure of aggregate economic activity and a measure of labor input. These are the logarithm of U.S. real gross national product, which we denote by y,, and the logarithm of per capita average hours worked, which we denote by N.
+
+Like other low frequency filters, the HP filter can be viewed as extracting growth and cyclical components from the data.3 To start, let us focus on the (   a   d    s 'a deviation from a linear trend (so that the residual y' = y, − γt). If the growth component is assumed to be a deterministic trend, then the business cycle component is y. Under the HP filtering procedure, by contrast, the time series is permitted to have a stochastic growth component. In addition to extracting a linear trend – if one exists in the series under study - HP filtering also removes some additional variation whose properties depend on the series in ways detailed in section 2 below. The HP cyclical component is then defined as the difference between the original time series and the HP growth component.
+
+Implications for real GNP: The first panel of fig. 1 plots the HP growth component versus the linear trend component of real gross national product. A relatively common reaction to this figure is that these two ways of removing
+
+2We thank Marianne Baxter for suggesting the revealing examples contained in this section and for technical assistance in producing these results.
+
+3In part, our discussion in this section and below involves the issue of how best to define business cycles. One possibility – which is sometimes discussed in evaluation of mechanical procedures such as the HP filter – would be to select some mechanical method that broadly replicated the stylized facts reported by NBER researchers following Mitchell (1927, 1951) and Burns and Mitchell (1941). However, preliminary work by King and Plosser (1989) leads us to believe that the NBER methods should be subject to some scrutiny as well.
+
+
+<!-- p:5 -->
+
+
+%
+
+Trends in Output Per Capita
+
+-3.8
+
+Trend
+
+RLinear Trend
+
+-4.2
+
+-4.4
+
+-4.6
+
+45
+
+50
+
+55
+
+60
+
+65
+
+70
+
+75
+
+80
+
+85
+
+90
+
+date
+
+HP Growth Component &amp; Linear Trend Residual
+
+20
+
+10
+
+HP Trend
+
+0
+
+Residual
+
+-10
+
+Growth
+
+Component
+
+-20
+
+45
+
+50
+
+55
+
+80
+
+65
+
+70
+
+75
+
+80
+
+85
+
+06
+
+date
+
+HP Cyclical Component
+
+20
+
+10
+
+0
+
+-10
+
+-20
+
+45
+
+50
+
+55
+
+60
+
+65
+
+70
+
+75
+
+80
+
+85
+
+90
+
+date
+
+Fig. 1
+
+
+<!-- p:6 -->
+
+
+rett  it it  st e       so consequences for business cycle components.
+
+In order to study the practical implications of alternative detrending methods, we construct the HP stochastic growth component by subtracting a linear trend from the HP growth component (taking the vertical difference between the series in the first panel of fig. 1). We call this component HP®(y,). Summarizing our definitions, the alternative decompositions are
+
+$$y _ { t } = \gamma t + y _ { t } ^ { r } = \gamma t + H P ^ { c } ( \, y _ { t } ) + H P ^ { g } ( \, y _ { t } ) \, ,$$
+
+i.e., the HP cyclical and stochastic growth components sum to the residual from the deterministic trend.
+
+The second panel of fig. 1 makes clear that the HP stochastic growth component constitutes a major portion of the departure of output from a linear trend, so that the implied cyclical components arising from these two methods of trend elimination are very different both in terms of magnitude and persistence. Notably, the autocorrelation correlation coefficient of y at the annual lag is 0.72. The third panel of fig. 1 plots the HP cyclical component [HP(y,)] of real GNP, which is a rapidly fluctuating series, as may be judged from its autocorrelation structure. The autocorrelation of HP(y,) at a year lag (four quarters), for example, is only 0.09, which is an order of magnitude smaller than the autocorrelation coefficient for y' at the same lag.
+
+Implications for GNP and labor input: The first panel of fig. 2 plots yi versus the departures of our labor input measure from its mean (i.e., N, — Ñ). There is not a strong relationship: the contemporaneous correlation o y y    o c yo   on output and hours in the second panel of fig. 2, there is a striking coincidence: the contemporaneous correlation is 0.86.
+
+### 1.3. Outline of our analysis
+
+To this point, we have shown that low frequency filtering - using the Hodrick and Prescott (1980) filter – has important implications for moments of U.S. time series and a simulated real business cycle model. In developing an explanation of the origin of these results and their practical consequences for business cycle research we proceed as follows. In section 2 we first discuss what linear filtering is and then review some facts about linear filters. In section 3 we derive the HP growth and cyclical filters as a direct generalization of the well-known exponential smoothing filter of Brown (1962). In section 4 we investigate the conditions under which the HP filter is an bpr     r  r    r  al aa uss s s us s uo uts s us s uste by section 3. Section 6 is a brief summary and conclusion.
+
+
+<!-- p:7 -->
+
+Hours - mean and Output - linear trend
+
+0.2
+
+0.1
+
+Output
+
+0
+
+Hours
+
+-0.1
+
+-0.2
+
+1945
+
+1950
+
+1955
+
+1960
+
+1965
+
+19970
+
+1975
+
+1980
+
+1985
+
+1890
+
+date
+
+HP cyclical components of Output and Hours
+
+0.2
+
+0.1
+
+Output
+
+0
+
+Hours
+
+-0.1
+
+-0.2
+
+1945
+
+1950
+
+1955
+
+1960
+
+1985
+
+1970
+
+1975
+
+1980
+
+1985
+
+1990
+
+date
+
+Fig. 2
+
+## 2. Some facts about linear filtering
+
+In this section, we provide an overview of analytical tools for studying the implications of linear filters. This discussion can be skipped by readers who are comfortable with introductory treatments of frequency domain methods [e.g., Harvey (1981, ch. 3)]. Throughout our discussion in this section, we will focus our attention on a representative time series y,, which we treat as the logarithm of an original series so that its first difference is a growth rate.
+
+In filtering y,, a researcher is motivated by one of several objectives: (i) extraction of a component such as a growth, cyclical, or seasonal component, (ii) transformation to induce stationarity, or (iii) mitigation of measurement error that is assumed to be particularly important at specific frequencies. We concentrate on the first two motivations, since a detailed treatment of measurement error would require grappling with details of a specific application.
+
+
+<!-- p:8 -->
+
+
+To focus our discussion, then, consider the idea that a particular economic model makes predictions about a business cycle' component of a time series and that the researcher views the series as containing both growth and business cycle components,
+
+$$y _ { t } = y _ { t } ^ { 8 } + y _ { t } ^ { c } ,$$
+
+where y% is the growth component and yc is the business cycle component. Representing yå as a moving average (possibly two-sided) of observed y, permits extraction of the growth component (y) and the cyclical component (y). That is, suppose that we assume that
+
+$$y _ { t } ^ { \& } = \sum _ { j = - \infty } ^ { \infty } g _ { j } y _ { t - j } = G ( B ) \, y _ { t } ,$$
+
+where B is the backshift operator with B"x, =x,-n for n ≥0. Then, since yc = yt − yå, it follows that yc is also a moving average of yt,
+
+$$y _ { t } ^ { c } = \left [ 1 - G ( B ) \right ] y _ { t } \equiv C ( B ) \, y _ { t } .$$
+
+In the language of filtering theory, G(B) and C(B) = [1 − G(B)] are linear filters.
+
+In order to discuss why a specific linear filter may be described as a low frequency filter, we are led to consideration of the Fourier transform of a linear filter (also called the frequency response function of the filter). For example, the frequency response of the growth filter is
+
+$$\tilde { G } ( \omega ) = \sum _ { j = - \infty } ^ { \infty } g _ { j } \exp ( - i j \omega ) \, ,$$
+
+where i denotes the imaginary number √(-1) and where ω is frequency measured in radians, i.e., − π ≤ ω ≤ π.
+
+Gain and phase decomposition: At a given frequency ω, the frequency response (ω) is simply a complex number, so that it may be written in polar form as Ġ(ω) = Γ(ω)exp(−iΨ(ω)), where Γ(ω) = |Ġ(ω)| and Ψ(ω) are real numbers for fixed ω. In these expressions and below, |x| denotes the modulus of x (the square root of the product of x and its conjugate). The gain of the linear filter, Γ(ω), yields a measure – at the specified frequency ω – of the increase in the amplitude of the filtered series over the original series. The phase, Ψ(ω), yields a measure of the time displacement attributable to the linear filter, again at the specified frequency ω. The frequency response unt ntd  (tn untn on  ta nto n on untion Ψ(ω) by replicating the preceding decomposition at each value of ω.
+
+
+<!-- p:9 -->
+
+a: Impact of Filtering--Increase in Gain
+
+2
+
+1
+
+0
+
+-1
+
+-2
+
+0
+
+5
+
+10
+
+15
+
+20
+
+25
+
+30
+
+35
+
+40
+
+time
+
+Fig. 3. ----original series, ——filtered series.
+
+b:Impact of Filtering--Phase Shift
+
+2
+
+1
+
+0
+
+-1
+
+-2
+
+0
+
+5
+
+10
+
+15
+
+20
+
+25
+
+30
+
+35
+
+40
+
+time
+
+To take a concrete example, suppose that a time series is strictly periodic with a period of 2π/ω*. Then application of the linear filter G would simply alter the range of this periodic function by Γ(ω*) = |G(ω*)|, as illustrated in fig. 3a. Further, fig. 3b illustrates the hypothetical phase shift effect of a linear filter.
+
+Symmetric filters: In our analysis, we will focus on filters that possess a symmetry property in that gj = g –j. For any such filter, it is possible to show that
+
+$$\tilde { G } ( \omega ) = g _ { 0 } + 2 \sum _ { j = 1 } ^ { \infty } g _ { j } \cos ( j \omega ) ,$$
+
+using the trigonometric identity 2 cos(x) = {exp(ix) + exp(−ix)}. Symmetric filters have the important property that they do not induce a phase shift, i.e., Ψ(ω) = 0 for all ω, since the Fourier transform (ω) is real for a symmetric gain
+
+
+<!-- p:10 -->
+
+
+1.5
+
+1
+
+0.5
+
+0
+
+
+ω*0.1
+
+0.2
+
+a: idealized low frequency filter
+
+0.3
+
+0.4
+
+0.5
+
+0.6
+
+0.7
+
+0.8
+
+0.9
+
+1
+
+angular frequency (in fractions of pi)
+
+b: implied cyclical filter
+
+1.5
+
+1
+
+gain
+
+0.5
+
+0
+
+
+ω*0.1
+
+0.2
+
+0.3
+
+0.4
+
+0.5
+
+0.6
+
+0.7
+
+0.8
+
+0.9
+
+1
+
+angular frequency (in fractions of pi)
+
+Fig. 4
+
+filter. Thus, the gain function is equal to the frequency response, so that we use these terms interchangeably below.
+
+Further, in the class of symmetric filters, it is easy to see that
+
+$$\tilde { G } ( 0 ) = \sum _ { j = - \infty } ^ { \infty } g _ { j } = 1$$
+
+is a necessary and sufficient condition for a filter to have the property that it has unit gain at zero frequency.4 Thus, by extension, the associated cyclical filter C(B) = [1 - G(B)] will place zero weight on zero frequency whenever G(0) = 1.
+
+By restricting attention to symmetric filters, then, we can simply express their implications by plotting the gain for various values of ω. Fig. 4a depicts -n  ae a y es e e o os e un cies up to some maximum ω*. It has unit gain for frequencies 0 ≤ ω ≤ ω* and zero gain for ω* ≤ ω ≤ π. Fig. 4b shows the gain of its cyclical counterpart, C(B) = [1 – G(B)].5 This type of band pass' filter is a natural procedure for isolating the business cycle frequencies. In fact, Prescott (1986) describes the Ga l ar       b r r at eliminates all frequencies lower than eight years.
+
+4This property obtains for symmetric filters since cos(0) = 1 and it follows directly that Ġ(0) = 1. Moreover, this property holds as well for nonsymmetric filters since exp(0) = 1 implies that (0) = 1 under the condition that the filter weights sum to unity.
+
+
+<!-- p:11 -->
+
+
+## 3. Analysis of some common linear filters
+
+In many practical contexts, one frequently approaches the task of extracting unobserved components by solving a minimization problem. Two noted examples are the problem (ES) which leads to the exponential smoothing filters for growth and cyclical components and the problem (HP) which leads to the Hodrick-Prescott (1980) filters for growth and cyclical components. The HP filter has been widely used in the real business cycle literature, while the ES filter was employed by Lucas (1980) in his empirical investigation of the quantity theory of money. These two filters can be obtained as the solutions to the following problems:6
+
+$$( E S ) \quad \min _ { \{ y _ { t } ^ { \ell } \} _ { t = 1 } ^ { T } } \sum _ { t = 1 } ^ { T } \left [ ( \ y _ { t } - y _ { t } ^ { 8 } ) ^ { 2 } + \lambda ( \ y _ { t } ^ { 8 } - y _ { t - 1 } ^ { 8 } ) ^ { 2 } \right ] ,$$
+
+$$( H ) \min _ { \{ y _ { t } ^ { s } \} _ { i = 0 } ^ { T + 1 } } \sum _ { t = 1 } ^ { T } \left [ ( \ y _ { t } - y _ { t } ^ { s } ) ^ { 2 } + \lambda \left [ ( \ y _ { t + 1 } ^ { s } - y _ { t } ^ { s } ) - ( \ y _ { t } ^ { s } - y _ { t - 1 } ^ { s } ) \right ] ^ { 2 } \right ] .$$
+
+In practice, the ES program would contain an additional parameter - a constant mean of the growth rate – to permit the minimal extraction of a deterministic linear trend for each chosen value of λ. The HP program automatically involves extraction of a linear trend component, since this specification involves no change in the growth rate. Thus, throughout our discussion, we proceed as though a linear trend had already been removed from data.
+
+Each of these minimization problems contains a parameter λ that penalizes' changes in the growth component [in problem (ES)] or in the acceleration of the growth component [in problem (HP)]. Below, we will use the first-order conditions from these problems to characterize the associated linear filters. For the minimization problem (ES), the first-order condition takes the form
+
+5As discussed in Koopmans (1974, pp. 176–185), it is not possible to apply that ideal filter to a finite length data set, since its construction requires an infinite number of weights. Truncation of these weights gives rise to leakage' from those frequencies for which the band pass filter is zero to those for which it is unity.
+
+6Our formulation of the HP problem is slightly different from that originally presented in Hodrick and Prescott (1980), in terms of treatment of endpoints. However, this difference is unimportant given our focus on the infinite sample' version of the filter.
+
+
+<!-- p:12 -->
+
+
+$$0 = - 2 [ y _ { t } - y _ { t } ^ { g } ] + 2 \lambda [ y _ { t } ^ { g } - y _ { t - 1 } ^ { g } ] - 2 \lambda [ y _ { t + 1 } ^ { g } - y _ { t } ^ { g } ] .$$
+
+For the minimization problem (HP), the first-order condition takes the form
+
+$$0 = - 2 ( y _ { t } - y _ { t } ^ { g } ) + 2 \lambda [ ( y _ { t } ^ { g } - y _ { t - 1 } ^ { g } ) - ( y _ { t - 1 } ^ { g } - y _ { t - 2 } ^ { g } ) ] \\ - 4 \lambda [ ( y _ { t + 1 } ^ { g } - y _ { t } ^ { g } ) - ( y _ { t } ^ { g } - y _ { t - 1 } ^ { g } ) ] \\ + 2 \lambda [ ( y _ { t + 2 } ^ { g } - y _ { t + 1 } ^ { g } ) - ( y _ { t + 1 } ^ { g } - y _ { t } ^ { g } ) ] .$$
+
+In each case, then, the first-order condition links yc = y, − y% to changes in the growth component in adjacent periods. Below, this shared characteristic will play an important role in analysis of the growth and cyclical filters associated with these minimization problems.
+
+In studying the optimal linear filters that solve these first-order conditions, we will consider the limiting version that obtains as the historical record length (T) is driven to infinity. This results in relatively simple formulae describing the filters and provides the maximum opportunity for these to match the perfect low frequency filter described earlier. In this case, each of the first-order conditions can be written in the form F(B)y = y,. The F(B) polynomials associated with the two problems are:
+
+$$F _ { E S } ( B ) & = - \lambda B ^ { - 1 } + ( 1 + 2 \lambda ) - \lambda B \\ & = \left [ \lambda ( 1 - B ) ( 1 - B ^ { - 1 } ) + 1 \right ] , \\ F _ { H P } ( B ) & = \left [ \lambda B ^ { - 2 } - 4 \lambda B ^ { - 1 } + ( 6 \lambda + 1 ) - 4 \lambda B + \lambda B ^ { 2 } \right ] \\ & = \left [ \lambda ( 1 - B ) ^ { 2 } ( 1 - B ^ { - 1 } ) ^ { 2 } + 1 \right ] .$$
+
+In order to find the growth and cyclical filter, we need to invert F(B) since G(B) = [F(B)]−1 and C(B) = 1 − G(B) = [F(B) − 1]F(B)]−1. The details of this process are relatively easy for the ES filter but are more tedious for the HP filter.7
+
+7See appendix A of the working paper version of this research, King and Rebelo (1989), for these calculations.
+
+
+<!-- p:13 -->
+
+
+### 3.1. Growth and cyclical components via exponential smoothing
+
+The extraction of low frequency components via exponential smoothing has a long tradition in economics, having been employed - to cite only one example – in Friedman's (1957) research on the permanent income hypothesis. In contrast to that application, however, the problem (ES) leads to a two-sided exponential smoothing filter since we do not constrain yå to be a function solely of past history. Manipulating the relevant first-order condition for the ES filter, we find that
+
+$$C ( B ) = [ F ( B ) - 1 ] [ F ( B ) ] ^ { - 1 } = \frac { \lambda [ 1 - B ] [ 1 - B ^ { - 1 } ] } { 1 + \lambda [ 1 - B ] [ 1 - B ^ { - 1 } ] } .$$
+
+Thus, we find that the ES cyclical filter contains forward and backward differences. A key implication of this finding is that the ES filter would render stationary Nelson and Plosser's (1982) difference-stationary stochastic processes and also integrated processes of order two, whose growth rates are not stationary.
+
+Our convenient expression for the cyclical filter's Fourier transform is
+
+$$O u \text { convenient expression for the cyclanite $i$-fourer} u \\ \tilde { C } ( \omega ) = [ F ( \exp ( - i \omega ) ) - 1 ] / F ( \exp ( - i \omega ) ) \\ = \frac { \lambda [ 1 - \exp ( - i \omega ) ] [ 1 - \exp ( i \omega ) ] } { 1 + \lambda [ 1 - \exp ( - i \omega ) ] [ 1 - \exp ( i \omega ) ] } \\ = \frac { 2 \lambda [ 1 - \cos ( \omega ) ] } { 1 + 2 \lambda [ 1 - \cos ( \omega ) ] } , \\ \text {where the third equality makes use of the trigonometric identity}$$
+
+where the third equality makes use of the trigonometric identity discussed earlier. Thus, the cyclical filter has zero weight at the zero frequency [since cos(0) = 1] and assigns a weight close to unity at high frequencies [since cos(π) = − 1, Č(π) = 4λ /(1 + 4λ), which is close to one for large λ]. Higher values of λ raise the gain closer to unity for each fixed frequency.
+
+Analysis of the cyclical filter in the time domain is slightly messier. To undertake this analysis, we define θ to be the smallest root of F, i.e., F(θ) = F(θ−1) = 0. This parameter is related to λ by the equation θ = {(1 + 2λ) − [(1 + 2λ)2 − 4λ2]1/2}/(2λ), so that it is real and less than one for any λ &gt; 0. The growth filter can then be expressed as G(B) = F(B)−1 = (θ/λ)[1 − θB]−1[1 − θB−1]−1. From a straightforward expansion,
+
+$$y _ { t } ^ { s } = \left [ \frac { ( \theta / \lambda ) } { 1 - \theta ^ { 2 } } \right ] \left [ \sum _ { s = 0 } ^ { \infty } \theta ^ { s } y _ { t - s } + \sum _ { s = 0 } ^ { \infty } \theta ^ { s } y _ { t + s }$$
+
+
+<!-- p:14 -->
+
+
+i.e., the growth component is a two-sided exponentially weighted moving average of the original series. Similarly, the cyclical filter can be expressed as
+
+$$C ( B ) = \frac { \theta [ 1 - B ] [ 1 - B ^ { - 1 } ] } { \lambda [ 1 - \theta B ] [ 1 - \theta B ^ { - 1 } ] } \, ,$$
+
+which also makes clear that the effects of second differencing [1 – B][1 – B−1] in the numerator are partly undone by the presence of [1 – θB][1 – θB-1] in the denominator. In fact, if θ were unity (which is true in the limit as λ → ∞), then numerator and denominator terms would cancel. In practical applications θ is closer to 0.9, so that while this filter will render stationary an integrated time series, it will generally preserve more low frequency content than the first difference filter.
+
+Larger values of λ - which penalize changes in the growth component – lead to smoother growth components. Thus, they lead to values of θ closer to unity [in the limit as λ →∞, θ → 1 so that C(B) = 1, i.e., yi = y,].
+
+### 3.2. Growth and cyclical filters via the Hodrick-Prescott method
+
+It turns out that the HP filters are closely related to those derived above. Manipulating the relevant first-order condition, the HP cyclical filter C(B) may be written as
+
+$$C ( B ) = \left [ F ( B ) - 1 \right ] \left [ F ( B ) ^ { - 1 } \right ] = \frac { \lambda [ 1 - B ] ^ { 2 } [ 1 - B ^ { - 1 } ] ^ { 2 } } { 1 + \lambda [ 1 - B ] ^ { 2 } [ 1 - B ^ { - 1 } ] ^ { 2 } } \, .$$
+
+Hence, the HP cyclical filter is also capable of rendering stationary any ie s s ds o is is  e  en soies tts numerator.
+
+As with the exponential smoothing filter explored earlier, it turns out that enor  ha G or or   nrl orr iiy simple form:
+
+$$\tilde { C } ( \omega ) = \frac { 4 \lambda [ 1 - \cos ( \omega ) ] ^ { 2 } } { 1 + 4 \lambda [ 1 - \cos ( \omega ) ] ^ { 2 } } \, .$$
+
+Thus, the cyclical component filter places zero weight on the zero frequency [Č(0) = 0] and close to unit weight on high frequencies [Č(π) = 16λ/(1 + 16λ)]. Increasing λ shifts the gain function upward, moving a given frequency's gain closer to unity.
+
+
+<!-- p:15 -->
+
+
+Developing time domain representations of the filter is once again more involved.8 The first-order condition F(B) may be factored into (λ/θ1θ2) × [(1 − θ1B)(1 − θ2B)(1 − θ1B−1)1 − θ2B−1)], where θ1 and θ2 are complex conjugates whose value depends on λ. (These parameters are the zeros of F that satisfy |θ| &lt; 1.) With this factorization, we can develop a two-sided moving average expression for the growth component
+
+$$y _ { t } ^ { g } = \left [ \frac { \theta _ { 1 } \theta _ { 2 } } { \lambda } \right ] \left [ \sum _ { j = 0 } ^ { \infty } \left [ A _ { 1 } \theta _ { 1 } ^ { j } + A _ { 2 } \theta _ { 2 } ^ { j } \right ] y _ { t - j } + \sum _ { j = 0 } ^ { \infty } \left [ A _ { 1 } \theta _ { 1 } ^ { j } + A _ { 2 } \theta _ { 2 } ^ { j } \right ] y _ { t + j } \right ] ,$$
+
+where the parameter A1 = [(1 − θ2/θ1)(1 − θ1)2(1 − θ1θ2)]−1 and A2 is the complex conjugate of A1.9 It may be shown that the coefficient [A1θ + A2θ¿] is a real number for each j and that A1 and A2 are complex conjugates. Hence, the growth component is a two-sided moving average involving a kind of double exponential smoothing'. Panel 3 of fig. 5 plots the filter weights of the cyclical filter for the λ = 1600 value that has most frequently been employed, following Hodrick and Prescott (1980). The rationale behind the choice of λ = 1600 is discussed in the next section.
+
+Combining the results of this section, we conclude that the HP filter will render stationary series that are integrated (up to fourth order), but that it also removes substantial low frequency variation. On the other hand, the HP filter will preserve more low frequency content than the first difference which is commonly employed for the purpose of achieving stationarity. As in the case of the ES filter, this property derives from the fact that the (fourth) r  nn   o d    1- - - -  - 0) since the modulus of θ is about 0.9 with the smoothing parameter λ set equal to 1600. Another way to reach this conclusion is to examine Singleton's (1988, fig. 2) comparison of the squared gain of the HP and first difference filter.
+
+### 3.3. Comparisons of ES and HP filters
+
+There is a single parameter on which the gain of the ES and HP cyclical filters depends, the smoothing parameter. To compare the filters, we chose λ = 1600 for the HP cyclical filter and required that the gain of the HP and ES cyclical filters be equal at the frequency π/16, which corresponds to a period of 8 years (32 quarters).
+
+8See appendix A of the working paper version of this research.
+
+9The analogue expression for the case in which the length of the data set is finite can be obtained following the same type of procedure as in Nerlove et al. (1979, p. 416–421).
+
+
+<!-- p:16 -->
+
+The HP, ES and Bandpass Cyclical Filters
+
+F(λ=1600)
+
+KES
+
+gain
+
+0.5
+
+Bandpass
+
+0
+
+
+0.05
+
+0.1
+
+0.15
+
+0.2
+
+0.25
+
+0.3
+
+0.35
+
+0.4
+
+0.45
+
+0.5
+
+frequency in radians (fractions of pi)
+
+The HP cyclical Filter: Frequency Response
+
+1
+
+λ=400
+
+/1600
+
+gain
+
+0.5
+
+λ=3200
+
+0
+
+
+0.05
+
+0.1
+
+0.15
+
+0.2
+
+0.25
+
+0.3
+
+0.35
+
+0.4
+
+0.45
+
+0.5
+
+frequency in radians (fractions of pi)
+
+Fig. 5
+
+The HP cyclical filter: lag weights
+
+filter weight
+
+λ=1600
+
+0.5
+
+0
+
+-0.5
+
+-40
+
+-30
+
+-20
+
+-10
+
+0
+
+10
+
+20
+
+30
+
+40
+
+time shift
+
+
+<!-- p:17 -->
+
+
+The results of this comparison are given in panel 1 of fig. 5 which depicts the gain functions of HP, ES, and band pass filters. The HP filter looks more like the ideal filter presented in fig. 4, since its gain function is more nearly zero for frequencies below π/16 and more near unity for frequencies above it.
+
+## 4. Inverse optimal linear filtering 10
+
+In this section we investigate the conditions under which the HP filter is an optimal linear filter in the sense of minimizing the mean square error as in Wiener (1949) and Whittle (1963).11
+
+To answer this question we need to posit a time series model for the growth and cycle components. To maximize the chances of the HP filter being an optimal linear filter, we chose a time series representation for yc which is linear and in which innovations to the growth and cycle components are orthogonal, so that growth and business cycles are separate phenomena. In particular we will assume that yo and y% are generated by the following ARMA models:
+
+$$A ^ { s } ( B ) y _ { t } ^ { g } = M ^ { s } ( B ) \varepsilon _ { t } ^ { g } , \quad A ^ { c } ( B ) y _ { t } ^ { c } = M ^ { c } ( B ) \varepsilon _ { t } ^ { c } ,$$
+
+where ε% and ε are white noise processes whose variances are s2(εc) and s2(ε8). By assumption, the roots of the autoregressive polynomials lie outside the unit circle (stationarity) and the roots of the moving average polynomial lie outside the unit circle (invertibility). We assume that the innovations ε% and ε are serially uncorrelated and E[εε] = 0. Further, for convenience, we define the ratio of variances ψ = s2(ε°)/[s3(ε) + s(ε8)].
+
+Whittle (1963, ch. V) shows that the optimal (two-sided) signal extraction filter for the cyclical component is12
+
+$$C ^ { * } ( B ) = \frac { \Gamma _ { c c } ( B ) } { \Gamma _ { c c } ( B ) + \Gamma _ { g g } ( B ) } \, ,$$
+
+where Γcc(B) is the autocovariance-generating function of the cyclical component and Γgg(B) is the autocovariance-generating function of the growth component. From the ARMA structure it follows directly that
+
+10This problem was first posed to us by Mark Watson, who also provided useful hints abot how to solve it. However, Watson should not be held responsible for any potential errors in following these leads or for our interpretation of the results. Our discussion of this material benefited from the comments of David Wilcox.
+
+12Whittle's analysis (1963) is limited to stationary ARMA processes. However, recent work extends these formulas to cases with unit roots [Watson (1986) provides a brief summary of Bell's (1984) work on these cases].
+
+11The mean squared error is defined as MSE = (1/T)Στ=(c − yc)2, where yc is the true cyclical component and o its estimate.
+
+
+<!-- p:18 -->
+
+
+$$z ) = \frac { M ^ { c } ( z ) M ^ { c } ( z ^ { - 1 } ) } { A ^ { c } ( z ) A ^ { c } ( z ^ { - 1 } ) } s ^ { 2 } ( \varepsilon _ { t } ^ { c } ) \, ,$$
+
+$$\Gamma _ { \text {cc} } ( z ) = \frac { M ^ { \text {c} } ( z ) M ^ { \text {e} } ( z ^ { \ \cdot } ) } { A ^ { \text {c} } ( z ) A ^ { \text {c} } ( z ^ { \ \cdot \, 1 } ) } s ^ { 2 } ( \varepsilon$$
+
+$$\Gamma _ { \mathbb { G } } ( z ) = \frac { M ^ { \mathfrak { g } } ( z ) M ^ { \mathfrak { g } } ( z ^ { - 1 } ) } { A ^ { \mathfrak { g } } ( z ) A ^ { \mathfrak { g } } ( z ^ { - 1 } ) } s ^ { 2 } ( \varepsilon _ { t } ^ { \mathfrak { g } } ) \, .$$
+
+Hence, it follows that the optimal filter may be expressed as
+
+$$C ^ { * } ( B ) = \frac { \psi A ^ { \mathfrak { g } } ( B ) A ^ { \mathfrak { g } } ( B ^ { - 1 } ) } { \psi A ^ { \mathfrak { g } } ( B ) A ^ { \mathfrak { g } } ( B ^ { - 1 } ) + ( 1 - \psi ) Q ( B ) } ,$$
+
+where
+
+$$Q ( B ) = \left [ \, A ^ { c } ( B ) \, A ^ { c } ( B ^ { - 1 } ) \right ] \left [ \, M ^ { g } ( B ) \, M ^ { g } ( B ^ { - 1 } ) \right ] \Big / \left [ \, M ^ { c } ( B ) \, M ^ { c } ( B ^ { - 1 } ) \right ] .$$
+
+### 4.1. Matching the HP cyclical filter
+
+The HP cyclical filter may be written as
+
+$$C ( B ) = \left [ F ( B ) - 1 \right ] \left [ F ( B ) ^ { - 1 } \right ] = \frac { \lambda [ 1 - B ] ^ { 2 } [ 1 - B ^ { - 1 } ] ^ { 2 } } { 1 + \lambda [ 1 - B ] ^ { 2 } [ 1 - B ^ { - 1 } ] ^ { 2 } } \, .$$
+
+The problem is to find AR and MA polynomials [A8(B), A(B), M8(B), and M(B)] such that C(B) and C*(B) coincide.
+
+One example of such an inverse optimal filtering rule is discussed by Hodrick and Prescott (1980, p. 5) and involves assuming that
+
+$$A ^ { g } ( B ) = ( 1 - B ) ^ { 2 } , \quad A ^ { c } ( B ) = M ^ { g } ( B ) = M ^ { c } ( B ) = 1 .$$
+
+That is, under this specification, the change in the growth rate is a white noise as is the cyclical component. Further, the parameter λ corresponds to ψ/(1 − ψ) which is equal to the ratio of variances λ = s2(εc)/s2(ε8) or λi/2 = s(ε)/s(εε). Hodrick and Prescott (1980) use a prior view that a five prl  n    l y se y yl en percent change in the rate of growth in a quarter. This led us to select λ1/2 = 5/ or λ = 1600 as a value for the smoothing parameter.'
+
+Pursuing this line further, suppose that we require that A8(B) = (1 – B)2 so as to accommodate nonstationarity in the growth rate. Then, it follows that C(B) = C*(B) requires that
+
+
+<!-- p:19 -->
+
+
+$$\frac { 1 } { \lambda } = \left ( \frac { 1 - \psi } { \psi } \right ) Q ( B ) \, .$$
+
+Thus, the optimality of the HP filter requires – apart from the constant terms – restrictions across the A°(B), M(B), and M8(B) polynomials. In particular, it requires that
+
+$$M ^ { c } ( B ) = \left [ \frac { \lambda ( 1 - \psi ) } { \psi } \right ] ^ { 1 / 2 } A ^ { c } ( B ) M ^ { g } ( B ) \, .$$
+
+If innovations to the growth and cyclical components are uncorrelated, we find that a necessary condition for the HP filtering procedure to be optimal is that the stochastic growth component have a random walk growth rate, i.e., that it be second-difference-stationary in an extension of the Nelson and Plosser (1982) terminology. However, this condition is not sufficient. For the HP filter to be optimal, we must further require either that the cycle consist of uncorrelated events or that there be an identical dynamic mechanism that propagates changes in the growth rate and innovations to the business cycle component.
+
+In real business cycle models growth and business cycles do not arise as separate phenomena, so that these models provide no theoretical justification for decomposition into growth and cycles. The simplest way to introduce growth into a real business cycle model is to assume that the level of Harrod-neutral technical progress expands at a constant rate. This induces cnes ss oms  ns s s os n monon stationary stochastic processes about this common trend. In this case there is a clear-cut separation between growth and cycles; growth is responsible for the common deterministic trend while cycles are the fluctuations around that trend. If we make exogenous technical progress stochastic and assume that it follows an integrated process (a kind of 'stochastic growth'), then these will generally set in motion complex responses that may resemble economic fluctuations [see King, Plosser, and Rebelo (1988b, sect. II)]. Thus, it is difficult to separate growth and fluctuations in this context. The dividing lines virtually disappear in models of endogenous economic growth, in which transient displacements to the dynamic system have permanent consequences for the paths of economic quantities [King and Rebelo (1986)]. However, given that there are a variety of motivations for filtering – some which do not hinge on an interest in precise growth versus cycle decompositions – we next explore the consequences of low frequency filtering in standard real business cycle models.
+
+
+<!-- p:20 -->
+
+
+## 5. Filtering a real business cycle model
+
+Our next objective is to investigate how application of a low frequency filter influences the time series generated by an artificial economy. The specific economy that we study is one that we have explored in detail elsewhere [King, Plosser, and Rebelo (1988a)], so that our presentation is deliberately brief. For reference purposes, the economy is close to those studied by Hansen (1985) and Prescott (1986) and discussed in McCallum (1989).
+
+The deep structure of the model economy – preferences, technology, and resource constraints – is specified as follows:
+
+Preferences: The representative agent values sequences of consumption (C,) and leisure (L,) according to
+
+$$E _ { 0 } \left \{ \sum _ { t = 0 } ^ { \infty } \beta ^ { t } [ \log ( C _ { t } ) + \eta \log ( L _ { t } ) ] \right \} .$$
+
+In this expression E0 is the expectation conditioned on information available at time zero.
+
+Technology: The production and accumulation technologies are
+
+$$Y _ { t } = A _ { t } \left [ K _ { t } ^ { 1 - \alpha } ( N _ { t } X _ { t } ) ^ { \alpha } \right ] \ \text {and} \ K _ { t + 1 } = ( 1 - \delta ) K _ { t } + I _ { t } ,$$
+
+where Y, is output, N, is labor input, K, is capital, I, is investment, and δ is the rate of depreciation. The production function is constant returns-to-scale with 0 &lt; α &lt; 1. The exogenous variables are X, which is a labor-augmenting technological shift that satisfies Xt +1/X, = γx &gt; 1, and A, which is a stationa /-   = /  t  t   t εAt with A &gt; 0, ρ &gt; 0, and ε, is an iid random variable with E(ε,) = 0 and
+
+Resource constraints: The resource constraints for goods and leisure are
+
+$$C _ { t } + I _ { t } = Y _ { t } \quad \text {and} \quad N _ { t } + L _ { t } = 1 .$$
+
+Values for technology and preference parameters are those of the baseline model in King, Plosser, and Rebelo (1988a): δ = 0.025, α = 0.58, γx = 1.004, .s       s    = (3  =  / = e N = 0.20.
+
+### 5.1. Approximate dynamics
+
+The equilibrium quantities for consumption, investment, output, capital, and real wages will fluctuate stochastically around a common deterministic trend induced by X,. On the other hand, hours are stationary random variables. Approximating this system, we can develop a state space system for the logarithms of variables so that each variable can be written in the form log(Y,) = log(Y) + log( X,) + ,, where , is interpretable as the devia'oze v  sesc y     vyie i t [, ê, i, k, ω, N,I′ then is
+
+
+<!-- p:21 -->
+
+
+$$z _ { t } = \Pi s _ { t } ,$$
+
+with state evolution governed by
+
+$$s _ { t + 1 } = M s _ { t } + \varepsilon _ { t + 1 } \quad \text {and} \quad M = \left [ \begin{matrix} \mu _ { 1 } & \pi _ { k A } \\ 0 & \rho \end{matrix} \right ] ,$$
+
+where s, = [k, À,]' and ε, = [0 εA, t + 1]. Stationarity of deviations from trend (μ, &lt; 1) is assured by diminishing returns to capital (holding fixed labor input). Thus, s, is stationary so long as A, is stationary (ρ &lt; 1). Given the state space representation just described, it is straightforward to compute the population movements of z, and s, using the procedures outlined in King, Plosser, and Rebelo (1987).
+
+### 5.2. Filtering the system
+
+To discuss the effects of filtering on moment implications we return to table 1.14 Looking first at the unfiltered moments in panel A, a researcher would draw one set of conclusions about the relative volatility of different series: labor input is about half as volatile as output; consumption is about two-thirds as variable; and investment is about twice as variable. The real wage is less volatile than output (about two thirds) but more variable than labor input. Further, one would conclude that labor input is at best only slightly more procyclical than capital input, on the basis that each has a contemporaneous correlation with output of about three quarters. Finally, one would view the stochastic components of output as relatively persistent given that the correlation of output with its fourth lag is 0.74 and the correlation with its twelfth lag is 0.42.
+
+13Our approximation strategy – which works off the first-order conditions to the representative agent's dynamic optimization problem – is detailed in King, Plosser, and Rebelo (1987). In the present context, it is essentially equivalent to the log-linear approximation strategy of Christiano (1988), which uses quadratic approximation to the objective function.
+
+Ihe as   e et a es te -r e e e om those reported in our working paper version of this research. This difference reflects the fact that results in our working paper were obtained with a version of the filter in which the number of coefficients was truncated to be 103, that is, 51 leads and lags. In this version of the paper iltg s s is  yt  s   s ter..
+
+
+<!-- p:22 -->
+
+
+Turning now to panel B, one finds the population moments for the components of time series isolated by the HP cyclical filter, with the smoothng i i i  y i i   s  i dor business cycles emerges. Consumption is now only 30% as variable as output, labor input is 64% as variable, and investment is now nearly three times as variable. The volatility of the real wage is only 40% of that of output. Further, with an application of the HP filter, the real wage it is sharply less volatile than labor input (only about two-thirds as volatile).
+
+One also has a very different picture of cyclical movements in inputs: labor in s  d ( d d   o  st unrelated to cyclical activity (its correlation is 0.18). Finally, autocorrelation in output is 0.22 at a lag of one year (four quarters) and negative at a lag of three years (twelve quarters).
+
+Considering the state space system, it is easy to interpret these results. The evolution of all variables depends on their weights placed on the state variables, the capital stock, and the technology shock. The technology shock isy      b        an A, = Σs=0ρε A,t−s Given the law of motion for capital, k1+1 = μ1k, + πkAA with μ ≈ 0.95, the capital stock is a moving average of technology shocks, with weights that die out very slowly. Relative to the technology shock, then, the capital stock is very slow moving and application of the low frequency filter downplays its influence and raises that of the technology shock. Notice that this occurs despite the fact that both capital and technology are driven by εAt, since they are related to it by different (one-sided) linear flters.15
+
+### 5.3. Random walk technology shocks
+
+It is possible to solve this model under the alternative assumption that technology shocks are integrated processes [see Christiano (1988) or King, Plosser, and Rebelo (1988b, sect. 2)]. In view of the Nelson-Plosser (1982) results and given the intuitive idea that technology shocks are well modeled as a random walk (with positive drift), we present some final results based on that alternative specification in table 2. Since the levels of variables are not stationary, population moments are not finite. Thus, we present results for the first difference filter and for the HP cyclical filter. In the presence of this nonstationarity, the HP filter produces results that broadly resemble those of table 1, although the shift to a random walk technology shock does reduce the extent of labor volatility, as stressed by Hansen (1988).
+
+15Our working paper contains plots of original and filtered spectral densities of capital and output which are revealing about the issue discussed in this paragraph.
+
+
+<!-- p:23 -->
+
+
+Effects of filtering on population moments: Unit root model.
+
+|    |                    |        | I l l l   |
+|----|--------------------|--------|-----------|
+|    | ,--~ ¢'4           |        | I         |
+|    | oo ~, ~;           |        |           |
+|    |                    | 3 ~    |           |
+|    | ,--.~ 0 0 0 0      |        |           |
+|    | 0 0                | ~ t",l |           |
+|    | 0 0 0 0 0          | R      |           |
+|    | .o.q . . 0 0 0 0 0 |        |           |
+|    | 0 0 0 ~ 0          |        |           |
+|    | 0 0 0 0 0          | 0      |           |
+|    | Ndd d d            | 8      |           |
+|    | .~.o. ~ ~.         | <      |           |
+| ~2 |                    |        | ~ L ~ o   |
+| >  |                    | >      |           |
+
+bStandard deviation HP-filtered x relative to standard deviation of filtered output. Standard deviation of x relative to standard deviation of growth rate of output.
+
+
+<!-- p:24 -->
+
+
+## 6. Summary and conclusions
+
+This paper has reported on implications of low frequency filtering, focusing on the Hodrick and Prescott (1980) filter which is commonly used in investigations of the stochastic properties of real business cycle models. We summarize our results as follows:
+
+First, application of the filter to U.S. real gross national product and a measure of labor input illustrates the impact of HP filtering on the character of cyclical components. Second, we derive convenient expressions for the HP filter and the closely related exponential smoothing (ES) filter in forms appropriate for both the time domain and frequency domain. These results are used (i) to discuss the influence of smoothing parameters and (ii) to demonstrate that the cyclical components which these filters generate are stationary, when the underlying time series are differenced stationary stochastic processes in the sense of Nelson and Plosser (1982). Third, we consider the conditions under which the HP filter is the optimal linear filter in the sense of Wiener (1949) and Whittle (1963). These conditions are unlikely to be even approximately true in practice. Fourth, application of the HP filter to a basic real business cycle model demonstrates that this filter substantially influences the perception of the operation of the model economy, as viewed by researchers studying its moment implications.
+
+At the end of our investigation, however, we remain struck by the figures presented in section 1: macroeconomic research focusing on the component of the time series that is isolated by the HP cyclical filter – in terms of either devising stylized facts or evaluating dynamic economic models – is likely to capture only a subset of the time series variation that most economists associate with cyclical fluctuations. A major facet of our ongoing research is the construction of dynamic models that more completely integrate the explanation of these components.
+
+<!-- END SOURCE 29/40: King_1993_low-frequency-filtering-real-business-cycles.md -->
+
+---
+
+<!-- BEGIN SOURCE 30/40: Kitagawa_2003_smoothness-prior-large-scale-time-series.md -->
+
+# Source: `Kitagawa_2003_smoothness-prior-large-scale-time-series.md`
+
+---
+id: "Kitagawa_2003_smoothness-prior-large-scale-time-series"
+source_pdf: "../pdf/Kitagawa_2003_smoothness-prior-large-scale-time-series.pdf"
+source_filename: "Kitagawa_2003_smoothness-prior-large-scale-time-series.pdf"
+format: "academic-paper"
+extraction_profile: "text-math-tables-high-fidelity"
+extraction_mode: "hybrid"
+extraction_quality: "excellent"
+extraction_score: 108.0
+visual_assets: "disabled"
+references_file: "../references/Kitagawa_2003_smoothness-prior-large-scale-time-series.references.md"
+---
+
+<!-- p:1 -->
+
+Theoretical Computer Science 292 (2003) 431-446
+
+##### Theoretical Computer Science
+
+www.elsevier.com/locate/tcs
+
+## Smoothness prior approach to explore mean structure in large-scale time series
+
+Genshiro Kitagawa, Tomoyuki Higuchi ∗ , Fumiyo N. Kondo
+
+The Institute of Statistical Mathematics, 4-6-7 Minami-Azabu, Minato-ku, Tokyo 106-8569 Japan
+
+##### Abstract
+
+This article is addressed to the problem of modeling and exploring mean value structure of large-scale time series data and time-space data. A smoothness prior modeling approach (Smoothness Prior Analysis of Time Series, Lecture Notes in Statistics, vol. 116, Springer, New York, 1996.) is taken. In this approach, the observed series are decomposed into several components each of which are expressed by smoothness priors models. In the analysis of POS and GPS data, various useful information were extracted by this decomposition, and result in discoveries in these areas. c © 2002 Elsevier Science B.V. All rights reserved.
+
+Keywords: Smoothness priors; State space model; Time series; Space-time data; Data mining; Seasonal adjustment; POS; GPS
+
+### 1. Introduction
+
+In statistical information processing, introduction of the information criterion AIC [1,20] facilitated to compare various types of statistical models freely and changed the conventional paradigm of statistical research which consisted of estimation and statistical test. It revealed the importance of proper statistical modeling, and the use of parametric models become very popular since then [4,14]. AIC criterion suggests that if the available data set is short, we have to use simpler model to obtain reliable information from that data. However, by the progress of various measuring devices, it has become possible to use huge amount of data in various FFelds of sciences and societies. In this situation, a more important problem is to extract useful information from huge
+
+∗ Corresponding author.
+
+E-mail addresses: kitagawa@ism.ac.jp (G. Kitagawa), higuchi@ism.ac.jp (T. Higuchi), kondo@ism.ac.jp
+
+(F.N. Kondo).
+
+URL:
+
+http://www.ism.ac.jp
+
+
+<!-- p:2 -->
+
+
+amount of data, which is diSOcult to achieve by a simple parametric model. Namely, in this situation, modeling with small number of parameters is sometimes inadequate and a more CRexible tool for extracting useful information from data is necessary.
+
+In an analysis of input-output relationship of econometric time series, Shiller [21] introduced the notion of 'smoothness priors', and considered constrained least-squares problem. A similar concept has already appeared in Whittaker [23] addressing a problem of the estimation of a smooth trend. The trade-oVT parameters were determined subjectively until Akaike [2,3] proposed the method of choosing the trade-oVT parameters or hyperparameters in a Bayesian framework, by maximizing the likelihood of a Bayes model [18]. The calculation of the likelihood of a Bayes model for time series requires intensive computation, the burden of which Gersch and Kitagawa [6] eased by employing a state space representation of the model and recursive algorithm of Kalman FFltering [11].
+
+In this paper, we will present applications of this smoothness priors approach for exploring large-scale time series data or space-time data. SpeciFFcally, we consider the point of sales (POS) scanner data and global positioning system (GPS) data, because automatic transaction of these data is one of the most attractive and potential targets in statistical science. By the analyses of these data, it will be shown that by removing trend and seasonal components by a proper smoothness prior modeling, useful information such as the trading day eVTect (for economic data), competitive relation (for POS data) and local CRuctuation associated with an atmospheric condition (for GPS) are discovered.
+
+### 2. Smoothness prior modeling
+
+#### 2.1. Flexible semi-parametric modeling
+
+A smoothing approach attributed to [23], is as follows: Let
+
+$$y _ { n } = f _ { n } + \varepsilon _ { m } , \ \ n = 1 , \dots , N$$
+
+denote observations, where fn is an unknown smooth function of n , and SI n is an independently identically distributed (i.i.d.) normal random variable with zero mean and unknown variance ESC 2 . The problem is to estimate fn; n =1 ; : : : ; N from the observations, yn; n =1 ; : : : ; N , in a statistically sensible way. Here the number of parameters to be estimated is equal to the number of observations. Therefore, the ordinary least-squares method or the maximum likelihood method yield meaningless results. Whittaker [23] suggested that the solution fn; n =1 ; : : : ; N balances a tradeoVT between inFFdelity to the data and inFFdelity to a k th order diVTerence equation constraint. Namely, for FFxed values of NAK 2 and k , the solution satisFFes
+
+$$\min _ { f } \left [ \sum _ { n = 1 } ^ { N } \left ( y _ { n } - f _ { n } \right ) ^ { 2 } + \lambda ^ { 2 } \sum _ { n = 1 } ^ { N } \left ( \Delta ^ { k } f _ { n } \right ) ^ { 2 } \right ] . \\ \\ \text {The first term in the} \, \phi \text { is} \, \text { } \phi \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \text { } \$$
+
+The FFrst term in the brackets in (2) is the inFFdelity-to-the-data measure, the second is the inFFdelity-to-the-constraint measure, and NAK 2 is the smoothness tradeoVT parameter. Whittaker left the choice of NAK 2 to the investigator.
+
+
+<!-- p:3 -->
+
+
+#### 2.2. Automatic parameter determination via Bayesian interpretation
+
+A smoothness priors solution [2] explicitly solves the problem posed by Whittaker [23]. A version of the solution is as follows: Multiply (2) by - 1 = (2 ESC 2 ) and exponentiate it. Then the solution that minimizes (2) achieves the maximization of
+
+$$\exp \left \{ - \frac { 1 } { 2 \sigma ^ { 2 } } \sum _ { n = 1 } ^ { N } \left ( y _ { n } - f _ { n } \right ) ^ { 2 } \right \} \exp \left \{ - \frac { \lambda ^ { 2 } } { 2 \sigma ^ { 2 } } \sum _ { n = 1 } ^ { N } \left ( \Delta ^ { k } f _ { n } \right ) ^ { 2 } \right \} . \\ \\ \ U l d o n _ { \ } t h e a m p o m t i o n _ { \ } o f \ n o m p o l i t y _ { \ } ( 3 ) \ v i l d o n _ { \ } o \, R o v o i j o n _ { \ } i n t o m o t i o n$$
+
+Under the assumption of normality, (3) yields a Bayesian interpretation
+
+$$\pi ( f | y , \lambda ^ { 2 } , \sigma ^ { 2 } , k ) \otimes p ( y | \sigma ^ { 2 } , f ) \pi ( f | \lambda ^ { 2 } , \sigma ^ { 2 } , k ) , \\ \\ \\$$
+
+where EM ( f | NAK 2 ; ESC 2 ; k ) is the prior distribution of f and p ( y | ESC 2 ; f ) the data distribution, conditional on ESC 2 and f , and EM ( f | y; NAK 2 ; ESC 2 ; k ) the posterior of f . Akaike [2] obtained the marginal likelihood for NAK 2 and k by integrating (3) with respect to f . This facilitates an automatic determination of the tradeoVT parameters in constrained least squares which has been treated subjectively for many years and eventually led to the frequent use of Bayesian method in statistical and information science communities. Several interesting applications of this method can be seen in [4].
+
+#### 2.3. Time series interpretation and state space modeling
+
+Consider a problem of FFtting polynomial of order k - 1 deFFned by
+
+where SI n ∼ N (0 ; ESC 2 ). It is easy to see that this polynomial is the solution to the diVTerence equation
+
+$$y _ { n } = t _ { n } + \varepsilon _ { n } , \ \ t _ { n } = a _ { 0 } + a _ { 1 } n + \cdots + a _ { k - 1 } n ^ { k - 1 } , \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\$$
+
+$$\Delta ^ { k } t _ { n } = 0 ,$$
+
+with appropriately deFFned initial conditions. This suggests that by modifying the above diVTerence equation so that it allows for a small deviation from the equation, namely by letting SOH k t n ≈ 0, it might be possible to obtain a more CRexible regression curve than the usual polynomials. A possible formal expression is the stochastic diVTerence equation model
+
+$$\Delta ^ { k } t _ { n } = v _ { n } ,$$
+
+where vn ∼ N (0 ; FS 2 ) is an i.i.d. Gaussian white noise sequence. For small noise variance FS 2 , it reasonably expresses our expectation that the noise is mostly very 'small' and with a small probability it may take a relatively 'large' value. Actually, the solution to the model is, at least locally, very close to a ( k - 1)th order polynomial. However, globally a signiFFcant diVTerence arises and (7) can express a very CRexible function. For k =1, it is locally constant and becomes a well-known random walk model, t n = t n - 1+ vn . For k =2, the model becomes t n =2 t n - 1 - t n - 2 + vn and the solution is a locally linear function.
+
+
+<!-- p:4 -->
+
+
+The models (5) together with (7) can be expressed in a special form of the state space model
+
+$$x _ { n } & = F x _ { n - 1 } + G v _ { n } \pmod { ( \text {system model} ) } , \\ y _ { n } & = H x _ { n } + w _ { n } \pmod { ( \text {observation model} ) } ,$$
+
+where vn ∼ N (0 ; FS 2 ), wn ∼ N (0 ; ESC 2 ) and xn =( t n ; : : : ; t n - k +1) ′ is a k -dimensional state vector, F , G and H are k × k , k × 1 and 1 × k matrices, respectively. For example, for k =2 ; they are given by
+
+$$x _ { n } = \begin{bmatrix} t _ { n } \\ t _ { n - 1 } \end{bmatrix} , \ \ F = \begin{bmatrix} 2 & - 1 \\ 1 & 0 \end{bmatrix} , \ \ G = \begin{bmatrix} 1 \\ 0 \end{bmatrix} , \ \ H = [ 1 , 0 ] .$$
+
+One of the merits of using this state space representation is that we can use computationally eSOcient Kalman FFlter for state estimation. Since the state vector contains unknown trend component, by estimating the state vector xn , the trend is automatically estimated. Also unknown parameters of the model, such as the variances ESC 2 and FS 2 can be estimated by the maximum likelihood method. In general, the likelihood of the time series model is given by
+
+$$L ( \theta ) & = p ( y _ { 1 } , \dots , y _ { N } | \theta ) = \prod _ { n = 1 } ^ { N } \, p ( y _ { n } | Y _ { n - 1 } , \theta ) , \\ \\$$
+
+where Yn - 1= { y 1 ; : : : ; y n - 1 } and each component p ( yn | Yn - 1 ; DC2 ) can be obtained as byproduct of the Kalman FFlter [11]. It is interesting to note that the tradeoVT parameter NAK 2 in the penalized least-squares method (2) can be interpreted as the ratio of the system noise variance to the observation noise variance, or the signal-to-noise ratio.
+
+The individual terms in (10) are given by, in general p -dimensional observation case,
+
+$$p ( y _ { n } | Y _ { n - 1 } , \theta ) = \frac { 1 } { ( \sqrt { 2 \pi } ) ^ { p } } \left | W _ { n | n - 1 } \right | ^ { - 1 / 2 } \exp \left \{ - \frac { 1 } { 2 } \, \varepsilon _ { n | n - 1 } ^ { \prime } W _ { n | n - 1 } ^ { - 1 } \varepsilon _ { n | n - 1 } \right \} ,$$
+
+where SI n | n - 1= yn - yn | n - 1 is one-step-ahead prediction error of time series and yn | n - 1 and V n | n - 1 are the mean and the variance covariance matrix of the observation yn , respectively, and are deFFned by
+
+$$y _ { n | n - 1 } = H x _ { n | n - 1 } ,$$
+
+$$W _ { n | n - 1 } = H V _ { n | n - 1 } H ^ { \prime } + \sigma ^ { 2 } .$$
+
+Here x n | n - 1 and V n | n - 1 are the mean and the variance covariance matrix of the state vector given the observations Yn - 1 and can be obtained by the Kalman FFlter [11].
+
+If there are several candidate models, the goodness of the FFt of the models can be evaluated by the AIC criterion deFFned by
+
+$$A I C = - 2 \, \log L ( \hat { \theta } ) + 2 \, \text { (number of parameters).}$$
+
+
+<!-- p:5 -->
+
+
+AIC is derived from an asymptotically unbiased estimate of the expected log-likelihood, or equivalently the Kullback-Leibler information of the model, and the model with the smallest AIC is considered to be the best one [1,20].
+
+#### 2.4. Modeling of space-time data
+
+Let Z i n , ( n =1 ; : : : ; N ; i =1 ; : : : ; I ) be scalar observation at a discrete time of n for a station (site) i . Along the line mentioned above, we consider the following model to decompose Z i n into trend, T i n , and irregular component, D i n , namely,
+
+$$Z _ { n } ^ { i } = T _ { n } ^ { i } + D _ { n } ^ { i } , \quad D _ { n } ^ { i } \sim N ( 0 , \sigma ^ { 2 , i } ) . \\ \\$$
+
+A direct approach to realize the Bayesian space-time (space-temporal) model is given by considering the following system model for each n :
+
+$$T _ { n } ^ { i } & = 2 T _ { n - 1 } ^ { i } - T _ { n - 2 } ^ { i } + E _ { n } ^ { i } , \quad E _ { n } ^ { i } \sim N ( 0 , \tau ^ { 2 i } ) \ \forall i , \\ & \\ & \quad \dot { i } \quad \dot { i } \quad \dot { i } \quad \dot { i } \quad \dot { i } \quad \dots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \quad \ddots \$$
+
+where SOH ij is some measure of a distance between station i and j , and RS is usually assumed as a linear function truncated at SOH th which is set to be the mean of distance between the neighboring points. Although this approach is desirable from the statistical viewpoint, its numerical realization on computer is impractical due to large memory required for a large number of I ≈ 1000 that we usually deal with. For a case with lower dimensional model like I 6 100, a simple approach to deal with T n =[ T 1 n ; T 2 n ; : : : ; T I n | T 1 n - 1 ; T 2 n - 1 ; : : : ; T I n - 1 ] ′ as a state vector can be implemented on a computer with large memory [12].
+
+$$T _ { n } ^ { i } - T _ { n } ^ { j } & = V _ { n } ^ { i } , \ \ V _ { n } ^ { i } \sim N ( 0 , ( \phi ( \Delta ^ { i j } ) ) ^ { 2 } s ^ { 2 } ) \ \forall ( i , j ) , \\ \\ \intertext { t } T _ { n } ^ { i j } - T _ { n } ^ { j } & = V _ { n } ^ { i } , \quad V _ { n } ^ { i } \sim N ( 0 , ( \phi ( \Delta ^ { i j } ) ) ^ { 2 } s ^ { 2 } ) \quad \forall ( i , j ) ,$$
+
+A simple way to mitigate this computational diSOculty in the direct Bayesian approach for a case with I ≈ 1000 is to assume that each time series Z i =[ Z i 1 ; Z i 2 ; : : : ; Z i N ] ′ is mutually independent vector. This assumption allows the smoothness priors approach mentioned earlier to be employed. Then, we use the system model given by (16) only. The maximum likelihood estimates for ESC 2 ; i and FS 2 ; i are denoted by ˆ ESC 2 ; i and ˆ FS 2 ; i , respectively. The Kalman FFlter and smoother with ˆ ESC 2 ; i and ˆ FS 2 ; i yield the estimates for the trend component, ˆ T i n . The estimated irregular components ˆ D i n = Z i n - ˆ T i n is called the residual hereafter. A vector of the residual components for the station i is denoted by D i and the median of ˆ T i n , for each n , by SYN Tn . Similarly, their percentile points corresponding to ± ESC and ± 2 ESC intervals of ˆ T i n versus n are denoted by T ± 1 n and T ± 2 n , respectively.
+
+The next step for exploring the mean structure of the space-time data is to examine the spatial correlation of the residual components in terms of a correlation coeSOcient C ij between D i and D j . For a FFxed station i , a spatial distribution of C ij as a function of a distance measure SOH ij has to be examined visually. In fact, a large number of C ij hampers such kind of visual examination. Therefore, a plot of C ij versus SOH ij guides us to further improvements on the mean structure of the space-time data. Obviously, when there appear many points with high correlation in the small value of SOH , taking the spatial correlation into account would improve an initial estimate on the mean structure of the space-time data, ˆ T i n . Such kind of improvements can be realized by considering the following smoothness priors model for a spatial data:
+
+
+<!-- p:6 -->
+
+
+$$\hat { T } _ { n } ^ { i } & = \mu _ { n } ^ { i } + U _ { n } ^ { i } , \quad U _ { n } ^ { i } \sim N ( 0 , r ^ { 2 } ) \ \forall i , \\ \mu _ { n } ^ { i } - \mu _ { n } ^ { j } & = V _ { n } ^ { i } , \quad V _ { n } ^ { i } \sim N ( 0 , ( \phi ( \Delta ^ { i j } ) ) ^ { 2 } s ^ { 2 } ) \ \forall ( i , j ) , \\ \text {where } \mu _ { n } ^ { i } \text { is an improved trend component. The iterative procedure mentioned above}$$
+
+where SYN i n is an improved trend component. The iterative procedure mentioned above is practical for improving the estimates of the mean structure of the space-time data set [9].
+
+### 3. Applications
+
+#### 3.1. An illustrative example: seasonal adjustment
+
+The smoothness priors method has been applied to many real world problems [4,13]. Most of the economic time series contain trend and almost periodic components which make it diSOcult to capture the essential change of economic activities. Therefore in economic data analysis, removal of these eVTects is important. In our modeling it is realized by the decomposition
+
+$$y _ { n } = t _ { n } + s _ { n } + w _ { n } ,$$
+
+where t n , s n and wn are trend, seasonal and irregular components. A reasonable solution to this decomposition was given by the use of smoothness priors for both t n and s n [6]. The trend component t n and the seasonal component s n are assumed to follow
+
+$$t _ { n } & = 2 t _ { n - 1 } - t _ { n - 2 } + v _ { n } , \\ s _ { n } & = - ( s _ { n - 1 } + \cdots + s _ { n - 1 1 } ) + u _ { n } , \\ \intertext { w h e r e } \ w h e r e \ \intertext { s u n } \ w h e r e \ \intertext { s o n } \intertext { w h e r e } \intertext { w h e r e } \intertext { s u n } \intertext { w h e r e } \intertext { s o n }$$
+
+We FFt this model to BDHWWS (Wholesale Hardware Sales, US Bureau of the Census, January 1967-February 1989) data. The variance of the irregular component, the log-likelihood and AIC of the model are 0.001193, 454.6 and 3095.2, respectively. Figs. 1A-C show the log-transformed original data and the estimated trend, seasonal component and the irregular component, respectively. The estimated seasonal component is very stable over the whole period and the trend clearly captures the depression of the sales in 1975 and 1982. The irregular component is small compared with the seasonal variation. Although, by this seasonal adjustment, it is possible to extract or remove seasonal component, we can extract more information by a smoothness prior modeling. Many of the economic time series related to sales or production are aVTected by the number of days of the week. For example, the sales of a department store will be strongly aVTected by the number of Sundays and Saturdays in each month. Such kind of eVTect is called the trading day eVTect.
+
+where vn , un and wn are Gaussian white noise with vn ∼ N (0 ; FS 2 t ), un ∼ N (0 ; FS 2 s ) and wn ∼ N (0 ; ESC 2 ).
+
+To extract the trading day eVTect, we consider the decomposition
+
+$$y _ { n } = t _ { n } + s _ { n } + t d _ { n } + w _ { n } ,$$
+
+
+<!-- p:7 -->
+
+
+Fig. 1. Seasonal adjustment of BDHWWS.
+
+where t n , s n and wn are as above and the trading day eVTect component, t d n , is assumed to be expressed as
+
+$$t d _ { n } & = \sum _ { j = 1 } ^ { 7 } \beta _ { j } d _ { j n } , \\ \\$$
+
+where djn is the number of j th day of the week (e.g., j =1 for Sunday and j =2 for Monday, etc.) and FF j is the unknown trading day eVTect coeSOcient. To assure the identiFFability, it is necessary to put constraint that FF 1+ · · · + FF 7 =0. The variance of the irregular component, the log-likelihood and AIC of the model are 0.000602, 515.4 and 2985.7, respectively. The reduction of the variance and the AIC value clearly indicates the existence of the trading day eVTect. Fig. 2A shows the estimated trading day eVTect coeSOcients FF j ; j =1 ; : : : ; 7. It reveals that Sunday ( j =1) and Saturday ( j =7) have negative eVTect. This suggests that many wholesale stores are closed on Sunday and Saturday. The coeSOcients for the weekend are positive. However, those of Monday, Wednesday and Friday are close to zero.
+
+
+<!-- p:8 -->
+
+
+Fig. 2. Trading day eVTect coeSOcients: (A) 7-factor model, and (B) 2-factor model.
+
+To check the reliability of these coeSOcients, we considered a constrained model that assumes
+
+$$\beta _ { 1 } = \beta _ { 7 } , \quad \beta _ { 2 } = \beta _ { 3 } = \beta _ { 4 } = \beta _ { 5 } = \beta _ { 6 } .$$
+
+The variance, log-likelihood and AIC of this model are 0.000636, 512.8, 2980.9, respectively. Since AIC of the model is smaller than the former model, it indicates that this constrained model is better than the former one. Namely, the diVTerence of the trading day coeSOcients within weekdays and also that of Sunday and Saturday are not signiFFcant. Fig. 2B shows the trading day coeSOcients obtained by this model.
+
+Figs. 1D and E show the trading day eVTect and the irregular component obtained by this model. The trend and seasonal components are visually indistinguishable from the ones shown in Figs. 1A and B. The trading day eVTect is very small compared with the seasonal variation. However, the irregular component becomes considerably small. Actually, the variance of the residual becomes a half. Fig. 1F shows the plot of the seasonal component plus trading day eVTect. Comparing with Fig. 1A, it can be seen that the seasonal component plus trading day eVTect reproduces the detailed behavior of the series.
+
+Since the numbers of day of the week are completely determined by the calendar, if we obtain good estimates of the trading day eVTect coeSOcients, then it will greatly contribute to the increase of prediction ability.
+
+Similar decomposition methods are developed for the analysis of earth tide data and groundwater data. In these applications, the time series is decomposed as
+
+$$y _ { n } = t _ { n } + p _ { n } + e _ { n } + r _ { n } + w _ { n } ,$$
+
+where pn , en and r n are the barometric air pressure eVTect, the earth tide eVTect and the precipitation eVTect, respectively [4]. By the decomposition of 10 years groundwater data with this model, the eVTects of earthquakes are clearly detected, and various knowledge on the relation between occurrence of earthquakes and the groundwater level are obtained [14,15].
+
+
+<!-- p:9 -->
+
+
+#### 3.2. Analysis of POS data
+
+Analysis of POS scanner data is an important research area of 'data mining' and discovery science, which may provide store managers with useful information to control price or stock levels of goods. The promotional eVTect measurements responding to price changes and semi-automatic sales forecasts of each brand may be useful in order to pursue price promotions eSOciently and reduce the risk of 'dead-stock' or 'out-of-stock'.
+
+POS data set consists of a huge number of items and the analyses so far are mostly concentrated on the detection of mutual relation between items. In this subsection, we will show that, by the smoothness prior modeling of multivariate time series which takes into account of various components such as long term baseline sales trend, weekly pattern and competitive eVTects, it is possible to discover the eVTect of temporary pricecut and competitive relation between several items.
+
+Assume that yn =[ y (1) n ; : : : ; y ( ' ) n ] ′ denotes ' dimensional time series of sales of a certain product category, and pn =[ p (1) n ; : : : ; p ( ' ) n ] ′ the covariate expressing the price of each brand. The generic model we consider here for the analysis of POS data is given by
+
+$$y _ { n } = t _ { n } + d _ { n } + x _ { n } + w _ { n } ,$$
+
+where t n , dn , xn and wn are the baseline sales trend, weekly pattern, sales promotion eVTect, and observation noise, respectively. Each component of the baseline sales trend, t ( j ) n , is assumed to follow the FFrst order trend model
+
+$$t _ { n } ^ { ( j ) } = t _ { n - 1 } ^ { ( j ) } + u _ { n } ^ { ( j ) } .$$
+
+The weekly pattern, d ( j ) n , can be considered as a special form of seasonal component with period length 7 and is assumed to follow
+
+$$d _ { n } ^ { ( j ) } = - ( d _ { n - 1 } ^ { ( j ) } + \cdots + d _ { n - 6 } ^ { ( j ) } ) + v _ { n } ^ { ( j ) } . \\$$
+
+The price promotion eVTect is assumed to be expressed by a linear function of nonlinear transformation of the price (price function)
+
+$$x _ { n } = B _ { n } f ( p _ { n } ) .$$
+
+In the analysis that follows, we assume that the price function is given by
+
+$$f ( p _ { n } ) ^ { ( j ) } = \exp \{ - \gamma ( n - n _ { 0 } ) \} I _ { A } ( \Delta p _ { n } ^ { ( j ) } - c _ { n } ^ { ( j ) } ) , \\$$
+
+where SOH p ( j ) n denotes the temporary price-cut from its regular (precisely the maximum) price, CR , a parameter, n 0 a starting point of price-cut, c ( j ) n a condition that a price-cut is eVTective to cause sales increases, and I A ( ) an indicator function. In actual modeling, this price promotion eVTect is further decomposed into xn = gn + z n , where gn is the category expansion eVTect and corresponds to the contribution to the increase of total
+
+
+<!-- p:10 -->
+
+-150
+
+Fig. 3. Decomposition of the brand B1 (left) and B2 (right). Top plots: observed series, second plots: baseline trend plus weekly pattern, third plots: category expansion, fourth to sixth plots: brand substitution, positive due to own price-cuts and negative due to competitors' price-cuts.
+
+sales. On the other hand, z n is the brand switch eVTect which is the increase of the sales of a brand obtained at the expense of the decrease of other brands and does not contribute to the increase of category total [19].
+
+This model can be conveniently expressed in linear state space model and thus the numerically eSOcient Kalman FFlter can be used for state estimation, namely for the decomposition into components, and parameter estimation. Within various possible candidate models, the best model was found by the AIC criterion.
+
+The presented model was applied to scanner data sets of daily milk category, for the period of 1994 = 2 = 28-1996 = 3 = 3 ( N =735). Five-variate series consisted of top four brands and the others total were analyzed. Only two brands B1 and B2 are shown on top of Fig. 3. The second plots show the estimated baseline trend components plus the estimated weekly pattern. Only about 20% of the variation of the original series is explained by this day of the week eVTect. However, for other stores where the prices of brands did not change so signiFFcantly, the weekly pattern contribute much more than this present case.
+
+
+<!-- p:11 -->
+
+
+Fig. 4. Competitive relationships between four brands.
+
+Fig. 4 shows the detected competitive relationship among four major brands discovered via identiFFed model. The competitive coeSOcients are shown as well. The brand, B3, is a low fat type of B2 and is identiFFed to be independent of other brand's price promotion due to the type diVTerence. Price-cut of B4 (B2) increases sales of B4 (B2), but reduces those of B1 and B2 (B1). Price-cut of B1 increases sales of B1 and does not aVTect the sales of the competitive three brands.
+
+The decomposition of price promotion eVTect into brand switch eVTect and category expansion eVTect is achieved by using the category total sales instead of the others total sales with a zero constraint on the brand switch eVTect of the category total for each price function. The third plots of Fig. 3 show the estimated category expansion eVTect. The price-cuts of B1 and B2 contribute to the expansion of category total. The fourth plots show the estimated brand switch components, being positive by own price-cuts, and the FFfth or sixth plots, being negative by the competitors' price-cuts.
+
+The brand switch components of B1 and B2 are quite diVTerent. The plot for B1 indicates that the price-cut of B1 slightly contributes to the expansion of its own sales. However, B1 is vulnerable to the price-cut of B2 (see the FFfth plots) and B4 (see the sixth plots). On the other hand, the price-cut of B2 considerably contributes to the increase of the own sales (see the fourth plots) and B2 is slightly aVTected by the price-cut of B4 (see the FFfth plots) .
+
+#### 3.3. Analysis of GPS data
+
+The GPS is one of the most interesting and important data set which allows us to investigate a global change in environment precisely. Its high precision information on positions of permanent stations can be supplied by signal processing of microwave signal from GPS satellite. Several physical quantities of media existing between the GPS satellite and ground stations, such as electron, water vapor, and so on, aVTect phase information of microwave signals and result in propagation delays [5,7,10]. Therefore, a careful treatment of propagation delays is required to extract reliable information as to measurements of the positions.
+
+
+<!-- p:12 -->
+
+
+Dominant sources to bring about propagation delays are (1) ionosphere origin and (2) troposphere origin, such as atmospheric pressure and atmospheric water vapor [22]. The propagation delay generated by the atmospheric water vapor, called the wet delay, is most diSOcult to evaluate among these factors. A good estimation on the propagation delay can be given to the ionosphere origin and atmospheric pressure origin sources, by utilizing other physical quantities measured simultaneously. As a result, the wet delay turns out to appear as 'noise source' in the processing of the GPS data and has to be subtracted prior to diagnosing the GPS data in terms of information on positions.
+
+In Japan, considerable eVTorts to establish a nationwide GPS array has been kept making by the Geographical Survey Institute of Japan (GSI) [8]. The Japanese GPS array is characterized by its high spatial resolution; the array is composed of nearly one thousand stations separated typically by 15-30 km from one another [22]. Then, a proper processing of the GPS data set taking the wet delay eVTect into account allows us to estimate a high-frequent spatial pattern of the atmospheric water vapor, in particular, precipitable water vapor (PWV) which plays an important role in forecasting a weather map. Actually, an approach to extract information concerning the PWV from the GPS data draws much attention in a FFeld of the meteorology and now is referred to as the GPS meteorology [5,7,22].
+
+Many previous works to infer a quantitative relationship between the PWV and GPS data used the hourly GPS data sequences for some special events in limited local areas, because an association of space-time variation of the GPS data with other information obtained by radar echo and radiosonde measurements would be useful and direct [7,10,22]. Our objective in this study is aimed at FFnding empirical rules to give a quantitative description for the relationship between the CRuctuations observed in the GPS data and PWV. We begin with a statistical analysis of the daily GPS array data provided by the GSI. Let U i n be the n th day starting from January 1st, 1996 at the station (site) i :
+
+$$U _ { n } ^ { i } = [ X _ { n } ^ { i } , Y _ { n } ^ { i } , Z _ { n } ^ { i } ] , \quad i = 1 , \dots , I , \ n = N _ { s } ^ { i } , \dots , N _ { e } ^ { i }$$
+
+where X , Y , and Z correspond to the north-south, east-west, and up-down components, respectively. N i s and N i e represent the starting and last date of the GPS data available to us now. I is the number of stations.
+
+Our preparatory analysis shows that the CRuctuations associated with the PWV are most clearly seen in the up-down component, Z i n , among the three components. Then, in this study, we focus on the up-down component Z i n . Unfortunately, the original GPS array data contains the outliers as well as the missing observations. These unsatisfactory cases can be easily treated by smoothness priors approach with the state space model, presented in Section 2.3, which provides us with the reasonable interpolated data (see [4] for details). Denoising procedure based on another modeling approach has been proposed to deal with an identiFFcation of outliers and discontinuities and has produced the similar estimates on T i n [16]. The interpolation allows us to determine ˆ T i n , T ± 1 n , and T ± 2 n systematically. In Fig. 5 we show SYN Tn , T ± 1 n , and T ± 2 n obtained by applying the smoothness priors approach to Z i n . A seasonal pattern, which is expected to be associated with the PWV, is clearly seen in this FFgure. A spatial distribution of SYN Tn can be illustrated by a GIF animation ( http://www.ism.ac.jp/ ∼ higuchi/GPS/SpaAll.gif ).
+
+
+<!-- p:13 -->
+
+
+Fig. 5. The median, ± 1 ESC , and ± 2 ESC percentile points of the estimated trend of the up-down component versus n , SYN Tn; T ± 1 n , and T ± 2 n .
+
+In addition, a relatively signiFFcant amplitude of the seasonal variation is found to be larger than the typical amplitude of the residuals, which can be approximated by the mean of the standard deviation of D i . Therefore, it is apparent that an extraction of precise information on the position from the GPS array requires an elimination of an eVTect of the PWV from the GPS data. A power spectrum analysis is performed on the SYN Tn component and FFnd no eminent peak except for a yearly cycle in a frequency domain. A detail investigation is being made on this FFgure to discover with what factors is associated from the viewpoint of a climatology.
+
+Fig. 6 shows a plot of SOH ij versus C ij , where the unit of SOH is degree; roughly speaking, the distance of the degree corresponds to 111km. In this FFgure, only 10 000 points that are randomly drawn from about 180 000 C ij are shown for the sake of reducing a FFle size for this FFgure. An appearance of many points with high correlation in a small value of SOH clearly suggests that a residual sometimes shows a similar CRuctuation with that in the neighboring stations.
+
+Three lines superposed on this FFgure are
+
+$$C ( \Delta ) = \exp \left ( - \frac { \Delta } { 7 } \right ) \, \left [ \exp . \, d a c y \, \text { type} \right ] \, ( \min \, \text {line} ) ,$$
+
+C ( SOH ) = (0 : 82) SOH [ AR type ] (broken line) ;
+
+$$C ( \Delta ) = 1 - 0 . 3 6 \cdot ( \Delta ) ^ { 0 . 2 9 } \, \left [ \text {long memory type} \right ] \, ( \text {thick line} ) .$$
+
+
+<!-- p:14 -->
+
+
+Fig. 6. Plots of SOH ij versus C ij .
+
+The horizontal line indicates a value of 1 =e . Each curve represents a correlation function induced from a model denoted in bold face. The thin and thick lines are drawn so as to have them resemble an envelope of the upper bound and +2 ESC percentile as a function of SOH in the range of SOH 6 10. A good agreement of the thick line to +2 ESC envelope would imply that a long-memory-type spatial correlation ( H ∼ 0 : 15) [17] happens to be observed for an atmospheric spatial pattern. An examination of the weather map for these cases is interesting, but the detailed discussion will be left to other places.
+
+### 4. Conclusion
+
+The key to the success of a statistical procedure is the appropriateness of the model used in the analysis. The smoothness prior approach facilitates to develop various types of models based on prior information on the subject and the data. In this paper, we applied the smoothness priors method for the modeling of large-scale time series and space-time data with mean value structure and competitive relations between variables. In the analysis of POS data, the time series is decomposed into several components and various knowledge to make a strategy concerning price promotion and risk control of dead-stock are obtained. By the analysis of GPS data, a useful information for making a conjecture on the relationship between the propagation delay and PWV is successfully extracted based on the detailed investigation on the trend and residual components.
+
+Softwares based on the smoothness prior approach are available at the following Web sites. The seasonal adjustment method discussed in Section 3.1 can be directly performed on Web-Decomp (http: == www.ism.ac.jp =  ̃ sato) without installing any software. Some other models based on the smoothness prior approach or state space modeling can be run on the Web site of Institute of Geoscience, National Institute of Advanced Industrial Science and Technology (http: == 150.29.8.26 = GSJ E = analysis = index.html).
+
+
+<!-- p:15 -->
+
+
+### Acknowledgements
+
+The GPS array data were provided by the Geographical Survey Institute of Japan (GSI). One of the authors (T.H.) thanks to Dr. S. Miyazaki (GSI) for his help to understand the original data structure. One of the authors (F.N.K) wishes to thank Mr. Ono and Mr. Nishiyama, The Distribution Systems Research Institute, for providing us with valuable daily scanner data.
+
+<!-- END SOURCE 30/40: Kitagawa_2003_smoothness-prior-large-scale-time-series.md -->
+
+---
+
+<!-- BEGIN SOURCE 31/40: Liu_2021_risks-returns-cryptocurrency.md -->
+
+# Source: `Liu_2021_risks-returns-cryptocurrency.md`
+
+---
+id: "Liu_2021_risks-returns-cryptocurrency"
+source_pdf: "../pdf/Liu_2021_risks-returns-cryptocurrency.pdf"
+source_filename: "Liu_2021_risks-returns-cryptocurrency.pdf"
+format: "academic-paper"
+extraction_profile: "text-math-tables-high-fidelity"
+extraction_mode: "hybrid"
+extraction_quality: "excellent"
+extraction_score: 106.0
+visual_assets: "disabled"
+references_file: "../references/Liu_2021_risks-returns-cryptocurrency.references.md"
+---
+
+<!-- p:1 -->
+
+NBER WORKING PAPER SERIES
+
+RISKS AND RETURNS OF CRYPTOCURRENCY
+
+Yukun Liu Aleh Tsyvinski
+
+Working Paper 24877 http://www.nber.org/papers/w24877
+
+NATIONAL BUREAU OF ECONOMIC RESEARCH 1050 Massachusetts Avenue Cambridge, MA 02138 August 2018
+
+We thank Andrew Atkeson, Nicola Borri, Eduardo Davila, Stefano Giglio, William Goetzmann, Stephen Roach, and Robert Shiller for their comments. The views expressed herein are those of the  authors and  do  not  necessarily  reflect  the  views  of  the  National  Bureau  of  Economic Research.
+
+NBER working papers are circulated for discussion and comment purposes. They have not been peer-reviewed or been subject to the review by the NBER Board of Directors that accompanies official NBER publications.
+
+© 2018 by  Yukun  Liu  and  Aleh  Tsyvinski.  All  rights  reserved.  Short  sections  of  text,  not  to exceed two  paragraphs,  may  be  quoted  without  explicit  permission  provided  that  full  credit, including © notice, is given to the source.
+
+
+<!-- p:2 -->
+
+
+Risks and Returns of Cryptocurrency Yukun Liu and Aleh Tsyvinski NBER Working Paper No. 24877 August 2018 JEL No. G12,G32
+
+### ABSTRACT
+
+We establish that the risk-return tradeoff of cryptocurrencies (Bitcoin, Ripple, and Ethereum) is distinct from those of stocks, currencies, and precious metals. Cryptocurrencies have no exposure to  most common stock market and macroeconomic factors. They also have no exposure to the returns of currencies and commodities. In contrast, we show that the cryptocurrency returns can be predicted by factors which are specific to cryptocurrency markets. Specifically, we determine that there is a strong time-series momentum effect and that proxies for investor attention strongly forecast cryptocurrency returns. Finally, we create an index of exposures to cryptocurrencies of 354 industries in the US and 137 industries in China.
+
+Yukun Liu Department of Economics Yale University New Haven, CT 06520-8268 yukun.liu@yale.edu
+
+Aleh Tsyvinski Department of Economics Yale University Box 208268 New Haven, CT  06520-8268 and NBER a.tsyvinski@yale.edu
+
+
+<!-- p:3 -->
+
+
+## 1 Introduction
+
+Cryptocurrency is a recent phenomenon that is receiving significant attention. On the one hand it is based on a fundamentally new technology, the potential of which is not fully understood. On the other hand, at least in the current form, it fullfils similar functions as other, more traditional assets. Is cryptocurrency a form of a currency, a commodity, a stake in a technology breakthrough, or a completely different instrument? Can cryptocurrency be priced by the factors available for other asset classes? Which industries may be affected by the development of blockchain technology?
+
+One way to understand what cryptocurrencies represent is to investigate whether their returns behave similarly to other asset classes. In other words, we assess how investors and markets value current and future prospects of cryptocurrencies. We use standard tools of empirical asset pricing to comprehensively analyze cryptocurrency risks and returns. Specifically, we study whether major cryptocurrencies comove with stocks, currencies, commodities, macroeconomic factors, and the cryptocurrency market specific factors. Our main conclusion is that only cryptocurrency market specific factors - momentum and the proxies for investor attention - consistently explain the variations of cryptocurrency returns. This suggests, in contrast to popular explanations, that markets do not view cryptocurrencies similarly to standard asset classes.
+
+We focus on three of the five major cryptocurrencies - Bitcoin, Ripple, and Ethereum 1 - and start by documenting the characteristics of cryptocurrency returns. We observe that the mean and the standard deviation of returns are an order of magnitude higher than those for the traditional asset classes. For example, the weekly mean return on Bitcoin is 3.79 percent with a standard deviation of 16.64 percent. The Sharpe ratios at the daily and weekly levels are about 50 percent and 75 percent higher, and at the monthly level are comparable to those of stocks. The returns have positive skewness increasing with the frequencies from daily to monthly. The returns experience high probabilities of 'disasters' and 'miracles'. For example, a 'disaster' of the daily 20 percent negative return on Bitcoin happens with the probability of 0.5 percent while a 'miracle' of the same size happens with the probability of almost 1 percent.
+
+We first investigate whether the cryptocurrency market behaves similarly to the stock market. We test this by studying whether the returns on the cryptocurrency market are compensated by the risk factors derived from the stock market. We show that the CAPM betas are sizable but the alphas remain large and statistically significant. The exposures to other common risk factors in the stock market are very small. Specifically, the exposures to Fama French five risk factors are low and not statistically significant. Compared to Bitcoin, Ripple and Ethereum have higher unconditional alphas, a smaller CAPM beta, and a strong exposure to the HML factor. We also explore 155 other factors documented in the finance literature and find no discernible patterns of loadings.
+
+Second, we study the exposure of cryptocurrency returns to major currencies (Australian Dollar, Canadian Dollar, Euro, Singaporean Dollar, and UK Pound). This aims to test a popular view that cryptocurrency may serve as another medium of exchange. Although these major currenices strongly comove, we find that the exposures of all cryptocurrencies to these currencies are small and not statistically significant.
+
+Third, we study the exposure of cryptocurrency returns to precious metals commodities (gold, platinum, and silver). This aims to test a popular narrative that cryptocurrency may serve as an alternative to precious metals as a store of value. With the exception of the exposure of Ethereum to gold, the exposures of all other cryptocurrencies to these commodities are not statistically significant.
+
+Fourth, we study the exposure of cryptocurrency returns to macroeconomic factors. For Bitcoin and Ripple, the exposures to common macroeconomic factors (the non-durable consumption growth, durable consumption growth, industrial production growth, and personal income growth) are low and not statistically significant, while for Ethereum there is some loading on the durable consumption growth factor.
+
+1 The other two largest cryptocurrencies by market capitalization are BitcoinCash and Litecoin which are derived from, and thus behave similarly to, Bitcoin.
+
+
+<!-- p:4 -->
+
+
+Summarizing, we established that the risk-return tradeoff of cryptocurrencies is distinct from those of stocks, currencies and precious metals. Hence, there is little evidence, in the view of the markets, behind the popular narratives that there are similarities between cryptocurrencies and these traditional assets.
+
+We now turn to cryptocurrency specific factors. We formulate and investigate potential predictors for cryptocurrency returns that mirror those of traditional asset classes. Specifically, we construct cryptocurrency momentum, proxies for average and negative investor attention, a proxy for price-to-'dividend' ratio, 2 realized volatility, and proxies for the supply conditions.
+
+First, we show that there is significant time-series cryptocurrency momentum at the daily and weekly frequencies for all three cryptocurrencies. For example, a one-standard-deviation increase in the current day's Bitcoin return predicts a 0.33 percent increase in the daily return over the next day. Grouping weekly returns by quintiles, we find that the top quintiles outperform the bottom quintiles over the 1-4 week horizons. For example, at the 1-week horizon, the average return of the top quintile is 11.22 percent per week with the Sharpe ratio of 0.45 while the average return of the bottom quintile is 2.60 percent per week with the Sharpe ratio of 0.19. However, for Ethereum, the momentum effect is less significant than for Bitcoin and Ripple.
+
+Second, we construct proxies for investor attention and show that high investor attention predicts high future returns over 1-2 week horizons for Bitcoin, a 1-week horizon for Ripple, and 1-, 3-, and 6-week horizons for Ethereum. For example, a one-standard-deviation increase in the Google search for the word 'Bitcoin' yields a 2.3 percent increase in the 2-week ahead Bitcoin returns. At the 1-week horizon, the average return of the top quintile is 11.20 percent per week with the Sharpe ratio of 0.48 while the average return of the bottom quintile is 1.07 percent per week with the Sharpe ratio of 0.08. Another proxy for investor attention we construct is Twitter post counts. A one-standard-deviation increase in the Twitter post count for the word 'Bitcoin' yields a 2.50 percent increase in the 1-week ahead Bitcoin returns. Finally, we construct a proxy for negative investor attention and show that relatively high negative investor attention negatively predicts future Bitcoin returns. We construct a ratio between Google searches for the phrase 'Bitcoin hack' and searches for the word 'Bitcoin,' and show that a one-standard-devation increase of the ratio leads to a 2.75 percent decrease in Bitcoin returns the following week.
+
+Third, we construct a proxy for the the price-to-'dividend' ratios for Bitcoin and find that it has no predictive power. Realized volatility also does not predict returns of Bitcoin and Ethereum but predicts Ripple returns at 4-, 5-, and 7-day ahead frequencies.
+
+Finally, we construct proxies for the cost of mining to capture the supply factors, and find that those have low loadings for Bitcoin and Ripple. For Ethereum, there is some evidence that returns are exposed to the stock returns of Advanced Micro Devices, Inc. (AMD), one of the main manufacturers of specialized mining hardware.
+
+Our main conclusion is that indeed cryptocurrency represents an asset class that can be assessed using simple finance tools. At the same time, cryptocurrencies comprise an asset class which is radically different from traditional asset classes.
+
+Our last group of results determines the exposures of various industries to cryptocurrencies. These results indicate which industries may benefit or may be disrupted by the blockchain technology. We start with 30 Fama French industries and find that Consumer Goods and Healthcare have significant and positive exposures to Bitcoin returns and that Fabricated Products and Metal Mining industries have significant and negative exposures to Bitcoin returns. Finance, Retail, and Wholesale industries have no exposure. We then estimate the exposures of 354 U.S. SIC 3-digit industries' on cryptocurrency returns and 137 Chinese CIC industries exposures on Bitcoin returns, controlling for the excess market returns, and create an index of industry exposures.
+
+2 We use Bitcoin Wallet user count to measure the fundamental value of Bitcoin or 'dividend.'
+
+
+<!-- p:5 -->
+
+
+We now briefly discuss the relationship to the literature. Our paper uses standard textbook empirical asset pricing tools and methods, the discussion of which we mostly omit for conciseness. Our findings on momentum are related to a series of papers such as Jegadeesh and Titman (1993), Moskowitz and Grinblatt (1999). Moskowitz, Ooi, and Pedersen (2012), and Asness, Moskowitz, and Pedersen (2013). Da, Engelberg, and Gao (2011) uses Google searches to proxy for investor attention. Yermack (2015) is one of the first papers that brought academic attention to the field of cryptocurrency. Several recent papers (e.g., Stoffels, 2017, Borri, 2018, Borri and Shakhnov, 2018, Foley, Karlsen, and Putni ̧ nš (2018), and Hu, Parlour, and Rajan, 2018) document individual facts related to cryptocurrency investment. A number of recent papers develop models of cryptocurrencies (see, e.g., Weber (2016), Huberman, Leshno, and Moallemi (2017), Biais et al. (2018), Chiu and Koeppl (2017), Cong and He, 2018, Cong, Li, and Wang, 2018, Cong, He, and Li, 2018, Sockin and Xiong, 2018, Saleh, 2018, Schilling and Uhlig, 2018, Abadi and Brunnermeier (2018), Routledge and Zetlin-Jones (2018), and Makarov and Schoar (2018)).
+
+## 2 Data and Basic Characteristics
+
+Cryptocurrency price data series are from the CoinDesk website. For Bitcoin, we use data from 01/01/2011 to 05/31/2018 because there was not much liquidity and trading in earlier years. The data series for Ripple ranges from 08/04/2013 to 05/31/2018, and the data series for Ethereum ranges from 08/07/2015 to 05/31/2018. We construct cryptocurrency return data using the corresponding price data. Google search data series are downloaded from Google. Twitter post counts for the word 'Bitcoin' are downloaded from Crimson Hexagon. 3 The data series for the number of Bitcoin Wallet users is from blockchain.info. The Bitcoin price-to-'dividend' ratio is constructed from the ratio between Bitcoin price and the number of Bitcoin wallet users. The cryptocurrency realized volatility is measured as the sum of daily squared log returns from the previous month.
+
+The spot exchange rates in units of US dollar per foreign currency are from the Federal Reserve Bank of St. Louis. We focus on five major currencies: Australian Dollar, Canadian Dollar, Euro, Singaporean Dollar, and UK Pound. The spot price of precious metals are from several sources. The gold and silver prices are from the London Bullion Market Association (LBMA). Platinum prices are from the London Platinum and Palladium Market (LPPM).
+
+Aggregate and individual stock return data is from CRSP. Detailed SIC 3-digit industry return data series are constructed using individual stock returns. Chinese stock return data is from CSMAR. We construct the value-weighted aggregate Chinese stock returns and detailed CIC (China Industry Classification) industry return data series from the individual stocks. The data series of Chinese stock returns lasts until 2016/12.
+
+Corporate bond return data series is constructed by Asvanunt and Richardson (2016) and is available on their website. 4 For the housing market, we use the Case-Shiller housing index from Robert Shiller's website. The return series of the 155 anomalies are downloaded from Andrew Chen's website. 5
+
+3 We thank William Goetzmann for kindly sharing the Twitter post count data with us.
+
+4 https://www.aqr.com/Insights/Datasets/Credit-Risk-Premium-Preliminary-Paper-Data. The data series ends at 2014/12.
+
+5 One of the 156 anomalies does not exist during the sample period. The database ends at 2016/12.
+
+
+<!-- p:6 -->
+
+
+We obtain the Fama French 3-factor, Carhart 4-factor, Fama French 5-factor, and Fama French 6-factor models dataseries from Kenneth French's website. We also obtain the return series of Fama French 30 industries, Europe, Japan, AsiaExJapan, and North America from Kenneth French's website.
+
+The macroeconomic data series are from the website of the Federal Reserve Bank of St. Louis. Nondurable consumption is defined as the sum of personal consumption expenditures: non-durable goods, and personal consumption expenditures: services.
+
+Stock market prices, dividends, and earnings, as well as the three-month Treasury bill rates, are from Robert Shiller's website. Using these data series, we construct the stock market price-to-dividend ratio (pd), price-to-earning ratio (pe), and the relative bill rate (tbill). The relative bill rate is defined as the threemonth Treasury bill rate minus its twelve-month backward moving average. Credit spread (credit) is defined as the yield spread between BAA corporate bonds and AAA corporate bonds. Term spread (term) is defined as the yield spread between the 10-year treasury and 3-month treasury. Data series on the BAA corporate yield, AAA corporate yield, 10-year treasury yield, and 3-month treasury yield are from the Federal Reserve Bank of St. Louis' website.
+
+We now document main statistical properties of the time series for the returns of Bitcoin, Ripple, and Ethereum. Figure 1 plots the price movements for each of the three cryptocurrencies.
+
+Figure 1: Price Movements
+
+(a) Bitcoin
+
+(b) Ripple
+
+(c) Ethereum
+
+Figure 2: Bitcoin Return Distributions
+
+<!-- p:7 -->
+
+
+Figure 3: Ripple Return Distributions
+
+Figure 4: Ethereum Return Distributions
+
+Table 1 and Figure 2 show the statistics of Bitcoin at the daily, weekly, and monthly frequencies compared to those of stocks, corporate bonds, and housing. Both the returns and their volatility are very high. At the daily frequency, the mean return is 0.52 percent and the standard deviation is 5.55 percent; at the weekly frequency, the mean return is 3.79 percent and the standard deviation is 16.64 percent; at the monthly frequency, the mean return is 21.60 percent and the standard deviation is 69.46 percent. Both the means and the standard deviations are an order of magnitude higher than those for traditional asset classes. These facts are broadly known.
+
+The Sharpe ratios of bitcoin returns are 0.09 at the daily frequency, 0.23 at the weekly frequency, and 0.31 at the monthly frequency. At the monthly frequency, the Sharpe ratios are similar to those of stocks for the comparable time period, although higher than the historical Sharpe ratios for stocks. At the daily and weekly frequencies, the Sharpe ratios are about 50 percent and 75 percent higher than those of stocks for the comparable time period.
+
+In Tables 2, and 3 and Figures 3 and 4, we document the main characteristics of the Ripple and Ethereum returns. Note that since the Ripple return series starts on 08/04/2013 and the Ethereum return series starts on 08/07/2015, in the tables we present the statistics for Bitcoin for the corresponding periods. For the Ripple returns, the Sharpe ratios are 0.06 at the daily frequency, 0.13 at the weekly frequency, and 0.25 at the monthly frequency. The Ripple returns have a markedly higher mean and standard deviation compared to the Bitcoin returns of the period. However, during this period the Sharpe ratios of Ripple returns are comparable to the Sharpe ratios of Bitcoin returns. For Ethereum, the Sharpe ratios are 0.11 at the daily frequency, 0.28 at the weekly frequency, and 0.53 at the monthly frequency. The Ethereum returns also have higher mean and standard deviation than Bitcoin returns during the same period. However, during this period the Sharpe ratios of Ethereum returns are comparable to the Sharpe ratios of Bitcoin returns.
+
+
+<!-- p:8 -->
+
+
+The Bitcoin returns are positively skewed at all frequencies in contrast to the stock returns which are negatively skewed. The skewness increases from 0.80 at the daily frequency to 1.76 at the weekly frequency, and to 4.32 at the monthly frequency. The corresponding kurtosis is 15.21 at the daily frequency, 10.25 at the weekly frequency, and 25.38 at the monthly frequency. The bitcoin returns have high probabilities of exceptional negative and positive daily returns. For example, the probability of a -20 percent daily return 'disaster' is almost 0.5 percent; the probability of a 20 percent daily return 'miracle' is almost 1 percent. The Ripple and Ethereum returns have similar characteristics: (1) positively skewed at all frequencies and having high kurtosis; and (2) high probabilities of exceptional negative and positive daily returns.
+
+Table 1: Bitcoin Returns Summary Statistics and Comparison with Traditional Asset Classes
+
+| Panel A - Daily      | Panel A - Mean   | Panel A - SD      | Panel A - T-Statistics   | Panel A - Sharpe   | Panel A - Skewness   | Panel A - Kurtosis   | Panel A - % Return >0   |
+|----------------------|------------------|-------------------|--------------------------|--------------------|----------------------|----------------------|-------------------------|
+| Bitcoin              | 0.52%            | 5.55%             | 4.88                     | 0.09               | 0.80                 | 15.21                | 53.69                   |
+| Stock                | 0.05%            | 0.94%             | 2.44                     | 0.06               | -0.51                | 7.95                 | 54.91                   |
+| Stock*               | 0.04%            | 1.06%             | 6.10                     | 0.03               | -0.13                | 19.72                | 55.07                   |
+| Weekly               | Mean             | SD                | T-Statistics             | Sharpe             | Skewness             | Kurtosis             | % Return >0             |
+| Bitcoin              | 3.79%            | 16.64%            | 4.49                     | 0.23               | 1.76                 | 10.25                | 58.72                   |
+| Stock                | 0.26%            | 1.93%             | 2.59                     | 0.13               | -0.38                | 5.17                 | 59.95                   |
+| Stock*               | 0.21%            | 2.45%             | 6.02                     | 0.06               | -0.27                | 10.14                | 58.40                   |
+| Monthly              | Mean             | SD                | T-Statistics             | Sharpe             | Skewness             | Kurtosis             | % Return >0             |
+| Bitcoin              | 21.60%           | 69.46%            | 2.95                     | 0.31               | 4.32                 | 25.38                | 60.00                   |
+| Stock                | 1.08%            | 3.24%             | 3.12                     | 0.33               | -0.10                | 3.78                 | 68.89                   |
+| Stock*               | 0.91%            | 4.27%             | 5.36                     | 0.12               | -0.51                | 5.02                 | 62.16                   |
+| Bond                 | 0.95%            | 3.00%             | 2.18                     | 0.32               | -0.10                | 2.73                 | 64.58                   |
+| Housing Note: Stock* | 0.40% shows      | 0.72% results for | 5.15 the whole sample    | 0.55 between       | -0.01 1953/07 and    | 3.17 2018/04.        | 73.56                   |
+
+| Panel B: Extreme Events of Daily Bitcoin Returns - Disasters   |   Panel B: Extreme Events of Daily Bitcoin Returns - Counts | Panel B: Extreme Events of Daily Bitcoin Returns - Percentage   | Panel B: Extreme Events of Daily Bitcoin Returns - Miracles   |   Panel B: Extreme Events of Daily Bitcoin Returns - Counts | Panel B: Extreme Events of Daily Bitcoin Returns - Percentage   |
+|----------------------------------------------------------------|-------------------------------------------------------------|-----------------------------------------------------------------|---------------------------------------------------------------|-------------------------------------------------------------|-----------------------------------------------------------------|
+| <-5%                                                           |                                                         225 | 8.26%                                                           | >5%                                                           |                                                         304 | 11.16%                                                          |
+| <-10%                                                          |                                                          78 | 2.86%                                                           | >10%                                                          |                                                         104 | 3.82%                                                           |
+| <-20%                                                          |                                                          13 | 0.48%                                                           | >20%                                                          |                                                          26 | 0.95%                                                           |
+| <-30%                                                          |                                                           3 | 0.11%                                                           | >30%                                                          |                                                           9 | 0.33%                                                           |
+
+
+<!-- p:9 -->
+
+
+Table 2: Ripple Returns Summary Statistics
+
+| Panel A: Return Summary - Ripple Returns   | Panel A: Return Summary - Ripple Returns - Mean   | Panel A: Return Summary - Ripple Returns - SD   | Panel A: Return Summary - Ripple Returns - T-Statistics   | Panel A: Return Summary - Ripple Returns - Sharpe   | Panel A: Return Summary - Ripple Returns - Skewness   | Panel A: Return Summary - Ripple Returns - Kurtosis   | Panel A: Return Summary - Ripple Returns - % Return >0   |
+|--------------------------------------------|---------------------------------------------------|-------------------------------------------------|-----------------------------------------------------------|-----------------------------------------------------|-------------------------------------------------------|-------------------------------------------------------|----------------------------------------------------------|
+| Daily                                      | 0.59%                                             | 9.11%                                           | 2.74                                                      | 0.06                                                | 6.11                                                  | 99.05                                                 | 46.09                                                    |
+| Weekly                                     | 6.26%                                             | 47.39%                                          | 2.11                                                      | 0.13                                                | 7.62                                                  | 76.26                                                 | 46.27                                                    |
+| Monthly                                    | 36.20%                                            | 143.31%                                         | 1.94                                                      | 0.25                                                | 3.82                                                  | 18.69                                                 | 40.68                                                    |
+| Same Period Bitcoin Returns                | Same Period Bitcoin Returns                       | Same Period Bitcoin Returns                     | Same Period Bitcoin Returns                               | Same Period Bitcoin Returns                         | Same Period Bitcoin Returns                           | Same Period Bitcoin Returns                           | Same Period Bitcoin Returns                              |
+|                                            | Mean                                              | SD                                              | T-Statistics                                              | Sharpe                                              | Skewness                                              | Kurtosis                                              | % Return >0                                              |
+| Daily                                      | 0.34%                                             | 4.47%                                           | 3.17                                                      | 0.08                                                | 0.54                                                  | 13.08                                                 | 54.58                                                    |
+| Weekly                                     | 2.42%                                             | 12.68%                                          | 3.04                                                      | 0.19                                                | 0.88                                                  | 5.72                                                  | 56.86                                                    |
+| Monthly                                    | 14.93%                                            | 64.87%                                          | 1.77                                                      | 0.23                                                | 5.88                                                  | 41.58                                                 | 55.93                                                    |
+
+| Panel B: Extreme Events of Daily Ripple Returns - Disasters   |   Panel B: Extreme Events of Daily Ripple Returns - Counts | Panel B: Extreme Events of Daily Ripple Returns - Percentage   | Panel B: Extreme Events of Daily Ripple Returns - Miracles   |   Panel B: Extreme Events of Daily Ripple Returns - Counts | Panel B: Extreme Events of Daily Ripple Returns - Percentage   |
+|---------------------------------------------------------------|------------------------------------------------------------|----------------------------------------------------------------|--------------------------------------------------------------|------------------------------------------------------------|----------------------------------------------------------------|
+| <-5%                                                          |                                                        224 | 12.59%                                                         | >5%                                                          |                                                        247 | 13.88%                                                         |
+| <-10%                                                         |                                                         75 | 4.22%                                                          | >10%                                                         |                                                        119 | 6.69%                                                          |
+| <-20%                                                         |                                                         11 | 0.62%                                                          | >20%                                                         |                                                         44 | 2.47%                                                          |
+| <-30%                                                         |                                                          3 | 0.17%                                                          | >30%                                                         |                                                         21 | 1.18%                                                          |
+
+Table 3: Ethereum Returns Summary Statistics
+
+|                                     |                                     |                                     |                                     |                                     |                                     |                                     |                                     |
+|-------------------------------------|-------------------------------------|-------------------------------------|-------------------------------------|-------------------------------------|-------------------------------------|-------------------------------------|-------------------------------------|
+| Panel A: Returns Summary Statistics | Panel A: Returns Summary Statistics | Panel A: Returns Summary Statistics | Panel A: Returns Summary Statistics | Panel A: Returns Summary Statistics | Panel A: Returns Summary Statistics | Panel A: Returns Summary Statistics | Panel A: Returns Summary Statistics |
+|                                     | Ethereum Returns                    | Ethereum Returns                    | Ethereum Returns                    | Ethereum Returns                    | Ethereum Returns                    | Ethereum Returns                    | Ethereum Returns                    |
+|                                     | Mean                                | SD                                  | T-Statistics                        | Sharpe                              | Skewness                            | Kurtosis                            | % Return >0                         |
+| Daily                               | 0.81%                               | 7.71%                               | 3.41                                | 0.11                                | 0.24                                | 15.71                               | 49.33                               |
+| Weekly                              | 6.88%                               | 24.51%                              | 3.43                                | 0.28                                | 1.71                                | 7.24                                | 54.00                               |
+| Monthly                             | 30.26%                              | 67.56%                              | 2.65                                | 0.53                                | 1.24                                | 3.95                                | 54.29                               |
+|                                     | Same Period Bitcoin Return          | Same Period Bitcoin Return          | Same Period Bitcoin Return          | Same Period Bitcoin Return          | Same Period Bitcoin Return          | Same Period Bitcoin Return          | Same Period Bitcoin Return          |
+|                                     | Mean                                | SD                                  | T-Statistics                        | Sharpe                              | Skewness                            | Kurtosis                            | % Return >0                         |
+| Daily                               | 0.38%                               | 4.07%                               | 3.04                                | 0.09                                | 0.19                                | 7.54                                | 56.88                               |
+| Weekly                              | 2.84%                               | 11.80%                              | 2.94                                | 0.24                                | 0.26                                | 4.05                                | 62.00                               |
+| Monthly                             | 12.05%                              | 25.10%                              | 2.84                                | 0.48                                | 0.51                                | 2.88                                | 65.71                               |
+
+| Panel B: Extreme Events of Daily Ethereum Returns - Disasters   |   Panel B: Extreme Events of Daily Ethereum Returns - Counts | Panel B: Extreme Events of Daily Ethereum Returns - Percentage   | Panel B: Extreme Events of Daily Ethereum Returns - Miracles   |   Panel B: Extreme Events of Daily Ethereum Returns - Counts | Panel B: Extreme Events of Daily Ethereum Returns - Percentage   |
+|-----------------------------------------------------------------|--------------------------------------------------------------|------------------------------------------------------------------|----------------------------------------------------------------|--------------------------------------------------------------|------------------------------------------------------------------|
+| <-5%                                                            |                                                          134 | 12.81%                                                           | >5%                                                            |                                                          198 | 18.93%                                                           |
+| <-10%                                                           |                                                           39 | 3.73%                                                            | >10%                                                           |                                                           96 | 9.20%                                                            |
+| <-20%                                                           |                                                            6 | 0.57%                                                            | >20%                                                           |                                                           23 | 2.20%                                                            |
+| <-30%                                                           |                                                            1 | 0.10%                                                            | >30%                                                           |                                                            8 | 0.76%                                                            |
+
+
+<!-- p:10 -->
+
+
+Table 4: Return Summary Statistics by Day of the Week
+
+| Bitcoin   | Mean   | SD    | T-Statistics   | Sharpe   | Ripple    | Mean   | SD     | T-Statistics   | Sharpe   |
+|-----------|--------|-------|----------------|----------|-----------|--------|--------|----------------|----------|
+| Monday    | 0.67%  | 5.48% | 2.43           | 0.12     | Monday    | 0.05%  | 7.70%  | 0.11           | 0.01     |
+| Tuesday   | 1.01%  | 6.09% | 3.25           | 0.17     | Tuesday   | 0.75%  | 9.04%  | 1.32           | 0.08     |
+| Wednesday | 0.46%  | 5.62% | 1.62           | 0.08     | Wednesday | 0.45%  | 6.86%  | 1.03           | 0.06     |
+| Thursday  | 0.66%  | 5.95% | 2.18           | 0.11     | Thursday  | 1.45%  | 10.90% | 2.13           | 0.13     |
+| Friday    | 0.32%  | 5.71% | 1.09           | 0.06     | Friday    | 0.97%  | 7.71%  | 2.01           | 0.13     |
+| Saturday  | 0.33%  | 5.32% | 1.24           | 0.06     | Saturday  | -0.14% | 7.32%  | -0.29          | -0.02    |
+| Sunday    | 0.18%  | 4.52% | 0.80           | 0.04     | Sunday    | 0.61%  | 12.72% | 0.76           | 0.05     |
+| Ethereum  | Mean   | SD    | T-Statistics   | Sharpe   | Stock     | Mean   | SD     | T-Statistics   | Sharpe   |
+| Monday    | 0.38%  | 7.39% | 0.62           | 0.05     | Monday    | -0.03% | 1.00%  | -0.47          | -0.03    |
+| Tuesday   | 1.53%  | 8.86% | 2.11           | 0.17     | Tuesday   | 0.12%  | 0.90%  | 2.55           | 0.13     |
+| Wednesday | 0.86%  | 6.83% | 1.53           | 0.13     | Wednesday | 0.04%  | 0.93%  | 0.94           | 0.05     |
+| Thursday  | 1.72%  | 8.72% | 2.41           | 0.20     | Thursday  | 0.06%  | 0.97%  | 1.23           | 0.06     |
+| Friday    | 0.21%  | 6.75% | 0.39           | 0.03     | Friday    | 0.06%  | 0.88%  | 1.31           | 0.07     |
+| Saturday  | 0.26%  | 8.83% | 0.36           | 0.03     |           |        |        |                |          |
+| Sunday    | 0.74%  | 6.15% | 1.47           | 0.12     |           |        |        |                |          |
+
+Table 4 shows the mean, standard deviation, and Sharpe ratios of the returns on different days of the week. In contrast to the stocks, there is no pronounced Monday effect. However, the returns are lower on Saturdays: Bitcoin - 0.33 percent with the Sharpe ratio of 0.06 compared to 0.52 percent daily average with the Sharpe ratio of 0.09; Ripple - -0.14 percent with the Sharpe ratio of -0.02 compared to 0.59 percent daily average with the Sharpe ratio of 0.06; and Ethereum - 0.26 percent with the Sharpe ratio of 0.03 compared to 0.81 percent daily average with the Sharpe ratio of 0.03. While Bitcoin returns are somewhat lower on Sundays, the returns on Saturday is consistently lower across all three cryptocurrencies.
+
+In this paper, we report two types of t-statistics: (1) based on regular standard error, and (2) based on bootstrapped standard error. The first type is reported in parentheses and the second type is reported in brackets.
+
+## 3 Risk Exposures
+
+In this section, we establish facts on factor loadings and on exposures to stocks, currencies, and precious metals commodities. Throughout this section, t-statistics in parentheses and brackets are based on regular and bootstrapped standard errors.
+
+### 3.1 Stock Factors Loadings
+
+Table 5 documents the common stock factor exposures of the Bitcoin returns. For the risk factors, we choose the CAPM, Fama French 3-factor, Carhart 4-factor, Fama French 5-factor, and Fama French 6-factor models. The alphas for all of the considered models are statistically significant. The unconditional alpha of the period is 22.45 percent per month. The CAPM adjusted alpha decreases to 18.91 percent per month - a reduction of about 16 percent. The CAPM beta is large at 3.34 but not statistically significant. The beta is statistically significant at the 10-percent level only for the 5-factor and 6-factor models. The corresponding alphas are 16.72 and 15.98 percent per month. The exposures to the other factors are not statistically significant. The exposures to the SMB factor is not stable across the specifications: both the magnitude and the signs change when 5-factor and 6-factor models are considered. The exposures to the HML factor are negative and have consistent magnitudes and signs; this suggests that Bitcoin returns may comove more with growth rather than with value firms. The exposures to the RMW factor are positive and are estimated slightly more accurately than other statistically not significant factors; this suggests that Bitcoin returns comove more with high profit rather than low profit firms. The point estimates on the MOM and CMA factors are very inaccurate. 6
+
+
+<!-- p:11 -->
+
+
+Table 5: Bitcoin Returns Factor Loadings
+
+| (Percentage)   | CAPM    | 3-Fac   | 4-Fac   | 5-Fac   | 6-Fac   |
+|----------------|---------|---------|---------|---------|---------|
+| ALPHA          | 18 : 91 | 18 : 20 | 17 : 66 | 16 : 72 | 15 : 98 |
+|                | (2.42)  | (2.30)  | (2.18)  | (2.07)  | (1.94)  |
+|                | [2.55]  | [2.34]  | [2.28]  | [2.61]  | [2.54]  |
+| MKTRF          | 3 : 34  | 3 : 79  | 4 : 00  | 4 : 57  | 4 : 85  |
+|                | (1.45)  | (1.56)  | (1.60)  | (1.81)  | (1.86)  |
+|                | [1.94]  | [2.08]  | [1.94]  | [2.14]  | [2.06]  |
+| SMB            |         | 1 : 29  | 1 : 26  | 0 : 45  | 0 : 55  |
+|                |         | (-0.36) | (-0.35) | (0.12)  | (0.14)  |
+|                |         | [-0.55] | [-0.54] | [0.15]  | [0.16]  |
+| HML            |         | 3 : 02  | 2 : 41  | 3 : 80  | 3 : 01  |
+|                |         | (-0.81) | (-0.59) | (-0.79) | (-0.58) |
+|                |         | [-1.22] | [-0.84] | [-0.97] | [-0.67] |
+| MOM            |         |         | 1 : 08  |         | 1 : 35  |
+|                |         |         | (0.38)  |         | (0.47)  |
+|                |         |         | [0.48]  |         | [0.59]  |
+| RMW            |         |         |         | 6 : 16  | 6 : 39  |
+|                |         |         |         | (1.07)  | (1.10)  |
+|                |         |         |         | [1.35]  | [1.41]  |
+| CMA            |         |         |         | 2 : 47  | 2 : 40  |
+|                |         |         |         | (0.35)  | (0.33)  |
+|                |         |         |         | [0.27]  | [0.24]  |
+| R-Squared      | 0.02    | 0.04    | 0.04    | 0.05    | 0.05    |
+
+Table 6 documents the common stock factor exposures of the Ripple returns and compares them to the Bitcoin returns for the same time period. The Bitcoin returns for this time period have similar risk exposures as those in the full sample but have smaller and mostly insignificant alphas. We now turn to the analysis of Ripple. The alphas for all of the considered models are statistically significant. The unconditional alpha of the period is 38.15 percent per month and is more than twice as large as that for Bitcoin. The CAPM adjusted alpha is about the same as the unadjusted alpha. The CAPM beta is about half the size of Bitcoin and is not significant. In contrast to Bitcoin, there are statistically significant large negative loadings on the HML factor within the 5-factor and 6-factor models. The exposures to the other factors are not statistically significant. Summarizing, Ripple has performed better than Bitcoin for the corresponding time period, and its returns comove with growth rather than value firms.
+
+6 Stoffels (2017) and Gilbert and Loi (2018) examine cryptocurrency loadings on the CAPM and Fama French 3-factor models.
+
+
+<!-- p:12 -->
+
+
+Table 6: Ripple Return Factor Loadings
+
+|              | Ripple Return   | Ripple Return   | Ripple Return   | Ripple Return   | Ripple Return   |
+|--------------|-----------------|-----------------|-----------------|-----------------|-----------------|
+| (Percentage) | CAPM            | 3-Fac           | 4-Fac           | 5-Fac           | 6-Fac           |
+| ALPHA        | 36 : 61         | 35 : 30         | 38 : 46         | 39 : 92         | 41 : 33         |
+|              | (1.78)          | (1.70)          | (1.82)          | (1.90)          | (1.93)          |
+|              | [2.43]          | [2.24]          | [2.18]          | [2.06]          | [1.97]          |
+| MKTRF        | 1 : 56          | 1 : 59          | 0 : 06          | 2 : 73          | 1 : 81          |
+|              | (0.23)          | (0.23)          | (-0.01)         | (0.40)          | (0.25)          |
+|              | [0.45]          | [0.42]          | [-0.01]         | [0.70]          | [0.43]          |
+| SMB          |                 | 0 : 82          | 0 : 57          | 2 : 95          | 2 : 57          |
+|              |                 | (0.10)          | (0.07)          | (0.32)          | (0.27)          |
+|              |                 | [0.15]          | [0.10]          | [0.42]          | [0.33]          |
+| HML          |                 | 8 : 88          | 13 : 48         | 22 : 27         | 23 : 80         |
+|              |                 | (-1.01)         | (-1.33)         | (-1.94)         | (-1.98)         |
+|              |                 | [-1.99]         | [-2.02]         | [-2.10]         | [-2.03]         |
+| MOM          |                 |                 | 6 : 88          |                 | 3 : 54          |
+|              |                 |                 | (-0.92)         |                 | (-0.46)         |
+|              |                 |                 | [-1.08]         |                 | [-0.59]         |
+| RMW          |                 |                 |                 | 6 : 90          | 6 : 10          |
+|              |                 |                 |                 | (0.47)          | (0.41)          |
+|              |                 |                 |                 | [0.78]          | [0.67]          |
+| CMA          |                 |                 |                 | 30 : 92         | 29 : 05         |
+|              |                 |                 |                 | (1.67)          | (1.52)          |
+|              |                 |                 |                 | [1.29]          | [1.24]          |
+| R-Squared    | 0.00            | 0.02            | 0.04            | 0.08            | 0.09            |
+
+Same Period Bitcoin Return Same Period Bitcoin Return Table 7 documents the common stock factor exposures of the Ethereum returns and compares them to the Bitcoin returns for the same time period. The Bitcoin returns for this time period have a smaller exposure to the market and also have smaller alphas compared to the full sample. We now turn to the analysis of Ethereum. The alphas for all the considered models are statistically significant. The unconditional alpha of the period is 32.87 percent per month, comparable to Ripple and more than two times larger than that of Bitcoin. The CAPM adjusted alpha is about the same as the unadjusted alpha. The CAPM beta is about the same size as Bitcoin and is not significant. In contrast to Bitcoin, there is significant large negative loadings on the HML factor for 3-factor, 4-factor, 5-factor and 6-factor models. The exposures to the other factors are not statistically significant. Summarizing, Ethereum has performed better than Bitcoin for the corresponding time period, and its returns comove with the growth rather than the value firms for all of the specifications of the multi-factor models.
+
+| (Percentage)   | CAPM    | 3-Fac   | 4-Fac   | 5-Fac   | 6-Fac   |
+|----------------|---------|---------|---------|---------|---------|
+| ALPHA          | 12 : 72 | 12 : 49 | 11 : 87 | 11 : 43 | 10 : 75 |
+|                | (1.39)  | (1.33)  | (1.24)  | (1.17)  | (1.08)  |
+|                | [2.03]  | [1.81]  | [1.85]  | [1.64]  | [1.69]  |
+| MKTRF          | 3 : 30  | 3 : 37  | 3 : 69  | 3 : 27  | 3 : 71  |
+|                | (1.10)  | (1.09)  | (1.14)  | (1.03)  | (1.12)  |
+|                | [1.28]  | [1.35]  | [1.31]  | [1.26]  | [1.23]  |
+| SMB            |         | 0 : 43  | 0 : 38  | 1 : 05  | 1 : 23  |
+|                |         | (-0.12) | (-0.10) | (0.24)  | (0.28)  |
+|                |         | [-0.20] | [-0.18] | [0.32]  | [0.37]  |
+| HML            |         | 0 : 86  | 0 : 03  | 0 : 64  | 0 : 10  |
+|                |         | (-0.22) | (0.01)  | (-0.12) | (0.02)  |
+|                |         | [-0.59] | [0.00]  | [-0.37] | [0.05]  |
+| MOM            |         |         | 1 : 33  |         | 1 : 71  |
+|                |         |         | (0.39)  |         | (0.48)  |
+|                |         |         | [0.78]  |         | [0.84]  |
+| RMW            |         |         |         | 4 : 77  | 5 : 15  |
+|                |         |         |         | (0.71)  | (0.75)  |
+|                |         |         |         | [1.21]  | [1.21]  |
+| CMA            |         |         |         | 1 : 46  | 0 : 55  |
+|                |         |         |         | (-0.17) | (-0.06) |
+|                |         |         |         | [-0.50] | [-0.18] |
+| R-Squared      | 0.02    | 0.02    | 0.03    | 0.03    | 0.04    |
+
+
+<!-- p:13 -->
+
+
+Table 7: Ethereum Return Factor Loadings
+
+|              | Ethereum Return   | Ethereum Return   | Ethereum Return   | Ethereum Return   | Ethereum Return   |
+|--------------|-------------------|-------------------|-------------------|-------------------|-------------------|
+| (Percentage) | CAPM              | 3-Fac             | 4-Fac             | 5-Fac             | 6-Fac             |
+| ALPHA        | 31 : 42           | 33 : 04           | 35 : 69           | 31 : 55           | 33 : 28           |
+|              | (2.49)            | (2.82)            | (3.19)            | (2.80)            | (2.99)            |
+|              | [2.54]            | [2.93]            | [2.93]            | [2.57]            | [2.70]            |
+| MKTRF        | 1 : 61            | 2 : 04            | 0 : 86            | 2 : 86            | 0 : 50            |
+|              | (0.41)            | (0.55)            | (-0.23)           | (0.81)            | (0.13)            |
+|              | [0.44]            | [0.62]            | [-0.19]           | [0.85]            | [0.11]            |
+| SMB          |                   | 3 : 47            | 6 : 71            | 1 : 35            | 3 : 66            |
+|              |                   | (-0.69)           | (-1.33)           | (-0.26)           | (-0.68)           |
+|              |                   | [-0.58]           | [-1.35]           | [-0.21]           | [-0.62]           |
+| HML          |                   | 10 : 25           | 13 : 65           | 15 : 15           | 16 : 05           |
+|              |                   | (-2.07)           | (-2.74)           | (-2.69)           | (-2.89)           |
+|              |                   | [-1.66]           | [-1.83]           | [-2.10]           | [-2.38]           |
+| MOM          |                   |                   | 9 : 46            |                   | 6 : 77            |
+|              |                   |                   | (-2.06)           |                   | (-1.41)           |
+|              |                   |                   | [-2.02]           |                   | [-1.30]           |
+| RMW          |                   |                   |                   | 11 : 46           | 10 : 41           |
+|              |                   |                   |                   | (1.50)            | (1.38)            |
+|              |                   |                   |                   | [1.57]            | [1.35]            |
+| CMA          |                   |                   |                   | 13 : 62           | 9 : 43            |
+|              |                   |                   |                   | (1.60)            | (1.06)            |
+|              |                   |                   |                   | [1.51]            | [1.14]            |
+| R-Squared    | 0.01              | 0.21              | 0.31              | 0.34              | 0.39              |
+
+| (Percentage)   | CAPM    | 3-Fac   | 4-Fac   | 5-Fac   | 6-Fac   |
+|----------------|---------|---------|---------|---------|---------|
+| ALPHA          | 12 : 25 | 12 : 26 | 11 : 87 | 11 : 67 | 11 : 32 |
+|                | (2.73)  | (2.84)  | (2.72)  | (2.59)  | (2.47)  |
+|                | [2.99]  | [2.98]  | [3.01]  | [2.81]  | [2.85]  |
+| MKTRF          | 1 : 61  | 2 : 01  | 2 : 44  | 1 : 85  | 2 : 34  |
+|                | (1.15)  | (1.47)  | (1.65)  | (1.30)  | (1.47)  |
+|                | [1.35]  | [1.43]  | [1.25]  | [1.29]  | [1.09]  |
+| SMB            |         | 2 : 94  | 2 : 45  | 2 : 38  | 1 : 91  |
+|                |         | (-1.59) | (-1.25) | (-1.14) | (-0.86) |
+|                |         | [-1.55] | [-1.59] | [-0.95] | [-0.88] |
+| HML            |         | 1 : 28  | 0 : 77  | 0 : 58  | 0 : 39  |
+|                |         | (-0.70) | (-0.40) | (-0.26) | (-0.17) |
+|                |         | [-0.70] | [-0.34] | [-0.26] | [-0.15] |
+| MOM            |         |         | 1 : 42  |         | 1 : 39  |
+|                |         |         | (0.79)  |         | (0.70)  |
+|                |         |         | [0.64]  |         | [0.58]  |
+| RMW            |         |         |         | 1 : 61  | 1 : 82  |
+|                |         |         |         | (0.52)  | (0.58)  |
+|                |         |         |         | [0.54]  | [0.60]  |
+| CMA            |         |         |         | 1 : 88  | 1 : 02  |
+|                |         |         |         | (-0.55) | (-0.28) |
+|                |         |         |         | [-0.53] | [-0.31] |
+| R-Squared      | 0.04    | 0.18    | 0.20    | 0.19    | 0.21    |
+
+
+<!-- p:14 -->
+
+
+### 3.2 Currency
+
+Table 8 shows currency exposures of Bitcoin, Ripple, and Ethereum returns. For currency returns, we consider five major currencies: Australian Dollar, Canadian Dollar, Euro, Singaporean Dollar, and UK Pound. The exposures of all other cryptocurrencies to these commodities are not statistically significant and the alpha estimates barely change. In Table 9, we investigate the currency exposures of Bitcoin returns over shorter periods corresponding to those of Ripple and Ethereum. Again, the currency exposures of Bitcoin returns over the shorter periods are small and statistically insignificant. We conclude that there is no consistent evidence of systematic currency exposures in cryptocurrencies.
+
+Table 8: Currency Loadings of Cryptocurrency Returns
+
+| Panel A: Bitcoin   | (1)         | (2)                | (3)         | (4)                | (5)         |
+|--------------------|-------------|--------------------|-------------|--------------------|-------------|
+| APLHA              | 23 : 79     | 24 : 27            | 23 : 68     | 23 : 41            | 23 : 95     |
+|                    | (3.23)      | (3.28)             | (3.23)      | (3.20)             | (3.27)      |
+|                    | [2.82]      | [2.86]             | [2.75]      | [2.71]             | [2.69]      |
+| AUSTRALIA          | 1.46 (0.66) |                    |             |                    |             |
+| CANADA             | [0.56]      | 3.51 (0.84) [0.92] |             |                    |             |
+| EURO               |             |                    | 2.45 (0.90) |                    |             |
+| SINGAPORE          |             |                    | [1.08]      |                    |             |
+| UK                 |             |                    |             | 4.09 (0.99) [0.96] |             |
+|                    |             |                    |             |                    | 3.27 (1.13) |
+| R-Squared          | 0.00        | 0.01               | 0.01        | 0.01               | [1.04] 0.01 |
+
+
+<!-- p:15 -->
+
+
+| Panel B: Ripple   | (1)     | (2)     | (3)         | (4)     | (5)     |
+|-------------------|---------|---------|-------------|---------|---------|
+| APLHA             | 38 : 38 | 36 : 46 | 40 : 54     | 38 : 54 | 39 : 11 |
+|                   | (1.96)  | (1.85)  | (2.11)      | (1.98)  | (2.01)  |
+|                   | [2.35]  | [2.45]  | [2.63]      | [2.48]  | [2.51]  |
+| AUSTRALIA         | 0.62    |         |             |         |         |
+|                   | (0.09)  |         |             |         |         |
+|                   | [0.07]  |         |             |         |         |
+| CANADA            |         | -4.69   |             |         |         |
+|                   |         | (-0.48) |             |         |         |
+|                   |         | [-0.88] |             |         |         |
+| EURO              |         |         | 10.90       |         |         |
+|                   |         |         | (1.28)      |         |         |
+|                   |         |         | [2.07]      |         |         |
+| SINGAPORE         |         |         |             | 3.69    |         |
+|                   |         |         |             | (0.27)  |         |
+| UK                |         |         |             | [0.32]  |         |
+|                   |         |         |             |         | 4.13    |
+|                   |         |         |             |         | (0.55)  |
+|                   |         |         |             |         | [1.18]  |
+| R-Squared         | 0.00    | 0.00    | 0.03        | 0.00    | 0.01    |
+| Panel C: Ethereum | (1)     | (2)     | (3)         | (4)     | (5)     |
+| APLHA             | 32 : 86 | 32 : 87 | 31 : 34     | 32 : 34 | 33 : 36 |
+|                   | (2.71)  | (2.70)  | (2.63)      | (2.77)  | (2.71)  |
+|                   | [2.75]  | [2.88]  | [2.69]      | [2.76]  | [2.71]  |
+| AUSTRALIA         | 1.77    |         |             |         |         |
+|                   | (0.39)  |         |             |         |         |
+|                   | [0.52]  |         |             |         |         |
+| CANADA            |         | -0.07   |             |         |         |
+|                   |         | (-0.01) |             |         |         |
+|                   |         | [-0.01] |             |         |         |
+| EURO              |         |         | 7.35 (1.29) |         |         |
+|                   |         |         | [1.40]      |         |         |
+|                   |         |         |             | 12.32   |         |
+| SINGAPORE         |         |         |             | (1.63)  |         |
+|                   |         |         |             | [1.80]  |         |
+| UK                |         |         |             |         | 1.02    |
+|                   |         |         |             |         | (0.24)  |
+|                   |         |         |             |         | [0.25]  |
+| R-Squared         | 0.00    | 0.00    | 0.05        | 0.08    | 0.00    |
+
+
+<!-- p:16 -->
+
+
+Table 9: Currency Loadings of Bitcoin Returns - Different Period
+
+| Panel A: Ripple Period   | (1)     | (2)     | (3)     | (4)     | (5)         |
+|--------------------------|---------|---------|---------|---------|-------------|
+| APLHA                    | 14 : 91 | 15 : 93 | 16 : 25 | 15 : 76 | 16 : 29     |
+|                          | (1.70)  | (1.78)  | (1.84)  | (1.79)  | (1.85)      |
+|                          | [2.21]  | [2.15]  | [1.98]  | [2.07]  | [1.85]      |
+| AUSTRALIA                | -2.90   |         |         |         |             |
+|                          | (-0.93) |         |         |         |             |
+|                          | [-0.77] |         |         |         |             |
+| CANADA                   |         | -0.11   |         |         |             |
+|                          |         | (-0.02) |         |         |             |
+|                          |         | [-0.03] |         |         |             |
+| EURO                     |         |         | 1.28    |         |             |
+|                          |         |         | (0.33)  |         |             |
+|                          |         |         | [0.70]  |         |             |
+| SINGAPORE                |         |         |         | -1.99   |             |
+|                          |         |         |         | (-0.33) |             |
+|                          |         |         |         | [-0.42] |             |
+| UK                       |         |         |         |         | 1.35        |
+|                          |         |         |         |         | (0.40)      |
+| R-Squared                | 0.02    | 0.00    | 0.00    | 0.00    | [0.48] 0.00 |
+| Panel B: Ethereum Period | (1)     | (2)     | (3)     | (4)     | (5)         |
+| APLHA                    | 13 : 70 | 13 : 69 | 13 : 93 | 13 : 66 | 12 : 82     |
+|                          | (3.12)  | (3.11)  | (3.17)  | (3.11)  | (2.95)      |
+|                          | [3.31]  | [3.39]  | [3.59]  | [3.36]  | [3.26]      |
+| AUSTRALIA                | -0.60   |         |         |         |             |
+|                          | (-0.36) |         |         |         |             |
+|                          | [-0.47] |         |         |         |             |
+| CANADA                   |         | -0.04   |         |         |             |
+|                          |         | (-0.02) |         |         |             |
+|                          |         | [-0.02] |         |         |             |
+| EURO                     |         |         | -1.15   |         |             |
+|                          |         |         | (-0.55) |         |             |
+|                          |         |         | [-0.65] | 0.77    |             |
+| SINGAPORE                |         |         |         |         |             |
+|                          |         |         |         | (0.27)  |             |
+| UK                       |         |         |         | [0.33]  | -1.84       |
+|                          |         |         |         |         | (-1.23)     |
+|                          |         |         |         |         | [-1.91]     |
+| R-Squared                | 0.00    | 0.00    | 0.01    | 0.00    | 0.05        |
+
+We further test cryptocurrency exposures on currency factors as in Lustig, Roussanov, and Verdelhan (2011) instead of individual currency returns. 7 Table 10 reports the results for each of the three cryptocurrencies. Consistent with the results on individual currency returns, we find that none of the three cryptocurrencies has significant exposures to the currency factors.
+
+7 We thank Nicola Borri for providing us with the up-to-date currency factors.
+
+
+<!-- p:17 -->
+
+
+Table 10: Currency Loadings of Cryptocurrency Factors
+
+| Panel A: Bitcoin   | (1)     | (2)     | (3)     |
+|--------------------|---------|---------|---------|
+| APLHA              | 0.23*** | 0.21*** | 0.21*** |
+|                    | (3.04)  | (2.75)  | (2.78)  |
+|                    | [3.14]  | [2.77]  | [2.76]  |
+| DOLLAR             | 3.18    |         | 2.56    |
+|                    | (0.75)  |         | (0.59)  |
+|                    | [0.56]  |         | [0.43]  |
+| CARRY              |         | 3.88    | 3.41    |
+|                    |         | (0.92)  | (0.79)  |
+|                    |         | [1.53]  | [1.23]  |
+| R-Squared          | 0.01    | 0.01    | 0.01    |
+| Panel B: Ripple    | (1)     | (2)     | (3)     |
+| APLHA              | 0.40**  | 0.42**  | 0.43**  |
+|                    | (2.04)  | (2.01)  | (2.04)  |
+|                    | [2.50]  | [2.60]  | [2.53]  |
+| DOLLAR             | 9.01    |         | 8.65    |
+|                    | (0.72)  |         | (0.68)  |
+|                    | [0.70]  |         | [0.67]  |
+| CARRY              |         | -5.70   | -5.14   |
+|                    |         | (-0.47) | (-0.42) |
+|                    |         | [-1.13] | [-1.01] |
+| R-Squared          | 0.01    | 0.00    | 0.01    |
+| Panel C: Ethereum  | (1)     | (2)     | (3)     |
+| APLHA              | 0.32**  | 0.32**  | 0.30**  |
+|                    | (2.71)  | (2.47)  | (2.37)  |
+|                    | [2.62]  | [2.43]  | [2.30]  |
+| DOLLAR             | 10.81   |         | 11.09   |
+|                    | (1.43)  |         | (1.43)  |
+|                    | [1.46]  |         | [1.45]  |
+| CARRY              |         | 1.15    | 2.24    |
+|                    |         | (0.17)  | (0.33)  |
+|                    |         | [0.22]  | [0.46]  |
+| R-Squared          | 0.06    | 0.00    | 0.06    |
+
+### 3.3 Precious Metals Commodities
+
+Table 11 shows commodity exposures of Bitcoin, Ripple, and Ethereum returns. For commodity returns, we consider gold, platinum, and crude oil. With the exception of the exposure of Ethereum to gold, the exposures of all other cryptocurrencies to these commodities are not statistically significant. At the same time, note that the alphas of Bitcoin and Ripple decrease, respectively, when gold and platinum are considered. In Table 12, we investigate the commodity exposures of Bitcoin returns over shorter periods corresponding to those of Ripple and Ethereum. During the Ripple period, Bitcoin negatively covaries with gold and platinum returns, similar to Ripple. For the Ethereum period, Bitcoin negatively covariates with platinum returns, in contrast with the behavior of Ethereum. We conclude that there is no consistent evidence of systematic commodity exposures in cryptocurrencies.
+
+
+<!-- p:18 -->
+
+
+Table 11: Commodity Loadings of Cryptocurrency Returns
+
+| Panel A: Bitcoin   | (1)          | (2)     | (3)     |
+|--------------------|--------------|---------|---------|
+| APLHA              | 22 : 32      | 22 : 53 | 22 : 54 |
+|                    | (2.97)       | (2.75)  | (2.98)  |
+|                    | [3.01]       | [3.49]  | [3.01]  |
+| GOLD               | -0.59        |         |         |
+|                    | (-0.39)      |         |         |
+|                    | [-0.26]      |         |         |
+| PLATINUM           |              | 24.05   |         |
+|                    |              | (0.22)  |         |
+|                    |              | [0.29]  |         |
+| SILVER             |              |         | 0.08    |
+|                    |              |         | (0.10)  |
+|                    |              |         | [0.05]  |
+| R-Squared          | 0.00         | 0.00    | 0.00    |
+| Panel B: Ripple    | (1)          | (2)     | (3)     |
+| APLHA              | 40 : 88      | 21 : 44 | 36 : 78 |
+|                    | (1.97)       | (0.98)  | (1.89)  |
+|                    | [2.27]       | [2.47]  | [2.41]  |
+| GOLD               | -2.45        |         |         |
+|                    | (-0.47)      |         |         |
+|                    | [-0.48]      |         |         |
+| PLATINUM           |              | -466.74 |         |
+|                    |              | (-1.57) |         |
+|                    |              | [-1.93] |         |
+| SILVER             |              |         | -2.43   |
+|                    |              |         | (-0.78) |
+|                    |              |         | [-0.89] |
+| R-Squared          | 0.00         | 0.04    | 0.01    |
+| Panel C: Ethereum  | (1)          | (2)     | (3)     |
+| APLHA              | 37 : 82      | 35 : 93 | 32 : 75 |
+|                    | (3.11)       | (2.46)  | (2.70)  |
+| GOLD               | [3.20]       | [2.38]  | [2.76]  |
+|                    | 5.45* (1.77) |         |         |
+|                    | [1.83]       |         |         |
+| PLATINUM           |              | 61.65   |         |
+|                    |              | (0.37)  |         |
+|                    |              | [0.37]  |         |
+| SILVER             |              |         | 0.86    |
+|                    |              |         | (0.41)  |
+|                    |              |         | [0.48]  |
+| R-Squared          | 0.10         | 0.00    | 0.01    |
+
+
+<!-- p:19 -->
+
+
+Table 12: Commodity Loadings of Bitcoin Returns - Different Period
+
+| Panel A: Ripple Period   | (1)     | (2)     | (3)     | Panel B: Ethereum Period   | (1)     | (2)     | (3)     |
+|--------------------------|---------|---------|---------|----------------------------|---------|---------|---------|
+| APLHA                    | 15 : 55 | 13.13   | 14 : 96 | APLHA                      | 13 : 79 | 13 : 53 | 13 : 72 |
+|                          | (1.81)  | (1.31)  | (1.72)  |                            | (3.12)  | (2.56)  | (3.13)  |
+|                          | [2.22]  | [2.28]  | [2.42]  |                            | [3.49]  | [3.10]  | [3.40]  |
+| GOLD                     | 3 : 74  |         |         | GOLD                       | -0.11   |         |         |
+|                          | (-1.68) |         |         |                            | (-0.10) |         |         |
+|                          | [-1.03] |         |         |                            | [-0.14] |         |         |
+| PLATINUM                 |         | -80.21  |         | PLATINUM                   |         | -4.16   |         |
+|                          |         | (-0.59) |         |                            |         | (-0.07) |         |
+|                          |         | [-0.77] |         |                            |         | [-0.09] |         |
+| SILVER                   |         |         | -1.85   | SILVER                     |         |         | 0.11    |
+|                          |         |         | (-1.32) |                            |         |         | (0.15)  |
+|                          |         |         | [-0.83] |                            |         |         | [0.24]  |
+| R-Squared                | 0.05    | 0.01    | 0.03    | R-Squared                  | 0.00    | 0.00    | 0.00    |
+
+### 3.4 Exploring the Factor Zoo
+
+Finance literature has documented more than a hundred factors for predicting the cross-section of stock returns (see, e.g., summarizes in Feng, Giglio, and Xiu, 2017 and Chen and Velikov, 2017). To investigate whether any of those factors may be important in pricing cryptocurrencies, we estimate the loadings of the 155 common factors from Andrew Chen's website. One caveat is that this dataset ends at the end of 2016 and thus does not cover the most recent return experiences. Therefore, it can only be meaningfully used for the analysis of Bitcoin. We report the results in the Appendix, due to the large number of factors. We find that only four out of the 155 factors are significant, but those four factors do not form any discernible patterns.
+
+### 3.5 Macroeconomic Factors
+
+Table 13 shows macroeconomic factor exposures of Bitcoin, Ripple, and Ethereum returns. For macroeconomic factors, we consider the non-durable consumption growth, durable consumption growth, industrial production growth, and personal income growth. For Bitcoin and Ripple, all of the exposures are not statistically significant. 8 For Ethereum, notably, the durable consumption growth factor has a significant loading.
+
+8 In the Appendix, we also report the results for Bitcoin for the time periods corresponding to those of Ripple and Ethereum. The results are the same as for the full sample.
+
+
+<!-- p:20 -->
+
+
+Table 13: Macro Factor Loadings of Cryptocurrency Returns
+
+| Panel           | A: Bitcoin   | (1)     | (2)           | (3)     | (4) (5)   | (6)     | (7)           | (8)           |
+|-----------------|--------------|---------|---------------|---------|-----------|---------|---------------|---------------|
+|                 | 0 : 08       | 0 : 25  | 0 : 24        | 0 : 25  | 0 : 06    | 0 : 21  | 0 : 20        | 0 : 20        |
+|                 | (0.57)       | (3.12)  | (3.17)        | (3.02)  | (0.40)    | (2.57)  | (2.51)        | (2.39)        |
+|                 | [0.57]       | [3.18]  | [2.68]        | [2.79]  | [0.41]    | [2.99]  | [2.48]        | [2.64]        |
+| c nd            | 47 : 21      |         |               |         | 43 : 36   |         |               |               |
+|                 | (1.30)       |         |               |         | (1.20)    |         |               |               |
+|                 | [0.79]       |         |               |         | [0.75]    |         |               |               |
+| c d             |              | 2 : 80  |               |         |           | 4 : 12  |               |               |
+|                 |              | (-0.38) |               |         |           | (-0.56) |               |               |
+|                 |              | [-0.33] |               |         |           | [-0.50] |               |               |
+| indpro          |              |         | 6 : 12        |         |           |         | 5 : 15        |               |
+|                 |              |         | (-0.38)       |         |           |         | (-0.32)       |               |
+|                 |              |         | [-0.44]       |         |           |         | [-0.38]       |               |
+| pi              |              |         |               | 3 : 15  |           |         |               | 2 : 52        |
+|                 |              |         |               | (-0.30) |           |         |               | (-0.24)       |
+|                 |              |         |               | [-0.52] |           |         |               | [-0.48]       |
+| MKTRF           |              |         |               |         | 2 : 98    | 3 : 31  | 3 : 14        | 3 : 15        |
+|                 |              |         |               |         | (1.39)    | (1.54)  | (1.46)        | (1.47)        |
+|                 |              |         |               |         | [2.05]    | [2.18]  | [1.92]        | [1.85]        |
+| R-Squared       | 0.02         | 0.00    | 0.00          | 0.00    | 0.04      | 0.03    | 0.02          | 0.02          |
+| Panel B: Ripple | (1)          | (2)     | (3)           | (4)     | (5)       | (6)     | (7)           | (8)           |
+|                 | 0 : 11       | 0 : 39  | 0 : 33        | 0 : 32  | 0 : 11    | 0 : 37  | 0 : 31        | 0 : 32        |
+|                 | (-0.26)      | (1.90)  | (1.69)        | (0.96)  | (-0.26)   | (1.73)  | (1.49)        | (0.96)        |
+|                 | [-0.39]      | [2.49]  | [2.57]        | [1.89]  | [-0.40]   | [2.34]  | [2.39]        | [1.91]        |
+| c nd            | 137 : 57     |         |               |         | 138 : 82  |         |               |               |
+|                 | (1.31)       |         |               |         | (1.27)    |         |               |               |
+|                 | [1.48]       |         |               |         | [1.54]    |         |               |               |
+| c d             |              | 1 : 96  |               |         |           | 2 : 37  |               |               |
+|                 |              | (-0.11) |               |         |           | (-0.13) |               |               |
+|                 |              | [-0.21] |               |         |           | [-0.26] |               |               |
+| indpro          |              |         | 50 : 99       |         |           |         | 51 : 72       |               |
+|                 |              |         | (1.33) [1.78] |         |           |         | (1.34) [1.77] |               |
+| pi              |              |         |               | 18 : 53 |           |         |               | 14 : 13       |
+|                 |              |         |               | (0.22)  |           |         |               | (0.16)        |
+| MKTRF           |              |         |               | [0.38]  | 0 : 36    | 1 : 64  | 2 : 10        | [0.28] 1 : 25 |
+|                 |              |         |               |         | (-0.05)   | (0.24)  | (0.31)        | (0.18)        |
+|                 |              |         |               |         | [-0.13]   | [0.47]  | [0.62]        | [0.35]        |
+| R-Squared       | 0.03         | 0.00    | 0.03          | 0.00    | 0.03      | 0.00    | 0.03          | 0.00          |
+
+
+<!-- p:21 -->
+
+
+| Panel C: Ethereum   | (1)     | (2)     | (3)    | (4)     | (6)     | (7)     | (8)    | (9)     |
+|---------------------|---------|---------|--------|---------|---------|---------|--------|---------|
+|                     | 0 : 19  | 0 : 22  | 0 : 17 | 0 : 22  | 0 : 17  | 0 : 19  | 0 : 13 | 0 : 24  |
+|                     | (1.03)  | (2.59)  | (1.88) | (1.70)  | (0.94)  | (2.16)  | (1.41) | (1.86)  |
+|                     | [1.58]  | [3.40]  | [2.86] | [2.51]  | [1.46]  | [2.97]  | [2.48] | [2.54]  |
+| c nd                | 7 : 52  |         |        |         | 11 : 22 |         |        |         |
+|                     | (-0.16) |         |        |         | (-0.24) |         |        |         |
+|                     | [-0.24] |         |        |         | [-0.27] |         |        |         |
+| c d                 |         | 17 : 59 |        |         |         | 16 : 91 |        |         |
+|                     |         | (-2.11) |        |         |         | (-2.04) |        |         |
+|                     |         | [-2.71] |        |         |         | [-2.27] |        |         |
+| indpro              |         |         | 0 : 05 |         |         |         | 4 : 54 |         |
+|                     |         |         | (0.00) |         |         |         | (0.27) |         |
+|                     |         |         | [0.04] |         |         |         | [0.12] |         |
+| pi                  |         |         |        | 21 : 26 |         |         |        | 44 : 19 |
+|                     |         |         |        | (-0.56) |         |         |        | (-1.10) |
+|                     |         |         |        | [-0.99] |         |         |        | [-1.12] |
+| MKTRF               |         |         |        |         | 3 : 47  | 3 : 04  | 3 : 59 | 4 : 62  |
+|                     |         |         |        |         | (1.24)  | (1.16)  | (1.25) | (1.57)  |
+|                     |         |         |        |         | [0.45]  | [0.32]  | [0.47] | [0.79]  |
+| R-Squared           | 0.00    | 0.13    | 0.00   | 0.01    | 0.05    | 0.16    | 0.05   | 0.08    |
+
+## 4 Cryptocurrency Specific Factors
+
+In this section, we first develop and investigate cryptocurrency specific predictors. We consider momentum, proxies for investor attention, proxies for the price-to-'dividend' ratio, and the volatility - all of which are specific to the individual cryptocurrency markets. Finally, we construct proxies for cryptocurrency supply conditions. Throughout this section, t-statistics in parentheses and brackets are based on regular and bootstrapped standard errors.
+
+### 4.1 Cryptocurrency Momentum
+
+We first establish that there is very strong evidence of momentum at various time horizons. Table 14 documents the time-series momentum results. For Bitcoin daily returns, the current return positively and statistically significantly predicts 1-day, 3-day, 5-day, and 6-day ahead returns. A one standard deviation increase in today's return leads to increases in daily returns by 0.33 percent, 9 0.17 percent, 0.39 percent, and 0.50 percent increases at the 1-day, 3-day, 5-day, and 6-day ahead returns, respectively. Specifically, the 1-day ahead daily return is that of buying a Bitcoin at 11:59:59 UTD today and selling at 11:59:59 UTD one day later.
+
+For Bitcoin weekly returns, the current return positively and statistically significantly predicts 1-week, 2-week, 3-week, and 4-week ahead returns. A one-standard-deviation increase in this week's return leads to increases in weekly returns of 3.16 percent, 10 3.66 percent, 3.49 percent, and 1.50 percent increases at the 1-week, 2-week, 3-week, and 4-week ahead returns, respectively. Specifically, the 1-week ahead weekly return is that of buying a Bitcoin at 11:59:59 UTD Sunday and selling at 11:59:59 UTD one week later.
+
+9 The 0.33 percent daily return is calculated by multiplying a one-standard-deviation increase of today's return (5.55 percent) and the coefficient estimate (0.06).
+
+10 The 3.16 percent weekly return is calculated by multiplying one-standard-deviation increase of today's return (16.64 percent) and the coefficient estimate (0.19).
+
+
+<!-- p:22 -->
+
+
+In Table 15, we estimate the time-series momentum by grouping weekly returns into quintiles and evaluating their performance going forward. We find that the top quintiles outperform the bottom quintiles at 1-4 week ahead horizons. For example, at the 1-week horizon, the average return of the top quintile is 11.22 percent per week with the Sharpe ratio of 0.45 while the average return of the bottom quintile is 2.60 percent per week with the Sharpe ratio of 0.19. In Table 16, we restrict our sample to 2013 onward. Again, we find a strong and statistically significant momentum effect of somewhat smaller magnitude. 11 In Table 17, we use the first two years of data to determine the quintile cutoffs and study the out-of-sample momentum performance, and we find strong momentum effect as well.
+
+Table 14: Time-Series Momentum
+
+| Panel A - Daily   | Panel A - R t + 1 (1)   | Panel A - R t + 2 (2)   | Panel A - R t + 3 (3)   | Panel A - R t + 4 (4)   | Panel A - R t + 5 (5)   | Panel A - R t + 6 (6)   | Panel A - R t + 7 (7)   |
+|-------------------|-------------------------|-------------------------|-------------------------|-------------------------|-------------------------|-------------------------|-------------------------|
+| R t               | 0 : 06                  | 0 : 02                  | 0 : 03                  | 0 : 02                  | 0 : 07                  | 0 : 08                  | 0 : 03                  |
+|                   | (2.96)                  | (-1.14)                 | (1.71)                  | (1.22)                  | (3.51)                  | (4.14)                  | (-1.58)                 |
+|                   | [1.22]                  | [-0.71]                 | [0.80]                  | [0.95]                  | [2.00]                  | [2.97]                  | [-0.97]                 |
+| R-Squared         | 0.00                    | 0.00                    | 0.00                    | 0.00                    | 0.01                    | 0.01                    | 0.00                    |
+
+| Panel B Weekly   | R t + 1 (1)   | R t + 2 (2)   | R t + 3 (3)   | R t + 4 (4)   |
+|------------------|---------------|---------------|---------------|---------------|
+| R t              | 0 : 19        | 0 : 22        | 0 : 21        | 0 : 09        |
+|                  | (3.73)        | (4.52)        | (4.26)        | (1.72)        |
+|                  | [2.17]        | [2.73]        | [2.47]        | [1.40]        |
+| R-Squared        | 0.03          | 0.05          | 0.05          | 0.01          |
+
+
+<!-- p:23 -->
+
+
+Table 15: Time-Series Momentum by Groups
+
+| Weekly Level (Percentage) - Rank   | Weekly Level (Percentage) - Formation Return   | Weekly Level (Percentage) - R t + 1   | Weekly Level (Percentage) - T-Statistics   | Weekly Level (Percentage) - Sharpe   | Weekly Level (Percentage) - R t + 2   | Weekly Level (Percentage) - T-Statistics   | Weekly Level (Percentage) - Sharpe   |
+|------------------------------------|------------------------------------------------|---------------------------------------|--------------------------------------------|--------------------------------------|---------------------------------------|--------------------------------------------|--------------------------------------|
+| Low                                | 14 : 95                                        | 2 : 60                                | (1.69)                                     | 0.19                                 | 1 : 23                                | (-0.89)                                    | -0.10                                |
+| 2                                  | 2 : 56                                         | 0 : 27                                | (0.19)                                     | 0.02                                 | 4 : 40                                | (2.32)                                     | 0.26                                 |
+| 3                                  | 1 : 84                                         | 1 : 15                                | (0.87)                                     | 0.10                                 | 2 : 92                                | (2.52)                                     | 0.29                                 |
+| 4                                  | 7 : 59                                         | 3 : 75                                | (2.20)                                     | 0.25                                 | 2 : 62                                | (1.71)                                     | 0.19                                 |
+| 5                                  | 27 : 44                                        | 11 : 22                               | (3.95)                                     | 0.45                                 | 10 : 05                               | (3.52)                                     | 0.40                                 |
+| Difference                         |                                                | 8.62                                  |                                            |                                      | 11.28                                 |                                            |                                      |
+|                                    | Formation Return                               |                                       |                                            |                                      |                                       |                                            | Sharpe                               |
+| Rank Low                           | 14 : 95                                        | R t + 3 0 : 50                        | T-Statistics (-0.38)                       | Sharpe -0.04                         | R t + 4 1 : 73                        | T-Statistics (1.03)                        | 0.12                                 |
+| 2                                  | 2 : 56                                         | 2 : 40                                | (1.35)                                     | 0.15                                 | 2 : 13                                | (1.29)                                     | 0.15                                 |
+| 3                                  | 1 : 84                                         | 3 : 62                                | (2.24)                                     | 0.26                                 | 2 : 42                                | (1.81)                                     | 0.21                                 |
+| 4                                  | 7 : 59                                         | 3 : 04                                | (1.83)                                     | 0.21                                 | 5 : 31                                | (2.81)                                     | 0.32                                 |
+| 5                                  | 27 : 44                                        | 10 : 07                               | (3.76)                                     | 0.43                                 | 6 : 92                                | (2.59)                                     | 0.30                                 |
+| Difference                         |                                                | 10.57                                 |                                            |                                      | 5.18                                  |                                            |                                      |
+
+Table 16: Time-Series Momentum by Groups Since 2013
+
+| Weekly Level (Percentage) - Rank   | Weekly Level (Percentage) - Formation Return   | Weekly Level (Percentage) - R t + 1   | Weekly Level (Percentage) - T-Statistics   | Weekly Level (Percentage) - Sharpe   | Weekly Level (Percentage) - R t + 2   | Weekly Level (Percentage) - T-Statistics   | Weekly Level (Percentage) - Sharpe   |
+|------------------------------------|------------------------------------------------|---------------------------------------|--------------------------------------------|--------------------------------------|---------------------------------------|--------------------------------------------|--------------------------------------|
+| Low                                | 14 : 38                                        | 2 : 83                                | (1.62)                                     | 0.22                                 | 0 : 01                                | (-0.01)                                    | -0.00                                |
+| 2                                  | 2 : 40                                         | 0 : 64                                | (0.49)                                     | 0.07                                 | 1 : 31                                | (1.00)                                     | 0.13                                 |
+| 3                                  | 1 : 75                                         | 0 : 91                                | (0.56)                                     | 0.07                                 | 3 : 38                                | (2.41)                                     | 0.32                                 |
+| 4                                  | 7 : 57                                         | 4 : 04                                | (2.66)                                     | 0.35                                 | 2 : 95                                | (1.69)                                     | 0.23                                 |
+| 5                                  | 23 : 53                                        | 7 : 18                                | (2.57)                                     | 0.34                                 | 7 : 8                                 | (2.80)                                     | 0.37                                 |
+| Difference                         |                                                | 4.35                                  |                                            |                                      | 7.87                                  |                                            |                                      |
+|                                    | Formation Return                               |                                       |                                            |                                      |                                       |                                            | Sharpe                               |
+| Rank Low                           | 14 : 38                                        | R t + 3 0 : 81                        | T-Statistics (0.56)                        | Sharpe 0.07                          | R t + 4 1 : 97                        | T-Statistics (1.10)                        | 0.15                                 |
+| 2                                  | 2 : 40                                         | 0 : 80                                | (0.52)                                     | 0.07                                 | 1 : 88                                | (1.41)                                     | 0.19                                 |
+| 3                                  | 1 : 75                                         | 4 : 06                                | (2.03)                                     | 0.27                                 | 0 : 76                                | (0.48)                                     | 0.06                                 |
+| 4                                  | 7 : 57                                         | 2 : 70                                | (1.49)                                     | 0.20                                 | 5 : 41                                | (3.02)                                     | 0.40                                 |
+| 5                                  |                                                | 6                                     |                                            |                                      |                                       |                                            |                                      |
+|                                    | 23 : 53                                        | : 90                                  | (2.83)                                     | 0.38                                 | 5 : 00                                | (1.86)                                     | 0.25                                 |
+| Difference                         |                                                | 6.09                                  |                                            |                                      | 3.03                                  |                                            |                                      |
+
+
+<!-- p:24 -->
+
+
+Table 17: Time-Series Momentum by Groups - No Lookahead
+
+| Weekly Level (Percentage) - Rank   | Weekly Level (Percentage) - Formation Return   | Weekly Level (Percentage) - R t + 1   | Weekly Level (Percentage) - T-Statistics   | Weekly Level (Percentage) - Sharpe   | Weekly Level (Percentage) - R t + 2   | Weekly Level (Percentage) - T-Statistics   | Weekly Level (Percentage) - Sharpe   |
+|------------------------------------|------------------------------------------------|---------------------------------------|--------------------------------------------|--------------------------------------|---------------------------------------|--------------------------------------------|--------------------------------------|
+| Low                                | 14 : 97                                        | 3 : 35                                | (1.82)                                     | 0.25                                 | 0 : 09                                | (0.05)                                     | 0.01                                 |
+| 2                                  | 2 : 88                                         | 0 : 39                                | (0.31)                                     | 0.04                                 | 0 : 78                                | (0.65)                                     | 0.09                                 |
+| 3                                  | 1 : 77                                         | 1 : 33                                | (0.91)                                     | 0.11                                 | 3 : 52                                | (2.75)                                     | 0.33                                 |
+| 4                                  | 8 : 12                                         | 3.25                                  | (2.10)                                     | 0.28                                 | 2 : 87                                | (1.60)                                     | 0.22                                 |
+| 5                                  | 24 : 14                                        | 7 : 88                                | (2.70)                                     | 0.37                                 | 8 : 32                                | (2.83)                                     | 0.39                                 |
+| Difference                         |                                                | 4.53                                  |                                            |                                      | 8.23                                  |                                            |                                      |
+|                                    | Formation Return                               |                                       |                                            |                                      |                                       |                                            | Sharpe                               |
+| Rank Low                           | 14 : 97                                        | R t + 3 1 37                          | T-Statistics (0.90)                        | Sharpe 0.12                          | R t + 4 2 : 60                        | T-Statistics (1.36)                        | 0.19                                 |
+| 2                                  | 2 88                                           | : 0 00                                | (-0.00)                                    | 0.00                                 | 1 : 21                                | (0.90)                                     | 0.12                                 |
+|                                    | :                                              | :                                     | (2.33)                                     | 0.28                                 | 1 68                                  | (1.20)                                     | 0.15                                 |
+| 3                                  | 1 : 77                                         | 3 : 99                                | (1.36)                                     | 0.18                                 | : 5 36                                | (2.95)                                     | 0.40                                 |
+| 4                                  | 8 : 12                                         | 2 : 58                                |                                            |                                      | :                                     |                                            |                                      |
+| 5                                  | 24 : 14                                        | 7 : 53                                | (2.98)                                     | 0.41                                 | 5 : 02                                | (1.77)                                     | 0.24                                 |
+| Difference                         |                                                | 6.16                                  |                                            |                                      | 2.42                                  |                                            |                                      |
+
+Table 18 summarizes evidence for Ripple and Ethereum. For Ripple, the momentum effect is statistically significant at the 1-5 day horizon. For Ethereum, the momentum effect is statistically significant at the 1-day and 5-day horizons, with the 5-day horizon coefficient having a negative sign.
+
+Table 18: Time-Series Momentum of Ripple and Ethereum
+
+| Panel A: Ripple   | Panel A: Ripple   | Panel A: Ripple   | Panel A: Ripple   | Panel A: Ripple   | Panel A: Ripple   | Panel A: Ripple   | Panel A: Ripple   |
+|-------------------|-------------------|-------------------|-------------------|-------------------|-------------------|-------------------|-------------------|
+| Daily             | R t + 1 (1)       | R t + 2 (2)       | R t + 3 (3)       | R t + 4 (4)       | R t + 5 (5)       | R t + 6 (6)       | R t + 7 (7)       |
+| R t               | 0 : 06            | 0 : 08            | 0 : 05            | 0 : 04            | 0 : 06            | 0 : 03            | 0 : 03            |
+|                   | (2.49)            | (3.59)            | (1.94)            | (1.83)            | (2.53)            | (1.35)            | (1.27)            |
+|                   | [0.61]            | [1.73]            | [0.88]            | [1.32]            | [2.02]            | [1.23]            | [0.63]            |
+| R-Squared         | 0.00              | 0.01              | 0.00              | 0.00              | 0.00              | 0.00              | 0.00              |
+
+| Panel B: Ethereum - Daily   | Panel B: Ethereum - R t + 1 (1)   | Panel B: Ethereum - R t + 2 (2)   | Panel B: Ethereum - R t + 3 (3)   | Panel B: Ethereum - R t + 4 (4)   | Panel B: Ethereum - R t + 5 (5)   | Panel B: Ethereum - R t + 6 (6)   | Panel B: Ethereum - R t + 7 (7)   |
+|-----------------------------|-----------------------------------|-----------------------------------|-----------------------------------|-----------------------------------|-----------------------------------|-----------------------------------|-----------------------------------|
+| R t                         | 0 : 08                            | 0 : 04                            | 0 : 01                            | 0 : 04                            | 0 : 08                            | 0 : 01                            | 0 : 04                            |
+| R t                         | (2.58)                            | (1.41)                            | (-0.20)                           | (-1.48)                           | (-2.63)                           | (0.23)                            | (1.46)                            |
+| R t                         | [1.67]                            | [0.73]                            | [-0.10]                           | [-1.07]                           | [-1.10]                           | [0.14]                            | [1.06]                            |
+| R-Squared                   | 0.01                              | 0.00                              | 0.00                              | 0.00                              | 0.01                              | 0.00                              | 0.00                              |
+
+### 4.2 Cryptocurrency Investor Attention
+
+In this section, we investigate the role of investor attention for the cryptocurrency returns. Specifically, we construct the deviation of Google searches for the words 'Bitcoin', 'Ripple', and 'Ethereum' in a given week compared to the average of those in the preceding four weeks. We match Google searches for the word 'Bitcoin' with Bitcoin data, searches for the word 'Ripple' with Ripple data, and searches for the word 'Ethereum' with Ethereum data.
+
+
+<!-- p:25 -->
+
+
+Table 19 reports the results for Bitcoin. For weekly returns, the Google search proxy statistically significantly predicts 1-week and 2-week ahead returns. A one-standard-deviation increase in this week's searches leads to increases in weekly returns of 1.84 percent and 2.30 percent at the 1-week and 2-week ahead returns. 12
+
+In Table 20, we investigate the Google search proxy by grouping the weekly Google search deviations into quintiles and evaluating their performance going forward. We find that the top quintile outperforms the bottom quintile at 1-4 week ahead horizons. For example, at the 1-week horizon, the average return of the top quintile is 11.20 percent per week with the Sharpe ratio of 0.48 while the average return of the bottom quintile is 1.07 percent per week with the Sharpe ratio of 0.08.
+
+Table 21 reports the same calculation for the more recent period since 2013. The results are similar to that of the full sample. The top quintile outperforms the bottom quintile at the 1-4 week ahead horizons. For example, at the 2-week horizon, the average return of the top quintile is 8.90 percent with the Sharpe ratio of 0.40 while the average return of the bottom quintile is 0.57 percent per week with the Sharpe ratio of 0.04. In Table 22, we use the first two years of data to determine the quintile cutoffs and study the out-of-sample effect of investor attention, and we find strong positive investor attention effect as well.
+
+Table 19: Google Searches - Bitcoin
+
+Google search data for 'Bitcoin' minus the average of previous four weeks, normalized.
+
+| Weekly     | R t + 1 (1)   | R t + 2 (2)   | R t + 3 (3)   | R t + 4 (4)   | R t + 5 (5)   | R t + 6 (6)   | R t + 7 (7)   |
+|------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|
+| Goo g le t | 1 : 84        | 2 : 30        | 1 : 04        | 0 : 59        | 1 : 03        | 0 : 01        | 1 : 30        |
+| Goo g le t | (2.17)        | (2.81)        | (1.25)        | (0.72)        | (1.25)        | (-0.01)       | (-1.39)       |
+| Goo g le t | [1.76]        | [2.07]        | [0.76]        | [0.54]        | [1.00]        | [-0.01]       | [-1.34]       |
+| R-Squared  | 0.01          | 0.02          | 0.00          | 0.00          | 0.00          | 0.00          | 0.01          |
+
+
+<!-- p:26 -->
+
+
+Table 20: Google Searches by Groups
+
+| Weekly Level (Percentage) - Rank   | Weekly Level (Percentage) - Google   | Weekly Level (Percentage) - R t + 1   | Weekly Level (Percentage) - T-Statistics   | Weekly Level (Percentage) - Sharpe   | Weekly Level (Percentage) - R t + 2   | Weekly Level (Percentage) - T-Statistics   | Weekly Level (Percentage) - Sharpe   |
+|------------------------------------|--------------------------------------|---------------------------------------|--------------------------------------------|--------------------------------------|---------------------------------------|--------------------------------------------|--------------------------------------|
+| Low                                | 0 : 71                               | 1 : 07                                | (0.74)                                     | 0.08                                 | 0 : 34                                | (0.23)                                     | 0.03                                 |
+| 2                                  | 0 : 05                               | 1 : 20                                | (-1.06)                                    | -0.11                                | 0 : 24                                | (0.20)                                     | 0.02                                 |
+| 3                                  | 0 : 01                               | 3 : 92                                | (2.26)                                     | 0.24                                 | 4 : 23                                | (2.75)                                     | 0.29                                 |
+| 4                                  | 0 : 04                               | 6 : 03                                | (2.65)                                     | 0.35                                 | 5 : 21                                | (2.36)                                     | 0.31                                 |
+| 5                                  | 0 : 87                               | 11 : 20                               | (3.95)                                     | 0.48                                 | 8 : 99                                | (3.17)                                     | 0.39                                 |
+| Difference                         |                                      | 10.13                                 |                                            |                                      | 8.66                                  |                                            |                                      |
+| Rank                               | Google                               | R t + 3                               | T-Statistics                               | Sharpe                               | R t + 4                               | T-Statistics                               | Sharpe                               |
+| Low                                | 0 : 71                               | 0 : 29                                | (-0.19)                                    | -0.02                                | 0 : 62                                | (0.39)                                     | 0.05                                 |
+| 2                                  | 0 : 05                               | 1 : 65                                | (1.47)                                     | 0.15                                 | 1 : 31                                | (1.03)                                     | 0.11                                 |
+| 3                                  | 0 : 01                               | 4 : 35                                | (2.39)                                     | 0.25                                 | 4 : 49                                | (2.57)                                     | 0.27                                 |
+| 4                                  | 0 : 04                               | 6 : 19                                | (3.06)                                     | 0.40                                 | 9 : 13                                | (3.33)                                     | 0.44                                 |
+| 5                                  | 0 : 87                               | 6 : 54                                | (2.39)                                     | 0.29                                 | 3 : 51                                | (1.67)                                     | 0.20                                 |
+| Difference                         |                                      | 6.82                                  |                                            |                                      | 2.89                                  |                                            |                                      |
+
+Table 21: Google Searches by Groups Since 2013
+
+| Weekly Level (Percentage) - Rank   | Weekly Level (Percentage) - Google   | Weekly Level (Percentage) - R t + 1   | Weekly Level (Percentage) - T-Statistics   | Weekly Level (Percentage) - Sharpe   | Weekly Level (Percentage) - R t + 2   | Weekly Level (Percentage) - T-Statistics   | Weekly Level (Percentage) - Sharpe   |
+|------------------------------------|--------------------------------------|---------------------------------------|--------------------------------------------|--------------------------------------|---------------------------------------|--------------------------------------------|--------------------------------------|
+| Low                                | 0 : 77                               | 0 : 21                                | (0.12)                                     | 0.02                                 | 0 : 57                                | (0.30)                                     | 0.04                                 |
+| 2                                  | 0 : 08                               | 0 : 51                                | (0.42)                                     | 0.05                                 | 0 : 62                                | (0.58)                                     | 0.07                                 |
+| 3                                  | 0 : 01                               | 1 : 26                                | (1.63)                                     | 0.20                                 | 1 : 91                                | (2.04)                                     | 0.25                                 |
+| 4                                  | 0 : 05                               | 3 : 65                                | (1.94)                                     | 0.28                                 | 4 : 93                                | (2.51)                                     | 0.36                                 |
+| 5                                  | 0 : 94                               | 11 : 60                               | (3.67)                                     | 0.51                                 | 8 : 90                                | (2.84)                                     | 0.40                                 |
+| Difference                         |                                      | 11.39                                 |                                            |                                      | 8.33                                  |                                            |                                      |
+| Rank                               | Google                               | R t + 3                               | T-Statistics                               | Sharpe                               | R t + 4                               | T-Statistics                               | Sharpe                               |
+| Low                                | 0 : 77                               | 0.78                                  | (0.43)                                     | 0.06                                 | 0.24                                  | (0.14)                                     | 0.02                                 |
+| 2                                  | 0 : 08                               | 1.10                                  | (0.89)                                     | 0.11                                 | 1.86                                  | (1.35)                                     | 0.17                                 |
+| 3                                  | 0 : 01                               | 1 : 85                                | (1.74)                                     | 0.22                                 | 1 : 93                                | (2.02)                                     | 0.25                                 |
+| 4                                  | 0 : 05                               | 6 : 26                                | (2.85)                                     | 0.41                                 | 7 : 79                                | (2.96)                                     | 0.43                                 |
+| 5                                  | 0 : 94                               | 6 : 83                                | (2.29)                                     | 0.32                                 | 4 : 75                                | (1.78)                                     | 0.25                                 |
+| Difference                         |                                      | 6.05                                  |                                            |                                      | 4.51                                  |                                            |                                      |
+
+
+<!-- p:27 -->
+
+
+Table 22: Google Searches by Groups - No Lookahead
+
+| Weekly Level (Percentage) - Rank   | Weekly Level (Percentage) - Google   | Weekly Level (Percentage) - R t + 1   | Weekly Level (Percentage) - T-Statistics   | Weekly Level (Percentage) - Sharpe   | Weekly Level (Percentage) - R t + 2   | Weekly Level (Percentage) - T-Statistics   | Weekly Level (Percentage) - Sharpe   |
+|------------------------------------|--------------------------------------|---------------------------------------|--------------------------------------------|--------------------------------------|---------------------------------------|--------------------------------------------|--------------------------------------|
+| Low                                | -3.31                                | 0 : 70                                | (0.54)                                     | 0.06                                 | 0 : 32                                | (0.24)                                     | 0.03                                 |
+| 2                                  | -0.25                                | 0 : 29                                | (-0.21)                                    | -0.04                                | 1 : 96                                | (1.23)                                     | 0.22                                 |
+| 3                                  | 0.00                                 | 1 : 10                                | (1.44)                                     | 0.18                                 | 1 : 68                                | (1.77)                                     | 0.22                                 |
+| 4                                  | 0.21                                 | 5 : 44                                | (1.64)                                     | 0.39                                 | 5 : 70                                | (1.72)                                     | 0.41                                 |
+| 5                                  | 4.08                                 | 8 : 10                                | (3.70)                                     | 0.41                                 | 7 : 25                                | (3.33)                                     | 0.37                                 |
+| Difference                         | Difference                           | 7.39                                  | 7.39                                       | 7.39                                 | 6.94                                  | 6.94                                       | 6.94                                 |
+| Rank                               | Google                               | R t + 3                               | T-Statistics                               | Sharpe                               | R t + 4                               | T-Statistics                               | Sharpe                               |
+| Low                                | -3.31                                | 0.61                                  | (0.47)                                     | 0.05                                 | 0.81                                  | (0.64)                                     | 0.07                                 |
+| 2                                  | -0.25                                | 2.71                                  | (1.64)                                     | 0.29                                 | 2.78                                  | (1.26)                                     | 0.23                                 |
+| 3                                  | 0.00                                 | 1 : 48                                | (1.39)                                     | 0.18                                 | 1 : 51                                | (1.61)                                     | 0.20                                 |
+| 4                                  | 0.21                                 | 7 : 50                                | (2.13)                                     | 0.50                                 | 10 : 33                               | (2.59)                                     | 0.61                                 |
+| 5                                  | 4.08                                 | 6 : 34                                | (2.96)                                     | 0.33                                 | 5 : 31                                | (2.52)                                     | 0.28                                 |
+| Difference                         |                                      | 5.72                                  |                                            |                                      | 4.49                                  |                                            |                                      |
+
+Table 23 reports the results for Ripple. For weekly returns, the Google search proxy statistically significantly predicts 1-week ahead returns. A one-standard-deviation increase in this week's searches leads to increases in weekly returns of 10.86 percent at the 1-week ahead returns. The results for Bitcoin for the same period are comparable to those for other samples and to those for Ripple.
+
+Table 23: Google Searches - Ripple
+
+Google search data for 'Ripple' minus the average of previous four weeks, normalized.
+
+| Ripple - Weekly         | Ripple - R t + 1 (1)   | Ripple - R t + 2 (2)   | Ripple - R t + 3 (3)   | Ripple - R t + 4 (4)   | Ripple - R t + 5 (5)   | Ripple - R t + 6 (6)   | Ripple - R t + 7 (7)   |
+|-------------------------|------------------------|------------------------|------------------------|------------------------|------------------------|------------------------|------------------------|
+| Goo g le t              | 10 : 86 (3.74)         | 4 : 44 (1.50)          | 3 : 03 (1.02)          | 0 : 22 (0.07)          | 1 : 39 (-0.47)         | 0 : 26 (0.09)          | 0 : 58 (0.19)          |
+|                         | [2.62] 0.05            | [1.32] 0.01            | [0.67] 0.00            | [0.11] 0.00            | [-0.63] 0.00           | [0.15]                 | [0.31]                 |
+| R-Squared Panel B: Same | Period R t + 1         | Bitcoin Result         | R                      | R t + 4 (4)            |                        | 0.00                   | 0.00                   |
+| Weekly                  | (1)                    | R t + 2 (2)            | t + 3 (3)              | 0 : 73                 | R t + 5 (5)            | R t + 6 (6)            | R t + 7 (7)            |
+| Goo g le t              | 2 : 16 (2.74)          | 2 : 59 (3.32) [2.08]   | 1 : 09 (1.36)          | (0.91) [0.51]          | 1 : 25 (1.56) [1.30]   | 0 : 07 (-0.09) [-0.06] | 1 : 47 (-1.84) [-1.21] |
+|                         | [1.67]                 |                        |                        | 0.00                   |                        |                        | 0.01                   |
+| R-Squared               |                        | 0.04                   | [0.77]                 |                        |                        |                        |                        |
+|                         | 0.06                   |                        | 0.01                   |                        | 0.01                   | 0.00                   |                        |
+
+Table 24 reports the results for Ethereum. For weekly returns, the Google search proxy statistically significantly predicts 1-week, 3-week, and 6-week ahead returns. A one-standard-deviation increase in this week's searches leads to increases in weekly returns of 4.36 percent, 3.45 percent, and 3.65 percent at the 1-week, 3-week and 6-week ahead returns. The results for Bitcoin for the same period are comparable to those for other samples and to those for Ripple.
+
+
+<!-- p:28 -->
+
+
+Table 24: Google Searches - Ethereum
+
+Google search data for the word 'Ethereum' is minus the average of past four weeks and normalized.
+
+| Panel A: Ethereum - Weekly   | Panel A: Ethereum - R t + 1 (1)   | Panel A: Ethereum - R t + 2 (2)   | Panel A: Ethereum - R t + 3 (3)   | Panel A: Ethereum - R t + 4 (4)   | Panel A: Ethereum - R t + 5 (5)   | Panel A: Ethereum - R t + 6 (6)   | Panel A: Ethereum - R t + 7 (7)   |
+|------------------------------|-----------------------------------|-----------------------------------|-----------------------------------|-----------------------------------|-----------------------------------|-----------------------------------|-----------------------------------|
+| Goo g le t                   | 4 : 36 (2.36)                     | 1 : 92 (1.02)                     | 3 : 45 (1.84)                     | 2 : 29 (1.22)                     | 0 : 86 (0.46)                     | 3 : 65 (1.96)                     | 0 : 95 (0.50)                     |
+|                              | [2.54]                            | [0.75]                            | [1.88]                            | [1.21]                            | [0.39]                            | [1.66]                            | [0.59]                            |
+| R-Squared                    | 0.04                              | 0.01                              | 0.02                              | 0.01                              | 0.00                              | 0.03                              | 0.00                              |
+| Panel B: Same Weekly         | Period R t + 1 (1)                | Bitcoin R t + 2 (2)               | Result R t + 3 (3)                | R t + 4 (4)                       | R t + 5 (5)                       | R t + 6 (6)                       | R t + 7 (7)                       |
+| Goo g le t                   | 2 : 28 (2.38)                     | 3 : 03 (3.22)                     | 1 : 31 (1.35)                     | 0.88 (0.90)                       | 1 : 47 (1.52)                     | 0 : 39 (-0.40)                    | 2 : 22 (-2.29)                    |
+|                              | [1.32]                            |                                   |                                   |                                   | [1.07]                            |                                   | [-1.27]                           |
+|                              |                                   | [1.95]                            | [0.67]                            | [0.56]                            |                                   | [-0.24]                           |                                   |
+| R-Squared                    | 0.04                              | 0.07                              |                                   |                                   | 0.02                              |                                   |                                   |
+|                              |                                   |                                   | 0.01                              | 0.01                              |                                   | 0.00                              | 0.03                              |
+
+We are also interested in the question of whether past returns are associated with increases in investor attention. We regress this week's deviation in the Google searches on the contemporaneous and the previous four weeks Bitcoin returns. Table 25 documents the results. We find that the deviations in Google searches are significantly associated with the contemporaneous and previous weeks Bitcoin returns.
+
+Table 25: Google Searches and Past Returns
+
+| Weekly      | Goo g le t (1)   | Goo g le t (2)   | Goo g le t (3)   | Goo g le t (4)        | Goo g le t (5)        |
+|-------------|------------------|------------------|------------------|-----------------------|-----------------------|
+| R t         | 0 : 01 (3.64)    | 0 : 01 (2.91)    | 0 : 01 (2.73)    | 0 : 01 (2.94)         | 0 : 01 (2.93)         |
+| R t 1       |                  | 0 : 01 (4.04)    | 0 : 01 (3.90)    | 0 : 01 (4.12) 0 : 00  | 0 : 01 (4.17) 0 : 00  |
+| R t 2 R t 3 |                  |                  | 0 : 00 (0.63)    | (0.82) 0 : 00 (-1.59) | (0.93) 0 : 00 (-1.50) |
+| R t 4       |                  |                  |                  |                       | 0 : 00 (-0.68)        |
+| R-Squared   | 0.03             | 0.07             | 0.07             | 0.08                  | 0.098                 |
+
+
+<!-- p:29 -->
+
+
+Table 26: Twitter
+
+Twitter post count for 'Bitcoin' minus the average of previous four weeks, normalized.
+
+| Weekly      | R t + 1 (1)   | R t + 2 (2)   | R t + 3 (3)   | R t + 4 (4)   | R t + 5 (5)   | R t + 6 (6)   | R t + 7 (7)   |
+|-------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|
+| T w itter t | 2 : 50        | 0 : 56        | 1 : 91        | 0 : 75        | 0 : 51        | 0 : 37        | 1 : 42        |
+| T w itter t | (2.96)        | (0.56)        | (2.33)        | (0.91)        | (-0.62)       | (-0.45)       | (-1.71)       |
+| T w itter t | [4.07]        | [0.38]        | [2.22]        | [0.74]        | [-0.46]       | [-0.44]       | [-2.83]       |
+| R-Squared   | 0.02          | 0.00          | 0.01          | 0.00          | 0.00          | 0.00          | 0.01          |
+
+Table 27: Twitter by Groups
+
+| Weekly Level - Rank   | (Percentage) - Twitter   | (Percentage) - R t + 1   | (Percentage) - T-Statistics   | (Percentage) - Sharpe   | (Percentage) - R t + 2   | (Percentage) - T-Statistics   | (Percentage) - Sharpe   |
+|-----------------------|--------------------------|--------------------------|-------------------------------|-------------------------|--------------------------|-------------------------------|-------------------------|
+| Low                   | -0.80                    | -1.20                    | -1.07                         | -0.12                   | -0.39                    | -0.34                         | -0.04                   |
+| 2                     | -0.10                    | 0.96                     | 0.71                          | 0.08                    | 2 : 39                   | 2.07                          | 0.24                    |
+| 3                     | -0.04                    | 6 : 72                   | 2.42                          | 0.28                    | 4 : 87                   | 2.03                          | 0.23                    |
+| 4                     | 0.05                     | 6 : 83                   | 4.17                          | 0.48                    | 8 : 37                   | 3.66                          | 0.42                    |
+| 5                     | 0.91                     | 5 : 33                   | 2.60                          | 0.30                    | 2.15                     | 1.25                          | 0.14                    |
+| Difference            |                          | 6.53                     |                               |                         | 2.54                     |                               |                         |
+| Rank                  | Twitter                  | R t + 3                  | T-Statistics                  | Sharpe                  | R t + 4                  | T-Statistics                  | Sharpe                  |
+| Low                   | -0.80                    | -1.24                    | -0.95                         | -0.11                   | -0.29                    | -0.25                         | -0.03                   |
+| 2                     | -0.10                    | 1.92                     | 1.20                          | 0.14                    | 3 : 15                   | 1.78                          | 0.20                    |
+| 3                     | -0.04                    | 6 : 92                   | 2.90                          | 0.33                    | 6 : 79                   | 2.54                          | 0.29                    |
+| 4                     | 0.05                     | 6 : 52                   | 3.19                          | 0.36                    | 5 : 53                   | 3.47                          | 0.40                    |
+| 5                     | 0.91                     | 3 : 05                   | 1.97                          | 0.23                    | 2.28                     | 1.42                          | 0.16                    |
+| Difference            |                          | 4.29                     |                               |                         | 2.57                     |                               |                         |
+
+### 4.3 Negative Investor Attention
+
+We have shown that unconditionally investor attention positively predicts cryptocurrency returns. In this section, we further investigate whether negative investor attention predicts cryptocurrency returns. We construct a ratio between Google searches for the phrase 'Bitcoin hack' and searches for the word 'Bitcoin' to proxy for negative investor attention. Table 28 shows the results of the predictive regressions. The ratio negatively and significantly predicts 1-5 week Bitcoin retruns. For example, a one-standard-devation increase of the ratio leads to a 2.75 percent decrease of Bitcoin returns in next week.
+
+
+<!-- p:30 -->
+
+
+Table 28: Bitcoin Hack
+
+The ratio between google searches for the phrase 'Bitcoin hack' and searches for the word 'Bitcoin', normalized.
+
+| Weekly    | R t + 1 (1)   | R t + 2 (2)   | R t + 3 (3)   | R t + 4 (4)   | R t + 5 (5)   | R t + 6 (6)   | R t + 7 (7)   |
+|-----------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|
+| Hack t    | 2 : 75        | 2 : 26        | 1 : 86        | 1 : 54        | 2 : 18        | -1.18         | -0.96         |
+|           | (-3.30)       | (-2.70)       | (-2.20)       | (-1.82)       | (-2.58)       | (-1.43)       | (-1.16)       |
+|           | [-3.53]       | [-2.52]       | [-2.01]       | [-1.85]       | [-2.58]       | [-1.38]       | [-0.88]       |
+| R-Squared | 0.03          | 0.02          | 0.01          | 0.01          | 0.02          | 0.01          | 0.00          |
+
+Table 29: Bitcoin Hack by Groups
+
+| Weekly Level (Percentage) - Rank   | Weekly Level (Percentage) - Hack   | Weekly Level (Percentage) - R t + 1   | Weekly Level (Percentage) - T-Statistics   | Weekly Level (Percentage) - Sharpe   | Weekly Level (Percentage) - R t + 2   | Weekly Level (Percentage) - T-Statistics   | Weekly Level (Percentage) - Sharpe   |
+|------------------------------------|------------------------------------|---------------------------------------|--------------------------------------------|--------------------------------------|---------------------------------------|--------------------------------------------|--------------------------------------|
+| Low                                | -1.21                              | 8 : 62                                | 2.91                                       | 0.33                                 | 8 : 18                                | 3.17                                       | 0.36                                 |
+| 2                                  | -0.65                              | 5 : 59                                | 2.69                                       | 0.30                                 | 4 : 23                                | 1.76                                       | 0.20                                 |
+| 3                                  | -0.11                              | 2.36                                  | 1.54                                       | 0.18                                 | 2.16                                  | 1.26                                       | 0.15                                 |
+| 4                                  | 0.49                               | 1.14                                  | 1.28                                       | 0.14                                 | 3 : 09                                | 3.13                                       | 0.35                                 |
+| 5                                  | 1.54                               | 1.09                                  | 1.11                                       | 0.13                                 | 1.09                                  | 1.11                                       | 0.13                                 |
+| Difference                         |                                    | -7.52                                 |                                            |                                      | -7.09                                 |                                            |                                      |
+| Rank                               | Hack                               | R t + 3                               | T-Statistics                               | Sharpe                               | R t + 4                               | T-Statistics                               | Sharpe                               |
+| Low                                | -1.21                              | 7 : 64                                | 2.95                                       | 0.33                                 | 6 : 08                                | 2.10                                       | 0.24                                 |
+| 2                                  | -0.65                              | 3.49                                  | 1.60                                       | 0.18                                 | 4 : 85                                | 2.55                                       | 0.29                                 |
+| 3                                  | -0.11                              | 4 : 00                                | 1.93                                       | 0.22                                 | 4 : 00                                | 2.19                                       | 0.25                                 |
+| 4                                  | 0.49                               | 1 : 86                                | 1.76                                       | 0.20                                 | 1.86                                  | 1.43                                       | 0.16                                 |
+| 5                                  | 1.54                               | 1 : 70                                | 1.85                                       | 0.21                                 | 1 : 75                                | 1.86                                       | 0.21                                 |
+| Difference                         |                                    | -5.95                                 |                                            |                                      | -4.33                                 |                                            |                                      |
+
+### 4.4 Crypto Price-to-'Dividend' and Crypto Volatility
+
+Obviously, there is no direct measure of dividend for the cryptocurrencies. However, in its essence, the price-to-dividend ratio is a measure of the gap between the market value and the fundamental value of an asset. The market value of cryptocurrency is just the observed price. We proxy the fundamental value by using the number of Bitcoin Wallet users. We regress the Bitcoin returns on the lagged Bitcoin price-to'dividend' ratio and the results are reported in Table 30. Overall, there is very weak relation between the future Bitcoin returns and the current price-to-'dividend' ratio. For Ripple and Ethereum, the data on the number of users is not immediately available.
+
+Table 30: Bitcoin Market Price-to-'Dividend' Ratio
+
+| Predictive regression at the daily level - Bitcoin   | Predictive regression at the daily level - R t + 1 (1)   | Predictive regression at the daily level - R t + 2 (2)   | Predictive regression at the daily level - R t + 3 (3)   | Predictive regression at the daily level - R t + 4 (4)   | Predictive regression at the daily level - R t + 5 (5)   | Predictive regression at the daily level - R t + 6 (6)   | Predictive regression at the daily level - R t + 7 (7)   |
+|------------------------------------------------------|----------------------------------------------------------|----------------------------------------------------------|----------------------------------------------------------|----------------------------------------------------------|----------------------------------------------------------|----------------------------------------------------------|----------------------------------------------------------|
+| Bitcoin PD                                           | 0 : 13 (1.34)                                            | 0 : 05 (0.49)                                            | 0 : 13 (-1.36)                                           | 0 : 12 (-1.25)                                           | 0 : 05 (0.57)                                            | 0 : 09 (0.99)                                            | 0 : 05 (0.55)                                            |
+| R-Squared                                            | 0.00                                                     | 0.00                                                     | 0.00                                                     | 0.00                                                     | 0.00                                                     | 0.00                                                     | 0.00                                                     |
+
+
+<!-- p:31 -->
+
+
+Wealso investigate whether realized volatility predicts cryptocurrency returns. We regress cryptocurrency returns for the past month realized return volatility and the results are reported in Table 31. Overall, there is very weak relation between future cryptocurrency returns and the realized volatility for Bitcoin and Ethereum. For Ripple, there is some evidence that realized volatility positively predicts 4-day, 5-day, and 7-day ahead Ripple returns.
+
+Table 31: Market Volatility as Predictor
+
+Predictive regressions are at the daily level.
+
+| Bitcoin            | R t + 1 (1)   | R t + 2 (2)   | R t + 3 (3)   | R t + 4 (4)   | R t + 5 (5)    | R t + 6 (6)    | R t + 7 (7)    |
+|--------------------|---------------|---------------|---------------|---------------|----------------|----------------|----------------|
+| Bitcoin Volatility | 1 : 27 (1.52) | 0 : 79 (0.95) | 0 : 57 (0.69) | 0 : 03 (0.03) | 0 : 02 (0.03)  | 0 : 21 (-0.25) | 0 : 15 (-0.18) |
+|                    | [0.79]        | [0.50]        | [0.38]        | [0.02]        | [0.01]         | [-0.18]        | [-0.11]        |
+| R-Squared          | 0.00          | 0.00          | 0.00          | 0.00          | 0.00           | 0.00           | 0.00           |
+| Ripple             | R t + 1 (1)   | R t + 2 (2)   | R t + 3 (3)   | R t + 4 (4)   | R t + 5 (5)    | R t + 6 (6)    | R t + 7 (7)    |
+| Ripple Volatility  | 0 : 62 (1.03) | 0 : 97 (1.61) | 0 : 87 (1.45) | 1 : 14 (1.90) | 1 : 05 (1.75)  | 0 : 99 (1.65)  | 1 : 22 (2.03)  |
+| R-Squared          | [0.61] 0.00   | [1.43] 0.00   | [1.37] 0.00   | [1.37] 0.00   | [1.13] 0.00    | [1.13] 0.00    | [1.63]         |
+| Ethereum           | R t + 1 (1)   | R t + 2 (2)   | R t + 3 (3)   | R t + 4       | R t + 5        | R t + 6        | 0.00 R t +     |
+| Ethereum           | 1 89          | 1 51          | 0 : 58        | (4)           | (5)            | (6)            | 7 (7)          |
+| Volatility         | : (0.94)      | : (0.75)      | (0.29)        | 0 : 20 (0.10) | 0 : 08 (-0.04) | 0 : 22 (0.11)  | 0 : 30 (-0.15) |
+|                    | [0.89]        | [0.76]        | [0.26]        | [0.09]        | [-0.04]        | [0.14]         |                |
+| R-Squared          |               |               |               |               |                |                | [-0.15]        |
+|                    | 0.00          | 0.00          | 0.00          | 0.00          | 0.00           | 0.00           | 0.00           |
+
+### 4.5 Supply Factors
+
+We now construct proxies for the supply factors. To the first approximation, mining a cryptocurrency requires two inputs: electricity and computer power. For electricity, we consider three proxies: (1) the valueweighted stock returns of the U.S.-listed electricity industries, (2) the value-weighted stock returns of the China-listed electricity industries, and (3) the Sinopec (SNP) stock returns. The reason why we include the China proxies is because electricity supply is location specific and because China is considered to have the largest coin mining operation among all countries. 13 For proxies of computer power, we consider the stock returns of the companies that are major manufacturers of either GPU mining chips (Nvidia Corporation and Advanced Micro Devices, Inc) or ASIC mining chips (Taiwan Semiconductor Manufacturing Company, Limited and Advanced Semiconductor Engineering, Inc). 14 Table 32 presents the results for the three cryptocurrencies. Somewhat surprisingly, the Bitcoin and Ripple returns are not statistically significantly exposed to any of these supply factors proxies. There is some evidence that Ethereum returns are exposed to the AMD stock returns. We also consider the possibility that the supply factors are more important in the recent periods as mining becomes costlier with the increase in popularity of the cryptocurrencies, but we find no support for this hypothesis (See Appendix).
+
+13 See http://www.businessinsider.com/why-china-mines-more-bitcoin-than-any-other-country-2017-12.
+
+14 See https://www.benzinga.com/markets/cryptocurrency/18/02/11117719/the-companies-behind-the-chips-that-powercryptocurrency-minin.
+
+
+<!-- p:32 -->
+
+
+Table 32: Cryptocurrency Return Loadings to Supply Proxies
+
+| Panel A: Bitcoin - (Percentage)   | Panel A: Bitcoin - (1)   | Panel A: Bitcoin - (2)   | Panel A: Bitcoin - (3)   | Panel A: Bitcoin - (4)   | Panel A: Bitcoin - (5)   | Panel A: Bitcoin - (6)   | Panel A: Bitcoin - (7)   |
+|-----------------------------------|--------------------------|--------------------------|--------------------------|--------------------------|--------------------------|--------------------------|--------------------------|
+| ALPHA                             | 0.19**                   | 0 : 19                   | 0.20**                   | 0.20**                   | 0.21**                   | 0.20**                   | 0.20**                   |
+|                                   | (2.28)                   | (2.09)                   | (2.37)                   | (2.37)                   | (2.50)                   | (2.42)                   | (2.45)                   |
+|                                   | [2.65]                   | [2.27]                   | [2.93]                   | [2.93]                   | [2.79]                   | [3.06]                   | [2.94]                   |
+| U.S. Elec                         | 1.33                     |                          |                          |                          |                          |                          |                          |
+|                                   | (0.56)                   |                          |                          |                          |                          |                          |                          |
+|                                   | [0.65]                   |                          |                          |                          |                          |                          |                          |
+| China Elec                        |                          | 0 : 48                   |                          |                          |                          |                          |                          |
+|                                   |                          | (-0.79)                  |                          |                          |                          |                          |                          |
+|                                   |                          | [-1.27]                  |                          |                          |                          |                          |                          |
+| NVIDIA                            |                          |                          | 0.04                     |                          |                          |                          |                          |
+|                                   |                          |                          | (0.05)                   |                          |                          |                          |                          |
+|                                   |                          |                          | [0.08]                   |                          |                          |                          |                          |
+| AMD                               |                          |                          |                          | -0.30                    |                          |                          |                          |
+|                                   |                          |                          |                          | (-0.52)                  |                          |                          |                          |
+|                                   |                          |                          |                          | [-1.00]                  |                          |                          |                          |
+| TSMC                              |                          |                          |                          |                          | -0.96                    |                          |                          |
+|                                   |                          |                          |                          |                          | (-0.58)                  |                          |                          |
+|                                   |                          |                          |                          |                          | [-0.40]                  |                          |                          |
+| ASX                               |                          |                          |                          |                          |                          | 0.16                     |                          |
+|                                   |                          |                          |                          |                          |                          | (0.14)                   |                          |
+|                                   |                          |                          |                          |                          |                          | [-0.20]                  |                          |
+| SNP                               |                          |                          |                          |                          |                          |                          | 0.51                     |
+|                                   |                          |                          |                          |                          |                          |                          | (0.42)                   |
+|                                   |                          |                          |                          |                          |                          |                          | [0.52]                   |
+| MKTRF                             | 3.14                     | 4 : 38                   | 3.43                     | 4.23                     | 4.22                     | 3.38                     | 3.09                     |
+|                                   | (1.26)                   | (1.54)                   | (1.30)                   | (1.50)                   | (1.54)                   | (1.33)                   | (1.19)                   |
+|                                   | [1.29]                   | [1.67]                   | [1.39]                   | [1.73]                   | [1.34]                   | [1.60]                   | [1.42]                   |
+| R-Squared                         | 0.03                     | 0.02                     | 0.02                     | 0.03                     | 0.03                     | 0.03                     | 0.03                     |
+
+
+<!-- p:33 -->
+
+
+| Panel B: Ripple - (Percentage)   | Panel B: Ripple - (1)   | (2)    | (3)     | (4)     | (5)     | (6)     | (7)     | Panel C: Ethereum - (Percentage)   | Panel C: Ethereum - (1)   | Panel C: Ethereum - (2)   | Panel C: Ethereum - (3)   | (4)     | (5)     | (6)     | (7)     |
+|----------------------------------|-------------------------|--------|---------|---------|---------|---------|---------|------------------------------------|---------------------------|---------------------------|---------------------------|---------|---------|---------|---------|
+| ALPHA                            | 0 : 47                  | 0 : 12 | 0 : 41  | 0 : 41  | 0 : 44  | 0 : 41  | 0 : 43  | ALPHA                              | 0 : 32                    | 0 : 12                    | 0 : 36                    | 0 : 44  | 0 : 30  | 0 : 35  | 0 : 39  |
+|                                  | (2.11)                  | (0.78) | (1.68)  | (1.84)  | (1.91)  | (1.84)  | (1.91)  |                                    | (2.23)                    | (0.73)                    | (2.11)                    | (3.15)  | (2.08)  | (2.46)  | (2.76)  |
+|                                  | [2.19]                  | [0.95] | [1.69]  | [2.19]  | [2.24]  | [2.28]  | [2.29]  |                                    | [2.38]                    | [0.88]                    | [2.22]                    | [3.32]  | [2.41]  | [2.80]  | [2.64]  |
+| U.S. Elec                        | 9 : 27                  |        |         |         |         |         |         | U.S. Elec                          | 5 : 09                    |                           |                           |         |         |         |         |
+|                                  | (-1.60)                 |        |         |         |         |         |         |                                    | (1.37)                    |                           |                           |         |         |         |         |
+|                                  | [-1.17]                 |        |         |         |         |         |         |                                    | [1.38]                    |                           |                           |         |         |         |         |
+| China Elec                       |                         | 0 : 23 |         |         |         |         |         | China Elec                         |                           | 4 : 12                    |                           |         |         |         |         |
+|                                  |                         | (0.13) |         |         |         |         |         |                                    |                           | (-1.51)                   |                           |         |         |         |         |
+|                                  |                         | [0.25] |         |         |         |         |         |                                    |                           | [-1.17]                   |                           |         |         |         |         |
+| NVIDIA                           |                         |        | 0 : 02  |         |         |         |         | NVIDIA                             |                           |                           | 0 : 00                    |         |         |         |         |
+|                                  |                         |        | (-0.01) |         |         |         |         |                                    |                           |                           | (-0.00)                   |         |         |         |         |
+|                                  |                         |        | [-0.01] |         |         |         |         |                                    |                           |                           | [-0.00]                   |         |         |         |         |
+| AMD                              |                         |        |         | 1 : 76  |         |         |         | AMD                                |                           |                           |                           | 1 : 80  |         |         |         |
+|                                  |                         |        |         | (-1.10) |         |         |         |                                    |                           |                           |                           | (-1.96) |         |         |         |
+|                                  |                         |        |         | [-1.62] |         |         |         |                                    |                           |                           |                           | [-2.00] |         |         |         |
+| TSMC                             |                         |        |         |         | 2 : 84  |         |         | TSMC                               |                           |                           |                           | 3 : 49  |         |         |         |
+|                                  |                         |        |         |         | (-0.64) |         |         |                                    |                           |                           |                           |         | (1.36)  |         |         |
+|                                  |                         |        |         |         | [-0.62] |         |         |                                    |                           |                           |                           |         | [1.56]  |         |         |
+| ASX                              |                         |        |         |         |         | 1 : 20  |         | ASX                                |                           |                           |                           |         |         | 1 : 77  |         |
+|                                  |                         |        |         |         |         | (-0.36) |         |                                    |                           |                           |                           |         |         | (0.80)  |         |
+|                                  |                         |        |         |         |         | [-0.73] |         |                                    |                           |                           |                           |         |         | [0.84]  |         |
+| SNP                              |                         |        |         |         |         |         | 3 : 00  | SNP                                |                           |                           |                           |         |         |         | 2 : 88  |
+|                                  |                         |        |         |         |         |         | (0.86)  |                                    |                           |                           |                           |         |         |         | (1.18)  |
+|                                  |                         |        |         |         |         |         | [1.38]  |                                    |                           |                           |                           |         |         |         | [1.04]  |
+| MKTRF                            | 4 : 08                  | 2 : 28 | 1 : 45  | 6 : 20  | 3 : 70  | 2 : 18  | 2 : 33  | MKTRF                              | 1 : 46                    | 9 : 52                    | 0 : 36                    | 5 : 09  | 2 : 45  | 1 : 07  | 4 : 15  |
+|                                  | (0.55)                  | (0.44) | (0.18)  | (0.73)  | (0.45)  | (0.28)  | (-0.27) |                                    | (-0.33)                   | (1.31)                    | (-0.08)                   | (1.01)  | (-0.53) | (-0.23) | (-0.76) |
+|                                  | [0.77]                  | [0.79] | [0.23]  | [1.40]  | [0.56]  | [0.52]  | [-0.55] |                                    | [-0.40]                   | [1.56]                    | [-0.08]                   | [1.01]  | [-0.58] | [-0.24] | [-0.82] |
+| R-Squared                        | 0.05                    | 0.01   | 0.00    | 0.02    | 0.01    | 0.00    | 0.02    | R-Squared                          | 0.07                      | 0.14                      | 0.00                      | 0.13    | 0.07    | 0.02    | 0.05    |
+
+
+<!-- p:34 -->
+
+
+## 5 Industry Exposures to Bitcoin Risk
+
+In this section, we first estimate the exposures of the Fama French 30 industry groups to the cryptocurrency risk. Second, we continue with a finer industry classification and investigate the cryptocurrency risk exposures of 354 SIC industries in the US and 137 CIC industries in China. These exposures which can be thought of as an index indicating the potential winners and losers from the current and future development of blockchain. Throughout this section, t-statistics in parentheses and brackets are based on regular and bootstrapped standard errors.
+
+### 5.1 Estimating Broad Industry Exposures
+
+Table 33: Industry Exposure to Bitcoin Return
+
+| x100      | food        | beer          | smoke         | games         | books         | hshld   | clths   | hlth          | chems           | txtls       |
+|-----------|-------------|---------------|---------------|---------------|---------------|---------|---------|---------------|-----------------|-------------|
+| BITCOIN   | 0.56        | 0.52          | -0.27         | -0.03         | -0.61         | 0.71*   | 0.69    | 0.64*         | -0.40           | 0.20        |
+|           | (1.63)      | (1.23)        | (-0.39)       | (-0.06)       | (-1.35)       | (1.87)  | (1.16)  | (1.81)        | (-1.06)         | (0.36)      |
+|           | [1.23]      | [0.98]        | [-0.38]       | [-0.08]       | [-1.49]       | [2.29]  | [1.17]  | [2.03]        | [-1.08]         | [0.51]      |
+| MKTRF     | 0.59***     | 0.39***       | 0.59***       | 1.36***       | 1.26***       | 0.56*** | 0.74*** | 0.84***       | 1.39***         | 1.20***     |
+|           | (8.04)      | (4.32)        | (3.96)        | (10.62)       | (12.85)       | (6.85)  | (5.79)  | (11.07)       | (17.01)         | (10.09)     |
+|           | [8.60]      | [4.41]        | [4.38]        | [11.52]       | [14.35]       | [5.65]  | [4.97]  | [9.15]        | [14.33]         | [9.29]      |
+| ALPHA     | 0.06        | 0.53*         | 0.59          | 0.11          | -0.39         | -0.12   | 0.25    | 0.21          | -0.33           | 0.11        |
+|           | (0.24)      | (1.69)        | (1.14)        | (0.25)        | (-1.16)       | (-0.42) | (0.56)  | (0.81)        | (-1.15)         | (0.28)      |
+|           | [0.22]      | [1.52]        | [1.14]        | [0.20]        | [-1.31]       | [-0.44] | [0.58]  | [0.65]        | [-1.01]         | [0.26]      |
+| R-Squared | 0.46        | 0.21          | 0.16          | 0.58          | 0.66          | 0.40    | 0.32    | 0.61          | 0.77            | 0.55        |
+| x100      | cnstr       | steel         | fabpr         | elceq         | autos         | carry   | mines   | coal          | oil             | util        |
+| BITCOIN   | -0.62       | -0.67         | -0.95**       | -0.61         | -0.77         | 0.26    | -1.65*  | -1.53         | -0.45           | 0.18        |
+|           | (-1.39)     | (-0.95)       | (-2.02)       | (-1.46)       | (-1.42)       | (0.72)  | (-1.69) | (-0.85)       | (-0.71)         | (0.37)      |
+|           | [-1.50]     | [-1.72]       | [-2.34]       | [-1.43]       | [-1.51]       | [1.02]  | [-2.10] | [-1.87]       | [-1.18]         | [0.30]      |
+| MKTRF     | 1.47***     | 1.64***       | 1.46***       | 1.31***       | 1.50***       | 1.03*** | 1.28*** | 1.72***       | 1.22***         | 0.31***     |
+|           | (15.37)     | (10.75)       | (14.47)       | (14.48)       | (12.73)       | (12.97) | (6.03)  | (4.43)        | (9.02)          | (3.04)      |
+|           | [12.17]     | [12.00]       | [11.09]       | [14.75]       | [9.62]        | [12.12] | [5.92]  | [3.54]        | [11.11]         | [3.12]      |
+| ALPHA     | -0.37       | -1.17**       | -0.35         | -0.65**       | -0.73*        | 0.34    | -1.06   | -3.19**       | -0.76           | 0.48        |
+|           | (-1.11)     | (-2.22)       | (-1.00)       | (-2.08)       | (-1.80)       | (1.23)  | (-1.44) | (-2.37)       | (-1.63)         | (1.35)      |
+|           | [-0.99]     | [-2.49]       | [-0.81]       | [-2.13]       | [-1.79]       | [1.17]  | [-1.24] | [-2.04]       | [-1.47]         | [1.48]      |
+| R-Squared | 0.74        | 0.58          | 0.71          | 0.71          | 0.66          | 0.67    | 0.30    | 0.19          | 0.49            | 0.10        |
+| x100      | telcm       | servs         | buseq         | paper         | trans         | whlsl   | rtail   | meals         | fin             | other       |
+| BITCOIN   | 0.19        | -0.18         | -0.05         | 0.22          | 0.29          | 0.14    | 0.18    | 0.30          | -0.11           | -0.16       |
+|           | (0.51)      | (-0.61)       | (-0.13)       | (0.84)        | (0.70)        | (0.46)  | (0.54)  | (0.89)        | (-0.34)         | (-0.50)     |
+|           | [0.43]      | [-1.08]       | [-0.19]       | [0.81]        | [1.05]        | [0.66]  | [0.62]  | [0.87]        | [-0.28]         | [-0.87]     |
+| MKTRF     | 0.85***     | 1.02***       | 1.10***       | 1.08***       | 1.00***       | 1.02*** | 0.85*** | 0.69***       | 1.24***         | 0.86***     |
+|           | (10.71)     | (16.15)       | (13.08)       | (18.76)       | (10.98)       | (15.93) | (11.98) | (9.46)        | (17.65)         | (12.54)     |
+|           | [10.88]     | [16.31]       | [14.15]       | [25.57]       | [9.79]        | [14.14] | [13.24] | [9.79]        | [21.63]         | [13.75]     |
+| ALPHA     | 0.00 (0.01) | 0.27          | 0.07          | -0.18 (-0.91) | 0.03          | -0.16   | 0.37    | 0.44*         | -0.06           | 0.10 (0.43) |
+|           | [-0.07]     | (1.26) [1.16] | (0.26) [0.18] | [-0.88]       | (0.09) [0.03] | (-0.73) | (1.50)  | (1.75) [1.49] | (-0.23) [-0.28] | [0.36]      |
+| R-Squared |             |               |               |               |               | [-0.69] | [1.20]  |               |                 |             |
+|           | 0.58        | 0.76          | 0.67          | 0.81          | 0.60          | 0.76    | 0.64    | 0.53          | 0.79            | 0.65        |
+
+Table 33 reports the Fama French 30 industries' exposures on Bitcoin returns controlling for the excess market returns. Specifically, we regress each industry's stock returns on the contemporaneous Bitcoin returns and the excess stock market returns. The Consumer Goods (Hshld) and Healthcare (Hlth) industries are positively and statistically significantly affected while the Fabricated Products (FabPr) and Metal Mining (Mines) industries are negatively and statistically significantly affected. These point estimates state that a one-standard-deviation increase in Bitcoin returns is associated with the 0.49 percent increase in the return of the Consumer Goods industry, 0.44 percent increase in the return of the Healthcare industry, 0.66 percent decrease in the return of the Fabricated Products industry, and 1.15 percent decrease in the return of the Metal Mining. Surprisingly, the often mentioned Finance, Retail, and Wholesale industries have no statistically significant exposure, and the magnitude of the point estimates is very small.
+
+
+<!-- p:35 -->
+
+
+Table 34: Industry Exposure to Ripple Returns
+
+| Panel A: Ripple Return - x100   | Panel A: Ripple Return - food   | Panel A: Ripple Return - beer   | Panel A: Ripple Return - smoke   | Panel A: Ripple Return - games   | Panel A: Ripple Return - books   | Panel A: Ripple Return - hshld   | Panel A: Ripple Return - clths   | Panel A: Ripple Return - hlth   | Panel A: Ripple Return - chems   | Panel A: Ripple Return - txtls   |
+|---------------------------------|---------------------------------|---------------------------------|----------------------------------|----------------------------------|----------------------------------|----------------------------------|----------------------------------|---------------------------------|----------------------------------|----------------------------------|
+| RIPPLE                          | -0.06                           | 0.26                            | 0.13                             | -0.02                            | -0.24                            | 0.30                             | 0.41                             | -0.07                           | -0.14                            | -0.03                            |
+|                                 | (-0.28)                         | (1.01)                          | (0.30)                           | (-0.07)                          | (-0.90)                          | (1.30)                           | (1.29)                           | (-0.33)                         | (-0.60)                          | (-0.09)                          |
+|                                 | [-0.45]                         | [0.86]                          | [0.24]                           | [-0.06]                          | [-1.00]                          | [1.33]                           | [1.31]                           | [-0.43]                         | [-0.53]                          | [-0.07]                          |
+| MKTRF                           | 0.70***                         | 0.54***                         | 0.59***                          | 1.19***                          | 1.38***                          | 0.62***                          | 0.64***                          | 0.99***                         | 1.31***                          | 1.08***                          |
+|                                 | (6.59)                          | (4.26)                          | (2.77)                           | (6.79)                           | (10.50)                          | (5.33)                           | (4.10)                           | (8.99)                          | (11.42)                          | (6.55)                           |
+|                                 | [5.91]                          | [3.93]                          | [2.66]                           | [5.90]                           | [10.76]                          | [4.04]                           | [5.29]                           | [7.47]                          | [12.26]                          | [6.58]                           |
+| ALPHA                           | -0.09                           | 0.31                            | 0.19                             | 0.49                             | -0.78*                           | -0.41                            | 0.19                             | -0.01                           | -0.20                            | -0.20                            |
+|                                 | (-0.27)                         | (0.78)                          | (0.28)                           | (0.88)                           | (-1.89)                          | (-1.10)                          | (0.39)                           | (-0.03)                         | (-0.56)                          | (-0.39)                          |
+|                                 | [-0.38]                         | [0.65]                          | [0.25]                           | [0.85]                           | [-2.60]                          | [-1.14]                          | [0.29]                           | [-0.09]                         | [-0.63]                          | [-0.44]                          |
+| R-Squared                       | 0.4456                          | 0.2653                          | 0.1262                           | 0.4606                           | 0.6718                           | 0.3614                           | 0.2588                           | 0.5993                          | 0.7074                           | 0.4427                           |
+| x100                            | cnstr                           | steel                           | fabpr                            | elceq                            | autos                            | carry                            | mines                            | coal                            | oil                              | util                             |
+| RIPPLE                          | -0.01                           | 0.32                            | 0.06                             | 0.14                             | -0.14                            | 0.20                             | 0.12                             | 0.49                            | -0.06                            | -0.50*                           |
+|                                 | (-0.06)                         | (0.69)                          | (0.22)                           | (0.65)                           | (-0.54)                          | (0.87)                           | (0.20)                           | (0.42)                          | (-0.13)                          | (-1.69)                          |
+|                                 | [-0.06]                         | [0.38]                          | [0.21]                           | [0.74]                           | [-0.37]                          | [0.99]                           | [0.12]                           | [0.38]                          | [-0.10]                          | [-1.84]                          |
+| MKTRF                           | 1.32***                         | 1.50***                         | 1.26***                          | 1.24***                          | 1.33***                          | 1.12***                          | 1.04***                          | 1.29**                          | 1.07***                          | 0.31**                           |
+|                                 | (10.43)                         | (6.51)                          | (9.33)                           | (11.69)                          | (10.61)                          | (9.80)                           | (3.48)                           | (2.20)                          | (5.03)                           | (2.13)                           |
+|                                 | [7.88]                          | [6.15]                          | [7.97]                           | [15.43]                          | [9.68]                           | [9.40]                           | [4.56]                           | [1.56]                          | [5.25]                           | [1.81]                           |
+| ALPHA                           | -0.40                           | -0.70                           | -0.22                            | -0.80**                          | -0.73*                           | 0.28                             | -0.39                            | -2.39                           | -0.88                            | 0.50                             |
+|                                 | (-1.01)                         | (-0.96)                         | (-0.53)                          | (-2.41)                          | (-1.85)                          | (0.77)                           | (-0.41)                          | (-1.30)                         | (-1.31)                          | (1.10)                           |
+|                                 | [-1.00]                         | [-1.14]                         | [-0.60]                          | [-2.60]                          | [-1.62]                          | [0.73]                           | [-0.43]                          | [-1.30]                         | [-1.45]                          | [1.05]                           |
+| R-Squared                       | 0.6683                          | 0.4441                          | 0.6178                           | 0.7183                           | 0.6758                           | 0.6435                           | 0.1841                           | 0.0860                          | 0.3191                           | 0.1177                           |
+| x100                            | telcm                           | servs                           | buseq                            | paper                            | trans                            | whlsl                            | rtail                            | meals                           | fin                              | other                            |
+| RIPPLE                          | 0.12                            | 0.02                            | -0.05                            | -0.01                            | 0.26                             | 0.26                             | 0.24                             | 0.35*                           | -0.06                            | -0.11                            |
+|                                 | (0.52)                          | (0.12)                          | (-0.24)                          | (-0.05)                          | (1.01)                           | (1.39)                           | (1.13)                           | (1.86)                          | (-0.31)                          | (-0.61)                          |
+|                                 | [0.37]                          | [0.09]                          | [-0.23]                          | [-0.05]                          | [1.04]                           | [0.92]                           | [0.73]                           | [0.97]                          | [-0.23]                          | [-0.60]                          |
+| MKTRF                           | 0.95***                         | 1.01***                         | 1.08***                          | 1.13***                          | 1.05***                          | 1.06***                          | 1.01***                          | 0.77***                         | 1.17***                          | 0.88***                          |
+|                                 | (8.60)                          | (10.40)                         | (9.75)                           | (13.65)                          | (8.24)                           | (11.39)                          | (9.61)                           | (8.18)                          | (11.23)                          | (9.43)                           |
+|                                 | [8.77]                          | [9.55]                          | [11.96]                          | [18.60]                          | [6.28]                           | [10.42]                          | [11.12]                          | [8.27]                          | [11.09]                          | [10.06]                          |
+| ALPHA                           | -0.47                           | 0.43                            | 0.46                             | -0.27                            | 0.02                             | -0.47                            | 0.03                             | 0.27                            | 0.08                             | -0.11                            |
+|                                 | (-1.36)                         | (1.42)                          | (1.31)                           | (-1.03)                          | (0.05)                           | (-1.60)                          | (0.09)                           | (0.91)                          | (0.23)                           | (-0.36)                          |
+|                                 | [-1.33]                         | [1.58]                          | [1.19]                           | [-1.31]                          | [-0.01]                          | [-1.81]                          | [0.02]                           | [0.78]                          | [0.19]                           | [-0.50]                          |
+| R-Squared                       |                                 | 0.6675                          | 0.6379                           | 0.7753                           | 0.5628                           | 0.7109                           | 0.6362                           | 0.5692                          | 0.7003                           |                                  |
+|                                 | 0.5801                          |                                 |                                  |                                  |                                  |                                  |                                  |                                 |                                  | 0.6222                           |
+
+
+<!-- p:36 -->
+
+
+| Panel B: Same Period Bitcoin Return - x100   | Panel B: Same Period Bitcoin Return - food   | Panel B: Same Period Bitcoin Return - beer   | Panel B: Same Period Bitcoin Return - smoke   | Panel B: Same Period Bitcoin Return - games   | Panel B: Same Period Bitcoin Return - books   | Panel B: Same Period Bitcoin Return - hshld   | Panel B: Same Period Bitcoin Return - clths   | Panel B: Same Period Bitcoin Return - hlth   | Panel B: Same Period Bitcoin Return - chems   | Panel B: Same Period Bitcoin Return - txtls   |
+|----------------------------------------------|----------------------------------------------|----------------------------------------------|-----------------------------------------------|-----------------------------------------------|-----------------------------------------------|-----------------------------------------------|-----------------------------------------------|----------------------------------------------|-----------------------------------------------|-----------------------------------------------|
+| BITCOIN                                      | -0.01                                        | 0.16                                         | -0.97                                         | -0.35                                         | -1.06*                                        | 0.57                                          | 0.54                                          | 0.12                                         | -0.48                                         | -0.05                                         |
+| BITCOIN                                      | (-0.01)                                      | (0.28)                                       | (-1.02)                                       | (-0.44)                                       | (-1.83)                                       | (1.08)                                        | (0.76)                                        | (0.24)                                       | (-0.94)                                       | (-0.06)                                       |
+| BITCOIN                                      | [-0.01]                                      | [0.11]                                       | [-0.75]                                       | [-0.23]                                       | [-0.60]                                       | [0.64]                                        | [0.30]                                        | [0.14]                                       | [-0.56]                                       | [-0.03]                                       |
+| MKTRF                                        | 0.70***                                      | 0.54***                                      | 0.62***                                       | 1.20***                                       | 1.41***                                       | 0.61***                                       | 0.63***                                       | 0.98***                                      | 1.33***                                       | 1.08***                                       |
+| MKTRF                                        | (6.51)                                       | (4.17)                                       | (2.92)                                        | (6.79)                                        | (10.87)                                       | (5.13)                                        | (3.95)                                        | (8.84)                                       | (11.48)                                       | (6.49)                                        |
+| MKTRF                                        | [5.77]                                       | [3.96]                                       | [2.83]                                        | [5.74]                                        | [10.56]                                       | [3.85]                                        | [4.91]                                        | [7.13]                                       | [12.17]                                       | [6.25]                                        |
+| ALPHA                                        | -0.11                                        | 0.39                                         | 0.36                                          | 0.52                                          | -0.73*                                        | -0.37                                         | 0.27                                          | -0.05                                        | -0.19                                         | -0.21                                         |
+| ALPHA                                        | (-0.34)                                      | (0.97)                                       | (0.55)                                        | (0.96)                                        | (-1.83)                                       | (-1.00)                                       | (0.55)                                        | (-0.16)                                      | (-0.54)                                       | (-0.41)                                       |
+| ALPHA                                        | [-0.46]                                      | [0.79]                                       | [0.53]                                        | [0.88]                                        | [-2.77]                                       | [-1.06]                                       | [0.44]                                        | [-0.23]                                      | [-0.58]                                       | [-0.46]                                       |
+| R-Squared                                    | 0.4448                                       | 0.2525                                       | 0.1413                                        | 0.4625                                        | 0.6863                                        | 0.3556                                        | 0.2442                                        | 0.5989                                       | 0.7102                                        | 0.4426                                        |
+| x100                                         | cnstr                                        | steel                                        | fabpr                                         | elceq                                         | autos                                         | carry                                         | mines                                         | coal                                         | oil                                           | util                                          |
+| BITCOIN                                      | -0.12                                        | -0.48                                        | -0.59                                         | -0.15                                         | -0.43                                         | 0.33                                          | -1.50                                         | -1.05                                        | -0.47                                         | -0.57                                         |
+| BITCOIN                                      | (-0.21)                                      | (-0.46)                                      | (-0.99)                                       | (-0.31)                                       | (-0.77)                                       | (0.64)                                        | (-1.13)                                       | (-0.40)                                      | (-0.49)                                       | (-0.85)                                       |
+| BITCOIN                                      | [-0.10]                                      | [-0.29]                                      | [-0.60]                                       | [-0.12]                                       | [-0.39]                                       | [0.38]                                        | [-0.72]                                       | [-0.31]                                      | [-0.29]                                       | [-0.55]                                       |
+| MKTRF                                        | 1.33***                                      | 1.52***                                      | 1.28***                                       | 1.25***                                       | 1.35***                                       | 1.12***                                       | 1.09***                                       | 1.33**                                       | 1.09***                                       | 0.32**                                        |
+| MKTRF                                        | (10.35)                                      | (6.51)                                       | (9.46)                                        | (11.60)                                       | (10.62)                                       | (9.60)                                        | (3.65)                                        | (2.25)                                       | (5.06)                                        | (2.14)                                        |
+| MKTRF                                        | [7.92]                                       | [6.11]                                       | [8.21]                                        | [15.32]                                       | [9.67]                                        | [9.29]                                        | [4.72]                                        | [1.62]                                       | [4.91]                                        | [1.86]                                        |
+| ALPHA                                        | -0.39                                        | -0.52                                        | -0.13                                         | -0.73**                                       | -0.73*                                        | 0.31                                          | -0.15                                         | -2.08                                        | -0.84                                         | 0.39                                          |
+| ALPHA                                        | (-0.99)                                      | (-0.72)                                      | (-0.30)                                       | (-2.21)                                       | (-1.86)                                       | (0.86)                                        | (-0.16)                                       | (-1.14)                                      | (-1.26)                                       | (0.85)                                        |
+| ALPHA                                        | [-0.95]                                      | [-0.89]                                      | [-0.37]                                       | [-2.28]                                       | [-1.64]                                       | [0.81]                                        | [-0.19]                                       | [-1.13]                                      | [-1.36]                                       | [0.78]                                        |
+| R-Squared                                    | 0.6686                                       | 0.4414                                       | 0.6242                                        | 0.7166                                        | 0.6776                                        | 0.6411                                        | 0.2024                                        | 0.0858                                       | 0.3220                                        | 0.0831                                        |
+| x100                                         | telcm                                        | servs                                        | buseq                                         | paper                                         | trans                                         | whlsl                                         | rtail                                         | meals                                        | fin                                           | other                                         |
+| BITCOIN                                      | -0.37                                        | 0.05                                         | 0.19                                          | 0.17                                          | 0.46                                          | 0.10                                          | 0.03                                          | 0.36                                         | 0.36                                          | -0.32                                         |
+|                                              | (-0.75)                                      | (0.12)                                       | (0.38)                                        | (0.45)                                        | (0.81)                                        | (0.24)                                        | (0.07)                                        | (0.84)                                       | (0.78)                                        | (-0.76)                                       |
+|                                              | [-0.51]                                      | [0.06]                                       | [0.17]                                        | [0.27]                                        | [0.71]                                        | [0.10]                                        | [0.05]                                        | [0.35]                                       | [0.40]                                        | [-0.40]                                       |
+| MKTRF                                        | 0.96***                                      | 1.01***                                      | 1.08***                                       | 1.13***                                       | 1.04***                                       | 1.06***                                       | 1.02***                                       | 0.76***                                      | 1.15***                                       | 0.89***                                       |
+| MKTRF                                        | (8.66)                                       | (10.28)                                      | (9.60)                                        | (13.46)                                       | (8.04)                                        | (11.09)                                       | (9.43)                                        | (7.83)                                       | (11.05)                                       | (9.44)                                        |
+| MKTRF                                        | [9.02]                                       | [9.24]                                       | [11.61]                                       | [18.37]                                       | [6.18]                                        | [9.95]                                        | [10.98]                                       | [8.48]                                       | [11.00]                                       | [9.79]                                        |
+| ALPHA                                        | -0.38                                        | 0.43                                         | 0.41                                          | -0.29                                         | 0.05                                          | -0.39                                         | 0.11                                          | 0.35                                         | 0.01                                          | -0.11                                         |
+| ALPHA                                        | (-1.11)                                      | (1.44)                                       | (1.20)                                        | (-1.14)                                       | (0.14)                                        | (-1.31)                                       | (0.34)                                        | (1.17)                                       | (0.02)                                        | (-0.37)                                       |
+| ALPHA                                        | [-1.14]                                      | [1.55]                                       | [1.11]                                        | [-1.46]                                       | [0.07]                                        | [-1.62]                                       | [0.29]                                        | [1.10]                                       | [-0.07]                                       | [-0.51]                                       |
+| R-Squared                                    | 0.5824                                       | 0.6675                                       | 0.6385                                        | 0.7762                                        | 0.5598                                        | 0.7010                                        | 0.6277                                        | 0.5474                                       | 0.7031                                        | 0.6237                                        |
+
+Table 34 reports the Fama French 30 industries' exposures on the Ripple returns controlling for the excess market returns. The Restaurant, Hotels, Motels (meals) industry is positively and statistically significantly affected while the Utility (util) industry is negatively and statistically significantly affected. We report the Fama French 30 industry exposures to Bitcoin returns for the same time period as well. The only statistically significant point estimate comes from the Printing and Publishing (books, negative) industry. Although the point estimates are not significant, the directions of the estimates are similar to those in the full sample. For example, Consumer Goods and Healthcare industries are positively exposed while Fabricated Products and Metal Mining industries are negatively exposed.
+
+Table 35 reports the Fama French 30 industries' exposures on Ethereum return controlling for the excess market returns. The Restaurant, Hotels, Motels (meals) industry is positively and statistically significantly affected while the Banking, Insurance, Real Estate, Trading (fin) industry is negatively and statistically significantly affected. We report the Fama French 30 industry exposures to Bitcoin returns for the same time period as well. The statistically significant point estimates are the Beer and Liquor (beer, positive)
+
+
+<!-- p:37 -->
+
+
+and the Restaurant, Hotels, Motels (meals, positive) industries. Again, the signs of the point estimates are similar to those of the full sample.
+
+Table 35: Industry Exposure to Ethereum Returns
+
+| Panel A: Ethereum Return - x100   | Panel A: Ethereum Return - food   | Panel A: Ethereum Return - beer   | Panel A: Ethereum Return - smoke   | Panel A: Ethereum Return - games   | Panel A: Ethereum Return - books   | Panel A: Ethereum Return - hshld   | Panel A: Ethereum Return - clths   | Panel A: Ethereum Return - hlth   | Panel A: Ethereum Return - chems   | Panel A: Ethereum Return - txtls   |
+|-----------------------------------|-----------------------------------|-----------------------------------|------------------------------------|------------------------------------|------------------------------------|------------------------------------|------------------------------------|-----------------------------------|------------------------------------|------------------------------------|
+| ETHEREUM                          | 0.62                              | 0.69                              | 1.74                               | 1.36                               | -0.61                              | 0.72                               | 0.23                               | 0.05                              | 0.13                               | 0.69                               |
+| ETHEREUM                          | (1.02)                            | (0.86)                            | (1.39)                             | (1.34)                             | (-0.81)                            | (1.00)                             | (0.25)                             | (0.08)                            | (0.19)                             | (0.81)                             |
+| ETHEREUM                          | [1.54)                            | [0.85)                            | [1.31)                             | [1.48)                             | [-1.05)                            | [1.06)                             | [0.42)                             | [0.13)                            | [0.15)                             | [1.11)                             |
+| MKTRF                             | 0.51***                           | 0.44**                            | 0.34                               | 1.32***                            | 1.35***                            | 0.47***                            | 0.47**                             | 1.11***                           | 1.43***                            | 0.95***                            |
+| MKTRF                             | (3.79)                            | (2.46)                            | (1.22)                             | (5.95)                             | (8.14)                             | (2.97)                             | (2.29)                             | (8.08)                            | (9.12)                             | (5.09)                             |
+| MKTRF                             | [3.40)                            | [2.06)                            | [1.00)                             | [6.35)                             | [7.88)                             | [2.48)                             | [2.74)                             | [8.00)                            | [7.15)                             | [6.54)                             |
+| ALPHA                             | -0.42                             | 0.06                              | -0.43                              | 0.28                               | -0.83                              | -0.49                              | -0.03                              | -0.79                             | -0.17                              | -1.38**                            |
+| ALPHA                             | (-0.90)                           | (0.10)                            | (-0.45)                            | (0.36)                             | (-1.44)                            | (-0.88)                            | (-0.05)                            | (-1.64)                           | (-0.32)                            | (-2.11)                            |
+| ALPHA                             | [-1.27)                           | [0.04)                            | [-0.65)                            | [0.30)                             | [-1.61)                            | [-1.04)                            | [-0.13)                            | [-1.67)                           | [-0.62)                            | [-2.23)                            |
+| R-Squared                         | 0.3491                            | 0.1919                            | 0.1094                             | 0.5626                             | 0.6884                             | 0.2560                             | 0.1531                             | 0.6869                            | 0.7367                             | 0.4767                             |
+| x100                              | cnstr                             | steel                             | fabpr                              | elceq                              | autos                              | carry                              | mines                              | coal                              | oil                                | util                               |
+| ETHEREUM                          | -0.37                             | -0.92                             | 0.17                               | -0.09                              | -0.33                              | -0.67                              | -0.28                              | 0.10                              | -1.48                              | 1.25                               |
+| ETHEREUM                          | (-0.45)                           | (-0.62)                           | (0.21)                             | (-0.14)                            | (-0.43)                            | (-0.99)                            | (-0.16)                            | (0.03)                            | (-1.22)                            | (1.52)                             |
+| ETHEREUM                          | [-0.47)                           | [-0.56)                           | [0.25)                             | [-0.15)                            | [-0.35)                            | [-0.96)                            | [-0.17)                            | [0.04)                            | [-1.62)                            | [1.71)                             |
+| MKTRF                             | 1.22***                           | 1.64***                           | 1.25***                            | 1.27***                            | 1.33***                            | 1.17***                            | 1.00**                             | 0.72                              | 1.19***                            | 0.21                               |
+| MKTRF                             | (6.79)                            | (5.06)                            | (7.20)                             | (8.67)                             | (7.93)                             | (7.85)                             | (2.72)                             | (0.91)                            | (4.47)                             | (1.15)                             |
+| MKTRF                             | [5.43)                            | [4.82)                            | [6.18)                             | [10.78)                            | [7.14)                             | [8.74)                             | [3.61)                             | [0.55)                            | [4.95)                             | [1.18)                             |
+| ALPHA                             | 0.01                              | 0.33                              | 0.45                               | -0.63                              | -0.65                              | 0.95*                              | 0.79                               | 0.64                              | 0.16                               | 0.01                               |
+| ALPHA                             | (0.01)                            | (0.29)                            | (0.74)                             | (-1.23)                            | (-1.11)                            | (1.82)                             | (0.61)                             | (0.23)                            | (0.17)                             | (0.01)                             |
+| ALPHA                             | [-0.06)                           | [0.35)                            | [0.68)                             | [-1.51)                            | [-1.16)                            | [1.92)                             | [0.58)                             | [0.23)                            | [0.13)                             | [-0.06)                            |
+| R-Squared                         | 0.6057                            | 0.4612                            | 0.6358                             | 0.7155                             | 0.6770                             | 0.6730                             | 0.1980                             | 0.0273                            | 0.4097                             | 0.1154                             |
+| x100                              | telcm                             | servs                             | buseq                              | paper                              | trans                              | whlsl                              | rtail                              | meals                             | fin                                | other                              |
+| ETHEREUM                          | 0.57                              | 0.43                              | 0.75                               | 0.72                               | 0.14                               | 0.13                               | 0.52                               | 1.67***                           | -1.76***                           | -0.12                              |
+| ETHEREUM                          | (0.78)                            | (0.71)                            | (1.03)                             | (1.43)                             | (0.18)                             | (0.20)                             | (0.89)                             | (2.94)                            | (-2.95)                            | (-0.22)                            |
+| ETHEREUM                          | [0.94)                            | [0.89)                            | [1.45)                             | [1.64)                             | [0.14)                             | [0.20)                             | [1.68)                             | [3.11)                            | [-4.48)                            | [-0.30)                            |
+| MKTRF                             | 0.91***                           | 1.03***                           | 1.06***                            | 1.09***                            | 1.08***                            | 1.08***                            | 0.95***                            | 0.68***                           | 1.22***                            | 0.82***                            |
+| MKTRF                             | (5.67)                            | (7.81)                            | (6.58)                             | (9.80)                             | (5.93)                             | (7.49)                             | (7.35)                             | (5.45)                            | (9.28)                             | (6.87)                             |
+| MKTRF                             | [6.25)                            | [8.86)                            | [9.79)                             | [12.95)                            | [5.70)                             | [7.58)                             | [7.19)                             | [6.25)                            | [9.85)                             | [9.06)                             |
+| ALPHA                             | -0.86                             | 0.41                              | 0.24                               | -0.54                              | -0.08                              | -0.66                              | -0.06                              | -0.18                             | 0.64                               | -0.12                              |
+| ALPHA                             | (-1.54)                           | (0.89)                            | (0.42)                             | (-1.39)                            | (-0.12)                            | (-1.30)                            | (-0.13)                            | (-0.42)                           | (1.40)                             | (-0.29)                            |
+| ALPHA                             | [-1.71)                           | [0.82)                            | [0.38)                             | [-1.63)                            | [-0.21)                            | [-1.36)                            | [-0.34)                            | [-0.64)                           | [1.36)                             | [-0.46)                            |
+| R-Squared                         | 0.5282                            | 0.6761                            | 0.6034                             | 0.7705                             | 0.5425                             | 0.6539                             | 0.6511                             | 0.5769                            | 0.7528                             | 0.6115                             |
+
+
+<!-- p:38 -->
+
+
+| Panel B: Same Period Bitcoin Return - x100   | Panel B: Same Period Bitcoin Return - food   | Panel B: Same Period Bitcoin Return - beer   | Panel B: Same Period Bitcoin Return - smoke   | Panel B: Same Period Bitcoin Return - games   | Panel B: Same Period Bitcoin Return - books   | Panel B: Same Period Bitcoin Return - hshld   | Panel B: Same Period Bitcoin Return - clths   | Panel B: Same Period Bitcoin Return - hlth   | Panel B: Same Period Bitcoin Return - chems   | Panel B: Same Period Bitcoin Return - txtls   |
+|----------------------------------------------|----------------------------------------------|----------------------------------------------|-----------------------------------------------|-----------------------------------------------|-----------------------------------------------|-----------------------------------------------|-----------------------------------------------|----------------------------------------------|-----------------------------------------------|-----------------------------------------------|
+| BITCOIN                                      | 2.02                                         | 3.89*                                        | 2.74                                          | -4.23                                         | -3.32                                         | 1.36                                          | -2.18                                         | 0.08                                         | 0.56                                          | -1.03                                         |
+| BITCOIN                                      | (1.18)                                       | (1.77)                                       | (0.76)                                        | (-1.50)                                       | (-1.61)                                       | (0.67)                                        | (-0.83)                                       | (0.05)                                       | (0.28)                                        | (-0.43)                                       |
+| BITCOIN                                      | [1.17)                                       | [1.84)                                       | [0.73)                                        | [-2.12)                                       | [-1.37)                                       | [0.54)                                        | [-0.87)                                       | [0.04)                                       | [0.25)                                        | [-0.42)                                       |
+| MKTRF                                        | 0.49***                                      | 0.39**                                       | 0.32                                          | 1.41***                                       | 1.39***                                       | 0.46***                                       | 0.51**                                        | 1.11***                                      | 1.43***                                       | 0.98***                                       |
+| MKTRF                                        | (3.59)                                       | (2.22)                                       | (1.12)                                        | (6.28)                                        | (8.50)                                        | (2.83)                                        | (2.46)                                        | (7.94)                                       | (8.93)                                        | (5.11)                                        |
+| MKTRF                                        | [3.09)                                       | [1.72)                                       | [0.90)                                        | [6.84)                                        | [8.81)                                        | [2.22)                                        | [3.08)                                        | [7.38)                                       | [6.59)                                        | [5.62)                                        |
+| ALPHA                                        | -0.48                                        | -0.20                                        | -0.22                                         | 1.23                                          | -0.62                                         | -0.43                                         | 0.31                                          | -0.79                                        | -0.20                                         | -1.04                                         |
+| ALPHA                                        | (-1.00)                                      | (-0.32)                                      | (-0.22)                                       | (1.56)                                        | (-1.08)                                       | (-0.75)                                       | (0.42)                                        | (-1.60)                                      | (-0.36)                                       | (-1.54)                                       |
+| ALPHA                                        | [-2.12)                                      | [-0.48)                                      | [-0.47)                                       | [1.66)                                        | [-1.38)                                       | [-0.93)                                       | [0.51)                                        | [-1.68)                                      | [-0.50)                                       | [-1.80)                                       |
+| R-Squared                                    | 0.3564                                       | 0.2505                                       | 0.0699                                        | 0.5685                                        | 0.7069                                        | 0.2425                                        | 0.1705                                        | 0.6869                                       | 0.7371                                        | 0.4686                                        |
+| x100                                         | cnstr                                        | steel                                        | fabpr                                         | elceq                                         | autos                                         | carry                                         | mines                                         | coal                                         | oil                                           | util                                          |
+| BITCOIN                                      | -1.97                                        | -1.88                                        | -2.98                                         | -3.20*                                        | -1.31                                         | 1.20                                          | -1.89                                         | -8.50                                        | -3.48                                         | 2.75                                          |
+| BITCOIN                                      | (-0.86)                                      | (-0.45)                                      | (-1.38)                                       | (-1.80)                                       | (-0.61)                                       | (0.62)                                        | (-0.40)                                       | (-0.85)                                      | (-1.01)                                       | (1.17)                                        |
+| BITCOIN                                      | [-0.78)                                      | [-0.41)                                      | [-1.13)                                       | [-1.57)                                       | [-0.68)                                       | [0.63)                                        | [-0.52)                                       | [-1.03)                                      | [-0.96)                                       | [1.26)                                        |
+| MKTRF                                        | 1.25***                                      | 1.66***                                      | 1.30***                                       | 1.32***                                       | 1.35***                                       | 1.14***                                       | 1.03**                                        | 0.86                                         | 1.22***                                       | 0.18                                          |
+| MKTRF                                        | (6.87)                                       | (5.00)                                       | (7.58)                                        | (9.31)                                        | (7.90)                                        | (7.44)                                        | (2.75)                                        | (1.08)                                       | (4.48)                                        | (0.99)                                        |
+| MKTRF                                        | [4.98)                                       | [4.36)                                       | [6.27)                                        | [9.08)                                        | [7.05)                                        | [7.20)                                        | [3.50)                                        | [0.64)                                       | [4.41)                                        | [0.91)                                        |
+| ALPHA                                        | 0.13                                         | 0.28                                         | 0.87                                          | -0.26                                         | -0.60                                         | 0.59                                          | 0.94                                          | 1.72                                         | 0.12                                          | 0.06                                          |
+| ALPHA                                        | (0.21)                                       | (0.24)                                       | (1.44)                                        | (-0.53)                                       | (-1.00)                                       | (1.10)                                        | (0.71)                                        | (0.62)                                       | (0.13)                                        | (0.09)                                        |
+| ALPHA                                        | [0.17)                                       | [0.24)                                       | [1.47)                                        | [-0.72)                                       | [-1.12)                                       | [1.01)                                        | [0.75)                                        | [0.69)                                       | [0.09)                                        | [0.04)                                        |
+| R-Squared                                    | 0.6126                                       | 0.4579                                       | 0.6570                                        | 0.7429                                        | 0.6790                                        | 0.6667                                        | 0.2015                                        | 0.0500                                       | 0.4006                                        | 0.0886                                        |
+| x100                                         | telcm                                        | servs                                        | buseq                                         | paper                                         | trans                                         | whlsl                                         | rtail                                         | meals                                        | fin                                           | other                                         |
+| BITCOIN                                      | -0.83                                        | -0.11                                        | 2.16                                          | 1.02                                          | 0.05                                          | -0.80                                         | 0.31                                          | 3.58**                                       | -1.65                                         | -0.09                                         |
+|                                              | (-0.40)                                      | (-0.06)                                      | (1.04)                                        | (0.70)                                        | (0.02)                                        | (-0.44)                                       | (0.19)                                        | (2.11)                                       | (-0.87)                                       | (-0.06)                                       |
+|                                              | [-0.39)                                      | [-0.08)                                      | [1.07)                                        | [0.71)                                        | [0.02)                                        | [-0.45)                                       | [0.13)                                        | [2.20)                                       | [-1.23)                                       | [-0.09)                                       |
+| MKTRF                                        | 0.93***                                      | 1.04***                                      | 1.04***                                       | 1.09***                                       | 1.08***                                       | 1.10***                                       | 0.95***                                       | 0.65***                                      | 1.21***                                       | 0.82***                                       |
+| MKTRF                                        | (5.67)                                       | (7.67)                                       | (6.34)                                        | (9.36)                                        | (5.83)                                        | (7.48)                                        | (7.15)                                        | (4.84)                                       | (8.12)                                        | (6.74)                                        |
+| MKTRF                                        | [6.77)                                       | [8.58)                                       | [8.88)                                        | [12.18)                                       | [6.14)                                        | [7.22)                                        | [6.22)                                        | [6.08)                                       | [7.99)                                        | [7.95)                                        |
+| ALPHA                                        | -0.58                                        | 0.56                                         | 0.21                                          | -0.44                                         | -0.04                                         | -0.52                                         | 0.06                                          | -0.10                                        | 0.29                                          | -0.15                                         |
+| ALPHA                                        | (-1.01)                                      | (1.18)                                       | (0.37)                                        | (-1.08)                                       | (-0.06)                                       | (-1.01)                                       | (0.14)                                        | (-0.21)                                      | (0.56)                                        | (-0.35)                                       |
+| ALPHA                                        | [-1.35)                                      | [1.24)                                       | [0.35)                                        | [-1.66)                                       | [-0.15)                                       | [-1.24)                                       | [0.06)                                        | [-0.34)                                      | [0.59)                                        | [-0.52)                                       |
+| R-Squared                                    | 0.5211                                       | 0.6706                                       | 0.6038                                        | 0.7588                                        | 0.5420                                        | 0.6556                                        | 0.6424                                        | 0.5259                                       | 0.6890                                        | 0.6109                                        |
+
+Furthermore, we examine the exposures of different regions to Bitcoin risk. Table 36 documents our findings. We obtain the return series of the different regions from Kenneth French's website. U.S., Europe, Japan, and Canada have similar exposures to Bitcoin risk - all positive but not statistically significant. Note that the point estimate for Europe is somewhat higher and for AsiaExJapan is significantly lower than the rest.
+
+
+<!-- p:39 -->
+
+
+Table 36: Country Exposure to Bitcoin Returns
+
+| x100      | U.S.          | Europe      | Japan       | AsiaExJapan   | North America   |
+|-----------|---------------|-------------|-------------|---------------|-----------------|
+| BITCOIN   | 0.72 (1.45)   | 0.95 (1.42) | 0.77 (1.40) | 0.33 (0.46)   | 0.68 (1.35)     |
+| ALPHA     | 0.90** (2.49) | 0.43 (0.89) | 0.55 (1.37) | 0.36 (0.69)   | 0.82** (2.24)   |
+| R-squared | 0.02          | 0.02        | 0.02        | 0.00          | 0.02            |
+
+### 5.2 Potential Winners and Losers: Index of Cryptocurrency Exposures
+
+In this section, we estimate the 354 U.S. SIC 3-digit industries' on cryptocurrency returns and 137 of China's CIC industries exposures on Bitcoin returns, controlling for the excess market returns. Specifically, we regress each industry's stock returns on the contemporaneous Bitcoin returns and the excess stock market returns. Each industry's stock return is calculated as value-weighted returns from individual publicly listed companies in the industry. The complete results are reported in the Appendix for conciseness. We then standardize the exposure estimates to have mean zero and standard deviation of one to create an index of the exposures of the industries to the cryptocurrencies. Figure 5 reports the histogram of the values of the index for each cryptocurrency for the 354 US industries and Figure 6 reports the same for the 137 Chinese industries.
+
+Figure 5: Industry Distribution of Cryptocurrency Exposure Index
+
+<!-- p:40 -->
+
+
+Figure 6: Industry Distribution of Cryptocurrency Exposure Index - China
+
+## 6 Conclusion
+
+We conclude that cryptocurrency returns have low exposures to traditional asset classes - stocks, currencies, and commodities. Our findings cast doubt on popular explanations that the behavior of cryptocurrencies is driven by its functions as a stake in the future of blockhain technology similar to stocks, as a unit of account similar to currencies, or as a store of value similar to precious metal commodities. At the same time, the returns of cryptocurrency can be predicted by two factors specific to its markets - momentum and investors attention. Our findings call into question popular explanations that supply factors such as mining costs, price-to-'dividend' ratio, or realized volatitility are useful for predicting the behavior of cryptocurrency returns. Finally, we document that the blockchain technology embodied in cryptocurrencies has a potential to affect a number of important industries.
+
+
+<!-- p:41 -->
+
+## Appendix A: Graphs &amp; Tables
+
+Figure A.1: Cryptocurrency Returns
+
+<!-- p:45 -->
+
+
+Figure A.2: Bitcoin Wallet Users
+
+<!-- p:46 -->
+
+
+Table A.1: Additional Summary Statistics
+
+| Top 10 Extreme Gains and Losses - Disasters   | Top 10 Extreme Gains and Losses - Month   | Top 10 Extreme Gains and Losses - Gains   | Top 10 Extreme Gains and Losses - Miracles   | Top 10 Extreme Gains and Losses - Month   | Top 10 Extreme Gains and Losses - Losses   |
+|-----------------------------------------------|-------------------------------------------|-------------------------------------------|----------------------------------------------|-------------------------------------------|--------------------------------------------|
+| 1                                             | 2013/11                                   | 173.59%                                   | 1                                            | 2011/08                                   | -48.74%                                    |
+| 2                                             | 2011/04                                   | 150.12%                                   | 2                                            | 2011/09                                   | -46.71%                                    |
+| 3                                             | 2013/03                                   | 102.50%                                   | 3                                            | 2011/10                                   | -45.84%                                    |
+| 4                                             | 2011/05                                   | 91.51%                                    | 4                                            | 2014/02                                   | -44.44%                                    |
+| 5                                             | 2011/06                                   | 61.09%                                    | 5                                            | 2018/03                                   | -39.78%                                    |
+| 6                                             | 2011/01                                   | 55.00%                                    | 6                                            | 2013/12                                   | -39.53%                                    |
+| 7                                             | 2017/05                                   | 54.74%                                    | 7                                            | 2015/01                                   | -38.79%                                    |
+| 8                                             | 2017/08                                   | 50.56%                                    | 8                                            | 2018/01                                   | -30.99%                                    |
+| 9                                             | 2011/02                                   | 50.31%                                    | 9                                            | 2013/06                                   | -27.85%                                    |
+| 10                                            | 2013/02                                   | 49.19%                                    | 10                                           | 2014/09                                   | -21.32%                                    |
+|                                               | Correlation                               |                                           |                                              |                                           |                                            |
+|                                               |                                           |                                           | Bitcoin                                      |                                           |                                            |
+|                                               |                                           | Bitcoin                                   | 1.00 0.16                                    |                                           |                                            |
+|                                               |                                           | Stock Bond                                | -0.04                                        |                                           |                                            |
+|                                               |                                           | House                                     | 0.11                                         |                                           |                                            |
+| Log                                           |                                           | Bitcoin                                   | Return                                       |                                           |                                            |
+| Mean Daily                                    |                                           | SD                                        | T-Statistics 3.47                            | Skewness -0.31                            | Kurtosis 14.84                             |
+| Weekly                                        | 0.37% 2.56%                               | 5.51% 14.99%                              | 3.37                                         | 0.53                                      | 6.64                                       |
+| Monthly                                       | 11.08%                                    | 36.74%                                    |                                              | 1.67                                      | 8.04                                       |
+|                                               |                                           |                                           | 2.86                                         |                                           |                                            |
+| Ripple Log Return                             | Ripple Log Return                         | Ripple Log Return                         | Ripple Log Return                            | Ripple Log Return                         | Ripple Log Return                          |
+|                                               | Mean                                      | SD                                        | T-Statistics                                 | Skewness                                  | Kurtosis                                   |
+| Daily                                         | 0.25%                                     | 7.94%                                     | 1.34                                         | 2.01                                      | 29.97                                      |
+| Weekly                                        | 1.77%                                     | 25.22%                                    | 1.12                                         | 2.88                                      | 19.63                                      |
+| Monthly                                       | 7.62%                                     | 57.50%                                    |                                              | 1.81                                      | 6.54                                       |
+| Ethereum                                      |                                           |                                           | 1.02                                         |                                           |                                            |
+| Log Return                                    | Log Return                                | Log Return                                | Log Return                                   | Log Return                                | Log Return                                 |
+| Daily                                         | Mean                                      | SD                                        | T-Statistics                                 | Skewness                                  | Kurtosis                                   |
+|                                               | 0.50%                                     | 8.19%                                     | 1.96                                         | -3.52                                     | 66.46                                      |
+| Weekly                                        | 4.41%                                     | 20.64%                                    | 2.61                                         | 0.82                                      | 4.44                                       |
+| Monthly                                       |                                           | 48.18%                                    | 1.82                                         |                                           | 2.57                                       |
+|                                               | 14.85%                                    |                                           |                                              | 0.24                                      |                                            |
+
+
+<!-- p:47 -->
+
+
+Table A.2: Characteristics of Predictors
+
+Summary Statistics of Predictors
+
+(Weekly)
+
+Mean SD
+
+AR(1)
+
+AR(2)
+
+AR(4)
+
+AR(8)
+
+Google (Bitcoin)
+
+0.00
+
+1.00
+
+0.66
+
+0.31
+
+-0.18
+
+-0.04
+
+Google (Ripple)
+
+0.00
+
+1.00
+
+0.76
+
+0.42
+
+-0.24
+
+-0.18
+
+Google (Ethereum)
+
+0.00
+
+1.00
+
+0.64
+
+0.32
+
+0.13
+
+-0.27
+
+Twitter
+
+0.00
+
+1.00
+
+0.34
+
+0.04
+
+-0.27
+
+0.29
+
+Hack
+
+0.00
+
+1.00
+
+0.44
+
+
+0.37
+
+0.38
+
+Price-to-'Dividend'
+
+0.00
+
+1.00
+
+0.99
+
+0.98
+
+0.97
+
+0.95
+
+Stationarity Tests of Predictors
+
+| (Weekly)            |   ADF t-statistics - 1 |   ADF t-statistics - 2 |   ADF t-statistics - 3 |   ADF t-statistics - 4 |   Critical - 1% |   Values - 5% |
+|---------------------|------------------------|------------------------|------------------------|------------------------|-----------------|---------------|
+| Google (Bitcoin)    |                 -10.10 |                 -10.67 |                 -10.13 |                  -7.46 |           -3.99 |         -3.43 |
+| Google (Ripple)     |                  -8.17 |                  -9.07 |                  -9.68 |                  -6.66 |           -3.99 |         -3.43 |
+| Google (Ethereum)   |                  -5.91 |                  -4.23 |                  -4.82 |                  -4.13 |           -4.03 |         -3.44 |
+| Twitter             |                 -12.13 |                 -11.37 |                 -12.37 |                 -10.34 |           -3.99 |         -3.43 |
+| Hack                |                  -7.82 |                  -6.28 |                  -5.22 |                  -4.43 |           -3.99 |         -3.43 |
+| Price-to-'Dividend' |                  -7.30 |                  -4.46 |                  -4.57 |                  -3.81 |           -3.99 |         -3.43 |
+
+
+<!-- p:48 -->
+
+
+Table A.3: Bitcoin Return Exposures to the Factor Zoo
+
+| (Percentage) VARIABLES   | (1) Return   | (2) Return   | (3) Return   | (4) Return   | (5) Return   | (6) Return   | (7) Return   | (8) Return   | (9) Return   | (10) Return   | (11) Return   | (12) Return   | (13) Return   | (14) Return   | (15) Return   |
+|--------------------------|--------------|--------------|--------------|--------------|--------------|--------------|--------------|--------------|--------------|---------------|---------------|---------------|---------------|---------------|---------------|
+| mktrf                    | 4.12         | 4.26         | 3.70         | 3.53         | 4.14         | 3.43         | 3.54         | 3.68         | 3.47         | 3.49          | 3.50          | 3.71          | 3.69          | 3.20          | 3.52          |
+|                          | (1.56)       | (1.57)       | (1.39)       | (1.33)       | (1.34)       | (1.28)       | (1.33)       | (1.39)       | (1.31)       | (1.32)        | (1.32)        | (1.40)        | (0.93)        | (1.16)        | (1.33)        |
+| abnormalaccruals         | 9.65         |              |              |              |              |              |              |              |              |               |               |               |               |               |               |
+|                          | (1.33)       |              |              |              |              |              |              |              |              |               |               |               |               |               |               |
+| accruals                 |              | 9.95         |              |              |              |              |              |              |              |               |               |               |               |               |               |
+|                          |              | (1.06)       |              |              |              |              |              |              |              |               |               |               |               |               |               |
+| accrualsbm               |              |              | 1.30         |              |              |              |              |              |              |               |               |               |               |               |               |
+|                          |              |              | (0.46)       |              |              |              |              |              |              |               |               |               |               |               |               |
+| adexp                    |              |              |              | 0.11         |              |              |              |              |              |               |               |               |               |               |               |
+|                          |              |              |              | (0.02)       |              |              |              |              |              |               |               |               |               |               |               |
+| announcementreturn       |              |              |              |              | -1.18        |              |              |              |              |               |               |               |               |               |               |
+|                          |              |              |              |              | (-0.30)      |              |              |              |              |               |               |               |               |               |               |
+| assetgrowth              |              |              |              |              |              | 1.09         |              |              |              |               |               |               |               |               |               |
+|                          |              |              |              |              |              | (0.24)       |              |              |              |               |               |               |               |               |               |
+| assetturnover            |              |              |              |              |              |              | 0.07         |              |              |               |               |               |               |               |               |
+|                          |              |              |              |              |              |              | (0.02)       |              |              |               |               |               |               |               |               |
+| bm                       |              |              |              |              |              |              |              | -1.67        |              |               |               |               |               |               |               |
+|                          |              |              |              |              |              |              |              | (-0.61)      |              |               |               |               |               |               |               |
+| bpebm                    |              |              |              |              |              |              |              |              | 1.76         |               |               |               |               |               |               |
+|                          |              |              |              |              |              |              |              |              | (0.31)       |               |               |               |               |               |               |
+| beta                     |              |              |              |              |              |              |              |              |              | 1.05          |               |               |               |               |               |
+|                          |              |              |              |              |              |              |              |              |              | (0.51)        |               |               |               |               |               |
+| betasquared              |              |              |              |              |              |              |              |              |              |               | 1.04          |               |               |               |               |
+|                          |              |              |              |              |              |              |              |              |              |               | (0.51)        |               |               |               |               |
+| betatailrisk             |              |              |              |              |              |              |              |              |              |               |               | 2.04          |               |               |               |
+|                          |              |              |              |              |              |              |              |              |              |               |               | (0.83)        |               |               |               |
+| bidaskspread             |              |              |              |              |              |              |              |              |              |               |               |               | 2.04          |               |               |
+|                          |              |              |              |              |              |              |              |              |              |               |               |               | (0.65)        |               |               |
+| cboperprof               |              |              |              |              |              |              |              |              |              |               |               |               |               | -1.49         |               |
+|                          |              |              |              |              |              |              |              |              |              |               |               |               |               | (-0.45)       |               |
+| cf                       |              |              |              |              |              |              |              |              |              |               |               |               |               |               | 0.32          |
+|                          |              |              |              |              |              |              |              |              |              |               |               |               |               |               | (0.09)        |
+
+
+<!-- p:49 -->
+
+
+| (Percentage) VARIABLES   | (16) Return   | (17) Return   | (18) Return   | (19) Return   | (20) Return   | (21) Return   | (22) Return   | (23) Return   | (24) Return   | (25) Return   | (26) Return   | (27) Return   | (28) Return   | (29) Return   | (30) Return   |
+|--------------------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|
+| mktrf                    | 3.43          | 3.55          | 3.50          | 3.79          | 3.53          | 3.93          | 4.00          | 3.54          | 3.60          | 3.49          | 3.48          | 3.55          | 3.59          | 3.49          | 3.81          |
+|                          | (1.30)        | (1.32)        | (1.31)        | (1.44)        | (1.34)        | (1.48)        | (1.52)        | (1.34)        | (1.35)        | (1.31)        | (1.31)        | (1.34)        | (1.35)        | (1.32)        | (1.44)        |
+| cash                     | 1.72          |               |               |               |               |               |               |               |               |               |               |               |               |               |               |
+|                          | (0.58)        |               |               |               |               |               |               |               |               |               |               |               |               |               |               |
+| chassetturnover          |               | 0.23          |               |               |               |               |               |               |               |               |               |               |               |               |               |
+|                          |               | (0.03)        |               |               |               |               |               |               |               |               |               |               |               |               |               |
+| cheq                     |               |               | 0.47          |               |               |               |               |               |               |               |               |               |               |               |               |
+|                          |               |               | (0.10)        | -7.27         |               |               |               |               |               |               |               |               |               |               |               |
+| chforecastaccrual chinv  |               |               |               | (-1.08)       | 1.74          |               |               |               |               |               |               |               |               |               |               |
+| chinvia                  |               |               |               |               | (0.23)        | -6.77         |               |               |               |               |               |               |               |               |               |
+| chnanalyst               |               |               |               |               |               | (-1.09)       | -14.72        |               |               |               |               |               |               |               |               |
+| chncoa                   |               |               |               |               |               |               | (-1.44)       | 2.08 (0.23)   |               |               |               |               |               |               |               |
+| chnwc                    |               |               |               |               |               |               |               |               |               |               |               |               |               |               |               |
+| chpm                     |               |               |               |               |               |               |               |               | 1.76 (0.18)   |               |               |               |               |               |               |
+|                          |               |               |               |               |               |               |               |               |               | -1.66         |               |               |               |               |               |
+| chtax                    |               |               |               |               |               |               |               |               |               | (-0.21)       | -2.27         |               |               |               |               |
+| changeinrecommendation   |               |               |               |               |               |               |               |               |               |               | (-0.40)       |               |               |               |               |
+|                          |               |               |               |               |               |               |               |               |               |               |               | -2.70         |               |               |               |
+|                          |               |               |               |               |               |               |               |               |               |               |               | (-0.46)       |               |               |               |
+| compositedebtissuance    |               |               |               |               |               |               |               |               |               |               |               |               | -1.20         |               |               |
+|                          |               |               |               |               |               |               |               |               |               |               |               |               | (-0.20)       |               |               |
+| consrecomm               |               |               |               |               |               |               |               |               |               |               |               |               |               | -2.90         |               |
+| convdebt                 |               |               |               |               |               |               |               |               |               |               |               |               |               | (-0.86)       | -4.84         |
+|                          |               |               |               |               |               |               |               |               |               |               |               |               |               |               | (-0.88)       |
+
+
+<!-- p:50 -->
+
+
+| (Percentage) VARIABLES   | (31) Return   | (32) Return   | (33) Return   | (34) Return   | (35) Return   | (36) Return   | (37) Return   | (38) Return   | (39) Return   | (40) Return   | (41) Return   | (42) Return   | (43) Return   | (44) Return   | (45) Return   |
+|--------------------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|
+| mktrf                    | 3.57          | 3.52          | 4.21          | 3.54          | 3.88          | 3.66          | 3.37          | 3.65          | 3.58          | 3.09          | 3.56          | 2.61          | 3.26          | 4.05          | 3.70          |
+|                          | (1.30)        | (1.33)        | (1.34)        | (1.34)        | (1.44)        | (1.38)        | (1.25)        | (1.40)        | (1.36)        | (1.17)        | (1.35)        | (0.96)        | (1.23)        | (1.46)        | (1.39)        |
+| credratdg                | -0.51         |               |               |               |               |               |               |               |               |               |               |               |               |               |               |
+|                          | (-0.30)       |               |               |               |               |               |               |               |               |               |               |               |               |               |               |
+| debtissuance             |               | -0.87         |               |               |               |               |               |               |               |               |               |               |               |               |               |
+|                          |               | (-0.11)       |               |               |               |               |               |               |               |               |               |               |               |               |               |
+| delbreadth               |               |               | -2.20         |               |               |               |               |               |               |               |               |               |               |               |               |
+|                          |               |               | (-0.45)       |               |               |               |               |               |               |               |               |               |               |               |               |
+| delcoa                   |               |               |               | -0.88         |               |               |               |               |               |               |               |               |               |               |               |
+|                          |               |               |               | (-0.13)       |               |               |               |               |               |               |               |               |               |               |               |
+| delcol                   |               |               |               |               | -3.65         |               |               |               |               |               |               |               |               |               |               |
+|                          |               |               |               |               | (-0.62)       |               |               |               |               |               |               |               |               |               |               |
+| deldrc                   |               |               |               |               |               | 2.39          |               |               |               |               |               |               |               |               |               |
+|                          |               |               |               |               |               | (0.45)        |               |               |               |               |               |               |               |               |               |
+| delequ                   |               |               |               |               |               |               | 1.80          |               |               |               |               |               |               |               |               |
+| delfinl                  |               |               |               |               |               |               | (0.32)        | -11.86        |               |               |               |               |               |               |               |
+|                          |               |               |               |               |               |               |               | (-1.30)       |               |               |               |               |               |               |               |
+| dellti                   |               |               |               |               |               |               |               |               | 8.57          |               |               |               |               |               |               |
+|                          |               |               |               |               |               |               |               |               | (0.77)        |               |               |               |               |               |               |
+| divind                   |               |               |               |               |               |               |               |               |               | -6.06         |               |               |               |               |               |
+|                          |               |               |               |               |               |               |               |               |               | (-1.11)       |               |               |               |               |               |
+| divinit                  |               |               |               |               |               |               |               |               |               |               | 2.53          |               |               |               |               |
+|                          |               |               |               |               |               |               |               |               |               |               | (0.50)        |               |               |               |               |
+| divomit                  |               |               |               |               |               |               |               |               |               |               |               | -6.76         |               |               |               |
+|                          |               |               |               |               |               |               |               |               |               |               |               | (-1.28)       |               |               |               |
+| divyield                 |               |               |               |               |               |               |               |               |               |               |               |               | -3.32         |               |               |
+|                          |               |               |               |               |               |               |               |               |               |               |               |               | (-0.96)       |               |               |
+| dolvol                   |               |               |               |               |               |               |               |               |               |               |               |               |               | -1.99         |               |
+|                          |               |               |               |               |               |               |               |               |               |               |               |               |               | (-0.61)       |               |
+| downforecast             |               |               |               |               |               |               |               |               |               |               |               |               |               |               | -3.85         |
+|                          |               |               |               |               |               |               |               |               |               |               |               |               |               |               | (-0.58)       |
+
+
+<!-- p:51 -->
+
+
+8
+
+| (Percentage) VARIABLES   | (46) Return   | (47) Return   | (48) Return   | (49) Return   | (50) Return   | (51) Return   | (52) Return   | (53) Return   | (54) Return   | (55) Return   | (56) Return   | (57) Return   | (58) Return   | (59) Return   | (60) Return   |
+|--------------------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|
+| mktrf                    | 3.53          | 3.56          | 3.43          | 3.43          | 3.42          | 3.50          | 3.45          | 3.36          | 4.01          | 4.14          | 3.57          | 3.20          | 3.57          | 4.38          | 3.74          |
+|                          | (1.34)        | (1.35)        | (1.29)        | (1.29)        | (1.29)        | (1.33)        | (1.30)        | (1.25)        | (1.49)        | (1.34)        | (1.31)        | (1.19)        | (1.35)        | (1.64)        | (1.44)        |
+| ebm                      | -4.49         |               |               |               |               |               |               |               |               |               |               |               |               |               |               |
+|                          | (-0.66)       |               |               |               |               |               |               |               |               |               |               |               |               |               |               |
+| ep                       |               | -1.47         |               |               |               |               |               |               |               |               |               |               |               |               |               |
+|                          |               | (-0.30)       |               |               |               |               |               |               |               |               |               |               |               |               |               |
+| earnsupbig               |               |               | 1.88          |               |               |               |               |               |               |               |               |               |               |               |               |
+| earningsconsistency      |               |               | (0.43)        | -2.42         |               |               |               |               |               |               |               |               |               |               |               |
+|                          |               |               |               | (-0.48)       |               |               |               |               |               |               |               |               |               |               |               |
+| earningssurprise         |               |               |               |               | 2.36 (0.39)   |               |               |               |               |               |               |               |               |               |               |
+| entmult                  |               |               |               |               |               |               |               |               |               |               |               |               |               |               |               |
+|                          |               |               |               |               |               | -3.53         |               |               |               |               |               |               |               |               |               |
+| exchswitch               |               |               |               |               |               | (-0.80)       | 1.26          |               |               |               |               |               |               |               |               |
+| exclexp                  |               |               |               |               |               |               | (0.56)        |               | -5.20         |               |               |               |               |               |               |
+|                          |               |               |               |               |               |               |               | 2.15          |               |               |               |               |               |               |               |
+| fr                       |               |               |               |               |               |               |               | (0.36)        |               |               |               |               |               |               |               |
+| failureprobability       |               |               |               |               |               |               |               |               | (-0.84)       | (0.10)        |               |               |               |               |               |
+|                          |               |               |               |               |               |               |               |               |               | 0.50          |               |               |               |               |               |
+| firmagemom               |               |               |               |               |               |               |               |               |               |               | -0.12         |               |               |               |               |
+| forecastdispersion       |               |               |               |               |               |               |               |               |               |               | (-0.06)       |               |               |               |               |
+|                          |               |               |               |               |               |               |               |               |               |               |               | -1.98         |               |               |               |
+| frontier                 |               |               |               |               |               |               |               |               |               |               |               | (-0.66)       |               |               |               |
+|                          |               |               |               |               |               |               |               |               |               |               |               |               | -0.52         |               |               |
+| gp                       |               |               |               |               |               |               |               |               |               |               |               |               | (-0.18)       | 6.24          |               |
+| gradexp                  |               |               |               |               |               |               |               |               |               |               |               |               |               | (1.45)        | -15.19*       |
+|                          |               |               |               |               |               |               |               |               |               |               |               |               |               |               | (-1.74)       |
+
+
+<!-- p:52 -->
+
+
+| (Percentage) VARIABLES   | (61) Return   | (62) Return   | (63) Return   | (64) Return   | (65) Return   | (66) Return   | (67) Return   | (68) Return   | (69) Return   | (70) Return   | (71) Return   | (72) Return   | (73) Return   | (74) Return   | (75) Return   |
+|--------------------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|
+| mktrf                    | 3.62          | 3.48          | 3.86          | 3.78          | 3.98          | 3.53          | 4.04          | 3.60          | 4.54          | 2.97          | 3.35          | 3.57          | 3.68          | 3.69          | 3.54          |
+|                          | (1.37)        | (1.31)        | (1.44)        | (1.42)        | (1.47)        | (1.33)        | (1.31)        | (1.16)        | (1.43)        | (1.08)        | (1.25)        | (1.35)        | (1.38)        | (1.39)        | (1.34)        |
+| grgmtogrsales            | -3.12         |               |               |               |               |               |               |               |               |               |               |               |               |               |               |
+|                          | (-0.57)       |               |               |               |               |               |               |               |               |               |               |               |               |               |               |
+| grltnoa                  |               | 3.36          |               |               |               |               |               |               |               |               |               |               |               |               |               |
+|                          |               | (0.41)        |               |               |               |               |               |               |               |               |               |               |               |               |               |
+| grsaletogrinv            |               |               | 4.98          |               |               |               |               |               |               |               |               |               |               |               |               |
+|                          |               |               | (0.67)        |               |               |               |               |               |               |               |               |               |               |               |               |
+| grsaletogroverhead       |               |               |               | 3.83          |               |               |               |               |               |               |               |               |               |               |               |
+|                          |               |               |               | (0.78)        |               |               |               |               |               |               |               |               |               |               |               |
+| herf                     |               |               |               |               | -3.87         |               |               |               |               |               |               |               |               |               |               |
+|                          |               |               |               |               | (-0.70)       |               |               |               |               |               |               |               |               |               |               |
+| high52                   |               |               |               |               |               | 0.05          |               |               |               |               |               |               |               |               |               |
+|                          |               |               |               |               |               | (0.03)        |               |               |               |               |               |               |               |               |               |
+| io_shortinterest         |               |               |               |               |               |               | -11.03        |               |               |               |               |               |               |               |               |
+|                          |               |               |               |               |               |               | (-1.44)       |               |               |               |               |               |               |               |               |
+| idiorisk                 |               |               |               |               |               |               |               | -2.58         |               |               |               |               |               |               |               |
+|                          |               |               |               |               |               |               |               | (-1.00)       |               |               |               |               |               |               |               |
+| illiquidity              |               |               |               |               |               |               |               |               | -3.36         |               |               |               |               |               |               |
+|                          |               |               |               |               |               |               |               |               | (-0.56)       |               |               |               |               |               |               |
+| indipo                   |               |               |               |               |               |               |               |               |               | -2.72         |               |               |               |               |               |
+|                          |               |               |               |               |               |               |               |               |               | (-0.75)       |               |               |               |               |               |
+| indmom                   |               |               |               |               |               |               |               |               |               |               | 1.54          |               |               |               |               |
+|                          |               |               |               |               |               |               |               |               |               |               | (0.49)        |               |               |               |               |
+| indretbig                |               |               |               |               |               |               |               |               |               |               |               | 0.72          |               |               |               |
+|                          |               |               |               |               |               |               |               |               |               |               |               | (0.26)        |               |               |               |
+| intmom                   |               |               |               |               |               |               |               |               |               |               |               |               | 1.12          |               |               |
+|                          |               |               |               |               |               |               |               |               |               |               |               |               | (0.41)        |               |               |
+| intanbm                  |               |               |               |               |               |               |               |               |               |               |               |               |               | -2.02         |               |
+|                          |               |               |               |               |               |               |               |               |               |               |               |               |               | (-0.71)       |               |
+| intancfp                 |               |               |               |               |               |               |               |               |               |               |               |               |               |               | -3.50         |
+|                          |               |               |               |               |               |               |               |               |               |               |               |               |               |               | (-0.81)       |
+
+
+<!-- p:53 -->
+
+
+10
+
+| (Percentage) VARIABLES   | (76) Return   | (77) Return   | (78) Return   | (79) Return    | (80) Return   | (81) Return   | (82) Return   | (83) Return   | (84) Return   | (85) Return   | (86) Return   | (87) Return   | (88) Return   | (89) Return   | (90) Return   |
+|--------------------------|---------------|---------------|---------------|----------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|
+| mktrf                    | 3.44          | 3.53          | 3.70          | 3.08           | 3.83          | 3.23          | 3.80          | 3.50          | 3.51          | 3.59          | 3.49          | 3.42          | 3.70          | 3.88          | 3.44          |
+|                          | (1.32)        | (1.33)        | (1.38)        | (1.18)         | (1.44)        | (1.19)        | (1.23)        | (1.32)        | (1.33)        | (1.35)        | (1.31)        | (1.29)        | (1.39)        | (1.38)        | (1.30)        |
+| intanep                  | -6.79         |               |               |                |               |               |               |               |               |               |               |               |               |               |               |
+|                          | (-1.33)       |               |               |                |               |               |               |               |               |               |               |               |               |               |               |
+| intansp                  |               | -0.04         |               |                |               |               |               |               |               |               |               |               |               |               |               |
+|                          |               | (-0.01)       |               |                |               |               |               |               |               |               |               |               |               |               |               |
+| investment               |               |               | -2.91         |                |               |               |               |               |               |               |               |               |               |               |               |
+|                          |               |               | (-0.34)       |                |               |               |               |               |               |               |               |               |               |               |               |
+| kz                       |               |               |               | -9.78* (-1.72) |               |               |               |               |               |               |               |               |               |               |               |
+|                          |               |               |               |                | -2.82         |               |               |               |               |               |               |               |               |               |               |
+|                          |               |               |               |                | (-0.92)       |               |               |               |               |               |               |               |               |               |               |
+| leverage ms              |               |               |               |                |               | 1.83          |               |               |               |               |               |               |               |               |               |
+| maxret                   |               |               |               |                |               | (0.52)        | -2.37 (-0.83) |               |               |               |               |               |               |               |               |
+|                          |               |               |               |                |               |               |               | 1.25          |               |               |               |               |               |               |               |
+| meanrankrevgrowth mom12m |               |               |               |                |               |               |               | (0.24)        | 0.86          |               |               |               |               |               |               |
+| mom18m13m                |               |               |               |                |               |               |               |               | (0.42)        | -0.74         |               |               |               |               |               |
+| mom1m                    |               |               |               |                |               |               |               |               |               | (-0.22)       | -0.49         |               |               |               |               |
+| mom36m                   |               |               |               |                |               |               |               |               |               |               | (-0.18)       | 1.02 (0.40)   |               |               |               |
+| mom6m                    |               |               |               |                |               |               |               |               |               |               |               |               | -1.48         |               |               |
+|                          |               |               |               |                |               |               |               |               |               |               |               |               | (-0.50)       |               |               |
+| mom6mjunk                |               |               |               |                |               |               |               |               |               |               |               |               |               | -0.80         |               |
+| momrev                   |               |               |               |                |               |               |               |               |               |               |               |               |               | (-0.29)       | -1.30         |
+|                          |               |               |               |                |               |               |               |               |               |               |               |               |               |               | (-0.70)       |
+
+
+<!-- p:54 -->
+
+
+11
+
+| (Percentage) VARIABLES          | (91) Return   | (92) Return   | (93) Return   | (94) Return   | (95) Return   | (96) Return   | (97) Return   | (98) Return   | (99) Return   | (100) Return   | (101) Return   | (102) Return   | (103) Return   | (104) Return   | (105) Return   |
+|---------------------------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|----------------|----------------|----------------|----------------|----------------|----------------|
+| mktrf                           | 3.77          | 3.55          | 3.67          | 3.53          | 3.73          | 3.31          | 3.34          | 3.50          | 4.50*         | 2.97           | 3.33           | 4.11           | 3.83           | 2.88           | 3.56           |
+|                                 | (1.36)        | (1.34)        | (1.37)        | (1.33)        | (1.40)        | (1.24)        | (1.25)        | (1.32)        | (1.72)        | (1.10)         | (1.25)         | (1.45)         | (1.35)         | (1.08)         | (1.37)         |
+| momseas                         | -1.34         |               |               |               |               |               |               |               |               |                |                |                |                |                |                |
+|                                 | (-0.30)       |               |               |               |               |               |               |               |               |                |                |                |                |                |                |
+| momvol                          |               | -0.59         |               |               |               |               |               |               |               |                |                |                |                |                |                |
+|                                 |               | (-0.35)       | -1.46         |               |               |               |               |               |               |                |                |                |                |                |                |
+|                                 |               |               |               | -1.76         |               |               |               |               |               |                |                |                |                |                |                |
+| noa netdebtfinance              |               |               | (-0.37)       |               |               |               |               |               |               |                |                |                |                |                |                |
+| netdebtprice                    |               |               |               | (-0.20)       | -1.40 (-0.51) |               |               |               |               |                |                |                |                |                |                |
+| netequityfinance netpayoutyield |               |               |               |               |               | -1.92 (-0.56) | -1.62         |               |               |                |                |                |                |                |                |
+| numearnincrease                 |               |               |               |               |               |               | (-0.58)       | (-0.13)       |               |                |                |                |                |                |                |
+| opleverage                      |               |               |               |               |               |               |               | -0.87         | 9.28*         |                |                |                |                |                |                |
+| oscore                          |               |               |               |               |               |               |               |               | (1.97)        |                |                |                |                |                |                |
+| operprof                        |               |               |               |               |               |               |               |               |               | -3.90 (-0.97)  | -2.58          |                |                |                |                |
+| optionvolume1                   |               |               |               |               |               |               |               |               |               |                | (-0.68)        |                |                |                |                |
+| optionvolume2                   |               |               |               |               |               |               |               |               |               |                |                | -5.14 (-0.91)  | (0.05)         |                |                |
+|                                 |               |               |               |               |               |               |               |               |               |                |                |                | 0.54           |                |                |
+| orderbacklog                    |               |               |               |               |               |               |               |               |               |                |                |                |                | -7.08 (-1.28)  |                |
+| orgcap                          |               |               |               |               |               |               |               |               |               |                |                |                |                |                | 2.99           |
+|                                 |               |               |               |               |               |               |               |               |               |                |                |                |                |                | (1.53)         |
+
+
+<!-- p:55 -->
+
+
+| (Percentage) VARIABLES   | (106) Return   | (107) Return   | (108) Return   | (109) Return   | (110) Return   | (111) Return   | (112) Return   | (113) Return   | (114) Return   | (115) Return   | (116) Return   | (117) Return   | (118) Return   | (119) Return   | (120) Return   |
+|--------------------------|----------------|----------------|----------------|----------------|----------------|----------------|----------------|----------------|----------------|----------------|----------------|----------------|----------------|----------------|----------------|
+| mktrf                    | 3.18           | 3.55           | 3.58           | 3.47           | 3.59           | 3.48           | 4.17           | 3.20           | 3.54           | 3.08           | 3.18           | 3.60           | 3.45           | 3.45           | 4.42           |
+|                          | (1.20)         | (1.34)         | (1.36)         | (1.31)         | (1.39)         | (1.30)         | (1.37)         | (1.19)         | (1.34)         | (1.15)         | (1.19)         | (1.36)         | (1.31)         | (1.30)         | (1.43)         |
+| pm                       | -3.20          |                |                |                |                |                |                |                |                |                |                |                |                |                |                |
+|                          | (-0.90)        |                |                |                |                |                |                |                |                |                |                |                |                |                |                |
+| ps                       |                | -0.68          |                |                |                |                |                |                |                |                |                |                |                |                |                |
+|                          |                | (-0.27)        |                |                |                |                |                |                |                |                |                |                |                |                |                |
+| payoutyield              |                |                | -3.27          |                |                |                |                |                |                |                |                |                |                |                |                |
+|                          |                |                | (-0.64)        |                |                |                |                |                |                |                |                |                |                |                |                |
+| pctacc                   |                |                |                | 2.24           |                |                |                |                |                |                |                |                |                |                |                |
+| pcttotacc                |                |                |                | (0.30)         | 14.32*         |                |                |                |                |                |                |                |                |                |                |
+|                          |                |                |                |                | (1.90)         |                |                |                |                |                |                |                |                |                |                |
+| price                    |                |                |                |                |                | 0.30           |                |                |                |                |                |                |                |                |                |
+| pricedelay               |                |                |                |                |                | (0.14)         | -1.41          |                |                |                |                |                |                |                |                |
+| profitability            |                |                |                |                |                |                | (-0.11)        | -1.88          |                |                |                |                |                |                |                |
+| rd                       |                |                |                |                |                |                |                | (-0.72)        | 2.85           |                |                |                |                |                |                |
+| rdipo                    |                |                |                |                |                |                |                |                | (0.89)         |                |                |                |                |                |                |
+| rds                      |                |                |                |                |                |                |                |                |                | -5.19 (-1.01)  | 2.76           |                |                |                |                |
+| rev6                     |                |                |                |                |                |                |                |                |                |                | (0.76)         | -1.69          |                |                |                |
+| rio_bm                   |                |                |                |                |                |                |                |                |                |                |                | (-0.34)        |                |                |                |
+|                          |                |                |                |                |                |                |                |                |                |                |                |                | 3.70           |                |                |
+|                          |                |                |                |                |                |                |                |                |                |                |                |                | (0.95)         |                |                |
+| rio_disp rio_idiorisk    |                |                |                |                |                |                |                |                |                |                |                |                |                | 1.44 (0.41)    | -3.24          |
+|                          |                |                |                |                |                |                |                |                |                |                |                |                |                |                | (-0.72)        |
+
+
+<!-- p:56 -->
+
+
+| (Percentage) VARIABLES   | (121) Return   | (122) Return   | (123) Return   | (124) Return   | (125) Return   | (126) Return   | (127) Return   | (128) Return   | (129) Return   | (130) Return   | (131) Return   | (132) Return   | (133) Return   | (134) Return   | (135) Return   |
+|--------------------------|----------------|----------------|----------------|----------------|----------------|----------------|----------------|----------------|----------------|----------------|----------------|----------------|----------------|----------------|----------------|
+| mktrf                    | 3.56           | 3.54           | 3.53           | 3.33           | 3.53           | 3.34           | 3.58           | 3.24           | 3.36           | 3.91           | 3.48           | 3.69           | 3.55           | 3.46           | 3.55           |
+|                          | (1.33)         | (1.34)         | (1.28)         | (1.27)         | (1.33)         | (1.25)         | (1.36)         | (1.21)         | (1.28)         | (1.45)         | (1.27)         | (1.31)         | (1.26)         | (1.30)         | (1.34)         |
+| rio_turnover             | -0.21          |                |                |                |                |                |                |                |                |                |                |                |                |                |                |
+|                          | (-0.08)        |                |                |                |                |                |                |                |                |                |                |                |                |                |                |
+| revenuesurprise          |                | 0.89           |                |                |                |                |                |                |                |                |                |                |                |                |                |
+|                          |                | (0.13)         |                |                |                |                |                |                |                |                |                |                |                |                |                |
+| roe                      |                |                | 0.02           |                |                |                |                |                |                |                |                |                |                |                |                |
+|                          |                |                | (0.00)         |                |                |                |                |                |                |                |                |                |                |                |                |
+| seo                      |                |                |                | -5.36          |                |                |                |                |                |                |                |                |                |                |                |
+|                          |                |                |                | (-1.39)        |                |                |                |                |                |                |                |                |                |                |                |
+|                          |                |                |                |                | (-0.01)        |                |                |                |                |                |                |                |                |                |                |
+| sp shareiss1y            |                |                |                |                | -0.03          | -2.08 (-0.54)  |                |                |                |                |                |                |                |                |                |
+| shareiss5y               |                |                |                |                |                |                | 4.16           |                |                |                |                |                |                |                |                |
+| sharerepurchase          |                |                |                |                |                |                | (0.64)         | -3.34          |                |                |                |                |                |                |                |
+|                          |                |                |                |                |                |                |                | (-0.57)        |                |                |                |                |                |                |                |
+| sharevol                 |                |                |                |                |                |                |                |                | -3.55 (-1.28)  |                |                |                |                |                |                |
+| shortinterest            |                |                |                |                |                |                |                |                |                | -1.79          |                |                |                |                |                |
+| size skew1               |                |                |                |                |                |                |                |                |                | (-0.68)        | 0.19 (0.07)    | -8.17          |                |                |                |
+| smileslope               |                |                |                |                |                |                |                |                |                |                |                | (-0.86)        |                |                |                |
+|                          |                |                |                |                |                |                |                |                |                |                |                |                | -4.39          |                |                |
+|                          |                |                |                |                |                |                |                |                |                |                |                |                | (-1.09)        |                |                |
+| spinoff                  |                |                |                |                |                |                |                |                |                |                |                |                |                | 0.96           |                |
+| surpriserd               |                |                |                |                |                |                |                |                |                |                |                |                |                | (0.27)         | 3.13           |
+|                          |                |                |                |                |                |                |                |                |                |                |                |                |                |                | (0.54)         |
+
+
+<!-- p:57 -->
+
+
+14
+
+| (Percentage) VARIABLES     | (136) Return   | (137) Return   | (138) Return   | (139) Return   | (140) Return   | (141) Return   | (142) Return   | (143) Return   | (144) Return   | (145) Return   | (146) Return   | (147) Return   | (148) Return   | (149) Return   | (150) Return   |
+|----------------------------|----------------|----------------|----------------|----------------|----------------|----------------|----------------|----------------|----------------|----------------|----------------|----------------|----------------|----------------|----------------|
+| mktrf                      | 3.48           | 3.23           | 3.17           | 3.74           | 3.51           | 3.35           | 3.37           | 3.48           | 3.37           | 3.52           | 3.67           | 3.49           | 3.49           | 3.64           | 3.47           |
+|                            | (1.29)         | (1.23)         | (1.19)         | (1.41)         | (1.33)         | (1.26)         | (1.26)         | (1.31)         | (1.28)         | (1.31)         | (1.39)         | (1.32)         | (1.32)         | (1.35)         | (1.31)         |
+| tax                        | -0.52          |                |                |                |                |                |                |                |                |                |                |                |                |                |                |
+|                            | (-0.09)        |                |                |                |                |                |                |                |                |                |                |                |                |                |                |
+| upforecast                 |                | -11.59         |                |                |                |                |                |                |                |                |                |                |                |                |                |
+|                            |                | (-1.10)        |                |                |                |                |                |                |                |                |                |                |                |                |                |
+| varcf                      |                |                | 2.17           |                |                |                |                |                |                |                |                |                |                |                |                |
+|                            |                |                | (0.87)         |                |                |                |                |                |                |                |                |                |                |                |                |
+| volmkt                     |                |                |                | -1.82          |                |                |                |                |                |                |                |                |                |                |                |
+| volsd                      |                |                |                | (-0.71)        | -1.07          |                |                |                |                |                |                |                |                |                |                |
+|                            |                |                |                |                | (-0.31)        |                |                |                |                |                |                |                |                |                |                |
+| volumetrend                |                |                |                |                |                | -3.18 (-0.56)  |                |                |                |                |                |                |                |                |                |
+| xfin                       |                |                |                |                |                |                | -1.47 (-0.48)  |                |                |                |                |                |                |                |                |
+| zscore                     |                |                |                |                |                |                |                | 1.05 (0.32)    |                |                |                |                |                |                |                |
+| cfp                        |                |                |                |                |                |                |                |                | -3.45 (-1.07)  |                |                |                |                |                |                |
+| fgr5yrlag grcapx           |                |                |                |                |                |                |                |                |                | -0.12 (-0.02)  | -6.36          |                |                |                |                |
+| hire                       |                |                |                |                |                |                |                |                |                |                | (-0.88)        |                |                |                |                |
+|                            |                |                |                |                |                |                |                |                |                |                |                | -2.72          |                |                |                |
+| pchdepr                    |                |                |                |                |                |                |                |                |                |                |                | (-0.49)        |                |                |                |
+|                            |                |                |                |                |                |                |                |                |                |                |                |                | -3.38          |                |                |
+|                            |                |                |                |                |                |                |                |                |                |                |                |                | (-0.42)        |                |                |
+|                            |                |                |                |                |                |                |                |                |                |                |                |                |                | 1.80           |                |
+| realestate retconglomerate |                |                |                |                |                |                |                |                |                |                |                |                |                | (0.21)         | 1.14           |
+|                            |                |                |                |                |                |                |                |                |                |                |                |                |                |                | (0.35)         |
+
+
+<!-- p:58 -->
+
+
+| (Percentage) VARIABLES   | (151) Return   | (152) Return   | (153) Return      | (154) Return             | (155) Return                 |
+|--------------------------|----------------|----------------|-------------------|--------------------------|------------------------------|
+| mktrf                    | 2.71 (1.02)    | 3.49 (1.32)    | 3.58 (1.36)       | 3.41 (1.29)              | 4.37                         |
+| sfe                      | 4.03           |                |                   |                          | (1.40)                       |
+| sinalgo std_turn tang    | (1.60)         | 1.35 (0.40)    | -2.15 (-0.91)     | 0.90                     |                              |
+| zerotrade Constant       | 24.18** (2.47) | 19.34** (2.04) | 22.21** (2.24) 71 | (0.68) 19.49** (2.06) 71 | -1.65 (-0.56) 23.17** (2.05) |
+| Observations             | 71             | 71             |                   |                          | 60                           |
+| R-squared                |                |                |                   |                          |                              |
+|                          |                |                | 0.0372            |                          |                              |
+|                          | 0.0608         | 0.0279         |                   | 0.0320                   | 0.0357                       |
+
+
+<!-- p:59 -->
+
+
+Table A.4: Other Predictors
+
+| Panel A: Bitcoin   | (1)     | (2)     | (3)     | (4)     | (5)     | (6)     |
+|--------------------|---------|---------|---------|---------|---------|---------|
+| pd                 | 0 : 03  |         |         |         |         | 0 : 01  |
+|                    | (0.97)  |         |         |         |         | (0.24)  |
+| pe                 |         | 0 : 02  |         |         |         | 0 : 02  |
+|                    |         | (-0.98) |         |         |         | (-0.67) |
+| credit             |         |         | 0 : 14  |         |         | 0 : 06  |
+|                    |         |         | (-0.47) |         |         | (-0.15) |
+| term               |         |         |         | 0 : 24  |         | 0 : 11  |
+|                    |         |         |         | (1.92)  |         | (0.55)  |
+| tbill              |         |         |         |         | 0 : 31  | 0 : 35  |
+|                    |         |         |         |         | (1.18)  | (1.16)  |
+| R-squared          | 0.00    | 0.00    | 0.00    | 0.01    | 0.04    | 0.06    |
+| Panel B: Ripple    | (1)     | (2)     | (3)     | (4)     | (5)     | (6)     |
+| pd                 | 0 : 07  |         |         |         |         | 0 : 09  |
+|                    | (0.87)  |         |         |         |         | (0.62)  |
+| pe                 |         | 0 : 04  |         |         |         | 0 : 15  |
+|                    |         | (0.48)  |         |         |         | (-0.57) |
+| credit             |         |         | 0 : 94  |         |         | 0 : 07  |
+|                    |         |         | (-1.15) |         |         | (-0.04) |
+| term               |         |         |         | 0 : 26  |         | 1 : 08  |
+|                    |         |         |         | (-0.74) |         | (-1.00) |
+| tbill              |         |         |         |         | 0 : 12  | 0 : 83  |
+|                    |         |         |         |         | (0.14)  | (0.70)  |
+| R-squared          | 0.01    | 0.00    | 0.02    | 0.01    | 0.0     | 0.07    |
+| Panel C: Ethereum  | (1)     | (2)     | (3)     | (4)     | (5)     | (6)     |
+| pd                 | 0 : 02  |         |         |         |         | 0 : 05  |
+|                    | (-0.48) |         |         |         |         | (0.51)  |
+| pe                 |         | 0 : 08  |         |         |         | 0 : 02  |
+|                    |         | (-0.45) |         |         |         | (-0.09) |
+| credit             |         |         | 0 : 19  |         |         | 0 : 13  |
+|                    |         |         | (0.44)  |         |         | (-0.12) |
+| term               |         |         |         | 0 : 43  |         | 0 : 60  |
+|                    |         |         |         | (1.28)  |         | (0.82)  |
+| tbill              |         |         |         |         | 0 : 10  | 0 : 24  |
+|                    |         |         |         |         | (-0.21) | (-0.28) |
+| R-squared          | 0.01    | 0.01    | 0.01    | 0.05    | 0.00    | 0.05    |
+
+
+<!-- p:60 -->
+
+
+Table A.5: Detailed U.S. SIC 3-digit Industry Exposures to Bitcoin Returns
+
+| SIC CODE         | 0             | 11              | 17             | 18             | 19           | 20             | 25             | 70             | 72             | 74             | 76             | 78              | 83           | 91             | 99             |
+|------------------|---------------|-----------------|----------------|----------------|--------------|----------------|----------------|----------------|----------------|----------------|----------------|-----------------|--------------|----------------|----------------|
+| BITCOIN          | -2.16         | -0.70           | -1.12          | -0.97          | 1.53         | 0.85           | -1.61          | -0.37          | -0.65          | -1.20          | 1.28           | -3.04           | -5.57*       | 0.01           | -2.50          |
+|                  | (-1.50)       | (-0.55)         | (-0.83)        | (-0.87)        | (0.97)       | (0.13)         | (-1.45)        | (-0.33)        | (-0.67)        | (-1.23)        | (0.59)         | (-0.53)         | (-2.07)      | (0.00)         | (-1.21)        |
+| MKTRF            | 1.89***       | 1.05***         | 1.39***        | 1.01***        | 1.46***      | 2.31**         | 0.64**         | 0.77***        | 1.16***        | 1.41***        | 2.07***        | 1.01**          | 1.59**       | 0.21           | 2.32***        |
+|                  | (5.68)        | (3.74)          | (4.68)         | (4.05)         | (4.22)       | (2.10)         | (2.62)         | (3.12)         | (5.46)         | (6.56)         | (4.29)         | (2.22)          | (2.29)       | (0.54)         | (4.10)         |
+| SIC CODE         | 100           | 101             | 102            | 103            | 104          | 106            | 107            | 108            | 109            | 122            | 124            | 131             | 132          | 138            | 140            |
+| BITCOIN          | -0.76         | -1.30           | -2.61*         | -3.32**        | -1.40        | -6.47**        | -0.03          | 1.69           | -0.87          | -1.21          | 1.81           | -1.06           | -0.75        | -1.39          | 1.65           |
+|                  | (-0.52)       | (-0.85)         | (-1.89)        | (-2.61)        | (-0.85)      | (-2.18)        | (-0.01)        | (0.76)         | (-0.69)        | (-0.85)        | (0.38)         | (-1.34)         | (-0.62)      | (-1.55)        | (0.66)         |
+| MKTRF            | 1.57***       | 1.61***         | 1.73***        | 1.67***        | 0.53         | 2.34***        | 2.80***        | 1.56***        | 2.06***        | 1.58***        | 2.87***        | 1.50***         | 1.71***      | 1.61***        | 0.97*          |
+|                  | (4.90)        | (4.77)          | (5.66)         | (5.96)         | (1.45)       | (3.56)         | (3.95)         | (3.17)         | (7.36)         | (5.03)         | (3.03)         | (8.59)          | (6.38)       | (8.10)         | (1.77) 173     |
+| SIC CODE BITCOIN | 141           | 142             | 144            | 147 -0.14      | 148 5.09     | 149            | 152            | 153            | 154            | 160            | 161 -2.14      | 162 -1.11       | 170 -4.21    | 171            | -0.69          |
+|                  | 2.02          | -2.39           | -0.42          |                |              | -1.24          | -0.94          | -0.04          | -0.99          | -0.81          |                |                 |              | -1.22          |                |
+|                  | (1.08)        | (-1.35)         | (-0.41)        | (-0.14)        | (0.49)       | (-0.82)        | (-0.83)        | (-0.06)        | (-0.75)        | (-0.57)        | (-0.49)        | (-1.56)         | (-0.95)      | (-1.02)        | (-1.20)        |
+| MKTRF            | 1.06** (2.55) | 1.45*** (4.05)  | 1.13*** (5.87) | 0.88*** (3.79) | 1.42* (1.76) | 1.13*** (3.37) | 1.73*** (6.95) | 1.42*** (8.20) | 2.46*** (8.40) | 1.36*** (4.35) | 4.01*** (4.18) | 1.71*** (10.80) | 1.76* (1.80) | 1.58*** (5.98) | 0.92*** (7.21) |
+| SIC CODE         | 174           | 175             | 178            | 179            | 200          | 201            | 202            | 203            | 204            | 205            | 206            | 207             | 208          | 209            | 210            |
+| BITCOIN          | -1.78         | -4.55           | -3.45*         | 1.35           | 0.44         | 0.73           | 0.83           | -0.30          | 0.32 (0.67)    | -0.19          | 1.09           | -0.20           | 0.43         | 1.48           | 232.74         |
+| MKTRF            | (-0.29) 0.82  | (-0.71) 4.73*** | (-1.93) 0.82** | (0.79) 1.67*** | (0.46)       | (1.07)         | (0.96)         | (-0.53)        |                | (-0.27)        | (1.51)         | (-0.34)         | (0.96)       | (1.09)         | (1.36)         |
+|                  |               |                 |                |                | 0.55***      | 0.49***        | 0.95***        | 0.41***        | 0.50***        | 0.64***        | 0.41**         | 0.78***         | 0.53***      | 0.47           | -12.55         |
+|                  | (1.65)        | (4.73)          | (2.07)         | (4.22)         | (2.65)       | (3.23)         | (4.98)         | (3.30)         | (4.72)         | (4.06)         | (2.58)         | (6.08)          | (5.37)       | (1.55)         | (-1.63)        |
+| SIC CODE         | 211           | 213             | 220            | 221            | 222          | 225            | 227            | 228            | 229            | 230            | 231            | 232             | 233          | 234            | 238            |
+| BITCOIN          | -0.20         | -0.68           | 2.97           | 0.08           | -0.83        | -0.02          | -0.34          | 1.39           | 0.45           | 0.57           | 11.30**        | 0.21            | 1.73*        | -0.53          | 1.52           |
+|                  | (-0.32)       | (-0.26)         | (0.27)         | (0.08)         | (-1.01)      | (-0.02)        | (-0.46)        | (1.01)         | (0.26)         | (0.36)         | (2.16)         | (0.35)          | (1.75)       | (-0.55)        | (0.84)         |
+| MKTRF            | 0.54***       | 0.24            | -0.53          | 0.62***        | 1.82***      | 1.08***        | 1.39***        | 1.00***        | 1.28***        | 0.20           | 2.37**         | 0.76***         | 1.12***      | 0.66***        | 1.24***        |
+|                  | (3.84)        | (0.20)          | (-0.21)        | (3.07)         | (10.06)      | (5.08)         | (8.46)         |                | (3.37)         | (0.56)         | (2.31)         | (5.83)          | (5.15)       | (3.09)         | (3.08)         |
+|                  |               |                 |                |                |              |                |                | (3.29)         |                |                |                |                 |              |                |                |
+
+
+<!-- p:61 -->
+
+
+| SIC CODE   | 241     | 242     | 243     | 245     | 249     | 250     | 251     | 252     | 253     | 254      | 261     | 262     | 263     | 265     | 267      |
+|------------|---------|---------|---------|---------|---------|---------|---------|---------|---------|----------|---------|---------|---------|---------|----------|
+| BITCOIN    | -1.82   | -1.91*  | 0.14    | 0.45    | 0.08    | -1.56   | 1.89*   | -0.69   | 0.62    | -0.09    | -0.57   | -0.37   | -0.17   | -1.14*  | 0.31     |
+|            | (-0.70) | (-1.97) | (0.13)  | (0.14)  | (0.10)  | (-0.92) | (1.80)  | (-0.71) | (0.82)  | (-0.07)  | (-0.32) | (-0.73) | (-0.27) | (-1.71) | (0.50)   |
+| MKTRF      | 1.24**  | 0.97*** | 1.78*** | 1.51**  | 1.70*** | 0.97**  | 1.34*** | 1.46*** | 1.41*** | 1.70***  | 1.42*** | 1.41*** | 1.32*** | 1.34*** | 0.43***  |
+|            | (2.37)  | (4.56)  | (7.92)  | (2.05)  | (9.55)  | (2.59)  | (5.80)  | (6.85)  | (8.50)  | (5.87)   | (3.99)  | (12.43) | (9.47)  | (9.10)  | (3.14)   |
+| SIC CODE   | 271     | 272     | 273     | 274     | 275     | 276     | 277     | 278     | 279     | 280      | 281     | 282     | 283     | 284     | 285      |
+| BITCOIN    | -0.56   | -0.09   | 0.32    | 0.07    | -0.48   | -0.26   | 2.22**  | -0.42   | -1.13   | 1.27     | -0.36   | -0.37   | 0.86**  | 0.76*   | -1.24**  |
+|            | (-0.74) | (-0.09) | (0.52)  | (0.14)  | (-0.68) | (-0.26) | (2.24)  | (-0.52) | (-1.05) | (1.46)   | (-1.01) | (-0.64) | (2.19)  | (1.83)  | (-2.41)  |
+| MKTRF      | 1.28*** | 1.60*** | 0.93*** | 0.94*** | 1.37*** | 1.08*** | 0.76*** | 1.46*** | 1.03*** | 1.06***  | 1.20*** | 1.66*** | 0.76*** | 0.44*** | 1.45***  |
+|            | (7.62)  | (7.15)  | (6.70)  | (8.14)  | (8.81)  | (4.81)  | (3.48)  | (8.26)  | (4.35)  | (5.49)   | (15.11) | (12.90) | (8.71)  | (4.76)  | (12.69)  |
+| SIC CODE   | 286     | 287     | 289     | 291     | 295     | 299     | 301     | 302     | 305     | 306      | 308     | 310     | 311     | 314     | 316      |
+| BITCOIN    | -0.39   | -0.46   | 0.23    | 0.13    | -0.02   | -0.45   | -0.70   | 1.06    | 1.83    | -0.31    | -0.64   | -0.23   | -2.94   | 0.99    | 0.06     |
+|            | (-0.68) | (-0.70) | (0.25)  | (0.26)  | (-0.02) | (-0.52) | (-0.62) | (1.28)  | (0.82)  | (-0.44)  | (-1.43) | (-0.29) | (-0.37) | (1.00)  | (0.03)   |
+| MKTRF      | 1.52*** | 1.37*** | 1.23*** | 1.06*** | 1.58*** | 0.74*** | 1.77*** | 0.56*** | 1.11**  | 1.27***  | 1.15*** | 0.78*** | 1.60    | 0.75*** | 1.47***  |
+|            | (12.01) | (9.54)  | (6.17)  | (9.95)  | (6.38)  | (3.88)  | (7.10)  | (3.03)  | (2.46)  | (8.06)   | (11.59) | (4.41)  | (0.85)  | (3.45)  | (3.74)   |
+| SIC CODE   | 317     | 319     | 322     | 323     | 324     | 325     | 326     | 327     | 329     | 331      | 332     | 333     | 334     | 335     | 336      |
+| BITCOIN    | -3.52   | 2.19    | -0.39   | 0.75    | -0.40   | -3.80   | 7.97    | -2.48** | -0.47   | -0.93    | 0.29    | -0.89   | -0.83   | -0.51   | 0.05     |
+|            | (-1.08) | (0.40)  | (-0.41) | (0.62)  | (-0.39) | (-1.28) | (0.71)  | (-2.21) | (-0.50) | (-0.96)  | (0.41)  | (-0.76) | (-0.42) | (-0.77) | (0.06)   |
+| MKTRF      | 1.65*   | 0.12    | 1.88*** | 1.65*** | 1.92*** | 2.19*** | 0.41    | 2.01*** | 1.44*** | 2.01***  | 0.68*** | 1.44*** | 2.07*** | 1.52*** | 1.07***  |
+|            | (1.85)  | (0.30)  | (8.83)  | (6.22)  | (8.32)  | (3.31)  | (0.49)  | (8.10)  | (6.93)  | (9.37)   | (4.38)  | (5.55)  | (4.55)  | (10.30) | (6.05)   |
+| SIC CODE   | 339     | 341     | 342     | 343     | 344     | 345     | 346     | 347     | 348     | 349      | 351     | 352     | 353     | 354     | 355      |
+| BITCOIN    | 1.71    | 0.24    | -1.20*  | 0.04    | -0.01   | 0.65    | 1.74    | 0.46    | 0.82    | -1.61*** | -0.35   | -1.12   | -0.82   | -0.38   | -1.91*** |
+|            | (0.32)  | (0.48)  | (-1.96) | (0.03)  | (-0.02) | (0.55)  | (1.25)  | (0.43)  | (0.78)  | (-2.65)  | (-0.57) | (-1.50) | (-1.02) | (-0.67) | (-2.96)  |
+| MKTRF      | 0.91    | 1.14*** | 1.46*** | 0.69*   | 1.29*** | 0.86*** | 2.14*** | 1.19*** | 0.60**  | 1.63***  | 1.11*** | 1.19*** | 1.44*** | 1.44*** | 1.54***  |
+|            | (0.78)  | (10.34) | (10.84) | (1.87)  | (13.68) | (3.24)  | (6.96)  | (4.99)  | (2.63)  | (12.09)  | (8.20)  | (7.24)  | (8.11)  | (11.44) | (10.78)  |
+
+
+<!-- p:62 -->
+
+
+| SIC CODE   | 356     | 357     | 358     | 359     | 360      | 361     | 362     | 363     | 364     | 365     | 366     | 367     | 369     | 371     | 372     |
+|------------|---------|---------|---------|---------|----------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|
+| BITCOIN    | -0.64   | 0.12    | -0.53   | -1.12   | 0.57     | 0.98    | -0.82   | -0.67   | -0.65   | -1.22   | 0.61    | -0.60   | 0.37    | -0.64   | 0.33    |
+|            | (-1.32) | (0.18)  | (-0.90) | (-1.38) | (0.50)   | (1.64)  | (-1.62) | (-0.79) | (-1.10) | (-1.38) | (0.89)  | (-1.29) | (0.93)  | (-1.15) | (0.87)  |
+| MKTRF      | 1.40*** | 1.05*** | 1.33*** | 1.70*** | 1.57***  | 1.23*** | 1.39*** | 1.49*** | 1.20*** | 1.75*** | 1.19*** | 1.22*** | 1.13*** | 1.50*** | 1.06*** |
+|            | (13.04) | (7.21)  | (10.20) | (9.45)  | (6.25)   | (9.32)  | (12.52) | (7.91)  | (9.12)  | (8.92)  | (7.92)  | (11.85) | (13.03) | (12.29) | (12.51) |
+| SIC CODE   | 373     | 374     | 375     | 376     | 379      | 381     | 382     | 384     | 385     | 386     | 387     | 391     | 393     | 394     | 395     |
+| BITCOIN    | -0.45   | -0.83   | -1.15   | 0.72    | 0.03     | 0.15    | -0.00   | 0.31    | 0.57    | 0.35    | -0.84   | 2.70    | 1.70    | 0.31    | 0.59    |
+|            | (-0.51) | (-0.90) | (-1.17) | (0.86)  | (0.02)   | (0.35)  | (-0.01) | (0.89)  | (0.78)  | (0.46)  | (-0.46) | (1.62)  | (1.33)  | (0.46)  | (0.34)  |
+| MKTRF      | 0.98*** | 1.72*** | 1.01*** | 0.36*   | 1.37***  | 0.85*** | 1.18*** | 0.89*** | 0.35**  | 0.98*** | 1.68*** | 0.82**  | 1.43*** | 0.88*** | 0.59    |
+|            | (4.99)  | (8.43)  | (4.62)  | (1.97)  | (5.30)   | (8.97)  | (13.38) | (11.45) | (2.14)  | (5.85)  | (4.16)  | (2.23)  | (5.06)  | (5.78)  | (1.21)  |
+| SIC CODE   | 396     | 397     | 399     | 401     | 421      | 422     | 440     | 441     | 442     | 444     | 448     | 449     | 451     | 452     | 458     |
+| BITCOIN    | 0.69    | -0.14   | -0.20   | 0.31    | 0.05     | -0.76   | -0.73   | -0.83   | 2.44    | 0.07    | -0.51   | -1.34   | 0.45    | 0.15    | 0.31    |
+|            | (0.18)  | (-0.07) | (-0.33) | (0.55)  | (0.09)   | (-0.40) | (-0.37) | (-1.19) | (0.58)  | (0.08)  | (-0.63) | (-0.94) | (0.67)  | (0.15)  | (0.36)  |
+| MKTRF      | -0.50   | 1.87*** | 1.46*** | 1.12*** | 0.98***  | 0.90    | 1.76*** | 1.53*** | 2.66*** | 1.08*** | 0.75*** | 1.92*** | 0.99*** | 1.61*** | 0.63*** |
+|            | (-0.60) | (4.34)  | (10.67) | (9.13)  | (8.55)   | (1.17)  | (4.07)  | (9.90)  | (4.03)  | (5.24)  | (4.14)  | (6.09)  | (6.63)  | (7.50)  | (3.35)  |
+| SIC CODE   | 461     | 472     | 473     | 474     | 478      | 481     | 482     | 483     | 484     | 489     | 491     | 492     | 493     | 494     | 495     |
+| BITCOIN    | 0.19    | -3.65   | -0.17   | -0.58   | -5.48*** | 0.01    | -1.77*  | 0.12    | 0.55    | 0.47    | 0.29    | -0.08   | -0.04   | -0.27   | 0.44    |
+|            | (0.31)  | (-1.52) | (-0.27) | (-0.57) | (-2.74)  | (0.01)  | (-1.78) | (0.25)  | (1.26)  | (1.00)  | (0.56)  | (-0.15) | (-0.08) | (-0.48) | (1.06)  |
+| MKTRF      | 0.80*** | 0.44    | 0.88*** | 1.18*** | 1.71***  | 0.56*** | 0.92*** | 1.33*** | 1.05*** | 0.63*** | 0.25**  | 0.88*** | 0.22*   | 0.40*** | 0.47*** |
+|            | (5.84)  | (0.74)  | (6.24)  | (4.14)  | (4.32)   | (5.65)  | (4.17)  | (13.09) | (10.92) | (6.08)  | (2.15)  | (7.28)  | (1.85)  | (3.19)  | (5.20)  |
+| SIC CODE   | 501     | 502     | 503     | 504     | 505      | 506     | 507     | 508     | 509     | 511     | 512     | 513     | 514     | 515     | 516     |
+| BITCOIN    | -0.18   | -1.39   | -0.73   | 0.20    | -1.25    | -0.43   | -0.67   | -0.59   | 0.75    | -1.32   | 0.95    | -0.30   | 0.64    | -0.60   | -0.29   |
+|            | (-0.41) | (-0.73) | (-1.07) | (0.45)  | (-1.63)  | (-1.06) | (-0.89) | (-0.88) | (1.07)  | (-0.93) | (1.45)  | (-0.27) | (1.40)  | (-0.74) | (-0.42) |
+| MKTRF      | 1.05*** | 1.35*** | 1.50*** | 1.01*** | 1.71***  | 1.23*** | 1.00*** | 0.92*** | 1.08*** | 1.33*** | 0.88*** | 1.03*** | 0.63*** | 1.20*** | 1.48*** |
+|            | (10.50) | (3.19)  | (9.85)  | (10.45) | (10.05)  | (13.86) | (5.95)  | (6.22)  | (7.01)  | (4.25)  | (6.05)  | (4.16)  | (6.19)  | (6.79)  | (9.73)  |
+
+
+<!-- p:63 -->
+
+
+| SIC CODE   | 517     | 518     | 519     | 520     | 521     | 523     | 531     | 533     | 539     | 541     | 544     | 546     | 549     | 551     | 552     |
+|------------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|
+| BITCOIN    | -0.48   | 0.52    | -1.37   | -1.42   | -1.40** | -1.02   | 0.31    | 0.45    | -1.25   | -0.79   | 0.29    | -0.15   | 3.32**  | -0.26   | 0.22    |
+|            | (-0.72) | (0.81)  | (-1.32) | (-1.55) | (-2.53) | (-1.24) | (0.35)  | (0.85)  | (-0.46) | (-0.98) | (0.45)  | (-0.07) | (2.59)  | (-0.27) | (0.19)  |
+| MKTRF      | 1.21*** | 0.58*** | 1.41*** | 0.99*** | 1.08*** | 0.91*** | 0.83*** | 0.46*** | 0.98    | 0.79*** | 0.67*** | 0.84*   | 0.86*** | 1.38*** | 1.55*** |
+|            | (8.27)  | (3.21)  | (6.17)  | (4.89)  | (8.82)  | (4.75)  | (4.19)  | (3.96)  | (1.34)  | (4.45)  | (4.71)  | (1.77)  | (3.04)  | (6.56)  | (6.08)  |
+| SIC CODE   | 553     | 554     | 555     | 560     | 561     | 562     | 563     | 564     | 565     | 566     | 569     | 570     | 571     | 572     | 573     |
+| BITCOIN    | -0.52   | 0.32    | -0.37   | -0.17   | 0.83    | 0.88    | 0.67    | -0.95   | 0.22    | -0.74   | -1.92   | 1.07    | 0.27    | 3.38    | 0.18    |
+|            | (-0.69) | (0.47)  | (-0.28) | (-0.11) | (0.52)  | (0.80)  | (0.36)  | (-0.65) | (0.29)  | (-0.70) | (-1.17) | (1.01)  | (0.28)  | (0.89)  | (0.13)  |
+| MKTRF      | 0.58*** | 0.68*** | 1.31*** | 0.86**  | 0.89**  | 0.96*** | 1.42*** | 1.10*** | 0.94*** | 0.92*** | 0.45    | 0.68*** | 1.31*** | 1.39    | 1.10*** |
+|            | (3.51)  | (4.47)  | (4.52)  | (2.62)  | (2.54)  | (3.95)  | (3.44)  | (3.38)  | (5.67)  | (3.90)  | (1.36)  | (2.89)  | (6.07)  | (1.65)  | (3.64)  |
+| SIC CODE   | 581     | 590     | 591     | 593     | 594     | 596     | 598     | 599     | 600     | 601     | 602     | 603     | 608     | 609     | 611     |
+| BITCOIN    | 0.33    | 1.83    | 0.87    | 0.06    | -0.35   | -0.35   | 0.43    | -0.27   | -1.24   | -0.27   | -0.36   | -0.34   | -2.12   | -0.90   | -2.44*  |
+|            | (0.86)  | (1.49)  | (1.36)  | (0.06)  | (-0.53) | (-0.39) | (0.23)  | (-0.45) | (-1.27) | (-0.26) | (-0.85) | (-0.74) | (-1.65) | (-1.22) | (-1.70) |
+| MKTRF      | 0.57*** | 0.87*** | 0.87*** | 0.73*** | 1.48*** | 0.88*** | 1.76*** | 0.76*** | 1.04*** | 0.28    | 1.29*** | 0.98*** | 1.20*** | 1.09*** | 1.22*** |
+|            | (6.67)  | (3.19)  | (6.20)  | (3.27)  | (10.19) | (4.41)  | (4.15)  | (5.83)  | (4.83)  | (1.24)  | (13.71) | (9.57)  | (3.87)  | (6.71)  | (3.84)  |
+| SIC CODE   | 614     | 615     | 616     | 619     | 620     | 621     | 622     | 623     | 628     | 630     | 631     | 632     | 633     | 635     | 636     |
+| BITCOIN    | 0.51    | 0.77    | 0.18    | -1.25   | 0.15    | -0.75   | 0.31    | 1.33    | 0.16    | -0.30   | 0.19    | 0.78    | -0.52*  | 0.25    | 0.22    |
+|            | (0.82)  | (1.44)  | (0.12)  | (-1.11) | (0.22)  | (-1.18) | (0.33)  | (1.28)  | (0.54)  | (-0.30) | (0.34)  | (1.52)  | (-1.75) | (0.44)  | (0.38)  |
+| MKTRF      | 1.11*** | 0.96*** | 1.16*** | 0.99*** | 0.88*** | 1.69*** | 0.80*** | 1.08*** | 1.60*** | 0.85*** | 1.65*** | 0.88*** | 0.88*** | 1.47*** | 0.66*** |
+|            | (8.14)  | (8.19)  | (3.55)  | (3.83)  | (5.84)  | (12.00) | (3.81)  | (4.73)  | (25.22) | (3.84)  | (13.26) | (7.73)  | (13.48) | (11.81) | (5.29)  |
+| SIC CODE   | 637     | 639     | 641     | 650     | 651     | 653     | 655     | 670     | 671     | 672     | 673     | 677     | 679     | 701     | 720     |
+| BITCOIN    | -0.15   | 1.24    | -0.04   | -0.38   | 0.14    | -0.20   | -0.70   | 0.31    | -0.36   | -0.13   | -2.85** | -0.71   | -0.26   | -0.29   | -0.01   |
+|            | (-0.19) | (1.34)  | (-0.10) | (-0.33) | (0.26)  | (-0.45) | (-0.86) | (0.09)  | (-0.69) | (-0.87) | (-2.37) | (-0.43) | (-0.56) | (-0.52) | (-0.01) |
+| MKTRF      | 0.82*** | 0.98*** | 0.95*** | 0.49*   | 1.08*** | 1.45*** | 0.94*** | 0.93    | 1.33*** | 0.76*** | 1.66*** | 1.24*** | 0.81*** | 1.59*** | 0.86*** |
+|            | (3.64)  | (4.82)  | (11.87) | (1.90)  | (9.08)  | (14.74) | (5.23)  | (1.27)  | (11.48) | (23.03) | (6.19)  | (3.35)  | (7.83)  | (12.87) | (2.96)  |
+
+
+<!-- p:64 -->
+
+
+| SIC CODE   | 721     | 723     | 726     | 728     | 729     | 731     | 732     | 733     | 734     | 735     | 736     | 737     | 738     | 751     | 753     |
+|------------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|
+| BITCOIN    | -0.96   | 0.24    | -0.48   | -1.06   | 1.28    | -0.45   | -0.27   | -1.67   | -0.53   | -0.62   | -0.84   | 0.01    | 0.08    | 0.67    | 0.69    |
+|            | (-1.45) | (0.25)  | (-0.77) | (-0.76) | (0.92)  | (-0.88) | (-0.56) | (-1.26) | (-1.14) | (-0.89) | (-1.57) | (0.03)  | (0.21)  | (0.66)  | (0.61)  |
+| MKTRF      | 1.07*** | 0.86*** | 1.05*** | 1.22*** | 1.68*** | 1.57*** | 1.10*** | 1.56*** | 0.72*** | 1.77*** | 1.61*** | 1.04*** | 1.05*** | 1.85*** | 0.75*** |
+|            | (7.28)  | (4.09)  | (7.54)  | (3.38)  | (5.42)  | (13.96) | (10.41) | (5.31)  | (7.03)  | (11.50) | (13.61) | (13.46) | (12.46) | (8.23)  | (2.99)  |
+| SIC CODE   | 781     | 782     | 783     | 784     | 790     | 792     | 793     | 794     | 799     | 800     | 801     | 802     | 805     | 806     | 807     |
+| BITCOIN    | -0.56   | 0.43    | -0.47   | 2.33    | -0.57   | -0.03   | 0.14    | 0.76    | 0.18    | -5.45*  | 0.31    | 1.31    | -0.35   | -0.58   | 0.09    |
+|            | (-0.67) | (0.24)  | (-0.55) | (0.82)  | (-0.26) | (-0.03) | (0.28)  | (1.50)  | (0.27)  | (-1.81) | (0.35)  | (0.72)  | (-0.40) | (-0.61) | (0.15)  |
+| MKTRF      | 1.14*** | 0.91**  | 1.06*** | 1.44**  | 0.58    | 1.17*** | 0.23**  | 0.89*** | 1.21*** | 0.59    | 0.62*** | -0.06   | 1.61*** | 1.11*** | 0.82*** |
+|            | (6.09)  | (2.27)  | (5.56)  | (2.30)  | (1.15)  | (5.19)  | (2.05)  | (7.89)  | (8.24)  | (0.78)  | (3.22)  | (-0.15) | (8.41)  | (5.32)  | (6.06)  |
+| SIC CODE   | 808     | 809     | 820     | 821     | 822     | 823     | 824     | 829     | 830     | 832     | 835     | 836     | 869     | 870     | 871     |
+| BITCOIN    | 1.56*   | 0.53    | -1.04   | 1.39    | -0.33   | 6.64    | -0.12   | 1.07    | -2.17   | -1.57   | -0.10   | 0.84    | -1.31   | 0.51    | -0.87*  |
+|            | (1.81)  | (0.83)  | (-0.61) | (0.76)  | (-0.25) | (1.02)  | (-0.08) | (0.75)  | (-0.42) | (-0.95) | (-0.12) | (0.54)  | (-0.65) | (0.99)  | (-1.73) |
+| MKTRF      | 0.79*** | 1.23*** | 1.38*** | 1.35*** | 1.31*** | 1.82*** | 1.29*** | 1.30*** | 0.39    | 1.13*** | 0.16    | 1.44*** | 1.57*** | 0.87*** | 1.39*** |
+|            | (4.16)  | (8.79)  | (3.68)  | (3.34)  | (4.46)  | (3.34)  | (4.01)  | (4.12)  | (0.39)  | (3.11)  | (0.68)  | (4.22)  | (3.81)  | (7.59)  | (12.44) |
+| SIC CODE   | 872     | 873     | 874     | 891     | 899     | 943     | 951     | 961     | 999     |         |         |         |         |         |         |
+| BITCOIN    | 0.48    | 0.81    | -0.13   | -0.21   | 0.48    | 1.21    | -2.93   | -3.30** | -0.42   |         |         |         |         |         |         |
+|            | (0.49)  | (0.98)  | (-0.36) | (-0.13) | (0.32)  | (0.57)  | (-0.55) | (-2.05) | (-0.94) |         |         |         |         |         |         |
+| MKTRF      | 1.10*** | 1.18*** | 0.98*** | 0.83**  | 1.22*** | 1.10**  | 2.83**  | 1.35*** | 1.16*** |         |         |         |         |         |         |
+|            | (5.06)  | (6.48)  | (12.11) | (2.35)  | (3.68)  | (2.22)  | (2.61)  | (4.54)  | (11.54) |         |         |         |         |         |         |
+
+
+<!-- p:65 -->
+
+
+## Appendix B: Implied Risk Neutral Disaster Probability
+
+In this section, we calculate the risk neutral disaster probability that can justify the realized high average cryptocurrency returns. We define a disaster as an event where the cryptocurrency price drops to zero in one day. We further calculate the average cryptocurrency return as the trailing one year average daily return. When the implied risk neutral disaster probability is negative, we modify it to zero. Figure A.3 plots the time-varying implied risk neutral disaster probability of Bitcoin, Ripple, and Ethereum, respectively. The implied disaster probability ranges from 0 to 1.3 percent for Bitcoin, 0 to 2.5 percent for Ripple, and 0.4 to 1.6 percent for Ethereum. The current implied daily disaster probability is about 0.4 percent for Bitcoin, 0.6 percent for Ripple, and 0.3 percent for Ethereum.
+
+Figure A.3: Implied Risk Neutral Disaster Probability
+
+## Appendix C: Portfolio Choice with Cryptocurrency
+
+In this section, we ask the question: how much cryptocurrency an investor should hold in her portfolio? To answer this question, we use the Black-Litterman model (Black and Litterman (1990, 1992)) and evaluate the optimal portfolio problem. The variable notations used in this section are the same as in He and Litterman (1999). We separately investigate incorporating Bitcoin into a portfolio with only stocks, a portfolio with stocks and corporate bonds, and a portfolio with stocks, bonds and currency. Following He and Litterman (1999), we assume a risk aversion parameter of 2.5. The coefficient of uncertainty in the prior estimate of the mean, , is assumed to be 0.30 or 30% - a very conservative estimate reflecting the high volatility of Bitcoin returns.
+
+Table A.6 shows the correlation structure of Bitoin and other assets including stocks, coprorate bonds, and currency. Table A.7 reports the standard deviations of the returns of the assets, market capitalization shares, and CAPM implied equilibrium risk premiums.
+
+The Black-Litterman model allows us to incorporate different investor views into the portfolio allocation problem. We investigate a range of investor views and their effect on the allocation of Bitcoin. The different investor views we examine are (1) Bitcoin will outperform the rest of the assets by 30 percent a year, (2) Bitcoin will outperform the rest of the assets by 50 percent a year, (3) Bitcoin will outperform the rest of the assets by 100 percent per year, and (4) Bitcoin will outperform the rest of the assets by 200 percent a year. Historically, Bitcoin has been outperforming the rest of the assets by about 200 percent a year. Across the different portfolios we considered, the shares of Bitcoin under the different investor views are similar. The investor should have about 1 percent, 1.6 percent, 3.1 percent, and 6.1 percent share of Bitcoin under views (1), (2), (3), and (4), respectively. That is, if the investor believes Bitcoin will continue to do as well as the past seven years, she should hold about 6.1 percent share of Bitcoin in her portfolio. Even if the investor believes Bitcoin will only have half of its historical performance going forward, she should still hold about 3.1 percent share of Bitcoin in her portfolio.
+
+
+<!-- p:66 -->
+
+
+Table A.6: Correlations of Different Asset Classes
+
+|           |   Bitcoin |   Stock |   Corporate |   Currency |
+|-----------|-----------|---------|-------------|------------|
+| Bitcoin   |      1.00 |         |             |            |
+| Stock     |      0.16 |    1.00 |             |            |
+| Corporate |     -0.04 |   -0.30 |        1.00 |            |
+| Currency  |      0.08 |    0.55 |       -0.08 |       1.00 |
+
+Table A.7: Annualized Volatility, Market Cap Weights, and Equilibrium Risk Premiums
+
+| Panel A   |      | w eq   |        |
+|-----------|------|--------|--------|
+| Bitcoin   | 2.41 | 0.61%  | 19.57% |
+| Stock     | 0.11 | 99.39% | 3.20%  |
+| Panel B   |      | w eq   |        |
+| Bitcoin   | 2.41 | 0.45%  | 13.65% |
+| Stock     | 0.11 | 72.39% | 2.09%  |
+| Corporate | 0.10 | 27.16% | 0.09%  |
+| Panel C   |      | w eq   |        |
+| Bitcoin   | 2.41 | 0.39%  | 12.21% |
+| Stock     | 0.11 | 62.40% | 1.93%  |
+| Corproate | 0.10 | 23.41% | 0.06%  |
+| Currency  | 0.06 | 13.80% | 0.71%  |
+
+
+<!-- p:67 -->
+
+
+Table A.8: Optimal Portfolio Weights under Different Investor Views
+
+| Panel A: Two Assets                    |          |              | w          | w eq       |
+|----------------------------------------|----------|--------------|------------|------------|
+| Outperform Other Assets by 30% Bitcoin | p 100    | 26.42%       | 1.00       | w 1 + 0.53 |
+| Stock                                  | -100     | 3.23%        | 75.92      | -0.53      |
+| Outperform Other Assets by             |          |              | w          | w          |
+| 50%                                    | p        |              |            | w eq 1 +   |
+| Bitcoin Stock                          | 100 -100 | 36.47% 3.29% | 1.61 75.32 | 1.14 -1.14 |
+|                                        |          |              |            | w          |
+| Outperform Other Assets by 100%        | p        |              | w          | w eq 1 +   |
+| Bitcoin Stock                          | 100 -100 | 61.6% 3.42%  | 3.13 73.79 | 2.66 -2.66 |
+| Outperform Other Assets by 200%        | p        |              | w          | w w eq 1 + |
+| Bitcoin                                |          |              | 6.12       | 5.70       |
+| Stock                                  | 100      | 111.9%       | 70.75      |            |
+|                                        | -100     | 3.69%        |            | -5.70      |
+
+| Panel B: Three Assets Outperform Other Assets by 30%   | p      |         | w     | w w eq 1 +   |
+|--------------------------------------------------------|--------|---------|-------|--------------|
+| Bitcoin                                                | 100    | 22.63%  | 0.97  | 0.63         |
+| Stock                                                  | -72.71 | 2.15%   | 55.23 | -0.46        |
+| Corporate                                              | -27.29 | 0.07%   | 20.72 | -0.17        |
+| Outperform Other Assets by 50%                         | p      |         | w     | w w eq 1 +   |
+| Bitcoin                                                | 100    | 32.67%  | 1.58  | 1.23         |
+| Stock                                                  | -72.71 | 2.21%   | 54.79 | -0.90        |
+| Corporate                                              | -27.29 | 0.05%   | 20.56 | -0.34        |
+| Outperform Other Assets by 100%                        | p      |         | w     | w w eq 1 +   |
+| Bitcoin                                                | 100    | 57.55%  | 3.10  | 2.75         |
+| Stock                                                  | -72.71 | 2.36%   | 53.69 | -2.00        |
+| Corporate                                              | -27.29 | 0.01%   | 20.14 | -0.75        |
+| Outperform Other Assets by 200%                        | p      |         | w     | w w eq 1 +   |
+| Bitcoin                                                | 100    | 108.00% | 6.13  | 5.78         |
+| Stock                                                  | -72.71 | 2.66%   | 51.48 | -4.20        |
+| Corporate                                              | -27.29 | -0.08%  | 19.32 | -1.58        |
+
+
+<!-- p:68 -->
+
+
+| Panel C: Four Assets Outperform Other Assets by 30%   | p      |         | w     | w w eq 1 +   |
+|-------------------------------------------------------|--------|---------|-------|--------------|
+| Bitcoin                                               | 100    | 21.80%  | 0.96  | 0.66         |
+| Stock                                                 | -62.64 | 1.99%   | 47.59 | -0.41        |
+| Corporate                                             | -23.50 | 0.04%   | 17.85 | -0.15        |
+| Currency                                              | -13.86 | 0.72%   | 10.52 | -0.09        |
+| Outperform Other Assets by 50%                        | p      |         | w     | w w eq 1 +   |
+| Bitcoin                                               | 100    | 31.84%  | 1.56  | 1.26         |
+| Stock                                                 | -62.64 | 2.06%   | 47.21 | -0.79        |
+| Corporate                                             | -23.50 | 0.02%   | 17.71 | -0.30        |
+| Currency                                              | -13.86 | 0.74%   | 10.44 | -0.17        |
+| Outperform Other Assets by 100%                       | p      |         | w     | w w eq 1 +   |
+| Bitcoin                                               | 100    | 56.93   | 3.08  | 2.78         |
+| Stock                                                 | -62.64 | 2.21    | 46.26 | -1.74        |
+| Corporate                                             | -23.50 | -0.02   | 17.36 | -0.65        |
+| Currency                                              | -13.86 | 0.78    | 10.23 | -0.38        |
+| Outperform Other Assets by 200%                       | p      |         | w     | w w eq 1 +   |
+| Bitcoin                                               | 100    | 107.10% | 6.10  | 5.804        |
+| Stock                                                 | -62.64 | 2.52%   | 44.36 | -3.64        |
+| Corporate                                             | -23.50 | -0.11%  | 16.64 | -1.36        |
+| Currency                                              | -13.86 | 0.86%   | 9.81  | -0.80        |
+
+<!-- END SOURCE 31/40: Liu_2021_risks-returns-cryptocurrency.md -->
+
+---
