@@ -88,6 +88,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--initial-grid-size", type=int, default=9)
     parser.add_argument("--max-depth", type=int, default=8)
     parser.add_argument("--min-interval", type=float, default=1e-3)
+    parser.add_argument("--endpoint-refinement-levels", type=int, default=6)
     parser.add_argument("--max-candidates", type=int, default=5)
     parser.add_argument(
         "--epsilons",
@@ -247,6 +248,7 @@ def run_case(
         initial_grid_size=args.initial_grid_size,
         max_depth=args.max_depth,
         min_interval=args.min_interval,
+        endpoint_refinement_levels=args.endpoint_refinement_levels,
     )
     adaptive_minima = tuple(
         point for point in search.points_ if point.kind_ == "minimum"
@@ -480,6 +482,7 @@ def main() -> None:
         "initial_grid_size": args.initial_grid_size,
         "max_depth": args.max_depth,
         "min_interval": args.min_interval,
+        "endpoint_refinement_levels": args.endpoint_refinement_levels,
         "max_candidates": args.max_candidates,
         "epsilons": list(args.epsilons),
         "dense_grid_size": dense_grid_size,
