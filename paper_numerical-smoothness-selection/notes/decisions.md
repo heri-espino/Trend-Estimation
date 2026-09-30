@@ -98,3 +98,18 @@ The target is recovery of relevant local minima and exact boundary optima.
 The paper does not claim certified recovery of every stationary point of an
 arbitrary smooth objective. In particular, a tangential stationary inflection
 that is not a local minimum is not counted as an optimization failure.
+
+## N012 — Confirmatory paper-scale benchmark passed
+
+**Date:** 2026-09-30  
+**Status:** frozen result.
+
+Under the frozen N009 specification, the paper-scale synthetic benchmark
+matched 2105/2105 dense-reference interior minima across 1920
+forecast-validation surfaces. The adversarial paper benchmark detected 240/240
+known relevant minima/boundary optima.
+
+These results close the primary algorithm-validation phase. Subsequent
+experiments must not change the N009 primary specification unless a genuine
+implementation error is discovered.
+
