@@ -6,7 +6,7 @@
 \usepackage{amsmath,amssymb,mathtools,booktabs,graphicx,natbib,hyperref}
 \usepackage[nameinlink,noabbrev]{cleveref}
 
-\title{Numerical Selection of Forecast-Optimal Smoothness and Financial Trend Recurrence}
+\title{Forecasting Financial Trends and Measuring Recurrence under Competing Trend Models}
 \author{Heriberto Espino Montelongo}
 \date{\today}
 \newcommand{\R}{\mathbb{R}}
@@ -15,113 +15,73 @@
 \maketitle
 
 \begin{abstract}
-We study numerical selection of normalized smoothness for finite-difference
-penalized trend estimation when the target is chronological forecast loss.
-Rather than searching an arbitrary bounded range of the penalty parameter, we
-parameterize the problem by a normalized smoothness index on the compact domain
-$[0,1]$. Because the forecast-validation objective may have multiple local
-minima, the numerical problem is to isolate and refine its stationary points
-without evaluating a dense uniform grid. The selected trend is then used as a
-forecast reference path for studying first-return and crossing times in
-financial price series. This manuscript is a research skeleton; empirical
-claims are deferred until the numerical method and recurrence protocol are
-frozen and validated.
+This applied study compares several established ways to define and forecast a
+financial trend under a common chronological validation and untouched-test
+protocol. Candidate methods include forecast-optimal penalized trends,
+classical smoothness selection, likelihood/state-space trends,
+autoregressive/ARIMA benchmarks, residual autoregression, and a no-change
+baseline. For every method, the trend forecast path is frozen at the forecast
+origin. We then study first-passage and recurrence behavior of future prices
+relative to those ex-ante paths. The central empirical question is whether
+forecast performance and measured recurrence are robust to the definition of
+trend. The numerical smoothness-selection algorithm used by one candidate is
+developed separately and is not a contribution of this paper.
 \end{abstract}
 
-\section{Penalized trend estimation}
+\section{Competing definitions of forecast trend}
 
-For $y\in\R^N$, let $D_d$ be the order-$d$ finite-difference matrix and
-$Q=D_d^\top D_d$. Then
+At forecast origin $T$, method $m$ uses only information available through
+$T$ to construct
 \[
-\widehat\tau_\lambda
+\widehat\tau^{(m)}_{T+k\mid T},
+\qquad k\ge0.
+\]
+Candidate method families are intentionally limited to distinct modeling
+principles rather than a large forecasting model zoo.
+
+\section{Chronological validation and test}
+
+Development/validation data are used for all model-specific choices. Once the
+protocol and model configuration are frozen, forecasts are evaluated on an
+untouched test block. Test outcomes do not feed back into model selection.
+
+\section{Recurrence relative to a frozen trend path}
+
+For log price $x_t$, define
+\[
+g^{(m)}_{T,k}
 =
-\arg\min_{\tau\in\R^N}
-\left\{
-\|y-\tau\|_2^2+\lambda\|D_d\tau\|_2^2
-\right\}
-=
-(I+\lambda Q)^{-1}y.
+x_{T+k}
+-
+\widehat\tau^{(m)}_{T+k\mid T}.
 \]
-
-\section{Normalized smoothness}
-
-Let $\delta_1,\ldots,\delta_{N-d}$ be the positive eigenvalues of $Q$.
-Define
+A crossing time is
 \[
-S(\lambda)
-=
-1-
-\frac{1}{N-d}
-\sum_{j=1}^{N-d}
-\frac{1}{1+\lambda\delta_j}.
-\]
-Then $S(0)=0$, $S(\lambda)\to1$ as $\lambda\to\infty$, and
-\[
-S'(\lambda)
-=
-\frac{1}{N-d}
-\sum_{j=1}^{N-d}
-\frac{\delta_j}{(1+\lambda\delta_j)^2}
->0.
-\]
-
-\section{Forecast-optimal smoothness}
-
-For fixed forecasting protocol and horizon $h$, let $CV_h(S)$ be pooled
-chronological forecast loss. The principal object is
-\[
-\boxed{
-S_h^\star=\arg\min_{S\in[0,1]}CV_h(S).
-}
-\]
-
-If $f(\lambda)$ is the same objective in penalty coordinates and
-$F(S)=f(\lambda(S))$, then
-\[
-F'(S)=\frac{f'(\lambda)}{S'(\lambda)}.
-\]
-Thus interior stationary points are preserved by the reparameterization.
-
-\section{Multiple-local-minimum numerical search}
-
-The proposed method starts from a small partition of the smoothness domain,
-adaptively refines intervals with evidence of stationary structure, brackets
-derivative sign changes, applies Brent refinement, classifies stationary
-points, and compares all detected local minima with exact boundaries. A dense
-GPU smoothness grid is retained as a numerical reference.
-
-\section{Financial trend recurrence}
-
-At forecast origin $T$, only information through $T$ may determine the selected
-smoothness and trend. Let $\widehat\tau_{T+k\mid T}$ be the frozen forecast
-trend path and let $x_t=\log P_t$. Define
-\[
-g_{T,k}=x_{T+k}-\widehat\tau_{T+k\mid T}.
-\]
-A crossing recurrence time is
-\[
-R_T^{\mathrm{cross}}
+H_T^{(m)}
 =
 \inf\left\{
-k\ge1:g_{T,k}g_{T,0}\le0
+k\ge1:
+g^{(m)}_{T,k}g^{(m)}_{T,0}\le0
 \right\}.
 \]
-A tolerance-band recurrence is defined analogously. Events that do not recur
-inside a pre-specified horizon are right-censored.
+Additional outcomes may include tolerance-band entry, probability of
+recurrence by horizon, restricted-mean recurrence time, and survival/hazard
+summaries under right censoring.
 
-\section{Experimental design}
+\section{Research questions}
 
-First validate the numerical optimizer against dense reference grids. Then
-freeze the forecasting and recurrence protocol before evaluating broad
-ETFs/indices, held-out equities, and cryptocurrency. The main paper does not
-jointly adapt difference order and window length.
+The study asks which trend definitions forecast well on untouched data,
+whether the preferred method changes with horizon, whether recurrence
+statistics are robust to the trend definition, and how recurrence depends on
+initial standardized distance from trend.
 
-\section{Limitations}
+\section{Scope}
 
-Recurrence to a forecast trend is not equivalent to stationarity or classical
-mean reversion. Forecast accuracy and recurrence statistics do not imply
-trading profitability. Dependence induced by overlapping forecast origins must
-be addressed before inferential claims.
+The paper is empirical/applied. It does not develop the numerical
+stationary-point search for normalized smoothness and does not study adaptive
+time-varying joint selection of $(d,L,S)$. Recurrence to a forecast trend is not
+automatically interpreted as stationary mean reversion or trading
+profitability.
 
 \bibliographystyle{plainnat}
 \IfFileExists{literature/references.bib}{
