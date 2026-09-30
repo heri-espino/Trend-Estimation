@@ -63,6 +63,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--initial-grid-size", type=int, default=9)
     parser.add_argument("--max-depth", type=int, default=8)
     parser.add_argument("--min-interval", type=float, default=1e-3)
+    parser.add_argument("--endpoint-refinement-levels", type=int, default=6)
     parser.add_argument("--boundary-margin", type=float, default=1e-6)
     parser.add_argument(
         "--log-s-lower",
@@ -150,6 +151,7 @@ def _adaptive_method(
         initial_grid_size=args.initial_grid_size,
         max_depth=args.max_depth,
         min_interval=args.min_interval,
+        endpoint_refinement_levels=args.endpoint_refinement_levels,
         boundary_margin=args.boundary_margin,
     )
     seconds = time.perf_counter() - start
@@ -478,6 +480,7 @@ def main() -> None:
         "adaptive_initial_grid_size": args.initial_grid_size,
         "adaptive_max_depth": args.max_depth,
         "adaptive_min_interval": args.min_interval,
+        "adaptive_endpoint_refinement_levels": args.endpoint_refinement_levels,
         "adaptive_boundary_margin": args.boundary_margin,
         "log_s_lower": args.log_s_lower,
         "log_s_upper": args.log_s_upper,
