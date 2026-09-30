@@ -43,10 +43,11 @@ jobs:
         if: ${{ inputs.target == 'numerical' || inputs.target == 'all' }}
         shell: bash
         run: |
-          mkdir -p paper_numerical-smoothness-selection/build
+          cd paper_numerical-smoothness-selection
+          mkdir -p build
           latexmk -pdf -interaction=nonstopmode \
-            -outdir=paper_numerical-smoothness-selection/build \
-            paper_numerical-smoothness-selection/main.tex
+            -outdir=build \
+            main.tex
 
       - name: Build adaptive paper
         if: ${{ inputs.target == 'adaptive' || inputs.target == 'all' }}
