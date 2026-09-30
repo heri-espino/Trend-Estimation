@@ -33,9 +33,9 @@ It is strictly increasing, so the penalty domain
 ## Forecast objective
 
 For a frozen chronological validation protocol, discrete configuration
-\((d,L,m,h)\), and continuation rule \(m\), define
+\((d,L,h)\), and continuation rule \(m\), define
 \[
-F(S)=CV_h(d,L,m,S).
+F(S)=CV_h(d,L,S).
 \]
 
 The primary continuous selection problem is
