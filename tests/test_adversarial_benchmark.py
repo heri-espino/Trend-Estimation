@@ -7,6 +7,8 @@ import sys
 import numpy as np
 import pandas as pd
 
+import trend_estimation as td
+
 from trend_estimation.benchmarks.adversarial import (
     adversarial_smoothness_cases,
 )
