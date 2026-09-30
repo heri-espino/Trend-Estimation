@@ -49,6 +49,18 @@ def test_prepared_objective_supports_infinite_penalty_limit():
     prepared = td.prepare_rolling_pure_forecast_objective(y, splits, order=2)
     result = prepared.evaluate(np.inf)
 
+    alpha_limit = np.zeros_like(prepared.eigvals)
+    alpha_limit[:2] = 1.0
+    expected_prediction = (
+        (prepared.spectral_history * alpha_limit)
+        @ prepared.spectral_to_future.T
+        + prepared.prediction_offset
+    )
+    expected_value = float(
+        np.mean((prepared.targets - expected_prediction) ** 2)
+    )
+
     assert np.isfinite(result.value)
+    assert np.isclose(result.value, expected_value, rtol=1e-12, atol=1e-12)
     assert result.first == 0.0
     assert result.second == 0.0
