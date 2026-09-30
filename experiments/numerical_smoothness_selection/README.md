@@ -77,3 +77,52 @@ Important summary columns include:
 - adaptive_seconds / dense_seconds.
 
 Commit the result directory after each scientifically relevant run so it can be inspected from another machine.
+## Adversarial analytic benchmark
+
+Before any larger paper run, use objectives whose stationary structure is known exactly:
+
+~~~bash
+python experiments/numerical_smoothness_selection/run_adversarial_benchmark.py --preset smoke
+~~~
+
+The adversarial suite includes:
+
+- a minimum at S=0.001;
+- a minimum at S=0.999;
+- two minima separated by only 0.02;
+- two upper-tail minima at 0.97 and 0.995;
+- a quartic flat minimum;
+- a stationary inflection where F'(S)=0 without a sign change;
+- five separated minima;
+- exact optima at S=0 and S=1.
+
+The runner compares three methods on exactly the same objective:
+
+1. adaptive_s — the proposed adaptive search on normalized smoothness;
+2. log_lambda — the existing stationary-point search on a uniform log(lambda) grid;
+3. dense — a dense S-grid reference.
+
+The log-lambda method uses finite bounds induced by the same normalized smoothness range S in [1e-6, 0.9999]. Exact endpoints S=0 and S=1 are still compared explicitly for the global optimum.
+
+After the smoke run is inspected, run:
+
+~~~bash
+python experiments/numerical_smoothness_selection/run_adversarial_benchmark.py --preset quick
+~~~
+
+The quick preset evaluates all adversarial cases at N in {63,252} and d in {1,2,3,4}, using a 5001-point dense reference and the existing 257-point log-lambda discovery grid.
+
+Outputs:
+
+~~~text
+results/numerical_smoothness_selection/<timestamp>_adversarial-<preset>_<sha>/
+├── method_summary.csv
+├── stationary_detection.csv
+├── case_manifest.csv
+└── run_metadata.json
+~~~
+
+method_summary.csv reports global-optimum error/regret, evaluation count and runtime. stationary_detection.csv records whether each known minimum, flat minimum, boundary optimum or stationary inflection was detected.
+
+Do not tune the proposed method after looking at a paper-scale run. The adversarial quick run is the intended dataset for diagnosing search-design weaknesses and freezing numerical defaults.
+
