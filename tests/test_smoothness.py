@@ -30,3 +30,10 @@ def test_exact_smoothness_endpoints_map_to_zero_and_infinity():
     assert td.smoothness_to_lambda(0.0, 40, 2) == 0.0
     assert np.isinf(td.smoothness_to_lambda(1.0, 40, 2))
     assert td.lambda_to_smoothness(np.inf, 40, 2) == 1.0
+
+
+def test_penalty_spectrum_has_exact_theoretical_nullity():
+    for order in (1, 2, 3, 4):
+        eigvals = td.penalty_eigenvalues(252, order)
+        assert np.array_equal(eigvals[:order], np.zeros(order))
+        assert np.all(eigvals[order:] > 0.0)
