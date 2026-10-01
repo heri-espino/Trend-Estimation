@@ -319,3 +319,37 @@ Prefer:
 Avoid inflated verbs such as *discover*, *unlock*, *revolutionize*, or *solve
 the smoothing problem* unless the sentence is literally about solving a
 well-defined linear system.
+
+
+## Predictive smoothing-selection novelty boundary
+
+Predictive selection of a smoothing parameter is established prior work.
+
+Hart (1994) uses time-series cross-validation to choose the bandwidth of a
+kernel trend smoother by one-step-ahead predictive performance using past data.
+
+Therefore avoid:
+
+> We propose choosing trend smoothness by forecast error.
+
+> We introduce time-series cross-validation for trend smoothing.
+
+Prefer:
+
+> Building on predictive smoothing-parameter selection, we study the numerical
+> landscape of a rolling \(h\)-step forecast-validation criterion for
+> finite-difference PLS.
+
+Also avoid:
+
+> We discover that smoothing criteria can have multiple local minima.
+
+Biessy provides an explicit GCV example with two local minima.
+
+Prefer:
+
+> We make recovery of multiple relevant minima of the rolling
+> forecast-validation objective the numerical target.
+
+The canonical bundle-based boundary is documented in
+[state_of_art_and_novelty.md](state_of_art_and_novelty.md).
