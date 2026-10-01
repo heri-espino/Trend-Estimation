@@ -503,6 +503,7 @@ def _evaluate_frozen_candidates(
         ).fit(train_log)
         forecast_log = np.asarray(model.forecast(horizon), dtype=float)
         test_mse = float(np.mean((test_log - forecast_log) ** 2))
+        forecast_level = np.exp(np.clip(forecast_log, -700.0, 700.0))
 
         rows.append(
             {
@@ -545,7 +546,7 @@ def _evaluate_frozen_candidates(
         for date, observed, predicted in zip(
             test_used["date"],
             test_used["value"],
-            np.exp(forecast_log),
+            forecast_level,
         ):
             path_rows.append(
                 {
@@ -636,7 +637,7 @@ def _long_horizon_order_diagnostics(
     test: pd.DataFrame,
     *,
     preset: dict,
-) -> tuple[pd.DataFrame, pd.DataFrame]:
+) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """Build development-selected long-horizon forecasts for d=1,...,4.
 
     For each order, the diagnostic horizon is the complete pre-reserved test
