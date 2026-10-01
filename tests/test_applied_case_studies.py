@@ -26,6 +26,23 @@ def test_applied_case_studies_smoke_preserves_test_separation(tmp_path):
 
     selections = pd.read_csv(tmp_path / "case_selection.csv")
     candidates = pd.read_csv(tmp_path / "candidate_results.csv")
+    protocol = pd.read_csv(
+        tmp_path / "temporal_split_protocol.csv",
+        parse_dates=[
+            "train_start_date",
+            "train_end_date",
+            "validation_start_date",
+            "validation_end_date",
+            "development_start_date",
+            "development_end_date",
+            "final_train_start_date",
+            "final_train_end_date",
+            "test_start_date",
+            "test_end_date",
+            "scored_test_start_date",
+            "scored_test_end_date",
+        ],
+    )
     metadata = json.loads(
         (tmp_path / "run_metadata.json").read_text(encoding="utf-8")
     )
@@ -59,6 +76,31 @@ def test_applied_case_studies_smoke_preserves_test_separation(tmp_path):
     assert metadata["test_role"] == "diagnostic_only"
     assert metadata["candidate_spacing_epsilon"] == 0.10
 
+    assert not protocol.empty
+    assert (protocol["validation_end_date"] <= protocol["development_end_date"]).all()
+    assert (protocol["train_end_date"] < protocol["validation_start_date"]).all()
+    assert (protocol["final_train_end_date"] == protocol["development_end_date"]).all()
+    assert (protocol["development_end_date"] < protocol["test_start_date"]).all()
+    assert (protocol["scored_test_end_date"] <= protocol["test_end_date"]).all()
+
     assert (tmp_path / "objective_profiles.csv").exists()
     assert (tmp_path / "applied_paths.csv").exists()
+    assert (tmp_path / "temporal_split_protocol.csv").exists()
     assert (tmp_path / "applied_case_studies.pdf").exists()
+    assert (tmp_path / "temporal_split.pdf").exists()
+
+    # Figure-only mode must reuse the frozen CSV results rather than rerun
+    # configuration or smoothness selection.
+    (tmp_path / "applied_case_studies.pdf").unlink()
+    (tmp_path / "temporal_split.pdf").unlink()
+    subprocess.run(
+        [
+            sys.executable,
+            script,
+            "--figures-from-run",
+            str(tmp_path),
+        ],
+        check=True,
+    )
+    assert (tmp_path / "applied_case_studies.pdf").exists()
+    assert (tmp_path / "temporal_split.pdf").exists()
