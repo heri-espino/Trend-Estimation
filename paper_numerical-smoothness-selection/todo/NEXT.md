@@ -7,18 +7,18 @@
 - [x] Freeze \(\varepsilon=0.10\).
 - [x] Freeze deterministic development-only configuration selection.
 - [x] Implement run_applied_case_studies.py.
-- [ ] Run the paper preset and commit its result directory.
+- [x] Run the paper preset and commit its result directory.
 
 ## Priority 2 — Inspect validation/test ranking
 
 For every frozen candidate:
 
-- [ ] record rolling validation error \(CV_k\);
-- [ ] record untouched test MSE \(E_k^{\mathrm{test}}\);
-- [ ] inspect validation rank and test rank;
-- [ ] inspect \(\Delta CV_k\) and \(\Delta E_k^{\mathrm{test}}\);
-- [ ] count validation--test rank reversals;
-- [ ] verify no example/configuration was selected using test performance.
+- [x] record rolling validation error \(CV_k\);
+- [x] record untouched test MSE \(E_k^{\mathrm{test}}\);
+- [x] inspect validation rank and test rank;
+- [x] inspect \(\Delta CV_k\) and \(\Delta E_k^{\mathrm{test}}\);
+- [x] count validation--test rank reversals;
+- [x] verify no example/configuration was selected using test performance.
 
 The test-best candidate is diagnostic only.
 
@@ -33,9 +33,9 @@ The test-best candidate is diagnostic only.
 
 ## Priority 4 — Manuscript revision
 
-- [ ] Add subsection: Why multiple forecast-optimal smoothness levels can arise.
-- [ ] Add subsection: Applied examples and validation--test ranking.
-- [ ] Integrate the four-row applied figure.
+- [x] Add subsection: Why multiple forecast-optimal smoothness levels can arise.
+- [x] Add subsection: Applied examples and validation--test ranking.
+- [x] Integrate the four-row applied figure.
 - [ ] Reduce current financial stress-test prose if page pressure grows.
 - [ ] Revisit abstract and introduction after applied results are frozen.
 - [ ] Consider one compact standard scalar-optimizer comparator.
