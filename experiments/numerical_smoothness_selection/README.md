@@ -255,13 +255,17 @@ Run:
 python experiments/numerical_smoothness_selection/run_applied_case_studies.py --preset paper
 ~~~
 
-To change only the presentation after a paper run has been frozen, regenerate
-the figures directly from its stored CSV outputs without repeating selection:
+After an updated applied run has created the long-horizon diagnostic CSVs,
+presentation-only changes can be regenerated from that run without repeating
+selection:
 
 ~~~bash
 python experiments/numerical_smoothness_selection/run_applied_case_studies.py \
-  --figures-from-run results/numerical_smoothness_selection/20261001T022610Z_applied-paper_72b8aaa
+  --figures-from-run results/numerical_smoothness_selection/<updated-applied-run>
 ~~~
+
+Older applied runs created before the long-horizon diagnostic was added do not
+contain those CSVs and therefore need one fresh `--preset paper` run first.
 
 The experiment reserves the final test block before any configuration or
 candidate search: 8 quarters for GDP and 60 observations for daily market
@@ -280,6 +284,9 @@ results/numerical_smoothness_selection/<timestamp>_applied-paper_<sha>/
 ├── candidate_results.csv
 ├── objective_profiles.csv
 ├── applied_paths.csv
+├── long_horizon_order_selection.csv
+├── long_horizon_order_candidates.csv
+├── long_horizon_order_paths.csv
 ├── temporal_split_protocol.csv
 ├── temporal_split.pdf
 ├── applied_case_studies.pdf
@@ -294,9 +301,24 @@ Because validation is rolling-origin, it is deliberately not drawn as one
 fixed validation interval. `temporal_split_protocol.csv` records the exact
 date boundaries used to construct the figure.
 
-The validation ranking is the actual selection ranking. The test ranking is
-retrospective diagnostic information only. A validation--test rank reversal
-does not permit selecting on the test set.
+The main applied figure remains a 4-by-3 panel. Its first two columns retain
+the selected forecast-CV profile and the fitted trends implied by its recovered
+minima. The third column is now a long-horizon visual diagnostic over
+`d=1,2,3,4`: for each order, the full pre-reserved test length is used as the
+forecast horizon, the training window is chosen by development-only rolling CV,
+and up to three epsilon-separated smoothness candidates are plotted. Observed
+training and test values are always blue; forecasts use red for `d=1`, green
+for `d=2`, purple for `d=3`, and orange for `d=4`. Within each order,
+larger smoothness is rendered with a more saturated version of the same hue.
+
+The third-column vertical limits are computed only from the displayed observed
+training tail and observed test block. Forecasts that diverge for large
+difference orders are therefore clipped by the plotting window rather than
+compressing the observed series into an unreadable scale.
+
+The validation ranking is the actual selection ranking. The test ranking and
+all long-horizon test paths are retrospective diagnostic information only. They
+do not permit selecting an order, window, or smoothness from the test block.
 
 The candidate set is a selection-sensitivity diagnostic, not a confidence
 interval or probability distribution over smoothness.
