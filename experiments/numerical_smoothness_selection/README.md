@@ -255,6 +255,14 @@ Run:
 python experiments/numerical_smoothness_selection/run_applied_case_studies.py --preset paper
 ~~~
 
+To change only the presentation after a paper run has been frozen, regenerate
+the figures directly from its stored CSV outputs without repeating selection:
+
+~~~bash
+python experiments/numerical_smoothness_selection/run_applied_case_studies.py \
+  --figures-from-run results/numerical_smoothness_selection/20261001T022610Z_applied-paper_72b8aaa
+~~~
+
 The experiment reserves the final test block before any configuration or
 candidate search: 8 quarters for GDP and 60 observations for daily market
 series.
@@ -272,9 +280,19 @@ results/numerical_smoothness_selection/<timestamp>_applied-paper_<sha>/
 ├── candidate_results.csv
 ├── objective_profiles.csv
 ├── applied_paths.csv
+├── temporal_split_protocol.csv
+├── temporal_split.pdf
 ├── applied_case_studies.pdf
 └── run_metadata.json
 ~~~
+
+`temporal_split.pdf` shows the full chronology for each applied series. The
+development region and final refit window are shaded separately, every rolling
+validation block is represented in a narrow protocol strip with its forecast
+origin marked, and the final reserved test block is kept visually distinct.
+Because validation is rolling-origin, it is deliberately not drawn as one
+fixed validation interval. `temporal_split_protocol.csv` records the exact
+date boundaries used to construct the figure.
 
 The validation ranking is the actual selection ranking. The test ranking is
 retrospective diagnostic information only. A validation--test rank reversal
