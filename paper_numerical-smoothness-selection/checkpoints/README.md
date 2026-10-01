@@ -13,7 +13,7 @@ from Git history or old chats. A checkpoint should state:
 
 ## Current checkpoint
 
-Read [CP03_manuscript-and-applied-direction.md](CP03_manuscript-and-applied-direction.md).
+Read [CP04_applied-results.md](CP04_applied-results.md).
 
 Previous project decisions and detailed numerical results remain under
 `../notes/`.
