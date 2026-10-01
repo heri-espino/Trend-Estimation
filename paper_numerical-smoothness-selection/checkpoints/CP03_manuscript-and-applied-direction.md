@@ -3,136 +3,104 @@
 **Date:** 2026-09-30  
 **Status:** current.
 
-## 1. Current paper question
+## Current paper question
 
-For fixed difference order (d), rolling-window length (L), and forecast
-horizon (h):
+For fixed difference order \(d\), rolling-window length \(L\), and forecast
+horizon \(h\):
 
 > Can forecast-optimal smoothness in finite-difference penalized least squares
 > be located accurately and economically when the rolling forecast-validation
 > surface contains multiple local minima?
 
-The numerical method is frozen. The paper is now moving from validation of the
-search algorithm to **interpretation of the multiple-minimum phenomenon on
-real series**.
+The numerical search is frozen. The active task is now to interpret what those
+different local minima mean on real series and whether their validation ranking
+persists on unseen data.
 
-## 2. Frozen numerical method
+## Frozen numerical evidence
 
-Primary search specification:
-
-[
-egin{aligned}
-	ext{initial grid size} &= 9,\
-	ext{endpoint refinement levels} &= 6,\
-	ext{maximum adaptive depth} &= 8,\
-	ext{minimum interval width} &= 10^{-3},\
-	ext{derivative tolerance} &= 10^{-8},\
-	ext{curvature tolerance} &= 10^{-8},\
-	ext{near-zero derivative ratio} &= 0.2,\
-	ext{Brent root tolerance} &= 10^{-10},\
-	ext{interior boundary margin} &= 10^{-6}.
-end{aligned}
-]
-
-Exact (S=0) and (S=1) are always evaluated.
-
-Do not retune this specification from later applied examples.
-
-## 3. Frozen primary evidence
-
-- adversarial analytic objectives: **240/240** relevant known minima/boundary
-  optima recovered;
-- synthetic rolling forecast objectives: **2105/2105** dense-reference
-  interior minima recovered over **1920** surfaces;
-- financial geometry stress test: **473/473** dense-reference interior minima
-  recovered over **384** surfaces;
-- synthetic mean evaluation fraction: **1.57%** of the dense grid;
-- financial mean evaluation fraction: **1.84%** of the dense grid;
+- 240/240 relevant known adversarial minima/boundary optima recovered;
+- 2105/2105 synthetic dense-reference interior minima recovered across 1920
+  surfaces;
+- 473/473 financial dense-reference interior minima recovered across 384
+  surfaces;
+- mean evaluation fractions of 1.57% (synthetic) and 1.84% (financial);
 - OFAT sensitivity completed;
-- epsilon spacing classified as post-processing only.
+- epsilon spacing fixed as post-processing only.
 
-These results establish the numerical-search claim. They do not establish
-forecasting superiority or economic predictability.
+Do not retune the numerical search from later applied examples.
 
-## 4. Manuscript state
+## Applied protocol now frozen
 
-A complete SMCCA manuscript draft exists in `../main.tex`.
+Series:
 
-Current length: approximately 10 pages in the SMCCA template.
+1. GDPC1 — GDP;
+2. SPY — ETF;
+3. AAPL — stock;
+4. BTC-USD — crypto.
 
-Current manuscript strengths:
+The final test block is reserved before any configuration search:
 
-- clear PLS formulation;
-- normalized smoothness coordinate (Sin[0,1]);
-- analytic derivative formulas;
-- explicit adaptive-search algorithm;
-- exact endpoint treatment;
-- controlled adversarial, synthetic, and real-data numerical validation.
+- GDP: 8 quarters;
+- daily series: 60 observations.
 
-Current manuscript weakness:
+Configuration and candidate selection use development data only. The final test
+block is used only after the candidate set is frozen.
 
-> The reader sees that the optimizer works, but does not yet see clearly why
-> multiple forecast-CV minima are substantively different smoothing choices.
+Representative candidate minima use the already frozen spacing
+\(\varepsilon=0.10\), with at most three candidates.
 
-The next addition should therefore be interpretive/applied rather than another
-large benchmark.
+The displayed configuration is chosen by development data only: among
+configurations with at least two representative minima, maximize the
+smoothness separation between the two lowest-CV candidates and break ties
+lexicographically by \((d,L,h)\).
 
-## 5. New applied direction
+## Validation--test rank reversals
 
-Add a small set of **case studies** covering qualitatively different data:
+For the frozen candidate set
 
-1. quarterly macroeconomic series: real GDP (FRED `GDPC1`);
-2. ETF: e.g. SPY or QQQ;
-3. individual stock: e.g. AAPL or XOM;
-4. cryptocurrency: e.g. BTC-USD or ETH-USD.
+\[
+\mathcal C=\{S_1,\ldots,S_K\},
+\]
 
-For each case, show:
+let
 
-- the rolling forecast-CV profile (F(S));
-- all relevant local minima;
-- the corresponding fitted trends on the same training data;
-- the continuation/forecast implied by each minimum;
-- an untouched final test block;
-- test error for each candidate minimum;
-- optionally a classical smoothing choice such as GCV as a reference, if
-  implemented without changing the primary question.
+\[
+k_{\mathrm{CV}}=\arg\min_k CV_k.
+\]
 
-The aim is **not** to identify a universally best asset-specific model. The aim
-is to show that distinct minima correspond to distinct trend scales and future
-paths.
+After freezing the candidates, evaluate them on the untouched block and define
+for diagnosis only
 
-## 6. Interpretation to develop
+\[
+k_{\mathrm{test}}=\arg\min_k E_k^{\mathrm{test}}.
+\]
 
-As (lambda) changes, the PLS smoother attenuates spectral/eigen components at
-different rates through
+If
 
-[
-alpha_j(lambda)=rac{1}{1+lambdadelta_j}.
-]
+\[
+k_{\mathrm{CV}}\neq k_{\mathrm{test}},
+\]
 
-The forecast operator then maps the resulting endpoint level, slope, and
-higher-order finite-difference structure into the future.
+report a validation--test rank reversal.
 
-Hence the rolling forecast loss need not change monotonically with smoothness:
-different smoothing levels may suppress noise differently while preserving
-different local slopes/curvatures. At a fixed forecast horizon, several such
-trade-offs can become locally optimal.
+This is not test-set model selection. It is evidence that distinct local minima
+of the same validation criterion can encode different smoothing/forecast
+choices whose relative ordering is sample-dependent.
 
-This mechanism should become part of the paper's explanation of why multiple
-minima occur.
+## Why this matters
 
-## 7. What not to do
+The previous manuscript showed that the numerical search recovered minima
+accurately. The applied section should now show that those minima can correspond
+to visibly different trend scales and forecast paths.
 
-- Do not reopen the frozen numerical algorithm.
-- Do not turn the paper into a model zoo.
-- Do not select illustrative examples using final test error.
-- Do not claim that a local minimum represents a true economic regime.
-- Do not claim financial predictability.
-- Do not mix this paper with recurrence/first-passage analysis.
+A rank reversal is especially informative: it demonstrates that the minimum
+with the smallest rolling-CV error need not be the candidate with the smallest
+error on the later untouched block. The test result remains diagnostic and
+must never be fed back into selection.
 
-## 8. Immediate next action
+## Immediate next action
 
-Implement a reproducible applied case-study experiment with a strictly untouched
-test block and deterministic example-selection rules. Then regenerate a small
-number of manuscript figures and revise the Introduction, Results, and
-Discussion around the interpretation of multiple minima.
+Run the paper preset of
+experiments/numerical_smoothness_selection/run_applied_case_studies.py,
+commit the result directory, inspect the four selected configurations and rank
+reversals, then revise the manuscript around the applied interpretation.
