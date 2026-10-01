@@ -16,6 +16,7 @@ matplotlib.use("Agg")
 
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
+from matplotlib.colors import to_rgb
 import numpy as np
 import pandas as pd
 
@@ -40,6 +41,16 @@ FROZEN_SEARCH = {
 CANDIDATE_SPACING_EPSILON = 0.10
 MAX_CANDIDATES = 3
 BOUNDARY_PROBE = 0.002
+
+LONG_DIAGNOSTIC_ORDERS = (1, 2, 3, 4)
+LONG_DIAGNOSTIC_MAX_CANDIDATES = 3
+OBSERVED_COLOR = "#1f77b4"
+ORDER_COLORS = {
+    1: "#d62728",  # red
+    2: "#2ca02c",  # green
+    3: "#9467bd",  # purple
+    4: "#ff7f0e",  # orange
+}
 
 SERIES = {
     "GDPC1": {
@@ -519,6 +530,9 @@ def _evaluate_frozen_candidates(
                 {
                     "series": key,
                     "family": SERIES[key]["family"],
+                    "order": int(order),
+                    "window": int(window),
+                    "horizon": int(horizon),
                     "cv_rank": int(candidate["cv_rank"]),
                     "smoothness": float(candidate["smoothness"]),
                     "segment": "train",
@@ -537,6 +551,9 @@ def _evaluate_frozen_candidates(
                 {
                     "series": key,
                     "family": SERIES[key]["family"],
+                    "order": int(order),
+                    "window": int(window),
+                    "horizon": int(horizon),
                     "cv_rank": int(candidate["cv_rank"]),
                     "smoothness": float(candidate["smoothness"]),
                     "segment": "test",
@@ -596,6 +613,133 @@ def _objective_profile(
         )
 
     return pd.DataFrame(rows)
+
+
+def _candidate_tint(
+    base_color: str,
+    smoothness: float,
+) -> tuple[float, float, float]:
+    """Map smoothness to lightness while preserving an order-specific hue."""
+
+    rgb = np.asarray(to_rgb(base_color), dtype=float)
+    smoothness = float(np.clip(smoothness, 0.0, 1.0))
+    # S=0 is strongly lightened; S=1 is the fully saturated base color.
+    white_fraction = 0.68 * (1.0 - smoothness)
+    tinted = rgb * (1.0 - white_fraction) + white_fraction
+    return tuple(float(value) for value in tinted)
+
+
+def _long_horizon_order_diagnostics(
+    key: str,
+    frame: pd.DataFrame,
+    development: pd.DataFrame,
+    test: pd.DataFrame,
+    *,
+    preset: dict,
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Build development-selected long-horizon forecasts for d=1,...,4.
+
+    For each order, the diagnostic horizon is the complete pre-reserved test
+    length.  Window length and smoothness candidates are selected using rolling
+    CV entirely inside the development region.  The test block is used only
+    after that choice is frozen.
+    """
+
+    spec = SERIES[key]
+    development_log = np.log(development["value"].to_numpy(dtype=float))
+    _, windows, _ = _effective_grid(key, preset)
+    horizon = int(spec["test_reserve"])
+
+    selection_rows: list[dict] = []
+    candidate_frames: list[pd.DataFrame] = []
+    path_frames: list[pd.DataFrame] = []
+
+    for order in LONG_DIAGNOSTIC_ORDERS:
+        order_rows: list[dict] = []
+        order_payloads: dict[int, dict] = {}
+
+        for window in windows:
+            window = int(window)
+            if window + horizon > len(development_log):
+                continue
+
+            prepared, splits = _make_prepared_objective(
+                development_log,
+                order=int(order),
+                window=window,
+                horizon=horizon,
+                step=int(spec["step"]),
+                max_origins=int(spec["max_origins"]),
+            )
+            search, candidates, n_evaluations = _search_candidates(
+                prepared,
+                order=int(order),
+                window=window,
+            )
+            order_payloads[window] = {
+                "prepared": prepared,
+                "splits": splits,
+                "search": search,
+                "candidates": candidates,
+            }
+            order_rows.append(
+                {
+                    "series": key,
+                    "family": spec["family"],
+                    "order": int(order),
+                    "window": window,
+                    "horizon": horizon,
+                    "best_cv_error": float(candidates[0]["cv_error"]),
+                    "best_smoothness": float(candidates[0]["smoothness"]),
+                    "n_representative_candidates": int(len(candidates)),
+                    "adaptive_evaluations": int(n_evaluations),
+                }
+            )
+
+        if not order_rows:
+            raise RuntimeError(
+                f"No long-horizon diagnostic configuration for {key}, d={order}."
+            )
+
+        # For each d, choose L by the smallest long-horizon rolling-CV error.
+        order_scan = pd.DataFrame(order_rows)
+        selected = (
+            order_scan.sort_values(
+                ["best_cv_error", "window"],
+                ascending=[True, True],
+            )
+            .iloc[0]
+        )
+        window = int(selected["window"])
+        payload = order_payloads[window]
+        candidates = payload["candidates"][:LONG_DIAGNOSTIC_MAX_CANDIDATES]
+
+        candidate_result, path_result = _evaluate_frozen_candidates(
+            key,
+            frame,
+            development,
+            test,
+            order=int(order),
+            window=window,
+            horizon=horizon,
+            candidates=candidates,
+        )
+        candidate_result["diagnostic"] = "long_horizon_across_orders"
+        path_result["diagnostic"] = "long_horizon_across_orders"
+
+        selection_rows.append(
+            {
+                **selected.to_dict(),
+                "n_displayed_candidates": int(len(candidates)),
+            }
+        )
+        candidate_frames.append(candidate_result)
+        path_frames.append(path_result)
+
+    selections = pd.DataFrame(selection_rows)
+    candidates = pd.concat(candidate_frames, ignore_index=True)
+    paths = pd.concat(path_frames, ignore_index=True)
+    return selections, candidates, paths
 
 
 def _temporal_protocol(selections: pd.DataFrame) -> pd.DataFrame:
@@ -816,12 +960,16 @@ def _write_applied_figures(
     candidates: pd.DataFrame,
     profiles: pd.DataFrame,
     paths: pd.DataFrame,
+    long_horizon_candidates: pd.DataFrame,
+    long_horizon_paths: pd.DataFrame,
 ) -> None:
     _build_figure(
         selections,
         candidates,
         profiles,
         paths,
+        long_horizon_candidates,
+        long_horizon_paths,
         run_dir / "applied_case_studies.pdf",
     )
     protocol = _temporal_protocol(selections)
@@ -839,23 +987,35 @@ def _replot_existing_run(run_dir: Path) -> None:
         "candidate_results.csv",
         "objective_profiles.csv",
         "applied_paths.csv",
+        "long_horizon_order_candidates.csv",
+        "long_horizon_order_paths.csv",
     }
     missing = sorted(name for name in required if not (run_dir / name).exists())
     if missing:
         raise FileNotFoundError(
-            f"Cannot replot {run_dir}; missing: {', '.join(missing)}"
+            f"Cannot replot {run_dir}; missing: {', '.join(missing)}. "
+            "Run the updated applied-case experiment once to create the "
+            "long-horizon diagnostic files."
         )
 
     selections = pd.read_csv(run_dir / "case_selection.csv")
     candidates = pd.read_csv(run_dir / "candidate_results.csv")
     profiles = pd.read_csv(run_dir / "objective_profiles.csv")
     paths = pd.read_csv(run_dir / "applied_paths.csv")
+    long_horizon_candidates = pd.read_csv(
+        run_dir / "long_horizon_order_candidates.csv"
+    )
+    long_horizon_paths = pd.read_csv(
+        run_dir / "long_horizon_order_paths.csv"
+    )
     _write_applied_figures(
         run_dir,
         selections,
         candidates,
         profiles,
         paths,
+        long_horizon_candidates,
+        long_horizon_paths,
     )
 
 
@@ -864,6 +1024,8 @@ def _build_figure(
     candidates: pd.DataFrame,
     profiles: pd.DataFrame,
     paths: pd.DataFrame,
+    long_horizon_candidates: pd.DataFrame,
+    long_horizon_paths: pd.DataFrame,
     output_path: Path,
 ) -> None:
     series_order = selections["series"].tolist()
@@ -871,7 +1033,7 @@ def _build_figure(
     fig, axes = plt.subplots(
         n_rows,
         3,
-        figsize=(12.0, max(3.0, 2.9 * n_rows)),
+        figsize=(12.8, max(3.0, 2.95 * n_rows)),
         squeeze=False,
     )
 
@@ -880,11 +1042,35 @@ def _build_figure(
         case_candidates = candidates.loc[candidates["series"].eq(key)].copy()
         profile = profiles.loc[profiles["series"].eq(key)]
         case_paths = paths.loc[paths["series"].eq(key)].copy()
+        diagnostic_candidates = long_horizon_candidates.loc[
+            long_horizon_candidates["series"].eq(key)
+        ].copy()
+        diagnostic_paths = long_horizon_paths.loc[
+            long_horizon_paths["series"].eq(key)
+        ].copy()
 
+        # Column 1: development-region objective profile.
         ax = axes[row_idx, 0]
-        ax.plot(profile["smoothness"], profile["cv_error"], linewidth=1.2)
+        ax.plot(
+            profile["smoothness"],
+            profile["cv_error"],
+            linewidth=1.2,
+            color=OBSERVED_COLOR,
+        )
+        selected_order = int(selection["order"])
+        selected_base = ORDER_COLORS[selected_order]
         for _, candidate in case_candidates.iterrows():
-            ax.scatter(candidate["smoothness"], candidate["cv_error"], s=35)
+            marker_color = _candidate_tint(
+                selected_base,
+                float(candidate["smoothness"]),
+            )
+            ax.scatter(
+                candidate["smoothness"],
+                candidate["cv_error"],
+                s=35,
+                color=marker_color,
+                alpha=0.72,
+            )
             ax.annotate(
                 f"CV-{int(candidate['cv_rank'])}",
                 (candidate["smoothness"], candidate["cv_error"]),
@@ -896,11 +1082,12 @@ def _build_figure(
         ax.set_xlabel("Normalized smoothness $S$")
         ax.set_ylabel("Rolling CV MSE")
         ax.set_title(
-            f"{SERIES[key]['family']}: d={int(selection['order'])}, "
+            f"{SERIES[key]['family']}: d={selected_order}, "
             f"L={int(selection['window'])}, h={int(selection['horizon'])}"
         )
         ax.grid(alpha=0.2)
 
+        # Column 2: fitted trends induced by the selected configuration's minima.
         ax = axes[row_idx, 1]
         first_rank = int(case_candidates["cv_rank"].min())
         observed_train = case_paths.loc[
@@ -911,70 +1098,130 @@ def _build_figure(
             pd.to_datetime(observed_train["date"]),
             observed_train["observed"],
             linewidth=1.0,
+            color=OBSERVED_COLOR,
             label="Observed",
         )
         for _, candidate in case_candidates.iterrows():
+            rank = int(candidate["cv_rank"])
+            smoothness = float(candidate["smoothness"])
             candidate_train = case_paths.loc[
                 (case_paths["segment"].eq("train"))
-                & (case_paths["cv_rank"].eq(int(candidate["cv_rank"])))
+                & (case_paths["cv_rank"].eq(rank))
             ]
             ax.plot(
                 pd.to_datetime(candidate_train["date"]),
                 candidate_train["candidate_path"],
-                linewidth=1.3,
-                label=f"CV-{int(candidate['cv_rank'])}",
+                linewidth=1.35,
+                color=_candidate_tint(selected_base, smoothness),
+                alpha=0.58,
+                label=f"CV-{rank}, S={smoothness:.3f}",
             )
         ax.set_title("Same data, different CV minima")
         ax.set_ylabel("Level")
-        ax.legend(frameon=False, fontsize=7)
-        ax.grid(alpha=0.2)
-
-        ax = axes[row_idx, 2]
-        train_tail_n = min(60, int(selection["window"]))
-        observed_tail = observed_train.tail(train_tail_n)
-        ax.plot(
-            pd.to_datetime(observed_tail["date"]),
-            observed_tail["observed"],
-            linewidth=1.0,
-            label="Observed train",
-        )
-        first_test = case_paths.loc[
-            (case_paths["segment"].eq("test"))
-            & (case_paths["cv_rank"].eq(first_rank))
-        ]
-        ax.plot(
-            pd.to_datetime(first_test["date"]),
-            first_test["observed"],
-            marker="o",
-            markersize=2.5,
-            linewidth=1.0,
-            label="Untouched test",
-        )
-        for _, candidate in case_candidates.iterrows():
-            rank = int(candidate["cv_rank"])
-            candidate_test = case_paths.loc[
-                (case_paths["segment"].eq("test"))
-                & (case_paths["cv_rank"].eq(rank))
-            ]
-            test_rank = int(candidate["test_rank"])
-            ax.plot(
-                pd.to_datetime(candidate_test["date"]),
-                candidate_test["candidate_path"],
-                linewidth=1.3,
-                label=f"CV-{rank} / test-{test_rank}",
-            )
-        reversal = bool(case_candidates["validation_test_rank_reversal"].iloc[0])
-        ax.set_title(
-            "Forecast vs untouched test"
-            + (" — rank reversal" if reversal else "")
-        )
         ax.legend(frameon=False, fontsize=6.8)
         ax.grid(alpha=0.2)
 
+        # Column 3: full reserved test block, comparing d=1,...,4.
+        ax = axes[row_idx, 2]
+        frame = _load_series(key)
+        test_reserve = int(selection["test_reserve"])
+        development = frame.iloc[:-test_reserve].copy()
+        test = frame.iloc[-test_reserve:].copy()
+
+        # Show enough history to provide context but keep the future block visible.
+        max_selected_window = int(
+            diagnostic_candidates["window"].max()
+        )
+        history_n = min(
+            len(development),
+            max(int(test_reserve), min(max_selected_window, 126)),
+        )
+        observed_tail = development.tail(history_n)
+
+        ax.plot(
+            pd.to_datetime(observed_tail["date"]),
+            observed_tail["value"],
+            linewidth=1.05,
+            color=OBSERVED_COLOR,
+            label="Observed train",
+            zorder=5,
+        )
+        ax.plot(
+            pd.to_datetime(test["date"]),
+            test["value"],
+            linewidth=1.05,
+            linestyle="--",
+            marker="o",
+            markersize=2.2,
+            color=OBSERVED_COLOR,
+            label="Observed test",
+            zorder=5,
+        )
+
+        for order in LONG_DIAGNOSTIC_ORDERS:
+            order_candidates = (
+                diagnostic_candidates.loc[
+                    diagnostic_candidates["order"].eq(order)
+                ]
+                .sort_values("cv_rank")
+                .copy()
+            )
+            if order_candidates.empty:
+                continue
+
+            first_for_order = True
+            for _, candidate in order_candidates.iterrows():
+                rank = int(candidate["cv_rank"])
+                smoothness = float(candidate["smoothness"])
+                candidate_test = diagnostic_paths.loc[
+                    (diagnostic_paths["order"].eq(order))
+                    & (diagnostic_paths["cv_rank"].eq(rank))
+                    & (diagnostic_paths["segment"].eq("test"))
+                ]
+                if candidate_test.empty:
+                    continue
+
+                ax.plot(
+                    pd.to_datetime(candidate_test["date"]),
+                    candidate_test["candidate_path"],
+                    linewidth=1.45 if rank == 1 else 1.05,
+                    color=_candidate_tint(ORDER_COLORS[int(order)], smoothness),
+                    alpha=0.58 if rank == 1 else 0.42,
+                    label=(f"d={order}" if first_for_order else None),
+                    zorder=3,
+                )
+                first_for_order = False
+
+        observed_for_limits = np.concatenate(
+            [
+                observed_tail["value"].to_numpy(dtype=float),
+                test["value"].to_numpy(dtype=float),
+            ]
+        )
+        observed_min = float(np.min(observed_for_limits))
+        observed_max = float(np.max(observed_for_limits))
+        observed_range = max(observed_max - observed_min, abs(observed_max) * 1e-6, 1e-8)
+        padding = 0.08 * observed_range
+        ax.set_ylim(observed_min - padding, observed_max + padding)
+
+        ax.axvline(
+            pd.to_datetime(test["date"].iloc[0]),
+            color="0.35",
+            linewidth=0.8,
+            linestyle=":",
+            alpha=0.7,
+        )
+        ax.set_title(
+            f"Long-horizon forecasts across $d$ (h={test_reserve})"
+        )
+        ax.legend(frameon=False, fontsize=6.4, ncol=2)
+        ax.grid(alpha=0.2)
+
         for panel in axes[row_idx, 1:]:
-            panel.xaxis.set_major_locator(mdates.AutoDateLocator())
+            locator = mdates.AutoDateLocator()
+            panel.xaxis.set_major_locator(locator)
             panel.xaxis.set_major_formatter(
-                mdates.ConciseDateFormatter(panel.xaxis.get_major_locator())
+                mdates.ConciseDateFormatter(locator)
             )
 
     fig.tight_layout()
@@ -1011,6 +1258,9 @@ def main() -> None:
     candidate_frames: list[pd.DataFrame] = []
     profile_frames: list[pd.DataFrame] = []
     path_frames: list[pd.DataFrame] = []
+    long_horizon_selection_frames: list[pd.DataFrame] = []
+    long_horizon_candidate_frames: list[pd.DataFrame] = []
+    long_horizon_path_frames: list[pd.DataFrame] = []
     snapshot_meta: dict[str, dict] = {}
 
     started = time.perf_counter()
@@ -1059,6 +1309,17 @@ def main() -> None:
             horizon=horizon,
             grid_size=profile_grid_size,
         )
+        (
+            long_horizon_selection,
+            long_horizon_candidates,
+            long_horizon_paths,
+        ) = _long_horizon_order_diagnostics(
+            key,
+            frame,
+            development,
+            test,
+            preset=preset,
+        )
 
         reversal = bool(candidate_result["validation_test_rank_reversal"].iloc[0])
         test_best_rank = int(
@@ -1094,6 +1355,9 @@ def main() -> None:
         candidate_frames.append(candidate_result)
         profile_frames.append(profile)
         path_frames.append(path_result)
+        long_horizon_selection_frames.append(long_horizon_selection)
+        long_horizon_candidate_frames.append(long_horizon_candidates)
+        long_horizon_path_frames.append(long_horizon_paths)
 
         path = Path(spec["path"])
         snapshot_meta[key] = {
@@ -1116,12 +1380,36 @@ def main() -> None:
     candidates = pd.concat(candidate_frames, ignore_index=True)
     profiles = pd.concat(profile_frames, ignore_index=True)
     paths = pd.concat(path_frames, ignore_index=True)
+    long_horizon_selections = pd.concat(
+        long_horizon_selection_frames,
+        ignore_index=True,
+    )
+    long_horizon_candidates = pd.concat(
+        long_horizon_candidate_frames,
+        ignore_index=True,
+    )
+    long_horizon_paths = pd.concat(
+        long_horizon_path_frames,
+        ignore_index=True,
+    )
 
     selections.to_csv(run_dir / "case_selection.csv", index=False)
     scans.to_csv(run_dir / "configuration_scan.csv", index=False)
     candidates.to_csv(run_dir / "candidate_results.csv", index=False)
     profiles.to_csv(run_dir / "objective_profiles.csv", index=False)
     paths.to_csv(run_dir / "applied_paths.csv", index=False)
+    long_horizon_selections.to_csv(
+        run_dir / "long_horizon_order_selection.csv",
+        index=False,
+    )
+    long_horizon_candidates.to_csv(
+        run_dir / "long_horizon_order_candidates.csv",
+        index=False,
+    )
+    long_horizon_paths.to_csv(
+        run_dir / "long_horizon_order_paths.csv",
+        index=False,
+    )
 
     _write_applied_figures(
         run_dir,
@@ -1129,6 +1417,8 @@ def main() -> None:
         candidates,
         profiles,
         paths,
+        long_horizon_candidates,
+        long_horizon_paths,
     )
 
     metadata = {
@@ -1158,6 +1448,18 @@ def main() -> None:
             "candidate at the development endpoint and score the first h "
             "observations of the untouched test block."
         ),
+        "long_horizon_diagnostic": {
+            "orders": list(LONG_DIAGNOSTIC_ORDERS),
+            "horizon": "entire pre-reserved test block",
+            "window_selection": (
+                "For each order independently, choose L by the smallest "
+                "rolling-CV error at the long diagnostic horizon using "
+                "development data only."
+            ),
+            "displayed_candidates_per_order": LONG_DIAGNOSTIC_MAX_CANDIDATES,
+            "test_role": "visual diagnostic only; never used for selection",
+            "plot_ylim": "observed train tail plus observed test only",
+        },
         "profile_grid_size": profile_grid_size,
         "snapshot": snapshot_meta,
         "elapsed_seconds": time.perf_counter() - started,
