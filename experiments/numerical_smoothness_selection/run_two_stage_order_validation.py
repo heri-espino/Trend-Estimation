@@ -14,7 +14,6 @@ matplotlib.use("Agg")
 
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
-from matplotlib.colors import to_rgb
 from matplotlib.lines import Line2D
 import numpy as np
 import pandas as pd
@@ -26,9 +25,8 @@ import run_applied_case_studies as applied
 
 RESULT_ROOT = Path("results") / "numerical_smoothness_selection"
 ORDERS = (1, 2, 3, 4)
-MODE_EPSILON = 0.10
 
-# Matplotlib-compatible colors matching the familiar "deep" palette.
+# Matplotlib-compatible colors from the familiar "deep" palette.
 OBSERVED_COLOR = "#4C72B0"
 ORDER_COLORS = {
     1: "#C44E52",  # red
@@ -40,13 +38,13 @@ ORDER_COLORS = {
 PRESETS = {
     "smoke": {
         "series": ("GDPC1",),
-        "windows": {
-            "GDPC1": (40,),
-        },
+        "windows": {"GDPC1": (40,)},
+        "max_origins_override": 6,
     },
     "paper": {
         "series": ("GDPC1", "SPY", "AAPL", "BTC-USD"),
         "windows": {},
+        "max_origins_override": None,
     },
 }
 
@@ -54,13 +52,13 @@ PRESETS = {
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description=(
-            "Exploratory two-stage order/smoothness selection. Stage 1 first "
-            "chooses L per order from aggregate rolling forecast CV, then "
-            "recovers the local smoothness minima preferred at each rolling "
-            "origin. Nearby S values are grouped into recurring modes. Stage 2 "
-            "scores every mode on a contiguous pseudo-test validation block. "
-            "Only after that is the winning (d, mode) refit and evaluated on "
-            "the untouched final test."
+            "Track local smoothness minima through nearby rolling windows. "
+            "At each origin, Validation 1 defines the smoothness objective; "
+            "its local minima are continued from the previous origin in a "
+            "small S-neighborhood. Each tracked minimum is then refit through "
+            "Validation 1 and scored on the immediately following Validation 2 "
+            "block. Historical Validation-2 scores select a persistent branch; "
+            "the final untouched test is diagnostic only."
         )
     )
     parser.add_argument("--preset", choices=tuple(PRESETS), default="paper")
@@ -68,22 +66,28 @@ def parse_args() -> argparse.Namespace:
         "--selection-metric",
         choices=("level_rmse", "log_rmse"),
         default="level_rmse",
-        help="Metric used on Validation 2 to choose the final candidate.",
+        help="Historical Validation-2 metric used to select a tracked branch.",
     )
     parser.add_argument(
-        "--mode-representative",
-        choices=("median", "mean"),
-        default="median",
+        "--max-minima",
+        type=int,
+        default=5,
+        help="Maximum number of local-minimum branches initialized per order.",
+    )
+    parser.add_argument(
+        "--track-epsilon",
+        type=float,
+        default=0.10,
         help=(
-            "Representative S used for each recurring rolling-origin mode. "
-            "Median is safer when a mode contains skewed or boundary values."
+            "Maximum |S_t-S_(t-1)| allowed when continuing a local-minimum "
+            "branch to the next rolling window."
         ),
     )
     parser.add_argument(
-        "--mode-epsilon",
+        "--candidate-spacing",
         type=float,
-        default=MODE_EPSILON,
-        help="Maximum gap in normalized smoothness used to group nearby minima.",
+        default=0.02,
+        help="Minimum S separation used to deduplicate minima on one surface.",
     )
     parser.add_argument("--output-dir", type=Path, default=None)
     parser.add_argument("--dpi", type=int, default=220)
@@ -105,7 +109,7 @@ def _git_short_sha() -> str:
 
 def _default_run_directory(preset: str) -> Path:
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-    return RESULT_ROOT / f"{stamp}_two-stage-order-{preset}_{_git_short_sha()}"
+    return RESULT_ROOT / f"{stamp}_tracked-minima-{preset}_{_git_short_sha()}"
 
 
 def _sha256(path: Path) -> str:
@@ -133,59 +137,184 @@ def _rmse(observed: np.ndarray, predicted: np.ndarray) -> float:
     return float(np.sqrt(np.mean((observed - predicted) ** 2)))
 
 
-def _fit_and_forecast(
-    train: pd.DataFrame,
-    future: pd.DataFrame,
+def _paired_splits(
+    n_obs: int,
+    *,
+    window: int,
+    horizon: int,
+    step: int,
+    max_origins: int,
+):
+    """Return rolling splits whose Validation 1 has a full Validation 2 after it."""
+
+    splits = td.rolling_origin_splits(
+        n_obs,
+        initial_train=window,
+        horizon=horizon,
+        step=step,
+        expanding=False,
+        train_window=window,
+    )
+    paired = [
+        split
+        for split in splits
+        if split.validation.stop + horizon <= n_obs
+    ]
+    paired = paired[-max_origins:]
+    if not paired:
+        raise ValueError(
+            f"No paired validation origins for L={window}, h={horizon}."
+        )
+    return paired
+
+
+def _surface_candidates(
+    prepared,
     *,
     order: int,
     window: int,
-    smoothness: float,
-) -> tuple[pd.DataFrame, np.ndarray]:
-    fit_train = train.tail(window).copy()
-    train_log = np.log(fit_train["value"].to_numpy(dtype=float))
-    model = td.PurePenalizedTrend(
-        order=int(order),
-        smoothness=float(smoothness),
-    ).fit(train_log)
-    fitted_level = _safe_levels(np.asarray(model.trend_, dtype=float))
-    forecast_log = np.asarray(model.forecast(len(future)), dtype=float)
-    forecast_level = _safe_levels(forecast_log)
+    spacing: float,
+) -> tuple[list[dict], int]:
+    """Recover distinct local minima on one Validation-1 objective surface."""
 
-    fitted = fit_train[["date", "value"]].copy()
-    fitted["candidate_path"] = fitted_level
-    return fitted, forecast_level
+    cache: dict[float, object] = {}
+
+    def evaluate_lambda(lambda_: float):
+        key = float(lambda_)
+        if key not in cache:
+            cache[key] = prepared.evaluate(key)
+        return cache[key]
+
+    def callback(lambda_: float):
+        result = evaluate_lambda(lambda_)
+        return result.value, result.first, result.second
+
+    result = td.find_stationary_points_smoothness(
+        callback,
+        n_obs=window,
+        order=order,
+        **applied.FROZEN_SEARCH,
+    )
+
+    pool: list[dict] = []
+    for point in result.points_:
+        if point.kind_ != "minimum":
+            continue
+        pool.append(
+            {
+                "smoothness": float(point.smoothness_),
+                "lambda": float(point.lambda_),
+                "val1_loss": float(point.objective_),
+                "source": "interior",
+            }
+        )
+
+    endpoint_values = {
+        0.0: float(evaluate_lambda(0.0).value),
+        1.0: float(evaluate_lambda(float("inf")).value),
+    }
+    lower_probe = td.smoothness_to_lambda(
+        applied.BOUNDARY_PROBE,
+        n_obs=window,
+        order=order,
+    )
+    upper_probe = td.smoothness_to_lambda(
+        1.0 - applied.BOUNDARY_PROBE,
+        n_obs=window,
+        order=order,
+    )
+    lower_probe_value = float(evaluate_lambda(lower_probe).value)
+    upper_probe_value = float(evaluate_lambda(upper_probe).value)
+
+    if endpoint_values[0.0] <= lower_probe_value:
+        pool.append(
+            {
+                "smoothness": 0.0,
+                "lambda": 0.0,
+                "val1_loss": endpoint_values[0.0],
+                "source": "S=0",
+            }
+        )
+    if endpoint_values[1.0] <= upper_probe_value:
+        pool.append(
+            {
+                "smoothness": 1.0,
+                "lambda": float("inf"),
+                "val1_loss": endpoint_values[1.0],
+                "source": "S=1",
+            }
+        )
+
+    if not pool:
+        pool = [
+            {
+                "smoothness": 0.0,
+                "lambda": 0.0,
+                "val1_loss": endpoint_values[0.0],
+                "source": "S=0",
+            },
+            {
+                "smoothness": 1.0,
+                "lambda": float("inf"),
+                "val1_loss": endpoint_values[1.0],
+                "source": "S=1",
+            },
+        ]
+
+    # Deduplicate numerical copies of the same basin, but do not collapse
+    # genuinely separate minima. Keep the lower-loss representative first.
+    ordered = sorted(
+        pool,
+        key=lambda row: (row["val1_loss"], row["smoothness"]),
+    )
+    distinct: list[dict] = []
+    for candidate in ordered:
+        if any(
+            abs(candidate["smoothness"] - kept["smoothness"]) < spacing
+            for kept in distinct
+        ):
+            continue
+        distinct.append(candidate)
+
+    distinct.sort(key=lambda row: row["smoothness"])
+    return distinct, len(cache)
 
 
-def _choose_window_per_order(
+def _select_window_per_order(
     key: str,
-    inner_development: pd.DataFrame,
+    history: pd.DataFrame,
     *,
     windows: tuple[int, ...],
+    max_origins: int,
 ) -> tuple[pd.DataFrame, dict[int, list]]:
-    """Choose L for each order using the ordinary aggregate rolling-CV objective."""
+    """Choose L per d from aggregate Validation-1 rolling loss only."""
 
     spec = applied.SERIES[key]
     horizon = int(spec["test_reserve"])
-    inner_log = np.log(inner_development["value"].to_numpy(dtype=float))
+    history_log = np.log(history["value"].to_numpy(dtype=float))
 
-    selected_rows: list[dict] = []
+    rows: list[dict] = []
     selected_splits: dict[int, list] = {}
 
     for order in ORDERS:
-        rows: list[dict] = []
+        order_rows: list[dict] = []
         payloads: dict[int, list] = {}
 
         for window in windows:
-            if window + horizon > len(inner_log):
+            if window + 2 * horizon > len(history_log):
                 continue
 
-            prepared, splits = applied._make_prepared_objective(
-                inner_log,
-                order=int(order),
+            splits = _paired_splits(
+                len(history_log),
                 window=int(window),
                 horizon=horizon,
                 step=int(spec["step"]),
-                max_origins=int(spec["max_origins"]),
+                max_origins=max_origins,
+            )
+            prepared = td.prepare_rolling_pure_forecast_objective(
+                history_log,
+                splits,
+                order=int(order),
             )
             search, candidates, n_evaluations = applied._search_candidates(
                 prepared,
@@ -193,423 +322,502 @@ def _choose_window_per_order(
                 window=int(window),
             )
             best = candidates[0]
-            rows.append(
+            order_rows.append(
                 {
                     "series": key,
                     "family": spec["family"],
                     "order": int(order),
                     "window": int(window),
                     "horizon": horizon,
-                    "aggregate_cv_error": float(best["cv_error"]),
+                    "aggregate_val1_loss": float(best["cv_error"]),
                     "aggregate_best_smoothness": float(best["smoothness"]),
-                    "aggregate_best_source": str(best["source"]),
-                    "n_rolling_origins": int(len(splits)),
+                    "n_origins": int(len(splits)),
                     "adaptive_evaluations": int(n_evaluations),
                     "n_stationary_points": int(len(search.points_)),
-                    "n_representative_candidates": int(len(candidates)),
                 }
             )
             payloads[int(window)] = splits
 
-        if not rows:
+        if not order_rows:
             raise RuntimeError(
-                f"No valid Stage-1 window configuration for {key}, d={order}."
+                f"No valid rolling window for {key}, d={order}."
             )
 
         selected = (
-            pd.DataFrame(rows)
+            pd.DataFrame(order_rows)
             .sort_values(
-                ["aggregate_cv_error", "window"],
+                ["aggregate_val1_loss", "window"],
                 ascending=[True, True],
             )
             .iloc[0]
             .to_dict()
         )
-        selected_rows.append(selected)
+        rows.append(selected)
         selected_splits[int(order)] = payloads[int(selected["window"])]
 
     return (
-        pd.DataFrame(selected_rows).sort_values("order").reset_index(drop=True),
+        pd.DataFrame(rows).sort_values("order").reset_index(drop=True),
         selected_splits,
     )
 
 
-def _rolling_origin_minima(
-    key: str,
-    inner_development: pd.DataFrame,
-    window_selection: pd.DataFrame,
-    splits_by_order: dict[int, list],
-) -> pd.DataFrame:
-    """Recover all representative local minima for each individual rolling origin."""
+def _match_branches(
+    previous_s: dict[str, float],
+    candidates: list[dict],
+    *,
+    epsilon: float,
+) -> tuple[dict[str, tuple[int, float]], set[int]]:
+    """Greedy one-to-one nearest-neighbor continuation in normalized S."""
 
-    inner_log = np.log(inner_development["value"].to_numpy(dtype=float))
+    pairs: list[tuple[float, str, int]] = []
+    for branch_id, s_prev in previous_s.items():
+        for candidate_idx, candidate in enumerate(candidates):
+            distance = abs(float(candidate["smoothness"]) - float(s_prev))
+            pairs.append((distance, branch_id, candidate_idx))
+
+    matches: dict[str, tuple[int, float]] = {}
+    used_candidates: set[int] = set()
+
+    for distance, branch_id, candidate_idx in sorted(pairs):
+        if distance > epsilon:
+            continue
+        if branch_id in matches or candidate_idx in used_candidates:
+            continue
+        matches[branch_id] = (candidate_idx, float(distance))
+        used_candidates.add(candidate_idx)
+
+    return matches, used_candidates
+
+
+def _score_validation2(
+    history: pd.DataFrame,
+    split,
+    *,
+    horizon: int,
+    order: int,
+    window: int,
+    smoothness: float,
+) -> tuple[float, float]:
+    """Refit through Validation 1, then forecast the immediately following block."""
+
+    val2 = history.iloc[
+        split.validation.stop : split.validation.stop + horizon
+    ].copy()
+    refit = history.iloc[: split.validation.stop].tail(window).copy()
+
+    model = td.PurePenalizedTrend(
+        order=order,
+        smoothness=float(smoothness),
+    ).fit(np.log(refit["value"].to_numpy(dtype=float)))
+    forecast_log = np.asarray(model.forecast(horizon), dtype=float)
+    forecast_level = _safe_levels(forecast_log)
+
+    observed_level = val2["value"].to_numpy(dtype=float)
+    observed_log = np.log(observed_level)
+    return (
+        _rmse(observed_level, forecast_level),
+        _rmse(observed_log, forecast_log),
+    )
+
+
+def _track_order_minima(
+    key: str,
+    history: pd.DataFrame,
+    *,
+    order: int,
+    window: int,
+    splits: list,
+    max_minima: int,
+    track_epsilon: float,
+    candidate_spacing: float,
+) -> pd.DataFrame:
+    """Initialize local minima once, then continue each branch locally in time."""
+
+    history_log = np.log(history["value"].to_numpy(dtype=float))
+    horizon = int(applied.SERIES[key]["test_reserve"])
+
+    branch_last_s: dict[str, float] = {}
+    initialized_branch_ids: list[str] = []
     rows: list[dict] = []
 
-    for _, selected in window_selection.iterrows():
-        order = int(selected["order"])
-        window = int(selected["window"])
-        splits = splits_by_order[order]
+    for origin_number, split in enumerate(splits, start=1):
+        prepared = td.prepare_rolling_pure_forecast_objective(
+            history_log,
+            [split],
+            order=order,
+        )
+        candidates, evaluations = _surface_candidates(
+            prepared,
+            order=order,
+            window=window,
+            spacing=candidate_spacing,
+        )
 
-        for origin_number, split in enumerate(splits, start=1):
-            prepared = td.prepare_rolling_pure_forecast_objective(
-                inner_log,
-                [split],
-                order=order,
+        if origin_number == 1:
+            # Maximum five starting basins, preferring lower Validation-1 loss
+            # if the surface contains more than requested.
+            initial = sorted(
+                candidates,
+                key=lambda row: (row["val1_loss"], row["smoothness"]),
+            )[:max_minima]
+            initial.sort(key=lambda row: row["smoothness"])
+
+            for branch_number, candidate in enumerate(initial, start=1):
+                branch_id = f"d{order}_b{branch_number}"
+                initialized_branch_ids.append(branch_id)
+                branch_last_s[branch_id] = float(candidate["smoothness"])
+
+            matches = {
+                branch_id: (
+                    next(
+                        idx
+                        for idx, candidate in enumerate(candidates)
+                        if abs(
+                            float(candidate["smoothness"])
+                            - branch_last_s[branch_id]
+                        )
+                        < 1e-12
+                    ),
+                    0.0,
+                )
+                for branch_id in initialized_branch_ids
+            }
+        else:
+            matches, _ = _match_branches(
+                branch_last_s,
+                candidates,
+                epsilon=track_epsilon,
             )
-            _, candidates, _ = applied._search_candidates(
-                prepared,
-                order=order,
-                window=window,
-            )
 
-            validation_start = inner_development["date"].iloc[
-                split.validation.start
-            ]
-            validation_end = inner_development["date"].iloc[
-                split.validation.stop - 1
-            ]
+        matched_count = len(matches)
+        surface_minima_count = len(candidates)
+        val1_start = history["date"].iloc[split.validation.start]
+        val1_end = history["date"].iloc[split.validation.stop - 1]
+        val2_start = history["date"].iloc[split.validation.stop]
+        val2_end = history["date"].iloc[
+            split.validation.stop + horizon - 1
+        ]
 
-            for candidate in candidates:
+        for branch_id in initialized_branch_ids:
+            if branch_id not in matches:
                 rows.append(
                     {
                         "series": key,
                         "family": applied.SERIES[key]["family"],
                         "order": order,
                         "window": window,
+                        "branch_id": branch_id,
                         "origin_number": origin_number,
-                        "validation_start_date": validation_start,
-                        "validation_end_date": validation_end,
-                        "origin_cv_rank": int(candidate["cv_rank"]),
-                        "smoothness": float(candidate["smoothness"]),
-                        "lambda": float(candidate["lambda"]),
-                        "origin_cv_error": float(candidate["cv_error"]),
-                        "source": str(candidate["source"]),
+                        "status": "missing_local_minimum",
+                        "smoothness": np.nan,
+                        "lambda": np.nan,
+                        "val1_loss": np.nan,
+                        "val2_level_rmse": np.nan,
+                        "val2_log_rmse": np.nan,
+                        "delta_s": np.nan,
+                        "surface_minima_count": surface_minima_count,
+                        "matched_branch_count": matched_count,
+                        "objective_evaluations": evaluations,
+                        "val1_start_date": val1_start,
+                        "val1_end_date": val1_end,
+                        "val2_start_date": val2_start,
+                        "val2_end_date": val2_end,
+                    }
+                )
+                continue
+
+            candidate_idx, distance = matches[branch_id]
+            candidate = candidates[candidate_idx]
+            s = float(candidate["smoothness"])
+            val2_level_rmse, val2_log_rmse = _score_validation2(
+                history,
+                split,
+                horizon=horizon,
+                order=order,
+                window=window,
+                smoothness=s,
+            )
+
+            rows.append(
+                {
+                    "series": key,
+                    "family": applied.SERIES[key]["family"],
+                    "order": order,
+                    "window": window,
+                    "branch_id": branch_id,
+                    "origin_number": origin_number,
+                    "status": "matched",
+                    "smoothness": s,
+                    "lambda": float(candidate["lambda"]),
+                    "val1_loss": float(candidate["val1_loss"]),
+                    "val2_level_rmse": val2_level_rmse,
+                    "val2_log_rmse": val2_log_rmse,
+                    "delta_s": float(distance),
+                    "surface_minima_count": surface_minima_count,
+                    "matched_branch_count": matched_count,
+                    "objective_evaluations": evaluations,
+                    "val1_start_date": val1_start,
+                    "val1_end_date": val1_end,
+                    "val2_start_date": val2_start,
+                    "val2_end_date": val2_end,
+                }
+            )
+            branch_last_s[branch_id] = s
+
+    return pd.DataFrame(rows)
+
+
+def _summarize_branches(
+    tracks: pd.DataFrame,
+    *,
+    selection_metric: str,
+) -> pd.DataFrame:
+    metric_column = (
+        "val2_level_rmse"
+        if selection_metric == "level_rmse"
+        else "val2_log_rmse"
+    )
+    rows: list[dict] = []
+
+    for (series, order, branch_id), group in tracks.groupby(
+        ["series", "order", "branch_id"],
+        sort=False,
+    ):
+        matched = group.loc[group["status"].eq("matched")].sort_values(
+            "origin_number"
+        )
+        n_possible = int(len(group))
+        n_matched = int(len(matched))
+        recent = matched.tail(min(5, n_matched))
+
+        rows.append(
+            {
+                "series": series,
+                "family": str(group["family"].iloc[0]),
+                "order": int(order),
+                "window": int(group["window"].iloc[0]),
+                "branch_id": branch_id,
+                "n_possible_origins": n_possible,
+                "n_matched_origins": n_matched,
+                "support_fraction": n_matched / max(n_possible, 1),
+                "mean_val2_level_rmse": float(
+                    matched["val2_level_rmse"].mean()
+                ),
+                "median_val2_level_rmse": float(
+                    matched["val2_level_rmse"].median()
+                ),
+                "mean_val2_log_rmse": float(
+                    matched["val2_log_rmse"].mean()
+                ),
+                "median_val2_log_rmse": float(
+                    matched["val2_log_rmse"].median()
+                ),
+                "selection_score": float(matched[metric_column].mean()),
+                "smoothness_first": float(matched["smoothness"].iloc[0]),
+                "smoothness_last": float(matched["smoothness"].iloc[-1]),
+                "smoothness_mean": float(matched["smoothness"].mean()),
+                "smoothness_median": float(matched["smoothness"].median()),
+                "smoothness_recent5_mean": float(recent["smoothness"].mean()),
+                "smoothness_recent5_median": float(
+                    recent["smoothness"].median()
+                ),
+                "max_abs_delta_s": float(
+                    matched["delta_s"].fillna(0.0).max()
+                ),
+            }
+        )
+
+    return pd.DataFrame(rows)
+
+
+def _final_validation_split(
+    pretest: pd.DataFrame,
+    *,
+    window: int,
+    horizon: int,
+):
+    splits = td.rolling_origin_splits(
+        len(pretest),
+        initial_train=len(pretest) - horizon,
+        horizon=horizon,
+        step=1,
+        expanding=False,
+        train_window=window,
+    )
+    exact = [
+        split
+        for split in splits
+        if split.validation.stop == len(pretest)
+    ]
+    if not exact:
+        raise RuntimeError(
+            f"Could not construct final Validation-1 split for L={window}."
+        )
+    return exact[-1]
+
+
+def _continue_to_final_validation(
+    key: str,
+    frame: pd.DataFrame,
+    summaries: pd.DataFrame,
+    *,
+    track_epsilon: float,
+    candidate_spacing: float,
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Continue every historical branch once more on the final pre-test Val1."""
+
+    spec = applied.SERIES[key]
+    horizon = int(spec["test_reserve"])
+    pretest = frame.iloc[:-horizon].copy()
+    true_test = frame.iloc[-horizon:].copy()
+    pretest_log = np.log(pretest["value"].to_numpy(dtype=float))
+
+    result_rows: list[dict] = []
+    path_rows: list[dict] = []
+
+    for order in ORDERS:
+        order_summary = summaries.loc[
+            summaries["order"].eq(order)
+        ].copy()
+        if order_summary.empty:
+            continue
+
+        window = int(order_summary["window"].iloc[0])
+        split = _final_validation_split(
+            pretest,
+            window=window,
+            horizon=horizon,
+        )
+        prepared = td.prepare_rolling_pure_forecast_objective(
+            pretest_log,
+            [split],
+            order=order,
+        )
+        candidates, _ = _surface_candidates(
+            prepared,
+            order=order,
+            window=window,
+            spacing=candidate_spacing,
+        )
+        previous = {
+            str(row["branch_id"]): float(row["smoothness_last"])
+            for _, row in order_summary.iterrows()
+        }
+        matches, _ = _match_branches(
+            previous,
+            candidates,
+            epsilon=track_epsilon,
+        )
+
+        for _, summary in order_summary.iterrows():
+            branch_id = str(summary["branch_id"])
+            if branch_id not in matches:
+                result_rows.append(
+                    {
+                        "series": key,
+                        "branch_id": branch_id,
+                        "order": order,
+                        "final_continuation": False,
+                        "final_smoothness": np.nan,
+                        "final_val1_loss": np.nan,
+                        "true_test_level_rmse": np.nan,
+                        "true_test_log_rmse": np.nan,
+                    }
+                )
+                continue
+
+            candidate_idx, distance = matches[branch_id]
+            candidate = candidates[candidate_idx]
+            final_s = float(candidate["smoothness"])
+
+            final_train = pretest.tail(window).copy()
+            model = td.PurePenalizedTrend(
+                order=order,
+                smoothness=final_s,
+            ).fit(np.log(final_train["value"].to_numpy(dtype=float)))
+            forecast_log = np.asarray(model.forecast(horizon), dtype=float)
+            forecast_level = _safe_levels(forecast_log)
+
+            observed_level = true_test["value"].to_numpy(dtype=float)
+            observed_log = np.log(observed_level)
+
+            result_rows.append(
+                {
+                    "series": key,
+                    "branch_id": branch_id,
+                    "order": order,
+                    "final_continuation": True,
+                    "final_smoothness": final_s,
+                    "final_delta_s": float(distance),
+                    "final_val1_loss": float(candidate["val1_loss"]),
+                    "true_test_level_rmse": _rmse(
+                        observed_level,
+                        forecast_level,
+                    ),
+                    "true_test_log_rmse": _rmse(
+                        observed_log,
+                        forecast_log,
+                    ),
+                }
+            )
+
+            for date, observed, predicted in zip(
+                true_test["date"],
+                true_test["value"],
+                forecast_level,
+            ):
+                path_rows.append(
+                    {
+                        "series": key,
+                        "branch_id": branch_id,
+                        "order": order,
+                        "smoothness": final_s,
+                        "date": date,
+                        "observed": float(observed),
+                        "candidate_path": float(predicted),
                     }
                 )
 
-    minima = pd.DataFrame(rows)
-    if minima.empty:
-        raise RuntimeError(f"No rolling-origin minima recovered for {key}.")
-    return minima
+    return pd.DataFrame(result_rows), pd.DataFrame(path_rows)
 
 
-def _cluster_order_minima(
-    order_minima: pd.DataFrame,
-    *,
-    epsilon: float,
-    representative: str,
+def _select_winner(
+    summary: pd.DataFrame,
+    final_results: pd.DataFrame,
 ) -> pd.DataFrame:
-    """Group nearby S values into recurring one-dimensional modes."""
-
-    if order_minima.empty:
-        return pd.DataFrame()
-
-    values = (
-        order_minima.sort_values(
-            ["smoothness", "origin_number", "origin_cv_rank"]
-        )
-        .reset_index(drop=True)
+    merged = summary.merge(
+        final_results,
+        on=["series", "branch_id", "order"],
+        how="left",
+        validate="one_to_one",
     )
+    merged["selected_branch"] = False
 
-    clusters: list[list[int]] = []
-    current: list[int] = []
+    for series, group in merged.groupby("series"):
+        eligible = group.loc[group["final_continuation"].fillna(False)].copy()
+        if eligible.empty:
+            raise RuntimeError(
+                f"No tracked branch continued to the final validation for {series}."
+            )
 
-    for idx, row in values.iterrows():
-        s = float(row["smoothness"])
-        if not current:
-            current = [idx]
-            continue
-
-        current_values = values.loc[current, "smoothness"].to_numpy(dtype=float)
-        center = float(np.median(current_values))
-        if abs(s - center) <= epsilon:
-            current.append(idx)
+        complete = eligible.loc[
+            np.isclose(eligible["support_fraction"], 1.0)
+        ].copy()
+        if not complete.empty:
+            pool = complete
         else:
-            clusters.append(current)
-            current = [idx]
+            max_support = float(eligible["support_fraction"].max())
+            pool = eligible.loc[
+                np.isclose(eligible["support_fraction"], max_support)
+            ].copy()
 
-    if current:
-        clusters.append(current)
+        winner_idx = pool.sort_values(
+            ["selection_score", "order", "branch_id"],
+            ascending=[True, True, True],
+        ).index[0]
+        merged.loc[winner_idx, "selected_branch"] = True
 
-    rows: list[dict] = []
-    n_origins = int(order_minima["origin_number"].nunique())
-
-    for raw_cluster_id, indices in enumerate(clusters, start=1):
-        cluster = values.loc[indices].copy()
-        s_values = cluster["smoothness"].to_numpy(dtype=float)
-
-        # An origin can contribute more than one nearby minimum. Support counts
-        # distinct rolling origins, while point_count preserves the raw amount.
-        support = int(cluster["origin_number"].nunique())
-        s_mean = float(np.mean(s_values))
-        s_median = float(np.median(s_values))
-        s_used = s_median if representative == "median" else s_mean
-
-        rows.append(
-            {
-                "series": str(cluster["series"].iloc[0]),
-                "family": str(cluster["family"].iloc[0]),
-                "order": int(cluster["order"].iloc[0]),
-                "window": int(cluster["window"].iloc[0]),
-                "raw_mode_id": raw_cluster_id,
-                "origin_support": support,
-                "origin_support_fraction": support / max(n_origins, 1),
-                "point_count": int(len(cluster)),
-                "smoothness_min": float(np.min(s_values)),
-                "smoothness_max": float(np.max(s_values)),
-                "smoothness_mean": s_mean,
-                "smoothness_median": s_median,
-                "smoothness_used": float(s_used),
-                "mean_origin_cv_error": float(cluster["origin_cv_error"].mean()),
-                "median_origin_cv_error": float(
-                    cluster["origin_cv_error"].median()
-                ),
-            }
-        )
-
-    modes = pd.DataFrame(rows)
-    modes = modes.sort_values(
-        [
-            "origin_support",
-            "mean_origin_cv_error",
-            "smoothness_used",
-        ],
-        ascending=[False, True, True],
-    ).reset_index(drop=True)
-    modes["mode_rank_within_order"] = np.arange(1, len(modes) + 1)
-    modes["mode_id"] = [
-        f"d{int(row.order)}_m{int(row.mode_rank_within_order)}"
-        for row in modes.itertuples()
-    ]
-    return modes
-
-
-def _build_modes(
-    minima: pd.DataFrame,
-    *,
-    epsilon: float,
-    representative: str,
-) -> pd.DataFrame:
-    frames = []
-    for order in ORDERS:
-        order_minima = minima.loc[minima["order"].eq(order)].copy()
-        modes = _cluster_order_minima(
-            order_minima,
-            epsilon=epsilon,
-            representative=representative,
-        )
-        if modes.empty:
-            raise RuntimeError(f"No smoothness modes recovered for d={order}.")
-        frames.append(modes)
-    return pd.concat(frames, ignore_index=True)
-
-
-def _evaluate_validation2(
-    key: str,
-    inner_development: pd.DataFrame,
-    validation2: pd.DataFrame,
-    modes: pd.DataFrame,
-    *,
-    selection_metric: str,
-) -> tuple[pd.DataFrame, pd.DataFrame]:
-    rows: list[dict] = []
-    path_rows: list[dict] = []
-
-    validation_level = validation2["value"].to_numpy(dtype=float)
-    validation_log = np.log(validation_level)
-
-    for _, mode in modes.iterrows():
-        order = int(mode["order"])
-        window = int(mode["window"])
-        smoothness = float(mode["smoothness_used"])
-
-        fitted, forecast_level = _fit_and_forecast(
-            inner_development,
-            validation2,
-            order=order,
-            window=window,
-            smoothness=smoothness,
-        )
-        forecast_log = np.log(np.clip(forecast_level, 1e-300, None))
-
-        rows.append(
-            {
-                **mode.to_dict(),
-                "validation2_level_rmse": _rmse(
-                    validation_level,
-                    forecast_level,
-                ),
-                "validation2_log_rmse": _rmse(
-                    validation_log,
-                    forecast_log,
-                ),
-            }
-        )
-
-        for date, observed, predicted in zip(
-            fitted["date"],
-            fitted["value"],
-            fitted["candidate_path"],
-        ):
-            path_rows.append(
-                {
-                    "series": key,
-                    "mode_id": str(mode["mode_id"]),
-                    "order": order,
-                    "window": window,
-                    "smoothness": smoothness,
-                    "segment": "inner_train",
-                    "date": date,
-                    "observed": float(observed),
-                    "candidate_path": float(predicted),
-                }
-            )
-
-        for date, observed, predicted in zip(
-            validation2["date"],
-            validation2["value"],
-            forecast_level,
-        ):
-            path_rows.append(
-                {
-                    "series": key,
-                    "mode_id": str(mode["mode_id"]),
-                    "order": order,
-                    "window": window,
-                    "smoothness": smoothness,
-                    "segment": "validation2",
-                    "date": date,
-                    "observed": float(observed),
-                    "candidate_path": float(predicted),
-                }
-            )
-
-    result = pd.DataFrame(rows)
-    metric_column = (
-        "validation2_level_rmse"
-        if selection_metric == "level_rmse"
-        else "validation2_log_rmse"
-    )
-    result["validation2_global_rank"] = (
-        result[metric_column].rank(method="first", ascending=True).astype(int)
-    )
-    result["validation2_rank_within_order"] = (
-        result.groupby("order")[metric_column]
-        .rank(method="first", ascending=True)
-        .astype(int)
-    )
-    result["best_mode_within_order"] = result[
-        "validation2_rank_within_order"
-    ].eq(1)
-    result["selected_global"] = result["validation2_global_rank"].eq(1)
-
-    return (
-        result.sort_values(
-            ["validation2_global_rank", "order", "mode_rank_within_order"]
-        ).reset_index(drop=True),
-        pd.DataFrame(path_rows),
-    )
-
-
-def _evaluate_true_test(
-    key: str,
-    pretest_development: pd.DataFrame,
-    true_test: pd.DataFrame,
-    candidates: pd.DataFrame,
-) -> tuple[pd.DataFrame, pd.DataFrame]:
-    rows: list[dict] = []
-    path_rows: list[dict] = []
-
-    test_level = true_test["value"].to_numpy(dtype=float)
-    test_log = np.log(test_level)
-
-    for _, candidate in candidates.iterrows():
-        order = int(candidate["order"])
-        window = int(candidate["window"])
-        smoothness = float(candidate["smoothness_used"])
-        mode_id = str(candidate["mode_id"])
-
-        fitted, forecast_level = _fit_and_forecast(
-            pretest_development,
-            true_test,
-            order=order,
-            window=window,
-            smoothness=smoothness,
-        )
-        forecast_log = np.log(np.clip(forecast_level, 1e-300, None))
-
-        rows.append(
-            {
-                "series": key,
-                "mode_id": mode_id,
-                "order": order,
-                "true_test_level_rmse": _rmse(
-                    test_level,
-                    forecast_level,
-                ),
-                "true_test_log_rmse": _rmse(
-                    test_log,
-                    forecast_log,
-                ),
-            }
-        )
-
-        for date, observed, predicted in zip(
-            fitted["date"],
-            fitted["value"],
-            fitted["candidate_path"],
-        ):
-            path_rows.append(
-                {
-                    "series": key,
-                    "mode_id": mode_id,
-                    "order": order,
-                    "window": window,
-                    "smoothness": smoothness,
-                    "segment": "final_train",
-                    "date": date,
-                    "observed": float(observed),
-                    "candidate_path": float(predicted),
-                }
-            )
-
-        for date, observed, predicted in zip(
-            true_test["date"],
-            true_test["value"],
-            forecast_level,
-        ):
-            path_rows.append(
-                {
-                    "series": key,
-                    "mode_id": mode_id,
-                    "order": order,
-                    "window": window,
-                    "smoothness": smoothness,
-                    "segment": "true_test",
-                    "date": date,
-                    "observed": float(observed),
-                    "candidate_path": float(predicted),
-                }
-            )
-
-    return pd.DataFrame(rows), pd.DataFrame(path_rows)
-
-
-def _order_color(order: int, smoothness: float) -> tuple[float, float, float]:
-    rgb = np.asarray(to_rgb(ORDER_COLORS[int(order)]), dtype=float)
-    smoothness = float(np.clip(smoothness, 0.0, 1.0))
-    white_fraction = 0.34 * (1.0 - smoothness)
-    mixed = rgb * (1.0 - white_fraction) + white_fraction
-    return tuple(float(value) for value in mixed)
-
-
-def _observed(frame: pd.DataFrame) -> pd.DataFrame:
-    return (
-        frame.loc[:, ["date", "observed"]]
-        .drop_duplicates("date")
-        .sort_values("date")
-        .reset_index(drop=True)
-    )
+    return merged
 
 
 def _padded_limits(values: pd.Series, fraction: float = 0.08) -> tuple[float, float]:
@@ -630,211 +838,137 @@ def _date_axis(ax: plt.Axes) -> None:
     ax.xaxis.set_major_formatter(mdates.ConciseDateFormatter(locator))
 
 
-def _line_style(candidate: pd.Series) -> tuple[float, float, int]:
-    if bool(candidate["selected_global"]):
-        return 0.94, 2.55, 5
-    if bool(candidate["best_mode_within_order"]):
-        return 0.42, 1.55, 4
-
-    support = float(candidate["origin_support_fraction"])
-    alpha = 0.10 + 0.20 * min(max(support, 0.0), 1.0)
-    return alpha, 0.95, 2
-
-
 def _plot(
-    selections: pd.DataFrame,
-    paths: pd.DataFrame,
+    tracks: pd.DataFrame,
+    final_selection: pd.DataFrame,
+    final_paths: pd.DataFrame,
     output_dir: Path,
     *,
     selection_metric: str,
-    mode_representative: str,
     dpi: int,
 ) -> None:
     series_order = [
         key
         for key in ("GDPC1", "SPY", "AAPL", "BTC-USD")
-        if key in set(selections["series"])
+        if key in set(final_selection["series"])
     ]
     fig, axes = plt.subplots(
         len(series_order),
         3,
-        figsize=(15.2, max(3.6, 3.35 * len(series_order))),
+        figsize=(15.4, max(3.6, 3.35 * len(series_order))),
         squeeze=False,
     )
 
+    metric_column = (
+        "val2_level_rmse"
+        if selection_metric == "level_rmse"
+        else "val2_log_rmse"
+    )
+
     for row_idx, key in enumerate(series_order):
-        ax_val2, ax_fit, ax_test = axes[row_idx]
-        case_selection = selections.loc[
-            selections["series"].eq(key)
+        ax_s, ax_loss, ax_test = axes[row_idx]
+        case_tracks = tracks.loc[tracks["series"].eq(key)].copy()
+        case_selection = final_selection.loc[
+            final_selection["series"].eq(key)
         ].copy()
-        case_paths = paths.loc[paths["series"].eq(key)].copy()
-
         winner = case_selection.loc[
-            case_selection["selected_global"]
+            case_selection["selected_branch"]
         ].iloc[0]
-        chosen_order = int(winner["order"])
-        chosen_mode = str(winner["mode_id"])
+        winner_id = str(winner["branch_id"])
 
-        inner_train = case_paths.loc[
-            case_paths["segment"].eq("inner_train")
-        ]
-        validation2 = case_paths.loc[
-            case_paths["segment"].eq("validation2")
-        ]
-        final_train = case_paths.loc[
-            case_paths["segment"].eq("final_train")
-        ]
-        true_test = case_paths.loc[
-            case_paths["segment"].eq("true_test")
-        ]
-
-        obs_inner = _observed(inner_train)
-        obs_val2 = _observed(validation2)
-        obs_final = _observed(final_train)
-        obs_test = _observed(true_test)
-
-        history_n = min(
-            len(obs_inner),
-            max(24 if key == "GDPC1" else 120, 2 * len(obs_val2)),
-        )
-        val_context = pd.concat(
-            [obs_inner.tail(history_n), obs_val2],
-            ignore_index=True,
-        ).drop_duplicates("date").sort_values("date")
-
-        # Column 1: every recurring S-mode is scored on Validation 2.
-        ax_val2.plot(
-            val_context["date"],
-            val_context["observed"],
-            color=OBSERVED_COLOR,
-            linewidth=1.50,
-            alpha=0.96,
-            zorder=8,
-        )
-        for _, candidate in case_selection.sort_values(
-            ["order", "mode_rank_within_order"]
-        ).iterrows():
-            mode_id = str(candidate["mode_id"])
-            order = int(candidate["order"])
-            train_path = (
-                inner_train.loc[inner_train["mode_id"].eq(mode_id)]
-                .sort_values("date")
-                .tail(history_n)
-            )
-            val_path = validation2.loc[
-                validation2["mode_id"].eq(mode_id)
-            ].sort_values("date")
-            combined = pd.concat(
-                [
-                    train_path[["date", "candidate_path"]],
-                    val_path[["date", "candidate_path"]],
-                ],
-                ignore_index=True,
-            ).sort_values("date")
-
-            alpha, linewidth, zorder = _line_style(candidate)
-            ax_val2.plot(
-                combined["date"],
-                combined["candidate_path"],
-                color=_order_color(
-                    order,
-                    float(candidate["smoothness_used"]),
-                ),
-                linewidth=linewidth,
-                alpha=alpha,
-                zorder=zorder,
+        # Column 1: local minima tracked through nearby rolling windows.
+        for branch_id, branch in case_tracks.groupby("branch_id"):
+            branch = branch.sort_values("origin_number")
+            matched = branch.loc[branch["status"].eq("matched")]
+            if matched.empty:
+                continue
+            order = int(branch["order"].iloc[0])
+            selected = branch_id == winner_id
+            ax_s.plot(
+                pd.to_datetime(matched["val1_start_date"]),
+                matched["smoothness"],
+                color=ORDER_COLORS[order],
+                linewidth=2.45 if selected else 1.0,
+                alpha=0.95 if selected else 0.22,
+                marker="o" if selected else None,
+                markersize=2.4 if selected else 0.0,
+                zorder=5 if selected else 2,
             )
 
-        ax_val2.axvline(
-            obs_val2["date"].iloc[0],
-            color="0.25",
-            linewidth=0.9,
-            linestyle="--",
-            alpha=0.65,
-        )
-        ax_val2.set_ylim(*_padded_limits(val_context["observed"]))
-        metric_label = (
-            "level RMSE"
+        ax_s.set_ylim(-0.03, 1.03)
+        ax_s.set_title("Tracked local minima $S_{j,t}$")
+        ax_s.set_ylabel(applied.SERIES[key]["family"], fontweight="bold")
+        ax_s.set_xlabel("Validation-1 origin")
+
+        # Column 2: each branch's out-of-sample Validation-2 score through time.
+        for branch_id, branch in case_tracks.groupby("branch_id"):
+            branch = branch.sort_values("origin_number")
+            matched = branch.loc[branch["status"].eq("matched")]
+            if matched.empty:
+                continue
+            order = int(branch["order"].iloc[0])
+            selected = branch_id == winner_id
+            ax_loss.plot(
+                pd.to_datetime(matched["val2_start_date"]),
+                matched[metric_column],
+                color=ORDER_COLORS[order],
+                linewidth=2.45 if selected else 1.0,
+                alpha=0.95 if selected else 0.22,
+                marker="o" if selected else None,
+                markersize=2.4 if selected else 0.0,
+                zorder=5 if selected else 2,
+            )
+
+        ax_loss.set_title(
+            "Validation-2 RMSE by tracked minimum"
             if selection_metric == "level_rmse"
-            else "log RMSE"
+            else "Validation-2 log-RMSE by tracked minimum"
         )
-        ax_val2.set_title(
-            f"Validation 2 → {chosen_mode} ({metric_label})"
-        )
-        ax_val2.set_ylabel(
-            applied.SERIES[key]["family"],
-            fontweight="bold",
-        )
+        ax_loss.set_xlabel("Validation-2 origin")
 
-        # Column 2: refit all modes through Validation 2.
-        ax_fit.plot(
-            obs_final["date"],
-            obs_final["observed"],
-            color=OBSERVED_COLOR,
-            linewidth=1.40,
-            alpha=0.96,
-            zorder=8,
+        # Column 3: final untouched test. Every continuing branch is shown.
+        case_paths = final_paths.loc[
+            final_paths["series"].eq(key)
+        ].copy()
+        observed = (
+            case_paths[["date", "observed"]]
+            .drop_duplicates("date")
+            .sort_values("date")
         )
-        for _, candidate in case_selection.sort_values(
-            ["order", "mode_rank_within_order"]
-        ).iterrows():
-            mode_id = str(candidate["mode_id"])
-            order = int(candidate["order"])
-            order_fit = final_train.loc[
-                final_train["mode_id"].eq(mode_id)
-            ].sort_values("date")
-            alpha, linewidth, zorder = _line_style(candidate)
-            ax_fit.plot(
-                order_fit["date"],
-                order_fit["candidate_path"],
-                color=_order_color(
-                    order,
-                    float(candidate["smoothness_used"]),
-                ),
-                linewidth=linewidth,
-                alpha=alpha,
-                zorder=zorder,
-            )
-        ax_fit.set_ylim(*_padded_limits(obs_final["observed"]))
-        ax_fit.set_title(
-            f"Refit through Validation 2; selected d={chosen_order}"
-        )
-
-        # Column 3: untouched final test.
         ax_test.plot(
-            obs_test["date"],
-            obs_test["observed"],
+            pd.to_datetime(observed["date"]),
+            observed["observed"],
             color=OBSERVED_COLOR,
-            linewidth=1.60,
+            linewidth=1.65,
             marker="o",
-            markersize=2.0,
-            alpha=0.96,
+            markersize=2.2,
+            alpha=0.97,
             zorder=8,
         )
-        for _, candidate in case_selection.sort_values(
-            ["order", "mode_rank_within_order"]
-        ).iterrows():
-            mode_id = str(candidate["mode_id"])
-            order = int(candidate["order"])
-            order_test = true_test.loc[
-                true_test["mode_id"].eq(mode_id)
-            ].sort_values("date")
-            alpha, linewidth, zorder = _line_style(candidate)
-            ax_test.plot(
-                order_test["date"],
-                order_test["candidate_path"],
-                color=_order_color(
-                    order,
-                    float(candidate["smoothness_used"]),
-                ),
-                linewidth=linewidth,
-                alpha=alpha,
-                zorder=zorder,
-            )
-        ax_test.set_ylim(*_padded_limits(obs_test["observed"]))
-        ax_test.set_title("Untouched true test")
 
-        for ax in (ax_val2, ax_fit, ax_test):
+        for branch_id, branch_path in case_paths.groupby("branch_id"):
+            branch_meta = case_selection.loc[
+                case_selection["branch_id"].eq(branch_id)
+            ].iloc[0]
+            order = int(branch_meta["order"])
+            selected = branch_id == winner_id
+            branch_path = branch_path.sort_values("date")
+            ax_test.plot(
+                pd.to_datetime(branch_path["date"]),
+                branch_path["candidate_path"],
+                color=ORDER_COLORS[order],
+                linewidth=2.55 if selected else 1.0,
+                alpha=0.95 if selected else 0.18,
+                zorder=5 if selected else 2,
+            )
+
+        ax_test.set_ylim(*_padded_limits(observed["observed"]))
+        ax_test.set_title(
+            f"Untouched test; selected {winner_id}, "
+            f"S={float(winner['final_smoothness']):.3f}"
+        )
+
+        for ax in (ax_s, ax_loss, ax_test):
             ax.grid(alpha=0.16)
             _date_axis(ax)
 
@@ -863,7 +997,7 @@ def _plot(
             color="0.15",
             linewidth=2.5,
             alpha=0.95,
-            label="Validation-2 winner",
+            label="Selected persistent branch",
         ),
         Line2D(
             [0],
@@ -871,7 +1005,7 @@ def _plot(
             color="0.45",
             linewidth=1.0,
             alpha=0.22,
-            label="Other rolling-CV modes",
+            label="Other tracked minima",
         ),
     ]
     fig.legend(
@@ -883,22 +1017,19 @@ def _plot(
         fontsize=8.1,
     )
     fig.suptitle(
-        (
-            "Rolling-origin smoothness modes → Validation 2 selection → "
-            f"true test  (mode S = {mode_representative})"
-        ),
+        "Local-minimum tracking: Validation 1 → Validation 2 → true test",
         y=0.998,
         fontsize=14,
     )
     fig.tight_layout(rect=[0.02, 0.02, 0.98, 0.955])
 
     fig.savefig(
-        output_dir / "two_stage_order_validation.png",
+        output_dir / "tracked_minima_validation.png",
         dpi=dpi,
         bbox_inches="tight",
     )
     fig.savefig(
-        output_dir / "two_stage_order_validation.pdf",
+        output_dir / "tracked_minima_validation.pdf",
         bbox_inches="tight",
     )
     plt.close(fig)
@@ -906,8 +1037,12 @@ def _plot(
 
 def main() -> None:
     args = parse_args()
-    if args.mode_epsilon <= 0.0:
-        raise ValueError("--mode-epsilon must be positive.")
+    if args.max_minima < 1 or args.max_minima > 5:
+        raise ValueError("--max-minima must be between 1 and 5.")
+    if not 0.0 < args.track_epsilon <= 1.0:
+        raise ValueError("--track-epsilon must be in (0, 1].")
+    if not 0.0 < args.candidate_spacing <= 1.0:
+        raise ValueError("--candidate-spacing must be in (0, 1].")
 
     preset = PRESETS[args.preset]
     output_dir = (
@@ -919,7 +1054,7 @@ def main() -> None:
 
     started = time.perf_counter()
     window_frames: list[pd.DataFrame] = []
-    minima_frames: list[pd.DataFrame] = []
+    track_frames: list[pd.DataFrame] = []
     selection_frames: list[pd.DataFrame] = []
     path_frames: list[pd.DataFrame] = []
     snapshot_meta: dict[str, dict] = {}
@@ -927,144 +1062,147 @@ def main() -> None:
     for key in preset["series"]:
         spec = applied.SERIES[key]
         frame = applied._load_series(key)
-        reserve = int(spec["test_reserve"])
-        if len(frame) <= 2 * reserve:
+        horizon = int(spec["test_reserve"])
+
+        if len(frame) <= 3 * horizon:
             raise RuntimeError(
-                f"{key} does not have enough observations for Validation 2 "
-                "plus the untouched true test."
+                f"{key} does not have enough observations for repeated "
+                "Validation-1/Validation-2 pairs, final Validation 1, and test."
             )
 
-        inner_development = frame.iloc[: -2 * reserve].copy()
-        validation2 = frame.iloc[-2 * reserve : -reserve].copy()
-        pretest_development = frame.iloc[:-reserve].copy()
-        true_test = frame.iloc[-reserve:].copy()
+        # The last H observations are the true test. The H observations before
+        # that are the final Validation-1 block used only to update the already
+        # selected branch to its newest nearby local minimum. All historical
+        # branch scoring happens strictly before those two blocks.
+        history = frame.iloc[: -2 * horizon].copy()
 
-        window_selection, splits_by_order = _choose_window_per_order(
+        max_origins = (
+            int(preset["max_origins_override"])
+            if preset["max_origins_override"] is not None
+            else int(spec["max_origins"])
+        )
+        window_selection, splits_by_order = _select_window_per_order(
             key,
-            inner_development,
+            history,
             windows=_windows_for(key, preset),
+            max_origins=max_origins,
         )
-        minima = _rolling_origin_minima(
-            key,
-            inner_development,
-            window_selection,
-            splits_by_order,
-        )
-        modes = _build_modes(
-            minima,
-            epsilon=float(args.mode_epsilon),
-            representative=args.mode_representative,
-        )
-        stage2, validation_paths = _evaluate_validation2(
-            key,
-            inner_development,
-            validation2,
-            modes,
+        window_frames.append(window_selection)
+
+        series_tracks: list[pd.DataFrame] = []
+        for _, selected in window_selection.iterrows():
+            order = int(selected["order"])
+            track = _track_order_minima(
+                key,
+                history,
+                order=order,
+                window=int(selected["window"]),
+                splits=splits_by_order[order],
+                max_minima=int(args.max_minima),
+                track_epsilon=float(args.track_epsilon),
+                candidate_spacing=float(args.candidate_spacing),
+            )
+            series_tracks.append(track)
+
+        tracks = pd.concat(series_tracks, ignore_index=True)
+        summary = _summarize_branches(
+            tracks,
             selection_metric=args.selection_metric,
         )
-        test_metrics, test_paths = _evaluate_true_test(
+        final_results, final_paths = _continue_to_final_validation(
             key,
-            pretest_development,
-            true_test,
-            stage2,
+            frame,
+            summary,
+            track_epsilon=float(args.track_epsilon),
+            candidate_spacing=float(args.candidate_spacing),
         )
+        final_selection = _select_winner(summary, final_results)
 
-        merged = stage2.merge(
-            test_metrics,
-            on=["series", "mode_id", "order"],
-            how="left",
-            validate="one_to_one",
-        )
-        merged["inner_development_start_date"] = (
-            inner_development["date"].iloc[0]
-        )
-        merged["inner_development_end_date"] = (
-            inner_development["date"].iloc[-1]
-        )
-        merged["validation2_start_date"] = validation2["date"].iloc[0]
-        merged["validation2_end_date"] = validation2["date"].iloc[-1]
-        merged["true_test_start_date"] = true_test["date"].iloc[0]
-        merged["true_test_end_date"] = true_test["date"].iloc[-1]
-
-        window_frames.append(window_selection)
-        minima_frames.append(minima)
-        selection_frames.append(merged)
-        path_frames.append(
-            pd.concat([validation_paths, test_paths], ignore_index=True)
-        )
+        track_frames.append(tracks)
+        selection_frames.append(final_selection)
+        path_frames.append(final_paths)
 
         snapshot_path = Path(spec["path"])
         snapshot_meta[key] = {
             "path": str(snapshot_path),
             "sha256": _sha256(snapshot_path),
             "rows_loaded": int(len(frame)),
-            "inner_development_rows": int(len(inner_development)),
-            "validation2_rows": int(len(validation2)),
-            "true_test_rows": int(len(true_test)),
+            "historical_tracking_rows": int(len(history)),
+            "final_validation1_rows": horizon,
+            "true_test_rows": horizon,
+            "max_origins": max_origins,
         }
 
     windows = pd.concat(window_frames, ignore_index=True)
-    minima = pd.concat(minima_frames, ignore_index=True)
-    selections = pd.concat(selection_frames, ignore_index=True)
-    paths = pd.concat(path_frames, ignore_index=True)
+    tracks = pd.concat(track_frames, ignore_index=True)
+    final_selection = pd.concat(selection_frames, ignore_index=True)
+    final_paths = pd.concat(path_frames, ignore_index=True)
 
     windows.to_csv(output_dir / "order_window_selection.csv", index=False)
-    minima.to_csv(output_dir / "rolling_origin_minima.csv", index=False)
-    selections.to_csv(
-        output_dir / "two_stage_order_selection.csv",
+    tracks.to_csv(output_dir / "rolling_minimum_tracks.csv", index=False)
+    final_selection.to_csv(
+        output_dir / "tracked_branch_selection.csv",
         index=False,
     )
-    paths.to_csv(output_dir / "two_stage_order_paths.csv", index=False)
+    final_paths.to_csv(
+        output_dir / "tracked_branch_test_paths.csv",
+        index=False,
+    )
 
     _plot(
-        selections,
-        paths,
+        tracks,
+        final_selection,
+        final_paths,
         output_dir,
         selection_metric=args.selection_metric,
-        mode_representative=args.mode_representative,
         dpi=int(args.dpi),
     )
 
     metadata = {
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
         "git_commit": _git_short_sha(),
-        "suite": "two_stage_order_validation",
+        "suite": "tracked_local_minima_two_validation",
         "preset": args.preset,
         "series": list(preset["series"]),
         "selection_metric": args.selection_metric,
-        "mode_representative": args.mode_representative,
-        "mode_epsilon": float(args.mode_epsilon),
         "selection_uses_true_test": False,
+        "max_minima": int(args.max_minima),
+        "track_epsilon": float(args.track_epsilon),
+        "candidate_spacing": float(args.candidate_spacing),
         "protocol": {
-            "stage_1a_window_selection": (
-                "Inside the inner development region, the standard aggregate "
-                "rolling forecast-CV objective selects L separately for each "
-                "d in {1,2,3,4}."
+            "window_selection": (
+                "For each d, choose L from aggregate rolling Validation-1 loss "
+                "inside the historical tracking region only."
             ),
-            "stage_1b_originwise_minima": (
-                "At the selected L for each d, the same rolling origins are "
-                "reused individually. All representative local smoothness "
-                "minima are recovered at every origin."
+            "first_origin": (
+                "Find up to five distinct local minima of the Validation-1 "
+                "smoothness objective and initialize one branch per minimum."
             ),
-            "stage_1c_mode_aggregation": (
-                "Nearby originwise minima are grouped in normalized-smoothness "
-                "space. Each recurring mode is represented by the requested "
-                "mean or median S; support records the number of rolling "
-                "origins contributing to the mode."
+            "continuation": (
+                "Move the rolling window by the series step. Recompute the "
+                "Validation-1 objective and match each existing branch one-to-one "
+                "to a new local minimum within track_epsilon in normalized S."
             ),
-            "stage_2_validation": (
-                "Every recurring (d, S-mode) candidate forecasts the following "
-                "contiguous Validation-2 block. The candidate with the smallest "
-                "specified RMSE is selected globally."
+            "validation_2": (
+                "For every matched minimum, refit through Validation 1 with the "
+                "same d, L, S and score the immediately following Validation-2 "
+                "block. Store the score for that branch and repeat."
             ),
-            "final_refit": (
-                "All candidates are refit through Validation 2 with frozen "
-                "d, L and mode representative S. The winner is emphasized in "
-                "the plot; all other candidates remain visible at lower alpha."
+            "branch_selection": (
+                "Select among persistent branches using mean historical "
+                "Validation-2 loss. If complete-support branches exist, only "
+                "they are eligible; otherwise use the branches with maximum "
+                "support. The true test is not used."
+            ),
+            "final_update": (
+                "Before the true test, continue every branch one final time on "
+                "the reserved pre-test Validation-1 block. The selected branch "
+                "uses that newest nearby local minimum S for the final refit."
             ),
             "true_test": (
-                "The final reserve remains untouched until all selection is "
-                "complete. True-test metrics are diagnostic only."
+                "The last reserve is untouched until branch selection and final "
+                "local-minimum continuation are complete. Test scores are "
+                "diagnostic only."
             ),
         },
         "snapshot": snapshot_meta,
@@ -1077,22 +1215,18 @@ def main() -> None:
 
     print(f"Wrote: {output_dir}")
     for key in preset["series"]:
-        winner = selections.loc[
-            selections["series"].eq(key)
-            & selections["selected_global"]
+        winner = final_selection.loc[
+            final_selection["series"].eq(key)
+            & final_selection["selected_branch"]
         ].iloc[0]
-        metric = (
-            winner["validation2_level_rmse"]
-            if args.selection_metric == "level_rmse"
-            else winner["validation2_log_rmse"]
-        )
         print(
-            f"{key}: selected {winner['mode_id']} "
+            f"{key}: selected {winner['branch_id']} "
             f"(d={int(winner['order'])}, "
             f"L={int(winner['window'])}, "
-            f"S={float(winner['smoothness_used']):.6f}, "
-            f"support={int(winner['origin_support'])}, "
-            f"validation2_{args.selection_metric}={float(metric):.6g})"
+            f"historical mean Val2={float(winner['selection_score']):.6g}, "
+            f"support={int(winner['n_matched_origins'])}/"
+            f"{int(winner['n_possible_origins'])}, "
+            f"final S={float(winner['final_smoothness']):.6f})"
         )
 
 
