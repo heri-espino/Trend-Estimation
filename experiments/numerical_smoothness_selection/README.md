@@ -322,3 +322,36 @@ do not permit selecting an order, window, or smoothness from the test block.
 
 The candidate set is a selection-sensitivity diagnostic, not a confidence
 interval or probability distribution over smoothness.
+
+### Exploratory long-horizon order plot
+
+For visual inspection only, generate a separate diagnostic figure without
+changing manuscript files:
+
+~~~bash
+python experiments/numerical_smoothness_selection/plot_long_horizon_orders.py
+~~~
+
+By default the script uses the newest compatible `*_applied-paper_*` run.
+A specific run can be supplied explicitly:
+
+~~~bash
+python experiments/numerical_smoothness_selection/plot_long_horizon_orders.py \
+  --run-dir results/numerical_smoothness_selection/20261001T070706Z_applied-paper_8d83764
+~~~
+
+The resulting `long_horizon_orders_exploratory.png` and
+`long_horizon_orders_exploratory.pdf` are written inside that run directory.
+The panel has one row per available series and three columns:
+
+1. final fitted trends for `d=1,2,3,4`;
+2. recent train history followed by the complete reserved test block;
+3. the reserved test block alone.
+
+Observed values are always blue. Forecasts use red, green, purple, and orange
+for `d=1,2,3,4`, respectively. Within each order the selected smoothness
+controls color saturation. All forecast panels set their vertical limits from
+observed data only, so unstable high-order extrapolations are clipped rather
+than compressing the observed series.
+
+This plot is exploratory and is not referenced by the paper.
