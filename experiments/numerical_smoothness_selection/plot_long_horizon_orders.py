@@ -360,8 +360,16 @@ def plot_exploratory_panel(
         parse_dates=["date"],
     )
 
+    present_series = tuple(
+        series
+        for series in SERIES_ORDER
+        if series in set(selection["series"].astype(str))
+    )
+    if not present_series:
+        raise RuntimeError("No recognized applied series are present in the run.")
+
     required_orders = {1, 2, 3, 4}
-    for series in SERIES_ORDER:
+    for series in present_series:
         observed_orders = set(
             selection.loc[selection["series"].eq(series), "order"]
             .astype(int)
@@ -374,13 +382,13 @@ def plot_exploratory_panel(
             )
 
     fig, axes = plt.subplots(
-        nrows=len(SERIES_ORDER),
+        nrows=len(present_series),
         ncols=3,
-        figsize=(15.0, 12.8),
+        figsize=(15.0, max(3.5, 3.2 * len(present_series))),
         squeeze=False,
     )
 
-    for row_idx, series in enumerate(SERIES_ORDER):
+    for row_idx, series in enumerate(present_series):
         _plot_series_row(
             axes[row_idx],
             series,
