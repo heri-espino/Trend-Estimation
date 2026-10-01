@@ -356,80 +356,85 @@ than compressing the observed series.
 
 This plot is exploratory and is not referenced by the paper.
 
-### Exploratory two-stage order selection
+### Exploratory rolling local-minimum tracking
 
-To test a stricter order-selection protocol without touching the manuscript,
-run:
+To follow the same local minima through nearby rolling windows, without touching
+the manuscript, run:
 
 ~~~bash
 python experiments/numerical_smoothness_selection/run_two_stage_order_validation.py --preset paper
 ~~~
 
-The chronology is:
+The protocol is intentionally local in both time and smoothness:
 
-1. **Inner development / Validation 1a:** the usual aggregate rolling forecast
-   CV selects a training window `L` separately for each
-   `d in {1,2,3,4}`.
-2. **Rolling-origin minima / Validation 1b:** at that selected `L`, the same
-   historical rolling origins are reused one at a time. All representative
-   local smoothness minima are recovered at each origin.
-3. **Recurring smoothness modes:** nearby originwise minima are grouped in
-   normalized-smoothness space. Each mode records how many rolling origins
-   support it and is represented by the median `S` by default. This avoids
-   averaging unrelated low- and high-smoothness minima into a value that may
-   lie between objective basins.
-4. **Validation 2:** the immediately following contiguous block has the same
-   length as the final test reserve (8 quarters for GDP, 60 observations for
-   the daily series). Every recurring `(d, S-mode)` candidate forecasts this
-   block. The candidate with the smallest RMSE is selected globally.
-5. **Final refit:** all candidates are refit through Validation 2 using their
-   frozen `d, L`, and mode representative `S`. The Validation-2 winner is
-   drawn with high alpha; the best alternative within each order has
-   intermediate alpha; all remaining modes stay visible at low alpha.
-6. **True test:** the final reserved block remains untouched until all selection
-   is complete.
+1. **Choose the rolling window.** For each `d in {1,2,3,4}`, aggregate
+   Validation-1 rolling loss is used only to choose the training-window length
+   `L`.
+2. **Initialize local minima.** At the first retained rolling origin, compute the
+   Validation-1 objective over normalized smoothness and keep up to five distinct
+   local minima.
+3. **Score on Validation 2.** For every minimum, refit through Validation 1 with
+   the same `d,L,S`, forecast the immediately following Validation-2 block,
+   and store its RMSE.
+4. **Move the window.** Shift the rolling origin by the series step. Recompute
+   the Validation-1 surface and continue each existing branch only to a new
+   local minimum satisfying
+   `|S_t-S_{t-1}| <= epsilon`. Matching is one-to-one, so two old branches
+   cannot collapse onto the same new minimum.
+5. **Repeat.** Each branch therefore becomes a time trajectory
+   `S_{j,1}, S_{j,2}, ...` with one Validation-2 score per matched origin.
+   Missing or disappearing local minima are recorded rather than silently
+   averaged with another basin.
+6. **Select a persistent branch.** Historical Validation-2 RMSE is averaged
+   within each tracked branch. Complete-support branches are preferred; if no
+   branch survives every origin, the branches with maximum support are compared.
+7. **Final local update.** The block immediately before the untouched test is
+   used as one final Validation-1 surface. Each historical branch is continued
+   one more time in the same small smoothness neighborhood. The selected branch
+   uses this newest local minimum for the final refit.
+8. **True test.** The last reserve remains untouched until branch selection and
+   final local continuation are complete.
 
-By default, Validation 2 uses RMSE on the observed level and each rolling-origin
-mode uses the median `S`. To compare alternatives:
+This is deliberately different from taking one global mean of all smoothness
+values. The mean and median `S` of each branch are still reported for
+diagnostics, including the mean/median over its five most recent matches, but
+the default final forecast uses the newest local minimum on the selected branch.
+
+The default local-continuation radius is `epsilon=0.10` in normalized
+smoothness and at most five minima are initialized per order. Both can be
+changed explicitly:
 
 ~~~bash
 python experiments/numerical_smoothness_selection/run_two_stage_order_validation.py \
-  --preset paper --selection-metric log_rmse
-
-python experiments/numerical_smoothness_selection/run_two_stage_order_validation.py \
-  --preset paper --mode-representative mean
+  --preset paper --track-epsilon 0.05 --max-minima 5
 ~~~
 
-The mean option averages only within a recurring smoothness mode, not across
-all minima for an order. The median remains the default because the rolling
-preferences can be skewed or concentrated at `S=0` or `S=1`.
-
-Each run writes a separate exploratory result directory:
+Each run writes:
 
 ~~~text
-results/numerical_smoothness_selection/<timestamp>_two-stage-order-paper_<sha>/
+results/numerical_smoothness_selection/<timestamp>_tracked-minima-paper_<sha>/
 ├── order_window_selection.csv
-├── rolling_origin_minima.csv
-├── two_stage_order_selection.csv
-├── two_stage_order_paths.csv
-├── two_stage_order_validation.png
-├── two_stage_order_validation.pdf
+├── rolling_minimum_tracks.csv
+├── tracked_branch_selection.csv
+├── tracked_branch_test_paths.csv
+├── tracked_minima_validation.png
+├── tracked_minima_validation.pdf
 └── run_metadata.json
 ~~~
 
-`rolling_origin_minima.csv` makes the historical smoothness preferences
-auditable. `two_stage_order_selection.csv` contains one row per recurring
-smoothness mode, including its support, mean/median `S`, Validation-2 RMSE,
-within-order rank, global rank, and final true-test diagnostic error.
+`rolling_minimum_tracks.csv` contains one row per branch and rolling origin,
+including the local `S`, Validation-1 loss, Validation-2 RMSE, the step
+`delta_s`, the number of minima on that surface, and whether the branch could
+be continued locally. `tracked_branch_selection.csv` summarizes persistence,
+historical Validation-2 performance, first/last/mean/median smoothness, recent
+smoothness summaries, final continuation, and untouched-test diagnostics.
 
-The figure has three columns per series: the second validation block where the
-final `(d,S)` mode is selected, the final refit through that block, and the
-untouched true test. Observed values remain blue. Colors follow the deep-style
-palette: red for `d=1`, green for `d=2`, purple for `d=3`, and orange for
-`d=4`. All recovered modes are plotted. The global Validation-2 winner is
-drawn with high alpha and larger linewidth; the best non-winning mode within
-each order is intermediate; the remaining modes are deliberately faint.
-Vertical limits depend only on observed values.
+The figure has one row per series and three columns: tracked `S` trajectories,
+their Validation-2 RMSE through time, and the untouched final-test forecasts.
+Observed values are blue. The deep-style order colors remain red for `d=1`,
+green for `d=2`, purple for `d=3`, and orange for `d=4`. The selected
+persistent branch is thick and opaque; all other tracked minima remain visible
+with low alpha.
 
 This experiment is exploratory and does not alter the paper or its frozen
 primary applied-case results.
