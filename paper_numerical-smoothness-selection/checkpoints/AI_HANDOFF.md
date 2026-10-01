@@ -2,7 +2,7 @@
 
 Read in this order:
 
-1. `CP03_manuscript-and-applied-direction.md`
+1. `CP04_applied-results.md`
 2. `../todo/NEXT.md`
 3. `../notes/applied_case_studies.md`
 4. `../notes/submission_positioning.md`
@@ -17,8 +17,8 @@ Read in this order:
 - Current weakness: the manuscript proves the search works but does not yet
   make the practical meaning of multiple forecast-CV minima sufficiently
   visible.
-- Current next task: add reproducible applied case studies for GDP, ETF, stock,
-  and cryptocurrency series, with an untouched final test block.
+- Applied case studies: complete and committed.
+- Current next task: compile/review the revised SMCCA manuscript, inspect the applied figure, and decide whether one compact standard scalar-optimizer comparator is still needed.
 
 Do not reopen tuning of the primary numerical search unless a genuine
 implementation error is found.
