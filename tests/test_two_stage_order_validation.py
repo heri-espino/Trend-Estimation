@@ -7,7 +7,7 @@ import sys
 import pandas as pd
 
 
-def test_two_stage_order_validation_smoke_keeps_true_test_untouched(tmp_path):
+def test_tracked_minima_smoke_keeps_true_test_untouched(tmp_path):
     script = (
         "experiments/numerical_smoothness_selection/"
         "run_two_stage_order_validation.py"
@@ -25,26 +25,18 @@ def test_two_stage_order_validation_smoke_keeps_true_test_untouched(tmp_path):
     )
 
     windows = pd.read_csv(tmp_path / "order_window_selection.csv")
-    minima = pd.read_csv(
-        tmp_path / "rolling_origin_minima.csv",
+    tracks = pd.read_csv(
+        tmp_path / "rolling_minimum_tracks.csv",
         parse_dates=[
-            "validation_start_date",
-            "validation_end_date",
+            "val1_start_date",
+            "val1_end_date",
+            "val2_start_date",
+            "val2_end_date",
         ],
     )
-    selection = pd.read_csv(
-        tmp_path / "two_stage_order_selection.csv",
-        parse_dates=[
-            "inner_development_start_date",
-            "inner_development_end_date",
-            "validation2_start_date",
-            "validation2_end_date",
-            "true_test_start_date",
-            "true_test_end_date",
-        ],
-    )
-    paths = pd.read_csv(
-        tmp_path / "two_stage_order_paths.csv",
+    selection = pd.read_csv(tmp_path / "tracked_branch_selection.csv")
+    test_paths = pd.read_csv(
+        tmp_path / "tracked_branch_test_paths.csv",
         parse_dates=["date"],
     )
     metadata = json.loads(
@@ -55,60 +47,64 @@ def test_two_stage_order_validation_smoke_keeps_true_test_untouched(tmp_path):
     assert set(windows["order"]) == {1, 2, 3, 4}
     assert set(windows["horizon"]) == {8}
 
-    assert set(minima["series"]) == {"GDPC1"}
-    assert set(minima["order"]) == {1, 2, 3, 4}
+    assert set(tracks["series"]) == {"GDPC1"}
+    assert set(tracks["order"]) == {1, 2, 3, 4}
     assert {
+        "branch_id",
         "origin_number",
-        "origin_cv_rank",
+        "status",
         "smoothness",
-        "origin_cv_error",
-    } <= set(minima.columns)
-    assert minima["origin_number"].nunique() >= 2
+        "val1_loss",
+        "val2_level_rmse",
+        "val2_log_rmse",
+        "delta_s",
+        "surface_minima_count",
+        "matched_branch_count",
+    } <= set(tracks.columns)
+
+    matched = tracks.loc[tracks["status"].eq("matched")]
+    assert not matched.empty
+    assert matched["smoothness"].between(0.0, 1.0).all()
+    assert (
+        matched["val1_end_date"] < matched["val2_start_date"]
+    ).all()
 
     assert set(selection["series"]) == {"GDPC1"}
-    assert set(selection["order"]) == {1, 2, 3, 4}
-    assert int(selection["selected_global"].sum()) == 1
-
-    assert (
-        selection["inner_development_end_date"]
-        < selection["validation2_start_date"]
-    ).all()
-    assert (
-        selection["validation2_end_date"]
-        < selection["true_test_start_date"]
-    ).all()
-
+    assert int(selection["selected_branch"].sum()) == 1
     assert {
-        "mode_id",
-        "origin_support",
-        "origin_support_fraction",
-        "smoothness_mean",
-        "smoothness_median",
-        "smoothness_used",
-        "validation2_level_rmse",
-        "validation2_log_rmse",
-        "validation2_global_rank",
-        "validation2_rank_within_order",
-        "best_mode_within_order",
-        "selected_global",
+        "branch_id",
+        "order",
+        "window",
+        "n_possible_origins",
+        "n_matched_origins",
+        "support_fraction",
+        "selection_score",
+        "smoothness_first",
+        "smoothness_last",
+        "smoothness_recent5_mean",
+        "final_continuation",
+        "final_smoothness",
         "true_test_level_rmse",
         "true_test_log_rmse",
+        "selected_branch",
     } <= set(selection.columns)
 
-    assert set(paths["segment"]) == {
-        "inner_train",
-        "validation2",
-        "final_train",
-        "true_test",
-    }
-    assert {"mode_id", "order", "smoothness"} <= set(paths.columns)
+    assert not test_paths.empty
+    assert {
+        "series",
+        "branch_id",
+        "order",
+        "smoothness",
+        "date",
+        "observed",
+        "candidate_path",
+    } <= set(test_paths.columns)
 
-    assert metadata["suite"] == "two_stage_order_validation"
+    assert metadata["suite"] == "tracked_local_minima_two_validation"
     assert metadata["selection_uses_true_test"] is False
-    assert metadata["selection_metric"] == "level_rmse"
-    assert metadata["mode_representative"] == "median"
+    assert metadata["max_minima"] == 5
+    assert metadata["track_epsilon"] == 0.10
+    assert metadata["candidate_spacing"] == 0.02
 
-    assert (tmp_path / "order_window_selection.csv").exists()
-    assert (tmp_path / "rolling_origin_minima.csv").exists()
-    assert (tmp_path / "two_stage_order_validation.png").exists()
-    assert (tmp_path / "two_stage_order_validation.pdf").exists()
+    assert (tmp_path / "tracked_minima_validation.png").exists()
+    assert (tmp_path / "tracked_minima_validation.pdf").exists()
