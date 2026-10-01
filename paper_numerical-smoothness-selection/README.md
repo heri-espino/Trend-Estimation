@@ -129,3 +129,23 @@ latexmk -pdf -interaction=nonstopmode -outdir=build main.tex
 
 The repository's heavy paper-build workflow remains manual
 (`workflow_dispatch`) with target `numerical`.
+
+
+## Project navigation
+
+For current research state and next actions:
+
+1. `checkpoints/AI_HANDOFF.md`
+2. `checkpoints/CP03_manuscript-and-applied-direction.md`
+3. `todo/NEXT.md`
+
+Supporting material:
+
+- `notes/applied_case_studies.md` — design for GDP/ETF/stock/crypto examples;
+- `notes/submission_positioning.md` — SMCCA fit and claim boundaries;
+- `notes/results.md` — frozen numerical evidence;
+- `notes/decisions.md` — frozen methodological decisions;
+- `literature/dictionary/` — terminology and wording rules.
+
+The numerical algorithm and confirmatory benchmark are frozen. The active
+development task is the applied interpretation of multiple forecast-CV minima.
