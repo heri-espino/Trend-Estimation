@@ -486,3 +486,35 @@ The algorithm is now considered experimentally frozen. Remaining work is
 evidence packaging, literature positioning, manuscript writing, and
 referee-style review.
 
+## 2026-09-30 — Applied multiple-minima case studies
+
+A development-only case-study protocol was run on GDPC1, SPY, AAPL, and
+BTC-USD, with final test blocks reserved before configuration search.
+
+Across the 64 pre-specified configurations per series, the number with at least
+two epsilon-separated representative minima was:
+
+- GDPC1: 0/64;
+- SPY: 7/64;
+- AAPL: 10/64;
+- BTC-USD: 9/64.
+
+The selected SPY case produced a validation-test rank reversal. Rolling CV
+selected S=0.95639 with CV MSE 0.00177070, while S=0 had CV MSE 0.00195813.
+On the untouched h=60 test block, however, their MSE values were 0.00093985
+and 0.00066164, respectively. Thus the second-ranked validation candidate had
+about 29.6% lower test MSE.
+
+The selected AAPL and BTC cases retained their CV winner on test. BTC is
+notable because its second candidate, S=0.02908, was only about 13.9% worse in
+CV than the winner S=0.84463, but its test MSE was about 14.7 times larger.
+
+GDPC1 had no configuration with two epsilon-separated representative minima and
+therefore serves as a unimodal contrast.
+
+These results support a selective claim: multiple forecast-CV minima are not
+universal, but when present they can correspond to substantially different
+smoothness regimes and their validation ranking can change on later unseen
+data. The test ranking is diagnostic only and was not used for candidate or
+configuration selection.
+
