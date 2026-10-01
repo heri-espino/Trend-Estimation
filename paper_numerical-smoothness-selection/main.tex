@@ -17,7 +17,7 @@
 \maketitle
 
 \begin{abstract}
-Selecting a smoothing parameter for penalized trend estimation becomes a numerical problem when the criterion is chronological forecast loss rather than in-sample fit. We reparameterize finite-difference penalized least squares by a normalized smoothness coordinate \(S\in[0,1]\) and minimize a rolling forecast-validation objective that may contain multiple local minima. The proposed derivative-aware search combines adaptive subdivision, endpoint refinement, Brent root refinement, and exact boundary evaluation. With the algorithm frozen before the final runs, it recovered 240/240 relevant adversarial optima, 2105/2105 synthetic reference minima, and 473/473 minima on financial-series stress tests, while using about 1.6--1.8\% of the dense-grid evaluations in the latter two benchmarks.
+Selecting a smoothing parameter for penalized trend estimation becomes a numerical problem when the criterion is chronological forecast loss rather than in-sample fit. We reparameterize finite-difference penalized least squares by a normalized smoothness coordinate \(S\in[0,1]\) and minimize a rolling forecast-validation objective that may contain multiple local minima. The proposed derivative-aware search combines adaptive subdivision, endpoint refinement, Brent root refinement, and exact boundary evaluation. With the algorithm frozen before the final runs, it recovered 240/240 relevant adversarial optima, 2105/2105 synthetic reference minima, and 473/473 minima on financial-series stress tests, while using about 1.6--1.8\% of the dense-grid evaluations in the latter two benchmarks. Applied case studies show that multimodality is configuration-dependent rather than universal and that the validation ranking of frozen minima can change on a later test block.
 \end{abstract}
 
 \vspace{1em}
@@ -40,7 +40,7 @@ The difficulty is numerical as well as statistical. The resulting forecast-valid
 
 This paper studies that numerical problem. The PLS estimator is reparameterized by a normalized smoothness coordinate \(S\in[0,1]\), derived from the controlled-smoothness index but rescaled so that the two limiting smoothing regimes are represented exactly by \(S=0\) and \(S=1\). Analytic first and second derivatives of the rolling forecast loss are combined with a derivative-aware adaptive search that detects and classifies relevant stationary points, refines derivative roots with Brent's method \cite{brent1971zero}, and compares all detected local minima with the exact smoothness-domain endpoints.
 
-The contribution is deliberately narrow. We do not propose a new smoother or a new forecasting model, and we do not optimize jointly over model order, window length, and smoothness. Instead, we ask whether forecast-optimal smoothness can be located accurately and with substantially fewer evaluations than a dense reference search when the forecast-loss surface may contain multiple local minima. The method is validated on analytic adversarial objectives, 1920 synthetic rolling forecast objectives, and 384 real financial-data objective surfaces. Search settings are frozen before the final benchmark and are then subjected to one-factor-at-a-time sensitivity analysis.
+The contribution is deliberately narrow. We do not propose a new smoother or a new forecasting model, and we do not optimize jointly over model order, window length, and smoothness. Instead, we ask whether forecast-optimal smoothness can be located accurately and with substantially fewer evaluations than a dense reference search when the forecast-loss surface may contain multiple local minima. Recovering those alternatives is practically relevant because separated minima can represent different trend scales and forecast paths even when their validation errors are relatively close. The method is validated on analytic adversarial objectives, 1920 synthetic rolling forecast objectives, and 384 real financial-data objective surfaces. A separate development/test case study then examines how the recovered minima translate into fitted trends and future forecasts without using the test block for selection.
 
 \section{Penalized trend estimation and forecast validation}
 
@@ -177,6 +177,33 @@ f_{d,L,h}(\lambda).
 \end{equation}
 Thus, forecast-optimal in this paper always means optimal with respect to the rolling future-block mean squared error in \eqref{eq:rollingloss}.
 
+\subsection{Why several forecast-CV minima can matter}
+
+Let
+\[
+Q=U\operatorname{diag}(\delta_j)U^\top.
+\]
+In this basis the smoother attenuates penalized components through
+\begin{equation}
+\alpha_j(\lambda)
+=
+\frac{1}{1+\lambda\delta_j}.
+\label{eq:spectralattenuation}
+\end{equation}
+The attenuation is component-specific: as \(\lambda\) changes, different
+penalized directions disappear at different rates. Consequently, the fitted
+endpoint level, slope, and higher-order finite differences can change
+substantially across smoothing levels. The continuation operator then maps
+those endpoint features into future values.
+
+This provides a mechanism by which several local minima can arise. A rougher
+trend can preserve recent movement and extrapolate a stronger local slope or
+curvature, while a smoother trend can suppress that movement and extrapolate a
+more stable low-frequency path. Their forecast errors can cross across rolling
+origins, so the average objective in \eqref{eq:rollingloss} need not be unimodal.
+The existence of multiple minima is therefore a property to diagnose rather
+than an assumption imposed on every series.
+
 \subsection{Analytic derivatives}
 
 The derivative of the smoothing matrix follows from differentiating a matrix inverse:
@@ -290,6 +317,29 @@ The final external check uses six versioned daily closing-price series: SPY, QQQ
 \]
 real-data objective surfaces. These experiments test numerical geometry only; they are not a comparison of financial forecasting models and are not interpreted as evidence of return or price predictability.
 
+\subsection{Applied development/test case studies}
+
+To interpret the numerical minima, a separate applied experiment uses four
+pre-specified tracked series: quarterly U.S. real GDP (GDPC1), SPY, AAPL, and
+BTC--USD. The final eight quarters of GDP and the final 60 observations of each
+daily market series are reserved before any configuration search. All positive
+levels are modeled on the natural-log scale.
+
+Within the development region, the pre-specified \((d,L,h)\) grid is scanned
+using the frozen search. Candidate minima are summarized with the already
+frozen spacing radius \(\varepsilon=0.10\), retaining at most three
+representatives ranked by rolling forecast-CV error. Among configurations with
+at least two representatives, the displayed case maximizes the smoothness
+separation between its two lowest-CV candidates, with lexicographic
+\((d,L,h)\) tie breaking. This rule uses development data only.
+
+After the candidate set is frozen, each candidate is refit at the final
+development origin and scored on the first \(h\) observations of the untouched
+test block. A validation--test rank reversal is recorded when the lowest-CV
+candidate is not the lowest-test-error candidate among this already frozen set.
+The test ranking is retrospective diagnostic information; it is never fed back
+into candidate or configuration selection.
+
 \subsection{Frozen protocol and sensitivity}
 
 The primary search specification was frozen after a pre-paper quick benchmark and before the 1920-surface confirmatory run. A separate one-factor-at-a-time sensitivity analysis then varied the initial grid size, maximum depth, endpoint-refinement levels, minimum interval width, and near-zero derivative threshold while leaving all other settings fixed.
@@ -353,13 +403,58 @@ The sensitivity study explains which parts of the frozen specification matter. T
 
 The optional \(\varepsilon\)-spacing rule affects only how multiple detected minima are summarized. With \(\varepsilon=0.10\), 359 nearby candidates were suppressed across 330 synthetic surfaces, while the best detected minimum in each surface was preserved by construction.
 
+\subsection{Applied interpretation of multiple minima}
+
+The applied scan confirms that multimodality is not universal. None of the 64
+pre-specified GDP configurations produced two \(\varepsilon\)-separated
+representative minima. In contrast, this occurred in 7/64 SPY configurations,
+10/64 AAPL configurations, and 9/64 BTC--USD configurations; three BTC
+configurations produced three representatives. GDP therefore provides a useful
+unimodal contrast to the market examples.
+
+The selected SPY case used \(d=1\), \(L=126\), and \(h=60\). Rolling CV ranked
+an interior minimum at \(S=0.95639\) first, with MSE \(0.00177070\), and the
+exact lower endpoint \(S=0\) second, with MSE \(0.00195813\). Thus the endpoint
+candidate had about 10.6\% larger validation error. After freezing these two
+candidates, their test MSE values were \(0.00093985\) and \(0.00066164\),
+respectively. The validation ordering therefore reversed: the second-ranked
+validation candidate had about 29.6\% lower test MSE on the later block.
+
+The AAPL case produced two widely separated minima,
+\(S=0.62901\) and \(S=0.99733\), but the second had much larger validation and
+test error. The selected BTC--USD case produced three representatives at
+\(S=0.84463\), \(0.02908\), and \(0.99786\). Its second candidate was only
+about 13.9\% worse than the winner in rolling CV, yet its test MSE was about
+14.7 times larger. These examples show that separated minima can range from
+competitive alternatives to clearly inferior local optima.
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth]{../results/numerical_smoothness_selection/20261001T022610Z_applied-paper_72b8aaa/applied_case_studies.pdf}
+\caption{Applied interpretation of forecast-CV minima. Each row corresponds to
+GDP, SPY, AAPL, or BTC--USD. The left panels show the development-region
+forecast-CV profile and representative minima; the center panels show trend
+estimates fitted to the same final development window; the right panels compare
+the frozen candidate forecasts with the untouched test block. Candidate labels
+retain validation rank even when the later test ranking differs.}
+\label{fig:applied}
+\end{figure}
+
+The test comparison is not used to replace rolling CV by retrospective test
+selection. Its role is to reveal selection sensitivity: when several local
+minima exist, the validation winner need not dominate every later realization.
+Recovering the candidate set therefore provides information that a single
+unimodal optimization run would discard.
+
+
+
 \section{Discussion}
 
 The numerical benefit of the normalized smoothness coordinate is not that it makes the forecast objective convex. It does not. Its value is that it turns an unbounded penalty parameter into a compact, interpretable domain whose endpoints correspond to exact limiting estimators. Because \(S'(\lambda)>0\), stationary points and their local minimum/maximum classification are preserved in the interior. This allows the search to operate in a meaningful smoothness coordinate while derivative calculations continue to exploit the simple matrix dependence on \(\lambda\).
 
 Compactification also creates a numerical issue: a large range of \(\lambda\) is compressed near \(S=1\). The early diagnostic runs showed that several derivative roots can occupy the same coarse upper-tail cell. Endpoint-aware refinement was introduced in response to that observed geometry, then frozen before the paper-scale benchmark. The subsequent sensitivity experiment independently reproduces the failure when endpoint refinement is removed. This is a useful example of a transformation that improves global search organization while still requiring explicit attention to its boundary geometry.
 
-The paper's scope is narrower than general smoothing-parameter selection. CV, GCV, information criteria, marginal likelihood, controlled smoothness, and simulation-calibrated HP parameters remain legitimate answers to their respective statistical objectives \cite{craven1979gcv,guerrero2008smoothness,cortes2017smoothness,biessy2026wh,franke2026hp}. Here the target is specifically rolling future-block forecast MSE. The contribution is therefore the numerical treatment of that criterion when multiple local minima are possible, not a claim that forecast loss is universally preferable to the alternatives.
+The paper's scope is narrower than general smoothing-parameter selection. CV, GCV, information criteria, marginal likelihood, controlled smoothness, and simulation-calibrated HP parameters remain legitimate answers to their respective statistical objectives \cite{craven1979gcv,guerrero2008smoothness,cortes2017smoothness,biessy2026wh,franke2026hp}. Here the target is specifically rolling future-block forecast MSE. The contribution is therefore the numerical treatment of that criterion when multiple local minima are possible, not a claim that forecast loss is universally preferable to the alternatives. The applied cases also show why retaining several detected minima can be informative: they form a finite set of distinct smoothing choices whose validation ranking may or may not persist out of sample. This candidate set should be interpreted as a selection-sensitivity diagnostic, not as a confidence set or probability distribution over smoothness.
 
 Several limitations remain. First, no finite sampler can guarantee detection of every stationary root of an arbitrary smooth function without additional assumptions. The adversarial stationary inflection illustrates this distinction: it is stationary but not a local minimum. Second, the dense reference grid is a benchmark rather than mathematical ground truth. Third, the analytic derivative formulas rely on a fixed affine trend-continuation operator. If additional forecasting parameters were re-estimated as functions of \(S\), for example inside an ARIMA continuation model, the derivative expressions would change. Finally, the financial experiment is only a real-data numerical stress test and provides no evidence of trading value or financial predictability.
 
@@ -369,7 +464,7 @@ The implementation, frozen experiment scripts, tracked data snapshots, and resul
 
 Forecast-optimal smoothness selection for penalized trend estimation can require more than minimizing a unimodal scalar function. By normalizing the controlled-smoothness coordinate to \(S\in[0,1]\), differentiating the chronological forecast-validation objective analytically, and searching adaptively for multiple local minima while retaining exact boundary candidates, the proposed procedure avoids an exhaustive dense scan of the smoothing domain.
 
-Under a protocol frozen before the confirmatory experiments, the method recovered all relevant adversarial optima, all 2105 dense-reference minima across 1920 synthetic forecast surfaces, and all 473 dense-reference minima across 384 financial real-data surfaces. The synthetic and financial benchmarks required on average only 1.57\% and 1.84\% of the corresponding dense-grid evaluation counts. Sensitivity analysis identified endpoint refinement as the principal structural safeguard near the compactified upper boundary.
+Under a protocol frozen before the confirmatory experiments, the method recovered all relevant adversarial optima, all 2105 dense-reference minima across 1920 synthetic forecast surfaces, and all 473 dense-reference minima across 384 financial real-data surfaces. The synthetic and financial benchmarks required on average only 1.57\% and 1.84\% of the corresponding dense-grid evaluation counts. Sensitivity analysis identified endpoint refinement as the principal structural safeguard near the compactified upper boundary. In the applied case studies, separated minima occurred for several SPY, AAPL, and BTC--USD configurations but not for GDP, and one frozen SPY candidate set exhibited a validation--test rank reversal.
 
 These results support the proposed search as an accurate and computationally economical numerical procedure for the tested rolling forecast-validation problems. They do not establish universal recovery of all stationary points, and the method is intended as a numerical component for forecast-based PLS smoothness selection rather than as a replacement for other statistical smoothing criteria.
 
