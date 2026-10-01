@@ -242,3 +242,43 @@ The generator intentionally references the exact frozen adversarial, synthetic,
 sensitivity, and financial result directories. If any frozen input is missing,
 it fails rather than silently substituting another run.
 
+
+
+## Applied multiple-minima case studies
+
+After the numerical search is frozen, interpret the local forecast-CV minima on
+four pre-specified tracked series: GDPC1, SPY, AAPL, and BTC-USD.
+
+Run:
+
+~~~bash
+python experiments/numerical_smoothness_selection/run_applied_case_studies.py --preset paper
+~~~
+
+The experiment reserves the final test block before any configuration or
+candidate search: 8 quarters for GDP and 60 observations for daily market
+series.
+
+All \((d,L,h)\) scanning, local-minimum discovery, candidate spacing, and
+example selection use development data only. The final test block is diagnostic
+only.
+
+Outputs:
+
+~~~text
+results/numerical_smoothness_selection/<timestamp>_applied-paper_<sha>/
+├── case_selection.csv
+├── configuration_scan.csv
+├── candidate_results.csv
+├── objective_profiles.csv
+├── applied_paths.csv
+├── applied_case_studies.pdf
+└── run_metadata.json
+~~~
+
+The validation ranking is the actual selection ranking. The test ranking is
+retrospective diagnostic information only. A validation--test rank reversal
+does not permit selecting on the test set.
+
+The candidate set is a selection-sensitivity diagnostic, not a confidence
+interval or probability distribution over smoothness.
