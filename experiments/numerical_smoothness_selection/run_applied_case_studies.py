@@ -127,6 +127,15 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--preset", choices=tuple(PRESETS), default="smoke")
     parser.add_argument("--profile-grid-size", type=int, default=None)
     parser.add_argument("--output-dir", type=Path, default=None)
+    parser.add_argument(
+        "--figures-from-run",
+        type=Path,
+        default=None,
+        help=(
+            "Regenerate the applied figures from an existing result directory "
+            "without rerunning configuration or smoothness selection."
+        ),
+    )
     return parser.parse_args()
 
 
@@ -589,6 +598,267 @@ def _objective_profile(
     return pd.DataFrame(rows)
 
 
+def _temporal_protocol(selections: pd.DataFrame) -> pd.DataFrame:
+    """Reconstruct the exact rolling-validation chronology for selected cases.
+
+    The final test reserve is never part of any rolling-origin split.  Each row
+    describes one development-region validation block for the selected
+    (d, L, h) configuration and repeats the final refit/test boundaries needed
+    to make the plotting protocol auditable.
+    """
+
+    rows: list[dict] = []
+    for _, selection in selections.iterrows():
+        key = str(selection["series"])
+        spec = SERIES[key]
+        frame = _load_series(key)
+
+        test_reserve = int(
+            selection.get("test_reserve", spec["test_reserve"])
+        )
+        development = frame.iloc[:-test_reserve].copy()
+        test = frame.iloc[-test_reserve:].copy()
+
+        window = int(selection["window"])
+        horizon = int(selection["horizon"])
+        step = int(spec["step"])
+        max_origins = int(spec["max_origins"])
+
+        splits = td.rolling_origin_splits(
+            len(development),
+            initial_train=window,
+            horizon=horizon,
+            step=step,
+            expanding=False,
+            train_window=window,
+        )
+        splits = splits[-max_origins:]
+        if not splits:
+            raise RuntimeError(
+                f"No rolling validation splits for selected case {key}."
+            )
+
+        final_train = development.tail(window)
+        scored_test = test.head(horizon)
+
+        for split_number, split in enumerate(splits, start=1):
+            rows.append(
+                {
+                    "series": key,
+                    "family": spec["family"],
+                    "order": int(selection["order"]),
+                    "window": window,
+                    "horizon": horizon,
+                    "split_number": split_number,
+                    "train_start_date": development["date"].iloc[
+                        split.train.start
+                    ],
+                    "train_end_date": development["date"].iloc[
+                        split.train.stop - 1
+                    ],
+                    "validation_start_date": development["date"].iloc[
+                        split.validation.start
+                    ],
+                    "validation_end_date": development["date"].iloc[
+                        split.validation.stop - 1
+                    ],
+                    "development_start_date": development["date"].iloc[0],
+                    "development_end_date": development["date"].iloc[-1],
+                    "final_train_start_date": final_train["date"].iloc[0],
+                    "final_train_end_date": final_train["date"].iloc[-1],
+                    "test_start_date": test["date"].iloc[0],
+                    "test_end_date": test["date"].iloc[-1],
+                    "scored_test_start_date": scored_test["date"].iloc[0],
+                    "scored_test_end_date": scored_test["date"].iloc[-1],
+                }
+            )
+
+    protocol = pd.DataFrame(rows)
+    date_columns = [column for column in protocol if column.endswith("_date")]
+    for column in date_columns:
+        protocol[column] = pd.to_datetime(protocol[column])
+    return protocol
+
+
+def _build_temporal_split_figure(
+    selections: pd.DataFrame,
+    protocol: pd.DataFrame,
+    output_path: Path,
+) -> None:
+    """Plot the full case-study chronology and its nonstandard temporal split."""
+
+    series_order = selections["series"].tolist()
+    fig, axes = plt.subplots(
+        len(series_order),
+        1,
+        figsize=(12.0, max(4.0, 2.25 * len(series_order))),
+        squeeze=False,
+    )
+
+    for row_idx, key in enumerate(series_order):
+        ax = axes[row_idx, 0]
+        selection = selections.loc[selections["series"].eq(key)].iloc[0]
+        case_protocol = protocol.loc[protocol["series"].eq(key)].copy()
+        frame = _load_series(key)
+
+        development_start = pd.Timestamp(
+            case_protocol["development_start_date"].iloc[0]
+        )
+        development_end = pd.Timestamp(
+            case_protocol["development_end_date"].iloc[0]
+        )
+        final_train_start = pd.Timestamp(
+            case_protocol["final_train_start_date"].iloc[0]
+        )
+        final_train_end = pd.Timestamp(
+            case_protocol["final_train_end_date"].iloc[0]
+        )
+        test_start = pd.Timestamp(case_protocol["test_start_date"].iloc[0])
+        test_end = pd.Timestamp(case_protocol["test_end_date"].iloc[0])
+
+        ax.axvspan(
+            development_start,
+            development_end,
+            color="#dbeafe",
+            alpha=0.35,
+            label="Development region",
+            zorder=0,
+        )
+        ax.axvspan(
+            final_train_start,
+            final_train_end,
+            color="#60a5fa",
+            alpha=0.38,
+            label=f"Final training window (L={int(selection['window'])})",
+            zorder=1,
+        )
+        ax.axvspan(
+            test_start,
+            test_end,
+            color="#fecaca",
+            alpha=0.45,
+            label="Untouched test reserve",
+            zorder=0,
+        )
+
+        # Validation is not one fixed block.  Draw every future block only in a
+        # narrow protocol strip at the bottom and mark its forecast origin.
+        for _, split in case_protocol.iterrows():
+            ax.axvspan(
+                pd.Timestamp(split["validation_start_date"]),
+                pd.Timestamp(split["validation_end_date"]),
+                ymin=0.0,
+                ymax=0.075,
+                color="#1d4ed8",
+                alpha=0.12,
+                zorder=2,
+            )
+
+        origin_dates = pd.to_datetime(
+            case_protocol["validation_start_date"]
+        ).drop_duplicates()
+        ax.scatter(
+            mdates.date2num(origin_dates),
+            np.full(len(origin_dates), 0.038),
+            marker="|",
+            s=55,
+            color="#1d4ed8",
+            transform=ax.get_xaxis_transform(),
+            label=f"Rolling validation origins (n={len(origin_dates)})",
+            zorder=5,
+        )
+
+        ax.plot(
+            pd.to_datetime(frame["date"]),
+            frame["value"],
+            color="#3f3f46",
+            linewidth=1.0,
+            label="Observed series",
+            zorder=4,
+        )
+        ax.axvline(
+            test_start,
+            color="#991b1b",
+            linewidth=0.9,
+            linestyle="--",
+            zorder=3,
+        )
+
+        ax.set_title(
+            f"{SERIES[key]['family']}: selected "
+            f"d={int(selection['order'])}, "
+            f"L={int(selection['window'])}, "
+            f"h={int(selection['horizon'])}"
+        )
+        ax.set_ylabel("Level")
+        ax.grid(alpha=0.18)
+        locator = mdates.AutoDateLocator()
+        ax.xaxis.set_major_locator(locator)
+        ax.xaxis.set_major_formatter(mdates.ConciseDateFormatter(locator))
+
+        if row_idx == 0:
+            ax.legend(
+                frameon=False,
+                fontsize=7.2,
+                ncol=3,
+                loc="upper left",
+            )
+
+    axes[-1, 0].set_xlabel("Date")
+    fig.tight_layout()
+    fig.savefig(output_path, bbox_inches="tight")
+    plt.close(fig)
+
+
+def _write_applied_figures(
+    run_dir: Path,
+    selections: pd.DataFrame,
+    candidates: pd.DataFrame,
+    profiles: pd.DataFrame,
+    paths: pd.DataFrame,
+) -> None:
+    _write_applied_figures(
+        run_dir,
+        selections,
+        candidates,
+        profiles,
+        paths,
+    )
+    protocol = _temporal_protocol(selections)
+    protocol.to_csv(run_dir / "temporal_split_protocol.csv", index=False)
+    _build_temporal_split_figure(
+        selections,
+        protocol,
+        run_dir / "temporal_split.pdf",
+    )
+
+
+def _replot_existing_run(run_dir: Path) -> None:
+    required = {
+        "case_selection.csv",
+        "candidate_results.csv",
+        "objective_profiles.csv",
+        "applied_paths.csv",
+    }
+    missing = sorted(name for name in required if not (run_dir / name).exists())
+    if missing:
+        raise FileNotFoundError(
+            f"Cannot replot {run_dir}; missing: {', '.join(missing)}"
+        )
+
+    selections = pd.read_csv(run_dir / "case_selection.csv")
+    candidates = pd.read_csv(run_dir / "candidate_results.csv")
+    profiles = pd.read_csv(run_dir / "objective_profiles.csv")
+    paths = pd.read_csv(run_dir / "applied_paths.csv")
+    _write_applied_figures(
+        run_dir,
+        selections,
+        candidates,
+        profiles,
+        paths,
+    )
+
+
 def _build_figure(
     selections: pd.DataFrame,
     candidates: pd.DataFrame,
@@ -714,6 +984,16 @@ def _build_figure(
 
 def main() -> None:
     args = parse_args()
+
+    if args.figures_from_run is not None:
+        run_dir = Path(args.figures_from_run)
+        _replot_existing_run(run_dir)
+        print(
+            f"Regenerated applied figures from frozen results in {run_dir}",
+            flush=True,
+        )
+        return
+
     preset = PRESETS[args.preset]
     profile_grid_size = int(
         args.profile_grid_size
