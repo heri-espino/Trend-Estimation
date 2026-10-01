@@ -5,9 +5,10 @@ Read in this order:
 1. `CP04_applied-results.md`
 2. `../todo/NEXT.md`
 3. `../notes/applied_case_studies.md`
-4. `../notes/submission_positioning.md`
-5. `../notes/decisions.md`
-6. `../notes/results.md`
+4. `../../literature/dictionary/state_of_art_and_novelty.md`
+5. `../notes/submission_positioning.md`
+6. `../notes/decisions.md`
+7. `../notes/results.md`
 
 ## Current state
 
