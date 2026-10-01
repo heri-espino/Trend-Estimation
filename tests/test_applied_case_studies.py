@@ -26,6 +26,15 @@ def test_applied_case_studies_smoke_preserves_test_separation(tmp_path):
 
     selections = pd.read_csv(tmp_path / "case_selection.csv")
     candidates = pd.read_csv(tmp_path / "candidate_results.csv")
+    long_selection = pd.read_csv(
+        tmp_path / "long_horizon_order_selection.csv"
+    )
+    long_candidates = pd.read_csv(
+        tmp_path / "long_horizon_order_candidates.csv"
+    )
+    long_paths = pd.read_csv(
+        tmp_path / "long_horizon_order_paths.csv"
+    )
     protocol = pd.read_csv(
         tmp_path / "temporal_split_protocol.csv",
         parse_dates=[
@@ -75,6 +84,21 @@ def test_applied_case_studies_smoke_preserves_test_separation(tmp_path):
     assert metadata["selection_uses_test"] is False
     assert metadata["test_role"] == "diagnostic_only"
     assert metadata["candidate_spacing_epsilon"] == 0.10
+    assert metadata["long_horizon_diagnostic"]["orders"] == [1, 2, 3, 4]
+    assert metadata["long_horizon_diagnostic"]["test_role"].startswith(
+        "visual diagnostic"
+    )
+
+    assert set(long_selection["order"]) == {1, 2, 3, 4}
+    assert set(long_selection["horizon"]) == {8}
+    assert set(long_candidates["order"]) == {1, 2, 3, 4}
+    assert {"order", "window", "horizon", "smoothness", "cv_rank"} <= set(
+        long_candidates.columns
+    )
+    assert {"order", "window", "horizon", "segment", "candidate_path"} <= set(
+        long_paths.columns
+    )
+    assert set(long_paths["segment"]) == {"train", "test"}
 
     assert not protocol.empty
     assert (protocol["validation_end_date"] <= protocol["development_end_date"]).all()
@@ -85,6 +109,9 @@ def test_applied_case_studies_smoke_preserves_test_separation(tmp_path):
 
     assert (tmp_path / "objective_profiles.csv").exists()
     assert (tmp_path / "applied_paths.csv").exists()
+    assert (tmp_path / "long_horizon_order_selection.csv").exists()
+    assert (tmp_path / "long_horizon_order_candidates.csv").exists()
+    assert (tmp_path / "long_horizon_order_paths.csv").exists()
     assert (tmp_path / "temporal_split_protocol.csv").exists()
     assert (tmp_path / "applied_case_studies.pdf").exists()
     assert (tmp_path / "temporal_split.pdf").exists()
