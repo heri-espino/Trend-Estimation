@@ -53,25 +53,36 @@ The closest literature in the project corpus separates into several strands:
   user-chosen percentage of smoothness.
 - **Cortés-Toto et al.:** CV, GCV, AICc, and BIC selection inside the PLS
   framework, followed by analysis of attained smoothness.
+- **Hart (1994):** the closest conceptual predecessor. Time-series
+  cross-validation chooses the bandwidth of a kernel trend smoother from
+  one-step-ahead predictive performance using past data. Therefore predictive
+  selection of trend smoothness is not our novelty.
+- **Tashman / Bergmeir-Benítez:** chronological forecast evaluation,
+  rolling-origin designs, rolling windows, recalibration, and explicit
+  horizon-dependent evaluation.
 - **Weinert / modern WH work:** efficient numerical computation for
   Whittaker-Henderson smoothing and smoothing-oriented criteria.
 - **Biessy:** modern probabilistic WH formulation, marginal likelihood/LAML,
-  numerical optimization, extrapolation, and an explicit example of a GCV
-  profile with multiple local minima.
+  numerical optimization, extrapolation, and an explicit GCV profile with
+  multiple local minima. Therefore multiple minima in a smoothing criterion are
+  not themselves our novelty.
 - **Franke et al.:** simulation-based data-driven calibration of HP smoothing
-  parameters using known synthetic trends.
-- **Tashman / Bergmeir-Benítez:** chronological forecast evaluation,
-  rolling-origin designs, rolling windows, and recalibration.
+  parameters using known synthetic trends, including discussion of
+  parameter-objective geometry.
 
-Our target differs because the scalar objective is **rolling future forecast
-loss**, not reconstruction CV/GCV, information criteria, marginal likelihood,
-or user-fixed smoothness.
+Our target is the **combination** not found in the local corpus: a
+horizon-specific rolling future-block forecast objective for finite-difference
+PLS, expressed in normalized smoothness space and treated as a
+multiple-local-minimum numerical search problem with analytic derivatives and
+exact boundary models.
 
 ## Preferred novelty sentence
 
-> We formulate smoothing-parameter selection as a horizon-specific rolling
-> forecast optimization problem in normalized smoothness space and develop a
-> numerical procedure to recover multiple relevant local minima efficiently.
+> Building on predictive smoothing-parameter selection and rolling-origin
+> forecast evaluation, we formulate a horizon-specific rolling forecast
+> criterion for finite-difference PLS in normalized smoothness space and
+> develop a numerical procedure to recover multiple relevant local minima and
+> exact boundary optima efficiently.
 
 Do not use “first” unless a later targeted literature audit establishes it.
 
@@ -133,3 +144,15 @@ S\in[0,1]
 
 Keep finance short. Keep the numerical mechanism, endpoint semantics,
 derivatives, and controlled benchmark central.
+
+
+## Canonical literature boundary
+
+For the bundle-based citation map and the exact distinction between established
+ideas and the active paper's provisional novelty, read:
+
+`../../literature/dictionary/state_of_art_and_novelty.md`
+
+This file is the canonical novelty reference. “Not found in the bundle” must
+not be upgraded to a universal first-in-the-literature claim without a targeted
+external audit.
