@@ -817,12 +817,12 @@ def _write_applied_figures(
     profiles: pd.DataFrame,
     paths: pd.DataFrame,
 ) -> None:
-    _write_applied_figures(
-        run_dir,
+    _build_figure(
         selections,
         candidates,
         profiles,
         paths,
+        run_dir / "applied_case_studies.pdf",
     )
     protocol = _temporal_protocol(selections)
     protocol.to_csv(run_dir / "temporal_split_protocol.csv", index=False)
@@ -1123,12 +1123,12 @@ def main() -> None:
     profiles.to_csv(run_dir / "objective_profiles.csv", index=False)
     paths.to_csv(run_dir / "applied_paths.csv", index=False)
 
-    _build_figure(
+    _write_applied_figures(
+        run_dir,
         selections,
         candidates,
         profiles,
         paths,
-        run_dir / "applied_case_studies.pdf",
     )
 
     metadata = {
