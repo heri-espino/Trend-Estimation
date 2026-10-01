@@ -367,31 +367,49 @@ python experiments/numerical_smoothness_selection/run_two_stage_order_validation
 
 The chronology is:
 
-1. **Inner development / Validation 1:** rolling forecast CV is run only inside
-   the earliest development region. For each `d in {1,2,3,4}`, this stage
-   selects the training window `L` and the best smoothness candidate `S`.
-2. **Validation 2:** the immediately following contiguous block has the same
+1. **Inner development / Validation 1a:** the usual aggregate rolling forecast
+   CV selects a training window `L` separately for each
+   `d in {1,2,3,4}`.
+2. **Rolling-origin minima / Validation 1b:** at that selected `L`, the same
+   historical rolling origins are reused one at a time. All representative
+   local smoothness minima are recovered at each origin.
+3. **Recurring smoothness modes:** nearby originwise minima are grouped in
+   normalized-smoothness space. Each mode records how many rolling origins
+   support it and is represented by the median `S` by default. This avoids
+   averaging unrelated low- and high-smoothness minima into a value that may
+   lie between objective basins.
+4. **Validation 2:** the immediately following contiguous block has the same
    length as the final test reserve (8 quarters for GDP, 60 observations for
-   the daily series). The four Stage-1 choices forecast this block, and the
-   polynomial order with the smallest RMSE is selected.
-3. **Final refit:** each Stage-1 choice is refit through Validation 2 using its
-   frozen `d, L, S`. The Validation-2 winner is the selected trend; the other
-   orders are retained only as low-alpha visual alternatives.
-4. **True test:** the final reserved block remains untouched until all selection
+   the daily series). Every recurring `(d, S-mode)` candidate forecasts this
+   block. The candidate with the smallest RMSE is selected globally.
+5. **Final refit:** all candidates are refit through Validation 2 using their
+   frozen `d, L`, and mode representative `S`. The Validation-2 winner is
+   drawn with high alpha; the best alternative within each order has
+   intermediate alpha; all remaining modes stay visible at low alpha.
+6. **True test:** the final reserved block remains untouched until all selection
    is complete.
 
-By default, Validation 2 selects the order using RMSE on the observed level.
-For a log-scale comparison instead:
+By default, Validation 2 uses RMSE on the observed level and each rolling-origin
+mode uses the median `S`. To compare alternatives:
 
 ~~~bash
 python experiments/numerical_smoothness_selection/run_two_stage_order_validation.py \
   --preset paper --selection-metric log_rmse
+
+python experiments/numerical_smoothness_selection/run_two_stage_order_validation.py \
+  --preset paper --mode-representative mean
 ~~~
+
+The mean option averages only within a recurring smoothness mode, not across
+all minima for an order. The median remains the default because the rolling
+preferences can be skewed or concentrated at `S=0` or `S=1`.
 
 Each run writes a separate exploratory result directory:
 
 ~~~text
 results/numerical_smoothness_selection/<timestamp>_two-stage-order-paper_<sha>/
+├── order_window_selection.csv
+├── rolling_origin_minima.csv
 ├── two_stage_order_selection.csv
 ├── two_stage_order_paths.csv
 ├── two_stage_order_validation.png
@@ -399,10 +417,18 @@ results/numerical_smoothness_selection/<timestamp>_two-stage-order-paper_<sha>/
 └── run_metadata.json
 ~~~
 
-The figure has three columns per series: the second validation block where
-`d` is selected, the final refit through that block, and the untouched true
-test. Observed values remain blue. The selected order is drawn with high alpha
-and larger linewidth; the other Stage-1 choices remain visible with low alpha.
+`rolling_origin_minima.csv` makes the historical smoothness preferences
+auditable. `two_stage_order_selection.csv` contains one row per recurring
+smoothness mode, including its support, mean/median `S`, Validation-2 RMSE,
+within-order rank, global rank, and final true-test diagnostic error.
+
+The figure has three columns per series: the second validation block where the
+final `(d,S)` mode is selected, the final refit through that block, and the
+untouched true test. Observed values remain blue. Colors follow the deep-style
+palette: red for `d=1`, green for `d=2`, purple for `d=3`, and orange for
+`d=4`. All recovered modes are plotted. The global Validation-2 winner is
+drawn with high alpha and larger linewidth; the best non-winning mode within
+each order is intermediate; the remaining modes are deliberately faint.
 Vertical limits depend only on observed values.
 
 This experiment is exploratory and does not alter the paper or its frozen
