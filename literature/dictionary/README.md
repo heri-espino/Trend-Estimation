@@ -13,6 +13,8 @@ paper needs a precise distinction that the source literature does not make.
   notation guidance, and source anchors.
 - [wording.md](wording.md) — preferred manuscript wording, discouraged wording,
   and distinctions that should remain consistent across the paper.
+- [state_of_art_and_novelty.md](state_of_art_and_novelty.md) — bundle-based
+  citation map, closest predecessors, novelty boundary, and safe novelty wording.
 
 ## Source policy
 
