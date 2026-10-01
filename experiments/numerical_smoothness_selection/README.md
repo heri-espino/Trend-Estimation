@@ -355,3 +355,55 @@ observed data only, so unstable high-order extrapolations are clipped rather
 than compressing the observed series.
 
 This plot is exploratory and is not referenced by the paper.
+
+### Exploratory two-stage order selection
+
+To test a stricter order-selection protocol without touching the manuscript,
+run:
+
+~~~bash
+python experiments/numerical_smoothness_selection/run_two_stage_order_validation.py --preset paper
+~~~
+
+The chronology is:
+
+1. **Inner development / Validation 1:** rolling forecast CV is run only inside
+   the earliest development region. For each `d in {1,2,3,4}`, this stage
+   selects the training window `L` and the best smoothness candidate `S`.
+2. **Validation 2:** the immediately following contiguous block has the same
+   length as the final test reserve (8 quarters for GDP, 60 observations for
+   the daily series). The four Stage-1 choices forecast this block, and the
+   polynomial order with the smallest RMSE is selected.
+3. **Final refit:** each Stage-1 choice is refit through Validation 2 using its
+   frozen `d, L, S`. The Validation-2 winner is the selected trend; the other
+   orders are retained only as low-alpha visual alternatives.
+4. **True test:** the final reserved block remains untouched until all selection
+   is complete.
+
+By default, Validation 2 selects the order using RMSE on the observed level.
+For a log-scale comparison instead:
+
+~~~bash
+python experiments/numerical_smoothness_selection/run_two_stage_order_validation.py \
+  --preset paper --selection-metric log_rmse
+~~~
+
+Each run writes a separate exploratory result directory:
+
+~~~text
+results/numerical_smoothness_selection/<timestamp>_two-stage-order-paper_<sha>/
+├── two_stage_order_selection.csv
+├── two_stage_order_paths.csv
+├── two_stage_order_validation.png
+├── two_stage_order_validation.pdf
+└── run_metadata.json
+~~~
+
+The figure has three columns per series: the second validation block where
+`d` is selected, the final refit through that block, and the untouched true
+test. Observed values remain blue. The selected order is drawn with high alpha
+and larger linewidth; the other Stage-1 choices remain visible with low alpha.
+Vertical limits depend only on observed values.
+
+This experiment is exploratory and does not alter the paper or its frozen
+primary applied-case results.
