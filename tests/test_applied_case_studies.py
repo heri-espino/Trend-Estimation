@@ -116,6 +116,24 @@ def test_applied_case_studies_smoke_preserves_test_separation(tmp_path):
     assert (tmp_path / "applied_case_studies.pdf").exists()
     assert (tmp_path / "temporal_split.pdf").exists()
 
+    exploratory_script = (
+        "experiments/numerical_smoothness_selection/"
+        "plot_long_horizon_orders.py"
+    )
+    subprocess.run(
+        [
+            sys.executable,
+            exploratory_script,
+            "--run-dir",
+            str(tmp_path),
+            "--output-stem",
+            "exploratory_smoke",
+        ],
+        check=True,
+    )
+    assert (tmp_path / "exploratory_smoke.png").exists()
+    assert (tmp_path / "exploratory_smoke.pdf").exists()
+
     # Figure-only mode must reuse the frozen CSV results rather than rerun
     # configuration or smoothness selection.
     (tmp_path / "applied_case_studies.pdf").unlink()
