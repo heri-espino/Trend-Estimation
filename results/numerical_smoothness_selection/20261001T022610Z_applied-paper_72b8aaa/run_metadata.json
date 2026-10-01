@@ -1,0 +1,64 @@
+{
+  "created_at_utc": "2026-10-01T02:26:17.878793+00:00",
+  "git_commit": "72b8aaa",
+  "suite": "applied_multiple_minima",
+  "preset": "paper",
+  "series": [
+    "GDPC1",
+    "SPY",
+    "AAPL",
+    "BTC-USD"
+  ],
+  "data_policy": "tracked_snapshot_only",
+  "transform": "natural_log_level",
+  "selection_uses_test": false,
+  "test_role": "diagnostic_only",
+  "candidate_spacing_epsilon": 0.1,
+  "max_candidates": 3,
+  "boundary_probe": 0.002,
+  "frozen_search": {
+    "initial_grid_size": 9,
+    "max_depth": 8,
+    "min_interval": 0.001,
+    "endpoint_refinement_levels": 6,
+    "derivative_tol": 1e-08,
+    "curvature_tol": 1e-08,
+    "near_zero_ratio": 0.2,
+    "root_xtol": 1e-10,
+    "boundary_margin": 1e-06
+  },
+  "selection_rule": "Among development-only configurations with at least two epsilon-separated candidates, maximize the smoothness separation between the two lowest-CV candidates; break ties by ascending (d,L,h). If no configuration has two candidates, fall back to the largest candidate count with the same deterministic tie rule.",
+  "test_protocol": "Reserve the final max-horizon block before configuration search. After the development-only candidate set is frozen, refit each candidate at the development endpoint and score the first h observations of the untouched test block.",
+  "profile_grid_size": 2001,
+  "snapshot": {
+    "GDPC1": {
+      "path": "data/external/real_world/snapshot/fred/GDPC1.csv",
+      "sha256": "c8335f46e0628add80cc33db3b92e32f516e4188f6bdeeb4fedcfdb6f782ae5f",
+      "rows_loaded": 248,
+      "development_rows": 240,
+      "test_reserve_rows": 8
+    },
+    "SPY": {
+      "path": "data/external/real_world/snapshot/yahoo/SPY.csv",
+      "sha256": "0fce5b558e6492f37d3e59190a57ba2f2aeaae37bc85d2679f75620cc52c9c10",
+      "rows_loaded": 2060,
+      "development_rows": 2000,
+      "test_reserve_rows": 60
+    },
+    "AAPL": {
+      "path": "data/external/real_world/snapshot/yahoo/AAPL.csv",
+      "sha256": "5d0e84e7bc5e4ba1df14245c9c7601bba249f3e56d1efdc98f79252e1fb2e5a5",
+      "rows_loaded": 2060,
+      "development_rows": 2000,
+      "test_reserve_rows": 60
+    },
+    "BTC-USD": {
+      "path": "data/external/real_world/snapshot/yahoo/BTC_USD.csv",
+      "sha256": "fe2fda971d2ae48f1c9c4c9712b3b5fceb1438523ec0bff201d732d489c6eae5",
+      "rows_loaded": 2060,
+      "development_rows": 2000,
+      "test_reserve_rows": 60
+    }
+  },
+  "elapsed_seconds": 7.774956699926406
+}
