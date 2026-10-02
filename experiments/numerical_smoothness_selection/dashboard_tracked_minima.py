@@ -1358,6 +1358,188 @@ def main() -> None:
     st.pyplot(overview, use_container_width=True)
     plt.close(overview)
 
+    st.subheader("Interactive trend sandbox")
+    st.caption(
+        "Choose any series in the current run, the finite-difference order d, "
+        "the normalized smoothness S, the exact interval used to fit the trend, "
+        "and the future interval you want to inspect. The forecast always starts "
+        "mathematically immediately after the trend fit; if the displayed forecast "
+        "interval starts later, the intermediate continuation is drawn faintly."
+    )
+
+    sandbox_series = st.selectbox(
+        "Series",
+        options=_available_series(metadata),
+        format_func=lambda value: (
+            f"{SERIES_LABELS.get(value, value)} - {value}"
+        ),
+        key="sandbox-series",
+    )
+    sandbox_frame = _load_snapshot(
+        str(metadata["snapshot"][sandbox_series]["path"])
+    )
+    sandbox_defaults = _interactive_defaults(
+        sandbox_series,
+        sandbox_frame,
+        selection,
+        metadata,
+    )
+    sandbox_key = f"{selected_run.name}::{sandbox_series}"
+
+    control_a, control_b, control_c = st.columns([1.0, 1.5, 1.0])
+    with control_a:
+        order_default = int(sandbox_defaults["order"])
+        sandbox_order = st.selectbox(
+            "Difference order d",
+            options=(1, 2, 3, 4),
+            index=(1, 2, 3, 4).index(order_default),
+            key=f"sandbox-order::{sandbox_key}",
+            help=(
+                "d=1 gives constant continuation, d=2 linear, "
+                "d=3 quadratic, and d=4 cubic in finite differences."
+            ),
+        )
+
+    slider_key = f"sandbox-s-slider::{sandbox_key}"
+    input_key = f"sandbox-s-input::{sandbox_key}"
+    if slider_key not in st.session_state:
+        st.session_state[slider_key] = float(sandbox_defaults["smoothness"])
+    if input_key not in st.session_state:
+        st.session_state[input_key] = float(sandbox_defaults["smoothness"])
+
+    with control_b:
+        st.slider(
+            "Smoothness S",
+            min_value=0.0,
+            max_value=1.0,
+            step=0.001,
+            key=slider_key,
+            on_change=_sync_widget_value,
+            args=(slider_key, input_key),
+        )
+    with control_c:
+        st.number_input(
+            "Exact S",
+            min_value=0.0,
+            max_value=1.0,
+            step=0.001,
+            format="%.6f",
+            key=input_key,
+            on_change=_sync_widget_value,
+            args=(input_key, slider_key),
+        )
+    sandbox_smoothness = float(st.session_state[input_key])
+
+    date_indices = list(range(len(sandbox_frame)))
+    trend_default = tuple(int(value) for value in sandbox_defaults["trend_range"])
+    trend_start_idx, trend_end_idx = st.select_slider(
+        "Trend-fit interval",
+        options=date_indices,
+        value=trend_default,
+        format_func=lambda idx: sandbox_frame["date"].iloc[int(idx)].strftime(
+            "%Y-%m-%d"
+        ),
+        key=f"sandbox-trend-range::{sandbox_key}",
+    )
+    trend_start_idx = int(trend_start_idx)
+    trend_end_idx = int(trend_end_idx)
+
+    future_indices = list(range(trend_end_idx + 1, len(sandbox_frame)))
+    if not future_indices:
+        st.warning(
+            "The selected trend interval ends at the last available observation. "
+            "Move its right endpoint left to create a forecast interval."
+        )
+    else:
+        default_horizon = int(
+            metadata["snapshot"][sandbox_series].get("true_test_rows", 1)
+        )
+        forecast_default_start = max(
+            future_indices[0],
+            int(sandbox_defaults["forecast_range"][0]),
+        )
+        if forecast_default_start not in future_indices:
+            forecast_default_start = future_indices[0]
+        forecast_default_end = min(
+            len(sandbox_frame) - 1,
+            max(
+                forecast_default_start,
+                forecast_default_start + default_horizon - 1,
+            ),
+        )
+
+        if len(future_indices) == 1:
+            forecast_start_idx = forecast_end_idx = future_indices[0]
+            st.caption(
+                "Forecast interval: "
+                f"{sandbox_frame['date'].iloc[forecast_start_idx]:%Y-%m-%d}"
+            )
+        else:
+            forecast_start_idx, forecast_end_idx = st.select_slider(
+                "Forecast interval to display and score",
+                options=future_indices,
+                value=(forecast_default_start, forecast_default_end),
+                format_func=lambda idx: sandbox_frame["date"].iloc[
+                    int(idx)
+                ].strftime("%Y-%m-%d"),
+                key=(
+                    f"sandbox-forecast-range::{sandbox_key}::"
+                    f"{trend_end_idx}"
+                ),
+            )
+            forecast_start_idx = int(forecast_start_idx)
+            forecast_end_idx = int(forecast_end_idx)
+
+        if trend_end_idx - trend_start_idx + 1 <= int(sandbox_order):
+            st.warning(
+                f"The trend interval has only "
+                f"{trend_end_idx - trend_start_idx + 1} observations. "
+                f"Choose more than d={sandbox_order} observations."
+            )
+        else:
+            try:
+                sandbox_fig, sandbox_metrics = _interactive_trend_forecast(
+                    sandbox_frame,
+                    trend_start_idx=trend_start_idx,
+                    trend_end_idx=trend_end_idx,
+                    forecast_start_idx=forecast_start_idx,
+                    forecast_end_idx=forecast_end_idx,
+                    order=int(sandbox_order),
+                    smoothness=sandbox_smoothness,
+                )
+            except (ValueError, FloatingPointError) as exc:
+                st.error(str(exc))
+            else:
+                st.pyplot(sandbox_fig, use_container_width=True)
+                plt.close(sandbox_fig)
+
+                lambda_value = sandbox_metrics["lambda"]
+                lambda_text = (
+                    "∞"
+                    if np.isinf(lambda_value)
+                    else f"{lambda_value:.5g}"
+                )
+                m1, m2, m3, m4, m5 = st.columns(5)
+                m1.metric("Level RMSE", f"{sandbox_metrics['level_rmse']:.5g}")
+                m2.metric("Log RMSE", f"{sandbox_metrics['log_rmse']:.5g}")
+                m3.metric("lambda", lambda_text)
+                m4.metric("Trend observations", int(sandbox_metrics["n_train"]))
+                m5.metric(
+                    "Forecast observations",
+                    int(sandbox_metrics["n_forecast"]),
+                )
+
+                st.caption(
+                    "Trend fit: "
+                    f"{sandbox_frame['date'].iloc[trend_start_idx]:%Y-%m-%d} "
+                    "to "
+                    f"{sandbox_frame['date'].iloc[trend_end_idx]:%Y-%m-%d}. "
+                    "Scored forecast: "
+                    f"{sandbox_frame['date'].iloc[forecast_start_idx]:%Y-%m-%d} "
+                    "to "
+                    f"{sandbox_frame['date'].iloc[forecast_end_idx]:%Y-%m-%d}."
+                )
+
     present_series = [
         series
         for series in SERIES_ORDER
