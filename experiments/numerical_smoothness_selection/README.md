@@ -438,3 +438,55 @@ with low alpha.
 
 This experiment is exploratory and does not alter the paper or its frozen
 primary applied-case results.
+
+### Tracked-minima dashboard
+
+The full rolling-minimum story is easier to inspect interactively than in one
+paper figure. Install the optional dashboard dependencies once:
+
+~~~bash
+python -m pip install -e ".[dashboard]"
+~~~
+
+The current dashboard also uses the full historical Validation-2 forecast paths,
+so the tracked-minima experiment must be rerun after pulling the dashboard
+version of the repository:
+
+~~~bash
+python experiments/numerical_smoothness_selection/run_two_stage_order_validation.py --preset paper
+~~~
+
+Then launch:
+
+~~~bash
+streamlit run experiments/numerical_smoothness_selection/dashboard_tracked_minima.py
+~~~
+
+The dashboard automatically opens the newest compatible
+`*_tracked-minima-*` result directory and lets another run be selected from
+the sidebar.
+
+The top view preserves the four scientific rows -- GDP, ETF, Stock, and Crypto
+-- and expands the experiment into seven columns:
+
+1. complete chronology and the final validation/test reserves;
+2. tracked local-minimum smoothness trajectories `S_{j,t}`;
+3. number of local minima on each Validation-1 surface;
+4. Validation-1 loss along each branch;
+5. Validation-2 RMSE along each branch;
+6. recent polynomial continuations into Validation 2;
+7. every continuing branch on the untouched true test.
+
+Below that matrix, each series has its own drill-down tab. The tab provides the
+selected branch, `d`, `L`, support, historical Validation-2 score, final
+smoothness, and true-test diagnostic; an origin selector for inspecting one
+Validation-2 forecast block; detailed branch/minimum tables; and CSV download
+buttons.
+
+Observed values are always blue. The deep-style order colors remain red for
+`d=1`, green for `d=2`, purple for `d=3`, and orange for `d=4`. The
+selected persistent branch is emphasized while the other tracked branches stay
+visible with user-controlled alpha.
+
+The dashboard is exploratory only. It reads frozen result files and does not
+change model selection or manuscript outputs.
