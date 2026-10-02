@@ -467,21 +467,33 @@ The dashboard automatically opens the newest compatible
 the sidebar.
 
 The top view preserves the four scientific rows -- GDP, ETF, Stock, and Crypto
--- and expands the experiment into seven columns:
+-- and expands the experiment into nine columns:
 
 1. complete chronology and the final validation/test reserves;
 2. tracked local-minimum smoothness trajectories `S_{j,t}`;
 3. number of local minima on each Validation-1 surface;
 4. Validation-1 loss along each branch;
 5. Validation-2 RMSE along each branch;
-6. recent polynomial continuations into Validation 2;
-7. every continuing branch on the untouched true test.
+6. the selected branch's observed training window, smoothed trend, and
+   Validation-1 polynomial continuation at the latest tracked origin;
+7. recent polynomial continuations into Validation 2;
+8. the final observed training tail, its selected smooth trend, and the
+   forecast made after the final validation block into the true test;
+9. every continuing branch on the untouched true test.
+
+Validation losses can occasionally explode for unstable high-order
+continuations. The dashboard therefore sets the Validation-1 and Validation-2
+vertical ranges from an upper empirical quantile (95% by default) rather than
+the maximum. The quantile is adjustable in the sidebar. No observations or
+scores are removed; extreme values are simply clipped by the visible plotting
+range so the bulk of the validation history remains readable.
 
 Below that matrix, each series has its own drill-down tab. The tab provides the
 selected branch, `d`, `L`, support, historical Validation-2 score, final
 smoothness, and true-test diagnostic; an origin selector for inspecting one
-Validation-2 forecast block; detailed branch/minimum tables; and CSV download
-buttons.
+Validation-2 forecast block; the corresponding smoothed training series and
+Validation-1 continuation; the final smoothed fit followed by the true-test
+forecast; detailed branch/minimum tables; and CSV download buttons.
 
 Observed values are always blue. The deep-style order colors remain red for
 `d=1`, green for `d=2`, purple for `d=3`, and orange for `d=4`. The
