@@ -253,6 +253,202 @@ def _final_context(
     }
 
 
+def _sync_widget_value(source_key: str, target_key: str) -> None:
+    st.session_state[target_key] = float(st.session_state[source_key])
+
+
+def _available_series(metadata: dict) -> list[str]:
+    snapshot = metadata.get("snapshot", {})
+    ordered = [series for series in SERIES_ORDER if series in snapshot]
+    extras = sorted(series for series in snapshot if series not in SERIES_ORDER)
+    return ordered + extras
+
+
+def _interactive_defaults(
+    series: str,
+    frame: pd.DataFrame,
+    selection: pd.DataFrame,
+    metadata: dict,
+) -> dict[str, object]:
+    case_selection = selection.loc[selection["series"].eq(series)].copy()
+    winner = _winner(case_selection) if not case_selection.empty else None
+
+    horizon = int(
+        metadata.get("snapshot", {})
+        .get(series, {})
+        .get("true_test_rows", max(1, min(20, len(frame) // 5)))
+    )
+    if winner is not None:
+        window = int(winner["window"])
+        order = int(winner["order"])
+        smoothness = float(winner["final_smoothness"])
+    else:
+        window = min(max(20, horizon * 2), max(len(frame) - horizon, 2))
+        order = 2
+        smoothness = 0.75
+
+    forecast_start = max(1, len(frame) - horizon)
+    trend_end = forecast_start - 1
+    trend_start = max(0, trend_end - window + 1)
+    forecast_end = min(len(frame) - 1, forecast_start + horizon - 1)
+
+    return {
+        "order": order,
+        "smoothness": smoothness,
+        "trend_range": (trend_start, trend_end),
+        "forecast_range": (forecast_start, forecast_end),
+    }
+
+
+def _interactive_trend_forecast(
+    frame: pd.DataFrame,
+    *,
+    trend_start_idx: int,
+    trend_end_idx: int,
+    forecast_start_idx: int,
+    forecast_end_idx: int,
+    order: int,
+    smoothness: float,
+) -> tuple[plt.Figure, dict[str, float]]:
+    if trend_end_idx <= trend_start_idx:
+        raise ValueError("The trend interval must contain at least two observations.")
+    if forecast_start_idx <= trend_end_idx:
+        raise ValueError("The forecast interval must start after the trend interval.")
+    if forecast_end_idx < forecast_start_idx:
+        raise ValueError("The forecast interval end must not precede its start.")
+
+    train = frame.iloc[trend_start_idx : trend_end_idx + 1].copy()
+    if len(train) <= int(order):
+        raise ValueError(
+            f"Need more than d={order} observations in the trend interval."
+        )
+
+    future = frame.iloc[trend_end_idx + 1 : forecast_end_idx + 1].copy()
+    selected_future = frame.iloc[
+        forecast_start_idx : forecast_end_idx + 1
+    ].copy()
+
+    model = td.PurePenalizedTrend(
+        order=int(order),
+        smoothness=float(smoothness),
+    ).fit(np.log(train["value"].to_numpy(dtype=float)))
+    fitted = _safe_level(np.asarray(model.trend_, dtype=float))
+    forecast_all = _safe_level(
+        np.asarray(model.forecast(len(future)), dtype=float)
+    )
+
+    skip = forecast_start_idx - trend_end_idx - 1
+    forecast_selected = forecast_all[skip:]
+
+    fig, ax = plt.subplots(1, 1, figsize=(13.5, 5.0))
+    ax.plot(
+        train["date"],
+        train["value"],
+        color=OBSERVED_COLOR,
+        linewidth=1.15,
+        alpha=0.72,
+        label="Original series",
+        zorder=4,
+    )
+    ax.plot(
+        train["date"],
+        fitted,
+        color=ORDER_COLORS[int(order)],
+        linewidth=2.35,
+        alpha=0.96,
+        label="Smoothed trend",
+        zorder=6,
+    )
+
+    if skip > 0:
+        bridge = future.iloc[:skip]
+        ax.plot(
+            bridge["date"],
+            forecast_all[:skip],
+            color=ORDER_COLORS[int(order)],
+            linewidth=1.15,
+            linestyle="--",
+            alpha=0.30,
+            label="Forecast bridge",
+            zorder=3,
+        )
+        ax.plot(
+            bridge["date"],
+            bridge["value"],
+            color=OBSERVED_COLOR,
+            linewidth=0.9,
+            alpha=0.28,
+            zorder=2,
+        )
+
+    ax.plot(
+        selected_future["date"],
+        selected_future["value"],
+        color=OBSERVED_COLOR,
+        linewidth=1.55,
+        marker="o",
+        markersize=2.0,
+        alpha=0.96,
+        label="Observed forecast interval",
+        zorder=7,
+    )
+    ax.plot(
+        selected_future["date"],
+        forecast_selected,
+        color=ORDER_COLORS[int(order)],
+        linewidth=2.25,
+        linestyle="--",
+        alpha=0.96,
+        label="Forecast",
+        zorder=6,
+    )
+
+    ax.axvline(
+        frame["date"].iloc[trend_end_idx],
+        color="0.28",
+        linewidth=0.9,
+        linestyle=":",
+        alpha=0.72,
+    )
+    ax.axvspan(
+        frame["date"].iloc[forecast_start_idx],
+        frame["date"].iloc[forecast_end_idx],
+        color="#E6A0A0",
+        alpha=0.10,
+        zorder=1,
+    )
+
+    observed_for_limits = pd.concat(
+        [train["value"], future["value"]],
+        ignore_index=True,
+    )
+    ax.set_ylim(*_padded_limits(observed_for_limits))
+    ax.set_title(
+        f"Interactive trend and forecast "
+        f"(d={int(order)}, S={float(smoothness):.3f})"
+    )
+    ax.grid(alpha=0.14)
+    ax.legend(frameon=False, fontsize=8, loc="best")
+    _date_axis(ax, max_ticks=7)
+    fig.tight_layout()
+
+    observed_level = selected_future["value"].to_numpy(dtype=float)
+    observed_log = np.log(observed_level)
+    forecast_log = np.log(np.clip(forecast_selected, 1e-300, None))
+    metrics = {
+        "level_rmse": float(
+            np.sqrt(np.mean((observed_level - forecast_selected) ** 2))
+        ),
+        "log_rmse": float(
+            np.sqrt(np.mean((observed_log - forecast_log) ** 2))
+        ),
+        "lambda": float(model.lambda_),
+        "n_train": float(len(train)),
+        "n_forecast": float(len(selected_future)),
+    }
+    return fig, metrics
+
+
 def _winner(case_selection: pd.DataFrame) -> pd.Series:
     selected = case_selection.loc[case_selection["selected_branch"].eq(True)]
     if selected.empty:
