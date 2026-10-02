@@ -1026,6 +1026,17 @@ def main() -> None:
             value=3,
             step=1,
         )
+        robust_quantile = st.slider(
+            "Upper quantile for validation-error y-limits",
+            min_value=0.80,
+            max_value=1.00,
+            value=0.95,
+            step=0.01,
+            help=(
+                "Validation-loss panels ignore extreme upper-tail explosions "
+                "when setting their visible y-range. The data are not removed."
+            ),
+        )
 
     data = _load_run(str(selected_run))
     metadata = data["metadata"]
@@ -1042,13 +1053,17 @@ def main() -> None:
     st.caption(
         "Rows are GDP, ETF, Stock, and Crypto. Columns follow the whole story: "
         "chronology, tracked smoothness, number of minima, Validation-1 loss, "
-        "Validation-2 loss, polynomial continuation, and untouched true test."
+        "Validation-2 loss, the selected smoothed series, rolling Validation-2 "
+        "continuations, the final smoothed fit carried into the test, and the "
+        "untouched-test branch comparison. Validation-error axes use a robust "
+        "upper quantile so isolated explosions do not flatten the rest."
     )
     overview = _story_matrix(
         data,
         metric=metric,
         faint_alpha=faint_alpha,
         recent_origins=recent_origins,
+        robust_quantile=robust_quantile,
     )
     st.pyplot(overview, use_container_width=True)
     plt.close(overview)
@@ -1121,6 +1136,7 @@ def main() -> None:
                 metric=metric,
                 faint_alpha=faint_alpha,
                 origin_number=int(origin_number),
+                robust_quantile=robust_quantile,
             )
             st.pyplot(detail, use_container_width=True)
             plt.close(detail)
