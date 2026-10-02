@@ -772,62 +772,103 @@ def _plot_final_selected_trend_forecast(
     winner: pd.Series,
     metadata: dict,
 ) -> None:
-    """Clean final view: original series, selected trend, forecast, and true test."""
+    """Show full-series smoothing and the actual final-window forecast model."""
 
-    context = _final_context(series, winner, metadata)
-    train = context["train"]
-    test = context["test"]
-    order = int(context["order"])
+    frame = _load_snapshot(str(metadata["snapshot"][series]["path"]))
+    horizon = int(metadata["snapshot"][series]["true_test_rows"])
+    pretest = frame.iloc[:-horizon].copy()
+    test = frame.iloc[-horizon:].copy()
 
-    history_n = min(
-        len(train),
-        max(
-            len(test) * 3,
-            32 if series == "GDPC1" else 160,
-        ),
+    window = int(winner["window"])
+    order = int(winner["order"])
+    smoothness = float(winner["final_smoothness"])
+
+    # Full-history smoothing is a visualization of the selected (d, S) over
+    # every pre-test observation. It is not the model used to make the final
+    # forecast, because the forecast protocol refits only the final L-window.
+    full_model = td.PurePenalizedTrend(
+        order=order,
+        smoothness=smoothness,
+    ).fit(np.log(pretest["value"].to_numpy(dtype=float)))
+    full_smooth = _safe_level(np.asarray(full_model.trend_, dtype=float))
+
+    # Actual model used for the final forecast.
+    final_train = pretest.tail(window).copy()
+    final_model = td.PurePenalizedTrend(
+        order=order,
+        smoothness=smoothness,
+    ).fit(np.log(final_train["value"].to_numpy(dtype=float)))
+    final_smooth = _safe_level(np.asarray(final_model.trend_, dtype=float))
+    forecast = _safe_level(
+        np.asarray(final_model.forecast(horizon), dtype=float)
     )
-    train_tail = train.tail(history_n).copy()
-    fitted_tail = np.asarray(context["fitted"])[-history_n:]
-    forecast = np.asarray(context["forecast"])
 
+    # Original series across both the pre-test history and the held-out test.
     ax.plot(
-        train_tail["date"],
-        train_tail["value"],
+        frame["date"],
+        frame["value"],
         color=OBSERVED_COLOR,
-        linewidth=1.2,
-        alpha=0.78,
+        linewidth=1.10,
+        alpha=0.70,
         label="Original series",
+        zorder=3,
+    )
+
+    # Smooth the whole available pre-test history with the selected d and S.
+    ax.plot(
+        pretest["date"],
+        full_smooth,
+        color=ORDER_COLORS[order],
+        linewidth=1.65,
+        alpha=0.52,
+        label="Full-history smooth trend (same d, S)",
         zorder=4,
     )
+
+    # Emphasize the exact smoothed window that is actually extrapolated.
     ax.plot(
-        train_tail["date"],
-        fitted_tail,
+        final_train["date"],
+        final_smooth,
         color=ORDER_COLORS[order],
-        linewidth=2.35,
-        alpha=0.96,
-        label="Selected trend",
-        zorder=5,
-    )
-    ax.plot(
-        test["date"],
-        forecast,
-        color=ORDER_COLORS[order],
-        linewidth=2.25,
-        linestyle="--",
-        alpha=0.96,
-        label="Forecast",
+        linewidth=2.65,
+        alpha=0.98,
+        label=f"Final-window smooth trend (L={window})",
         zorder=6,
     )
+
+    # Connect the last fitted trend value to the polynomial continuation so it
+    # is visually explicit where smoothing ends and forecasting begins.
+    continuation_dates = pd.concat(
+        [
+            pd.Series([final_train["date"].iloc[-1]]),
+            test["date"].reset_index(drop=True),
+        ],
+        ignore_index=True,
+    )
+    continuation_values = np.concatenate(
+        [[float(final_smooth[-1])], forecast]
+    )
+    ax.plot(
+        continuation_dates,
+        continuation_values,
+        color=ORDER_COLORS[order],
+        linewidth=2.30,
+        linestyle="--",
+        alpha=0.96,
+        label="Polynomial forecast",
+        zorder=7,
+    )
+
     ax.plot(
         test["date"],
         test["value"],
         color=OBSERVED_COLOR,
-        linewidth=1.6,
+        linewidth=1.65,
         marker="o",
         markersize=2.0,
         alpha=0.98,
         label="Observed test",
-        zorder=7,
+        zorder=8,
     )
 
     ax.axvspan(
@@ -843,21 +884,17 @@ def _plot_final_selected_trend_forecast(
         linewidth=0.95,
         linestyle=":",
         alpha=0.72,
-        zorder=3,
+        zorder=2,
     )
 
-    observed = pd.concat(
-        [train_tail["value"], test["value"]],
-        ignore_index=True,
-    )
-    ax.set_ylim(*_padded_limits(observed))
+    ax.set_ylim(*_padded_limits(frame["value"]))
     ax.set_title(
-        f"Final selected trend and forecast "
-        f"(d={order}, S={float(winner['final_smoothness']):.3f})"
+        f"Original series + smooth trend + forecast "
+        f"(d={order}, S={smoothness:.3f})"
     )
     ax.grid(alpha=0.14)
     ax.legend(frameon=False, fontsize=8, loc="best")
-    _date_axis(ax, max_ticks=6)
+    _date_axis(ax, max_ticks=7)
 
 
 def _plot_recent_validation_continuations(
