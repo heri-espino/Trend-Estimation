@@ -666,6 +666,7 @@ def _story_matrix(
     metric: str,
     faint_alpha: float,
     recent_origins: int,
+    robust_quantile: float,
 ) -> plt.Figure:
     metadata = data["metadata"]
     selection = data["selection"]
@@ -677,8 +678,8 @@ def _story_matrix(
 
     fig, axes = plt.subplots(
         len(present),
-        7,
-        figsize=(28.0, max(3.0, 3.1 * len(present))),
+        9,
+        figsize=(35.0, max(3.0, 3.1 * len(present))),
         squeeze=False,
     )
 
@@ -705,6 +706,7 @@ def _story_matrix(
             column="val1_loss",
             title="Validation 1 loss",
             faint_alpha=faint_alpha,
+            robust_quantile=robust_quantile,
         )
         _plot_loss(
             axes[row_idx, 4],
@@ -721,15 +723,41 @@ def _story_matrix(
                 else "Validation 2 log-RMSE"
             ),
             faint_alpha=faint_alpha,
+            robust_quantile=robust_quantile,
+        )
+
+        winner_origins = sorted(
+            int(value)
+            for value in tracks.loc[
+                tracks["branch_id"].eq(winner_id)
+                & tracks["status"].eq("matched"),
+                "origin_number",
+            ].unique()
+        )
+        latest_origin = winner_origins[-1]
+
+        _plot_smoothed_origin(
+            axes[row_idx, 5],
+            series,
+            tracks,
+            winner_id,
+            metadata,
+            origin_number=latest_origin,
         )
         _plot_recent_validation_continuations(
-            axes[row_idx, 5],
+            axes[row_idx, 6],
             validation_paths,
             winner_id,
             recent_origins=recent_origins,
         )
+        _plot_final_smooth_to_test(
+            axes[row_idx, 7],
+            series,
+            winner,
+            metadata,
+        )
         _plot_true_test(
-            axes[row_idx, 6],
+            axes[row_idx, 8],
             test_paths,
             case_selection,
             winner_id,
@@ -740,7 +768,7 @@ def _story_matrix(
             SERIES_LABELS.get(series, series),
             fontweight="bold",
         )
-        for col_idx in range(7):
+        for col_idx in range(9):
             axes[row_idx, col_idx].grid(alpha=0.13)
             if row_idx < len(present) - 1:
                 axes[row_idx, col_idx].tick_params(labelbottom=False)
@@ -798,12 +826,13 @@ def _detail_figure(
     metric: str,
     faint_alpha: float,
     origin_number: int,
+    robust_quantile: float,
 ) -> plt.Figure:
     tracks, validation_paths, selection, test_paths = _series_slice(series, data)
     winner = _winner(selection)
     winner_id = str(winner["branch_id"])
 
-    fig, axes = plt.subplots(2, 3, figsize=(18.0, 9.0))
+    fig, axes = plt.subplots(2, 4, figsize=(23.0, 9.0))
     _plot_smoothness(
         axes[0, 0],
         tracks,
@@ -817,6 +846,7 @@ def _detail_figure(
         column="val1_loss",
         title="Validation 1 loss",
         faint_alpha=faint_alpha,
+        robust_quantile=robust_quantile,
     )
     _plot_loss(
         axes[0, 2],
@@ -833,6 +863,15 @@ def _detail_figure(
             else "Validation 2 log-RMSE"
         ),
         faint_alpha=faint_alpha,
+        robust_quantile=robust_quantile,
+    )
+    _plot_smoothed_origin(
+        axes[0, 3],
+        series,
+        tracks,
+        winner_id,
+        data["metadata"],
+        origin_number=origin_number,
     )
     _plot_minima_count(axes[1, 0], tracks)
 
@@ -869,8 +908,14 @@ def _detail_figure(
     axes[1, 1].set_title(f"Validation 2 continuation: origin {origin_number}")
     _date_axis(axes[1, 1])
 
-    _plot_true_test(
+    _plot_final_smooth_to_test(
         axes[1, 2],
+        series,
+        winner,
+        data["metadata"],
+    )
+    _plot_true_test(
+        axes[1, 3],
         test_paths,
         selection,
         winner_id,
