@@ -10,6 +10,8 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 
+import trend_estimation as td
+
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 RESULT_ROOT = REPO_ROOT / "results" / "numerical_smoothness_selection"
@@ -124,6 +126,131 @@ def _padded_limits(values: pd.Series, fraction: float = 0.08) -> tuple[float, fl
         span = max(abs(high), 1.0) * 0.10
     pad = fraction * span
     return low - pad, high + pad
+
+
+def _robust_error_limits(
+    values: pd.Series,
+    *,
+    upper_quantile: float,
+    pad_fraction: float = 0.08,
+) -> tuple[float, float]:
+    """Bound a nonnegative loss axis using the bulk of finite observations."""
+
+    array = values.to_numpy(dtype=float)
+    array = array[np.isfinite(array)]
+    if array.size == 0:
+        return 0.0, 1.0
+
+    upper_quantile = float(np.clip(upper_quantile, 0.50, 1.0))
+    upper = float(np.quantile(array, upper_quantile))
+    if upper <= 0.0:
+        upper = float(np.max(array))
+    if upper <= 0.0:
+        upper = 1.0
+    return 0.0, upper * (1.0 + pad_fraction)
+
+
+def _safe_level(log_values: np.ndarray) -> np.ndarray:
+    return np.exp(np.clip(np.asarray(log_values, dtype=float), -700.0, 700.0))
+
+
+def _fit_window(
+    train: pd.DataFrame,
+    *,
+    order: int,
+    smoothness: float,
+    steps: int,
+) -> tuple[np.ndarray, np.ndarray]:
+    model = td.PurePenalizedTrend(
+        order=int(order),
+        smoothness=float(smoothness),
+    ).fit(np.log(train["value"].to_numpy(dtype=float)))
+    fitted = _safe_level(np.asarray(model.trend_, dtype=float))
+    forecast = _safe_level(np.asarray(model.forecast(int(steps)), dtype=float))
+    return fitted, forecast
+
+
+def _historical_origin_context(
+    series: str,
+    tracks: pd.DataFrame,
+    winner_id: str,
+    metadata: dict,
+    origin_number: int,
+) -> dict[str, object]:
+    row = tracks.loc[
+        tracks["branch_id"].eq(winner_id)
+        & tracks["origin_number"].eq(origin_number)
+        & tracks["status"].eq("matched")
+    ]
+    if row.empty:
+        raise RuntimeError(
+            f"No matched row for {series}, {winner_id}, origin={origin_number}."
+        )
+    row = row.iloc[0]
+
+    frame = _load_snapshot(str(metadata["snapshot"][series]["path"]))
+    val1_start = pd.Timestamp(row["val1_start_date"])
+    val1_end = pd.Timestamp(row["val1_end_date"])
+
+    start_matches = frame.index[frame["date"].eq(val1_start)].tolist()
+    end_matches = frame.index[frame["date"].eq(val1_end)].tolist()
+    if not start_matches or not end_matches:
+        raise RuntimeError(f"Could not locate Validation 1 dates for {series}.")
+
+    start_idx = int(start_matches[0])
+    end_idx = int(end_matches[-1])
+    window = int(row["window"])
+    order = int(row["order"])
+    smoothness = float(row["smoothness"])
+
+    train = frame.iloc[start_idx - window : start_idx].copy()
+    val1 = frame.iloc[start_idx : end_idx + 1].copy()
+    fitted, val1_forecast = _fit_window(
+        train,
+        order=order,
+        smoothness=smoothness,
+        steps=len(val1),
+    )
+    return {
+        "train": train,
+        "val1": val1,
+        "fitted": fitted,
+        "val1_forecast": val1_forecast,
+        "order": order,
+        "smoothness": smoothness,
+        "window": window,
+    }
+
+
+def _final_context(
+    series: str,
+    winner: pd.Series,
+    metadata: dict,
+) -> dict[str, object]:
+    frame = _load_snapshot(str(metadata["snapshot"][series]["path"]))
+    horizon = int(metadata["snapshot"][series]["true_test_rows"])
+    window = int(winner["window"])
+    order = int(winner["order"])
+    smoothness = float(winner["final_smoothness"])
+
+    pretest = frame.iloc[:-horizon].copy()
+    test = frame.iloc[-horizon:].copy()
+    train = pretest.tail(window).copy()
+    fitted, forecast = _fit_window(
+        train,
+        order=order,
+        smoothness=smoothness,
+        steps=horizon,
+    )
+    return {
+        "train": train,
+        "test": test,
+        "fitted": fitted,
+        "forecast": forecast,
+        "order": order,
+        "smoothness": smoothness,
+        "window": window,
+    }
 
 
 def _winner(case_selection: pd.DataFrame) -> pd.Series:
