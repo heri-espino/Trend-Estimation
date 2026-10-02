@@ -44,6 +44,14 @@ evaluada fuera de la ventana que genero cada minimo.
 
 \tableofcontents
 
+\section*{Nota numerica complementaria}
+La derivacion detallada de las primeras y segundas derivadas, la inversion
+\(S\leftrightarrow\lambda\), el refinamiento adaptativo de intervalos, la
+construccion de brackets, el metodo de Brent, la clasificacion por curvatura y
+el tratamiento de endpoints se desarrolla en
+\texttt{numerical\_methods\_smoothness\_search.tex}. Esta nota principal se
+concentra en el tracking temporal y en la seleccion final de la rama.
+
 \section{Objetivo y notacion}
 
 Sea una serie positiva
@@ -401,7 +409,7 @@ con correspondencia uno-a-uno entre ramas y minimos nuevos.
 
 Si ninguna raiz nueva cae dentro del radio permitido, se registra
 \[
-\texttt{status}=	exttt{missing\_local\_minimum}.
+\texttt{status}=\texttt{missing\_local\_minimum}.
 \]
 No se sustituye automaticamente por el mejor minimo global. La rama conserva
 como referencia su ultimo \(S\) exitosamente observado y puede reaparecer mas
@@ -500,7 +508,7 @@ rama fue emparejada. Con la metrica default,
 A_{d,j}
 =
 \frac{1}{R^{\mathrm{match}}_{d,j}}
-\sum_{r:,(d,j)\text{ existe en }r}
+\sum_{r:\,(d,j)\text{ existe en }r}
 E^{(2)}_{d,j,r}.
 \label{eq:branchscore}
 \end{equation}
