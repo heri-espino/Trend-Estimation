@@ -566,7 +566,7 @@ def _plot_final_smooth_to_test(
         ignore_index=True,
     )
     ax.set_ylim(*_padded_limits(observed))
-    ax.set_title("Final smooth → true test")
+    ax.set_title("After final validation → true test")
     _date_axis(ax)
 
 
@@ -1119,7 +1119,8 @@ def main() -> None:
             origins = sorted(
                 int(value)
                 for value in tracks.loc[
-                    tracks["status"].eq("matched"),
+                    tracks["branch_id"].eq(str(winner["branch_id"]))
+                    & tracks["status"].eq("matched"),
                     "origin_number",
                 ].unique()
             )
