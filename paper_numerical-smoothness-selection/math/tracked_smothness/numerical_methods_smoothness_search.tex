@@ -1,0 +1,1091 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage{amsmath,amssymb,mathtools,bm}
+\usepackage{booktabs}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\geometry{margin=1in}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\argmin}{\operatorname*{arg\,min}}
+\newcommand{\diag}{\operatorname{diag}}
+
+\title{Metodos numericos para localizar minimos de smoothness\\
+en la perdida de forecast}
+\author{Nota tecnica del proyecto \texttt{paper\_numerical-smoothness-selection}}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Esta nota desarrolla la parte numerica que queda escondida detras de
+encontrar los minimos locales de la perdida en smoothness. El procedimiento
+implementado no es una simple busqueda sobre una grilla. La tendencia
+penalizada y el forecast tienen primeras y segundas derivadas analiticas con
+respecto a \(\lambda\); estas derivadas se transforman a la coordenada
+normalizada \(S\), se usa una busqueda adaptativa para detectar intervalos que
+pueden contener puntos estacionarios y, finalmente, cada raiz de la derivada
+se refina con Brent. Tambien se tratan explicitamente los endpoints
+\(S=0\) y \(S=1\), se deduplican soluciones numericamente equivalentes y se
+clasifican los puntos por el signo de la segunda derivada.
+
+El objetivo es documentar exactamente la matematica y las decisiones numericas
+de las rutinas activas del repositorio.
+\end{abstract}
+
+\tableofcontents
+
+\section{Problema numerico}
+
+Para una configuracion fija
+\[
+(d,L,h),
+\]
+consideramos una ventana de entrenamiento
+\[
+\bm x=(x_1,\ldots,x_L)^\top
+\]
+y un bloque futuro observado
+\[
+\bm z=(z_1,\ldots,z_h)^\top.
+\]
+
+La tendencia penalizada es
+\begin{equation}
+\widehat{\bm\tau}_\lambda
+=
+\argmin_{\bm\tau\in\R^L}
+\left\{
+\|\bm x-\bm\tau\|_2^2
++
+\lambda\|D_d\bm\tau\|_2^2
+\right\}.
+\label{eq:pls}
+\end{equation}
+
+Sea
+\[
+Q_d=D_d^\top D_d.
+\]
+Entonces
+\begin{equation}
+\widehat{\bm\tau}_\lambda
+=
+H_\lambda\bm x,
+\qquad
+H_\lambda=(I+\lambda Q_d)^{-1}.
+\label{eq:smoother}
+\end{equation}
+
+Despues de continuar la tendencia \(h\) pasos, obtenemos
+\[
+\widehat{\bm z}_\lambda.
+\]
+La funcion objetivo de una Validation 1 es
+\begin{equation}
+F(\lambda)
+=
+\frac{1}{h}
+\|\bm z-\widehat{\bm z}_\lambda\|_2^2.
+\label{eq:forecast-loss}
+\end{equation}
+
+La funcion que realmente exploramos es
+\[
+\widetilde F(S)=F(\lambda(S)),
+\qquad
+0\le S\le1.
+\]
+La tarea numerica es recuperar todos los minimos locales relevantes
+\[
+\mathcal M
+=
+\left\{
+S:
+\widetilde F_S(S)=0,
+\quad
+\widetilde F_{SS}(S)>0
+\right\},
+\]
+mas los posibles minimos de frontera.
+
+\section{Representacion espectral del suavizador}
+
+Sea
+\[
+Q_d
+=
+U\diag(\delta_1,\ldots,\delta_L)U^\top,
+\qquad
+\delta_j\ge0.
+\]
+Para una penalizacion por diferencias de orden \(d\), exactamente \(d\)
+eigenvalores son cero.
+
+Definimos
+\[
+\bm c=U^\top\bm x
+\]
+y
+\begin{equation}
+\alpha_j(\lambda)
+=
+\frac{1}{1+\lambda\delta_j}.
+\label{eq:alpha}
+\end{equation}
+Entonces
+\begin{equation}
+\widehat{\bm\tau}_\lambda
+=
+U\diag(\alpha_j(\lambda))\bm c.
+\label{eq:spectral-trend}
+\end{equation}
+
+La dependencia en \(\lambda\) queda separada en los escalares
+\(\alpha_j\). Esto permite obtener derivadas exactas sin diferencias finitas.
+
+\subsection{Primera y segunda derivada}
+
+De \eqref{eq:alpha},
+\[
+\alpha_j'(\lambda)
+=
+-
+\frac{\delta_j}{(1+\lambda\delta_j)^2}
+=
+-\delta_j\alpha_j^2,
+\]
+y
+\[
+\alpha_j''(\lambda)
+=
+\frac{2\delta_j^2}{(1+\lambda\delta_j)^3}
+=
+2\delta_j^2\alpha_j^3.
+\]
+Por tanto,
+\begin{align}
+\widehat{\bm\tau}_\lambda'
+&=
+U\diag(-\delta_j\alpha_j^2)\bm c,
+\label{eq:trend-first}
+\\
+\widehat{\bm\tau}_\lambda''
+&=
+U\diag(2\delta_j^2\alpha_j^3)\bm c.
+\label{eq:trend-second}
+\end{align}
+
+Equivalentemente,
+\begin{align}
+\widehat{\bm\tau}_\lambda'
+&=
+-H_\lambda Q_d\widehat{\bm\tau}_\lambda,
+\\
+\widehat{\bm\tau}_\lambda''
+&=
+2H_\lambda Q_dH_\lambda Q_d
+\widehat{\bm\tau}_\lambda.
+\end{align}
+
+Estas son las identidades implementadas en
+\texttt{pure\_trend\_derivatives}.
+
+\section{Derivadas del forecast}
+
+La continuacion de diferencias finitas puede escribirse como un operador lineal
+\[
+C_{d,h,L}\in\R^{h\times L}
+\]
+tal que
+\begin{equation}
+\widehat{\bm z}_\lambda
+=
+C_{d,h,L}
+\widehat{\bm\tau}_\lambda.
+\label{eq:forecast-operator}
+\end{equation}
+
+Como \(C_{d,h,L}\) no depende de \(\lambda\),
+\begin{align}
+\widehat{\bm z}_\lambda'
+&=
+C_{d,h,L}\widehat{\bm\tau}_\lambda',
+\\
+\widehat{\bm z}_\lambda''
+&=
+C_{d,h,L}\widehat{\bm\tau}_\lambda''.
+\end{align}
+
+\section{Derivadas exactas de la MSE}
+
+Sea
+\[
+\bm r_\lambda
+=
+\bm z-\widehat{\bm z}_\lambda.
+\]
+La perdida es
+\[
+F(\lambda)
+=
+\frac{1}{h}
+\bm r_\lambda^\top\bm r_\lambda.
+\]
+
+Como
+\[
+\bm r_\lambda'=-\widehat{\bm z}_\lambda',
+\]
+se obtiene
+\begin{equation}
+F'(\lambda)
+=
+-
+\frac{2}{h}
+\bm r_\lambda^\top
+\widehat{\bm z}_\lambda',
+\label{eq:mse-first}
+\end{equation}
+y
+\begin{equation}
+F''(\lambda)
+=
+\frac{2}{h}
+\left[
+(\widehat{\bm z}_\lambda')^\top
+\widehat{\bm z}_\lambda'
+-
+\bm r_\lambda^\top
+\widehat{\bm z}_\lambda''
+\right].
+\label{eq:mse-second}
+\end{equation}
+
+Asi, cada evaluacion produce
+\[
+\boxed{
+F(\lambda),
+\qquad
+F'(\lambda),
+\qquad
+F''(\lambda)
+}.
+\]
+
+No se aproximan estas derivadas mediante diferencias finitas. Esto evita
+escoger un paso numerico auxiliar y reduce el numero de forecasts necesarios.
+
+\section{Objetivo rolling y vectorizacion}
+
+Con varios rolling origins, sea \(\mathcal R\) su conjunto y
+\(\bm r_{r,\lambda}\) el residual del origin \(r\). La implementacion usa
+\begin{equation}
+F_{\mathrm{roll}}(\lambda)
+=
+\frac{
+\sum_{r\in\mathcal R}
+\|\bm r_{r,\lambda}\|_2^2
+}{
+N_{\mathrm{score}}
+},
+\qquad
+N_{\mathrm{score}}
+=
+\sum_{r\in\mathcal R}h_r.
+\label{eq:rolling-loss}
+\end{equation}
+
+Las derivadas se agregan de la misma forma. Para ventanas y horizontes fijos,
+el codigo prepara una sola vez el espectro de \(Q_d\), las ventanas de training
+en la base espectral, el operador de forecast y todos los targets futuros.
+
+Si \(B\) contiene las ventanas historicas en coordenadas espectrales y
+\[
+G=C_{d,h,L}U,
+\]
+entonces las predicciones de todos los origins pueden escribirse
+simultaneamente como
+\begin{equation}
+\widehat Z_\lambda
+=
+\left(
+B\odot\bm\alpha(\lambda)^\top
+\right)G^\top.
+\label{eq:vectorized}
+\end{equation}
+Para las derivadas se reemplaza \(\bm\alpha\) por
+\(\bm\alpha'\) o \(\bm\alpha''\).
+
+\section{La coordenada normalizada de smoothness}
+
+Para \(d>0\),
+\begin{equation}
+S(\lambda)
+=
+1-
+\frac{1}{L-d}
+\sum_{j:\delta_j>0}
+\frac{1}{1+\lambda\delta_j}.
+\label{eq:smoothness}
+\end{equation}
+
+Sus primeras dos derivadas son
+\begin{equation}
+S'(\lambda)
+=
+\frac{1}{L-d}
+\sum_{j:\delta_j>0}
+\frac{\delta_j}
+{(1+\lambda\delta_j)^2}
+>0,
+\label{eq:s-first}
+\end{equation}
+y
+\begin{equation}
+S''(\lambda)
+=
+-
+\frac{2}{L-d}
+\sum_{j:\delta_j>0}
+\frac{\delta_j^2}
+{(1+\lambda\delta_j)^3}
+<0.
+\label{eq:s-second}
+\end{equation}
+
+Por tanto,
+\[
+S:[0,\infty]\to[0,1]
+\]
+es monotona creciente con
+\[
+S(0)=0,
+\qquad
+S(\infty)=1.
+\]
+
+\section{Regla de la cadena de \(\lambda\) a \(S\)}
+
+Definimos
+\[
+\widetilde F(S)=F(\lambda(S)).
+\]
+Como \(S'(\lambda)>0\),
+\[
+\frac{d\lambda}{dS}
+=
+\frac{1}{S'(\lambda)}.
+\]
+Entonces
+\begin{equation}
+\widetilde F_S(S)
+=
+\frac{F'(\lambda)}
+{S'(\lambda)},
+\label{eq:chain-first}
+\end{equation}
+y
+\begin{equation}
+\widetilde F_{SS}(S)
+=
+\frac{F''(\lambda)}
+{[S'(\lambda)]^2}
+-
+\frac{
+F'(\lambda)S''(\lambda)
+}{
+[S'(\lambda)]^3
+}.
+\label{eq:chain-second}
+\end{equation}
+
+Como \(S'(\lambda)>0\),
+\begin{equation}
+\widetilde F_S(S)=0
+\quad\Longleftrightarrow\quad
+F'(\lambda)=0.
+\label{eq:stationary-equivalence}
+\end{equation}
+
+Ademas, en un punto estacionario,
+\[
+F'(\lambda)=0,
+\]
+y por tanto
+\begin{equation}
+\widetilde F_{SS}(S)
+=
+\frac{F''(\lambda)}
+{[S'(\lambda)]^2}.
+\label{eq:curvature-equivalence}
+\end{equation}
+El signo de la curvatura se conserva. Un minimo en \(\lambda\) sigue siendo un
+minimo en \(S\).
+
+\section{Como se calcula \(\lambda(S)\)}
+
+Para \(0<S<1\), la implementacion invierte \eqref{eq:smoothness} por
+biseccion monotona. Se resuelve
+\begin{equation}
+\phi(\lambda)
+=
+S(\lambda)-S_0
+=
+0.
+\label{eq:inverse-problem}
+\end{equation}
+
+El algoritmo actual es:
+
+\begin{enumerate}[leftmargin=2.4em]
+    \item Si \(S_0=0\), regresar \(\lambda=0\).
+    \item Si \(S_0=1\), regresar \(\lambda=\infty\).
+    \item Iniciar
+    \[
+    \lambda_{\mathrm{lo}}=0,
+    \qquad
+    \lambda_{\mathrm{hi}}=1.
+    \]
+    \item Mientras
+    \[
+    S(\lambda_{\mathrm{hi}})<S_0,
+    \]
+    usar
+    \[
+    \lambda_{\mathrm{hi}}
+    \leftarrow
+    10\lambda_{\mathrm{hi}},
+    \]
+    hasta encerrar el target o alcanzar \(10^{16}\).
+    \item Bisecar el intervalo y conservar la mitad que contiene el target.
+    \item Detener cuando
+    \[
+    |S(\lambda_{\mathrm{mid}})-S_0|<10^{-11}
+    \]
+    o despues de \(100\) iteraciones.
+\end{enumerate}
+
+La biseccion explota una propiedad fuerte del problema: la monotonicidad de
+\(S(\lambda)\) esta demostrada, por lo que la raiz interior es unica.
+
+\section{Por que no basta con un optimizador local}
+
+Si \(\widetilde F(S)\) fuera unimodal, un metodo local podria ser suficiente.
+Pero aqui queremos recuperar
+\[
+S_1^\star,
+S_2^\star,
+\ldots,
+S_J^\star,
+\]
+no solamente
+\[
+\argmin_S \widetilde F(S).
+\]
+
+Un unico Newton, BFGS o golden-section search puede encontrar un minimo y
+omitir las demas cuencas. Por ello la implementacion separa
+\[
+\text{descubrimiento de regiones con raices}
+\quad\longrightarrow\quad
+\text{refinamiento de cada raiz}.
+\]
+
+\section{Dominio interior de busqueda}
+
+La busqueda derivativa se hace sobre
+\begin{equation}
+0\le S\le1-\eta,
+\qquad
+\eta=10^{-6}.
+\label{eq:interior-domain}
+\end{equation}
+
+El punto \(S=1\) corresponde a \(\lambda=\infty\) y se trata por separado
+como endpoint.
+
+\section{Malla inicial y refinamiento de endpoints}
+
+La rutina inicia con
+\[
+m_0=9
+\]
+puntos uniformes:
+\[
+S_i
+=
+\frac{i}{m_0-1}(1-\eta),
+\qquad
+i=0,\ldots,m_0-1.
+\]
+
+No es una grilla final. Solo es el esqueleto de una busqueda adaptativa.
+
+La compactificacion puede comprimir estructura cerca de \(S=1\), y en menor
+grado cerca de \(S=0\). Por eso se insertan seis niveles diadicos dentro de las
+dos celdas de frontera. Si \(w\) es el ancho de una celda inicial, se agregan
+distancias
+\[
+\frac{w}{2},
+\frac{w}{2^2},
+\ldots,
+\frac{w}{2^6}
+\]
+desde cada extremo.
+
+\section{Refinamiento adaptativo}
+
+Definimos
+\[
+g(S)=\widetilde F_S(S),
+\qquad
+q(S)=\widetilde F_{SS}(S).
+\]
+Para un intervalo \([a,b]\), sea
+\[
+m=\frac{a+b}{2}.
+\]
+Evaluamos
+\[
+g_a=g(a),
+\quad
+g_m=g(m),
+\quad
+g_b=g(b),
+\]
+y
+\[
+q_a=q(a),
+\quad
+q_m=q(m),
+\quad
+q_b=q(b).
+\]
+
+El intervalo se subdivide si alguno de cuatro diagnosticos indica estructura
+no resuelta.
+
+\subsection{La derivada gira}
+
+Se refina si
+\begin{equation}
+(g_m-g_a)(g_b-g_m)<0.
+\label{eq:turning}
+\end{equation}
+
+\subsection{La curvatura cambia de signo}
+
+Con
+\[
+\tau_q=10^{-8},
+\]
+se refina si
+\begin{equation}
+\min(q_a,q_m,q_b)<-\tau_q
+\quad\text{y}\quad
+\max(q_a,q_m,q_b)>\tau_q.
+\label{eq:curvature-change}
+\end{equation}
+
+\subsection{La derivada central esta cerca de cero}
+
+Sea
+\[
+\tau_g=10^{-8},
+\qquad
+\rho=0.2,
+\]
+y
+\[
+G_{\mathrm{edge}}
+=
+\max(|g_a|,|g_b|,\tau_g).
+\]
+Se refina si
+\begin{equation}
+|g_m|
+\le
+\max(
+\tau_g,
+\rho G_{\mathrm{edge}}
+).
+\label{eq:near-zero}
+\end{equation}
+
+\subsection{Cambio de signo oculto}
+
+Tambien se refina si los extremos tienen el mismo signo pero una de las dos
+mitades cambia de signo:
+\[
+\operatorname{sign}(g_a)
+=
+\operatorname{sign}(g_b),
+\]
+junto con
+\[
+g_ag_m<0
+\quad\text{o}\quad
+g_mg_b<0.
+\]
+
+\subsection{Parada}
+
+El refinamiento se detiene al alcanzar
+\[
+\texttt{max\_depth}=8
+\]
+o cuando
+\[
+b-a\le10^{-3}.
+\]
+
+\section{Construccion de brackets}
+
+Despues del refinamiento, los puntos evaluados se ordenan:
+\[
+S_1<S_2<\cdots<S_M.
+\]
+
+Un punto muestreado se considera raiz candidata si
+\begin{equation}
+|g(S_i)|\le10^{-8}.
+\label{eq:near-root}
+\end{equation}
+
+Ademas, un par consecutivo define un bracket si
+\begin{equation}
+g(S_i)g(S_{i+1})<0.
+\label{eq:bracket}
+\end{equation}
+
+Cada bracket se resuelve con Brent.
+
+\section{Metodo de Brent}
+
+La implementacion usa
+\[
+\texttt{scipy.optimize.brentq}
+\]
+para resolver
+\[
+g(S)=\widetilde F_S(S)=0.
+\]
+
+Brent conserva un bracket y combina tres mecanismos.
+
+\subsection{Biseccion}
+
+\[
+S_{\mathrm{bis}}
+=
+\frac{a+b}{2}.
+\]
+Es el paso robusto que garantiza reducir el bracket.
+
+\subsection{Secante}
+
+Con dos puntos, la propuesta es
+\begin{equation}
+S_{\mathrm{sec}}
+=
+b
+-
+g(b)
+\frac{b-a}{g(b)-g(a)}.
+\label{eq:secant}
+\end{equation}
+
+\subsection{Interpolacion cuadratica inversa}
+
+Con tres puntos adecuados, Brent aproxima \(S\) como funcion cuadratica de
+\(g\) y evalua esa aproximacion en \(g=0\). Este paso puede ser mucho mas
+rapido que biseccion cerca de una raiz regular.
+
+\subsection{Salvaguarda}
+
+Si una propuesta de secante o interpolacion no satisface las condiciones de
+seguridad del metodo, se vuelve a biseccion. Asi se combina
+\[
+\boxed{
+\text{robustez de bracket}
++
+\text{velocidad de interpolacion}
+}.
+\]
+
+La tolerancia actual es
+\[
+\texttt{root\_xtol}=10^{-10}.
+\]
+
+\section{Por que no Newton como buscador principal}
+
+Newton sobre \(g(S)=0\) seria
+\begin{equation}
+S_{k+1}
+=
+S_k
+-
+\frac{g(S_k)}{q(S_k)}.
+\label{eq:newton}
+\end{equation}
+
+Puede ser muy rapido cerca de una raiz, pero:
+
+\begin{enumerate}[leftmargin=2.4em]
+    \item necesita una semilla por cada raiz;
+    \item puede saltar de una cuenca a otra;
+    \item es problematico cuando \(q(S_k)\) es pequeno;
+    \item no descubre por si solo cuantos puntos estacionarios existen.
+\end{enumerate}
+
+El objetivo de este proyecto es recuperar multiples minimos. Por eso se usa
+\[
+\text{refinamiento adaptativo}
+\to
+\text{brackets}
+\to
+\text{Brent}.
+\]
+
+\section{Deduplicacion y clasificacion}
+
+Una misma raiz puede detectarse como punto casi estacionario y tambien mediante
+un bracket. Despues de ordenar las raices se fusionan aquellas con separacion
+menor que
+\begin{equation}
+\tau_{\mathrm{merge}}
+=
+\max(
+10\,	exttt{root\_xtol},
+10^{-8}
+).
+\label{eq:merge}
+\end{equation}
+
+Con los parametros actuales,
+\[
+\tau_{\mathrm{merge}}=10^{-8}.
+\]
+
+Para cada raiz deduplicada \(S^\star\), se evalua
+\[
+q(S^\star)
+=
+\widetilde F_{SS}(S^\star).
+\]
+Con \(\tau_q=10^{-8}\),
+\begin{equation}
+\begin{cases}
+q(S^\star)>\tau_q
+&
+\Rightarrow
+\texttt{minimum},
+\\
+q(S^\star)<-\tau_q
+&
+\Rightarrow
+\texttt{maximum},
+\\
+|q(S^\star)|\le\tau_q
+&
+\Rightarrow
+\texttt{flat}.
+\end{cases}
+\label{eq:classification}
+\end{equation}
+
+El tracking conserva los puntos \texttt{minimum} y los minimos de frontera.
+
+\section{Minimos de frontera}
+
+Los endpoints no necesitan satisfacer \(F_S=0\). El experimento evalua
+\[
+\widetilde F(0),
+\qquad
+\widetilde F(1),
+\]
+y usa
+\[
+\epsilon_b=0.002
+\]
+como sonda interior.
+
+Se acepta \(S=0\) si
+\begin{equation}
+\widetilde F(0)
+\le
+\widetilde F(\epsilon_b),
+\label{eq:left-boundary}
+\end{equation}
+y \(S=1\) si
+\begin{equation}
+\widetilde F(1)
+\le
+\widetilde F(1-\epsilon_b).
+\label{eq:right-boundary}
+\end{equation}
+
+Estas son condiciones unilaterales de minimo.
+
+\section{Separacion de candidatos}
+
+Despues de reunir minimos interiores y de frontera, el experimento de tracking
+elimina candidatos numericamente demasiado cercanos.
+
+Se ordenan por menor Validation-1 loss. Un candidato \(S_b\) se descarta si ya
+se retuvo \(S_a\) con
+\begin{equation}
+|S_b-S_a|
+<
+\epsilon_{\mathrm{cand}},
+\qquad
+\epsilon_{\mathrm{cand}}=0.02.
+\label{eq:candidate-spacing}
+\end{equation}
+
+Esta operacion ocurre dentro de una sola superficie. No promedia smoothness ni
+fusiona ramas temporales.
+
+En el primer origin se inicializan como maximo cinco de esos minimos.
+
+\section{Estabilidad numerica del espectro}
+
+En aritmetica exacta,
+\[
+\operatorname{nullity}(D_d^\top D_d)=d.
+\]
+En punto flotante, los ceros estructurales pueden aparecer como numeros muy
+pequenos positivos o negativos.
+
+El codigo canonicaliza el espectro:
+\[
+\delta_1=\cdots=\delta_d=0,
+\]
+y para el resto
+\[
+\delta_j\leftarrow\max(\delta_j,0).
+\]
+
+Esto evita que un error de eigensolver en un valor que deberia ser cero sea
+amplificado cuando \(\lambda\) es grande.
+
+\section{Tratamiento de \(\lambda=\infty\)}
+
+Para \(S=1\), no se calcula literalmente \(1+\infty\cdot0)^{-1}\. Se usa el
+limite
+\[
+\alpha_j(\infty)
+=
+\begin{cases}
+1,&\delta_j=0,\\
+0,&\delta_j>0.
+\end{cases}
+\]
+Las derivadas se fijan en cero. Asi
+\[
+\widehat{\bm\tau}_\infty
+=
+P_{\ker D_d}\bm x.
+\]
+
+\section{Cache de evaluaciones}
+
+Durante la subdivision, un punto medio se convierte despues en extremo de dos
+intervalos. Para evitar recalculo, se guarda
+\[
+S
+\longmapsto
+\left(
+\lambda,
+F,
+F_\lambda,
+F_{\lambda\lambda},
+F_S,
+F_{SS}
+\right).
+\]
+
+Cada valor de \(S\) se evalua una sola vez. El contador
+\texttt{n\_evaluations\_} mide precisamente cuantos smoothness distintos fueron
+evaluados.
+
+\section{Complejidad}
+
+La eigendescomposicion densa inicial cuesta, en orden,
+\[
+O(L^3).
+\]
+Pero esa operacion se prepara una sola vez por configuracion.
+
+Despues, cada nuevo \(\lambda\) reutiliza el espectro y el operador de forecast.
+La evaluacion trabaja con pesos espectrales y multiplicaciones matriciales
+vectorizadas sobre todos los rolling origins.
+
+Por tanto, evaluar \(M\) candidatos no equivale a resolver desde cero
+\(M\) problemas penalizados completos.
+
+\section{Por que seguimos usando una grilla densa como diagnostico}
+
+Ningun muestreo finito puede certificar, sin hipotesis adicionales, que
+encontro todas las raices de una funcion suave arbitraria. Una oscilacion
+suficientemente estrecha puede quedar entre puntos muestreados.
+
+Por eso los benchmarks comparan
+\[
+\text{busqueda adaptativa derivativa}
+\qquad\text{vs.}\qquad
+\text{perfil denso de referencia}.
+\]
+
+La grilla densa sirve para revisar:
+
+\begin{itemize}[leftmargin=2em]
+    \item cuantos minimos se recuperaron;
+    \item si se omitio una cuenca estrecha;
+    \item el error de localizacion de cada \(S^\star\);
+    \item el numero de evaluaciones ahorradas.
+\end{itemize}
+
+La grilla es una referencia numerica, no el algoritmo principal.
+
+\section{Algoritmo completo}
+
+Para una superficie fija:
+
+\begin{enumerate}[leftmargin=2.4em]
+    \item Preparar el objetivo rolling y su algebra espectral.
+    \item Crear nueve puntos iniciales en \([0,1-10^{-6}]\).
+    \item Agregar seis niveles diadicos cerca de ambos endpoints.
+    \item Para cada nuevo \(S\):
+    \begin{enumerate}
+        \item invertir \(S\mapsto\lambda\) por biseccion;
+        \item evaluar \(F,F_\lambda,F_{\lambda\lambda}\);
+        \item transformar a \((F,F_S,F_{SS})\).
+    \end{enumerate}
+    \item Refinar los intervalos cuya derivada o curvatura sugiera estructura.
+    \item Guardar puntos con \(|F_S|\le10^{-8}\).
+    \item Crear brackets donde \(F_S\) cambia de signo.
+    \item Resolver cada bracket con Brent hasta
+    \(	exttt{xtol}=10^{-10}\).
+    \item Deduplicar raices a escala \(10^{-8}\).
+    \item Clasificar con \(F_{SS}\).
+    \item Revisar \(S=0\) y \(S=1\) como minimos unilaterales.
+    \item Separar candidatos dentro de \(0.02\).
+    \item Inicializar hasta cinco ramas para el tracking temporal.
+\end{enumerate}
+
+\section{Flujo matematico}
+
+El calculo de los minimos puede resumirse como
+
+\[
+\boxed{
+S
+\xrightarrow{\text{biseccion}}
+\lambda(S)
+\xrightarrow{\text{espectro}}
+\widehat{\bm\tau},
+\widehat{\bm\tau}',
+\widehat{\bm\tau}''
+}
+\]
+
+\[
+\boxed{
+\xrightarrow{C_{d,h,L}}
+\widehat{\bm z},
+\widehat{\bm z}',
+\widehat{\bm z}''
+\xrightarrow{\text{MSE}}
+F,
+F_\lambda,
+F_{\lambda\lambda}
+}
+\]
+
+\[
+\boxed{
+\xrightarrow{\text{regla de la cadena}}
+F_S,
+F_{SS}
+\xrightarrow{\text{refinamiento}}
+\text{brackets}
+\xrightarrow{\text{Brent}}
+S_j^\star
+}.
+\]
+
+Finalmente,
+\[
+S_j^\star\in\mathcal M
+\quad\Longleftrightarrow\quad
+F_S(S_j^\star)=0
+\quad\text{y}\quad
+F_{SS}(S_j^\star)>0,
+\]
+salvo los minimos unilaterales de frontera.
+
+\section{Relacion con el tracking temporal}
+
+Todo lo anterior ocurre dentro de una sola ventana. El tracking temporal
+documentado en
+\texttt{tracked\_minimum\_smoothness\_selection.tex}
+toma el conjunto
+\[
+\mathcal M_{d,r}
+=
+\{S_{d,1,r},\ldots,S_{d,J_r,r}\}
+\]
+y lo asocia con los minimos de la ventana siguiente mediante
+\[
+|S_{d,j,r+1}-S_{d,j,r}|
+\le
+\varepsilon_{\mathrm{track}}.
+\]
+
+Por tanto existen dos problemas distintos:
+
+\[
+\boxed{
+\text{A: localizar todos los minimos de una superficie}
+}
+\]
+y
+\[
+\boxed{
+\text{B: asociar esos minimos entre ventanas}
+}.
+\]
+
+Esta nota documenta A. La nota de tracking desarrolla B y la seleccion final
+mediante Validation 2.
+
+\section{Conclusion}
+
+La seleccion numerica de smoothness no es una exploracion ciega de \(S\). La
+implementacion explota la estructura lineal del suavizador para obtener
+derivadas analiticas, transforma esas derivadas exactamente a la coordenada
+normalizada, adapta el muestreo a la geometria observada y resuelve cada raiz
+detectada con un metodo con bracket.
+
+La idea central es
+\[
+\boxed{
+\text{usar derivadas para descubrir donde buscar}
+\quad+\quad
+\text{usar Brent para localizar cada raiz robustamente}
+}.
+\]
+
+Esto hace posible recuperar multiples minimos locales con muchas menos
+evaluaciones que una grilla muy densa, mientras que los perfiles densos
+permanecen como diagnostico independiente de cobertura.
+
+\end{document}
