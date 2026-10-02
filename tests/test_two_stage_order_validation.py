@@ -34,6 +34,10 @@ def test_tracked_minima_smoke_keeps_true_test_untouched(tmp_path):
             "val2_end_date",
         ],
     )
+    validation_paths = pd.read_csv(
+        tmp_path / "rolling_validation_paths.csv",
+        parse_dates=["date"],
+    )
     selection = pd.read_csv(tmp_path / "tracked_branch_selection.csv")
     test_paths = pd.read_csv(
         tmp_path / "tracked_branch_test_paths.csv",
@@ -68,6 +72,20 @@ def test_tracked_minima_smoke_keeps_true_test_untouched(tmp_path):
     assert (
         matched["val1_end_date"] < matched["val2_start_date"]
     ).all()
+
+    assert not validation_paths.empty
+    assert {
+        "series",
+        "order",
+        "branch_id",
+        "origin_number",
+        "smoothness",
+        "date",
+        "observed",
+        "candidate_path",
+        "val2_level_rmse",
+        "val2_log_rmse",
+    } <= set(validation_paths.columns)
 
     assert set(selection["series"]) == {"GDPC1"}
     assert int(selection["selected_branch"].sum()) == 1
@@ -106,5 +124,6 @@ def test_tracked_minima_smoke_keeps_true_test_untouched(tmp_path):
     assert metadata["track_epsilon"] == 0.10
     assert metadata["candidate_spacing"] == 0.02
 
+    assert (tmp_path / "rolling_validation_paths.csv").exists()
     assert (tmp_path / "tracked_minima_validation.png").exists()
     assert (tmp_path / "tracked_minima_validation.pdf").exists()
