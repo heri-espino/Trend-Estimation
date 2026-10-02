@@ -1,0 +1,951 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage{amsmath,amssymb,mathtools,bm}
+\usepackage{booktabs}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\geometry{margin=1in}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\D}{\Delta}
+\newcommand{\argmin}{\operatorname*{arg\,min}}
+
+\title{Desarrollo matematico del seguimiento de minimos locales\\
+para seleccionar suavidad y orden de tendencia}
+\author{Nota tecnica del proyecto \texttt{paper\_numerical-smoothness-selection}}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Esta nota formaliza, paso a paso, el procedimiento exploratorio implementado en
+\texttt{experiments/numerical\_smoothness\_selection/run\_two\_stage\_order\_validation.py}.
+La idea central es separar dos tareas. Primero, una perdida de
+\emph{Validation 1} define la geometria de candidatos: para cada orden de
+diferencia \(d\), se identifican varios minimos locales de la funcion de
+perdida en la coordenada de suavidad normalizada \(S\in[0,1]\). Segundo, esos
+minimos se siguen a traves de ventanas temporales cercanas y cada rama se
+evalua en un bloque posterior de \emph{Validation 2}. La rama final se escoge
+por persistencia temporal y desempeno historico en Validation 2, no por la
+misma perdida que la genero. Finalmente, la rama seleccionada se actualiza una
+vez mas en una Validation 1 inmediatamente anterior al test, y el test
+verdadero permanece sin usar hasta el final.
+
+El punto importante es que el valor final de \(S\) \textbf{no} es un promedio
+global de suavidades. Es el minimo local mas reciente perteneciente a una rama
+que ha sido seguida localmente en el tiempo y cuya calidad predictiva fue
+evaluada fuera de la ventana que genero cada minimo.
+\end{abstract}
+
+\tableofcontents
+
+\section{Objetivo y notacion}
+
+Sea una serie positiva
+\[
+Y_1,\ldots,Y_N,\qquad Y_t>0,
+\]
+y definamos
+\[
+X_t=\log Y_t.
+\]
+En los experimentos aplicados se trabaja sobre \(X_t\). Cuando la metrica de
+seleccion es \texttt{level\_rmse}, los pronosticos se transforman de regreso a
+nivel mediante la exponencial antes de calcular el error.
+
+Los parametros estructurales son:
+\begin{itemize}[leftmargin=2em]
+    \item \(d\in\{1,2,3,4\}\): orden de la penalizacion por diferencias;
+    \item \(L\): longitud de la ventana de entrenamiento;
+    \item \(h\): horizonte de Validation 1, Validation 2 y test final;
+    \item \(S\in[0,1]\): coordenada normalizada de suavidad;
+    \item \(\lambda\in[0,\infty]\): parametro clasico de penalizacion;
+    \item \(\varepsilon_{\mathrm{track}}>0\): radio local maximo para continuar
+    un minimo de una ventana a la siguiente.
+\end{itemize}
+
+En el codigo actual,
+\[
+\varepsilon_{\mathrm{track}}=0.10,
+\]
+se inicializan como maximo cinco ramas por orden \(d\), y se usa una separacion
+numerica de \(0.02\) para evitar contar dos veces el mismo minimo en una misma
+superficie. Para GDP se usa \(h=8\) trimestres; para SPY, AAPL y BTC--USD se
+usa \(h=60\) observaciones diarias. El avance de los rolling origins es de una
+observacion para GDP y de cinco observaciones para las series diarias.
+
+\section{Suavizador penalizado}
+
+\subsection{Problema de minimos cuadrados penalizados}
+
+En una ventana de entrenamiento de longitud \(L\), sea
+\[
+\bm{x}=(x_1,\ldots,x_L)^\top\in\R^L.
+\]
+Sea \(D_d\) la matriz de diferencias finitas de orden \(d\). La tendencia
+penalizada es
+\begin{equation}
+\widehat{\bm{\tau}}_{\lambda}
+=
+\argmin_{\bm{\tau}\in\R^L}
+\left\{
+\|\bm{x}-\bm{\tau}\|_2^2
++
+\lambda\|D_d\bm{\tau}\|_2^2
+\right\}.
+\label{eq:pls}
+\end{equation}
+Definiendo \(Q_d=D_d^\top D_d\), la solucion es
+\begin{equation}
+\widehat{\bm{\tau}}_{\lambda}
+=
+H_{\lambda,d}\bm{x},
+\qquad
+H_{\lambda,d}=(I+\lambda Q_d)^{-1}.
+\label{eq:smoother}
+\end{equation}
+
+Cuando \(\lambda=0\), \(H_{0,d}=I\). Cuando \(\lambda\to\infty\), sobreviven
+unicamente las componentes del null-space:
+\[
+H_{\lambda,d}\longrightarrow P_{\ker(D_d)}.
+\]
+Por tanto, la tendencia limite tiene diferencia \(d\)-esima nula.
+
+\subsection{Coordenada normalizada de suavidad}
+
+Sea
+\[
+Q_d
+=
+U\operatorname{diag}
+(0,\ldots,0,\delta_1,\ldots,\delta_{L-d})U^\top,
+\qquad \delta_j>0.
+\]
+La coordenada usada en el paper y en el codigo es
+\begin{equation}
+S(\lambda;L,d)
+=
+1-
+\frac{1}{L-d}
+\sum_{j=1}^{L-d}
+\frac{1}{1+\lambda\delta_j}.
+\label{eq:smoothness}
+\end{equation}
+Entonces
+\[
+S(0)=0,
+\qquad
+S(\infty)=1,
+\]
+y
+\begin{equation}
+\frac{\partial S}{\partial\lambda}
+=
+\frac{1}{L-d}
+\sum_{j=1}^{L-d}
+\frac{\delta_j}{(1+\lambda\delta_j)^2}
+>0.
+\label{eq:smonotone}
+\end{equation}
+Por tanto, \(S\) y \(\lambda\) ordenan los modelos de la misma manera, pero
+\(S\) vive en el intervalo compacto \([0,1]\). Escribimos
+\[
+\lambda=\lambda(S;L,d)
+\]
+para la inversa numerica de \eqref{eq:smoothness}.
+
+\section{Como se continua la tendencia hacia el futuro}
+
+El pronostico no es un polinomio ajustado por una regresion separada del
+suavizador. Se toma la tendencia penalizada al final de la ventana y se
+continua imponiendo
+\begin{equation}
+\D^d\widehat{\tau}_t=0
+\qquad
+\text{para los puntos futuros}.
+\label{eq:zero-difference}
+\end{equation}
+La recurrencia usada por el codigo es
+\begin{equation}
+\widehat{\tau}_{n+1}
+=
+-
+\sum_{k=0}^{d-1}
+(-1)^{d-k}
+\binom{d}{k}
+\widehat{\tau}_{n-d+1+k}.
+\label{eq:continuation}
+\end{equation}
+Esto produce una continuacion constante para \(d=1\), lineal para \(d=2\),
+cuadratica para \(d=3\) y cubica para \(d=4\), en el sentido de diferencias
+finitas. Por eso \(d\) determina tambien la geometria de la extrapolacion.
+
+\section{Dos validaciones consecutivas}
+
+Para un rolling origin \(r\), usamos tres bloques consecutivos:
+\[
+\boxed{\mathcal{T}_r}
+\;\longrightarrow\;
+\boxed{\mathcal{V}^{(1)}_r}
+\;\longrightarrow\;
+\boxed{\mathcal{V}^{(2)}_r},
+\]
+con
+\[
+|\mathcal{T}_r|=L,
+\qquad
+|\mathcal{V}^{(1)}_r|
+=
+|\mathcal{V}^{(2)}_r|
+=
+h.
+\]
+
+Validation 1 descubre la geometria local de candidatos. Validation 2 mide si
+cada candidato sigue funcionando en el bloque temporal inmediatamente
+posterior.
+
+Para \(S\), sea
+\[
+\widehat{\bm z}^{(1)}_{r,d,L,h}(S)
+\]
+el forecast de Validation 1 y \(\bm z^{(1)}_r\) su valor observado. La perdida
+es
+\begin{equation}
+F^{(1)}_{r,d,L,h}(S)
+=
+\frac{1}{h}
+\left\|
+\bm z^{(1)}_r
+-
+\widehat{\bm z}^{(1)}_{r,d,L,h}(S)
+\right\|_2^2.
+\label{eq:val1}
+\end{equation}
+La funcion \(S\mapsto F^{(1)}_{r,d,L,h}(S)\) puede tener varios minimos
+locales.
+
+\section{Paso 0: seleccionar la longitud de ventana}
+
+Antes de seguir ramas, el codigo escoge una sola longitud \(L\) para cada
+orden \(d\). Sea \(\mathcal{R}_{d,L}\) el conjunto de rolling origins historicos
+para los que caben Validation 1 y Validation 2 completas. Se define
+\begin{equation}
+\overline F^{(1)}_{d,L}(S)
+=
+\frac{1}{|\mathcal{R}_{d,L}|}
+\sum_{r\in\mathcal{R}_{d,L}}
+F^{(1)}_{r,d,L,h}(S).
+\label{eq:aggregate}
+\end{equation}
+
+Para cada \(L\), sea
+\[
+\widehat S_{d,L}^{\mathrm{agg}}
+\in
+\argmin_{S\in\mathcal{C}_{d,L}^{\mathrm{agg}}}
+\overline F^{(1)}_{d,L}(S),
+\]
+donde \(\mathcal{C}_{d,L}^{\mathrm{agg}}\) contiene los minimos recuperados y
+los endpoints relevantes. Entonces
+\begin{equation}
+L_d^\star
+=
+\argmin_L
+\overline F^{(1)}_{d,L}
+\left(
+\widehat S_{d,L}^{\mathrm{agg}}
+\right).
+\label{eq:Lselection}
+\end{equation}
+
+Este paso no escoge todavia el smoothness final. Solo fija la escala temporal
+sobre la cual se seguiran los minimos.
+
+\section{Paso 1: inicializar hasta cinco minimos locales}
+
+Fijados \(d\) y \(L_d^\star\), en el primer rolling origin se define
+\begin{equation}
+\mathcal{M}_{d,1}
+=
+\left\{
+S\in(0,1):
+\frac{\partial F^{(1)}_{1,d,L_d^\star,h}}{\partial S}(S)=0,
+\quad
+\frac{\partial^2 F^{(1)}_{1,d,L_d^\star,h}}{\partial S^2}(S)>0
+\right\},
+\label{eq:firstminima}
+\end{equation}
+mas los endpoints que actuan como minimos de frontera.
+
+Se deduplican soluciones a menos de \(0.02\) en la escala \(S\). Si hay mas de
+cinco, se conservan los cinco con menor perdida de Validation 1:
+\[
+S_{d,1,1},\ldots,S_{d,J_d,1},
+\qquad
+J_d\le5.
+\]
+Cada uno inicia una rama \(\mathcal{B}_{d,j}\).
+
+\section{Paso 2: evaluar cada minimo en Validation 2}
+
+Para cada \(S_{d,j,r}\), Validation 1 ya fue utilizada para descubrir el
+candidato. Para evaluarlo predictivamente, el modelo se refitea usando todos
+los datos disponibles hasta el final de Validation 1, manteniendo
+\[
+d,
+\qquad
+L_d^\star,
+\qquad
+S_{d,j,r}
+\]
+fijos. Sea \(\widehat{\bm z}^{(2)}_{d,j,r}\) el forecast del siguiente bloque.
+
+La metrica default es RMSE en nivel:
+\begin{equation}
+E^{(2)}_{d,j,r}
+=
+\sqrt{
+\frac{1}{h}
+\sum_{\ell=1}^{h}
+\left(
+Y^{(2)}_{r,\ell}
+-
+\widehat Y^{(2)}_{d,j,r,\ell}
+\right)^2
+}.
+\label{eq:val2level}
+\end{equation}
+Tambien se guarda RMSE en log-escala:
+\begin{equation}
+E^{(2,\log)}_{d,j,r}
+=
+\sqrt{
+\frac{1}{h}
+\sum_{\ell=1}^{h}
+\left(
+X^{(2)}_{r,\ell}
+-
+\widehat X^{(2)}_{d,j,r,\ell}
+\right)^2
+}.
+\label{eq:val2log}
+\end{equation}
+
+La separacion conceptual es
+\[
+\boxed{F^{(1)}\text{ genera candidatos}}
+\qquad
+\text{y}
+\qquad
+\boxed{E^{(2)}\text{ juzga su utilidad futura}}.
+\]
+
+\section{Paso 3: mover la ventana y volver a buscar minimos}
+
+Avanzamos el rolling origin una cantidad pequena \(q\). En el codigo,
+\(q=1\) para GDP y \(q=5\) para las series diarias. Se vuelve a construir
+\[
+F^{(1)}_{r+1,d,L_d^\star,h}(S)
+\]
+y se recupera su conjunto de minimos locales
+\[
+\mathcal{M}_{d,r+1}.
+\]
+La hipotesis operativa es que, si la ventana cambia poco, un minimo local bien
+definido deberia moverse poco en \(S\).
+
+\section{Paso 4: seguimiento local de cada minimo}
+
+Supongamos que la rama \(j\) tenia ultimo minimo conocido \(S_{d,j,r}\). Un
+candidato \(\widetilde S\in\mathcal{M}_{d,r+1}\) puede continuar esa rama solo
+si
+\begin{equation}
+|\widetilde S-S_{d,j,r}|
+\le
+\varepsilon_{\mathrm{track}}.
+\label{eq:track}
+\end{equation}
+
+Entre todos los pares rama--candidato se consideran las distancias
+\[
+D_{jk}
+=
+|S_{d,j,r}-\widetilde S_{d,k,r+1}|.
+\]
+El codigo ordena los pares por distancia y realiza una asignacion greedy
+uno-a-uno: toma primero el par mas cercano permitido, despues el siguiente que
+no reutilice ni la rama ni el candidato, y asi sucesivamente.
+
+La regla implementada aproxima
+\begin{equation}
+S_{d,j,r+1}
+\approx
+\argmin_{\widetilde S\in\mathcal{M}_{d,r+1}}
+|\widetilde S-S_{d,j,r}|
+\quad
+\text{sujeto a}
+\quad
+|\widetilde S-S_{d,j,r}|
+\le
+\varepsilon_{\mathrm{track}},
+\label{eq:continuation-rule}
+\end{equation}
+con correspondencia uno-a-uno entre ramas y minimos nuevos.
+
+Si ninguna raiz nueva cae dentro del radio permitido, se registra
+\[
+\texttt{status}=	exttt{missing\_local\_minimum}.
+\]
+No se sustituye automaticamente por el mejor minimo global. La rama conserva
+como referencia su ultimo \(S\) exitosamente observado y puede reaparecer mas
+adelante si vuelve a existir un minimo dentro del vecindario local.
+
+\section{Por que el seguimiento local tiene sentido}
+
+Imaginemos provisionalmente que el origen temporal puede representarse por un
+parametro continuo \(u\). Sea \(F(S,u)\) la perdida de Validation 1 cuando la
+ventana esta localizada alrededor de \(u\). Supongamos que
+\[
+F_S(S_0,u_0)=0,
+\qquad
+F_{SS}(S_0,u_0)>0.
+\]
+Si \(F\) es suficientemente suave y la curvatura no se anula, el teorema de la
+funcion implicita da una trayectoria local \(S^\star(u)\) con
+\[
+F_S(S^\star(u),u)=0,
+\]
+y
+\begin{equation}
+\frac{dS^\star(u)}{du}
+=
+-
+\frac{F_{Su}(S^\star(u),u)}
+{F_{SS}(S^\star(u),u)}.
+\label{eq:implicit}
+\end{equation}
+
+Por tanto, si la ventana cambia poco, el termino cruzado no es excesivamente
+grande y la curvatura permanece separada de cero,
+\[
+S^\star(u+\delta)
+\approx
+S^\star(u)+O(\delta).
+\]
+La condicion \eqref{eq:track} es una version discreta de esta idea de
+continuacion de soluciones.
+
+Tambien explica por que no conviene promediar globalmente minimos de cuencas
+distintas. Si dos ramas persistentes estan cerca de \(0.10\) y \(0.90\), su
+media es \(0.50\), pero nada garantiza que \(0.50\) sea un minimo. El objeto
+relevante es cada trayectoria local
+\[
+\mathcal{B}_{d,j}
+=
+(S_{d,j,1},S_{d,j,2},\ldots).
+\]
+
+\section{Paso 5: almacenar la historia de cada rama}
+
+Para cada rolling origin y rama se guarda
+\[
+S_{d,j,r},
+\qquad
+F^{(1)}_{r,d,L_d^\star,h}(S_{d,j,r}),
+\qquad
+E^{(2)}_{d,j,r},
+\]
+junto con
+\[
+\Delta S_{d,j,r}
+=
+|S_{d,j,r}-S_{d,j,r-1}|.
+\]
+Tambien se guarda el numero total de minimos de la superficie,
+\[
+M_{d,r}=|\mathcal{M}_{d,r}|,
+\]
+el numero de ramas emparejadas, las fechas exactas de ambos bloques y el
+forecast completo sobre Validation 2.
+
+\section{Paso 6: persistencia de una rama}
+
+Sea \(R_{d,j}\) el numero total de rolling origins considerados para la rama
+\(j\), y sea \(R^{\mathrm{match}}_{d,j}\) el numero de origins en que se encontro
+una continuacion local. La fraccion de soporte es
+\begin{equation}
+P_{d,j}
+=
+\frac{R^{\mathrm{match}}_{d,j}}{R_{d,j}}.
+\label{eq:support}
+\end{equation}
+
+Una rama con \(P_{d,j}=1\) persistio en todos los origins historicos. Esta
+cantidad actua como regularizacion de estabilidad: una rama con un RMSE
+ocasionalmente bajo pero que desaparece con frecuencia no se trata igual que
+una rama que puede seguirse coherentemente.
+
+\section{Paso 7: score historico de Validation 2}
+
+Para cada rama se promedian unicamente los scores de los origins en los que la
+rama fue emparejada. Con la metrica default,
+\begin{equation}
+A_{d,j}
+=
+\frac{1}{R^{\mathrm{match}}_{d,j}}
+\sum_{r:,(d,j)\text{ existe en }r}
+E^{(2)}_{d,j,r}.
+\label{eq:branchscore}
+\end{equation}
+Con \texttt{--selection-metric log\_rmse} se reemplaza \(E^{(2)}\) por
+\(E^{(2,\log)}\).
+
+\section{Paso 8: ultima Validation 1 antes del test}
+
+Toda la historia usada para tracking termina antes de los ultimos \(2h\) puntos.
+La estructura final es
+\[
+\boxed{\text{historia para tracking}}
+\;\longrightarrow\;
+\boxed{\mathcal{V}^{(1)}_{\mathrm{final}}}
+\;\longrightarrow\;
+\boxed{\mathcal{T}_{\mathrm{test}}},
+\]
+donde los dos ultimos bloques tienen longitud \(h\).
+
+En \(\mathcal{V}^{(1)}_{\mathrm{final}}\) se construye una ultima superficie de
+Validation 1 para cada \(d\). Cada rama historica se intenta continuar una vez
+mas:
+\begin{equation}
+S_{d,j,\mathrm{final}}
+=
+\argmin_{S\in\mathcal{M}_{d,\mathrm{final}}}
+|S-S_{d,j,\mathrm{last}}|
+\quad
+\text{sujeto a}
+\quad
+|S-S_{d,j,\mathrm{last}}|
+\le
+\varepsilon_{\mathrm{track}}.
+\label{eq:final-continuation}
+\end{equation}
+Una rama que no puede continuar hasta esta superficie final no es elegible para
+el forecast final.
+
+\section{Paso 9: seleccion de la rama ganadora}
+
+Sea \(\mathcal{J}_{\mathrm{final}}\) el conjunto de ramas que pudieron continuar
+hasta la superficie final. El codigo aplica primero una regla de persistencia.
+
+Si existe al menos una rama con \(P_{d,j}=1\), el conjunto elegible es
+\begin{equation}
+\mathcal{E}
+=
+\left\{
+(d,j)\in\mathcal{J}_{\mathrm{final}}:
+P_{d,j}=1
+\right\}.
+\label{eq:eligible1}
+\end{equation}
+
+Si ninguna tiene soporte completo, sea
+\[
+P_{\max}
+=
+\max_{(d,j)\in\mathcal{J}_{\mathrm{final}}}P_{d,j},
+\]
+y
+\begin{equation}
+\mathcal{E}
+=
+\left\{
+(d,j)\in\mathcal{J}_{\mathrm{final}}:
+P_{d,j}=P_{\max}
+\right\}.
+\label{eq:eligible2}
+\end{equation}
+
+Dentro de ese conjunto, la rama ganadora es
+\begin{equation}
+(d^\star,j^\star)
+=
+\argmin_{(d,j)\in\mathcal{E}}
+A_{d,j}.
+\label{eq:winner}
+\end{equation}
+
+En caso de empate numerico, la implementacion actual rompe el empate por
+\(d\) y despues por el identificador de rama. La regla puede resumirse como
+\[
+\boxed{
+\text{persistencia primero}
+\quad+\quad
+\text{menor perdida historica en Validation 2}
+}.
+\]
+
+\section{Cual es el smoothness finalmente seleccionado}
+
+Una vez seleccionada la rama \((d^\star,j^\star)\), el smoothness utilizado para
+el forecast final es
+\begin{equation}
+\boxed{
+S_{\mathrm{final}}^\star
+=
+S_{d^\star,j^\star,\mathrm{final}}.
+}
+\label{eq:finalS}
+\end{equation}
+
+Es decir:
+\begin{itemize}[leftmargin=2em]
+    \item no es el \(S\) del primer rolling origin;
+    \item no es el minimo global de todas las superficies historicas;
+    \item no es el promedio de todos los \(S\);
+    \item no usa el test verdadero;
+    \item es el minimo local actual de la rama historicamente seleccionada.
+\end{itemize}
+
+La rama se escoge por su comportamiento historico en Validation 2, pero su
+posicion final se actualiza localmente con la informacion mas reciente
+disponible antes del test.
+
+\section{Paso 10: refit final y test intacto}
+
+Sea \(L^\star=L_{d^\star}^\star\). Tomamos las ultimas \(L^\star\)
+observaciones disponibles antes del test, incluyendo el bloque final de
+Validation 1, y ajustamos
+\begin{equation}
+\widehat{\bm{\tau}}_{\mathrm{final}}
+=
+\argmin_{\bm{\tau}}
+\left\{
+\|\bm{x}_{\mathrm{final}}-\bm{\tau}\|_2^2
++
+\lambda(S_{\mathrm{final}}^\star)
+\|D_{d^\star}\bm{\tau}\|_2^2
+\right\}.
+\label{eq:finalfit}
+\end{equation}
+Despues se continua esa tendencia \(h\) pasos usando
+\[
+\D^{d^\star}\widehat{\tau}_t=0.
+\]
+Solo entonces se compara con el test real.
+
+El test no participa en la seleccion de \(L\), deteccion de minimos, tracking,
+score historico \(A_{d,j}\), eleccion de rama ni seleccion de
+\(S_{\mathrm{final}}^\star\). Solo produce metricas retrospectivas de
+diagnostico.
+
+\section{Por que Validation 1 y Validation 2 deben estar separadas}
+
+Si el mismo bloque que define \(S_{d,j,r}\) tambien se utilizara para decidir
+cual minimo es predictivamente mejor, la seleccion reutilizaria la misma
+realizacion que genero los candidatos.
+
+Aqui,
+\[
+\mathcal{V}^{(1)}:
+\text{descubrimiento geometrico},
+\qquad
+\mathcal{V}^{(2)}:
+\text{evaluacion temporal posterior}.
+\]
+Puede ocurrir que
+\[
+F^{(1)}(S_a)<F^{(1)}(S_b)
+\]
+pero
+\[
+E^{(2)}(S_a)>E^{(2)}(S_b).
+\]
+Ese desacuerdo es justamente informacion util: dos minimos de la misma
+superficie pueden tener capacidad de continuacion muy diferente.
+
+\section{Interpretacion jerarquica}
+
+El metodo puede verse como
+\[
+\boxed{
+d
+\to
+L_d^\star
+\to
+\text{ramas locales de }S
+\to
+\text{persistencia}
+\to
+\text{Validation 2}
+\to
+S_{\mathrm{final}}^\star
+}.
+\]
+
+Cada etapa controla un aspecto distinto:
+\begin{itemize}[leftmargin=2em]
+    \item \(d\) determina la familia geometrica de extrapolacion;
+    \item \(L\) determina la escala temporal de entrenamiento;
+    \item los minimos locales de \(S\) representan escalas de suavidad
+    competitivas;
+    \item el tracking conserva la identidad de esas escalas a traves del tiempo;
+    \item la persistencia penaliza soluciones temporalmente fragiles;
+    \item Validation 2 mide utilidad predictiva posterior;
+    \item la ultima Validation 1 actualiza la posicion de la rama antes del test.
+\end{itemize}
+
+Una rama no es una distribucion posterior ni un intervalo de confianza. Es una
+trayectoria determinista de minimos locales de problemas de optimizacion
+cercanos.
+
+\section{Que significa un promedio local de smoothness}
+
+El codigo actual no usa un promedio de \(S\) para el forecast final: usa
+\eqref{eq:finalS}. Sin embargo, una extension coherente seria promediar
+\emph{solo dentro de la misma rama y localmente en el tiempo}. Por ejemplo,
+\begin{equation}
+\widetilde S_{d,j,R}^{(K)}
+=
+\frac{1}{K}
+\sum_{k=0}^{K-1}
+S_{d,j,R-k},
+\label{eq:localmean}
+\end{equation}
+o una media ponderada
+\begin{equation}
+\widetilde S_{d,j,R}^{(\rho)}
+=
+\frac{
+\sum_{k=0}^{K-1}
+\rho^k S_{d,j,R-k}
+}{
+\sum_{k=0}^{K-1}\rho^k
+},
+\qquad 0<\rho\le1.
+\label{eq:weightedmean}
+\end{equation}
+
+Esto es muy distinto de promediar minimos de cuencas diferentes. En
+\eqref{eq:localmean}, todos los terminos ya fueron identificados como la misma
+rama mediante \eqref{eq:track}. El codigo reporta medias y medianas globales y
+de los cinco matches mas recientes por rama para diagnostico, pero el default
+actual usa el minimo local mas reciente.
+
+\section{Limitaciones matematicas del tracking actual}
+
+\subsection{Matching greedy}
+
+La asignacion rama--minimo es greedy por distancia. Si dos ramas se acercan o
+cruzan, la correspondencia puede depender del orden de las distancias. Una
+alternativa mas formal seria resolver
+\begin{equation}
+\min_{\pi}
+\sum_j
+|S_{d,j,r}-\widetilde S_{d,\pi(j),r+1}|
+\label{eq:assignment}
+\end{equation}
+sujeto a
+\[
+|S_{d,j,r}-\widetilde S_{d,\pi(j),r+1}|
+\le
+\varepsilon_{\mathrm{track}},
+\]
+por ejemplo con Hungarian matching. El codigo actual usa la aproximacion
+greedy.
+
+\subsection{Eleccion de \(\varepsilon_{\mathrm{track}}\)}
+
+El radio \(0.10\) es una regla operativa, no un parametro inferido
+estadisticamente. Si es demasiado pequeno, una rama puede fragmentarse; si es
+demasiado grande, dos cuencas pueden confundirse. Por ello conviene inspeccionar
+\[
+\max_r|S_{d,j,r+1}-S_{d,j,r}|,
+\]
+la distribucion de \(\Delta S\), el numero de minimos por superficie y el
+numero de matches por origin.
+
+\subsection{Numero variable de minimos}
+
+No se impone que
+\[
+|\mathcal{M}_{d,r}|
+=
+|\mathcal{M}_{d,r+1}|.
+\]
+Que el numero permanezca estable es una hipotesis empirica que puede examinarse
+en \texttt{rolling\_minimum\_tracks.csv} y en el dashboard. El nacimiento,
+desaparicion o fusion aparente de minimos puede ser informacion relevante.
+
+\subsection{Seleccion de \(L\) separada del tracking}
+
+\(L_d^\star\) se selecciona una vez por orden mediante la perdida agregada de
+Validation 1. No se sigue una trayectoria temporal de \(L\). Una extension
+mayor podria seguir simultaneamente ramas en \((L,S)\), pero seria un problema
+de correspondencia bidimensional distinto.
+
+\section{Criterio completo en una sola expresion}
+
+Aunque el procedimiento es secuencial, puede resumirse como
+\begin{equation}
+(d^\star,j^\star)
+=
+\argmin_{(d,j)}
+\left\{
+A_{d,j}:
+(d,j)\text{ es suficientemente persistente y continua al origin final}
+\right\},
+\label{eq:concept}
+\end{equation}
+donde
+\[
+A_{d,j}
+=
+\frac{1}{R^{\mathrm{match}}_{d,j}}
+\sum_r E^{(2)}_{d,j,r},
+\]
+y la secuencia \(\{S_{d,j,r}\}_r\) satisface
+\[
+S_{d,j,r}\in\mathcal{M}_{d,r},
+\qquad
+|S_{d,j,r}-S_{d,j,r-1}|
+\le
+\varepsilon_{\mathrm{track}}.
+\]
+Despues,
+\[
+S_{\mathrm{final}}^\star
+=
+\text{continuacion local final de la rama }(d^\star,j^\star).
+\]
+
+Por eso el metodo no selecciona simplemente un numero \(S\): selecciona una
+\textbf{rama estable de soluciones locales} y usa su estado mas reciente.
+
+\section{Correspondencia con los archivos del experimento}
+
+\begin{center}
+\begin{tabular}{p{0.37\textwidth} p{0.54\textwidth}}
+\toprule
+Archivo & Objeto matematico principal\\
+\midrule
+\texttt{order\_window\_selection.csv}
+&
+\(L_d^\star\) y la perdida agregada de Validation 1
+\\
+\texttt{rolling\_minimum\_tracks.csv}
+&
+\(S_{d,j,r}\), \(F^{(1)}_{d,j,r}\), \(E^{(2)}_{d,j,r}\),
+\(\Delta S_{d,j,r}\), soporte y conteo de minimos
+\\
+\texttt{rolling\_validation\_paths.csv}
+&
+\(\widehat{\bm z}^{(2)}_{d,j,r}\) completo para cada rama y origin
+\\
+\texttt{tracked\_branch\_selection.csv}
+&
+\(P_{d,j}\), \(A_{d,j}\), resumenes de \(S\), continuidad final y rama ganadora
+\\
+\texttt{tracked\_branch\_test\_paths.csv}
+&
+pronostico final de cada rama que pudo continuar
+\\
+\texttt{run\_metadata.json}
+&
+protocolo, parametros, hashes y rol del test
+\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Resumen del algoritmo}
+
+Para cada serie:
+\begin{enumerate}[leftmargin=2.4em]
+    \item Reservar el test final de longitud \(h\).
+    \item Para cada \(d\), escoger \(L_d^\star\) por
+    \eqref{eq:Lselection}.
+    \item En el primer rolling origin, encontrar hasta cinco minimos locales de
+    Validation 1.
+    \item Inicializar una rama por minimo.
+    \item Evaluar cada rama en Validation 2.
+    \item Mover el rolling origin y reconstruir la superficie de Validation 1.
+    \item Continuar cada rama al minimo nuevo mas cercano dentro de
+    \(\varepsilon_{\mathrm{track}}\), sin reutilizar minimos.
+    \item Repetir y acumular \(E^{(2)}_{d,j,r}\).
+    \item Calcular soporte \(P_{d,j}\) y score historico \(A_{d,j}\).
+    \item Construir una ultima Validation 1 inmediatamente antes del test.
+    \item Continuar localmente cada rama una vez mas.
+    \item Elegir la rama mas persistente y, entre las elegibles, la de menor
+    \(A_{d,j}\).
+    \item Usar su nuevo minimo local como \(S_{\mathrm{final}}^\star\).
+    \item Refit final y forecast del test verdadero.
+\end{enumerate}
+
+En simbolos:
+\[
+F^{(1)}_r(S)
+\to
+\mathcal{M}_r
+\to
+S_{j,r}
+\to
+E^{(2)}_{j,r}
+\to
+S_{j,r+1}
+\to
+E^{(2)}_{j,r+1}
+\to
+\cdots
+\]
+y finalmente
+\[
+\{E^{(2)}_{j,r}\}_r
+\to
+j^\star
+\to
+S_{\mathrm{final}}^\star
+\to
+\text{true test}.
+\]
+
+\section{Conclusion}
+
+El procedimiento separa tres ideas que conviene no mezclar:
+\[
+\text{geometria de la perdida}
+\quad
+\longrightarrow
+\quad
+\text{persistencia de un minimo local}
+\quad
+\longrightarrow
+\quad
+\text{calidad predictiva posterior}.
+\]
+
+Validation 1 crea los candidatos; el rolling temporal los convierte en ramas;
+Validation 2 asigna a cada rama una historia de desempeno fuera de la ventana
+que genero el minimo. La rama ganadora debe ser suficientemente persistente y
+tener el menor score historico de Validation 2 entre las ramas elegibles. El
+smoothness final es su minimo local mas reciente:
+\[
+\boxed{
+S_{\mathrm{final}}^\star
+=
+S_{d^\star,j^\star,\mathrm{final}}.
+}
+\]
+
+Esta construccion tiene sentido porque conserva la identidad de cada cuenca de
+optimizacion, evita promediar soluciones que pertenecen a minimos diferentes y
+separa el descubrimiento de candidatos de su evaluacion predictiva. El test
+verdadero permanece fuera de todo el proceso de seleccion.
+
+\end{document}
