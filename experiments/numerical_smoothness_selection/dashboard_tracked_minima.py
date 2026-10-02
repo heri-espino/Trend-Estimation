@@ -570,6 +570,100 @@ def _plot_final_smooth_to_test(
     _date_axis(ax)
 
 
+def _plot_final_selected_trend_forecast(
+    ax: plt.Axes,
+    series: str,
+    winner: pd.Series,
+    metadata: dict,
+) -> None:
+    """Clean final view: original series, selected trend, forecast, and true test."""
+
+    context = _final_context(series, winner, metadata)
+    train = context["train"]
+    test = context["test"]
+    order = int(context["order"])
+
+    history_n = min(
+        len(train),
+        max(
+            len(test) * 3,
+            32 if series == "GDPC1" else 160,
+        ),
+    )
+    train_tail = train.tail(history_n).copy()
+    fitted_tail = np.asarray(context["fitted"])[-history_n:]
+    forecast = np.asarray(context["forecast"])
+
+    ax.plot(
+        train_tail["date"],
+        train_tail["value"],
+        color=OBSERVED_COLOR,
+        linewidth=1.2,
+        alpha=0.78,
+        label="Original series",
+        zorder=4,
+    )
+    ax.plot(
+        train_tail["date"],
+        fitted_tail,
+        color=ORDER_COLORS[order],
+        linewidth=2.35,
+        alpha=0.96,
+        label="Selected trend",
+        zorder=5,
+    )
+    ax.plot(
+        test["date"],
+        forecast,
+        color=ORDER_COLORS[order],
+        linewidth=2.25,
+        linestyle="--",
+        alpha=0.96,
+        label="Forecast",
+        zorder=6,
+    )
+    ax.plot(
+        test["date"],
+        test["value"],
+        color=OBSERVED_COLOR,
+        linewidth=1.6,
+        marker="o",
+        markersize=2.0,
+        alpha=0.98,
+        label="Observed test",
+        zorder=7,
+    )
+
+    ax.axvspan(
+        test["date"].iloc[0],
+        test["date"].iloc[-1],
+        color="#E6A0A0",
+        alpha=0.10,
+        zorder=1,
+    )
+    ax.axvline(
+        test["date"].iloc[0],
+        color="0.25",
+        linewidth=0.95,
+        linestyle=":",
+        alpha=0.72,
+        zorder=3,
+    )
+
+    observed = pd.concat(
+        [train_tail["value"], test["value"]],
+        ignore_index=True,
+    )
+    ax.set_ylim(*_padded_limits(observed))
+    ax.set_title(
+        f"Final selected trend and forecast "
+        f"(d={order}, S={float(winner['final_smoothness']):.3f})"
+    )
+    ax.grid(alpha=0.14)
+    ax.legend(frameon=False, fontsize=8, loc="best")
+    _date_axis(ax, max_ticks=6)
+
+
 def _plot_recent_validation_continuations(
     ax: plt.Axes,
     validation_paths: pd.DataFrame,
@@ -1141,6 +1235,18 @@ def main() -> None:
             )
             st.pyplot(detail, use_container_width=True)
             plt.close(detail)
+
+            st.markdown("**Final original series, selected trend, and forecast**")
+            final_fig, final_ax = plt.subplots(1, 1, figsize=(12.5, 4.8))
+            _plot_final_selected_trend_forecast(
+                final_ax,
+                series,
+                winner,
+                data["metadata"],
+            )
+            final_fig.tight_layout()
+            st.pyplot(final_fig, use_container_width=True)
+            plt.close(final_fig)
 
             st.markdown("**Branch summary**")
             st.dataframe(
