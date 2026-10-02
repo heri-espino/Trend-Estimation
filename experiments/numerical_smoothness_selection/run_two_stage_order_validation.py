@@ -397,7 +397,7 @@ def _score_validation2(
     order: int,
     window: int,
     smoothness: float,
-) -> tuple[float, float]:
+) -> tuple[float, float, pd.DataFrame]:
     """Refit through Validation 1, then forecast the immediately following block."""
 
     val2 = history.iloc[
@@ -414,9 +414,13 @@ def _score_validation2(
 
     observed_level = val2["value"].to_numpy(dtype=float)
     observed_log = np.log(observed_level)
+    path = val2[["date", "value"]].copy()
+    path = path.rename(columns={"value": "observed"})
+    path["candidate_path"] = forecast_level
     return (
         _rmse(observed_level, forecast_level),
         _rmse(observed_log, forecast_log),
+        path,
     )
 
 
@@ -430,7 +434,7 @@ def _track_order_minima(
     max_minima: int,
     track_epsilon: float,
     candidate_spacing: float,
-) -> pd.DataFrame:
+) -> tuple[pd.DataFrame, pd.DataFrame]:
     """Initialize local minima once, then continue each branch locally in time."""
 
     history_log = np.log(history["value"].to_numpy(dtype=float))
@@ -439,6 +443,7 @@ def _track_order_minima(
     branch_last_s: dict[str, float] = {}
     initialized_branch_ids: list[str] = []
     rows: list[dict] = []
+    validation_path_rows: list[dict] = []
 
     for origin_number, split in enumerate(splits, start=1):
         prepared = td.prepare_rolling_pure_forecast_objective(
@@ -529,7 +534,11 @@ def _track_order_minima(
             candidate_idx, distance = matches[branch_id]
             candidate = candidates[candidate_idx]
             s = float(candidate["smoothness"])
-            val2_level_rmse, val2_log_rmse = _score_validation2(
+            (
+                val2_level_rmse,
+                val2_log_rmse,
+                val2_path,
+            ) = _score_validation2(
                 history,
                 split,
                 horizon=horizon,
@@ -562,9 +571,27 @@ def _track_order_minima(
                     "val2_end_date": val2_end,
                 }
             )
+            for _, path_row in val2_path.iterrows():
+                validation_path_rows.append(
+                    {
+                        "series": key,
+                        "family": applied.SERIES[key]["family"],
+                        "order": order,
+                        "window": window,
+                        "branch_id": branch_id,
+                        "origin_number": origin_number,
+                        "smoothness": s,
+                        "date": path_row["date"],
+                        "observed": float(path_row["observed"]),
+                        "candidate_path": float(path_row["candidate_path"]),
+                        "val2_level_rmse": val2_level_rmse,
+                        "val2_log_rmse": val2_log_rmse,
+                    }
+                )
+
             branch_last_s[branch_id] = s
 
-    return pd.DataFrame(rows)
+    return pd.DataFrame(rows), pd.DataFrame(validation_path_rows)
 
 
 def _summarize_branches(
@@ -1055,6 +1082,7 @@ def main() -> None:
     started = time.perf_counter()
     window_frames: list[pd.DataFrame] = []
     track_frames: list[pd.DataFrame] = []
+    validation_path_frames: list[pd.DataFrame] = []
     selection_frames: list[pd.DataFrame] = []
     path_frames: list[pd.DataFrame] = []
     snapshot_meta: dict[str, dict] = {}
@@ -1092,7 +1120,7 @@ def main() -> None:
         series_tracks: list[pd.DataFrame] = []
         for _, selected in window_selection.iterrows():
             order = int(selected["order"])
-            track = _track_order_minima(
+            track, validation_paths = _track_order_minima(
                 key,
                 history,
                 order=order,
@@ -1103,6 +1131,8 @@ def main() -> None:
                 candidate_spacing=float(args.candidate_spacing),
             )
             series_tracks.append(track)
+            if not validation_paths.empty:
+                validation_path_frames.append(validation_paths)
 
         tracks = pd.concat(series_tracks, ignore_index=True)
         summary = _summarize_branches(
@@ -1135,11 +1165,20 @@ def main() -> None:
 
     windows = pd.concat(window_frames, ignore_index=True)
     tracks = pd.concat(track_frames, ignore_index=True)
+    validation_paths = (
+        pd.concat(validation_path_frames, ignore_index=True)
+        if validation_path_frames
+        else pd.DataFrame()
+    )
     final_selection = pd.concat(selection_frames, ignore_index=True)
     final_paths = pd.concat(path_frames, ignore_index=True)
 
     windows.to_csv(output_dir / "order_window_selection.csv", index=False)
     tracks.to_csv(output_dir / "rolling_minimum_tracks.csv", index=False)
+    validation_paths.to_csv(
+        output_dir / "rolling_validation_paths.csv",
+        index=False,
+    )
     final_selection.to_csv(
         output_dir / "tracked_branch_selection.csv",
         index=False,
@@ -1186,7 +1225,8 @@ def main() -> None:
             "validation_2": (
                 "For every matched minimum, refit through Validation 1 with the "
                 "same d, L, S and score the immediately following Validation-2 "
-                "block. Store the score for that branch and repeat."
+                "block. Store both the score and full forecast path for that "
+                "branch and repeat."
             ),
             "branch_selection": (
                 "Select among persistent branches using mean historical "
