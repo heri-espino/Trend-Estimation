@@ -400,6 +400,7 @@ def _plot_loss(
     column: str,
     title: str,
     faint_alpha: float,
+    robust_quantile: float,
 ) -> None:
     for branch_id, branch in tracks.groupby("branch_id"):
         matched = branch.loc[
@@ -417,7 +418,155 @@ def _plot_loss(
             linewidth=2.2 if selected else 0.9,
             alpha=0.96 if selected else faint_alpha,
         )
-    ax.set_title(title)
+    finite_values = tracks.loc[
+        tracks["status"].eq("matched") & tracks[column].notna(),
+        column,
+    ]
+    ax.set_ylim(
+        *_robust_error_limits(
+            finite_values,
+            upper_quantile=robust_quantile,
+        )
+    )
+    ax.set_title(f"{title} (ylim q{int(round(100 * robust_quantile))})")
+    _date_axis(ax)
+
+
+def _plot_smoothed_origin(
+    ax: plt.Axes,
+    series: str,
+    tracks: pd.DataFrame,
+    winner_id: str,
+    metadata: dict,
+    *,
+    origin_number: int,
+) -> None:
+    context = _historical_origin_context(
+        series,
+        tracks,
+        winner_id,
+        metadata,
+        origin_number,
+    )
+    train = context["train"]
+    val1 = context["val1"]
+    order = int(context["order"])
+
+    ax.plot(
+        train["date"],
+        train["value"],
+        color=OBSERVED_COLOR,
+        linewidth=1.0,
+        alpha=0.68,
+        label="Observed train",
+    )
+    ax.plot(
+        train["date"],
+        context["fitted"],
+        color=ORDER_COLORS[order],
+        linewidth=2.0,
+        alpha=0.94,
+        label="Smoothed trend",
+    )
+    ax.plot(
+        val1["date"],
+        val1["value"],
+        color=OBSERVED_COLOR,
+        linewidth=1.25,
+        alpha=0.95,
+    )
+    ax.plot(
+        val1["date"],
+        context["val1_forecast"],
+        color=ORDER_COLORS[order],
+        linewidth=1.45,
+        linestyle="--",
+        alpha=0.88,
+        label="Val. 1 forecast",
+    )
+    ax.axvline(
+        val1["date"].iloc[0],
+        color="0.30",
+        linewidth=0.8,
+        linestyle=":",
+        alpha=0.60,
+    )
+    observed = pd.concat(
+        [train["value"], val1["value"]],
+        ignore_index=True,
+    )
+    ax.set_ylim(*_padded_limits(observed))
+    ax.set_title("Smoothed series + Val. 1")
+    _date_axis(ax)
+
+
+def _plot_final_smooth_to_test(
+    ax: plt.Axes,
+    series: str,
+    winner: pd.Series,
+    metadata: dict,
+) -> None:
+    context = _final_context(series, winner, metadata)
+    train = context["train"]
+    test = context["test"]
+    order = int(context["order"])
+
+    history_n = min(
+        len(train),
+        max(
+            len(test) * 2,
+            24 if series == "GDPC1" else 120,
+        ),
+    )
+    train_tail = train.tail(history_n)
+    fitted_tail = np.asarray(context["fitted"])[-history_n:]
+
+    ax.plot(
+        train_tail["date"],
+        train_tail["value"],
+        color=OBSERVED_COLOR,
+        linewidth=1.0,
+        alpha=0.68,
+    )
+    ax.plot(
+        train_tail["date"],
+        fitted_tail,
+        color=ORDER_COLORS[order],
+        linewidth=2.0,
+        alpha=0.94,
+    )
+    ax.plot(
+        test["date"],
+        test["value"],
+        color=OBSERVED_COLOR,
+        linewidth=1.55,
+        marker="o",
+        markersize=1.8,
+        alpha=0.97,
+        zorder=7,
+    )
+    ax.plot(
+        test["date"],
+        context["forecast"],
+        color=ORDER_COLORS[order],
+        linewidth=2.25,
+        alpha=0.95,
+        zorder=6,
+    )
+    ax.axvline(
+        test["date"].iloc[0],
+        color="0.25",
+        linewidth=0.9,
+        linestyle="--",
+        alpha=0.65,
+    )
+
+    observed = pd.concat(
+        [train_tail["value"], test["value"]],
+        ignore_index=True,
+    )
+    ax.set_ylim(*_padded_limits(observed))
+    ax.set_title("Final smooth → true test")
     _date_axis(ax)
 
 
