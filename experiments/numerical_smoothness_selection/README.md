@@ -500,5 +500,23 @@ Observed values are always blue. The deep-style order colors remain red for
 selected persistent branch is emphasized while the other tracked branches stay
 visible with user-controlled alpha.
 
+The dashboard also contains an **Interactive trend sandbox**. It lets the user:
+
+- choose any series available in the selected run;
+- choose the finite-difference order `d=1,2,3,4`;
+- vary normalized smoothness `S` with a slider or enter the exact value in a
+  numeric box; both controls stay synchronized;
+- choose the exact historical interval used to fit the penalized trend;
+- choose a later interval to display and score as the forecast target.
+
+The sandbox plots the original selected history, its smoothed trend, the
+polynomial continuation implied by `d`, and the observed future values.
+If the requested forecast interval begins later than the first observation
+after the trend-fit interval, the necessary intermediate forecast is drawn
+faintly as a bridge. Level RMSE, log-RMSE, the implied `lambda`, training
+sample size, and scored forecast size update interactively. Plot limits depend
+on observed values so an explosive forecast does not flatten the visible
+series.
+
 The dashboard is exploratory only. It reads frozen result files and does not
 change model selection or manuscript outputs.
