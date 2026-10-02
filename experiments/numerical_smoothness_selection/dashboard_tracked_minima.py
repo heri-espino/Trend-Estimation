@@ -785,16 +785,15 @@ def _plot_final_selected_trend_forecast(
     smoothness = float(context["smoothness"])
     window = int(context["window"])
 
-    # Show the observed series only from the start of the actual final
-    # training window. This keeps the visual aligned with the data used by the
-    # selected forecasting model rather than showing unrelated earlier history.
+    # Keep the original series intact and control the visible range with xlim.
+    # The view begins exactly where the final training window begins.
     observed_window = pd.concat(
         [train[["date", "value"]], test[["date", "value"]]],
         ignore_index=True,
     )
     ax.plot(
-        observed_window["date"],
-        observed_window["value"],
+        frame["date"],
+        frame["value"],
         color=OBSERVED_COLOR,
         linewidth=1.05,
         alpha=0.62,
@@ -864,6 +863,10 @@ def _plot_final_selected_trend_forecast(
         zorder=2,
     )
 
+    ax.set_xlim(
+        train["date"].iloc[0],
+        test["date"].iloc[-1],
+    )
     ax.set_ylim(*_padded_limits(observed_window["value"]))
     ax.set_title(
         f"Original series + selected smooth trend + forecast "
