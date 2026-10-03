@@ -28,6 +28,37 @@ This is the canonical model for the active derivative and numerical-optimization
 
 **Status:** definition, implementation, and derivative identities are internally consistent.
 
+
+### Interpretation for forecast validation
+
+For the active numerical paper, Model A is intentionally the **zero-drift**
+special case of the Guerrero family: (V=I) and (mu=0). This should be
+treated as a modeling choice, not as a claim that the true (d)-th differences
+of the latent trend necessarily have mean zero.
+
+The chronological validation objective selects (lambda) **within** a fixed
+forecasting family. If the zero-drift penalty is locally inappropriate,
+validation can prefer a smaller (lambda), reducing the influence of the
+penalty, but (lambda) cannot change the native continuation class. Under the
+current continuation rule (D_d\tau_{future}=0), (d=1) gives constant
+continuation, (d=2) linear continuation, (d=3) quadratic continuation, and
+so on.
+
+Therefore, increasing (d) must not be described as a substitute for estimating
+a nonzero (mu). The roles are distinct:
+
+[
+d = \text{structural / continuation order},\qquad
+mu = \text{reference drift of the }d\text{-th difference},\qquad
+lambda = \text{strength of penalization around that structure}.
+]
+
+For paper wording, say **zero-drift finite-difference PLS** or **the
+(mu=0) special case of Guerrero (2007)**. The Brent-based numerical search is
+not inherently tied to (mu=0); the present analytic derivative identities
+are. A Guerrero plug-in-drift version is therefore a natural robustness
+extension, not a prerequisite for the validity of the current numerical paper.
+
 ## B. Guerrero (2007) plug-in drift formulation
 
 The Guerrero (2007) source has now been checked directly. The paper first gives the known-drift estimator
