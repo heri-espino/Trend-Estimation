@@ -103,6 +103,52 @@ risk or information criteria.
 
 The paper therefore studies a **forecasting method**, not merely a smoother.
 
+
+## ML-style interpretation and protocol hyperparameters
+
+The project can also be viewed as a structured, interpretable
+**ML-style model-selection algorithm for learning a forecasting trend**.
+
+The model-side configuration includes quantities such as \(d\), \(\mu\),
+smoothness \(S\) / penalty \(\lambda\), and estimator-memory length \(L\).
+The temporal selection protocol also has consequential design parameters,
+including training-sample size, inner-validation / selector-memory length, and
+the size and placement of later untouched evaluation blocks.
+
+These quantities do not all play the same role:
+
+- \(d,\mu,S,\lambda,L\) describe or constrain the candidate trend model;
+- training and inner-validation sizes determine how much evidence is available
+  to fit and select that model;
+- \(h\) is normally a task condition, not something optimized;
+- the final outer validation/test size is an evaluation-design parameter and
+  must be fixed before inspection rather than tuned to improve reported
+  performance.
+
+Conceptually, one may write an expanded configuration
+
+\[
+\Theta
+=
+\left(
+d,\mu,S,L_{\mathrm{fit}},M_{\mathrm{select}},
+n_{\mathrm{train}},n_{\mathrm{val1}},\ldots
+\right),
+\]
+
+while retaining \((d,L,S)\) as the smaller canonical coordinate of the
+current adaptive paper when that narrower definition is required.
+
+This makes the scientific interpretation explicit: each series, horizon,
+frequency, and local regime can support a different configuration because each
+configuration encodes assumptions about trend geometry, drift, memory,
+noise-versus-signal tradeoff, and the amount of evidence required for stable
+selection.
+
+The full conceptual note is:
+
+`notes/ml_style_interpretation.md`
+
 ## Three-level scientific structure
 
 ### Level I — Target dependence
