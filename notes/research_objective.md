@@ -149,6 +149,37 @@ The full conceptual note is:
 
 `notes/ml_style_interpretation.md`
 
+
+### Recommended hyperparameter-selection view
+
+For the broader adaptive algorithm, use **strictly chronological cross-validation
+over an assumption-informed candidate grid** as the default conceptual
+framework. The grid may include
+
+\[
+(d,S,L,n_{\rm train},n_{\rm val1},n_{\rm val2},h)
+\]
+
+or the appropriate subset for a particular experiment.
+
+These quantities are not arbitrary bookkeeping choices. They encode assumptions
+about trend geometry, regime duration, available estimation history, selector
+memory, required external evidence, and forecast horizon. In particular,
+\(n_{\rm train}\), \(n_{\rm val1}\), \(n_{\rm val2}\), and \(h\) can
+materially change the selected method and the measured forecasting problem.
+
+Use an interpretable grid first because the candidate values should come from
+the data frequency, plausible cycle/regime scales, the application horizon,
+and explicit modeling assumptions. Do not use an arbitrary grid merely to
+search for favorable results.
+
+Guardrail: \(n_{\rm val2}\) matters, but once it defines an untouched outer
+evaluation block it is not to be tuned after seeing that block. Likewise, treat
+\(h\) primarily as a task axis and re-select the forecasting configuration
+conditional on each relevant horizon rather than choosing the horizon by
+validation performance.
+
+
 ## Three-level scientific structure
 
 ### Level I — Target dependence
