@@ -21,7 +21,7 @@ It is useful to separate three kinds of quantities.
 These define the class of trends and continuations being considered:
 
 \[
-d,qquad \mu,qquad \lambda\;\text{or}\;S.
+d,\qquad \mu,\qquad \lambda\;\text{or}\;S.
 \]
 
 Interpretation:
@@ -197,6 +197,113 @@ after its outcomes are observed.
 This distinction is essential if we describe the method using ML language:
 the project is a hyperparameter-selection algorithm only when the information
 sets remain strictly chronological and outer evaluation remains untouched.
+
+
+## Recommended ML-style selection strategy
+
+For the broader adaptive method, the repository should treat the procedure as
+an **interpretable hyperparameter-selection algorithm** rather than as a
+single fixed smoother.
+
+A natural implementation is chronological cross-validation over a deliberately
+chosen candidate grid. For example,
+
+\[
+\mathcal G
+=
+\mathcal D
+\times
+\mathcal L
+\times
+\mathcal S
+\times
+\mathcal N_{\rm train}
+\times
+\mathcal N_{\rm val1}
+\times
+\mathcal N_{\rm val2}
+\times
+\mathcal H,
+\]
+
+where the axes are not arbitrary numbers. Each grid is chosen from assumptions
+about the series, sampling frequency, plausible regime duration, expected trend
+geometry, and the forecasting task.
+
+For a candidate configuration \(\theta\in\mathcal G\), the chronological
+workflow is conceptually
+
+\[
+\text{fit on train}
+\rightarrow
+\text{select / score on val1}
+\rightarrow
+\text{freeze}
+\rightarrow
+\text{compare on val2},
+\]
+
+with all blocks ordered in time.
+
+A grid is attractive here because the parameters are low-dimensional and
+highly interpretable. It lets the analyst encode scientifically plausible
+choices instead of pretending that every configuration is equally meaningful.
+For example:
+
+- candidate \(d\) values encode assumptions about trend geometry and native
+  continuation;
+- candidate \(L\) or \(n_{\rm train}\) values encode assumptions about how
+  long the current regime remains informative;
+- candidate \(n_{\rm val1}\) values encode how much recent forecasting
+  evidence should be required before changing the selected configuration;
+- candidate \(n_{\rm val2}\) values encode how much later evidence is used
+  to assess whether a frozen choice generalizes;
+- candidate \(h\) values represent the forecast horizons that matter for the
+  application;
+- candidate \(S\) or \(\lambda\) values encode the signal-versus-noise
+  tradeoff.
+
+Thus \(n_{\rm train}\), \(n_{\rm val1}\), \(n_{\rm val2}\), and \(h\)
+**matter materially**. They are not random bookkeeping choices. They determine
+what information the learner sees, what evidence the selector uses, how
+generalization is measured, and what forecasting problem is being solved.
+
+At the same time, their roles differ:
+
+- \(n_{\rm train}\) and \(n_{\rm val1}\) may legitimately be compared as
+  candidate protocol hyperparameters inside a nested chronological design;
+- \(h\) is best treated as an application-defined task axis, so the method may
+  be re-selected separately for each relevant horizon;
+- \(n_{\rm val2}\) is an outer-evaluation design choice. Its value matters
+  and should be justified, but once the outer block is designated it must not
+  be repeatedly changed after inspecting its outcomes.
+
+Therefore the recommended default is **assumption-informed grid search with
+strict temporal CV**, not unconstrained random search. Random search or other
+optimizers can be useful later when the configuration space becomes large, but
+the first scientific implementation should keep the grid small, interpretable,
+and tied to explicit assumptions about the data.
+
+A useful conceptual distinction is
+
+\[
+\boxed{
+\text{candidate grid}
+=
+\text{scientific assumptions translated into testable configurations}
+}
+\]
+
+rather than
+
+\[
+\text{candidate grid}
+=
+\text{arbitrary combinations tried until one wins}.
+\]
+
+This point should be stated explicitly when the project is described as an
+ML-style trend-learning algorithm.
 
 ## Wording for future papers
 
