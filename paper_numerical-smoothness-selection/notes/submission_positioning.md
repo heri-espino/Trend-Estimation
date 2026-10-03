@@ -24,6 +24,68 @@ The active paper does **not** ask whether PLS is the best forecasting model,
 whether financial prices are predictable, or whether (d,L,S) should adapt
 jointly over time.
 
+
+## Zero-drift scope and forecasting interpretation
+
+The active numerical paper deliberately studies the **pure zero-drift PLS
+smoother**
+
+[
+\widehat{\tau}_{\lambda,d}
+=
+\arg\min_\tau
+\left\{
+\|y-\tau\|_2^2
++
+\lambda\|D_d\tau\|_2^2
+\right\},
+]
+
+which is the special case (V=I) and (mu=0) of the broader Guerrero
+formulation. The manuscript must say this explicitly; it should not describe
+the estimator as the full Guerrero (2007) model.
+
+This is a modeling restriction, not merely an algebraic convenience. Setting
+(mu=0) means that the (d)-th finite difference is penalized toward zero.
+For the native continuation rule used in the paper, it also determines the
+forecast class beyond the origin:
+
+- (d=1): zero first difference, hence constant continuation;
+- (d=2): zero second difference, hence linear continuation;
+- (d=3): zero third difference, hence quadratic continuation;
+- in general, (d) defines the polynomial-like null-space continuation of
+  degree (d-1).
+
+The rolling validation criterion does **not** assert that the true
+(d)-th-difference mean is zero. It asks, for a fixed ((d,L,h)), which
+smoothing level within this zero-drift forecasting family minimizes future
+validation error. If zero drift is a poor approximation, validation may reduce
+(lambda) and therefore weaken the penalty, but changing (lambda) cannot
+change the continuation class itself.
+
+This distinction matters when interpreting difference order. Increasing (d)
+is not equivalent to estimating a nonzero drift (mu). It changes the
+null space of the penalty and therefore the family of trends and forecasts that
+are left unpenalized. Consequently:
+
+- (d) should be interpreted as a **structural/continuation-order choice**;
+- (mu) is a **drift/reference level for the (d)-th difference**;
+- (lambda) controls **how strongly deviations from that reference structure
+  are penalized**.
+
+For the numerical paper, keeping (mu=0) is acceptable because the
+contribution is the efficient recovery and comparison of minima of the rolling
+forecast-loss surface for a clearly defined smoother. Brent refinement itself
+does not require (mu=0); only the current closed-form derivative formulas are
+for the zero-drift estimator. A Guerrero plug-in-drift version can therefore be
+studied later as a robustness extension without changing the central numerical
+question.
+
+Do not preprocess a series solely to force the (d)-th differences to have
+mean zero. If a later study needs nonzero drift, compare the zero-drift model
+against the Guerrero plug-in estimator rather than using higher (d) merely to
+make the mean vanish.
+
 ## Core contribution
 
 The paper combines four pieces:
