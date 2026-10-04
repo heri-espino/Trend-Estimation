@@ -195,6 +195,84 @@ f'(\lambda)=0.
 
 **Status:** implemented.
 
+
+## 6A. Normalized smoothness is strictly increasing in lambda
+
+To distinguish the smoother matrix from the scalar smoothness coordinate, write
+
+\[
+H_\lambda=(I+\lambda Q)^{-1},
+\qquad
+Q=D_d^\top D_d.
+\]
+
+If the \(N-d\) positive eigenvalues of \(Q\) are
+\(\delta_1,\ldots,\delta_{N-d}>0\), then the normalized smoothness used in the
+active numerical paper is
+
+\[
+\boxed{
+S(\lambda)
+=
+1-
+\frac{1}{N-d}
+\sum_{j=1}^{N-d}
+\frac{1}{1+\lambda\delta_j}.
+}
+\]
+
+It satisfies
+
+\[
+S(0)=0,
+\qquad
+S(\infty)=1,
+\]
+
+and
+
+\[
+\boxed{
+S'(\lambda)
+=
+\frac{1}{N-d}
+\sum_{j=1}^{N-d}
+\frac{\delta_j}{(1+\lambda\delta_j)^2}
+>0.
+}
+\]
+
+Therefore \(S\) is a continuous strictly increasing reparameterization of
+\(\lambda\in[0,\infty]\) onto \(S\in[0,1]\). For
+\(F(S)=f(\lambda(S))\),
+
+\[
+\boxed{
+\frac{dF}{dS}
+=
+\frac{f'(\lambda)}{S'(\lambda)},
+}
+\]
+
+so interior stationary points are preserved exactly. At a stationary point,
+
+\[
+\boxed{
+\frac{d^2F}{dS^2}
+=
+\frac{f''(\lambda)}
+{\left[S'(\lambda)\right]^2},
+}
+\]
+
+so nondegenerate minima and maxima retain their classification under the
+change of variable.
+
+**Status:** analytic structural result.
+
+Detailed note: notes/numerical_selection.md.
+
+
 ## 7. Bracketed stationary-point strategy
 
 On a bounded log-penalty domain:
