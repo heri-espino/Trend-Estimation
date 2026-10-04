@@ -115,6 +115,169 @@ Newton in log space uses
 This is useful for refinement and as a computational benchmark. It is not sufficient as the only global search because the result depends on initialization when several stationary points exist.
 
 
+
+## Why normalized smoothness is monotone in lambda
+
+To avoid confusing the normalized smoothness coordinate \(S\) with the smoother
+matrix, write the pure PLS smoother as
+
+\[
+H_\lambda=(I+\lambda Q)^{-1},
+\qquad
+Q=D_d^\top D_d.
+\]
+
+For the standard order-\(d\) difference matrix with \(1\le d<N\),
+
+\[
+Q
+=
+U\operatorname{diag}
+\left(
+\underbrace{0,\ldots,0}_{d},
+\delta_1,\ldots,\delta_{N-d}
+\right)U^\top,
+\]
+
+where every positive eigenvalue satisfies \(\delta_j>0\). Hence
+
+\[
+\operatorname{tr}(H_\lambda)
+=
+d+
+\sum_{j=1}^{N-d}
+\frac{1}{1+\lambda\delta_j}.
+\]
+
+The Guerrero-style index is
+
+\[
+S_G(\lambda)
+=
+1-\frac{\operatorname{tr}(H_\lambda)}{N},
+\]
+
+whose upper endpoint is \(1-d/N\). The normalized coordinate used in the
+numerical paper rescales that attainable range to \([0,1]\):
+
+\[
+\boxed{
+S(\lambda)
+=
+\frac{S_G(\lambda)}{1-d/N}
+=
+1-
+\frac{1}{N-d}
+\sum_{j=1}^{N-d}
+\frac{1}{1+\lambda\delta_j}.
+}
+\]
+
+The endpoints follow immediately:
+
+\[
+S(0)=0,
+\qquad
+\lim_{\lambda\to\infty}S(\lambda)=1.
+\]
+
+More importantly, differentiating gives
+
+\[
+\boxed{
+S'(\lambda)
+=
+\frac{1}{N-d}
+\sum_{j=1}^{N-d}
+\frac{\delta_j}
+{(1+\lambda\delta_j)^2}
+>0
+\qquad
+(\lambda\ge0).
+}
+\]
+
+Thus \(S(\lambda)\) is continuous and strictly increasing on
+\([0,\infty)\). After adjoining the limiting endpoint \(\lambda=\infty\), it
+gives a one-to-one monotone map
+
+\[
+[0,\infty]\longleftrightarrow[0,1].
+\]
+
+Its second derivative is
+
+\[
+S''(\lambda)
+=
+-\frac{2}{N-d}
+\sum_{j=1}^{N-d}
+\frac{\delta_j^2}
+{(1+\lambda\delta_j)^3}
+<0,
+\]
+
+so the map is also concave in \(\lambda\): increases in a very large penalty
+produce progressively smaller changes in normalized smoothness.
+
+### Consequence for stationary points
+
+Let \(f(\lambda)\) denote the fixed-\((d,L,h)\) forecast loss and define the
+same objective in normalized smoothness coordinates by
+
+\[
+F(S)=f(\lambda(S)).
+\]
+
+Because \(S'(\lambda)>0\), the inverse \(\lambda(S)\) exists in the interior.
+By the chain rule,
+
+\[
+\boxed{
+\frac{dF}{dS}
+=
+\frac{f'(\lambda)}{S'(\lambda)}.
+}
+\]
+
+Therefore
+
+\[
+\boxed{
+\frac{dF}{dS}=0
+\iff
+f'(\lambda)=0.
+}
+\]
+
+The change of variable does not create, remove, or reorder interior stationary
+points.
+
+It also preserves the local classification of nondegenerate stationary points.
+At a point where \(f'(\lambda^\star)=0\),
+
+\[
+\frac{d^2F}{dS^2}
+=
+\frac{f''(\lambda^\star)}
+{\left[S'(\lambda^\star)\right]^2}.
+\]
+
+Since the denominator is strictly positive,
+
+\[
+\operatorname{sign}\!\left(\frac{d^2F}{dS^2}\right)
+=
+\operatorname{sign}\!\left(f''(\lambda^\star)\right).
+\]
+
+Thus an interior minimum in \(\lambda\) remains a minimum in \(S\), and an
+interior maximum remains a maximum. This is why the numerical paper can search
+and report in the interpretable compact coordinate \(S\in[0,1]\) without
+changing the stationary-point geometry of the underlying forecast-loss
+objective.
+
+
 ## Structural behavior of the forecast-loss function
 
 The forecast-validation objective used in this project is **not an arbitrary
