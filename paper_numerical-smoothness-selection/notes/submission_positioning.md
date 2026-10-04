@@ -10,6 +10,21 @@ scientific computing. This paper should therefore be presented primarily as a
 **numerical method for a structured one-dimensional optimization problem**, not
 as a financial forecasting paper.
 
+
+## Literature review
+
+The dedicated paper-facing literature synthesis is:
+
+\`notes/literature_review.md\`
+
+It gives the historical progression from Whittaker/PLS through controlled
+smoothness, classical and predictive smoothing-parameter selection,
+rolling-origin evaluation, modern Whittaker--Henderson optimization, and the
+active paper's numerical distinction. Use it together with
+\`../../literature/dictionary/state_of_art_and_novelty.md\`: the former is the
+paper-oriented review, while the latter remains the canonical corpus-level
+novelty guardrail.
+
 ## Paper question
 
 For fixed difference order (d), rolling-window length (L), and forecast
