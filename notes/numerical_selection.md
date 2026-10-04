@@ -114,17 +114,161 @@ Newton in log space uses
 
 This is useful for refinement and as a computational benchmark. It is not sufficient as the only global search because the result depends on initialization when several stationary points exist.
 
+
+## Structural behavior of the forecast-loss function
+
+The forecast-validation objective used in this project is **not an arbitrary
+smooth black-box function**. For fixed \(d\), \(L\), and \(h\), it has a
+finite-dimensional rational structure inherited from the PLS smoother.
+
+Let
+
+\[
+Q=D_d^\top D_d
+=
+U\operatorname{diag}(\delta_1,\ldots,\delta_L)U^\top,
+\]
+
+with \(d\) zero eigenvalues and \(r\le L-d\) distinct positive eigenvalues
+\(\delta_j>0\). Then
+
+\[
+S_\lambda=(I+\lambda Q)^{-1}
+\]
+
+acts spectrally through factors
+
+\[
+\alpha_j(\lambda)=\frac{1}{1+\lambda\delta_j}.
+\]
+
+For any fixed forecast origin, the linear forecast
+\(H S_\lambda y_{\rm past}\) is therefore a finite linear combination of a
+constant null-space component and terms of the form
+
+\[
+\frac{c_j}{1+\lambda\delta_j}.
+\]
+
+Using the common denominator
+
+\[
+D(\lambda)=\prod_{j=1}^{r}(1+\lambda\delta_j),
+\]
+
+each forecast component, residual component, and hence the origin-specific MSE
+can be written as a rational function. The pooled rolling-origin objective has
+the same denominator because \(d\) and \(L\) are fixed across origins:
+
+\[
+\boxed{
+f(\lambda)
+=
+\frac{P(\lambda)}{D(\lambda)^2}
+}
+\]
+
+for some polynomial \(P\) with degree at most \(2r\), before algebraic
+cancellations.
+
+Because \(\lambda\ge0\) and every \(\delta_j>0\),
+
+\[
+1+\lambda\delta_j>0,
+\]
+
+so the admissible domain contains no poles. Consequently the objective has:
+
+- no jumps or discontinuities;
+- no finite singularities;
+- no infinite accumulation of oscillations analogous to pathological examples
+  such as \(x\sin(1/x)\);
+- only finitely many stationary points unless the derivative degenerates
+  identically.
+
+Differentiating the rational representation gives
+
+\[
+f'(\lambda)
+=
+\frac{
+P'(\lambda)D(\lambda)-2P(\lambda)D'(\lambda)
+}{
+D(\lambda)^3
+}.
+\]
+
+Hence the interior stationary points are precisely the nonnegative real roots
+of the polynomial numerator
+
+\[
+\boxed{
+R(\lambda)
+=
+P'(\lambda)D(\lambda)-2P(\lambda)D'(\lambda),
+}
+\]
+
+provided \(R\not\equiv0\). Since
+\(\deg(P)\le2r\) and \(\deg(D)=r\), a crude algebraic bound is
+
+\[
+\deg(R)\le 3r-1
+\le
+3(L-d)-1.
+\]
+
+Thus the number of isolated interior stationary points is finite and
+algebraically bounded for each fixed configuration. This is a much stronger
+description than merely saying that the objective is smooth.
+
+The normalized smoothness change of variable does not create additional
+interior stationary points. Since \(S'(\lambda)>0\),
+
+\[
+F'(S)=0
+\iff
+f'(\lambda)=0.
+\]
+
+### Consequence for the search algorithm
+
+The current adaptive-Brent method should therefore be interpreted as exploiting
+a **structured rational objective**, not as attempting global optimization of
+an arbitrary smooth function.
+
+Brent still does not by itself discover every root. The current implementation
+first samples/adaptively refines the derivative, brackets sign changes, and then
+uses Brent for accurate refinement. Multiple roots or even-multiplicity roots
+of \(R\) need not produce a derivative sign change, so empirical discovery is
+not yet a mathematical certification of exhaustive root recovery.
+
+However, the rational structure suggests a stronger future extension:
+construct or otherwise characterize \(R(\lambda)\), isolate all of its
+nonnegative real roots using a certified polynomial-root method (for example,
+Sturm-sequence/root-isolation techniques), and use Brent only to refine the
+isolated roots numerically. Such an extension could potentially convert the
+current empirical recovery statement into an exhaustive fixed-configuration
+stationary-point result, subject to a formal derivation and numerically stable
+implementation.
+
+For the current paper, treat this rational representation and the finite-root
+property as an important structural observation. Do **not** claim a certified
+root-isolation theorem until the polynomial representation, degeneracies,
+multiplicities, and numerical conditioning have been formally checked in the
+implementation.
+
 ## Important limitation
 
-A finite sign-change scan cannot mathematically guarantee discovery of every stationary point of an arbitrary smooth function. In particular, it can miss:
+For the structured rational objective above, the number of stationary points is finite and algebraically bounded. The remaining limitation is therefore not pathological infinite oscillation, but **root discovery by the finite sampler**. In particular, a sign-change scan can still miss:
 
-- two roots inside the same coarse interval;
-- a root where the derivative touches zero without changing sign;
-- an extremely narrow feature between grid points.
+- two or more roots inside the same sampled interval;
+- an even-multiplicity stationary root where the derivative touches zero without changing sign;
+- a sufficiently narrow pair of extrema between sampled points.
 
-Therefore the root-based search must be validated against dense diagnostic scans on simulations, and the grid should be adaptively refinable where the derivative varies sharply or is close to zero.
+Therefore the current root-based search is validated against dense diagnostic references and uses adaptive refinement where the derivative or curvature indicates unresolved structure.
 
-This limitation should be stated in the paper rather than claiming that Brent itself "finds all roots." Brent robustly solves a root **after it has been bracketed**.
+The paper should not say that Brent itself "finds all roots." Brent robustly refines a root **after it has been bracketed**. The stronger finite-rational structure should be stated explicitly, while exhaustive certification should be reserved for a future root-isolation implementation or a formal proof that the present sampler detects every admissible root pattern.
 
 ## Library mapping
 
