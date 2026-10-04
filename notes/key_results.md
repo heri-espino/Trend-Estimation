@@ -221,6 +221,62 @@ On a bounded log-penalty domain:
 
 Detailed note: `notes/numerical_selection.md`.
 
+
+## 7A. Rational structure of fixed-configuration forecast loss
+
+For fixed \(d,L,h\), let \(\delta_1,\ldots,\delta_r>0\) be the distinct
+positive eigenvalues of \(Q=D_d^\top D_d\), where \(r\le L-d\), and define
+
+\[
+D(\lambda)=\prod_{j=1}^{r}(1+\lambda\delta_j).
+\]
+
+Because every spectral attenuation factor is
+\((1+\lambda\delta_j)^{-1}\), the pooled chronological forecast MSE can be
+written as
+
+\[
+\boxed{
+f(\lambda)=\frac{P(\lambda)}{D(\lambda)^2}
+}
+\]
+
+for a polynomial \(P\) with degree at most \(2r\).
+
+Therefore
+
+\[
+\boxed{
+f'(\lambda)
+=
+\frac{R(\lambda)}{D(\lambda)^3},
+\qquad
+R(\lambda)=P'(\lambda)D(\lambda)-2P(\lambda)D'(\lambda).
+}
+\]
+
+On \(\lambda\ge0\), \(D(\lambda)>0\), so there are no poles or singularities.
+If \(R\not\equiv0\), all interior stationary points are roots of a finite-degree
+polynomial and hence are finite in number. A crude degree bound is
+
+\[
+\deg R\le 3r-1\le3(L-d)-1.
+\]
+
+The monotone mapping from \(\lambda\) to normalized smoothness \(S\) preserves
+the interior stationary-point set.
+
+**Interpretation:** the numerical objective is a structured rational function,
+not an arbitrary smooth black box. Pathological infinite oscillation is not the
+relevant failure mode. The current practical limitation is finite-sampler root
+discovery, especially multiple/even-multiplicity roots that may not generate a
+sampled derivative sign change.
+
+**Status:** structural result documented; exhaustive certified polynomial-root
+isolation is a proposed extension, not yet implemented.
+
+Detailed note: notes/numerical_selection.md.
+
 ## 8. Active scientific object
 
 The active paper studies **forecast-optimal trend estimation as an adaptive
