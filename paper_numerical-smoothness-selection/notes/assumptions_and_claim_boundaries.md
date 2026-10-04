@@ -204,15 +204,23 @@ The adaptive sampler, endpoint refinement, derivative/curvature diagnostics,
 and exact endpoint checks are what turn local root refinement into the full
 search procedure.
 
-### Assumption N3 — no universal root-recovery guarantee
+### Assumption N3 — structured finite-root objective, but no sampler certification yet
 
-A finite adaptive sampler cannot certify recovery of every stationary point of
-an arbitrary smooth scalar objective. In particular, roots without a detected
-sign change, extremely narrow structures, or pathological flat behavior can be
-missed in principle.
+For fixed (d,L,h), the forecast-MSE objective is not an arbitrary smooth
+function. It is a rational function of (lambda) with no poles on
+(lambdage0), and its stationary points are roots of a finite-degree
+polynomial numerator (except for degenerate cases). Thus pathological infinite
+oscillation is not a relevant concern.
+
+The remaining limitation is algorithmic: the current finite adaptive sampler
+does not yet constitute a formal root-isolation proof. It can in principle miss
+multiple roots inside one unresolved interval or an even-multiplicity root that
+does not create a sign change.
 
 Therefore the paper may report empirical recovery on the frozen benchmark
-suite, but not a theorem of universal recovery.
+suite and may exploit the finite rational structure, but it should not claim
+certified exhaustive stationary-point recovery until a formal isolation
+argument or implementation is added.
 
 ### Assumption N4 — endpoint models are part of the candidate set
 
