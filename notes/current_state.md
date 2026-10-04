@@ -53,6 +53,8 @@ Completed before the main experiments:
 
 Canonical compact summary: `notes/key_results.md`.
 
+Canonical assumptions/claim guardrails: `paper_numerical-smoothness-selection/notes/assumptions_and_claim_boundaries.md`.
+
 ## 3. Controlled-simulation development
 
 ### First factorial
