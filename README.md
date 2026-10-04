@@ -8,7 +8,7 @@ src/trend_estimation/; papers and experiments import the installed package.
 
 ## Current research focus
 
-There are **three research papers** in this repository, plus one tutorial
+There are **four research-paper workspaces** in this repository, plus one tutorial
 companion.
 
 Only one research paper is active:
@@ -81,6 +81,26 @@ recurrence behavior relative to the frozen ex-ante trend paths.
 It does **not** own the smoothness-search algorithm. It resumes after the
 numerical paper is finished.
 
+
+### 4. PARKED — Statistical properties and inference
+
+Directory: paper_statistical-properties-penalized-trend/
+
+Working title:
+
+**Statistical Properties and Inference for Finite-Difference Penalized Trend Estimation**
+
+This is a future statistical-methodology project. It records the linear-smoother
+properties of the model (effective degrees of freedom, bias/variance, influence,
+uncertainty for level/slope/curvature, spectral shrinkage, residual diagnostics,
+and forecast uncertainty) and, more importantly, possible extensions involving
+forecast-selected smoothness and post-selection inference.
+
+The workspace explicitly distinguishes classical properties already developed
+for Whittaker-Henderson/spline/ridge/HP/Bayesian-state-space relatives from
+questions that may still support a new contribution. It remains parked until
+the active numerical paper is substantially frozen.
+
 ### Tutorial companion
 
 paper_penalized-trend-tutorial/ is explanatory material, not one of the three
@@ -127,6 +147,7 @@ literature/                                 source literature and extracted text
 paper_numerical-smoothness-selection/       ACTIVE research paper
 paper_forecast-optimal-smoothing/           PARKED adaptive paper
 paper_smoothness-recurrence/                PARKED financial/recurrence paper
+paper_statistical-properties-penalized-trend/ PARKED statistical/inference paper
 paper_penalized-trend-tutorial/             tutorial companion
 
 experiments/numerical_smoothness_selection/ active-paper experiments
