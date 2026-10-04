@@ -18,6 +18,28 @@ The sequence is:
 
 Financial forecasting comparisons and recurrence analysis belong to the parked applied paper, not this experiment namespace.
 
+
+## Sturm-sequence structural mini-check
+
+A small exact symbolic diagnostic checks the rational-function argument behind
+the forecast-loss geometry:
+
+\`\`\`bash
+python -m pip install -e ".[symbolic]"
+python experiments/numerical_smoothness_selection/run_sturm_minicheck.py
+\`\`\`
+
+The frozen toy case uses \(L=6\), \(d=2\), and \(h=2\). Its derivative numerator
+has degree 10. The exact Sturm sequence counts three positive stationary roots;
+Brent refinement recovers the same three roots, classified as
+minimum--maximum--minimum. The script also checks the symbolic objective and its
+first two derivatives against the production implementation at several
+\(\lambda\) values.
+
+This is a structural proof-of-concept, not the production optimizer and not yet
+a general certified-root theorem. See
+\`paper_numerical-smoothness-selection/notes/sturm_minicheck.md\`.
+
 ## Synthetic benchmark
 
 ~~~bash
