@@ -1,0 +1,65 @@
+{
+  "created_at_utc": "2026-10-02T07:47:25.971884+00:00",
+  "git_commit": "8fe5437",
+  "suite": "tracked_local_minima_two_validation",
+  "preset": "paper",
+  "series": [
+    "GDPC1",
+    "SPY",
+    "AAPL",
+    "BTC-USD"
+  ],
+  "selection_metric": "level_rmse",
+  "selection_uses_true_test": false,
+  "max_minima": 5,
+  "track_epsilon": 0.1,
+  "candidate_spacing": 0.02,
+  "protocol": {
+    "window_selection": "For each d, choose L from aggregate rolling Validation-1 loss inside the historical tracking region only.",
+    "first_origin": "Find up to five distinct local minima of the Validation-1 smoothness objective and initialize one branch per minimum.",
+    "continuation": "Move the rolling window by the series step. Recompute the Validation-1 objective and match each existing branch one-to-one to a new local minimum within track_epsilon in normalized S.",
+    "validation_2": "For every matched minimum, refit through Validation 1 with the same d, L, S and score the immediately following Validation-2 block. Store both the score and full forecast path for that branch and repeat.",
+    "branch_selection": "Select among persistent branches using mean historical Validation-2 loss. If complete-support branches exist, only they are eligible; otherwise use the branches with maximum support. The true test is not used.",
+    "final_update": "Before the true test, continue every branch one final time on the reserved pre-test Validation-1 block. The selected branch uses that newest nearby local minimum S for the final refit.",
+    "true_test": "The last reserve is untouched until branch selection and final local-minimum continuation are complete. Test scores are diagnostic only."
+  },
+  "snapshot": {
+    "GDPC1": {
+      "path": "data\\external\\real_world\\snapshot\\fred\\GDPC1.csv",
+      "sha256": "c8335f46e0628add80cc33db3b92e32f516e4188f6bdeeb4fedcfdb6f782ae5f",
+      "rows_loaded": 248,
+      "historical_tracking_rows": 232,
+      "final_validation1_rows": 8,
+      "true_test_rows": 8,
+      "max_origins": 24
+    },
+    "SPY": {
+      "path": "data\\external\\real_world\\snapshot\\yahoo\\SPY.csv",
+      "sha256": "0fce5b558e6492f37d3e59190a57ba2f2aeaae37bc85d2679f75620cc52c9c10",
+      "rows_loaded": 2060,
+      "historical_tracking_rows": 1940,
+      "final_validation1_rows": 60,
+      "true_test_rows": 60,
+      "max_origins": 30
+    },
+    "AAPL": {
+      "path": "data\\external\\real_world\\snapshot\\yahoo\\AAPL.csv",
+      "sha256": "5d0e84e7bc5e4ba1df14245c9c7601bba249f3e56d1efdc98f79252e1fb2e5a5",
+      "rows_loaded": 2060,
+      "historical_tracking_rows": 1940,
+      "final_validation1_rows": 60,
+      "true_test_rows": 60,
+      "max_origins": 30
+    },
+    "BTC-USD": {
+      "path": "data\\external\\real_world\\snapshot\\yahoo\\BTC_USD.csv",
+      "sha256": "fe2fda971d2ae48f1c9c4c9712b3b5fceb1438523ec0bff201d732d489c6eae5",
+      "rows_loaded": 2060,
+      "historical_tracking_rows": 1940,
+      "final_validation1_rows": 60,
+      "true_test_rows": 60,
+      "max_origins": 30
+    }
+  },
+  "elapsed_seconds": 19.820029599999543
+}

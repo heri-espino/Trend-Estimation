@@ -1,0 +1,55 @@
+{
+  "created_at_utc": "2026-10-01T21:13:21.023447+00:00",
+  "git_commit": "d073fbf",
+  "suite": "two_stage_order_validation",
+  "preset": "paper",
+  "series": [
+    "GDPC1",
+    "SPY",
+    "AAPL",
+    "BTC-USD"
+  ],
+  "selection_metric": "level_rmse",
+  "selection_uses_true_test": false,
+  "protocol": {
+    "stage_1": "Within the inner development region, rolling forecast CV at the full reserve horizon selects L and the best smoothness candidate separately for each d in {1,2,3,4}.",
+    "stage_2": "The immediately following contiguous block, with the same length as the final test reserve, acts as Validation 2. Its RMSE selects d among the four Stage-1 choices.",
+    "final_refit": "After d is selected, all four Stage-1 choices are refit using their frozen d/L/S through Validation 2. The selected order is emphasized; the alternatives are retained only for diagnostic comparison.",
+    "true_test": "The final reserve remains untouched until the order choice and all hyperparameters are frozen. True-test metrics are diagnostic only."
+  },
+  "snapshot": {
+    "GDPC1": {
+      "path": "data\\external\\real_world\\snapshot\\fred\\GDPC1.csv",
+      "sha256": "c8335f46e0628add80cc33db3b92e32f516e4188f6bdeeb4fedcfdb6f782ae5f",
+      "rows_loaded": 248,
+      "inner_development_rows": 232,
+      "validation2_rows": 8,
+      "true_test_rows": 8
+    },
+    "SPY": {
+      "path": "data\\external\\real_world\\snapshot\\yahoo\\SPY.csv",
+      "sha256": "0fce5b558e6492f37d3e59190a57ba2f2aeaae37bc85d2679f75620cc52c9c10",
+      "rows_loaded": 2060,
+      "inner_development_rows": 1940,
+      "validation2_rows": 60,
+      "true_test_rows": 60
+    },
+    "AAPL": {
+      "path": "data\\external\\real_world\\snapshot\\yahoo\\AAPL.csv",
+      "sha256": "5d0e84e7bc5e4ba1df14245c9c7601bba249f3e56d1efdc98f79252e1fb2e5a5",
+      "rows_loaded": 2060,
+      "inner_development_rows": 1940,
+      "validation2_rows": 60,
+      "true_test_rows": 60
+    },
+    "BTC-USD": {
+      "path": "data\\external\\real_world\\snapshot\\yahoo\\BTC_USD.csv",
+      "sha256": "fe2fda971d2ae48f1c9c4c9712b3b5fceb1438523ec0bff201d732d489c6eae5",
+      "rows_loaded": 2060,
+      "inner_development_rows": 1940,
+      "validation2_rows": 60,
+      "true_test_rows": 60
+    }
+  },
+  "elapsed_seconds": 3.2659421002026647
+}
