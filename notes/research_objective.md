@@ -180,6 +180,73 @@ conditional on each relevant horizon rather than choosing the horizon by
 validation performance.
 
 
+
+## Statistical assumptions and claim discipline
+
+For the active numerical smoothness-selection paper, the canonical model is the
+**zero-drift, identity-weighted** finite-difference PLS smoother,
+
+[
+widehat{	au}_{lambda,d}
+=
+argmin_{	au}
+left{
+|y-	au|_2^2+lambda|D_d	au|_2^2
+ight},
+]
+
+that is, the special case (V=I) and (mu=0) of the broader Guerrero
+formulation.
+
+These are **modeling assumptions / design choices**, not empirical truths about
+every series.
+
+Important consequences:
+
+- (V=I) gives an unweighted Euclidean data-fit criterion. Under a stochastic
+  interpretation it corresponds to equal marginal observation-error variance
+  and zero cross-time covariance. It does **not** imply independence without
+  additional assumptions such as joint Gaussianity.
+- (mu=0) centers the (d)-th difference penalty at zero and fixes the native
+  continuation class: constant for (d=1), linear for (d=2), quadratic for
+  (d=3), etc.
+- Standard (D_d) assumes equally spaced time indices unless an appropriate
+  irregular-time operator is introduced.
+- For the numerical paper, (d,L,h) are fixed and the one-dimensional
+  smoothness coordinate is optimized. Therefore "forecast-optimal" always
+  means optimal **conditional on this model family, loss, horizon, window, and
+  validation protocol**.
+- The differentiated objective is forecast **MSE**. RMSE has the same minimizer
+  for a fixed set of errors, but the analytic derivatives in the paper are
+  those of MSE.
+- Rolling-origin losses are generally dependent because windows and future
+  blocks overlap. They may be averaged for selection, but should not be treated
+  as i.i.d. observations for naive inference.
+- Chronological CV assumes that past forecast performance is informative for
+  the target future to some useful degree. Regime changes can break that
+  relationship; validation-optimal and later-test-optimal configurations may
+  differ.
+- Brent is a **root-refinement method after bracketing**, not a global optimizer.
+  The adaptive sampler, endpoint refinement, classification, and exact boundary
+  checks form the full numerical search.
+- A finite adaptive search cannot guarantee recovery of every stationary point
+  of every smooth objective. Dense grids are numerical references, not
+  mathematical truth.
+
+The core numerical method does **not** require Gaussian errors, independent
+errors, or a correct likelihood. Those stronger assumptions are needed only if
+we invoke stronger probabilistic interpretations such as
+(lambda=sigma_Z^2/sigma_arepsilon^2).
+
+Claim guardrail: do not state that the selected trend is the "true trend", that
+(mu=0) or (V=I) is empirically true, that Brent guarantees the global
+optimum, that forecast-optimal smoothness is recovery-optimal smoothness, or
+that the financial stress test establishes predictability or trading value.
+
+Detailed note:
+
+`paper_numerical-smoothness-selection/notes/assumptions_and_claim_boundaries.md`
+
 ## Three-level scientific structure
 
 ### Level I — Target dependence
