@@ -1,0 +1,4 @@
+benchmark,surfaces,reference_minima,matched_minima,missed_minima,mean_adaptive_evaluations,mean_dense_evaluations,evaluation_fraction,max_s_error,positive_regret_cases
+adversarial,144,240,240,0,75.24305555555556,20001.0,0.0037619646795438006,9.057666015610533e-05,0
+synthetic,1920,2105,2105,0,78.3546875,5001.0,0.015667803939212157,0.0001017550528858,0
+financial,384,473,473,0,91.88541666666667,5001.0,0.018373408651603012,9.979972469470466e-05,0
