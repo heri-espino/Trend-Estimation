@@ -108,6 +108,8 @@ paper_smoothness-recurrence/ is PARKED and owns applied model comparison/recurre
 
 paper_statistical-properties-penalized-trend/ is DRAFTING as a linked theory paper. It owns fixed-smoother statistical foundations and, especially, post-selection properties of the forecast-selected estimator. Its novelty audit and theorem agenda are not yet frozen.
 
+paper_bezier-trend/ is an IDEA / NOVELTY AUDIT PENDING. It studies Bernstein/Bézier control-space regularization and endpoint geometry for trend forecasting. Do not claim that Bézier smoothing, Bernstein regression, penalized Bézier fitting, P-spline forecasting, or financial Bézier filtering are new. Read its literature audit before implementing large experiments.
+
 ## Validation invariant
 
 At origin \(T\), nothing after \(T\) may influence the fitted trend, hyperparameter choice, or forecast path. Future observations are revealed only for scoring.
