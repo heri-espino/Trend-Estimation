@@ -1,170 +1,122 @@
 #!/usr/bin/env python3
-"""Build the internal Journal of Futures Markets manuscript.
-
-The active manuscript is staged together with the unmodified Wiley NJDv5 vendor
-bundle so that XeLaTeX can resolve the class, bibliography style, and bundled
-Utopia fonts without system-wide font installation.
+"""Build the Journal of Forecasting smoothness-CV manuscript.
 
 Usage
 -----
-python paper/build.py
-python paper/build.py --check
-python paper/build.py --clean
+python paper_smoothness-cv/build.py
+python paper_smoothness-cv/build.py --check
+python paper_smoothness-cv/build.py --clean
 """
 from __future__ import annotations
 
 import argparse
-import os
 from pathlib import Path
 import shutil
 import subprocess
 import sys
 
-ROOT = Path(__file__).resolve().parents[1]
-PAPER_DIR = ROOT / "paper"
+PAPER_DIR = Path(__file__).resolve().parent
 SOURCE_DIR = PAPER_DIR / "manuscript"
 VENDOR_DIR = PAPER_DIR / "vendor" / "wiley_njd_v5"
-PUBLICATION_FIGURES_DIR = ROOT / "figures" / "publication"
 BUILD_DIR = PAPER_DIR / "build"
 STAGE_DIR = BUILD_DIR / "stage"
 MAIN_TEX = SOURCE_DIR / "main.tex"
-FINAL_PDF = PAPER_DIR / "espino_2026_bayess-on-wti.pdf"
-LEGACY_FINAL_PDFS = (
-    BUILD_DIR / "jfm_internal_draft.pdf",
-    BUILD_DIR / FINAL_PDF.name,
-)
+FINAL_PDF = PAPER_DIR / "forecast_optimal_smoothness.pdf"
+
 EXPECTED_CLASS = r"\documentclass[HARVARD,Utopia2COL]{WileyNJDv5}"
+EXPECTED_JOURNAL = r"\journal{Journal of Forecasting}"
 LEGACY_RESERVE_INSERTS = r"\reserveinserts{28}"
-GUARDED_RESERVE_INSERTS = (
-    r"\ifdefined\reserveinserts\reserveinserts{28}\fi"
-)
+GUARDED_RESERVE_INSERTS = r"\ifdefined\reserveinserts\reserveinserts{28}\fi"
 
 
 def validate_layout() -> None:
-    """Fail early when the manuscript or vendor layout has drifted."""
     required = [
         MAIN_TEX,
         SOURCE_DIR / "references.bib",
         VENDOR_DIR / "WileyNJDv5.cls",
         VENDOR_DIR / "wileyNJD-Harvard.bst",
-        VENDOR_DIR / "Fonts",
-        PUBLICATION_FIGURES_DIR / "fig01_mechanism_map.pdf",
-        PUBLICATION_FIGURES_DIR / "fig02_historical_vs_apo_implied_volatility.pdf",
-        PUBLICATION_FIGURES_DIR / "fig03_forward_q_cluster_bootstrap.pdf",
-        PUBLICATION_FIGURES_DIR / "fig04_numerical_identification.pdf",
-        PUBLICATION_FIGURES_DIR / "figure_manifest.json",
     ]
-    missing = [path.relative_to(ROOT) for path in required if not path.exists()]
+    missing = [p.relative_to(PAPER_DIR) for p in required if not p.exists()]
     if missing:
-        formatted = "\n- ".join(str(path) for path in missing)
-        raise SystemExit(f"Manuscript layout check failed; missing:\n- {formatted}")
+        raise SystemExit(
+            "Manuscript layout check failed; missing:\n- "
+            + "\n- ".join(map(str, missing))
+        )
 
     source = MAIN_TEX.read_text(encoding="utf-8")
     if EXPECTED_CLASS not in source:
+        raise SystemExit("main.tex must use " + EXPECTED_CLASS)
+    if EXPECTED_JOURNAL not in source:
+        raise SystemExit("main.tex must identify Journal of Forecasting")
+
+    expected_sections = [
+        "01_introduction.tex",
+        "02_related_work.tex",
+        "03_penalized_trend.tex",
+        "04_forecast_optimal_smoothness.tex",
+        "05_properties.tex",
+        "06_evaluation_protocol.tex",
+        "07_scope_and_implications.tex",
+        "08_conclusion.tex",
+    ]
+    missing_sections = [
+        name for name in expected_sections
+        if not (SOURCE_DIR / "sections" / name).exists()
+    ]
+    if missing_sections:
         raise SystemExit(
-            "main.tex must preserve the selected Wiley layout: " + EXPECTED_CLASS
+            "Missing manuscript sections:\n- " + "\n- ".join(missing_sections)
         )
-    if "\\journal{Journal of Futures Markets}" not in source:
-        raise SystemExit("main.tex must identify Journal of Futures Markets")
 
 
 def clean() -> None:
-    """Remove all generated LaTeX products."""
     shutil.rmtree(BUILD_DIR, ignore_errors=True)
     FINAL_PDF.unlink(missing_ok=True)
 
 
 def prepare_stage() -> None:
-    """Create an isolated compilation tree under paper/build/."""
-    STAGE_DIR.parent.mkdir(parents=True, exist_ok=True)
     if STAGE_DIR.exists():
         shutil.rmtree(STAGE_DIR)
+    STAGE_DIR.parent.mkdir(parents=True, exist_ok=True)
 
-    # Wiley's class resolves bundled fonts using paths relative to the working
-    # directory. Copying the vendor bundle into the disposable stage is more
-    # portable than requiring local font installation or symlink support.
     shutil.copytree(VENDOR_DIR, STAGE_DIR)
     shutil.copytree(SOURCE_DIR, STAGE_DIR, dirs_exist_ok=True)
 
-    # Stage publication figures when they have been generated.  Keeping the
-    # relative "figures/publication" path inside the isolated build tree lets
-    # manuscript sources include final figures without depending on files
-    # outside the stage.
-    if PUBLICATION_FIGURES_DIR.exists():
-        shutil.copytree(
-            PUBLICATION_FIGURES_DIR,
-            STAGE_DIR / "figures" / "publication",
-            dirs_exist_ok=True,
-        )
-
-    # LaTeX releases from 2026 no longer expose etex's \reserveinserts
-    # command because the extended allocation mechanism is built in.  Patch
-    # only the disposable staged class so the frozen Wiley bundle continues
-    # to work with both older and newer TeX installations.
     staged_class = STAGE_DIR / "WileyNJDv5.cls"
     source = staged_class.read_text(encoding="utf-8")
-    if source.count(LEGACY_RESERVE_INSERTS) != 1:
-        raise SystemExit(
-            "Could not apply the Wiley/LaTeX compatibility patch: expected "
-            "one \\reserveinserts{28} command in the staged class"
+    if LEGACY_RESERVE_INSERTS in source:
+        staged_class.write_text(
+            source.replace(LEGACY_RESERVE_INSERTS, GUARDED_RESERVE_INSERTS),
+            encoding="utf-8",
         )
-    staged_class.write_text(
-        source.replace(LEGACY_RESERVE_INSERTS, GUARDED_RESERVE_INSERTS),
-        encoding="utf-8",
-    )
 
-    # The bundle's 2020 listings.sty is incompatible with the newer lstmisc
-    # and lstpatch companion files installed by current MiKTeX/TeX Live.
-    # Let the TeX installation resolve a consistent listings package instead.
+    # Prefer the TeX distribution's internally consistent listings package.
     (STAGE_DIR / "listings.sty").unlink(missing_ok=True)
 
 
 def run(command: list[str]) -> None:
-    """Run one compiler command in the staging directory."""
     print("+", " ".join(command), flush=True)
     subprocess.run(command, cwd=STAGE_DIR, check=True)
 
 
-def compiler(name: str) -> str | None:
-    return shutil.which(name)
-
-
-def build_publication_figures() -> None:
-    """Regenerate committed-result publication figures before staging LaTeX."""
-    run_from_root = [
-        sys.executable,
-        "-m",
-        "scripts.build_publication_figures",
-        "--formats",
-        "pdf",
-        "png",
-    ]
-    print("+", " ".join(run_from_root), flush=True)
-    subprocess.run(run_from_root, cwd=ROOT, check=True)
-
-
 def build() -> Path:
-    """Compile the manuscript with XeLaTeX and return the final PDF path."""
     validate_layout()
-    build_publication_figures()
     prepare_stage()
 
-    latexmk = compiler("latexmk")
-    xelatex = compiler("xelatex")
-    bibtex = compiler("bibtex")
+    latexmk = shutil.which("latexmk")
+    xelatex = shutil.which("xelatex")
+    bibtex = shutil.which("bibtex")
 
     if latexmk and xelatex:
-        run(
-            [
-                latexmk,
-                "-xelatex",
-                "-bibtex",
-                "-interaction=nonstopmode",
-                "-halt-on-error",
-                "-file-line-error",
-                "main.tex",
-            ]
-        )
+        run([
+            latexmk,
+            "-xelatex",
+            "-bibtex",
+            "-interaction=nonstopmode",
+            "-halt-on-error",
+            "-file-line-error",
+            "main.tex",
+        ])
     elif xelatex and bibtex:
         common = [
             xelatex,
@@ -179,34 +131,24 @@ def build() -> Path:
         run(common)
     else:
         raise SystemExit(
-            "XeLaTeX toolchain not found. Install TeX Live with xelatex, bibtex "
-            "and preferably latexmk. Run `python paper/build.py --check` for a "
-            "compiler-free structure check."
+            "XeLaTeX toolchain not found. Install xelatex and bibtex "
+            "(latexmk recommended), or run with --check."
         )
 
     staged_pdf = STAGE_DIR / "main.pdf"
     if not staged_pdf.exists():
-        raise SystemExit("Compilation finished without producing main.pdf")
-    for legacy_pdf in LEGACY_FINAL_PDFS:
-        legacy_pdf.unlink(missing_ok=True)
+        raise SystemExit("Compilation finished without main.pdf")
+
     FINAL_PDF.unlink(missing_ok=True)
-    shutil.move(staged_pdf, FINAL_PDF)
-    print(f"Built {FINAL_PDF.relative_to(ROOT)}")
+    shutil.copy2(staged_pdf, FINAL_PDF)
+    print(f"Built {FINAL_PDF}")
     return FINAL_PDF
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument(
-        "--check",
-        action="store_true",
-        help="validate manuscript/vendor structure without invoking LaTeX",
-    )
-    parser.add_argument(
-        "--clean",
-        action="store_true",
-        help="remove paper/build and the exported PDF before any requested check/build",
-    )
+    parser.add_argument("--check", action="store_true")
+    parser.add_argument("--clean", action="store_true")
     return parser.parse_args(argv)
 
 
@@ -218,7 +160,7 @@ def main(argv: list[str] | None = None) -> int:
             return 0
     if args.check:
         validate_layout()
-        print("JFM manuscript layout check passed")
+        print("Journal of Forecasting manuscript layout check passed")
         return 0
     build()
     return 0
