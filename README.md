@@ -12,6 +12,8 @@ Directory: paper_smoothness-cv/
 
 Working idea: **Forecast-Optimal Smoothness for Finite-Difference Penalized Trend Estimation**
 
+Primary target: **Journal of Forecasting**. The active Wiley manuscript is in `paper_smoothness-cv/manuscript/` and builds through `python paper_smoothness-cv/build.py`.
+
 It asks:
 
 > Given a fixed finite-difference trend family and forecast horizon, what level of smoothness should be selected when the criterion is future chronological forecast error rather than an exogenously chosen percentage or an in-sample/recovery criterion?
