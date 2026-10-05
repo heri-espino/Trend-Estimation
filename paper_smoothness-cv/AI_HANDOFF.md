@@ -121,3 +121,7 @@ Safe current wording:
 > Building on controlled-smoothness finite-difference penalized trend estimation, we define the smoothness percentage endogenously through a horizon-specific chronological future-block forecast criterion.
 
 Do not claim the first predictive smoothing selector, the first forecast-based tuning method, or universal superiority over classical selectors.
+
+## Current execution checkpoint
+
+The active stop point is `checkpoints/CP01_EMPIRICAL_CORE.md`. Empirical code is implemented under `experiments/smoothness_cv/`. Do not invent CP01 conclusions. Wait for the user to run smoke/quick and push the exact result bundle before freezing CP02.
