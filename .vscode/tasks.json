@@ -126,6 +126,27 @@
                 "panel": "shared",
                 "clear": false
             }
+        },
+        {
+            "label": "Compilar: Smoothness CV (Wiley)",
+            "type": "process",
+            "command": "cmd",
+            "args": [
+                "/c",
+                "${workspaceFolder}\\paper_smoothness-cv\\build-paper.bat"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "group": {
+                "kind": "build"
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "clear": false
+            }
         }
     ]
 }

@@ -137,7 +137,7 @@ python paper_smoothness-cv/build.py
 
 Expected output:
 
-paper_smoothness-cv/forecast_optimal_smoothness.pdf
+paper_smoothness-cv/EspinoMontelongo-2026-Forecast_Optimal_Smoothness.pdf
 
 GitHub Actions also has a manual smoothness-cv target under **Build papers**. Heavy paper compilation remains manual-only.
 
