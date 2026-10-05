@@ -161,3 +161,7 @@ Current-vintage FRED histories are exploratory only for historical macroeconomic
 5. notes/journal_of_forecasting_positioning.md
 6. notes/claim_boundaries.md
 7. notes/roadmap.md
+
+## Current execution checkpoint
+
+Checkpoint 01 empirical code is implemented. Read `checkpoints/CP01_EMPIRICAL_CORE.md` and `notes/empirical_roadmap.md` before running simulations. Run smoke first, then quick, commit the generated `results/smoothness_cv/checkpoint_01/` directory, and stop for review before the paper preset.
