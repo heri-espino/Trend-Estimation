@@ -76,3 +76,22 @@ A dense deterministic \(S\)-grid is acceptable here because computational effici
 - [ ] Final literature/claim audit.
 - [ ] Referee-style pass for forecasting contribution, readability, and overclaiming.
 - [ ] Compile submission PDF and freeze exact commit.
+
+
+## Empirical checkpoint status
+
+Detailed execution roadmap: empirical_roadmap.md.
+
+Checkpoint 01 is implemented and waiting for execution on the user's machine.
+
+Run:
+
+~~~bash
+python experiments/smoothness_cv/run_checkpoint_01.py --preset smoke
+python experiments/smoothness_cv/make_checkpoint_01_figures.py
+~~~
+
+If the smoke run passes, repeat with --preset quick, push the complete generated
+results/smoothness_cv/checkpoint_01/<run>/ directory, and stop. The next
+simulation design decisions must be made from those outputs rather than from
+speculation.
