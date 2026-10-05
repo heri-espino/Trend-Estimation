@@ -74,6 +74,7 @@ Frozen numerical evidence from the pre-split work remains part of Paper B: 240/2
 - paper_smoothness-recurrence/ — PARKED; applied financial trend/recurrence comparison.
 - paper_statistical-properties-penalized-trend/ — DRAFTING; statistical consequences of forecast-selected smoothness, with novelty/theorem claims not yet frozen.
 - paper_penalized-trend-tutorial/ — tutorial companion.
+- paper_bezier-trend/ — IDEA / NOVELTY AUDIT PENDING; Bernstein/Bézier control-space regularization and endpoint-aware trend forecasting, with P-splines as a mandatory rival.
 
 The old paper_numerical-smoothness-selection/ directory is retained only as a pre-split historical snapshot. Do not edit it for new work.
 
@@ -85,6 +86,8 @@ The old paper_numerical-smoothness-selection/ directory is retained only as a pr
 4. paper_smoothness-cv/AI_HANDOFF.md
 5. paper_numerical-methods/README.md
 6. paper_numerical-methods/AI_HANDOFF.md
+7. paper_bezier-trend/README.md
+8. paper_bezier-trend/notes/literature_positioning.md
 
 Paper-specific notes override older root notes when scopes conflict.
 
