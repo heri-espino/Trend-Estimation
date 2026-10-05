@@ -1,0 +1,62 @@
+\section{Evaluation protocol}
+
+The final submission should evaluate the criterion as a forecasting method, not only as a mathematical reparameterization. This section fixes the comparison logic before final test results are inserted.
+
+\subsection{Simulation questions}
+
+The simulation study is organized around three questions:
+\begin{enumerate}
+\item Does forecast-CV select a different amount of smoothness from recovery-oriented or conventional in-sample selectors?
+\item When the selected smoothness differs, does the horizon-matched choice improve genuinely held-out forecast loss?
+\item How do sample size, noise dependence, trend roughness, and forecast horizon change the selected $S$?
+\end{enumerate}
+
+The baseline simulations use $d=2$ and fixed estimation windows, with $d=1$ and $d=3$ reserved for robustness. Each generated series is split chronologically into a smoothness-selection segment and a later test segment. All tuning occurs before the test observations are revealed.
+
+The latent trend mechanisms should include a nearly linear trend; a smoothly changing slope; a piecewise-smooth trend with a level or slope change; and a low-frequency nonlinear trend without an abrupt break. Observation noise is varied across independent Gaussian noise, persistent AR(1) noise, and a heavy-tailed robustness condition. Sample size and signal-to-noise ratio are crossed with the trend mechanisms.
+
+For each design, forecast horizons are prespecified rather than selected from the same test data. A central comparison is whether $S^\star_{d,L,h}$ changes materially as $h$ changes.
+
+\subsection{Competing smoothness selectors}
+
+The proposed horizon-matched rolling criterion is compared with established PLS selectors:
+\begin{enumerate}
+\item future-block forecast-CV defined in \eqref{eq:F_S};
+\item ordinary CV;
+\item GCV;
+\item AICc;
+\item BIC;
+\item selected fixed percentages of controlled smoothness used only as interpretable reference points.
+\end{enumerate}
+
+The CV/GCV/AICc/BIC set follows the PLS comparison studied by Cort\'es-Toto et al.\ \cite{cortes2017smoothness}. Their study asks how much smoothness these criteria induce; ours asks how the selected trends subsequently forecast when extrapolated.
+
+A second comparison isolates horizon matching. For $h>1$, the same trend family is tuned once using one-step rolling loss and once using the $h$-step future-block loss. This directly tests whether matching the tuning horizon to the operational horizon matters.
+
+\subsection{Evaluation metrics}
+
+For simulations with known latent trend, report both
+\[
+\text{trend-recovery MSE}
+\quad\text{and}\quad
+\text{future forecast MSE}.
+\]
+This prevents a forecast-oriented selector from being judged only by its own objective and makes the recovery-versus-prediction distinction observable.
+
+For real data, the primary endpoint is held-out forecast MSFE. Secondary summaries include MAE, selected smoothness $S$, effective degrees of freedom from \eqref{eq:edf}, and the stability of selected smoothness across adjacent forecast origins.
+
+When comparing many series, report both per-series relative loss and aggregate summaries. Formal predictive-ability tests should be used only when their dependence assumptions match the evaluation design.
+
+\subsection{Public real-data evaluation}
+
+The submission-stage empirical analysis should emphasize reproducibility and chronological integrity. Two complementary panels are suitable.
+
+First, a broad public forecasting panel such as the M4 data can evaluate whether the criterion behaves sensibly across heterogeneous series, following the forecast-evaluation tradition represented by Stan\v{e}k \cite{stanek2023oos}. Series that require seasonal preprocessing should use a prespecified transformation so that the paper remains about trend smoothness rather than seasonal-model selection.
+
+Second, a small macroeconomic panel can provide interpretable trend examples. Historical macroeconomic backtests require real-time vintages; revised current histories are acceptable only for exploratory analysis because they can contain information unavailable at the historical forecast origin.
+
+The repository already distinguishes exploratory external-validation snapshots from paper-final vintage requirements. That distinction must be preserved in the reported results.
+
+\subsection{Result-freeze rule}
+
+All comparison rules, forecast origins, horizon sets, and primary metrics should be fixed before inspecting the final test block. Numerical optimization settings must not be tuned from test performance. The companion numerical-methods paper may provide a more efficient optimizer, but the scientific definition of the criterion is unchanged if a sufficiently fine deterministic grid is used for the present paper.
