@@ -102,6 +102,8 @@ For reproducibility, the existing experiment/result namespaces are intentionally
 - experiments/numerical_smoothness_selection/
 - results/numerical_smoothness_selection/
 
+The active Journal of Forecasting criterion paper now has its own checkpointed empirical pipeline under `experiments/smoothness_cv/`, with versioned outputs under `results/smoothness_cv/`.
+
 Those names are historical implementation namespaces, not the current paper title.
 
 ## Install
