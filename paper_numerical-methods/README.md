@@ -1,151 +1,96 @@
-# Numerical Smoothness Selection
+# Numerical methods for forecast-smoothness selection
 
-**Status: ACTIVE — manuscript drafting and review.**
+**Status: ACTIVE — numerical companion paper after the 2026-10-05 split.**
 
-Working title:
+Working title: **Numerical Solution of Multimodal Forecast-Smoothness Selection Problems**
 
-**Numerical Selection of Forecast-Optimal Smoothness in Penalized Trend Estimation**
+## Objective
 
-This is the paper currently being developed. Until this paper is finished, the
-other two research papers in this repository are parked: do not add experiments,
-expand scope, or revise their claims unless a change is required to support this
-paper.
+Given the forecast-smoothness objective \(F(S)\) defined in paper_smoothness-cv/, develop and validate methods for locating all relevant stationary minima and the global optimum efficiently and reliably on \(S\in[0,1]\).
 
-## One-sentence objective
+## What this paper assumes
 
-> Develop and validate an efficient numerical method for locating the relevant
-> local minima of a forecast-validation objective over normalized smoothness
-> \(S\in[0,1]\) in finite-difference penalized trend estimation.
-
-## Core mathematical object
-
-For
+Paper A defines
 \[
-\widehat\tau_\lambda=(I+\lambda D_d^\top D_d)^{-1}y,
-\]
-use the normalized smoothness coordinate
-\[
-S=S_d(\lambda;N)\in[0,1].
+S^\star\in\arg\min_{S\in[0,1]}F(S).
 \]
 
-For fixed discrete choices \((d,L,h)\), with the native finite-difference
-continuation rule fixed, define
+Paper B starts there and asks how to solve it.
+
+## Current production method
+
+1. sparse deterministic evaluation in \(S\);
+2. analytic first/second derivatives;
+3. adaptive interval subdivision;
+4. derivative sign-change brackets;
+5. Brent root refinement;
+6. stationary-point classification;
+7. exact/limiting endpoint comparison;
+8. optional post-discovery spacing of nearby minima.
+
+Brent does not discover all roots globally. It refines a root once a bracket is identified.
+
+## Analytic derivatives
+
 \[
-F_{d,L,h}(S)=CV_h(d,L,S).
+H'=-HQH,\qquad H''=2HQHQH.
 \]
 
-The numerical problem is to identify the relevant local minima of \(F\) and
-select
+With
 \[
-S^\star_{d,L,h}
-\in
-\arg\min_{S\in[0,1]}F_{d,L,h}(S)
+r_T=z_T-GHx_T,\quad
+a_T=GHQHx_T,\quad
+b_T=GHQHQHx_T,
 \]
-without relying on an exhaustive dense grid.
+\[
+f'_T=\frac{2}{h}r_T^\top a_T,
+\]
+\[
+f''_T=\frac{2}{h}\left(\|a_T\|^2-2r_T^\top b_T\right).
+\]
 
-## Main contribution
+\[
+F'(S)=\frac{f'(\lambda)}{S'(\lambda)},
+\]
+\[
+F''(S)=
+\frac{f''(\lambda)}{[S'(\lambda)]^2}
+-
+\frac{f'(\lambda)S''(\lambda)}{[S'(\lambda)]^3}.
+\]
 
-The contribution is numerical, not financial:
+## Stronger algebraic direction
 
-1. compactify the penalty domain with normalized smoothness \(S\in[0,1]\);
-2. exploit analytic derivatives inherited from the \(\lambda\)-parameterization;
-3. adaptively isolate stationary structure;
-4. refine derivative roots with a bracketed solver;
-5. classify stationary points and retain multiple local minima;
-6. compare against exact/limiting boundaries;
-7. validate against a very dense reference grid;
-8. quantify optimum agreement, missed minima, objective regret, evaluation
-   count, and runtime.
+\[
+f(\lambda)=\frac{P(\lambda)}{D(\lambda)^2},
+\qquad
+f'(\lambda)=\frac{R(\lambda)}{D(\lambda)^3}.
+\]
 
-The paper must be useful even if the financial application is removed.
+This creates a possible route to certified stationary-point isolation via polynomial-root methods such as Sturm sequences, followed by Brent refinement.
 
-## Delimitation
+Current status: the Sturm mini-check is a proof-of-concept, not the production solver and not a general certification theorem.
 
-### In scope
+## Frozen benchmark evidence
 
-- penalized least-squares trend estimation;
-- normalized smoothness \(S\);
-- forecast-validation objectives;
-- multiple local minima;
-- exact treatment of \(S=0\) and limiting \(S=1\);
-- adaptive stationary-point search;
-- Brent/root-refinement diagnostics;
-- spacing/suppression of nearby candidate minima;
-- sensitivity to \(d\in\{1,2,3,4\}\), rolling-window length \(L\), and forecast horizon \(h\);
-- synthetic and selected real-series surfaces used to stress the numerical
-  method.
+- 240/240 relevant adversarial minima/boundary optima;
+- 2105/2105 synthetic dense-reference interior minima across 1920 surfaces;
+- 473/473 financial dense-reference interior minima across 384 geometry-stress surfaces;
+- mean evaluation fractions about 1.57% synthetic and 1.84% financial.
 
-### Out of scope
+These are empirical benchmark results.
 
-- regime-adaptive joint \((d,L,S)\) modeling;
-- a large financial forecasting model comparison;
-- ARIMA/model-zoo benchmarking;
-- MLE/state-space versus forecast-optimal trend as a substantive empirical
-  question;
-- financial recurrence, first-passage, survival, or trading claims;
-- portfolio construction.
+## Migration note
 
-Those topics belong to the other two research papers.
+This folder was copied from paper_numerical-smoothness-selection/ so the manuscript, figures, tables, checkpoints, and historical notes remain available.
 
-## Current experimental status
+Some copied files still reflect the old combined-paper framing. Canonical current sources are:
 
-The primary numerical protocol is frozen and the principal experiments are
-complete:
+1. AI_HANDOFF.md
+2. notes/research_objective.md
+3. notes/paper_split_2026-10-05.md
+4. notes/submission_positioning.md
+5. notes/results.md
+6. notes/sturm_minicheck.md
 
-- 240/240 relevant adversarial minima/boundary optima recovered;
-- 2105/2105 synthetic dense-reference interior minima recovered across 1920
-  forecast-validation surfaces;
-- 473/473 financial dense-reference interior minima recovered across 384
-  real-data geometry stress surfaces;
-- one-factor sensitivity and epsilon post-processing sensitivity completed.
-
-The remaining work is manuscript refinement, literature/claim audit, SMCCA
-compilation, and referee-style review.
-
-## Read first
-
-1. notes/research_objective.md
-2. notes/scope.md
-3. notes/roadmap.md
-4. notes/decisions.md
-5. notes/submission_positioning.md
-
-Reusable implementation belongs in src/trend_estimation/.
-
-Paper-specific experiments should live in
-experiments/numerical_smoothness_selection/, and versioned lightweight
-outputs in results/numerical_smoothness_selection/.
-
-## Build
-
-The manuscript uses the SMCCA class copied into this directory. Compile from
-the paper directory so that the class, figures, tables, and bibliography resolve
-relative paths correctly:
-
-~~~bash
-cd paper_numerical-smoothness-selection
-latexmk -pdf -interaction=nonstopmode -outdir=build main.tex
-~~~
-
-The repository's heavy paper-build workflow remains manual
-(`workflow_dispatch`) with target `numerical`.
-
-
-## Project navigation
-
-For current research state and next actions:
-
-1. `checkpoints/AI_HANDOFF.md`
-2. `checkpoints/CP03_manuscript-and-applied-direction.md`
-3. `todo/NEXT.md`
-
-Supporting material:
-
-- `notes/applied_case_studies.md` — design for GDP/ETF/stock/crypto examples;
-- `notes/submission_positioning.md` — SMCCA fit and claim boundaries;
-- `notes/results.md` — frozen numerical evidence;
-- `notes/decisions.md` — frozen methodological decisions;
-- `literature/dictionary/` — terminology and wording rules.
-
-The numerical algorithm and confirmatory benchmark are frozen. The active
-development task is the applied interpretation of multiple forecast-CV minima.
+The experiment/result namespaces remain experiments/numerical_smoothness_selection/ and results/numerical_smoothness_selection/ for reproducibility.

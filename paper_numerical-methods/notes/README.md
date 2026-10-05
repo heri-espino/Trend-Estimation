@@ -1,12 +1,12 @@
-# Notes index
+# Numerical-methods notes
 
-**ACTIVE paper.** Read in this order:
+## Canonical after the 2026-10-05 split
 
-1. research_objective.md — canonical scientific question;
-2. scope.md — ownership and anti-scope-creep boundaries;
-3. roadmap.md — only active execution plan in the repository;
-4. decisions.md — frozen design choices.
+1. research_objective.md
+2. paper_split_2026-10-05.md
+3. submission_positioning.md
+4. results.md
+5. sturm_minicheck.md
+6. assumptions_and_claim_boundaries.md
 
-Do not move ARIMA/MLE/GCV comparative forecasting or recurrence analysis into this folder.
-
-- `submission_positioning.md` — SMCCA fit, state-of-the-art boundary, novelty wording, and claim limits for the manuscript.
+Other files were copied from the pre-split paper and may still mix the criterion contribution with the numerical contribution. When there is a conflict, the canonical files above and ../AI_HANDOFF.md win.
