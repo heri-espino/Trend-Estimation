@@ -35,6 +35,7 @@ First run the smoke checkpoint:
 
 ~~~bash
 python experiments/smoothness_cv/run_checkpoint_01.py --preset smoke
+python experiments/smoothness_cv/analyze_checkpoint_01.py
 ~~~
 
 Then build its figures and tables:
@@ -47,6 +48,7 @@ If the smoke run passes, run the exploratory quick design:
 
 ~~~bash
 python experiments/smoothness_cv/run_checkpoint_01.py --preset quick
+python experiments/smoothness_cv/analyze_checkpoint_01.py
 python experiments/smoothness_cv/make_checkpoint_01_figures.py
 ~~~
 
