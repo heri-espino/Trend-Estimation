@@ -72,7 +72,7 @@ Frozen numerical evidence from the pre-split work remains part of Paper B: 240/2
 
 - paper_forecast-optimal-smoothing/ — PARKED; broader adaptive joint selection of \((d,L,S)\).
 - paper_smoothness-recurrence/ — PARKED; applied financial trend/recurrence comparison.
-- paper_statistical-properties-penalized-trend/ — PARKED; future statistical-properties/inference project.
+- paper_statistical-properties-penalized-trend/ — DRAFTING; statistical consequences of forecast-selected smoothness, with novelty/theorem claims not yet frozen.
 - paper_penalized-trend-tutorial/ — tutorial companion.
 
 The old paper_numerical-smoothness-selection/ directory is retained only as a pre-split historical snapshot. Do not edit it for new work.

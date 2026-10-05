@@ -1,24 +1,34 @@
-# Statistical Properties of Penalized Trend Estimation
+# Statistical Properties of Forecast-Selected Penalized Trend Estimators
 
-**Status: PARKED / future paper.**
+**Status: DRAFTING / theory agenda active; novelty audit not yet complete.**
 
-This folder is intentionally separate from
-\`paper_numerical-methods/\`. The active numerical paper should
-remain computational and applied: its contribution is the numerical selection
-of forecast-optimal smoothness for fixed configurations. The material here is a
-future statistical-methodology project and should not be allowed to expand the
-scope of the active paper.
+This paper is separate from paper_smoothness-cv/ and paper_numerical-methods/.
 
-## Working title
+## The three-paper distinction
 
-**Statistical Properties and Inference for Finite-Difference Penalized Trend Estimation**
+\[
+\text{smoothness-CV: } y\rightarrow\widehat S
+\]
 
-The title is provisional. No novelty claim is implied.
+\[
+\text{numerical methods: solve the argmin defining }\widehat S
+\]
 
-## Motivation
+\[
+\text{this paper: }(y,\widehat S)
+\rightarrow
+\widehat\tau_{\widehat S}
+\rightarrow
+\text{bias, variance, complexity, and uncertainty}
+\]
 
-The pure finite-difference PLS estimator
+The smoothness-CV paper asks which smoothness level should be selected for
+forecasting. This paper asks what happens statistically after that smoothness
+level has been selected from the data.
 
+## Core distinction
+
+For fixed \(\lambda\),
 \[
 \widehat\tau_\lambda
 =
@@ -26,40 +36,46 @@ H_\lambda y,
 \qquad
 H_\lambda=(I+\lambda D_d^\top D_d)^{-1},
 \]
+is a linear smoother.
 
-is a linear smoother. This means that many classical statistical ideas have
-direct analogues:
-
-- effective degrees of freedom;
-- bias and variance;
-- covariance of the fitted trend;
-- leverage and influence;
-- residual diagnostics;
-- uncertainty for trend level, slope, and curvature;
-- model-complexity criteria;
-- Bayesian and state-space interpretations;
-- spectral shrinkage;
-- extrapolation uncertainty.
-
-The purpose of a future paper would not be to rediscover properties already
-known for Whittaker-Henderson smoothing, smoothing splines, P-splines, ridge /
-Tikhonov regularization, the Hodrick-Prescott filter, or Gaussian
-state-space/GMRF models. The first task must be a literature audit that separates
-known results from genuinely useful extensions for the particular
-forecast-selected finite-difference trend model studied in this repository.
-
-## Immediate structural identity
-
-For normalized smoothness \(S\),
-
+After chronological forecast-CV selection,
 \[
-S
+\widehat S=\arg\min_S F(S),
+\]
+and the actual estimator is
+\[
+\boxed{
+\widehat\tau_{\widehat S}
 =
-\frac{1-\operatorname{tr}(H_\lambda)/N}{1-d/N},
+H_{\lambda(\widehat S(y))}y.
+}
 \]
 
-so
+The full mapping is data-adaptive and generally nonlinear in \(y\).
 
+## What we already know
+
+For fixed smoothness, under
+\[
+y=\tau+\varepsilon,\qquad
+E(\varepsilon)=0,\qquad
+\operatorname{Var}(\varepsilon)=\Sigma,
+\]
+\[
+E(\widehat\tau_\lambda)=H_\lambda\tau,
+\]
+\[
+\operatorname{Bias}(\widehat\tau_\lambda)
+=
+(H_\lambda-I)\tau,
+\]
+\[
+\operatorname{Var}(\widehat\tau_\lambda)
+=
+H_\lambda\Sigma H_\lambda^\top.
+\]
+
+Also,
 \[
 \boxed{
 \operatorname{edf}(\lambda)
@@ -70,38 +86,58 @@ N-(N-d)S.
 }
 \]
 
-Thus the normalized smoothness coordinate is exactly a normalized complement of
-the effective degrees of freedom for the fixed-\(\lambda\) linear smoother.
+For a fixed forecast operator,
+\[
+\widehat z_\lambda=G_{d,h}H_\lambda y,
+\]
+and
+\[
+\operatorname{Var}(\widehat z_\lambda)
+=
+G_{d,h}H_\lambda\Sigma H_\lambda^\top G_{d,h}^\top.
+\]
 
-This identity is algebraic and useful, but should not by itself be advertised
-as a novel contribution without checking the literature.
+These are foundations, not novelty claims.
 
-## Research agenda
+## What we want to know
 
-See \`notes/research_agenda.md\`.
+The main open questions are:
 
-## Literature already in this repository
+- sampling distribution and stability of \(\widehat S\);
+- selection-adjusted effective degrees of freedom;
+- bias and variance of \(H_{\lambda(\widehat S)}y\);
+- valid uncertainty for level, slope, curvature, and turning points after
+  smoothness selection;
+- propagation of smoothness-selection uncertainty into forecasts;
+- statistical meaning of multimodal forecast-CV surfaces;
+- whether local delta-method approximations work around stable interior minima;
+- what replaces them near boundaries or minimum switching.
 
-The most important starting points include:
+## What is explicitly not enough for a paper
 
-- \`literature/extracted/Guerrero_2007_time-series-smoothing-penalized-least-squares.md\`
-- \`literature/extracted/Guerrero_2008_estimating-trends-percentage-smoothness.md\`
-- \`literature/extracted/Biessy_2025_whittaker-henderson-smoothing-revisited.md\`
-- \`literature/extracted/Biessy_2025_whittaker-henderson-smoothing-revisited-appendix.md\`
-- \`literature/extracted/Golub_1979_generalized-cross-validation-ridge.md\`
-- \`literature/extracted/Craven_1979_smoothing-noisy-data-spline-functions.md\`
-- \`literature/extracted/Eilers_1996_flexible-smoothing-b-splines.md\`
-- \`literature/extracted/Hodrick_1997_postwar-us-business-cycles.md\`
+By themselves, the following are likely classical:
 
-Biessy (2025) is especially important because it already treats modern
-statistical properties of Whittaker-Henderson smoothing, including effective
-degrees of freedom, smoothing bias, a Bayesian interpretation, credible
-intervals, marginal-likelihood smoothing-parameter selection, computational
-eigendecompositions, and extrapolation uncertainty. Any future paper here must
-differentiate itself clearly from that work.
+- \(\operatorname{edf}=\operatorname{tr}(H)\);
+- fixed-\(\lambda\) bias/variance;
+- leverage from \(H_{ii}\);
+- fixed-\(\lambda\) Gaussian intervals;
+- Bayesian interpretation of a quadratic penalty;
+- relationships with Whittaker-Henderson, HP, ridge/Tikhonov, splines, GMRFs,
+  and state-space trends.
 
-## Venue
+The paper must center on a nontrivial consequence of forecast-driven,
+data-dependent selection.
 
-Not selected. The target should be chosen only after the literature audit
-clarifies whether the eventual contribution is primarily statistical
-methodology, statistical computing, or applied time-series methodology.
+## Main draft
+
+The first working manuscript is main.tex.
+
+Read first:
+
+1. main.tex
+2. AI_HANDOFF.md
+3. notes/research_agenda.md
+4. notes/current_state.md
+
+No final novelty claim should be made until the dedicated literature audit is
+complete.

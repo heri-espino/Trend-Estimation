@@ -1,0 +1,795 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{proposition}{Proposition}
+\newtheorem{remark}{Remark}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\R}{\mathbb R}
+
+\title{Statistical Properties of Forecast-Selected Penalized Trend Estimators}
+\author{Heriberto Espino Montelongo}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Finite-difference penalized least-squares trend estimators are linear smoothers
+when their smoothing parameter is fixed. In that regime, their expectation,
+bias, covariance, effective degrees of freedom, influence matrix, and forecast
+variance follow directly from the smoothing matrix. The statistical object
+changes once smoothness is selected from the same time series by chronological
+forecast validation. The resulting estimator,
+\[
+\widehat\tau_{\widehat S}
+=
+H_{\lambda(\widehat S)}y,
+\]
+is no longer a fixed linear smoother because the selected smoothness
+\(\widehat S\) is itself random and data-dependent. This paper develops the
+fixed-smoothness foundation needed to study that distinction and formulates the
+main inferential questions created by forecast-driven smoothness selection:
+selection-adjusted complexity, bias and variance, uncertainty for trend
+functionals, uncertainty in forecast-optimal smoothness, and propagation of
+selection uncertainty into trend forecasts. The purpose is not to rederive
+classical linear-smoother theory as a novelty claim, but to identify precisely
+what is known conditionally on a fixed smoother and what must still be
+established for the forecast-selected estimator used in the companion
+smoothness-selection paper.
+\end{abstract}
+
+\section{Motivation and separation from the companion papers}
+
+The research program contains three distinct questions.
+
+The companion smoothness-selection paper asks
+\[
+\widehat S
+\in
+\arg\min_{S\in[0,1]}F(S),
+\]
+where \(F(S)\) is a chronological rolling future-block forecast loss. Its
+question is: \emph{which amount of smoothness should be selected for
+forecasting?}
+
+The numerical-methods paper assumes that objective is already defined and asks:
+\emph{how can its relevant minima and global optimum be located reliably and
+efficiently when the objective is multimodal?}
+
+The present paper asks a third question:
+\begin{quote}
+Once smoothness has been selected from the data, what statistical properties
+does the resulting trend estimator have, and how should its uncertainty be
+quantified?
+\end{quote}
+
+For fixed \(S\), penalized least squares is a linear smoother. After
+forecast-based selection,
+\[
+y
+\longmapsto
+\widehat S(y)
+\longmapsto
+H_{\lambda(\widehat S(y))}
+\longmapsto
+H_{\lambda(\widehat S(y))}y
+\]
+is a data-adaptive nonlinear mapping.
+
+The central statistical boundary of this paper is therefore
+\[
+\boxed{
+\text{fixed-smoother statistics}
+\quad\text{versus}\quad
+\text{statistics after forecast-driven smoothness selection}.
+}
+\]
+
+\section{Model and notation}
+
+Let
+\[
+y=(y_1,\ldots,y_N)^\top\in\R^N
+\]
+be an observed time series. For difference order \(d\), let
+\[
+D_d\in\R^{(N-d)\times N},
+\qquad
+Q=D_d^\top D_d.
+\]
+The baseline penalized least-squares estimator is
+\[
+\widehat\tau_\lambda
+=
+\arg\min_{\tau\in\R^N}
+\left\{
+\|y-\tau\|_2^2
++
+\lambda\|D_d\tau\|_2^2
+\right\},
+\]
+with solution
+\[
+\boxed{
+\widehat\tau_\lambda
+=
+H_\lambda y,
+\qquad
+H_\lambda=(I+\lambda Q)^{-1}.
+}
+\]
+
+The baseline model is deliberately the zero-drift, identity-weight case used by
+the companion methodological papers. The broader Guerrero formulation with
+nonzero difference drift or a non-identity observation-weight/covariance
+structure is treated as an extension rather than silently mixed into the
+baseline.
+
+Because
+\[
+x^\top Qx
+=
+x^\top D_d^\top D_dx
+=
+\|D_dx\|_2^2
+\ge0,
+\]
+\(Q\) is symmetric positive semidefinite. Under the standard finite-difference
+operator, its nullity is \(d\). Thus, if
+\[
+Q
+=
+U\diag(
+\underbrace{0,\ldots,0}_{d},
+\delta_1,\ldots,\delta_{N-d}
+)U^\top,
+\qquad
+\delta_j>0,
+\]
+then
+\[
+H_\lambda
+=
+U\diag\left(
+\underbrace{1,\ldots,1}_{d},
+\frac1{1+\lambda\delta_1},
+\ldots,
+\frac1{1+\lambda\delta_{N-d}}
+\right)U^\top.
+\]
+
+The normalized smoothness coordinate is
+\[
+\boxed{
+S(\lambda)
+=
+1-
+\frac1{N-d}
+\sum_{j=1}^{N-d}
+\frac1{1+\lambda\delta_j}.
+}
+\]
+It maps \(\lambda=0\) to \(S=0\), and the limiting
+\(\lambda\to\infty\) model to \(S=1\).
+
+\section{What is already known for fixed smoothness}
+
+This section collects the statistical foundation that follows once
+\(\lambda\), equivalently \(S\), is treated as fixed. These identities are
+important for the present paper, but they should not be presented as new
+without a literature-specific audit because closely related results are
+standard in Whittaker--Henderson smoothing, smoothing splines, generalized
+ridge/Tikhonov regularization, Hodrick--Prescott filtering, Gaussian
+random-walk/GMRF models, and related state-space formulations.
+
+\subsection{Linear-smoother structure}
+
+For fixed \(\lambda\),
+\[
+\widehat\tau_\lambda=H_\lambda y
+\]
+is linear in \(y\). The matrix \(H_\lambda\) is symmetric positive
+semidefinite, and every eigenvalue lies in \((0,1]\).
+
+The penalized spectral directions are attenuated by
+\[
+\alpha_j(\lambda)=\frac1{1+\lambda\delta_j}.
+\]
+The null-space directions are not attenuated.
+
+\begin{proposition}[Null-space reproduction]
+If \(x\in\ker(D_d)\), then
+\[
+H_\lambda x=x
+\]
+for every \(\lambda\ge0\).
+\end{proposition}
+
+For the usual difference operator, \(\ker(D_d)\) contains discrete polynomial
+sequences of degree at most \(d-1\).
+
+\subsection{Effective degrees of freedom and normalized smoothness}
+
+For a fixed linear smoother, define
+\[
+\operatorname{edf}(\lambda)=\tr(H_\lambda).
+\]
+Using the spectral representation,
+\[
+\tr(H_\lambda)
+=
+d
++
+\sum_{j=1}^{N-d}
+\frac1{1+\lambda\delta_j}.
+\]
+Therefore
+\[
+\boxed{
+\operatorname{edf}(\lambda)
+=
+N-(N-d)S(\lambda).
+}
+\]
+
+Equivalently,
+\[
+\boxed{
+S
+=
+\frac{N-\operatorname{edf}}{N-d}.
+}
+\]
+
+This identity gives a direct statistical interpretation of normalized
+smoothness: \(S\) is the normalized fraction of penalizable effective
+flexibility removed by the smoother. At the endpoints,
+\[
+S=0\Longleftrightarrow\operatorname{edf}=N,
+\qquad
+S=1\Longleftrightarrow\operatorname{edf}=d.
+\]
+
+A central later question is whether \(\tr(H_{\widehat\lambda})\) remains an
+adequate complexity measure after \(\widehat\lambda\) is selected from the data.
+
+\subsection{Expectation, bias, variance, covariance, and risk}
+
+Assume first
+\[
+y=\tau+\varepsilon,
+\qquad
+\E(\varepsilon)=0,
+\qquad
+\Var(\varepsilon)=\sigma^2I.
+\]
+For fixed \(\lambda\),
+\[
+\E(\widehat\tau_\lambda)
+=
+H_\lambda\tau,
+\]
+and
+\[
+\boxed{
+\operatorname{Bias}(\widehat\tau_\lambda)
+=
+(H_\lambda-I)\tau.
+}
+\]
+
+Likewise,
+\[
+\boxed{
+\Var(\widehat\tau_\lambda)
+=
+\sigma^2H_\lambda^2.
+}
+\]
+
+More generally, if
+\[
+\Var(\varepsilon)=\Sigma,
+\]
+then
+\[
+\boxed{
+\Var(\widehat\tau_\lambda)
+=
+H_\lambda\Sigma H_\lambda^\top.
+}
+\]
+
+For squared Euclidean risk,
+\[
+\E\|\widehat\tau_\lambda-\tau\|_2^2
+=
+\|(H_\lambda-I)\tau\|_2^2
++
+\sigma^2\tr(H_\lambda^2).
+\]
+
+\subsection{Linear functionals of the trend}
+
+For any \(a\in\R^N\),
+\[
+a^\top\widehat\tau_\lambda
+=
+a^\top H_\lambda y,
+\]
+and
+\[
+\Var(a^\top\widehat\tau_\lambda)
+=
+a^\top H_\lambda\Sigma H_\lambda^\top a.
+\]
+
+This includes level, local slope, and local curvature. The difficult question
+is whether intervals constructed conditionally on a selected \(\widehat S\)
+have correct post-selection coverage.
+
+\subsection{Influence and residuals}
+
+For fixed \(\lambda\),
+\[
+\frac{\partial\widehat\tau_i}{\partial y_j}
+=
+(H_\lambda)_{ij}.
+\]
+Hence \(H_\lambda\) is an observation-to-fit influence map.
+
+Residuals are
+\[
+e_\lambda=(I-H_\lambda)y,
+\]
+with
+\[
+\Var(e_\lambda)
+=
+(I-H_\lambda)\Sigma(I-H_\lambda)^\top.
+\]
+
+Unlike an OLS hat matrix, \(H_\lambda\) is generally not idempotent:
+\[
+H_\lambda^2\neq H_\lambda.
+\]
+Thus OLS residual degrees-of-freedom formulas should not be copied
+mechanically.
+
+\section{Forecasting with fixed smoothness}
+
+Let \(G_{d,h}\) denote the fixed continuation matrix. Then
+\[
+\widehat z_\lambda
+=
+G_{d,h}H_\lambda y.
+\]
+Conditional on fixed \(\lambda\),
+\[
+\E(\widehat z_\lambda)
+=
+G_{d,h}H_\lambda\tau,
+\]
+and
+\[
+\boxed{
+\Var(\widehat z_\lambda)
+=
+G_{d,h}H_\lambda\Sigma H_\lambda^\top G_{d,h}^\top.
+}
+\]
+
+This is uncertainty in the estimated and extrapolated trend. A full predictive
+distribution additionally requires future innovation or observation noise.
+
+After smoothness selection there is a third source:
+\[
+\text{forecast uncertainty}
+=
+\text{trend-estimation uncertainty}
++
+\text{future innovation uncertainty}
++
+\text{smoothness-selection uncertainty},
+\]
+with the caveat that exact finite-sample variance need not decompose additively
+without covariance terms.
+
+\section{The new statistical object: forecast-selected smoothness}
+
+The smoothness-CV paper selects
+\[
+\widehat S
+\in
+\arg\min_{S\in[0,1]}F(S).
+\]
+The resulting estimator is
+\[
+\boxed{
+\widehat\tau_{\widehat S}
+=
+H_{\lambda(\widehat S)}y.
+}
+\]
+
+The notation is deceptively similar to the fixed-\(S\) estimator, but
+\[
+\widehat S=\widehat S(y)
+\]
+is random. Consequently,
+\[
+y\mapsto H_{\lambda(\widehat S(y))}y
+\]
+is generally nonlinear.
+
+This is the central source of nontriviality in the paper.
+
+\subsection{Why fixed-smoother variance is not the whole answer}
+
+Conditioning on \(\widehat S=s\), one can write
+\[
+H_{\lambda(s)}\Sigma H_{\lambda(s)}^\top.
+\]
+But if inference concerns the full procedure that first selects \(S\) and then
+estimates the trend, the randomness of \(\widehat S\) must also be accounted
+for.
+
+The same warning applies to effective degrees of freedom, confidence bands,
+tests of slope or curvature, and forecast uncertainty.
+
+\section{What we want to know}
+
+The following are research targets, not established novelty claims.
+
+\subsection{Sampling behavior of selected smoothness}
+
+We want to characterize
+\[
+\widehat S=\arg\min_S F(S)
+\]
+as a random quantity:
+\begin{itemize}
+\item its sampling or stability distribution;
+\item dependence on horizon, sample length, residual dependence, noise scale,
+and latent roughness;
+\item uncertainty when \(F(S)\) is multimodal;
+\item confidence sets for a clearly defined population/oracle
+forecast-optimal \(S^\star\).
+\end{itemize}
+
+\subsection{Selection-adjusted effective degrees of freedom}
+
+For fixed \(\lambda\),
+\[
+\operatorname{edf}=\tr(H_\lambda).
+\]
+For
+\[
+m(y)=H_{\lambda(\widehat S(y))}y,
+\]
+we want an effective complexity measure for the full adaptive mapping rather
+than assuming
+\[
+\operatorname{edf}_{\rm adaptive}
+=
+\tr(H_{\widehat\lambda}).
+\]
+
+\subsection{Bias and variance after selection}
+
+We want to understand
+\[
+\E\left[H_{\lambda(\widehat S)}y\right]
+\]
+and
+\[
+\Var\left(H_{\lambda(\widehat S)}y\right),
+\]
+not only their conditional fixed-\(S\) analogues.
+
+Candidate approaches include exact results in simplified Gaussian settings,
+local expansions around stable interior optima, bootstrap approximations, and
+simulation-based coverage studies.
+
+\subsection{Inference for level, slope, and curvature}
+
+We want selection-aware inference for quantities such as
+\[
+e_t^\top H_{\lambda(\widehat S)}y,
+\qquad
+\Delta H_{\lambda(\widehat S)}y,
+\qquad
+\Delta^2H_{\lambda(\widehat S)}y.
+\]
+
+Scientifically useful targets include level, local slope, sign of slope,
+curvature, turning-point location, and terminal slope/curvature used by
+extrapolation.
+
+\subsection{Propagation of smoothness uncertainty into forecasts}
+
+For fixed \(\lambda\),
+\[
+\widehat z_\lambda=GH_\lambda y.
+\]
+Since
+\[
+\frac{\partial H_\lambda}{\partial\lambda}
+=
+-H_\lambda QH_\lambda,
+\]
+we have
+\[
+\frac{\partial\widehat z_\lambda}{\partial\lambda}
+=
+-GH_\lambda QH_\lambda y.
+\]
+Because \(S\) is monotone in \(\lambda\),
+\[
+\boxed{
+\frac{\partial\widehat z}{\partial S}
+=
+-\frac{GH_\lambda QH_\lambda y}{S'(\lambda)}.
+}
+\]
+
+This suggests a local delta-method term involving
+\[
+\left(
+\frac{\partial\widehat z}{\partial S}
+\right)
+\Var(\widehat S)
+\left(
+\frac{\partial\widehat z}{\partial S}
+\right)^\top,
+\]
+but its validity must be investigated. It may be poor near boundaries, flat
+objectives, or switches between local minima.
+
+\subsection{Multimodality as a statistical issue}
+
+The numerical-methods paper treats multiple minima as an optimization problem.
+Here the same phenomenon is statistical.
+
+If two minima \(S_1\) and \(S_2\) have similar forecast loss but imply
+substantially different effective degrees of freedom, terminal derivatives, or
+forecast geometry, small perturbations may move the fitted procedure between
+different smoothing regimes.
+
+We want to characterize competing minima by
+\[
+\operatorname{edf},
+\quad
+\text{roughness},
+\quad
+\text{bias/variance},
+\quad
+\text{spectral attenuation},
+\quad
+\text{terminal derivatives},
+\quad
+\text{forecast geometry}.
+\]
+
+\section{A local expansion around a stable selected optimum}
+
+Suppose the relevant optimum is unique, interior, and locally stable:
+\[
+\widehat S=S^\star+\Delta_S.
+\]
+Then formally,
+\[
+\widehat\tau_{\widehat S}
+\approx
+\widehat\tau_{S^\star}
++
+\left.
+\frac{\partial\widehat\tau_S}{\partial S}
+\right|_{S^\star}
+\Delta_S.
+\]
+
+Because
+\[
+\frac{\partial\widehat\tau}{\partial\lambda}
+=
+-H_\lambda QH_\lambda y,
+\]
+\[
+\boxed{
+\frac{\partial\widehat\tau}{\partial S}
+=
+-\frac{H_\lambda QH_\lambda y}{S'(\lambda)}.
+}
+\]
+
+This suggests a first-order decomposition into fixed-\(S^\star\) variability
+and smoothness-selection variability. However, \(\widehat S\) and \(y\) are
+generated from overlapping data, so covariance terms matter. A rigorous
+treatment must derive rather than assume the decomposition.
+
+The expansion is not expected to describe boundary solutions or local-minimum
+switching well.
+
+\section{What would constitute a contribution}
+
+The following are foundations, not sufficient contributions by themselves:
+\begin{itemize}
+\item \(\operatorname{edf}=\tr(H)\);
+\item fixed-\(\lambda\) bias and variance;
+\item leverage from \(H_{ii}\);
+\item ordinary fixed-\(\lambda\) Gaussian intervals;
+\item the Bayesian interpretation of a quadratic penalty;
+\item relationships with HP, ridge/Tikhonov, or Whittaker smoothing;
+\item polynomial continuation implied by the null space.
+\end{itemize}
+
+A publishable contribution should center on one or more nontrivial consequences
+of forecast-driven selection:
+\begin{enumerate}
+\item selection-adjusted degrees of freedom;
+\item uncertainty and coverage after forecast-CV smoothness selection;
+\item sampling/stability theory for \(\widehat S\);
+\item treatment of multimodal smoothness-selection uncertainty;
+\item forecast-risk decomposition including selection uncertainty;
+\item inference for terminal level/slope/curvature after selection;
+\item horizon-dependent extrapolation-risk theory.
+\end{enumerate}
+
+The final paper should choose one or two primary theorem and simulation targets
+rather than claiming all of these at once.
+
+\section{Relationship to the smoothness-CV paper}
+
+The distinction is
+\[
+\boxed{
+\text{smoothness-CV: }
+y\longmapsto \widehat S
+}
+\]
+versus
+\[
+\boxed{
+\text{statistical-properties: }
+(y,\widehat S)
+\longmapsto
+\widehat\tau_{\widehat S}
+\longmapsto
+\text{bias, variance, complexity, and uncertainty}.
+}
+\]
+
+The smoothness-CV paper may use simple fixed-smoother properties to interpret
+\(S\), especially
+\[
+\tr(H)=N-(N-d)S.
+\]
+It should not absorb the full post-selection inference problem.
+
+\section{Relationship to the numerical-methods paper}
+
+The numerical paper answers how to compute candidate minima of \(F(S)\). The
+present paper treats the selected minimum as a random output of a data-dependent
+procedure.
+
+Thus:
+\[
+\text{criterion}
+\longrightarrow
+\text{numerical solution}
+\longrightarrow
+\text{statistical consequences}.
+\]
+
+Multimodality is the main bridge: numerically it means several minima must be
+found; statistically it means the selected estimator may jump between
+substantially different smoothing regimes.
+
+\section{Planned simulation program}
+
+The first simulations should be designed for inference rather than forecasting
+performance. The latent trend should be known so that bias, variance, coverage,
+and selection behavior can be measured.
+
+Controlled factors should include:
+\begin{itemize}
+\item sample length;
+\item forecast horizon;
+\item observation-noise scale;
+\item latent-trend roughness;
+\item residual persistence;
+\item distance of the optimum from \(S=0\) or \(S=1\);
+\item unimodal versus multimodal forecast-CV geometry.
+\end{itemize}
+
+At minimum, compare:
+\begin{enumerate}
+\item an oracle fixed-\(S\) estimator;
+\item a fixed but misspecified \(S\);
+\item forecast-CV-selected \(\widehat S\);
+\item conditional intervals that ignore selection;
+\item one or more selection-aware uncertainty procedures.
+\end{enumerate}
+
+Primary endpoints should include bias, variance, mean-squared error, coverage,
+interval width, effective-complexity estimates, the distribution/stability of
+\(\widehat S\), and forecast coverage where relevant.
+
+\section{Literature boundary}
+
+A dedicated literature audit is required before any novelty claim. The closest
+bodies of theory include Whittaker--Henderson smoothing, smoothing splines and
+P-splines, generalized ridge/Tikhonov regularization, Hodrick--Prescott
+filtering, Gaussian random walks and GMRFs, state-space trend models,
+generalized degrees of freedom, data-adaptive smoothing, selective inference,
+and uncertainty after tuning-parameter selection.
+
+The repository already contains especially relevant material on Guerrero's
+finite-difference PLS/controlled-smoothness formulation and modern
+Whittaker--Henderson treatments. These make clear that fixed-smoother effective
+degrees of freedom, smoothing bias, Bayesian uncertainty, and extrapolation
+uncertainty cannot by themselves be claimed as new here.
+
+The novelty audit should therefore be organized around the narrower question:
+\begin{quote}
+What statistical theory already exists for a smoother whose tuning parameter is
+selected specifically by chronological forecast loss, especially when the
+validation surface is dependent, horizon-specific, and potentially multimodal?
+\end{quote}
+
+\section{Current status}
+
+Established within the repository:
+\begin{itemize}
+\item the finite-difference PLS estimator \(H_\lambda y\);
+\item normalized smoothness \(S(\lambda)\);
+\item \(\operatorname{edf}=N-(N-d)S\) for fixed smoothness;
+\item first and second derivatives of \(H_\lambda\);
+\item first and second derivatives of forecast loss;
+\item the forecast operator \(GH_\lambda\);
+\item empirical evidence that forecast-CV surfaces can be multimodal;
+\item a companion numerical method for recovering relevant minima.
+\end{itemize}
+
+Not yet established:
+\begin{itemize}
+\item the distribution and uncertainty of \(\widehat S\);
+\item selection-adjusted effective degrees of freedom;
+\item bias and variance of the full selected procedure;
+\item valid post-selection intervals for level/slope/curvature;
+\item a rigorous decomposition of forecast uncertainty including smoothness
+selection;
+\item treatment of multimodal smoothness-selection uncertainty.
+\end{itemize}
+
+These open items, rather than the fixed-smoother formulas alone, define the
+scientific target.
+
+\section{Conclusion}
+
+Finite-difference penalized trend estimation has a simple statistical
+description when smoothness is fixed. That simplicity provides an exact
+baseline against which the forecast-selected estimator can be measured. The
+main statistical challenge begins when smoothness is selected from
+chronological forecast performance. Then the fitted trend is no longer a fixed
+linear smoother, and its complexity, bias, variance, interval coverage, and
+forecast uncertainty must reflect the randomness and possible multimodality of
+the selection step.
+
+The intended contribution is therefore not a new derivation of classical
+smoothing identities. It is a statistical theory and inferential framework for
+the forecast-selected penalized trend estimator produced by the companion
+smoothness-CV procedure.
+
+\end{document}

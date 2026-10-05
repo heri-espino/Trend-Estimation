@@ -1,3 +1,5 @@
+> **Status update (2026-10-05):** This is no longer only a parking document. A first manuscript draft now exists in ../main.tex. The paper identity is fixed: classical fixed-\(S\) linear-smoother formulas are foundations, while the intended contribution concerns the data-adaptive estimator \(H_{\lambda(\widehat S(y))}y\) after forecast-CV smoothness selection. Use ../AI_HANDOFF.md and current_state.md for the current priority order.
+
 # Research Agenda — Statistical Properties and Inference
 
 This is a parking document for a possible future paper. It records what can be

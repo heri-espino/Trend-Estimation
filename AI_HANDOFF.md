@@ -106,7 +106,7 @@ paper_forecast-optimal-smoothing/ is PARKED and owns adaptive joint \((d,L,S)\) 
 
 paper_smoothness-recurrence/ is PARKED and owns applied model comparison/recurrence.
 
-paper_statistical-properties-penalized-trend/ is PARKED and owns broader inference/statistical properties.
+paper_statistical-properties-penalized-trend/ is DRAFTING as a linked theory paper. It owns fixed-smoother statistical foundations and, especially, post-selection properties of the forecast-selected estimator. Its novelty audit and theorem agenda are not yet frozen.
 
 ## Validation invariant
 
