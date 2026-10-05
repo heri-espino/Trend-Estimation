@@ -1,0 +1,87 @@
+\section{Basic properties}
+
+\begin{proposition}[Monotone smoothness reparameterization]
+\label{prop:monotone}
+For positive penalized eigenvalues $\delta_1,\ldots,\delta_{L-d}$,
+\[
+S'(\lambda)
+=
+\frac{1}{L-d}
+\sum_{j=1}^{L-d}
+\frac{\delta_j}{(1+\lambda\delta_j)^2}
+>0,
+\]
+and
+\[
+S''(\lambda)
+=
+-\frac{2}{L-d}
+\sum_{j=1}^{L-d}
+\frac{\delta_j^2}{(1+\lambda\delta_j)^3}
+<0.
+\]
+After adjoining $\lambda=\infty$, $S$ maps $[0,\infty]$ continuously and strictly increasingly onto $[0,1]$.
+\end{proposition}
+
+\begin{proof}
+Differentiate \eqref{eq:S} term by term. Positivity of each $\delta_j$ gives the signs; the endpoint values follow from $(1+\lambda\delta_j)^{-1}$.
+\end{proof}
+
+The bounded scale has a common interpretation across fixed $(d,L)$ configurations while preserving the ordering of penalty strength.
+
+\begin{proposition}[Effective degrees of freedom]
+\label{prop:edf}
+For fixed $\lambda$,
+\[
+\operatorname{tr}(H_\lambda)=L-(L-d)S(\lambda).
+\]
+\end{proposition}
+
+\begin{proof}
+From \eqref{eq:H_spectral},
+\[
+\operatorname{tr}(H_\lambda)
+=
+d+\sum_{j=1}^{L-d}(1+\lambda\delta_j)^{-1}.
+\]
+Substitution of \eqref{eq:S} yields the result.
+\end{proof}
+
+\begin{proposition}[Equivalent optimization in penalty and smoothness space]
+\label{prop:equiv}
+Let $F(S)=f(\lambda(S))$. Then the global minimizers in $\lambda\in[0,\infty]$ and $S\in[0,1]$ correspond under the bijection in Proposition \ref{prop:monotone}. At interior points,
+\[
+F'(S)=\frac{f'(\lambda)}{S'(\lambda)},
+\]
+so interior stationary points correspond exactly.
+\end{proposition}
+
+\begin{proof}
+A strictly increasing bijection preserves the minimizing set. The derivative identity follows from the chain rule.
+\end{proof}
+
+\begin{proposition}[Endpoint interpretation]
+\label{prop:endpoints}
+At $S=0$, $H_\lambda=I$ and the historical trend reproduces the observations. At $S=1$, interpreted as $\lambda\to\infty$, $H_\lambda$ converges to the orthogonal projection onto $\ker(D_d)$.
+\end{proposition}
+
+For $d=2$, the endpoints are therefore the unsmoothed historical path and its least-squares linear projection. Endpoint comparison is part of the scientific selection problem, not merely a numerical detail.
+
+\subsection{Existence and possible nonuniqueness}
+
+For finite $S<1$, $H_{\lambda(S)}$ is continuous. The limiting matrix at $S=1$ exists by \eqref{eq:H_spectral}. Thus the forecast loss has a continuous extension to the compact domain $[0,1]$ and at least one global minimizer exists.
+
+Uniqueness is not assumed. Distinct smoothing regimes can produce similar validation loss, and the criterion may contain several local minima. This is statistically meaningful because competing minima can imply different effective degrees of freedom and terminal slopes. Efficient recovery of all numerical candidates is delegated to the companion numerical-methods paper; the definition in \eqref{eq:Sstar} does not depend on a particular optimizer.
+
+\subsection{Forecast optimality versus recovery optimality}
+
+If a latent trend $\tau$ is known in simulation, a recovery-oriented oracle might choose
+\[
+S_{\mathrm{rec}}
+\in
+\arg\min_S
+\|\widehat\tau_S-\tau\|^2.
+\]
+The proposed criterion instead chooses $S^\star_{d,L,h}$ from future predictive error. These targets need not coincide. A smoother can reconstruct the historical latent path accurately but extrapolate poorly, or sacrifice historical recovery in exchange for more stable terminal derivatives.
+
+This distinction is a central empirical question of the paper, not a claim that forecast-optimal smoothness is universally preferable under every loss.
