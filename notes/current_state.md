@@ -1,3 +1,5 @@
+> **Scope note (2026-10-05):** This file records the broader adaptive-paper program before the smoothness-CV / numerical-methods split. It is no longer the global source of truth. Start with AI_HANDOFF.md and RESEARCH_MAP.md. For current methodological work use paper_smoothness-cv/ and paper_numerical-methods/.
+
 # Current Project State
 
 Last updated: 2026-09-29

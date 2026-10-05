@@ -1,3 +1,5 @@
+> **Split note (2026-10-05):** This review was written before the project was separated into a criterion paper and a numerical-methods paper. Treat it as source material, not the current novelty statement. Paper A positioning is in ../../paper_smoothness-cv/notes/literature_positioning.md; the numerical paper's current positioning is in submission_positioning.md.
+
 # Literature Review — Numerical Selection of Forecast-Optimal Smoothness
 
 **Status:** working literature review for the active numerical paper.

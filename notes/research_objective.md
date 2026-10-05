@@ -245,7 +245,7 @@ that the financial stress test establishes predictability or trading value.
 
 Detailed note:
 
-`paper_numerical-smoothness-selection/notes/assumptions_and_claim_boundaries.md`
+`paper_numerical-methods/notes/assumptions_and_claim_boundaries.md`
 
 ## Three-level scientific structure
 
