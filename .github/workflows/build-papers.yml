@@ -10,6 +10,7 @@ on:
         type: choice
         options:
           - numerical
+          - smoothness-cv
           - adaptive
           - recurrence
           - tutorial
@@ -38,7 +39,13 @@ jobs:
             latexmk \
             texlive-latex-base \
             texlive-latex-extra \
-            texlive-fonts-recommended
+            texlive-fonts-recommended \
+            texlive-xetex
+
+      - name: Build smoothness-CV paper
+        if: ${{ inputs.target == 'smoothness-cv' || inputs.target == 'all' }}
+        shell: bash
+        run: python paper_smoothness-cv/build.py
 
       - name: Build numerical paper
         if: ${{ inputs.target == 'numerical' || inputs.target == 'all' }}
@@ -85,6 +92,15 @@ jobs:
           latexmk -pdf -interaction=nonstopmode \
             -outdir=paper_penalized-trend-tutorial/build \
             paper_penalized-trend-tutorial/main.tex
+
+      - name: Upload smoothness-CV paper
+        if: ${{ inputs.target == 'smoothness-cv' || inputs.target == 'all' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: trend-estimation-smoothness-cv-${{ steps.meta.outputs.short_sha }}
+          path: paper_smoothness-cv/forecast_optimal_smoothness.pdf
+          if-no-files-found: error
+          retention-days: 30
 
       - name: Upload numerical paper
         if: ${{ inputs.target == 'numerical' || inputs.target == 'all' }}
