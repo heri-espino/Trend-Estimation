@@ -55,7 +55,7 @@ standardized distance.
 
 Forecast-optimal PLS is one competitor. Its numerical smoothness-selection
 algorithm is developed and validated in the separate
-paper_numerical-smoothness-selection/ paper and is imported here as a finished
+paper_numerical-methods/ paper and is imported here as a finished
 method.
 
 This paper does not claim novelty for AR, ARIMA, GCV, state-space likelihood, or

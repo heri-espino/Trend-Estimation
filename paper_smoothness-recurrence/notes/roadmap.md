@@ -1,7 +1,7 @@
 # Roadmap — Parked Applied Paper
 
 **Do not execute this roadmap until
-paper_numerical-smoothness-selection/ is finished.**
+paper_numerical-methods/ is finished.**
 
 ## Phase 0 — Separation
 

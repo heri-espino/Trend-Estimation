@@ -85,7 +85,7 @@ forecasting models if they add a genuinely different modeling principle.
 - portfolio/trading profitability unless a separate explicit design is added.
 
 The numerical optimizer used by forecast-optimal PLS belongs to
-paper_numerical-smoothness-selection/.
+paper_numerical-methods/.
 
 ## Read first when this paper is resumed
 
@@ -94,5 +94,5 @@ paper_numerical-smoothness-selection/.
 3. notes/roadmap.md
 4. notes/decisions.md
 
-Do not resume this roadmap until paper_numerical-smoothness-selection/ is
+Do not resume this roadmap until paper_numerical-methods/ is
 finished.

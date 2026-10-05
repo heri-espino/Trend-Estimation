@@ -6,7 +6,7 @@
 **Status:** frozen.
 
 No new experiments are run for this paper until
-paper_numerical-smoothness-selection/ is finished.
+paper_numerical-methods/ is finished.
 
 ## R002 — Numerical method is external to this paper
 
