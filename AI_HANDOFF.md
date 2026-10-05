@@ -8,6 +8,8 @@ The repository now has TWO linked active methodological papers. Do not merge the
 
 ### Paper A — paper_smoothness-cv/
 
+Primary target: **Journal of Forecasting**. The active Wiley manuscript has already been rewritten for this journal; do not restore the inherited WTI/JFM text.
+
 Question: **what smoothness criterion should be optimized?**
 
 \[
