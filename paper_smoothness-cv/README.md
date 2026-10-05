@@ -1,89 +1,163 @@
-# Smoothness selected by chronological forecast validation
+# Forecast-optimal smoothness by chronological forecast validation
 
-**Status: ACTIVE — methodological paper created by the 2026-10-05 split.**
+**Status: ACTIVE — manuscript rewritten for Journal of Forecasting on 2026-10-05.**
 
-Working title: **Forecast-Optimal Smoothness for Finite-Difference Penalized Trend Estimation**
+**Primary target journal:** *Journal of Forecasting*.
 
-## Objective
+**Working title:** *Forecast-Optimal Smoothness for Penalized Trend Estimation*.
 
-Define and study an endogenous smoothness level for finite-difference penalized trend estimation by choosing normalized smoothness \(S\) to minimize chronological future-block forecast error.
+## Scientific question
 
-## Why this is a separate paper
+For a fixed finite-difference trend family and forecast horizon, what amount of smoothness should be selected when the tuning target is genuinely future forecast performance?
 
-The former project mixed two questions:
+The paper defines
 
-1. What should smoothness mean and how should it be selected for forecasting?
-2. How should the resulting one-dimensional objective be optimized efficiently when multimodal?
-
-This folder owns question 1. Numerical root discovery, Brent, adaptive subdivision, rational-polynomial structure, and Sturm/root isolation belong to paper_numerical-methods/.
-
-## Direct methodological lineage
-
-The closest foundation is Guerrero's controlled-smoothness penalized least-squares framework: finite-difference PLS, a trace-based smoothness index, analyst-specified smoothness percentages, and trend extrapolation.
-
-The new step is
 \[
-S_{\text{chosen by analyst}}
-\longrightarrow
-S^\star_{\text{chosen by chronological forecast error}}.
+S^\star_{d,L,h}
+\in
+\arg\min_{S\in[0,1]}
+F_{d,L,h}(S),
 \]
 
-Hart (1994) is important related work because TSCV chooses a kernel bandwidth using predictive performance. It is not the same estimator or criterion.
+where \(F_{d,L,h}\) is chronological rolling future-block MSE.
+
+## Direct lineage
+
+The paper should be narrated primarily as
+
+\[
+\text{Guerrero controlled smoothness}
+\longrightarrow
+\text{forecast-selected smoothness}.
+\]
+
+Guerrero supplies finite-difference PLS, the trace-based smoothness interpretation, and trend continuation. The new step is to select the smoothness percentage from forecast performance instead of specifying it exogenously.
+
+Hart (1994) is an important predictive-smoothing precedent, not the direct model foundation. More recent *Journal of Forecasting* papers by Taylor, Zafar et al., Staněk, Wolff and Echterling, Franjic and Schweikert, and Xu et al. establish a journal-facing literature on forecast-oriented smoothing, tuning, and out-of-sample evaluation.
 
 ## Core model
 
 \[
-\widehat\tau_\lambda=H_\lambda y,\qquad
+\widehat\tau_\lambda
+=
+H_\lambda y,
+\qquad
 H_\lambda=(I+\lambda D_d^\top D_d)^{-1}.
 \]
 
+Normalized smoothness:
+
 \[
-S(\lambda)=
-1-\frac1{N-d}
-\sum_{\delta_j>0}\frac1{1+\lambda\delta_j}\in[0,1].
+S(\lambda)
+=
+1-\frac{1}{L-d}
+\sum_{\delta_j>0}
+\frac{1}{1+\lambda\delta_j}.
 \]
 
-For origin \(T\),
+At origin \(T\),
+
 \[
-\widehat z_T(S)=G_{d,h}H_{\lambda(S)}x_T.
+\widehat z_T(S)
+=
+G_{d,h}H_{\lambda(S)}x_T.
 \]
 
-Define
+For rolling origins,
+
 \[
-F_{d,L,h}(S)=
-\frac1{Mh}\sum_{j=1}^M
-\left\|z_{T_j}-G_{d,h}H_{\lambda(S)}x_{T_j}\right\|^2,
+F_{d,L,h}(S)
+=
+\frac{1}{Mh}
+\sum_{j=1}^M
+\left\|
+z_{T_j}
+-
+G_{d,h}H_{\lambda(S)}x_{T_j}
+\right\|^2.
 \]
-then
+
+The exact effective-degrees-of-freedom relation is
+
 \[
-S^\star_{d,L,h}\in\arg\min_{S\in[0,1]}F_{d,L,h}(S).
+\operatorname{edf}
+=
+L-(L-d)S.
 \]
 
-This is the central object.
+## Paper ownership
 
-## What this paper should establish
+This paper owns:
+- the definition and interpretation of forecast-optimal smoothness;
+- the normalized \(S\)-coordinate;
+- the chronological future-block tuning criterion;
+- horizon dependence;
+- forecast-optimal versus recovery-optimal smoothness;
+- the scientific forecasting evaluation.
 
-- why normalized smoothness is a useful coordinate;
-- why chronological future-block error is a different target from recovery-oriented or in-sample criteria;
-- how selected smoothness depends on forecast horizon and continuation family;
-- when the criterion is stable or multimodal;
-- whether forecast-optimal and recovery-optimal smoothness differ under controlled mechanisms;
-- relation to Guerrero, Hart/TSCV, classical smoothing-parameter criteria, and rolling-origin evaluation.
+It does **not** own:
+- Brent/adaptive root search/Sturm certification — paper_numerical-methods/;
+- post-selection bias/variance/inference — paper_statistical-properties-penalized-trend/;
+- joint adaptive selection of \((d,L,S)\) — paper_forecast-optimal-smoothing/.
 
-A dense grid is acceptable for the main scientific experiments. Numerical efficiency is not the contribution.
+## Manuscript
 
-## Scope
+The active Wiley manuscript is:
 
-The baseline paper fixes \(d,L,h\) for each continuous smoothness problem. Joint adaptation of \(d,L,S\) belongs to paper_forecast-optimal-smoothing/.
+paper_smoothness-cv/manuscript/main.tex
 
-The baseline estimator uses the zero-drift, identity-weight finite-difference PLS family already implemented. General Guerrero \(\mu\neq0\) and non-identity covariance weighting are extensions.
+The inherited WTI/Journal of Futures Markets text that was accidentally copied with the Wiley template has been removed from this paper.
+
+Current manuscript structure:
+
+1. Introduction
+2. Related work and positioning
+3. Finite-difference penalized trend estimation
+4. Forecast-optimal smoothness
+5. Basic properties
+6. Evaluation protocol
+7. Scope, interpretation, and implications
+8. Conclusion
+
+The manuscript deliberately contains **no fabricated empirical results**. Section 6 freezes the intended comparison protocol before the final test results are generated.
+
+## Build
+
+Compiler-free structure check:
+
+~~~bash
+python paper_smoothness-cv/build.py --check
+~~~
+
+Compile locally with XeLaTeX/BibTeX available:
+
+~~~bash
+python paper_smoothness-cv/build.py
+~~~
+
+Expected output:
+
+paper_smoothness-cv/forecast_optimal_smoothness.pdf
+
+GitHub Actions also has a manual smoothness-cv target under **Build papers**. Heavy paper compilation remains manual-only.
+
+## Final empirical package still required
+
+The current manuscript is method/theory plus a prespecified evaluation protocol. Before submission, run and freeze:
+- forecast-CV versus CV/GCV/AICc/BIC;
+- forecast-optimal versus recovery-optimal smoothness in controlled simulations;
+- one-step tuning versus horizon-matched \(h\)-step tuning;
+- public multi-series forecast evaluation;
+- submission-grade real-time macro vintages if macro backtests are retained.
+
+Current-vintage FRED histories are exploratory only for historical macroeconomic evaluation; use real-time vintages for paper-final backtests.
 
 ## Read first
 
-1. AI_HANDOFF.md
-2. notes/research_objective.md
-3. notes/model_and_notation.md
+1. manuscript/main.tex
+2. AI_HANDOFF.md
+3. notes/research_objective.md
 4. notes/literature_positioning.md
-5. notes/claim_boundaries.md
-6. notes/roadmap.md
-7. notes/manuscript_outline.md
+5. notes/journal_of_forecasting_positioning.md
+6. notes/claim_boundaries.md
+7. notes/roadmap.md
