@@ -1,0 +1,131 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Compilar: Penalized Trend Tutorial",
+            "type": "process",
+            "command": "cmd",
+            "args": [
+                "/c",
+                "${workspaceFolder}\\paper_penalized-trend-tutorial\\build-paper.bat"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "group": {
+                "kind": "build"
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "clear": false
+            }
+        },
+        {
+            "label": "Compilar: Statistical Properties",
+            "type": "process",
+            "command": "cmd",
+            "args": [
+                "/c",
+                "${workspaceFolder}\\paper_statistical-properties-penalized-trend\\build-paper.bat"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "group": {
+                "kind": "build"
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "clear": false
+            }
+        },
+        {
+            "label": "Compilar: Forecast-Optimal Smoothing",
+            "type": "process",
+            "command": "cmd",
+            "args": [
+                "/c",
+                "${workspaceFolder}\\paper_forecast-optimal-smoothing\\build-paper.bat"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "group": {
+                "kind": "build"
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "clear": false
+            }
+        },
+        {
+            "label": "Compilar: Numerical Smoothness Selection",
+            "type": "process",
+            "command": "cmd",
+            "args": [
+                "/c",
+                "${workspaceFolder}\\paper_numerical-smoothness-selection\\build-paper.bat"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "group": {
+                "kind": "build"
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "clear": false
+            }
+        },
+        {
+            "label": "Compilar: Smoothness Recurrence",
+            "type": "process",
+            "command": "cmd",
+            "args": [
+                "/c",
+                "${workspaceFolder}\\paper_smoothness-recurrence\\build-paper.bat"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "group": {
+                "kind": "build"
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "clear": false
+            }
+        },
+        {
+            "label": "Compilar: Numerical Methods",
+            "type": "process",
+            "command": "cmd",
+            "args": [
+                "/c",
+                "${workspaceFolder}\\paper_numerical-methods\\build-paper.bat"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "group": {
+                "kind": "build"
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "clear": false
+            }
+        }
+    ]
+}
