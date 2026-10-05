@@ -1,0 +1,51 @@
+\section{Scope, interpretation, and implications}
+
+\subsection{What the selected smoothness means}
+
+The output $S^\star_{d,L,h}$ is a forecast-task-specific complexity choice. From \eqref{eq:edf},
+\[
+S^\star
+=
+\frac{L-\operatorname{edf}^\star}{L-d},
+\]
+so the selected value has a direct effective-degrees-of-freedom interpretation.
+
+A value near zero says that, within the specified finite-difference family and validation design, preserving most observed local variation improved the forecast criterion. A value near one says that the criterion preferred a trend close to the null-space polynomial. Intermediate values represent partial attenuation of penalizable spectral directions.
+
+This interpretation is more comparable across sample lengths than reporting $\lambda$ alone because the same numerical penalty can imply different attenuation patterns when $L$ changes.
+
+\subsection{What forecast-optimal smoothness does not mean}
+
+The selected value is not a universal property of a time series. It depends on $d$, $L$, $h$, the continuation rule, the loss, and the rolling-origin design. In particular,
+\[
+S^\star_{d,L,h_1}
+\neq
+S^\star_{d,L,h_2}
+\]
+is not a contradiction; different horizons can reward different trade-offs between local adaptation and extrapolation stability.
+
+Nor should $S^\star$ automatically be interpreted as the smoothness that best recovers a latent historical trend. Forecasting and historical signal recovery are related but distinct objectives, as predictive smoothing work such as Hart \cite{hart1994tscv} makes clear.
+
+\subsection{Relation to adaptive smoothing}
+
+The baseline proposal selects one smoothness value for a specified validation problem. It does not make the smoothing parameter time-varying within the fitted window. Adaptive exponential-smoothing methods such as Taylor \cite{taylor2004stes} answer a different question by allowing smoothing parameters to evolve with observed conditions.
+
+A later extension could allow forecast-optimal smoothness itself to vary across origins or regimes. That requires an additional adaptation mechanism and is outside the baseline paper.
+
+\subsection{Relation to forecast-oriented filter design}
+
+Zafar et al.\ \cite{zafar2022filter} show that trend-filter design can matter for short-term forecast performance. The present approach holds the filter family fixed and optimizes its degree of smoothness. The two ideas are complementary: one changes the representation; the other changes the regularization strength inside a given representation.
+
+\subsection{Why the smoothness scale is useful}
+
+The criterion provides a common language between smoothing and forecast validation. It lets an analyst report not only that a penalty was cross-validated, but what effective amount of smoothing the forecast task selected. It also makes horizon dependence visible on a bounded scale.
+
+This is particularly useful when comparing series of different lengths or repeated rolling windows. Instead of comparing raw penalties, one can compare $S^\star$ and its implied effective degrees of freedom.
+
+\subsection{Limitations}
+
+The baseline framework assumes equally spaced observations, fixed difference order, and deterministic continuation of the estimated trend. It does not model a separate stochastic residual forecast component. In applications where short-run dynamics contain substantial predictive information, a trend-only forecast is intentionally incomplete.
+
+That limitation is useful scientifically because it isolates the effect of choosing trend smoothness for extrapolation. ARMA, state-space, or machine-learning residual models can be layered on later, but adding them to the baseline experiment would make it harder to identify whether forecast gains came from the smoothness criterion or from the residual model.
+
+Finally, the rolling validation loss can be noisy and multimodal. The present paper treats this as part of the selection problem rather than assuming unimodality. Efficient and potentially certified recovery of multiple minima is a separate numerical contribution.
