@@ -13,6 +13,7 @@ on:
           - adaptive
           - recurrence
           - tutorial
+          - statistical
           - all
 
 jobs:
@@ -67,6 +68,15 @@ jobs:
             -outdir=paper_smoothness-recurrence/build \
             paper_smoothness-recurrence/main.tex
 
+      - name: Build statistical-properties paper
+        if: ${{ inputs.target == 'statistical' || inputs.target == 'all' }}
+        shell: bash
+        run: |
+          mkdir -p paper_statistical-properties-penalized-trend/build
+          latexmk -pdf -interaction=nonstopmode \
+            -outdir=paper_statistical-properties-penalized-trend/build \
+            paper_statistical-properties-penalized-trend/main.tex
+
       - name: Build tutorial paper
         if: ${{ inputs.target == 'tutorial' || inputs.target == 'all' }}
         shell: bash
@@ -100,6 +110,15 @@ jobs:
         with:
           name: trend-estimation-smoothness-recurrence-${{ steps.meta.outputs.short_sha }}
           path: paper_smoothness-recurrence/build/main.pdf
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload statistical-properties paper
+        if: ${{ inputs.target == 'statistical' || inputs.target == 'all' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: trend-estimation-statistical-properties-${{ steps.meta.outputs.short_sha }}
+          path: paper_statistical-properties-penalized-trend/build/main.pdf
           if-no-files-found: error
           retention-days: 30
 
