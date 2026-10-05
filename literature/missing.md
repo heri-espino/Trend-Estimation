@@ -24,35 +24,35 @@ The older audit reported 16 missing references. Since then, **10 of those 16 hav
 1. **Guerrero & Galicia-Vázquez (2010)** — *Trend estimation of financial time series*
    - DOI: `10.1002/asmb.763`
    - Why it matters: closest direct antecedent for penalized trend estimation applied to financial time series.
-   - Expected basename: `Guerrero_2010_trend-estimation-financial-time-series.pdf`
+   - Expected basename: `Guerrero-2010-trend_estimation_financial_time_series.pdf`
 
 2. **Guerrero, Cortés-Toto & Reyes Cervantes (2018)** — *Effect of autocorrelation when estimating the trend of a time series via penalized least squares with controlled smoothness*
    - DOI: `10.1007/s10260-017-0389-8`
    - Why it matters: directly studies serial dependence/autocorrelation in the controlled-smoothness framework.
-   - Expected basename: `Guerrero_2018_autocorrelation-controlled-smoothness.pdf`
+   - Expected basename: `Guerrero-2018-autocorrelation_controlled_smoothness.pdf`
 
 3. **Racine (1997)** — *Feasible Cross-Validatory Model Selection for General Stationary Processes*
    - DOI: `10.1002/(SICI)1099-1255(199703)12:2<169::AID-JAE426>3.0.CO;2-P`
    - Why it matters: foundational cross-validation result for dependent stationary data.
-   - Expected basename: `Racine_1997_cross-validation-stationary-processes.pdf`
+   - Expected basename: `Racine-1997-cross_validation_stationary_processes.pdf`
 
 4. **Racine (2000)** — *Consistent cross-validatory model-selection for dependent data: hv-block cross-validation*
    - DOI: `10.1016/S0304-4076(00)00030-0`
    - Why it matters: directly relevant to leakage-resistant validation for dependent time series.
-   - Expected basename: `Racine_2000_hv-block-cross-validation.pdf`
+   - Expected basename: `Racine-2000-hv_block_cross_validation.pdf`
 
 ### Foundational / supporting
 
 5. **Brooks, Stone, Chan & Chan (1988)** — *Cross-validatory graduation*
    - DOI: `10.1016/0167-6687(88)90097-2`
    - Why it matters: early cross-validation treatment of graduation/smoothing.
-   - Expected basename: `Brooks_1988_cross-validatory-graduation.pdf`
+   - Expected basename: `Brooks-1988-cross_validatory_graduation.pdf`
 
 6. **Kitagawa & Gersch (1996)** — *Smoothness Priors Analysis of Time Series*
    - DOI: `10.1007/978-1-4612-0761-0`
    - Type: book / monograph rather than a journal paper.
    - Why it matters: foundational probabilistic/state-space treatment of smoothness priors.
-   - Expected basename: `Kitagawa_1996_smoothness-priors-time-series.pdf`
+   - Expected basename: `Kitagawa-1996-smoothness_priors_time_series.pdf`
 
 ## Previously missing, now present
 

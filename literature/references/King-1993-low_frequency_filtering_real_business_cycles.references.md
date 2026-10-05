@@ -1,0 +1,71 @@
+---
+id: "King-1993-low_frequency_filtering_real_business_cycles-references"
+source_pdf: "../pdf/King-1993-low_frequency_filtering_real_business_cycles.pdf"
+content: "references-only"
+---
+
+##### References
+
+Baxter, Marianne, 1991, Business cycles and the exchange rate regime: Some evidence from the United States, Journal of International Money and Finance 10, 71–88.
+
+Bell, W., 1984, Signal extráction for non-stationary time series, Annals of Statistics 12, 646–684.
+
+Baxter, Marianne and Alan Stockman, 1989, Business cycles and the exchange rate regime: Some international evidence, Journal of Monetary Economics 23, 377–400.
+
+Brown, R., 1962, Smoothing, forecasting and prediction of discrete time series (Prentice Hall,
+
+Englewood Cliffs, NJ).
+
+Burns, Arthur and Wesley C. Mitchell, 1941, Measuring business cycles (National Bureau of Economic Research, New York, NY).
+
+Friedman, Milton, 1957, A theory of the consumption function (Princeton University Press, Princeton, NJ).
+
+Christiano, Lawrence, 1988, Why does inventory investment fluctuate so much?, Journal of Monetary Economics 21, 247-280.
+
+Hansen, Gary, 1985, Indivisible labor and the business cycle, Journal of Monetary Economics 16, 309-327.
+
+
+<!-- p:25 -->
+
+
+Hansen, Gary, 1988, Technical progress and aggregate fluctuations, Working paper (University of California, Los Angeles, CA).
+
+Harvey, Andrew, 1981, Time series models (Phillip Allan, Oxford).
+
+King, Robert G. and Charles I. Plosser, 1989, Real business cycles and the test of the Adelmans (University of Rochester, Rochester, NY).
+
+Hodrick, Robert and Edward Prescott, 1980, Post-war U.S. business cycles: An empirical investigation, Working paper (Carnegie-Mellon University, Pittsburgh, PA).
+
+King, Robert G., C. I. Plosser, and S. T. Rebelo, 1988a, Production, growth, and business cycles: I. The basic neoclassical model, Journal of Monetary Economics 21, 195–232.
+
+King, Robert G., C. I. Plosser, and S. T. Rebelo, 1987, Production, growth, and business cycles: Technical appendix, Manuscript (University of Rochester, Rochester, NY).
+
+King, Robert G., C. I. Plosser, and S. T. Rebelo, 1988b, Production, growth, and business cycles: II. New directions, Journal of Monetary Economics 21, 309–342.
+
+King, Robert G. and Sergio T. Rebelo, 1986 Business cycles with endogenous growth, Manuscript (University of Rochester, Rochester, NY).
+
+King, Robert G. and Sergio T. Rebelo, 1989, Low frequency filtering and real business cycles, Working paper no. 205 (Rochester Center for Economic Research, Rochester, NY).
+
+Koopmans, Leonid, 1974, The spectral analysis of time series (Academic Press, New York, NY). Kydland, Finn and Edward Prescott, 1982, Time to build and aggregate fluctuations, Econometrica 50, 1345–1370.
+
+Lucas, Robert E., 1980, Two illustrations of the quantity theory of money, American Economic Review 70, 1005–1014.
+
+McCallum, Bennett, 1989, Real business cycles, in: Robert Barro, ed., Handbook of modern business cycle theory (Wiley, New York, NY).
+
+Mitchell, Wesley C., 1951, What happens during business cycles? (National Bureau of Economic Research, New York, NY).
+
+Mitchell, Wesley C., 1927, Business cycles: The problem and its setting (National Bureau of Economic Research, New York, NY).
+
+Nelson, Charles and Charles Plosser, 1982, Trends and random walks in macroeconomic time series, Journal of Monetary Economics 10, 139–167.
+
+Nerlove, Mark, David M. Grether, and Jose C. Carvalho, 1979, Analysis of economic time series (Academic Press, New York, NY).
+
+Singleton, Kenneth, 1988, Econometric issues in the analysis of equilibrium business cycle models, Journal of Monetary Economics 21, 361–386.
+
+Prescott, Edward, 1986, Theory ahead of business cycle measurement, Carnegie-Rochester Conference Series on Public Policy 25, 11–66.
+
+Watson, Mark, 1986, Univariate detrending methods with stochastic trends, Journal of Monetary Economics 18, 49–76.
+
+Whittle, Peter, 1963, Prediction and regulation (Van Nostrand, Princeton, NJ).
+
+Wiener, Norbert, 1949, Extrapolation, interpolation and smoothing of stationary-time-series (Wiley, New York, NY).

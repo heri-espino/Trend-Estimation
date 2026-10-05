@@ -61,7 +61,7 @@ The key idea already present is the trade-off
 We do **not** claim to introduce quadratic penalized smoothing.
 
 **Repository source:**
-\`literature/extracted/Whittaker_1923_new-method-graduation.md\`.
+\`literature/extracted/Whittaker-1923-new_method_graduation.md\`.
 
 ---
 
@@ -104,7 +104,7 @@ numerical contribution is easier to isolate and its derivatives are available in
 closed form.
 
 **Repository source:**
-\`literature/extracted/Guerrero_2007_time-series-smoothing-penalized-least-squares.md\`.
+\`literature/extracted/Guerrero-2007-time_series_smoothing_penalized_least_squares.md\`.
 
 ---
 
@@ -166,7 +166,7 @@ established smoothness concept**, not as the invention of controlled
 smoothness.
 
 **Repository source:**
-\`literature/extracted/Guerrero_2008_estimating-trends-percentage-smoothness.md\`.
+\`literature/extracted/Guerrero-2008-estimating_trends_percentage_smoothness.md\`.
 
 ---
 
@@ -184,7 +184,7 @@ smoothing parameter manually.
 This establishes that **data-driven selection of a smoothing parameter is old**.
 
 **Repository source:**
-\`literature/extracted/Craven_1979_smoothing-noisy-data-spline-functions.md\`.
+\`literature/extracted/Craven-1979-smoothing_noisy_data_spline_functions.md\`.
 
 ---
 
@@ -226,7 +226,7 @@ Their CV/GCV criteria are not our rolling future-block forecast loss.
 We cannot claim that selecting \(\lambda\) by CV inside PLS is new.
 
 **Repository source:**
-\`literature/extracted/Cortes-Toto_2017_trend-smoothness-optimality-criteria.md\`.
+\`literature/extracted/Cortes_Toto-2017-trend_smoothness_optimality_criteria.md\`.
 
 ---
 
@@ -289,7 +289,7 @@ Our paper:
 - explicitly searches for multiple relevant minima and exact endpoints.
 
 **Repository source:**
-\`literature/extracted/Hart_1994_time-series-cross-validation.md\`.
+\`literature/extracted/Hart-1994-time_series_cross_validation.md\`.
 
 ---
 
@@ -315,7 +315,7 @@ Our rolling validation design is methodologically standard and should be cited,
 not presented as a novelty.
 
 **Repository source:**
-\`literature/extracted/Tashman_2000_out-of-sample-forecast-accuracy.md\`.
+\`literature/extracted/Tashman-2000-out_of_sample_forecast_accuracy.md\`.
 
 ---
 
@@ -331,9 +331,9 @@ specific scalar objective in smoothness space.
 
 **Repository sources:**
 
-- \`literature/extracted/Bergmeir_2012_cross-validation-time-series-predictors.md\`;
-- \`literature/extracted/Bergmeir_2018_cross-validation-ar-time-series.md\`;
-- \`literature/extracted/Burman_1994_cross-validatory-dependent-data.md\`.
+- \`literature/extracted/Bergmeir-2012-cross_validation_time_series_predictors.md\`;
+- \`literature/extracted/Bergmeir-2018-cross_validation_ar_time_series.md\`;
+- \`literature/extracted/Burman-1994-cross_validatory_dependent_data.md\`.
 
 ---
 
@@ -361,9 +361,9 @@ choice.
 
 **Repository sources:**
 
-- \`literature/extracted/Islas-Camargo_2019_forecasting-remittances-mexico-rjef.md\`;
-- \`literature/extracted/Islas-Camargo_2019_forecasting-remittances-mexico.md\`;
-- \`literature/extracted/Islas-Camargo_2025_exchange-rate-predictability-controlled-smoothness.md\`.
+- \`literature/extracted/Islas_Camargo-2019-forecasting_remittances_mexico_rjef.md\`;
+- \`literature/extracted/Islas_Camargo-2019-forecasting_remittances_mexico.md\`;
+- \`literature/extracted/Islas_Camargo-2025-exchange_rate_predictability_controlled_smoothness.md\`.
 
 ---
 
@@ -380,7 +380,7 @@ smoothing criteria such as GCV.
 Efficient implementation of a penalized smoother is not by itself our novelty.
 
 **Repository source:**
-\`literature/extracted/Weinert_2007_efficient-whittaker-henderson-smoothing.md\`.
+\`literature/extracted/Weinert-2007-efficient_whittaker_henderson_smoothing.md\`.
 
 ---
 
@@ -423,8 +423,8 @@ defensible.
 
 **Repository sources:**
 
-- \`literature/extracted/Biessy_2025_whittaker-henderson-smoothing-revisited.md\`;
-- \`literature/extracted/Biessy_2025_whittaker-henderson-smoothing-revisited-appendix.md\`.
+- \`literature/extracted/Biessy-2025-whittaker_henderson_smoothing_revisited.md\`;
+- \`literature/extracted/Biessy-2025-whittaker_henderson_smoothing_revisited_appendix.md\`.
 
 ---
 
@@ -472,7 +472,7 @@ This distinction is important:
 in general.
 
 **Repository source:**
-\`literature/extracted/Franke_2026_data-driven-hp-smoothing-parameter.md\`.
+\`literature/extracted/Franke-2026-data_driven_hp_smoothing_parameter.md\`.
 
 ---
 
@@ -503,7 +503,7 @@ Never say "Brent finds all minima." The paper's contribution is the surrounding
 discovery/classification/end-point procedure.
 
 **Repository source:**
-\`literature/extracted/Brent_1971_zero-finding-algorithm.md\`.
+\`literature/extracted/Brent-1971-zero_finding_algorithm.md\`.
 
 ---
 
@@ -816,19 +816,19 @@ literature review should be updated rather than protecting a novelty claim.
 
 | Topic in manuscript | Main source(s) in repository |
 |---|---|
-| Historical quadratic smoothing | \`Whittaker_1923_new-method-graduation.md\` |
-| Finite-difference PLS | \`Guerrero_2007_time-series-smoothing-penalized-least-squares.md\` |
-| Controlled percentage of smoothness | \`Guerrero_2008_estimating-trends-percentage-smoothness.md\` |
-| CV/GCV | \`Craven_1979_smoothing-noisy-data-spline-functions.md\` |
-| PLS + CV/GCV/AICc/BIC | \`Cortes-Toto_2017_trend-smoothness-optimality-criteria.md\` |
-| Predictive TSCV for trend smoothing | \`Hart_1994_time-series-cross-validation.md\` |
-| Forecast-origin evaluation | \`Tashman_2000_out-of-sample-forecast-accuracy.md\` |
-| Time-series CV designs | \`Bergmeir_2012_cross-validation-time-series-predictors.md\` |
-| Efficient WH computation | \`Weinert_2007_efficient-whittaker-henderson-smoothing.md\` |
-| Modern WH + multiple GCV minima + optimization | \`Biessy_2025_whittaker-henderson-smoothing-revisited.md\` |
-| Data-driven HP calibration | \`Franke_2026_data-driven-hp-smoothing-parameter.md\` |
-| Applied controlled-smoothness forecasting | \`Islas-Camargo_2019_forecasting-remittances-mexico-rjef.md\` |
-| Brent root refinement | \`Brent_1971_zero-finding-algorithm.md\` |
+| Historical quadratic smoothing | \`Whittaker-1923-new_method_graduation.md\` |
+| Finite-difference PLS | \`Guerrero-2007-time_series_smoothing_penalized_least_squares.md\` |
+| Controlled percentage of smoothness | \`Guerrero-2008-estimating_trends_percentage_smoothness.md\` |
+| CV/GCV | \`Craven-1979-smoothing_noisy_data_spline_functions.md\` |
+| PLS + CV/GCV/AICc/BIC | \`Cortes_Toto-2017-trend_smoothness_optimality_criteria.md\` |
+| Predictive TSCV for trend smoothing | \`Hart-1994-time_series_cross_validation.md\` |
+| Forecast-origin evaluation | \`Tashman-2000-out_of_sample_forecast_accuracy.md\` |
+| Time-series CV designs | \`Bergmeir-2012-cross_validation_time_series_predictors.md\` |
+| Efficient WH computation | \`Weinert-2007-efficient_whittaker_henderson_smoothing.md\` |
+| Modern WH + multiple GCV minima + optimization | \`Biessy-2025-whittaker_henderson_smoothing_revisited.md\` |
+| Data-driven HP calibration | \`Franke-2026-data_driven_hp_smoothing_parameter.md\` |
+| Applied controlled-smoothness forecasting | \`Islas_Camargo-2019-forecasting_remittances_mexico_rjef.md\` |
+| Brent root refinement | \`Brent-1971-zero_finding_algorithm.md\` |
 
 ---
 

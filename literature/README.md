@@ -16,7 +16,7 @@ This directory is the metadata/RAG entry point for the Trend Estimation research
 ## Naming convention
 
 Paper artifacts use the same canonical basename across subfolders:
-`Author_Year_short-title` (for example, `Guerrero_2007_time-series-smoothing-penalized-least-squares`).
+`Author_Year_short-title` (for example, `Guerrero-2007-time_series_smoothing_penalized_least_squares`).
 The PDF is the canonical source for identifying author, publication year, and short title; matching extracted and references Markdown files reuse that basename.
 
 ## PDF policy
