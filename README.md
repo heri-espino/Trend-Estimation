@@ -1,179 +1,113 @@
 # Trend Estimation
 
-trend_estimation is a Python research library for penalized trend estimation,
-forecasting, chronological validation, and numerical smoothness selection.
+trend_estimation is a library-first research repository for finite-difference penalized trend estimation, forecasting, chronological validation, and smoothness selection.
 
-The repository is **library-first**: reusable methods live in
-src/trend_estimation/; papers and experiments import the installed package.
+## Research map
 
-## Current research focus
+As of 2026-10-05, the former mixed numerical-smoothness project is split into two linked papers because it contains two different scientific questions.
 
-There are **four research-paper workspaces** in this repository, plus one tutorial
-companion.
+### Paper A — Smoothness selected by chronological forecast validation
 
-Only one research paper is active:
+Directory: paper_smoothness-cv/
 
+Working idea: **Forecast-Optimal Smoothness for Finite-Difference Penalized Trend Estimation**
+
+It asks:
+
+> Given a fixed finite-difference trend family and forecast horizon, what level of smoothness should be selected when the criterion is future chronological forecast error rather than an exogenously chosen percentage or an in-sample/recovery criterion?
+
+Core estimator:
 \[
-\boxed{\text{paper\_numerical-smoothness-selection/}}
+\widehat\tau_\lambda=(I+\lambda D_d^\top D_d)^{-1}y.
 \]
 
-We are finishing that paper first. Until it is complete, do not start new
-experiments or expand the scope of the other two research papers.
-
-### 1. ACTIVE — Numerical smoothness selection
-
-Directory: paper_numerical-smoothness-selection/
-
-Working title:
-
-**Numerical Selection of Forecast-Optimal Smoothness in Penalized Trend Estimation**
-
-Core problem:
+Normalized smoothness:
 \[
-S^\star\in\arg\min_{S\in[0,1]}CV_h(S),
-\]
-where the forecast-validation objective may have multiple local minima.
-
-Main contribution: derivative-aware numerical discovery/refinement of relevant
-minima on the compact smoothness domain, validated against a dense reference.
-
-Read first:
-
-- paper_numerical-smoothness-selection/notes/research_objective.md
-- paper_numerical-smoothness-selection/notes/scope.md
-- paper_numerical-smoothness-selection/notes/roadmap.md
-- paper_numerical-smoothness-selection/notes/decisions.md
-
-### 2. PARKED — Adaptive forecast-optimal trend estimation
-
-Directory: paper_forecast-optimal-smoothing/
-
-Working title:
-
-**Adaptive Forecast-Optimal Trend Estimation under Changing Time-Series Regimes**
-
-Core object:
-\[
-\Theta^\star_{T,h}
-=
-(d^\star_{T,h},L^\star_{T,h},S^\star_{T,h})
-=
-G(h,X_T,\mathcal C).
+S(\lambda)=1-\frac{1}{N-d}\sum_{\delta_j>0}\frac{1}{1+\lambda\delta_j}.
 \]
 
-This paper owns regime/state adaptation and joint time-varying selection of
-difference order, memory length, and smoothness. It resumes only after the
-numerical paper is finished.
+For rolling origins \(T\in\mathcal O\),
+\[
+F_{d,L,h}(S)=
+\frac{1}{|\mathcal O|h}
+\sum_{T\in\mathcal O}
+\left\|z_T-G_{d,h}H_{\lambda(S)}x_T\right\|^2,
+\]
+and
+\[
+S^\star_{d,L,h}\in\arg\min_{S\in[0,1]}F_{d,L,h}(S).
+\]
 
-### 3. PARKED — Financial trend forecasting and recurrence
+This paper owns the definition, interpretation, statistical motivation, and empirical behavior of forecast-optimal smoothness. It may use a dense grid because numerical efficiency is not its contribution.
 
-Directory: paper_smoothness-recurrence/
+The direct methodological foundation is Guerrero's penalized least-squares/controlled-smoothness framework. Hart (1994) is important related work showing predictive smoothing-parameter selection in a different kernel/TSCV setting, but it is not the same estimator, smoothness coordinate, continuation rule, or future-block criterion.
 
-Working title:
+### Paper B — Numerical methods for the smoothness objective
 
-**Forecasting Financial Trends and Measuring Recurrence under Competing Trend Models**
+Directory: paper_numerical-methods/
 
-This paper compares a compact set of established trend/forecasting principles
-such as forecast-optimal PLS, GCV PLS, likelihood/state-space models,
-AR/ARIMA, residual-AR models, and no-change. It then studies first-passage and
-recurrence behavior relative to the frozen ex-ante trend paths.
+Working title: **Numerical Solution of Multimodal Forecast-Smoothness Selection Problems**
 
-It does **not** own the smoothness-search algorithm. It resumes after the
-numerical paper is finished.
+It asks:
 
+> Once \(F(S)\) is defined, how can all relevant minima and the global optimum be located reliably and with far fewer evaluations than an exhaustive dense grid?
 
-### 4. PARKED — Statistical properties and inference
+Current numerical method:
 
-Directory: paper_statistical-properties-penalized-trend/
+1. sparse deterministic evaluation in \(S\);
+2. analytic \(F'\) and \(F''\);
+3. adaptive subdivision of suspicious intervals;
+4. bracketing roots of \(F'(S)\);
+5. Brent refinement;
+6. stationary-point classification;
+7. comparison with exact endpoints \(S=0\) and \(S=1\).
 
-Working title:
+Brent is a root refiner, not a global discovery method. The current production algorithm still uses adaptive evaluations to discover brackets.
 
-**Statistical Properties and Inference for Finite-Difference Penalized Trend Estimation**
+A stronger certified direction is under study. For fixed \((d,L,h)\), the forecast loss has rational structure in \(\lambda\), so stationary points can be related to roots of a polynomial numerator. The existing Sturm experiment is a proof-of-concept only.
 
-This is a future statistical-methodology project. It records the linear-smoother
-properties of the model (effective degrees of freedom, bias/variance, influence,
-uncertainty for level/slope/curvature, spectral shrinkage, residual diagnostics,
-and forecast uncertainty) and, more importantly, possible extensions involving
-forecast-selected smoothness and post-selection inference.
+Frozen numerical evidence from the pre-split work remains part of Paper B: 240/240 adversarial relevant optima, 2105/2105 synthetic dense-reference interior minima over 1920 surfaces, and 473/473 financial geometry-stress interior minima over 384 surfaces.
 
-The workspace explicitly distinguishes classical properties already developed
-for Whittaker-Henderson/spline/ridge/HP/Bayesian-state-space relatives from
-questions that may still support a new contribution. It remains parked until
-the active numerical paper is substantially frozen.
+## Other workspaces
 
-### Tutorial companion
+- paper_forecast-optimal-smoothing/ — PARKED; broader adaptive joint selection of \((d,L,S)\).
+- paper_smoothness-recurrence/ — PARKED; applied financial trend/recurrence comparison.
+- paper_statistical-properties-penalized-trend/ — PARKED; future statistical-properties/inference project.
+- paper_penalized-trend-tutorial/ — tutorial companion.
 
-paper_penalized-trend-tutorial/ is explanatory material, not one of the three
-research-paper tracks.
+The old paper_numerical-smoothness-selection/ directory is retained only as a pre-split historical snapshot. Do not edit it for new work.
+
+## Canonical reading order for another AI agent
+
+1. AI_HANDOFF.md
+2. RESEARCH_MAP.md
+3. paper_smoothness-cv/README.md
+4. paper_smoothness-cv/AI_HANDOFF.md
+5. paper_numerical-methods/README.md
+6. paper_numerical-methods/AI_HANDOFF.md
+
+Paper-specific notes override older root notes when scopes conflict.
+
+## Stable implementation namespaces
+
+Reusable methods remain under src/trend_estimation/.
+
+For reproducibility, the existing experiment/result namespaces are intentionally not renamed yet:
+
+- experiments/numerical_smoothness_selection/
+- results/numerical_smoothness_selection/
+
+Those names are historical implementation namespaces, not the current paper title.
 
 ## Install
-
-From the repository root:
 
 ~~~bash
 conda env create -f environment.yml
 conda activate trend-estimation
 pip install -e .
-~~~
-
-For development and documentation:
-
-~~~bash
-pip install -e ".[dev,docs]"
-~~~
-
-Optional finance dependencies:
-
-~~~bash
-pip install -e ".[finance]"
-~~~
-
-Verify:
-
-~~~bash
-python -c "import trend_estimation as td; print(td.__version__)"
 pytest
 ~~~
 
-## Repository layout
+## CI policy
 
-~~~text
-src/trend_estimation/                       reusable Python package
-docs/                                       Sphinx API documentation
-tests/                                      tests
-examples/                                   small public-API examples
-literature/                                 source literature and extracted text
-
-paper_numerical-smoothness-selection/       ACTIVE research paper
-paper_forecast-optimal-smoothing/           PARKED adaptive paper
-paper_smoothness-recurrence/                PARKED financial/recurrence paper
-paper_statistical-properties-penalized-trend/ PARKED statistical/inference paper
-paper_penalized-trend-tutorial/             tutorial companion
-
-experiments/numerical_smoothness_selection/ active-paper experiments
-experiments/forecast_optimal_smoothing/      parked adaptive experiments
-experiments/smoothness_recurrence/           parked/historical applied experiments
-
-results/                                    lightweight versioned experiment results
-notes/                                      detailed legacy/adaptive scientific notes
-~~~
-
-## Documentation
-
-The Sphinx site is the canonical user-facing library documentation:
-
-~~~bash
-sphinx-build -W -b html docs docs/_build/html
-~~~
-
-Paper-specific scientific decisions belong inside the corresponding paper
-folder. Reusable code never belongs inside a paper directory.
-
-## GitHub Actions
-
-Push/pull-request CI stays lightweight: editable install, tests, and Sphinx
-validation.
-
-Paper/PDF compilation is manual-only through
-.github/workflows/build-papers.yml. Heavy paper outputs are never generated on
-ordinary pushes.
+Automatic CI stays lightweight. Paper/PDF compilation remains manual-only through workflow_dispatch.

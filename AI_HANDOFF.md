@@ -1,192 +1,117 @@
 # AI Handoff
 
+Last updated: 2026-10-05
+
 ## Highest-priority instruction
 
-This repository contains **three research papers**, but only one is active.
+The repository now has TWO linked active methodological papers. Do not merge their contributions back together.
+
+### Paper A — paper_smoothness-cv/
+
+Question: **what smoothness criterion should be optimized?**
 
 \[
-\boxed{\text{ACTIVE: paper\_numerical-smoothness-selection/}}
+S^\star_{d,L,h}\in\arg\min_{S\in[0,1]}F_{d,L,h}(S),
 \]
+where \(F\) is chronological rolling future-block forecast MSE.
 
-Work exclusively on the numerical smoothness-selection paper until its roadmap
-is complete. Do not start new experiments, broaden claims, or add model
-comparisons for the other two papers unless the user explicitly changes this
-priority.
+This paper is conceptually closest to Guerrero's controlled-smoothness PLS framework. Guerrero lets the analyst specify a smoothness percentage and maps it to a penalty. This paper asks whether that percentage can instead be selected endogenously from future forecast performance.
 
-The other papers are parked, not abandoned. Preserve their existing results and
-history.
+Hart (1994) must be cited as an important predictive-smoothing precedent, but do not present Hart's kernel/TSCV method as the same problem.
 
-## Research-paper map
+Paper A may use a dense smoothness grid. Efficient root finding is not its contribution.
 
-### 1. ACTIVE — Numerical Selection of Forecast-Optimal Smoothness
+Read first:
+1. paper_smoothness-cv/README.md
+2. paper_smoothness-cv/AI_HANDOFF.md
+3. paper_smoothness-cv/notes/research_objective.md
+4. paper_smoothness-cv/notes/literature_positioning.md
+5. paper_smoothness-cv/notes/roadmap.md
 
-Directory: paper_numerical-smoothness-selection/
+### Paper B — paper_numerical-methods/
 
-Read in this order:
+Question: **given \(F(S)\), how do we solve all relevant minima/global optimum efficiently and reliably?**
 
-1. notes/research_objective.md
-2. notes/scope.md
-3. notes/roadmap.md
-4. notes/decisions.md
+Current production design:
+1. sparse/adaptive evaluation in \(S\);
+2. derivative/curvature diagnostics;
+3. bracket roots of \(F'(S)\);
+4. Brent refinement;
+5. classify stationary points;
+6. compare local minima and exact endpoints.
 
-Primary estimator:
+Brent is NOT a global-discovery algorithm.
+
+The rational/Sturm direction is stronger but not yet production-certified. The current Sturm mini-check is evidence of feasibility only.
+
+Read first:
+1. paper_numerical-methods/README.md
+2. paper_numerical-methods/AI_HANDOFF.md
+3. paper_numerical-methods/notes/research_objective.md
+4. paper_numerical-methods/notes/paper_split_2026-10-05.md
+5. paper_numerical-methods/notes/results.md
+6. paper_numerical-methods/notes/sturm_minicheck.md
+
+## Shared equations
+
 \[
-\widehat\tau_\lambda
-=
-(I+\lambda D_d^\top D_d)^{-1}y.
+H_\lambda=(I+\lambda Q)^{-1},\quad Q=D_d^\top D_d,\quad
+\widehat\tau_\lambda=H_\lambda y.
 \]
 
-Normalized smoothness:
 \[
-S(\lambda)
-=
-1-
-\frac1{N-d}
-\sum_{j=1}^{N-d}
-\frac1{1+\lambda\delta_j}.
+S(\lambda)=1-\frac1{N-d}\sum_{\delta_j>0}\frac1{1+\lambda\delta_j}.
 \]
 
-Primary numerical object, for a fixed discrete configuration
-\((d,L,m,h)\):
 \[
-F(S)=CV_h(d,L,m,S),
-\qquad
-S^\star\in\arg\min_{S\in[0,1]}F(S).
+\widehat z_T(\lambda)=G_{d,h}H_\lambda x_T,\qquad
+F(S)=f(\lambda(S)).
 \]
 
-The method must allow multiple local minima. Current numerical design:
-
-1. sparse deterministic partition of \(S\);
-2. derivative/curvature evaluation;
-3. adaptive interval subdivision;
-4. derivative sign-change bracketing;
-5. Brent refinement;
-6. stationary-point classification;
-7. exact/limiting boundary comparison;
-8. post-discovery epsilon spacing of representative minima.
-
-Current epsilon sensitivity:
 \[
-\varepsilon\in\{0,0.02,0.05,0.10,0.15\}.
+H'=-HQH,\qquad H''=2HQHQH.
 \]
 
-Keep at most five representative local minima after discovery. Epsilon spacing
-is post-processing and must not affect root discovery.
-
-Important unfinished items:
-
-- exact \(S=1\leftrightarrow\lambda=\infty\) handling;
-- flat/tangential-root robustness;
-- frozen tolerances/stopping rules;
-- benchmark against dense reference;
-- comparison with existing log-\(\lambda\) stationary search;
-- controlled stress tests across \(d\in\{1,2,3,4\}\), several \(L\), \(h\),
-  and a small number of simple continuation rules.
-
-The contribution is numerical. Do not turn this paper into an ARIMA/MLE/GCV
-model-comparison paper or a recurrence paper.
-
-### 2. PARKED — Adaptive Forecast-Optimal Trend Estimation
-
-Directory: paper_forecast-optimal-smoothing/
-
-Core object:
 \[
-\Theta^\star_{T,h}
-=
-(d^\star_{T,h},L^\star_{T,h},S^\star_{T,h})
-=
-G(h,X_T,\mathcal C).
+F'(S)=\frac{f'(\lambda)}{S'(\lambda)}.
 \]
 
-This paper owns time-varying regime/state adaptation, mechanism studies, and
-adaptive-versus-fixed forecast evaluation. Detailed historical notes remain
-under root notes/.
+\[
+F''(S)=
+\frac{f''(\lambda)}{[S'(\lambda)]^2}
+-
+\frac{f'(\lambda)S''(\lambda)}{[S'(\lambda)]^3}.
+\]
 
-Do not resume it until the numerical paper is finished.
+## Frozen numerical evidence
 
-### 3. PARKED — Financial Trend Forecasting and Recurrence
+- adversarial: 240/240 relevant known minima/boundary optima;
+- synthetic: 2105/2105 dense-reference interior minima across 1920 surfaces;
+- financial geometry stress: 473/473 dense-reference interior minima across 384 surfaces;
+- mean evaluation fractions about 1.57% and 1.84% of dense references in synthetic and financial suites.
 
-Directory: paper_smoothness-recurrence/
+These are benchmark results, not a theorem.
 
-This paper owns the applied comparison of trend/forecast definitions and their
-financial recurrence implications.
+## Legacy directory
 
-Candidate principles include:
+paper_numerical-smoothness-selection/ is a historical pre-split snapshot. Do not add new work there. The complete snapshot was copied to paper_numerical-methods/.
 
-- forecast-optimal penalized trend;
-- GCV-selected penalized trend;
-- likelihood/state-space trend;
-- AR(\(p\))/ARIMA;
-- penalized trend + AR residual;
-- no-change/random walk.
+## Stable experiment namespaces
 
-At origin \(T\), every reference trend path must be frozen using only
-\(\mathcal F_T\). Future data may score the forecast and determine recurrence,
-but may not update the reference path retrospectively.
+Do not rename experiments/numerical_smoothness_selection/ or results/numerical_smoothness_selection/ casually. Tests, frozen metadata, manuscript paths, and reproducibility records depend on those names.
 
-This paper does not own the numerical \(S\)-search. Do not resume it until the
-numerical paper is finished.
+## Other papers
 
-## Tutorial companion
+paper_forecast-optimal-smoothing/ is PARKED and owns adaptive joint \((d,L,S)\) selection.
 
-paper_penalized-trend-tutorial/ is a tutorial companion, not a fourth research
-track.
+paper_smoothness-recurrence/ is PARKED and owns applied model comparison/recurrence.
 
-## Repository role
-
-Trend-Estimation is library-first.
-
-Reusable estimators, derivatives, optimizers, forecasting logic, simulations,
-metrics, and plotting belong in src/trend_estimation/.
-
-Paper-specific runners belong under experiments/<paper namespace>/.
-Lightweight reproducible outputs belong under results/<paper namespace>/.
-
-Do not duplicate reusable implementation inside paper folders.
-
-## Active numerical implementation
-
-Relevant existing implementation includes:
-
-- src/trend_estimation/core/smoothness.py
-  - lambda_to_smoothness
-  - smoothness_derivatives
-  - smoothness_to_lambda
-- src/trend_estimation/selection/smoothness_numerical.py
-  - find_stationary_points_smoothness
-  - select_spaced_smoothness_minima
-  - sweep_spaced_smoothness_minima
-  - DEFAULT_SPACING_EPSILONS
-- src/trend_estimation/selection/numerical.py
-  - existing log-\(\lambda\) stationary search
-- tests/test_smoothness.py
-- tests/test_smoothness_numerical.py
-
-Current smoothness_to_lambda behavior clips \(S\ge1\) to an interior value.
-That is not acceptable as the final scientific treatment of the endpoint; the
-active roadmap requires exact limiting semantics.
+paper_statistical-properties-penalized-trend/ is PARKED and owns broader inference/statistical properties.
 
 ## Validation invariant
 
-At forecast origin \(T\), no observation after \(T\) may influence fitting,
-hyperparameter selection, or the forecast path.
+At origin \(T\), nothing after \(T\) may influence the fitted trend, hyperparameter choice, or forecast path. Future observations are revealed only for scoring.
 
-Chronological future observations are revealed only for scoring.
+## Repository policy
 
-## Documentation policy
-
-docs/ is for public Sphinx API documentation.
-
-Each research paper owns its scientific objective, scope, roadmap, and decisions
-inside its own folder.
-
-Root notes/ contains historical/detailed material for the adaptive paper and
-must not override the active numerical paper's local source of truth.
-
-## CI policy
-
-Automatic CI remains lightweight: install, tests, and Sphinx.
-
-Paper compilation is manual-only through workflow_dispatch. Do not make heavy
-paper/results workflows run on ordinary push or pull request.
+Reusable algorithms live in src/trend_estimation/. Heavy paper builds stay manual-only.
