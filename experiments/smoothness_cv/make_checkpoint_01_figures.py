@@ -122,7 +122,7 @@ def fig03_selected_s_by_h(results: pd.DataFrame, output: Path) -> None:
         for h in horizons
     ]
     fig, ax = plt.subplots(figsize=(5.8, 3.8))
-    ax.boxplot(data, tick_labels=[str(int(h)) for h in horizons], showfliers=False)
+    ax.boxplot(data, labels=[str(int(h)) for h in horizons], showfliers=False)
     ax.set_xlabel("Forecast horizon")
     ax.set_ylabel(r"Selected smoothness $S^\star_h$")
     ax.set_ylim(-0.02, 1.02)
@@ -197,7 +197,7 @@ def fig06_horizon_matching(horizon_matching: pd.DataFrame, output: Path) -> None
         for h in horizons
     ]
     fig, ax = plt.subplots(figsize=(5.8, 3.8))
-    ax.boxplot(data, tick_labels=[str(int(h)) for h in horizons], showfliers=False)
+    ax.boxplot(data, labels=[str(int(h)) for h in horizons], showfliers=False)
     ax.axhline(1.0, linestyle="--", linewidth=1.0)
     ax.set_xlabel("Forecast horizon")
     ax.set_ylabel(r"MSE ratio: horizon-matched / one-step tuned")
