@@ -48,9 +48,21 @@ def penalty_eigenvalues(n_obs: int, order: int) -> np.ndarray:
 
 
 def effective_degrees_of_freedom(lambda_: float, n_obs: int, order: int) -> float:
-    """Return trace((I + lambda D.T D)^-1)."""
-    eigvals = _cached_penalty_eigenvalues(int(n_obs), int(order))
-    return float(np.sum(1.0 / (1.0 + float(lambda_) * eigvals)))
+    """Return trace((I + lambda D.T D)^-1).
+
+    The +infinity endpoint is interpreted as the exact limiting projection onto
+    the null space of the finite-difference penalty. Its dimension is order for
+    the standard order-d difference operator (and zero for order 0).
+    """
+    lambda_ = float(lambda_)
+    n_obs = int(n_obs)
+    order = int(order)
+    if lambda_ < 0.0:
+        raise ValueError("lambda_ must be nonnegative.")
+    if np.isinf(lambda_):
+        return float(order if order > 0 else 0)
+    eigvals = _cached_penalty_eigenvalues(n_obs, order)
+    return float(np.sum(1.0 / (1.0 + lambda_ * eigvals)))
 
 
 def lambda_to_smoothness(lambda_: float, n_obs: int, order: int) -> float:
