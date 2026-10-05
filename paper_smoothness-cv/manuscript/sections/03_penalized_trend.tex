@@ -1,0 +1,112 @@
+\section{Finite-difference penalized trend estimation}
+
+\subsection{Penalized least squares}
+
+At forecast origin $T$, let
+\[
+x_T=(y_{T-L+1},\ldots,y_T)^\top\in\mathbb{R}^{L}
+\]
+denote the estimation window. For difference order $d<L$, let
+\[
+D_d\in\mathbb{R}^{(L-d)\times L},
+\qquad
+Q=D_d^\top D_d.
+\]
+The baseline estimator solves
+\begin{equation}
+\label{eq:pls_problem}
+\widehat\tau_T(\lambda)
+=
+\arg\min_{\tau\in\mathbb{R}^{L}}
+\left\{
+\|x_T-\tau\|_2^2+\lambda\|D_d\tau\|_2^2
+\right\},
+\qquad \lambda\ge0,
+\end{equation}
+with solution
+\begin{equation}
+\label{eq:H}
+\widehat\tau_T(\lambda)
+=
+H_\lambda x_T,
+\qquad
+H_\lambda=(I+\lambda Q)^{-1}.
+\end{equation}
+
+The paper uses the zero-drift, identity-weight formulation in \eqref{eq:pls_problem} to isolate the smoothness-selection question. Guerrero's broader statistical formulation allows nonzero mean differences and more general covariance weighting \cite{guerrero2007penalized}; these are natural extensions but are not silently imposed in the baseline criterion.
+
+\subsection{Spectral representation}
+
+Because
+\[
+v^\top Qv=\|D_dv\|_2^2\ge0,
+\]
+$Q$ is symmetric positive semidefinite. Under the standard difference operator,
+\[
+\operatorname{rank}(Q)=L-d,
+\]
+so $Q$ has $d$ zero eigenvalues and $L-d$ positive eigenvalues. Write
+\[
+Q=
+U\operatorname{diag}
+\left(
+\underbrace{0,\ldots,0}_{d},
+\delta_1,\ldots,\delta_{L-d}
+\right)U^\top,
+\qquad
+\delta_j>0.
+\]
+Then
+\begin{equation}
+\label{eq:H_spectral}
+H_\lambda
+=
+U\operatorname{diag}
+\left(
+\underbrace{1,\ldots,1}_{d},
+\frac{1}{1+\lambda\delta_1},
+\ldots,
+\frac{1}{1+\lambda\delta_{L-d}}
+\right)U^\top.
+\end{equation}
+
+Thus the $d$ null-space directions are reproduced without shrinkage, while each penalizable direction is attenuated by
+\[
+\alpha_j(\lambda)=\frac{1}{1+\lambda\delta_j}.
+\]
+For $d=2$, the null space consists of discrete linear sequences, so increasing $\lambda$ moves the fitted path toward a linear trend.
+
+\subsection{Normalized smoothness}
+
+Guerrero's trace-based construction motivates measuring smoothing through the effective action of $H_\lambda$. We use
+\begin{equation}
+\label{eq:S}
+S(\lambda)
+=
+1-
+\frac{1}{L-d}
+\sum_{j=1}^{L-d}
+\frac{1}{1+\lambda\delta_j}.
+\end{equation}
+
+The normalization excludes the $d$ directions that cannot be penalized, so
+\[
+S(0)=0,
+\qquad
+\lim_{\lambda\to\infty}S(\lambda)=1.
+\]
+
+For a fixed linear smoother,
+\[
+\operatorname{edf}(\lambda)=\operatorname{tr}(H_\lambda).
+\]
+Combining \eqref{eq:H_spectral} and \eqref{eq:S},
+\begin{equation}
+\label{eq:edf}
+\boxed{
+\operatorname{edf}(\lambda)
+=
+L-(L-d)S(\lambda).
+}
+\end{equation}
+Hence $S$ is a normalized complement of effective degrees of freedom.
