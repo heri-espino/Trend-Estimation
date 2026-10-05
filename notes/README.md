@@ -1,3 +1,5 @@
+> **Repository note (2026-10-05):** Root \`notes/\` is now shared/historical material, dominated by the parked adaptive-paper program. Paper-local documentation is authoritative for current work. Start with \`../AI_HANDOFF.md\` and \`../RESEARCH_MAP.md\`.
+
 # Research Notes
 
 This directory is the internal scientific notebook for `Trend-Estimation`.
@@ -19,9 +21,9 @@ Every note describing a mathematical result should include:
 
 ## Current notes
 
-- `research_objective.md` — **first scientific source of truth**: canonical
-  objective, full adaptive object ((d,L,S)), experiment hierarchy, scope, and
-  anti-drift rules.
+- `research_objective.md` — historical canonical objective for the parked adaptive
+  paper: full adaptive object ((d,L,S)), experiment hierarchy, scope, and
+  anti-drift rules. It does not override paper-local sources of truth.
 - `key_results.md` — compact canonical result sheet.
 - `current_state.md` — chronological status: what we did, what the results mean, and what comes next.
 - `derivative.md` — forecast-loss derivatives for the pure penalized trend.

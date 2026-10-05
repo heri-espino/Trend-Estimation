@@ -1,49 +1,53 @@
-# NEXT — Applied interpretation of multiple forecast-CV minima
+# NEXT — Numerical-methods paper after the 2026-10-05 split
 
-## Priority 1 — Run the frozen applied protocol
+## Priority 1 — Refactor the manuscript identity
 
-- [x] Freeze the four data families: GDPC1, SPY, AAPL, BTC-USD.
-- [x] Freeze development/test separation before test evaluation.
-- [x] Freeze \(\varepsilon=0.10\).
-- [x] Freeze deterministic development-only configuration selection.
-- [x] Implement run_applied_case_studies.py.
-- [x] Run the paper preset and commit its result directory.
+- [ ] Rewrite the abstract/introduction so the criterion \(F(S)\) is input from the companion smoothness-CV paper, not the numerical paper's primary novelty.
+- [ ] Keep only enough Guerrero/Hart/forecast-CV background to make the numerical problem self-contained.
+- [ ] Move criterion-level novelty language to \`../../paper_smoothness-cv/\`.
+- [ ] Preserve the frozen numerical benchmark results, endpoint treatment, derivatives, multimodality evidence, and applied geometry examples.
+- [ ] Audit every use of "forecast-optimal smoothness" so the paper clearly distinguishes definition of the target from numerical solution of the target.
 
-## Priority 2 — Inspect validation/test ranking
+## Priority 2 — Decide the numerical-paper strength
 
-For every frozen candidate:
+Current production method:
+\[
+\text{adaptive discovery}
+\rightarrow
+\text{root brackets}
+\rightarrow
+\text{Brent refinement}.
+\]
 
-- [x] record rolling validation error \(CV_k\);
-- [x] record untouched test MSE \(E_k^{\mathrm{test}}\);
-- [x] inspect validation rank and test rank;
-- [x] inspect \(\Delta CV_k\) and \(\Delta E_k^{\mathrm{test}}\);
-- [x] count validation--test rank reversals;
-- [x] verify no example/configuration was selected using test performance.
+The stronger possible method is:
+\[
+\text{rational structure}
+\rightarrow
+\text{certified real-root isolation}
+\rightarrow
+\text{Brent refinement}.
+\]
 
-The test-best candidate is diagnostic only.
+- [ ] Decide whether the paper will stop at the frozen adaptive-Brent method or pursue certified root isolation.
+- [ ] If pursuing certification, generalize the Sturm mini-check beyond the toy case.
+- [ ] Construct the stationary polynomial numerator \(R(\lambda)\) robustly for practical \(L,d,h\).
+- [ ] Benchmark root counts/brackets against the existing frozen suites.
+- [ ] State precise assumptions and degenerate cases.
+- [ ] Do not claim "grid-free" or "certified" until this generalized implementation exists and passes tests.
 
-## Priority 3 — Interpret the minima
+## Priority 3 — Finish the frozen-method paper if certification is deferred
 
-- [ ] Explain the spectral attenuation
-      \(\alpha_j(\lambda)=1/(1+\lambda\delta_j)\).
-- [ ] Explain how smoothness changes endpoint slope/curvature and continuation.
-- [ ] Identify examples with similar CV error but visibly different trends.
-- [ ] Show whether their validation ordering persists on test.
-- [ ] Describe the candidate set as selection sensitivity, not uncertainty.
+- [ ] Finish numerical-conditioning discussion near \(S=0\) and \(S=1\).
+- [ ] Write the limitations section on missed tangential/even-multiplicity roots.
+- [ ] Generate final figures/tables from frozen results.
+- [ ] Compile the SMCCA manuscript through the manual workflow.
+- [ ] Run notation/claim consistency pass.
+- [ ] Run referee-style novelty/readability review.
 
-## Priority 4 — Manuscript revision
+## Frozen boundaries
 
-- [x] Add subsection: Why multiple forecast-optimal smoothness levels can arise.
-- [x] Add subsection: Applied examples and validation--test ranking.
-- [x] Integrate the four-row applied figure.
-- [ ] Reduce current financial stress-test prose if page pressure grows.
-- [ ] Revisit abstract and introduction after applied results are frozen.
-- [ ] Consider one compact standard scalar-optimizer comparator.
-- [ ] Compile the SMCCA PDF and run a referee-style review.
-
-## Submission boundary
-
-The paper remains a numerical/applied-mathematics paper. The applied examples
-interpret the consequences and stability of smoothness selection; they do not
-establish economic regimes, universal forecasting superiority, or trading
-value.
+- Do not retune the N009 primary search from confirmatory benchmark results.
+- Dense search is a reference approximation, not mathematical ground truth.
+- Financial panels are geometry stress tests, not evidence of predictability or trading value.
+- Epsilon spacing is post-processing, not root discovery.
+- Brent refines bracketed roots; it does not discover the global set by itself.

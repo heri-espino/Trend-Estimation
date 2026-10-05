@@ -1,3 +1,5 @@
+> **Scope update (2026-10-05):** This roadmap is now only for Paper B, \`paper_numerical-methods/\`. The statement below that this was the "sole active research track" is historical and superseded. Paper A is active separately at \`paper_smoothness-cv/\`. Do not move criterion-definition work back into this numerical roadmap.
+
 # Roadmap — Active Paper
 
 The repository is currently focused **only** on this roadmap. Do not start new

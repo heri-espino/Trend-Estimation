@@ -1,3 +1,5 @@
+> **2026-10-05 override:** Decision N001 ("sole active research paper") is superseded by the paper split. There are now two linked active methodological papers: \`paper_smoothness-cv/\` owns the forecast-optimal smoothness criterion, and \`paper_numerical-methods/\` owns its numerical solution. Decisions N002 onward remain in force unless explicitly contradicted by the new split documents.
+
 # Decisions Log
 
 ## N001 — Sole active research paper
@@ -5,7 +7,7 @@
 **Date:** 2026-09-30  
 **Status:** frozen until this paper is finished.
 
-paper_numerical-smoothness-selection/ is the only active research paper.
+paper_numerical-methods/ is the only active research paper.
 The adaptive and financial-recurrence papers are parked.
 
 ## N002 — Main contribution is numerical

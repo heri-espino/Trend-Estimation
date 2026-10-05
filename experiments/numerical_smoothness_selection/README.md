@@ -1,7 +1,8 @@
+> **Namespace note (2026-10-05):** This experiment directory keeps its historical name for reproducibility. It now supports primarily the active numerical-methods paper at \`../../paper_numerical-methods/\`. Criterion-definition experiments may also be reused by \`../../paper_smoothness-cv/\`. Do not rename this directory or the matching results namespace without updating tests, frozen metadata, and manuscript paths.
+
 # Numerical smoothness selection experiments
 
-This directory belongs to the **active** paper_numerical-smoothness-selection/ paper.
-Reusable numerical logic stays in src/trend_estimation/.
+Reusable numerical logic stays in src/trend_estimation/. The numerical benchmark and root-search experiments in this namespace belong to paper_numerical-methods/.
 
 ## Experimental order
 
@@ -38,7 +39,7 @@ first two derivatives against the production implementation at several
 
 This is a structural proof-of-concept, not the production optimizer and not yet
 a general certified-root theorem. See
-\`paper_numerical-smoothness-selection/notes/sturm_minicheck.md\`.
+\`paper_numerical-methods/notes/sturm_minicheck.md\`.
 
 ## Synthetic benchmark
 
@@ -248,7 +249,7 @@ python experiments/numerical_smoothness_selection/generate_paper_evidence.py
 This writes into the active paper directory:
 
 ~~~text
-paper_numerical-smoothness-selection/
+paper_numerical-methods/
 ├── tables/
 │   ├── benchmark_summary.csv
 │   ├── benchmark_summary.tex

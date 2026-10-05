@@ -1,29 +1,25 @@
-# AI_HANDOFF — Active numerical paper
+# AI_HANDOFF — Numerical-methods checkpoint
 
-Read in this order:
+**Status:** historical checkpoint summary. The canonical current handoff is \`../AI_HANDOFF.md\`.
 
-1. `CP04_applied-results.md`
-2. `../todo/NEXT.md`
-3. `../notes/applied_case_studies.md`
-4. `../../literature/dictionary/state_of_art_and_novelty.md`
-5. `../notes/submission_positioning.md`
-6. `../notes/decisions.md`
-7. `../notes/results.md`
+## Frozen work preserved from the pre-split paper
 
-## Current state
+- Primary adaptive-\(S\) numerical search is frozen.
+- Principal adversarial, synthetic, and real-geometry numerical benchmarks are complete.
+- Applied multiple-minimum case studies are complete and remain useful for interpretation.
+- The copied SMCCA manuscript is a pre-split draft and must be refactored so that the forecast-optimal-smoothness criterion is attributed to the companion \`paper_smoothness-cv/\` paper while this paper isolates the numerical contribution.
 
-- Primary numerical algorithm: **frozen**.
-- Principal numerical benchmarks: **complete**.
-- SMCCA manuscript: **complete first draft**.
-- Current weakness: the manuscript proves the search works but does not yet
-  make the practical meaning of multiple forecast-CV minima sufficiently
-  visible.
-- Applied case studies: complete and committed.
-- Current next task: compile/review the revised SMCCA manuscript, inspect the applied figure, and decide whether one compact standard scalar-optimizer comparator is still needed.
+## Current next action
 
-Do not reopen tuning of the primary numerical search unless a genuine
-implementation error is found.
+Read, in order:
 
-Do not turn this paper into the parked broad financial model-comparison paper.
-The applied examples are for interpretation of smoothness minima and their
-forecast consequences.
+1. \`../AI_HANDOFF.md\`
+2. \`../notes/research_objective.md\`
+3. \`../notes/paper_split_2026-10-05.md\`
+4. \`../todo/NEXT.md\`
+5. \`../notes/results.md\`
+6. \`../notes/sturm_minicheck.md\`
+
+Do not reopen tuning of the frozen adaptive search unless a genuine implementation error is found.
+
+The main open strategic decision is whether to finish the current adaptive-discovery + Brent paper as-is or strengthen it by generalizing the rational/Sturm root-isolation direction into a certified stationary-point enumeration method.

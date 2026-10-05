@@ -1,3 +1,5 @@
+> **Scope update (2026-10-05):** This file is the historical canonical objective for the broader adaptive \((d,L,S)\) paper, now parked at \`paper_forecast-optimal-smoothing/\`. It is **not** the global source of truth for the two active methodological papers. Start at root \`AI_HANDOFF.md\` and \`RESEARCH_MAP.md\`; use \`paper_smoothness-cv/notes/research_objective.md\` for the criterion paper and \`paper_numerical-methods/notes/research_objective.md\` for the numerical paper.
+
 # Canonical Research Objective
 
 Date clarified: 2026-09-22
