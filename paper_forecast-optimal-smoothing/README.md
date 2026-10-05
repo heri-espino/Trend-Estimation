@@ -43,13 +43,13 @@ fixed methods.
 - first-passage/survival analysis as the main endpoint.
 
 The standalone numerical method belongs to
-paper_numerical-smoothness-selection/. Comparative financial recurrence belongs
+paper_numerical-methods/. Comparative financial recurrence belongs
 to paper_smoothness-recurrence/.
 
 ## Status rule
 
 Do not run new adaptive-paper experiments or expand this manuscript until
-paper_numerical-smoothness-selection/ is complete.
+paper_numerical-methods/ is complete.
 
 ## Read first when resumed
 

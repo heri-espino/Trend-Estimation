@@ -11,7 +11,7 @@
 ## This paper may reuse
 
 The finished numerical smoothness-search routine from
-paper_numerical-smoothness-selection/ may become an internal solver.
+paper_numerical-methods/ may become an internal solver.
 
 ## This paper does not own
 

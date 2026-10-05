@@ -6,7 +6,7 @@
 **Status:** frozen until the numerical paper is complete.
 
 Do not run new adaptive-paper experiments while
-paper_numerical-smoothness-selection/ is active.
+paper_numerical-methods/ is active.
 
 ## A002 — Adaptive object remains joint and state-dependent
 

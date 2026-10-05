@@ -3,7 +3,7 @@
 **Status: PARKED / future paper.**
 
 This folder is intentionally separate from
-\`paper_numerical-smoothness-selection/\`. The active numerical paper should
+\`paper_numerical-methods/\`. The active numerical paper should
 remain computational and applied: its contribution is the numerical selection
 of forecast-optimal smoothness for fixed configurations. The material here is a
 future statistical-methodology project and should not be allowed to expand the
