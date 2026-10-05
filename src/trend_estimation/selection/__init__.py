@@ -1,6 +1,12 @@
 """Hyperparameter selection and numerical optimization."""
 
 from .base import BaseSelectionCriterion, BaseTrendSelector, SelectionResult
+from .classical import (
+    ClassicalSmoothnessScore,
+    ClassicalSmoothnessSelection,
+    pure_smoother_score,
+    select_classical_pure_smoothness,
+)
 from .forecast_optimal import (
     ForecastOptimalCandidate,
     ForecastOptimalSelection,
@@ -39,6 +45,10 @@ __all__ = [
     "BaseSelectionCriterion",
     "BaseTrendSelector",
     "SelectionResult",
+    "ClassicalSmoothnessScore",
+    "ClassicalSmoothnessSelection",
+    "pure_smoother_score",
+    "select_classical_pure_smoothness",
     "TrainValidationSelector",
     "TimeWeightedValidationSelector",
     "golden_local",
