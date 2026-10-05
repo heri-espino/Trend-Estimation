@@ -145,7 +145,41 @@ Since \(D(\lambda)>0\) for \(\lambda\ge0\), interior stationary points correspon
 
 The repository contains a Sturm mini-check showing exact polynomial root isolation is feasible in a small controlled case. It is not yet a production certification theorem.
 
-## 7. Paper ownership
+## 7. Bézier/Bernstein control-space paper idea
+
+The repository also contains a parked novelty-audit workspace:
+
+paper_bezier-trend/
+
+For a Bernstein design matrix \(B_K\), the candidate control-space estimator is
+
+\[
+\widehat\beta_{\lambda,K,q}
+=
+(B_K^\top B_K+\lambda D_q^\top D_q)^{-1}B_K^\top y,
+\]
+
+with fitted trend
+
+\[
+\widehat\tau^{(B)}
+=
+B_K\widehat\beta_{\lambda,K,q}.
+\]
+
+The candidate comparison is
+
+\[
+\|D_d\tau\|^2
+\qquad\text{versus}\qquad
+\|D_q\beta\|^2,
+\]
+
+together with explicit terminal Bézier level/slope/curvature and endpoint continuation.
+
+This is not yet a paper contribution. Direct prior work already covers Bézier statistical smoothing, Bernstein regression, Bernstein time-series forecasting, penalized Bézier smoothing, P-spline forecasting, and financial piecewise-Bézier filtering. The workspace is valid only if a literature/equivalence audit leaves a distinct endpoint or regularization-geometry result.
+
+## 8. Paper ownership
 
 paper_smoothness-cv/ owns the definition and interpretation of forecast-optimal smoothness.
 
@@ -157,7 +191,9 @@ paper_smoothness-recurrence/ owns applied model comparison and recurrence.
 
 paper_statistical-properties-penalized-trend/ owns broader inference/statistical properties.
 
-## 8. Claim discipline
+paper_bezier-trend/ owns only the exploratory Bernstein/Bézier representation, control-space regularization, endpoint geometry, and matched comparison with P-splines; it remains novelty-audit pending.
+
+## 9. Claim discipline
 
 Do not claim PLS, controlled smoothness, predictive smoothing selection, rolling-origin validation, Brent, or multiple minima are individually new.
 
