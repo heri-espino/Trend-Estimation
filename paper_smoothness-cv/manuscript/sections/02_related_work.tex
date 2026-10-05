@@ -1,0 +1,37 @@
+\section{Related work and positioning}
+
+\subsection{Controlled smoothness in finite-difference PLS}
+
+The direct methodological foundation is the controlled-smoothness formulation of finite-difference PLS. Guerrero \cite{guerrero2007penalized} derives a statistical representation of the penalized trend estimator and introduces a trace-based smoothness index linking the penalty parameter to an interpretable amount of smoothness. Guerrero \cite{guerrero2008smoothness} develops this into a user-controlled trend-estimation procedure in which a desired smoothness level is chosen first and the corresponding penalty is recovered afterward.
+
+Cort\'es-Toto et al.\ \cite{cortes2017smoothness} study what smoothness is produced when the PLS penalty is selected by CV, GCV, AICc, and BIC. Their results make an important distinction for the present paper: a rule for selecting $\lambda$ and the amount of smoothness ultimately induced by that rule are not the same object.
+
+The present paper reverses the controlled-smoothness direction:
+\[
+\text{user chooses }S\longrightarrow\lambda(S)
+\]
+becomes
+\[
+\text{chronological forecast loss}\longrightarrow S^\star.
+\]
+The percentage of smoothness remains the interpretable object, but it is selected endogenously for the forecast task.
+
+\subsection{Predictive selection of smoothing and tuning parameters}
+
+Forecast-based tuning is established in other smoother families. Hart \cite{hart1994tscv} considers kernel smoothing with serially correlated errors and proposes time-series cross-validation (TSCV), selecting the bandwidth through one-step-ahead predictive performance. This is an important conceptual precedent because it distinguishes good trend recovery from good prediction under dependence.
+
+The object considered here is different. Hart selects a kernel bandwidth and explicitly models serial dependence in the errors. We select the smoothness of a finite-difference PLS trend, retain the model's native continuation rule, and allow an arbitrary $h$-step future block to define the tuning target. The connection to Hart is therefore the predictive principle rather than estimator equivalence.
+
+Forecast-error tuning is also standard in exponential smoothing. Taylor \cite{taylor2004stes} describes data-driven smoothing-parameter estimation through ex post one-step-ahead forecast errors and develops an adaptive smooth-transition formulation. More recent \emph{Journal of Forecasting} papers apply the same predictive principle to other tuning problems. Wolff and Echterling \cite{wolff2024stock} choose regularization and machine-learning tuning parameters using validation forecast errors. Franjic and Schweikert \cite{franjic2025predictor} propose a cross-validation strategy that connects predictor preselection directly to nowcast performance. Xu et al.\ \cite{xu2025vix} compare bandwidth-selection schemes in a time-varying-parameter HAR model and show that bandwidth choice affects forecast performance.
+
+These papers establish that forecast-oriented tuning is a legitimate methodological target. The narrower gap addressed here is the selection of a controlled smoothness percentage inside the finite-difference PLS family.
+
+\subsection{Trend filtering for forecasting}
+
+Zafar et al.\ \cite{zafar2022filter} explicitly evaluate trend-filtering methods by the short-term forecasts they enable. Their study reinforces the idea that a trend representation should be judged partly by predictive consequences rather than only by visual smoothness or in-sample fit. Our objective is complementary: rather than introduce a new trend representation, we keep finite-difference PLS fixed and optimize the amount of smoothness within that family.
+
+\subsection{Chronological forecast evaluation}
+
+The proposed criterion uses pseudo-out-of-sample loss as a tuning objective. Tashman \cite{tashman2000oos} reviews out-of-sample forecast evaluation schemes, while Bergmeir and Ben\'itez \cite{bergmeir2012cv} discuss cross-validation for time-series predictors. Stan\v{e}k \cite{stanek2023oos} formalizes out-of-sample loss estimation and distinguishes rolling and fixed evaluation schemes. His formulation also makes explicit that the relevant forecast loss depends on the forecast horizon, model memory, and updating design.
+
+This is closely aligned with $F_{d,L,h}(S)$. Smoothness is selected for a specified horizon and update protocol, and the information set available at each origin is part of the estimator's definition.
