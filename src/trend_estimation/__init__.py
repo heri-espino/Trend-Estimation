@@ -82,7 +82,11 @@ from trend_estimation.plotting import (
     set_style,
 )
 from trend_estimation.selection import (
+    ClassicalSmoothnessScore,
+    ClassicalSmoothnessSelection,
     ForecastOptimalCandidate,
+    pure_smoother_score,
+    select_classical_pure_smoothness,
     ForecastOptimalSelection,
     LambdaOptimizationResult,
     PreparedRollingPureRecoveryObjective,
@@ -169,6 +173,10 @@ __all__ = [
     "pure_forecast_loss_derivatives",
     "rolling_pure_forecast_loss_derivatives",
     # Selection
+    "ClassicalSmoothnessScore",
+    "ClassicalSmoothnessSelection",
+    "pure_smoother_score",
+    "select_classical_pure_smoothness",
     "TrainValidationSelector",
     "TimeWeightedValidationSelector",
     "golden_local",
