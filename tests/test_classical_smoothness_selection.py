@@ -58,3 +58,15 @@ def test_grid_selector_returns_one_of_supplied_smoothness_values():
     assert np.any(np.isclose(selection.smoothness_, grid))
     assert np.isfinite(selection.score_)
     assert len(selection.scores_) == len(grid)
+
+
+def test_bic_rejects_exact_interpolating_endpoint():
+    y = np.linspace(0.0, 1.0, 10)
+
+    result = pure_smoother_score(
+        y,
+        order=2,
+        smoothness=0.0,
+        criterion="bic",
+    )
+    assert np.isinf(result.score)
