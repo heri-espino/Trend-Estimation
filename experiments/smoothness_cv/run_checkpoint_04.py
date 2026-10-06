@@ -254,6 +254,27 @@ def _select_branch(
     ).iloc[0]
 
 
+def _stable_error_metrics(error: np.ndarray) -> tuple[float, float, float]:
+    """Return MSE, RMSE, and MAE without spurious square overflow."""
+
+    error = np.asarray(error, dtype=float)
+    if not np.all(np.isfinite(error)):
+        return float("inf"), float("inf"), float("inf")
+
+    absolute = np.abs(error)
+    mae = float(np.mean(absolute))
+    scale = float(np.max(absolute))
+    if scale == 0.0:
+        return 0.0, 0.0, 0.0
+
+    scaled = error / scale
+    rmse = float(scale * np.sqrt(np.mean(scaled * scaled)))
+
+    sqrt_max = float(np.sqrt(np.finfo(float).max))
+    mse = float("inf") if rmse > sqrt_max else float(rmse * rmse)
+    return mse, rmse, mae
+
+
 def _fit_and_score(
     pretest: pd.DataFrame,
     true_test: pd.DataFrame,
@@ -273,13 +294,15 @@ def _fit_and_score(
     observed_log = np.log(observed_level)
     level_error = observed_level - forecast_level
     log_error = observed_log - forecast_log
+    level_mse, level_rmse, level_mae = _stable_error_metrics(level_error)
+    log_mse, log_rmse, log_mae = _stable_error_metrics(log_error)
     metrics = {
-        "level_mse": float(np.mean(level_error**2)),
-        "level_rmse": float(np.sqrt(np.mean(level_error**2))),
-        "level_mae": float(np.mean(np.abs(level_error))),
-        "log_mse": float(np.mean(log_error**2)),
-        "log_rmse": float(np.sqrt(np.mean(log_error**2))),
-        "log_mae": float(np.mean(np.abs(log_error))),
+        "level_mse": level_mse,
+        "level_rmse": level_rmse,
+        "level_mae": level_mae,
+        "log_mse": log_mse,
+        "log_rmse": log_rmse,
+        "log_mae": log_mae,
     }
     path = true_test[["date", "value"]].copy()
     path = path.rename(columns={"value": "observed"})
