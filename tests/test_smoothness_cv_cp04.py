@@ -8,7 +8,13 @@ from experiments.smoothness_cv.dynamic_branch_rules import (
     apply_rule,
     evaluate_rule_set,
 )
-from experiments.smoothness_cv.run_checkpoint_04 import _outer_stops
+from experiments.smoothness_cv.run_checkpoint_04 import (
+    _outer_stops,
+    _stable_error_metrics,
+)
+from experiments.numerical_smoothness_selection.run_two_stage_order_validation import (
+    _rmse,
+)
 
 
 def test_recent_mean_and_median_include_current_s():
@@ -87,3 +93,18 @@ def test_outer_stops_reserve_confirmation_blocks():
     )
     assert stops == [880, 900, 920]
     assert max(stops) == 1000 - 4 * 20
+
+
+def test_rmse_is_stable_for_enormous_finite_errors():
+    observed = np.array([1.0, 2.0])
+    predicted = np.array([1e200, -1e200])
+    value = _rmse(observed, predicted)
+    assert np.isfinite(value)
+    assert value > 1e199
+
+
+def test_cp04_metric_helper_keeps_rmse_finite_when_mse_is_unrepresentable():
+    mse, rmse, mae = _stable_error_metrics(np.array([1e200, -1e200]))
+    assert np.isinf(mse)
+    assert np.isfinite(rmse)
+    assert np.isfinite(mae)
