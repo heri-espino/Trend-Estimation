@@ -20,7 +20,10 @@ import pandas as pd
 
 import trend_estimation as td
 
-import run_applied_case_studies as applied
+try:
+    from . import run_applied_case_studies as applied
+except ImportError:
+    import run_applied_case_studies as applied
 
 
 RESULT_ROOT = Path("results") / "numerical_smoothness_selection"
