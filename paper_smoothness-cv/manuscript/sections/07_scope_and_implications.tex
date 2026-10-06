@@ -1,51 +1,43 @@
 \section{Scope, interpretation, and implications}
 
-\subsection{What the selected smoothness means}
+\subsection{What the dynamic smoothness object means}
 
-The output $S^\star_{d,L,h}$ is a forecast-task-specific complexity choice. From \eqref{eq:edf},
+The selected smoothness is not treated as a fixed property of a series. At a given origin, several local minima of the forecast-loss surface may coexist. Their temporal branches summarize recurring smoothing regimes discovered by the data.
+
+For a final selected value $\widehat S_T$, the effective-degrees-of-freedom interpretation remains
 \[
-S^\star
+\widehat S_T
 =
-\frac{L-\operatorname{edf}^\star}{L-d},
+\frac{L-\operatorname{edf}_T}{L-d}.
 \]
-so the selected value has a direct effective-degrees-of-freedom interpretation.
+A value near zero corresponds to a flexible trend; a value near one corresponds to a trend close to the null-space polynomial. The dynamic contribution is that today's value can depend on the history of a persistent local-minimum branch rather than on one pooled optimum alone.
 
-A value near zero says that, within the specified finite-difference family and validation design, preserving most observed local variation improved the forecast criterion. A value near one says that the criterion preferred a trend close to the null-space polynomial. Intermediate values represent partial attenuation of penalizable spectral directions.
+\subsection{Branches are data-driven, not fixed smoothness bins}
 
-This interpretation is more comparable across sample lengths than reporting $\lambda$ alone because the same numerical penalty can imply different attenuation patterns when $L$ changes.
+The continuation radius $\varepsilon$ does not define a preassigned category such as ``smoothness around 0.9.'' Branch locations arise from local minima of successive forecast-loss surfaces. The radius only determines whether two neighboring minima are close enough to be interpreted as the same branch.
 
-\subsection{What forecast-optimal smoothness does not mean}
+Consequently, a branch can drift over time. Its identity reflects local continuity of the optimum, not membership in a fixed interval.
 
-The selected value is not a universal property of a time series. It depends on $d$, $L$, $h$, the continuation rule, the loss, and the rolling-origin design. In particular,
-\[
-S^\star_{d,L,h_1}
-\neq
-S^\star_{d,L,h_2}
-\]
-is not a contradiction; different horizons can reward different trade-offs between local adaptation and extrapolation stability.
+\subsection{What may be averaged}
 
-Nor should $S^\star$ automatically be interpreted as the smoothness that best recovers a latent historical trend. Forecasting and historical signal recovery are related but distinct objectives, as predictive smoothing work such as Hart \cite{hart1994tscv} makes clear.
+The framework distinguishes three objects that should not be conflated. Historical forecast losses may be averaged to rank candidate smoothness values or branches. Historical smoothness values may be averaged when a declared branch functional such as a recent-mean rule is used. Historical fitted trends are never averaged in the proposed procedure.
 
-\subsection{Relation to adaptive smoothing}
+After the current smoothness is selected, the trend is always refit on the newest information available before the forecast.
 
-The baseline proposal selects one smoothness value for a specified validation problem. It does not make the smoothing parameter time-varying within the fitted window. Adaptive exponential-smoothing methods such as Taylor \cite{taylor2004stes} answer a different question by allowing smoothing parameters to evolve with observed conditions.
+\subsection{Static and dynamic targets}
 
-A later extension could allow forecast-optimal smoothness itself to vary across origins or regimes. That requires an additional adaptation mechanism and is outside the baseline paper.
+The pooled selector asks which single value of $S$ performs best on average over historical forecast origins. The dynamic selector asks whether local minima form persistent branches and whether branch history improves the current choice of $S$.
 
-\subsection{Relation to forecast-oriented filter design}
+Neither target is automatically the smoothness that best reconstructs a latent historical trend. Forecasting and signal recovery remain distinct objectives.
 
-Zafar et al.\ \cite{zafar2022filter} show that trend-filter design can matter for short-term forecast performance. The present approach holds the filter family fixed and optimizes its degree of smoothness. The two ideas are complementary: one changes the representation; the other changes the regularization strength inside a given representation.
+\subsection{Numerical boundary}
 
-\subsection{Why the smoothness scale is useful}
-
-The criterion provides a common language between smoothing and forecast validation. It lets an analyst report not only that a penalty was cross-validated, but what effective amount of smoothing the forecast task selected. It also makes horizon dependence visible on a bounded scale.
-
-This is particularly useful when comparing series of different lengths or repeated rolling windows. Instead of comparing raw penalties, one can compare $S^\star$ and its implied effective degrees of freedom.
+The forecasting paper does not claim that a particular root-search or assignment algorithm is the substantive contribution. Recovery of multiple minima, exact endpoint handling, and temporal correspondence of minima belong to the companion numerical-methods paper.
 
 \subsection{Limitations}
 
-The baseline framework assumes equally spaced observations, fixed difference order, and deterministic continuation of the estimated trend. It does not model a separate stochastic residual forecast component. In applications where short-run dynamics contain substantial predictive information, a trend-only forecast is intentionally incomplete.
+The baseline estimator assumes equally spaced observations, a fixed difference order, a fixed final estimation window, and deterministic continuation of the estimated trend. The current branch construction also introduces design quantities such as the tracking radius, recent-history length, and weighting parameters. Those quantities must be selected on development data and frozen before outer-test evaluation.
 
-That limitation is useful scientifically because it isolates the effect of choosing trend smoothness for extrapolation. ARMA, state-space, or machine-learning residual models can be layered on later, but adding them to the baseline experiment would make it harder to identify whether forecast gains came from the smoothness criterion or from the residual model.
+Local-minimum identity can become ambiguous when branches approach or cross. The initial greedy one-to-one matcher is therefore a transparent baseline rather than a mathematical definition of true branch identity. Sensitivity to the numerical correspondence rule must be reported separately from forecasting performance.
 
-Finally, the rolling validation loss can be noisy and multimodal. The present paper treats this as part of the selection problem rather than assuming unimodality. Efficient and potentially certified recovery of multiple minima is a separate numerical contribution.
+Finally, the framework isolates trend extrapolation. It does not yet add a separate stochastic residual forecast model. That restriction keeps the interpretation of any forecast gain tied to smoothness selection rather than to another predictive component.
