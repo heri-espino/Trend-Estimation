@@ -445,6 +445,12 @@ def _run_scenario_task(task: tuple[int, int, str, str, float, str]) -> tuple[
             )
             s_oracle, oracle_mse, _ = grid_argmin(s_grid, oracle_curve)
 
+            # CRITICAL VALIDATION SEMANTICS:
+            # matched_curve/one_step_curve choose S only. None of the trend fits
+            # created inside forecast_cv_curve are reused here. Every selector
+            # below is evaluated by a fresh fit on y_window = history[-L:],
+            # which contains all information available immediately before the
+            # untouched outer test block.
             selected = {
                 "forecast_cv_h": (s_matched, score_matched),
                 "forecast_cv_1": (s_one, score_one),
