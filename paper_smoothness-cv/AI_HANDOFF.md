@@ -125,3 +125,7 @@ Do not claim the first predictive smoothing selector, the first forecast-based t
 ## Current execution checkpoint
 
 The active stop point is `checkpoints/CP01_EMPIRICAL_CORE.md`. Empirical code is implemented under `experiments/smoothness_cv/`. Do not invent CP01 conclusions. Wait for the user to run smoke/quick and push the exact result bundle before freezing CP02.
+
+## Current stop point
+
+CP01 quick has been reviewed. The active execution handoff is `checkpoints/CP02_REFINE_SIMULATION_DESIGN.md`. CP02 is implemented; wait for its smoke/refine outputs before freezing CP03.
