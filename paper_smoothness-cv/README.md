@@ -85,6 +85,19 @@ The exact effective-degrees-of-freedom relation is
 L-(L-d)S.
 \]
 
+## How forecast-CV is actually used
+
+The rolling folds are used to choose \(S\), not to choose a historical fitted trend.
+
+At each outer forecast origin \(T\), forecast losses from inner chronological validation origins are averaged for each candidate \(S\). The minimizing value \(\widehat S_{T,h}\) is retained. All fold-specific trend fits are then discarded, and the model is refit on the most recent \(L\) observations available at \(T\):
+
+\[
+\widehat\tau_T
+=
+H_{\lambda(\widehat S_{T,h})}y_{T-L+1:T}.
+\]
+
+Only this updated trend is extrapolated into the untouched outer test block. At the next outer origin, the process is repeated with the newly available history. See `notes/validation_semantics.md` for the canonical rule.
 ## Paper ownership
 
 This paper owns:
