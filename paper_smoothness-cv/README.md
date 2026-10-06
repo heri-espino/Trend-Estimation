@@ -165,3 +165,7 @@ Current-vintage FRED histories are exploratory only for historical macroeconomic
 ## Current execution checkpoint
 
 Checkpoint 01 empirical code is implemented. Read `checkpoints/CP01_EMPIRICAL_CORE.md` and `notes/empirical_roadmap.md` before running simulations. Run smoke first, then quick, commit the generated `results/smoothness_cv/checkpoint_01/` directory, and stop for review before the paper preset.
+
+## Current stop point
+
+CP01 smoke and quick results are in the repository and have been reviewed. CP02 is implemented in `experiments/smoothness_cv/`; run `paper_smoothness-cv/checkpoints/CP02_REFINE_SIMULATION_DESIGN.md` next. Do not run CP03 yet.

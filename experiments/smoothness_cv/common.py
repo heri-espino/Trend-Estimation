@@ -19,7 +19,10 @@ from trend_estimation.forecasting.objectives import (
     prepare_rolling_pure_forecast_objective,
 )
 from trend_estimation.forecasting.operators import finite_difference_forecast_operator
-from trend_estimation.selection.classical import select_classical_pure_smoothness
+from trend_estimation.selection.classical import (
+    pure_smoother_score,
+    select_classical_pure_smoothness,
+)
 from trend_estimation.validation.rolling_origin import RollingOriginSplit
 
 
@@ -114,7 +117,12 @@ def smoothness_grid(n: int) -> np.ndarray:
 
 
 def latent_trend(n_obs: int, kind: str) -> np.ndarray:
-    """Deterministic latent mechanisms with broadly comparable ranges."""
+    """Deterministic latent mechanisms with broadly comparable ranges.
+
+    CP01 used four mild mechanisms. CP02 adds deliberately harder local-shape
+    mechanisms so that the d=2 extrapolation problem is not dominated by cases
+    where the maximally smooth linear limit is nearly oracle-optimal.
+    """
 
     n_obs = int(n_obs)
     if n_obs < 8:
@@ -131,10 +139,23 @@ def latent_trend(n_obs: int, kind: str) -> np.ndarray:
         trend = 0.5 + 1.6 * t + 4.0 * np.maximum(t - knot, 0.0)
     elif kind == "low_frequency":
         trend = 0.5 + 2.4 * t + 0.9 * np.sin(1.5 * np.pi * t - 0.4)
+    elif kind == "quadratic":
+        trend = 0.5 + 0.7 * t + 4.2 * t**2
+    elif kind == "turning_point":
+        trend = 0.4 + 5.0 * t - 4.2 * t**2
+    elif kind == "recent_slope_change":
+        knot = 0.72
+        trend = 0.4 + 1.4 * t + 7.0 * np.maximum(t - knot, 0.0)
+    elif kind == "oscillatory":
+        trend = 0.6 + 2.2 * t + 0.8 * np.sin(4.0 * np.pi * t - 0.25)
+    elif kind == "terminal_bend":
+        bend = np.maximum(t - 0.68, 0.0)
+        trend = 0.5 + 2.0 * t + 9.0 * bend**2
     else:
         raise ValueError(
-            "Unknown trend kind. Expected linear, smooth_curve, slope_change, "
-            "or low_frequency."
+            "Unknown trend kind. Expected one of: linear, smooth_curve, "
+            "slope_change, low_frequency, quadratic, turning_point, "
+            "recent_slope_change, oscillatory, terminal_bend."
         )
     return np.asarray(trend, dtype=float)
 
@@ -330,6 +351,56 @@ def fit_and_forecast(
     return fit.trend, prediction, float(fit.lambda_), edf
 
 
+
+def latent_forecast_oracle_curve(
+    y_window: np.ndarray,
+    latent_future: np.ndarray,
+    *,
+    order: int,
+    s_grid: np.ndarray,
+) -> np.ndarray:
+    """Simulation-only oracle loss for extrapolating the latent future trend.
+
+    The fit still uses the noisy historical window; only the choice of S is
+    allowed to see the latent future. This makes the oracle useful for measuring
+    selection regret without turning it into a feasible forecasting method.
+    """
+
+    horizon = int(len(latent_future))
+    solver = cached_pure_solver(len(y_window), order)
+    operator = finite_difference_forecast_operator(
+        n_fit=len(y_window),
+        order=order,
+        steps=horizon,
+    )
+    values = np.empty(len(s_grid), dtype=float)
+    for i, s in enumerate(s_grid):
+        fit = solver.fit_for_s(y_window, float(s))
+        prediction = operator.apply(fit.trend)
+        values[i] = float(np.mean((latent_future - prediction) ** 2))
+    return values
+
+
+def classical_score_curve(
+    y_window: np.ndarray,
+    *,
+    order: int,
+    criterion: str,
+    s_grid: np.ndarray,
+) -> np.ndarray:
+    """Return a full classical selector score curve for diagnostics."""
+
+    values = np.empty(len(s_grid), dtype=float)
+    for i, s in enumerate(s_grid):
+        values[i] = pure_smoother_score(
+            y_window,
+            order=order,
+            smoothness=float(s),
+            criterion=criterion,
+        ).score
+    return values
+
+
 def classical_selections(
     y_window: np.ndarray,
     *,
@@ -360,6 +431,8 @@ def add_relative_losses(results: pd.DataFrame, baseline: str = "gcv") -> pd.Data
         "outer_origin",
         "horizon",
     ]
+    if "window" in results.columns:
+        keys.insert(5, "window")
     base = (
         results.loc[results["selector"] == baseline, keys + ["forecast_mse_observed"]]
         .rename(columns={"forecast_mse_observed": "baseline_mse"})
