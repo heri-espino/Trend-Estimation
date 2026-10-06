@@ -1205,6 +1205,13 @@ def main() -> None:
         "series": list(preset["series"]),
         "selection_metric": args.selection_metric,
         "selection_uses_true_test": False,
+        "final_smoothness_rule": "last_tracked_minimum",
+        "branch_state_columns": [
+            "smoothness",
+            "val1_loss",
+            "val2_level_rmse",
+            "val2_log_rmse",
+        ],
         "max_minima": int(args.max_minima),
         "track_epsilon": float(args.track_epsilon),
         "candidate_spacing": float(args.candidate_spacing),
