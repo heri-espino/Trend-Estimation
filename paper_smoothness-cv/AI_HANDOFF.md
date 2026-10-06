@@ -91,10 +91,10 @@ There are deliberately no invented result numbers.
 
 ## Immediate next task
 
-The next scientific task is experiments, not more general prose.
+CP01 and CP02 are complete. The next scientific task is the frozen paper-scale simulation in CP03.
 
 Run and freeze:
-1. forecast-CV versus CV/GCV/AICc/BIC;
+1. forecast-CV versus one-step forecast-CV, CV, GCV, and AICc;
 2. forecast-optimal versus latent-trend recovery-optimal \(S\);
 3. one-step versus horizon-matched tuning;
 4. a public heterogeneous forecasting panel;
@@ -129,3 +129,7 @@ The active stop point is `checkpoints/CP01_EMPIRICAL_CORE.md`. Empirical code is
 ## Current stop point
 
 CP01 quick has been reviewed. The active execution handoff is `checkpoints/CP02_REFINE_SIMULATION_DESIGN.md`. CP02 is implemented; wait for its smoke/refine outputs before freezing CP03.
+
+## Current stop point
+
+The active execution handoff is `checkpoints/CP03_FROZEN_PAPER_SIMULATION.md`. The CP03 design is frozen before the paper run. Do not add/remove DGPs, change seeds, horizons, windows, or the comparator set after inspecting the paper-preset results.
