@@ -32,6 +32,21 @@ def test_recent_mean_and_median_include_current_s():
     assert np.isclose(median_s, 0.5)
 
 
+def test_recency_weighted_mean_favors_newer_smoothness():
+    selected, meta = apply_rule(
+        DynamicRuleSpec("recency", "recency_weighted", half_life=1.0),
+        history_s=np.array([0.0, 0.0]),
+        history_val2_loss=np.ones(2),
+        current_s=1.0,
+    )
+
+    simple_mean = np.mean([0.0, 0.0, 1.0])
+    assert selected > simple_mean
+    assert selected < 1.0
+    assert meta["includes_current_s"] is True
+    assert np.isclose(meta["rho"], 0.5)
+
+
 def test_val2_weighting_prefers_low_loss_historical_smoothness():
     selected, meta = apply_rule(
         DynamicRuleSpec("weighted", "val2_weighted"),
