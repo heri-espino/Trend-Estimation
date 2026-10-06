@@ -261,3 +261,25 @@ Then commit and push the complete `results/smoothness_cv/checkpoint_04/`
 directory and stop. Do **not** evaluate the four reserved confirmation
 blocks yet. The final dynamic rule must be frozen from the refine output
 before a confirmation preset is implemented.
+
+
+## Numerical-stability note after first refine run
+
+The first CP04 refine execution exposed occasional warnings of the form
+
+`overflow encountered in square`
+
+inside the level-RMSE calculation for deliberately poor branch candidates.
+The underlying forecast values were finite but could be astronomically large
+after exponentiating a log-scale trend; direct squaring overflowed before the
+square root was taken.
+
+This is a numerical representation issue, not evidence that the local-minimum
+search itself failed. The code now computes RMSE by scaling residuals before
+squaring. CP04 analysis also compares methods directly on RMSE rather than
+forming MSE and then taking square-root ratios.
+
+The already committed first refine output contains no `inf` or `NaN` in
+`decision_results.csv`, but because historical branch ranking can encounter
+these extreme candidates, rerun smoke/refine after this patch before freezing
+the final dynamic rule. The reserved confirmation blocks remain untouched.
