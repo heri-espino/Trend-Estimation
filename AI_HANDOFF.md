@@ -148,3 +148,13 @@ These results validate the tested **per-surface search**, not yet the temporal b
 ## Repository policy
 
 Reusable algorithms live in `src/trend_estimation/`. Heavy paper builds and large experiments remain manual-only.
+
+## Immediate execution state
+
+CP03 pooled forecast-CV paper run is committed. The active next experiment is
+`paper_smoothness-cv/checkpoints/CP04_DYNAMIC_BRANCH_RULES.md`.
+
+CP04 compares multiple `phi(V_j)` rules on repeated development-only outer
+tests while reserving the newest four blocks of every tracked real series for
+a later one-shot confirmation. Do not run or inspect that confirmation region
+until the development rule is frozen.
