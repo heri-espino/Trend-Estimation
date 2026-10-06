@@ -99,7 +99,7 @@ Compare held-out forecast performance of:
 - CV;
 - GCV;
 - AICc;
-- BIC.
+- BIC (exploratory audit only; it is not retained as a primary CP03 comparator because CP02 showed left-boundary degeneracy under global search).
 
 Primary display: relative RMSFE to GCV or another prespecified baseline.
 
@@ -163,7 +163,7 @@ Keep this compact: MSFE/MAE or relative loss and average rank.
 
 ## Checkpoint sequence
 
-### CP01 — empirical core: IMPLEMENTED, awaiting execution
+### CP01 — empirical core: COMPLETE
 
 Code:
 - experiments/smoothness_cv/common.py
@@ -179,7 +179,7 @@ Questions:
 
 Run smoke first, then quick. Stop and push results.
 
-### CP02 — refine and freeze simulation design: IMPLEMENTED, awaiting execution
+### CP02 — refine and freeze simulation design: COMPLETE
 
 CP01 quick outputs have been reviewed. See checkpoints/CP02_REFINE_SIMULATION_DESIGN.md.
 
@@ -193,7 +193,7 @@ Tasks:
 
 No final paper-scale run before this checkpoint is frozen.
 
-### CP03 — paper-scale controlled simulations
+### CP03 — paper-scale controlled simulations: IMPLEMENTED, awaiting execution
 
 Run the frozen grid at substantially larger scale.
 
@@ -251,15 +251,4 @@ If retained:
 
 ## Current stop point
 
-CP01 code is ready. The next required information is empirical output from the
-user's machine.
-
-Run:
-
-~~~bash
-python experiments/smoothness_cv/run_checkpoint_01.py --preset smoke
-python experiments/smoothness_cv/make_checkpoint_01_figures.py
-~~~
-
-If that passes, run the quick preset and push the entire generated run directory.
-Do not start CP02 from assumptions; CP02 must respond to the actual CP01 output.
+CP01 and CP02 are complete and reviewed. CP03 is frozen and implemented. Read `checkpoints/CP03_FROZEN_PAPER_SIMULATION.md`, run the smoke preset, then the paper preset if smoke passes, and push the complete `results/smoothness_cv/checkpoint_03/` tree. Do not alter the frozen design after inspecting the paper-preset results.
