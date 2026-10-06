@@ -1,97 +1,72 @@
-# Roadmap — Smoothness-CV paper
-
-Last updated: 2026-10-05.
+# Roadmap — Dynamic smoothness-CV paper
 
 **Primary target:** Journal of Forecasting.
 
-## Phase 0 — Identity
+## Phase 0 — Baseline criterion
 
-- [x] Split criterion and numerical-solver papers.
-- [x] Define Paper A as the "what should be optimized?" contribution.
-- [x] Make Guerrero the direct methodological foundation.
-- [x] Keep Hart as an important but structurally different predictive-selection precedent.
-- [x] Freeze Journal of Forecasting as the primary target.
-- [x] Replace the accidentally inherited WTI/JFM manuscript with the actual smoothness-CV paper.
+- [x] Define normalized smoothness `S`.
+- [x] Define chronological future-block forecast loss.
+- [x] Implement pooled forecast-CV selector.
+- [x] Separate forecast optimality from recovery optimality.
+- [x] Freeze fit-select-refit information semantics.
 
-## Phase 1 — Formal criterion and theory
+## Phase 1 — Pooled-selector evidence
 
-- [x] Freeze baseline assumptions: zero drift, identity weighting, regular spacing, fixed \(d,L,h\).
-- [x] Record monotonicity/endpoints of normalized \(S(\lambda)\).
-- [x] State the bijection \([0,\infty]\leftrightarrow[0,1]\).
-- [x] Define \(G_{d,h}\) and native zero-\(d\)th-difference continuation.
-- [x] State the chronological information-set rule.
-- [x] Define \(F_{d,L,h}(S)\) and \(S^\star\).
-- [x] Prove the exact effective-degrees-of-freedom relation.
-- [x] Clarify existence and possible nonuniqueness.
-- [x] Separate forecast optimality from latent-trend recovery optimality.
+- [x] CP01 exploratory simulation.
+- [x] CP02 refined simulation design.
+- [x] Freeze CP03 pooled-selector paper-scale design.
+- [ ] Finish/push CP03 paper-scale results.
 
-## Phase 2 — Journal-facing literature audit
+CP03 remains a valid baseline. Do not retune it because the central method has
+expanded.
 
-- [x] Re-read Guerrero 2007/controlled smoothness.
-- [x] Position Hart 1994 as predictive-smoothing precedent rather than direct foundation.
-- [x] Incorporate Cortés-Toto et al. on PLS selectors and induced smoothness.
-- [x] Incorporate Taylor 2004 on forecast-oriented smoothing parameters.
-- [x] Incorporate Zafar et al. 2022 on trend filtering for forecasting.
-- [x] Incorporate Staněk 2023 on pseudo-out-of-sample/rolling loss.
-- [x] Incorporate Wolff and Echterling 2024 on validation-based hyperparameter tuning.
-- [x] Incorporate Franjic and Schweikert 2025 on nowcast-error cross-validation.
-- [x] Incorporate Xu et al. 2025 on bandwidth/smoothing choices for forecasts.
-- [ ] Broader final novelty audit before any universal "first" claim.
+## Phase 2 — Dynamic tracked minima
 
-## Phase 3 — Controlled experiments
+- [x] Define local-minimum sets `M_t`.
+- [x] Define epsilon one-to-one branch continuation.
+- [x] Define branch matrix `V_j = [S, Val1 loss, Val2 loss]`.
+- [x] Existing tracked-minima experiment implements branch histories and `last`.
+- [ ] Freeze branch-selection rule `psi`.
+- [ ] Implement final-smoothness rules `phi(V_j)` on identical branch histories.
+- [ ] Compare `last`, recent mean, recent median, Val2-weighted, and
+  recency+Val2-weighted rules.
+- [ ] Decide/freeze `K`, `epsilon`, `rho`, and numerical stabilizer `delta` using
+  development data only.
+- [ ] Evaluate all frozen rules on untouched outer test blocks.
 
-This is now the highest-priority phase.
+## Phase 3 — Main dynamic simulation
 
-- [ ] Implement/freeze the paper-specific experiment entry point.
-- [ ] Compare forecast-CV with CV, GCV, AICc, and BIC.
-- [ ] Compare forecast-optimal \(S\) with latent-trend recovery-optimal \(S\).
-- [ ] Compare one-step-selected smoothness with horizon-matched \(h\)-step smoothness.
-- [ ] Vary horizon with \(d,L\) fixed.
-- [ ] Study noise scale, residual persistence, and latent trend roughness.
-- [ ] Include linear, smoothly nonlinear, and structural-change mechanisms.
-- [ ] Freeze seeds and test splits before inspecting final test results.
-- [ ] Plot representative \(F(S)\) curves, but do not turn the paper into the numerical-methods study.
+- [ ] Construct DGPs where forecast-optimal smoothness is stable, drifting,
+  switching, or intermittently multimodal.
+- [ ] Measure branch recovery/persistence separately from forecast performance.
+- [ ] Compare dynamic rules with pooled forecast-CV, CV, GCV, AICc, and
+  simple last-minimum selection.
+- [ ] Report forecast loss, selected `S`, branch support, switching frequency,
+  and regret to simulation-only forecast oracle.
 
-A dense deterministic \(S\)-grid is acceptable here because computational efficiency is not Paper A's contribution.
+## Phase 4 — Public real-data panel
 
-## Phase 4 — Public real-data forecasting panel
+- [ ] Freeze a heterogeneous public panel.
+- [ ] Use chronological Val1/refit/Val2/outer-test logic.
+- [ ] No manual per-series choice of branch rule.
+- [ ] Compare dynamic tracked rules with pooled forecast-CV and classical
+  selectors.
 
-- [ ] Choose/freeze a heterogeneous public multi-series panel.
-- [ ] Use genuinely chronological validation/test splits.
-- [ ] Report forecast MSFE/MAE, selected \(S\), and implied effective degrees of freedom.
-- [ ] If macroeconomic series are retained, replace exploratory current-vintage histories with real-time vintages for historical backtests.
-- [ ] Keep any current-vintage FRED results explicitly exploratory.
+## Phase 5 — Manuscript
 
-## Phase 5 — Manuscript completion
+- [x] Existing manuscript contains the pooled criterion and PLS foundation.
+- [ ] Rewrite abstract/introduction after dynamic results exist.
+- [ ] Make tracked branches the central method and pooled selector the baseline.
+- [ ] Add only results actually observed.
+- [ ] Audit novelty around dynamic smoothing-parameter tracking before claiming
+  precedence.
 
-- [x] Rewrite introduction for Journal of Forecasting.
-- [x] Rewrite related work for the target audience.
-- [x] Write the criterion and core propositions.
-- [x] Write a frozen result-free evaluation protocol.
-- [x] Configure Wiley NJDv5 for Journal of Forecasting.
-- [x] Add a local build script and manual GitHub Actions target.
-- [ ] Insert final frozen simulation results.
-- [ ] Insert final public-data results.
-- [ ] Add only figures/tables needed to answer the forecasting question.
-- [ ] Final literature/claim audit.
-- [ ] Referee-style pass for forecasting contribution, readability, and overclaiming.
-- [ ] Compile submission PDF and freeze exact commit.
+## Canonical notes
 
+- `notes/dynamic_tracked_smoothness.md` — central method.
+- `notes/validation_semantics.md` — information/refit invariant.
+- `notes/research_objective.md` — formal research question.
 
-## Empirical checkpoint status
+## Active papers
 
-Detailed execution roadmap: empirical_roadmap.md.
-
-Checkpoint 01 is implemented and waiting for execution on the user's machine.
-
-Run:
-
-~~~bash
-python experiments/smoothness_cv/run_checkpoint_01.py --preset smoke
-python experiments/smoothness_cv/make_checkpoint_01_figures.py
-~~~
-
-If the smoke run passes, repeat with --preset quick, push the complete generated
-results/smoothness_cv/checkpoint_01/<run>/ directory, and stop. The next
-simulation design decisions must be made from those outputs rather than from
-speculation.
+Only `paper_smoothness-cv/` and `paper_numerical-methods/` are active.
