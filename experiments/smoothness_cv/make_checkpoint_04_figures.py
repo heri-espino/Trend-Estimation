@@ -73,7 +73,9 @@ def _smoothness_difference_figure(decisions: pd.DataFrame, out: Path) -> None:
         for rule in order
     ]
     fig, ax = plt.subplots(figsize=(7.4, max(3.8, 0.45 * len(order) + 1.5)))
-    ax.boxplot(values, vert=False, labels=order, showfliers=False)
+    ax.boxplot(values, vert=False, showfliers=False)
+    ax.set_yticks(np.arange(1, len(order) + 1))
+    ax.set_yticklabels(order)
     ax.axvline(0.0, linestyle="--", linewidth=1.0)
     ax.set_xlabel(r"Selected $S$ minus newest branch minimum")
     ax.set_title("How branch rules modify the current smoothness")
