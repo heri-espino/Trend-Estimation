@@ -1,152 +1,135 @@
-# AI Handoff — Smoothness-CV paper
+# AI Handoff — Dynamic smoothness-CV paper
 
 ## Identity
 
-This paper answers **what amount of smoothness should be selected for forecasting?**
+This paper now studies **dynamic forecast-optimal smoothness**.
 
-Its central object is
+The older pooled selector
 
 \[
-S^\star_{d,L,h}
-\in
-\arg\min_{S\in[0,1]}
-F_{d,L,h}(S),
+\widehat S^{\mathrm{pool}}_{T,h}
+\in\arg\min_S F^{\mathrm{pool}}_{T,h}(S)
 \]
 
-where \(F\) is chronological rolling future-block MSE from a finite-difference penalized trend plus its fixed continuation rule.
+remains a primary baseline, but it is no longer the whole research question.
+
+The central object is a time sequence of local minima of forecast-loss surfaces
+and the persistent branches they form.
+
+Read `notes/dynamic_tracked_smoothness.md` before changing the method,
+experiments, or manuscript.
+
+## Canonical dynamic object
+
+At each chronological origin `t`, recover
+
+\[
+\mathcal M_t=\{S_{1,t},\ldots,S_{K_t,t}\}.
+\]
+
+A current minimum may continue a previous branch if
+
+\[
+|S_{j,t}-S_{j,t-1}|\le\varepsilon,
+\]
+
+with one-to-one matching.
+
+Each branch is represented by
+
+\[
+V_j=
+\begin{pmatrix}
+S_{j,t_1} & \ell^{(1)}_{j,t_1} & \ell^{(2)}_{j,t_1}\\
+\vdots & \vdots & \vdots
+\end{pmatrix}.
+\]
+
+`ell1` is Validation-1 loss on the surface where the local minimum is found.
+`ell2` is Validation-2 forecast loss after refitting through Validation 1 with
+the same `d,L,S`.
+
+The decision has two layers:
+
+\[
+\widehat j_T=\psi(V_1,\ldots,V_J),
+\qquad
+\widehat S_T=\phi(V_{\widehat j_T}).
+\]
+
+`psi` selects a persistent branch using historical information only.
+`phi` turns the selected branch history into the smoothness used today.
+
+Minimum `phi` comparison set:
+
+- last local minimum;
+- recent mean;
+- recent median;
+- Validation-2 weighted mean;
+- recency + Validation-2 weighted mean;
+- later: explicit forecast of the smoothness trajectory.
+
+Do not silently choose one rule as final before it is evaluated out of sample.
 
 ## Non-negotiable validation semantics
 
-Forecast-CV selects **only** the smoothness hyperparameter \(S\). The trends fitted inside the rolling validation folds are temporary scoring fits and are discarded.
+At an outer forecast origin `T`, no observation after `T` may affect branch
+selection, the final smoothness rule, or the trend fit.
 
-At outer origin \(T\):
+After `S_hat_T` is produced, discard all historical fold-specific trend fits and
+perform a fresh fit on
 
 \[
-\text{inner historical CV} \rightarrow \widehat S_{T,h}
-\rightarrow
-\text{fresh refit on }y_{T-L+1:T}
-\rightarrow
-\text{forecast }y_{T+1:T+h}.
+y_{T-L+1:T}.
 \]
 
-The final forecast therefore uses all information available immediately before the outer test, subject to the fixed rolling window \(L\). We do not keep the fit from the last validation fold, and we do not average fold-specific trends. What is averaged across inner folds is forecast loss for each candidate \(S\).
+Then forecast the untouched future block. We may average losses or values of
+`S` when a declared `phi` rule requires it; **we never average old trend fits**.
 
-Read `notes/validation_semantics.md` before editing any validation code, experiment, or empirical-method prose.
+## Current implementation mapping
+
+`experiments/numerical_smoothness_selection/run_two_stage_order_validation.py`
+already implements:
+
+- local-minimum recovery at each rolling origin;
+- epsilon branch tracking;
+- one-to-one branch continuation;
+- Validation-1 loss;
+- refit through Validation 1;
+- Validation-2 loss;
+- persistence summaries;
+- branch selection by historical Validation-2 loss;
+- final `last` local-minimum rule;
+- untouched-test scoring.
+
+It also records branch mean/median and recent-five mean/median as diagnostics.
+Those summaries are not yet competing final `phi` methods.
+
+## Relationship to CP03
+
+CP01--CP03 belong to the simpler pooled-selector baseline. CP03 remains frozen
+and should not be changed after results are observed. It becomes baseline
+evidence, not the final dynamic method.
+
+The next smoothness-CV checkpoint must compare dynamic `phi(V_j)` rules using
+identical branch histories and identical untouched test blocks.
+
+## Paper boundary
+
+`paper_smoothness-cv/` owns the forecasting/statistical decision rule:
+`V_j`, `psi`, `phi`, validation design, and forecast evidence.
+
+`paper_numerical-methods/` owns recovery of the multiple local minima and the
+numerical correspondence/tracking problem across surfaces.
+
+Only these two papers are active.
+
 ## Primary target
 
-**Journal of Forecasting.**
-
-The active Wiley NJDv5 manuscript is in manuscript/main.tex and is configured with
-
-\[
-\text{journal}=\text{Journal of Forecasting}.
-\]
-
-The template bundle lives under vendor/wiley_njd_v5/. Build through build.py rather than editing the vendor class.
-
-## Foundation and literature story
-
-Start from Guerrero, not Hart.
-
-Guerrero supplies:
-- finite-difference PLS;
-- the trace-based controlled-smoothness idea;
-- the mapping between smoothness and penalty;
-- trend continuation/forecasting.
-
-The extension is to choose smoothness from chronological forecast performance rather than specifying it exogenously.
-
-Hart (1994) is a conceptual precedent for predictive smoothing selection in a different kernel-smoothing problem. It limits novelty wording but is not the same estimator.
-
-For Journal of Forecasting positioning, the manuscript now also uses:
-- Taylor (2004): smoothing parameters estimated/updated for forecasting;
-- Zafar et al. (2022): trend filtering judged by forecast performance;
-- Staněk (2023): rolling/fixed pseudo-out-of-sample loss and model selection;
-- Wolff and Echterling (2024): forecast-error tuning of regularization/hyperparameters;
-- Franjic and Schweikert (2025): cross-validation linked directly to nowcast error;
-- Xu et al. (2025): bandwidth/smoothing choice affecting forecasts.
-
-## Do not import the numerical paper
-
-Do not make Brent, adaptive subdivision, derivative root finding, rational stationary polynomials, or Sturm the contribution here. A dense grid is acceptable for Paper A if it evaluates the scientific criterion transparently.
-
-The numerical solver belongs to paper_numerical-methods/.
-
-## Do not import the statistical-properties paper
-
-Fixed-\(S\) effective degrees of freedom are useful here because
-
-\[
-\operatorname{edf}
-=
-L-(L-d)S.
-\]
-
-But post-selection bias, variance, uncertainty, and inference for
-
-\[
-H_{\lambda(\widehat S)}y
-\]
-
-belong to paper_statistical-properties-penalized-trend/.
-
-## Manuscript status
-
-The paper was rewritten on 2026-10-05 for Journal of Forecasting. The accidentally copied WTI/Journal of Futures Markets manuscript text has been removed.
-
-The current draft contains:
-1. journal-facing introduction;
-2. literature positioning;
-3. finite-difference PLS and normalized smoothness;
-4. the forecast-optimal smoothness criterion;
-5. basic mathematical properties;
-6. a prespecified evaluation protocol;
-7. scope and interpretation;
-8. conclusion.
-
-There are deliberately no invented result numbers.
-
-## Immediate next task
-
-CP01 and CP02 are complete. The next scientific task is the frozen paper-scale simulation in CP03.
-
-Run and freeze:
-1. forecast-CV versus one-step forecast-CV, CV, GCV, and AICc;
-2. forecast-optimal versus latent-trend recovery-optimal \(S\);
-3. one-step versus horizon-matched tuning;
-4. a public heterogeneous forecasting panel;
-5. paper-final real-time macro vintages if macro examples are retained.
-
-Do not use revised current-vintage macro history as if it were available at historical forecast origins.
-
-## Build
-
-Check structure:
-
-python paper_smoothness-cv/build.py --check
-
-Compile:
-
-python paper_smoothness-cv/build.py
-
-Or use the manual GitHub Actions target smoothness-cv.
+Journal of Forecasting.
 
 ## Claim rule
 
-Safe current wording:
-
-> Building on controlled-smoothness finite-difference penalized trend estimation, we define the smoothness percentage endogenously through a horizon-specific chronological future-block forecast criterion.
-
-Do not claim the first predictive smoothing selector, the first forecast-based tuning method, or universal superiority over classical selectors.
-
-## Current execution checkpoint
-
-The active stop point is `checkpoints/CP01_EMPIRICAL_CORE.md`. Empirical code is implemented under `experiments/smoothness_cv/`. Do not invent CP01 conclusions. Wait for the user to run smoke/quick and push the exact result bundle before freezing CP02.
-
-## Current stop point
-
-CP01 quick has been reviewed. The active execution handoff is `checkpoints/CP02_REFINE_SIMULATION_DESIGN.md`. CP02 is implemented; wait for its smoke/refine outputs before freezing CP03.
-
-## Current stop point
-
-The active execution handoff is `checkpoints/CP03_FROZEN_PAPER_SIMULATION.md`. The CP03 design is frozen before the paper run. Do not add/remove DGPs, change seeds, horizons, windows, or the comparator set after inspecting the paper-preset results.
+Do not claim the first predictive smoothing selector or universal superiority.
+Any novelty claim about tracked minima must be audited against the literature
+before submission.
