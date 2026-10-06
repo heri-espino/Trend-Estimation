@@ -22,17 +22,31 @@ os.environ["NUMEXPR_NUM_THREADS"] = "1"
 import numpy as np
 import pandas as pd
 
-from common import (
-    classical_selections,
-    fit_and_forecast,
-    forecast_cv_curve,
-    git_short_sha,
-    grid_argmin,
-    latent_forecast_oracle_curve,
-    make_simulated_series,
-    recovery_curve,
-    smoothness_grid,
-)
+try:
+    from .common import (
+        classical_selections,
+        fit_and_forecast,
+        forecast_cv_curve,
+        git_short_sha,
+        grid_argmin,
+        latent_forecast_oracle_curve,
+        make_simulated_series,
+        recovery_curve,
+        smoothness_grid,
+    )
+except ImportError:
+    # Direct script execution: python experiments/smoothness_cv/run_checkpoint_03.py
+    from common import (
+        classical_selections,
+        fit_and_forecast,
+        forecast_cv_curve,
+        git_short_sha,
+        grid_argmin,
+        latent_forecast_oracle_curve,
+        make_simulated_series,
+        recovery_curve,
+        smoothness_grid,
+    )
 
 
 @dataclass(frozen=True)
