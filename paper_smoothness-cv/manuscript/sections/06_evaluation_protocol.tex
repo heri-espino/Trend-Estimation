@@ -50,6 +50,32 @@ The same origins are used for every horizon. At each origin, all tuning uses onl
 
 The scientific criterion is evaluated on a deterministic grid of $601$ equally spaced smoothness values on $[0,1]$. A dense grid is sufficient here because numerical efficiency is not the contribution of this paper. The companion numerical-methods paper studies more efficient recovery of multimodal minima.
 
+\subsection{Selection versus final refitting}
+
+The rolling validation exercise selects the smoothness hyperparameter, not one of the intermediate fitted trends. At outer forecast origin \(T\), each candidate \(S\) is scored over historical pseudo-out-of-sample validation blocks contained entirely within \(y_{1:T}\). Let
+\[
+\widehat S_{T,h}
+\in
+\arg\min_S F_{T,h}(S)
+\]
+denote the selected smoothness. The fold-specific trend estimates used to construct \(F_{T,h}\) are then discarded.
+
+Before forecasting the untouched outer block, the trend is re-estimated using the most recent full estimation window available at the outer origin:
+\[
+x_T=y_{T-L+1:T},
+\qquad
+\widehat\tau_T
+=
+H_{\lambda(\widehat S_{T,h})}x_T.
+\]
+The operational forecast is therefore
+\[
+\widehat y_{T+1:T+h\mid T}
+=
+G_{d,h}\widehat\tau_T.
+\]
+Thus the inner folds average forecast losses for candidate values of \(S\); they do not average trend estimates. When the evaluation advances to a later outer origin, observations that have become available are incorporated into the new historical information set and the full select-\(S\), refit, and forecast cycle is repeated.
+
 \subsection{Competing selectors}
 
 The primary feasible comparison set is:
