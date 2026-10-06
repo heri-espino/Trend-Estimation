@@ -15,6 +15,23 @@ F_{d,L,h}(S),
 
 where \(F\) is chronological rolling future-block MSE from a finite-difference penalized trend plus its fixed continuation rule.
 
+## Non-negotiable validation semantics
+
+Forecast-CV selects **only** the smoothness hyperparameter \(S\). The trends fitted inside the rolling validation folds are temporary scoring fits and are discarded.
+
+At outer origin \(T\):
+
+\[
+\text{inner historical CV} \rightarrow \widehat S_{T,h}
+\rightarrow
+\text{fresh refit on }y_{T-L+1:T}
+\rightarrow
+\text{forecast }y_{T+1:T+h}.
+\]
+
+The final forecast therefore uses all information available immediately before the outer test, subject to the fixed rolling window \(L\). We do not keep the fit from the last validation fold, and we do not average fold-specific trends. What is averaged across inner folds is forecast loss for each candidate \(S\).
+
+Read `notes/validation_semantics.md` before editing any validation code, experiment, or empirical-method prose.
 ## Primary target
 
 **Journal of Forecasting.**
