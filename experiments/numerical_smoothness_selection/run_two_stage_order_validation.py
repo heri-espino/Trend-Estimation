@@ -135,9 +135,27 @@ def _safe_levels(log_values: np.ndarray) -> np.ndarray:
 
 
 def _rmse(observed: np.ndarray, predicted: np.ndarray) -> float:
+    """Overflow-safe RMSE.
+
+    Some deliberately bad local-minimum candidates can extrapolate to enormous
+    level forecasts after exponentiating a log-scale trend. Squaring those
+    finite errors directly can overflow even though the RMSE itself is still
+    representable. Scale by the maximum absolute error before squaring.
+    """
+
     observed = np.asarray(observed, dtype=float)
     predicted = np.asarray(predicted, dtype=float)
-    return float(np.sqrt(np.mean((observed - predicted) ** 2)))
+    error = observed - predicted
+
+    if not np.all(np.isfinite(error)):
+        return float("inf")
+
+    scale = float(np.max(np.abs(error)))
+    if scale == 0.0:
+        return 0.0
+
+    scaled = error / scale
+    return float(scale * np.sqrt(np.mean(scaled * scaled)))
 
 
 def _paired_splits(
