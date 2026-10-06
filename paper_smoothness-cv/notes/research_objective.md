@@ -1,57 +1,115 @@
-# Canonical research objective
+# Canonical research objective — dynamic smoothness-CV
 
 ## Research question
 
-Can the percentage of smoothness in finite-difference penalized least-squares trend estimation be selected endogenously from chronological forecast performance rather than specified ex ante?
+Can local minima of a chronological forecast-loss surface for penalized trend
+smoothness be tracked through time, and can their historical trajectories be
+used to choose the current smoothness more effectively than a single pooled
+forecast-CV optimum?
 
 ## Estimator
 
-For \(x_T\in\mathbb R^L\),
+For the most recent `L` observations at outer origin `T`,
+
 \[
-\widehat\tau_T(\lambda)=H_\lambda x_T,\qquad
-H_\lambda=(I+\lambda Q)^{-1},\qquad
-Q=D_d^\top D_d.
+\widehat\tau_T(S)=H_{\lambda(S)}y_{T-L+1:T},
+\qquad
+H_\lambda=(I+\lambda D_d^\top D_d)^{-1}.
 \]
 
-## Smoothness coordinate
+## Normalized smoothness
 
 \[
-S(\lambda)=
-1-\frac1{L-d}\sum_{\delta_j>0}\frac1{1+\lambda\delta_j}.
+S(\lambda)
+=
+1-\frac1{L-d}\sum_{\delta_j>0}\frac1{1+\lambda\delta_j},
+\qquad S\in[0,1].
 \]
 
-Under the usual finite-difference operator, \(S\) is continuous and strictly increasing, with
+## Static pooled baseline
+
+For historical forecast origins inside the information set available at `T`,
+
 \[
-S(0)=0,\qquad S(\infty)=1.
+F^{\mathrm{pool}}_{T,h}(S)
+=
+\frac1M\sum_{m=1}^{M}\ell_{m,h}(S),
 \]
 
-## Forecast criterion
-
-Let \(G_{d,h}\) map the fitted historical trend to the \(h\)-step continuation implied by the fixed finite-difference forecast family.
+with baseline selector
 
 \[
-\widehat z_T(S)=G_{d,h}H_{\lambda(S)}x_T.
+\widehat S^{\mathrm{pool}}_{T,h}
+\in\arg\min_S F^{\mathrm{pool}}_{T,h}(S).
 \]
 
-For rolling origins \(T_1,\ldots,T_M\),
+## Dynamic local-minimum process
+
+At each chronological origin `t`, define the local-minimum set
+
 \[
-F_{d,L,h}(S)=
-\frac1{Mh}
-\sum_{j=1}^M
-\left\|
-z_{T_j}-G_{d,h}H_{\lambda(S)}x_{T_j}
-\right\|^2.
+\mathcal M_t^{(d,L,h)}
+=
+\{S_{1,t},\ldots,S_{K_t,t}\}.
 \]
 
-Define
+Track minima through time by one-to-one continuation inside
+
 \[
-S^\star_{d,L,h}\in\arg\min_{S\in[0,1]}F_{d,L,h}(S).
+|S_{j,t}-S_{j,t-1}|\le\varepsilon.
+\]
+
+A tracked branch stores
+
+\[
+V_j=
+\{(S_{j,t},\ell^{(1)}_{j,t},\ell^{(2)}_{j,t})\}_{t\in\mathcal T_j}.
+\]
+
+The final decision is
+
+\[
+\widehat j_T=\psi(V_1,\ldots,V_J),
+\qquad
+\widehat S_T=\phi(V_{\widehat j_T}).
+\]
+
+`psi` selects a persistent branch from historical Validation-2 performance and
+support. `phi` determines how the branch history is converted into today's
+smoothness.
+
+## Candidate final-smoothness rules
+
+The initial comparison set is:
+
+\[
+\phi_{\mathrm{last}},\
+\phi_{\mathrm{mean},K},\
+\phi_{\mathrm{median},K},\
+\phi_{\mathrm{V2}},\
+\phi_{\mathrm{recency+V2}}.
+\]
+
+A simple time-series forecast of `S_{j,t}` is a later extension.
+
+## Final refit
+
+Once `S_hat_T` is chosen, the trend is refit with all currently available data
+in the fixed final window:
+
+\[
+\widehat\tau_T
+=
+H_{\lambda(\widehat S_T)}y_{T-L+1:T},
+\qquad
+\widehat y_{T+1:T+h\mid T}=G_{d,h}\widehat\tau_T.
 \]
 
 ## Intended contribution
 
-Formulate and study this smoothness-selection target inside the finite-difference PLS/controlled-smoothness framework.
+The paper studies the **forecasting value of temporal persistence in local
+smoothness optima**. It compares dynamic branch-based rules with the simpler
+pooled forecast-CV optimum and conventional smoothness selectors.
 
-The paper should distinguish it from analyst-chosen smoothness, recovery optimality, in-sample fit, GCV/AIC/BIC/marginal-likelihood selection, and kernel-bandwidth TSCV.
-
-Efficient multimodal optimization belongs to paper_numerical-methods/. Joint adaptive selection of \(d,L,S\) belongs to paper_forecast-optimal-smoothing/.
+Efficient recovery and numerical tracking of local minima belong to
+`paper_numerical-methods/`.
