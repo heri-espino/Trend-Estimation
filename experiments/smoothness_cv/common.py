@@ -278,6 +278,14 @@ def forecast_cv_curve(
     max_inner_origins: int,
     s_grid: np.ndarray,
 ) -> np.ndarray:
+    """Score candidate smoothness values using historical rolling forecasts.
+
+    This function selects/scorers the hyperparameter only. The trend fits
+    created inside the rolling folds are temporary and must not be reused as
+    the final outer-origin trend. After S is selected, callers must refit on
+    the latest available outer-origin window before forecasting the test block.
+    """
+
     splits = inner_splits(
         n_history=len(history),
         window=window,
@@ -333,6 +341,14 @@ def fit_and_forecast(
     horizon: int,
     smoothness: float,
 ) -> tuple[np.ndarray, np.ndarray, float, float]:
+    """Freshly refit at the outer origin, then extrapolate.
+
+    In the smoothness-CV experiments, y_window must be the most recent
+    L-observation window available at the current outer origin. The supplied
+    smoothness may have been selected by inner CV, but no inner-fold fit is
+    carried forward into this function.
+    """
+
     solver = cached_pure_solver(len(y_window), order)
     fit = solver.fit_for_s(y_window, float(smoothness))
     operator = finite_difference_forecast_operator(
