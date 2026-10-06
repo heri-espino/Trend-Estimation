@@ -1,96 +1,115 @@
-# Numerical methods for forecast-smoothness selection
+# Numerical methods for multimodal forecast-smoothness selection
 
-**Status: ACTIVE — numerical companion paper after the 2026-10-05 split.**
+**Status: ACTIVE.**
 
-Working title: **Numerical Solution of Multimodal Forecast-Smoothness Selection Problems**
+**Working title:** *Numerical Solution and Tracking of Multimodal Forecast-Smoothness Minima*.
 
 ## Objective
 
-Given the forecast-smoothness objective \(F(S)\) defined in paper_smoothness-cv/, develop and validate methods for locating all relevant stationary minima and the global optimum efficiently and reliably on \(S\in[0,1]\).
+The numerical paper now has two linked tasks.
 
-## What this paper assumes
+### Task A — recover minima on one surface
 
-Paper A defines
+Given
+
 \[
-S^\star\in\arg\min_{S\in[0,1]}F(S).
+F_t(S),\qquad S\in[0,1],
 \]
 
-Paper B starts there and asks how to solve it.
+recover all relevant local minima and the global optimum efficiently and
+reliably, without assuming unimodality.
 
-## Current production method
+### Task B — track minima across time
 
-1. sparse deterministic evaluation in \(S\);
+For a sequence of neighboring forecast-loss surfaces, recover
+
+\[
+\mathcal M_t=\{S_{1,t},\ldots,S_{K_t,t}\}
+\]
+
+and determine which minima belong to the same temporal branch.
+
+The current baseline continuation rule is one-to-one nearest-neighbor matching
+under
+
+\[
+|S_{j,t}-S_{j,t-1}|\le\varepsilon.
+\]
+
+Canonical tracking note: `notes/temporal_minima_tracking.md`.
+
+## Current per-surface solver
+
+1. sparse deterministic evaluation in normalized `S`;
 2. analytic first/second derivatives;
 3. adaptive interval subdivision;
 4. derivative sign-change brackets;
 5. Brent root refinement;
 6. stationary-point classification;
 7. exact/limiting endpoint comparison;
-8. optional post-discovery spacing of nearby minima.
+8. optional within-surface spacing of nearby representative minima.
 
-Brent does not discover all roots globally. It refines a root once a bracket is identified.
+Brent refines roots after a bracket is identified; it is not a global
+root-discovery algorithm.
 
-## Analytic derivatives
+## Two different epsilon-like quantities
 
-\[
-H'=-HQH,\qquad H''=2HQHQH.
-\]
+Do not conflate:
 
-With
-\[
-r_T=z_T-GHx_T,\quad
-a_T=GHQHx_T,\quad
-b_T=GHQHQHx_T,
-\]
-\[
-f'_T=\frac{2}{h}r_T^\top a_T,
-\]
-\[
-f''_T=\frac{2}{h}\left(\|a_T\|^2-2r_T^\top b_T\right).
-\]
+- `candidate_spacing`: post-discovery separation of redundant/nearby minima on
+  the **same** surface;
+- `track_epsilon`: maximum distance used to continue a minimum from one
+  chronological surface to the **next** surface.
 
-\[
-F'(S)=\frac{f'(\lambda)}{S'(\lambda)},
-\]
-\[
-F''(S)=
-\frac{f''(\lambda)}{[S'(\lambda)]^2}
--
-\frac{f'(\lambda)S''(\lambda)}{[S'(\lambda)]^3}.
-\]
+The dynamic forecasting paper uses the tracked branches downstream.
 
-## Stronger algebraic direction
+## Interface with `paper_smoothness-cv/`
+
+The numerical paper returns the local minima and their branch identities.
+The forecasting paper then augments each branch with Validation-2 forecast loss
+and forms
 
 \[
-f(\lambda)=\frac{P(\lambda)}{D(\lambda)^2},
-\qquad
-f'(\lambda)=\frac{R(\lambda)}{D(\lambda)^3}.
+V_j=[S_{j,t},\ell^{(1)}_{j,t},\ell^{(2)}_{j,t}]_t.
 \]
 
-This creates a possible route to certified stationary-point isolation via polynomial-root methods such as Sturm sequences, followed by Brent refinement.
+The forecasting paper owns branch selection `psi(V_1,...,V_J)` and the final
+smoothness rule `phi(V_j)`. This numerical paper does **not** claim those
+decision rules as its contribution.
 
-Current status: the Sturm mini-check is a proof-of-concept, not the production solver and not a general certification theorem.
+## Frozen numerical evidence
 
-## Frozen benchmark evidence
+The existing per-surface solver remains frozen under the previous benchmark
+protocol:
 
 - 240/240 relevant adversarial minima/boundary optima;
 - 2105/2105 synthetic dense-reference interior minima across 1920 surfaces;
-- 473/473 financial dense-reference interior minima across 384 geometry-stress surfaces;
+- 473/473 financial dense-reference interior minima across 384 surfaces;
 - mean evaluation fractions about 1.57% synthetic and 1.84% financial.
 
-These are empirical benchmark results.
+These validate the per-surface search empirically. They do not yet validate
+temporal branch correspondence.
 
-## Migration note
+## New numerical work required
 
-This folder was copied from paper_numerical-smoothness-selection/ so the manuscript, figures, tables, checkpoints, and historical notes remain available.
+The temporal extension must evaluate:
 
-Some copied files still reflect the old combined-paper framing. Canonical current sources are:
+- sensitivity to `track_epsilon`;
+- branch birth/death;
+- near-crossings and ambiguous matches;
+- greedy one-to-one matching versus globally optimal bipartite matching;
+- stability when minima become very close;
+- possible use of curvature/objective information as secondary correspondence
+  features.
 
-1. AI_HANDOFF.md
-2. notes/research_objective.md
-3. notes/paper_split_2026-10-05.md
-4. notes/submission_positioning.md
-5. notes/results.md
-6. notes/sturm_minicheck.md
+Do not claim certified tracking until those cases are studied.
 
-The experiment/result namespaces remain experiments/numerical_smoothness_selection/ and results/numerical_smoothness_selection/ for reproducibility.
+## Stronger algebraic direction
+
+The rational/Sturm direction remains a possible route to certified per-surface
+stationary-root isolation. It is still a proof-of-concept and does not solve
+the cross-time correspondence problem by itself.
+
+## Active papers
+
+Only `paper_numerical-methods/` and `paper_smoothness-cv/` are active.
