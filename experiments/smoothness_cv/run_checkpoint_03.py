@@ -1,13 +1,23 @@
 from __future__ import annotations
 
 import argparse
-import gzip
+from concurrent.futures import ProcessPoolExecutor
 import json
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from itertools import product
+import multiprocessing as mp
+import os
 from pathlib import Path
 import time
+
+# Each worker should use one BLAS/OpenMP thread. Parallelism is provided at the
+# scenario level below; allowing every process to spawn its own BLAS thread pool
+# can oversubscribe the machine badly.
+os.environ.setdefault("OMP_NUM_THREADS", "1")
+os.environ.setdefault("OPENBLAS_NUM_THREADS", "1")
+os.environ.setdefault("MKL_NUM_THREADS", "1")
+os.environ.setdefault("NUMEXPR_NUM_THREADS", "1")
 
 import numpy as np
 import pandas as pd
@@ -110,6 +120,15 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--preset", choices=tuple(PRESETS), default="smoke")
     parser.add_argument("--output-dir", type=Path, default=None)
+    parser.add_argument(
+        "--jobs",
+        type=int,
+        default=0,
+        help=(
+            "Number of worker processes. 0=auto (all but one logical CPU, "
+            "capped at 16); 1=serial."
+        ),
+    )
     return parser.parse_args()
 
 
@@ -305,13 +324,192 @@ def oracle_series_comparisons(series_results: pd.DataFrame) -> pd.DataFrame:
     return out
 
 
+
+def resolve_jobs(requested: int) -> int:
+    """Resolve --jobs while keeping the automatic setting conservative."""
+
+    requested = int(requested)
+    if requested < 0:
+        raise ValueError("--jobs must be 0 or a positive integer.")
+    if requested == 1:
+        return 1
+    cpu_count = int(os.cpu_count() or 1)
+    if requested == 0:
+        return max(1, min(16, cpu_count - 1 if cpu_count > 1 else 1))
+    if os.name == "nt" and requested > 61:
+        raise ValueError("Windows ProcessPoolExecutor supports at most 61 workers.")
+    return requested
+
+
+def _run_scenario_task(task: tuple[int, int, str, str, float, str]) -> tuple[
+    int,
+    list[dict],
+    list[dict],
+]:
+    """Evaluate one complete simulation scenario.
+
+    The task is deliberately coarse: one process owns all outer origins,
+    horizons, selectors, and objective curves for one
+    (seed, trend, noise-model, noise-scale) combination. This keeps process
+    communication small and lets process-local cached linear algebra objects be
+    reused many times.
+    """
+
+    (
+        scenario_index,
+        seed,
+        trend_kind,
+        noise_model,
+        noise_std,
+        preset_name,
+    ) = task
+    preset = PRESETS[preset_name]
+    s_grid = smoothness_grid(preset.n_s_grid)
+
+    sid = scenario_id(trend_kind, noise_model, float(noise_std))
+    y, true_trend = make_simulated_series(
+        n_obs=preset.n_obs,
+        trend_kind=trend_kind,
+        noise_model=noise_model,
+        noise_std=float(noise_std),
+        seed=int(seed),
+    )
+
+    rows: list[dict] = []
+    curve_rows: list[dict] = []
+
+    for origin_index, origin in enumerate(preset.outer_origins):
+        history = y[:origin]
+        y_window = history[-preset.window :]
+        true_window = true_trend[origin - preset.window : origin]
+
+        one_step_curve = forecast_cv_curve(
+            history,
+            order=preset.order,
+            window=preset.window,
+            horizon=1,
+            step=preset.inner_step,
+            max_inner_origins=preset.max_inner_origins,
+            s_grid=s_grid,
+        )
+        s_one, score_one, _ = grid_argmin(s_grid, one_step_curve)
+
+        recovery_values = recovery_curve(
+            y_window,
+            true_window,
+            order=preset.order,
+            s_grid=s_grid,
+        )
+        s_recovery, score_recovery, _ = grid_argmin(s_grid, recovery_values)
+
+        classical = classical_selections(
+            y_window,
+            order=preset.order,
+            s_grid=s_grid,
+        )
+
+        for horizon in preset.horizons:
+            observed_future = y[origin : origin + horizon]
+            latent_future = true_trend[origin : origin + horizon]
+
+            matched_curve = forecast_cv_curve(
+                history,
+                order=preset.order,
+                window=preset.window,
+                horizon=horizon,
+                step=preset.inner_step,
+                max_inner_origins=preset.max_inner_origins,
+                s_grid=s_grid,
+            )
+            s_matched, score_matched, _ = grid_argmin(s_grid, matched_curve)
+
+            oracle_curve = latent_forecast_oracle_curve(
+                y_window,
+                latent_future,
+                order=preset.order,
+                s_grid=s_grid,
+            )
+            s_oracle, oracle_mse, _ = grid_argmin(s_grid, oracle_curve)
+
+            selected = {
+                "forecast_cv_h": (s_matched, score_matched),
+                "forecast_cv_1": (s_one, score_one),
+                "cv": classical["cv"],
+                "gcv": classical["gcv"],
+                "aicc": classical["aicc"],
+                "recovery_oracle_train": (s_recovery, score_recovery),
+                "latent_forecast_oracle": (s_oracle, oracle_mse),
+            }
+
+            for selector in ALL_SELECTORS:
+                selected_s, selector_score = selected[selector]
+                row = evaluate_selector(
+                    selector=selector,
+                    selected_s=selected_s,
+                    selector_score=selector_score,
+                    y_window=y_window,
+                    true_window=true_window,
+                    observed_future=observed_future,
+                    latent_future=latent_future,
+                    order=preset.order,
+                    horizon=horizon,
+                    latent_oracle_mse=oracle_mse,
+                )
+                row.update(
+                    {
+                        "seed": seed,
+                        "scenario_id": sid,
+                        "trend_kind": trend_kind,
+                        "noise_model": noise_model,
+                        "noise_std": noise_std,
+                        "order": preset.order,
+                        "window": preset.window,
+                        "outer_origin": origin,
+                        "horizon": horizon,
+                    }
+                )
+                rows.append(row)
+
+            # Save representative curves only, exactly as in the serial design.
+            if (
+                seed == preset.seeds[0]
+                and origin_index == 0
+                and trend_kind in ("linear", "oscillatory", "recent_slope_change")
+                and noise_std == preset.noise_stds[0]
+            ):
+                for s, loss_h, loss_1, loss_rec, loss_oracle in zip(
+                    s_grid,
+                    matched_curve,
+                    one_step_curve,
+                    recovery_values,
+                    oracle_curve,
+                ):
+                    curve_rows.append(
+                        {
+                            "scenario_id": sid,
+                            "seed": seed,
+                            "trend_kind": trend_kind,
+                            "noise_model": noise_model,
+                            "noise_std": noise_std,
+                            "outer_origin": origin,
+                            "horizon": horizon,
+                            "smoothness": float(s),
+                            "forecast_loss_h": float(loss_h),
+                            "forecast_loss_1": float(loss_1),
+                            "recovery_mse": float(loss_rec),
+                            "latent_forecast_oracle_mse": float(loss_oracle),
+                        }
+                    )
+
+    return scenario_index, rows, curve_rows
+
 def main() -> None:
     args = parse_args()
     preset = PRESETS[args.preset]
     run_dir = args.output_dir or default_run_dir(preset.name)
     run_dir.mkdir(parents=True, exist_ok=True)
 
-    s_grid = smoothness_grid(preset.n_s_grid)
+    jobs = resolve_jobs(args.jobs)
     scenarios = list(
         product(
             preset.seeds,
@@ -320,169 +518,96 @@ def main() -> None:
             preset.noise_stds,
         )
     )
-    total_blocks = len(scenarios) * len(preset.outer_origins) * len(preset.horizons)
+    total_scenarios = len(scenarios)
+    blocks_per_scenario = len(preset.outer_origins) * len(preset.horizons)
+    total_blocks = total_scenarios * blocks_per_scenario
+
+    tasks = [
+        (
+            scenario_index,
+            int(seed),
+            str(trend_kind),
+            str(noise_model),
+            float(noise_std),
+            preset.name,
+        )
+        for scenario_index, (seed, trend_kind, noise_model, noise_std)
+        in enumerate(scenarios, start=1)
+    ]
 
     rows: list[dict] = []
     curve_rows: list[dict] = []
-    block_counter = 0
     started = time.perf_counter()
 
-    for scenario_index, (seed, trend_kind, noise_model, noise_std) in enumerate(
-        scenarios,
-        start=1,
-    ):
-        sid = scenario_id(trend_kind, noise_model, float(noise_std))
-        y, true_trend = make_simulated_series(
-            n_obs=preset.n_obs,
-            trend_kind=trend_kind,
-            noise_model=noise_model,
-            noise_std=float(noise_std),
-            seed=int(seed),
-        )
+    print(
+        f"Checkpoint 03 preset={preset.name}: {total_scenarios} scenarios, "
+        f"{total_blocks} outer-horizon blocks, jobs={jobs}",
+        flush=True,
+    )
 
-        print(
-            f"[scenario {scenario_index}/{len(scenarios)}] seed={seed} "
-            f"trend={trend_kind} noise={noise_model} sd={noise_std}",
-            flush=True,
-        )
+    progress_every = max(1, total_scenarios // 100)
 
-        for origin_index, origin in enumerate(preset.outer_origins):
-            history = y[:origin]
-            y_window = history[-preset.window :]
-            true_window = true_trend[origin - preset.window : origin]
-
-            one_step_curve = forecast_cv_curve(
-                history,
-                order=preset.order,
-                window=preset.window,
-                horizon=1,
-                step=preset.inner_step,
-                max_inner_origins=preset.max_inner_origins,
-                s_grid=s_grid,
-            )
-            s_one, score_one, _ = grid_argmin(s_grid, one_step_curve)
-
-            recovery_values = recovery_curve(
-                y_window,
-                true_window,
-                order=preset.order,
-                s_grid=s_grid,
-            )
-            s_recovery, score_recovery, _ = grid_argmin(s_grid, recovery_values)
-
-            classical = classical_selections(
-                y_window,
-                order=preset.order,
-                s_grid=s_grid,
-            )
-
-            for horizon in preset.horizons:
-                block_counter += 1
-                block_started = time.perf_counter()
-                observed_future = y[origin : origin + horizon]
-                latent_future = true_trend[origin : origin + horizon]
-
-                matched_curve = forecast_cv_curve(
-                    history,
-                    order=preset.order,
-                    window=preset.window,
-                    horizon=horizon,
-                    step=preset.inner_step,
-                    max_inner_origins=preset.max_inner_origins,
-                    s_grid=s_grid,
+    if jobs == 1:
+        iterator = map(_run_scenario_task, tasks)
+        for completed, (scenario_index, scenario_rows, scenario_curves) in enumerate(
+            iterator,
+            start=1,
+        ):
+            rows.extend(scenario_rows)
+            curve_rows.extend(scenario_curves)
+            if completed % progress_every == 0 or completed == total_scenarios:
+                elapsed = time.perf_counter() - started
+                rate = elapsed / completed
+                remaining = rate * (total_scenarios - completed)
+                print(
+                    f"    [{completed}/{total_scenarios} scenarios] "
+                    f"blocks={completed * blocks_per_scenario}/{total_blocks} "
+                    f"elapsed={elapsed/60:.1f}m eta={remaining/60:.1f}m",
+                    flush=True,
                 )
-                s_matched, score_matched, _ = grid_argmin(s_grid, matched_curve)
-
-                oracle_curve = latent_forecast_oracle_curve(
-                    y_window,
-                    latent_future,
-                    order=preset.order,
-                    s_grid=s_grid,
-                )
-                s_oracle, oracle_mse, _ = grid_argmin(s_grid, oracle_curve)
-
-                selected = {
-                    "forecast_cv_h": (s_matched, score_matched),
-                    "forecast_cv_1": (s_one, score_one),
-                    "cv": classical["cv"],
-                    "gcv": classical["gcv"],
-                    "aicc": classical["aicc"],
-                    "recovery_oracle_train": (s_recovery, score_recovery),
-                    "latent_forecast_oracle": (s_oracle, oracle_mse),
-                }
-
-                for selector in ALL_SELECTORS:
-                    selected_s, selector_score = selected[selector]
-                    row = evaluate_selector(
-                        selector=selector,
-                        selected_s=selected_s,
-                        selector_score=selector_score,
-                        y_window=y_window,
-                        true_window=true_window,
-                        observed_future=observed_future,
-                        latent_future=latent_future,
-                        order=preset.order,
-                        horizon=horizon,
-                        latent_oracle_mse=oracle_mse,
-                    )
-                    row.update(
-                        {
-                            "seed": seed,
-                            "scenario_id": sid,
-                            "trend_kind": trend_kind,
-                            "noise_model": noise_model,
-                            "noise_std": noise_std,
-                            "order": preset.order,
-                            "window": preset.window,
-                            "outer_origin": origin,
-                            "horizon": horizon,
-                        }
-                    )
-                    rows.append(row)
-
-                # Save representative objective curves only. This is enough for
-                # manuscript figures and keeps the paper run versionable.
-                if (
-                    seed == preset.seeds[0]
-                    and origin_index == 0
-                    and trend_kind in ("linear", "oscillatory", "recent_slope_change")
-                    and noise_std == preset.noise_stds[0]
-                ):
-                    for s, loss_h, loss_1, loss_rec, loss_oracle in zip(
-                        s_grid,
-                        matched_curve,
-                        one_step_curve,
-                        recovery_values,
-                        oracle_curve,
-                    ):
-                        curve_rows.append(
-                            {
-                                "scenario_id": sid,
-                                "seed": seed,
-                                "trend_kind": trend_kind,
-                                "noise_model": noise_model,
-                                "noise_std": noise_std,
-                                "outer_origin": origin,
-                                "horizon": horizon,
-                                "smoothness": float(s),
-                                "forecast_loss_h": float(loss_h),
-                                "forecast_loss_1": float(loss_1),
-                                "recovery_mse": float(loss_rec),
-                                "latent_forecast_oracle_mse": float(loss_oracle),
-                            }
-                        )
-
-                if block_counter % 100 == 0 or block_counter == total_blocks:
+    else:
+        # Explicit spawn is the safest cross-platform context, particularly on
+        # Windows. executor.map preserves task order, so result files remain
+        # deterministic even though work is executed concurrently.
+        context = mp.get_context("spawn")
+        with ProcessPoolExecutor(
+            max_workers=jobs,
+            mp_context=context,
+        ) as executor:
+            iterator = executor.map(
+                _run_scenario_task,
+                tasks,
+                chunksize=1,
+            )
+            for completed, (scenario_index, scenario_rows, scenario_curves) in enumerate(
+                iterator,
+                start=1,
+            ):
+                rows.extend(scenario_rows)
+                curve_rows.extend(scenario_curves)
+                if completed % progress_every == 0 or completed == total_scenarios:
                     elapsed = time.perf_counter() - started
-                    rate = elapsed / block_counter
-                    remaining = rate * (total_blocks - block_counter)
+                    rate = elapsed / completed
+                    remaining = rate * (total_scenarios - completed)
                     print(
-                        f"    [{block_counter}/{total_blocks}] h={horizon} "
-                        f"elapsed={elapsed/60:.1f}m eta={remaining/60:.1f}m",
+                        f"    [{completed}/{total_scenarios} scenarios] "
+                        f"blocks={completed * blocks_per_scenario}/{total_blocks} "
+                        f"elapsed={elapsed/60:.1f}m eta={remaining/60:.1f}m "
+                        f"jobs={jobs}",
                         flush=True,
                     )
 
-    block_results = pd.DataFrame(rows)
+    block_results = pd.DataFrame(rows).sort_values(
+        [
+            "seed",
+            "trend_kind",
+            "noise_model",
+            "noise_std",
+            "outer_origin",
+            "horizon",
+            "selector",
+        ]
+    ).reset_index(drop=True)
     series_results = series_aggregate(block_results)
     paired = paired_series_comparisons(series_results)
     oracle = oracle_series_comparisons(series_results)
@@ -501,6 +626,9 @@ def main() -> None:
         "git_commit": git_short_sha(),
         "checkpoint": "03",
         "preset": preset.name,
+        "jobs": jobs,
+        "cpu_count_reported": int(os.cpu_count() or 1),
+        "parallel_unit": "scenario",
         "design_frozen_before_paper_run": True,
         "preset_definition": asdict(preset),
         "feasible_selectors": list(FEASIBLE_SELECTORS),
