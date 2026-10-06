@@ -133,3 +133,16 @@ Journal of Forecasting.
 Do not claim the first predictive smoothing selector or universal superiority.
 Any novelty claim about tracked minima must be audited against the literature
 before submission.
+
+## Current execution checkpoint — CP04
+
+CP03 pooled paper-scale results have been committed. CP04 is now implemented
+as the development experiment for dynamic tracked-branch rules.
+
+Run `run_checkpoint_04.py --preset smoke` first, then `--preset refine` if
+smoke passes. The refine preset uses six development outer blocks per series
+while reserving the newest four non-overlapping blocks for later confirmation.
+
+After refine, push the result bundle and stop. Do not inspect the reserved
+confirmation region until `phi`, K/half-life, and the confirmation protocol
+have been frozen in `checkpoints/CP04_DYNAMIC_BRANCH_RULES.md`.
