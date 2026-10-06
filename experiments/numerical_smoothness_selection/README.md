@@ -1,6 +1,35 @@
 > **Namespace note (2026-10-05):** This experiment directory keeps its historical name for reproducibility. It now supports primarily the active numerical-methods paper at \`../../paper_numerical-methods/\`. Criterion-definition experiments may also be reused by \`../../paper_smoothness-cv/\`. Do not rename this directory or the matching results namespace without updating tests, frozen metadata, and manuscript paths.
 
 # Numerical smoothness selection experiments
+## Cross-paper dynamic tracked-smoothness interface
+
+The tracked-minima experiment is now the prototype shared by the two active
+papers.
+
+`paper_numerical-methods/` owns recovery of local minima and their temporal
+branch identities. `paper_smoothness-cv/` owns how a branch is scored and
+converted into the final forecast smoothness.
+
+For each matched branch/origin, the key scientific row is
+
+~~~text
+[S, Validation-1 loss, Validation-2 loss]
+~~~
+
+and the branch matrix is `V_j` formed by stacking those rows through time.
+
+The current `run_two_stage_order_validation.py` uses the **last/newest local
+minimum** on the selected branch for the final forecast. It already records
+`smoothness_mean`, `smoothness_median`, `smoothness_recent5_mean`, and
+`smoothness_recent5_median`, but those columns are diagnostics only.
+
+The next forecasting experiment will hold the recovered branch histories fixed
+and compare alternative final rules: last, recent mean, recent median,
+Validation-2 weighting, and recency + Validation-2 weighting.
+
+Do not change the per-surface numerical solver merely to improve one of those
+forecasting rules.
+
 
 Reusable numerical logic stays in src/trend_estimation/. The numerical benchmark and root-search experiments in this namespace belong to paper_numerical-methods/.
 
