@@ -1,6 +1,6 @@
 # Checkpoint 04 — Dynamic branch decision rules
 
-**Status: DESIGN / IMPLEMENTATION NEXT.**
+**Status: DEVELOPMENT EXPERIMENT IMPLEMENTED — run smoke, then refine.**
 
 Checkpoint 03 remains the frozen pooled forecast-CV baseline. CP04 introduces
 the central dynamic method without altering CP03.
@@ -159,3 +159,77 @@ Before a paper-scale CP04 run, freeze:
 
 After the final dynamic run is observed, these choices may not be changed to
 improve reported performance.
+
+## Implemented development protocol
+
+Code:
+
+- `experiments/smoothness_cv/dynamic_branch_rules.py`
+- `experiments/smoothness_cv/run_checkpoint_04.py`
+- `experiments/smoothness_cv/analyze_checkpoint_04.py`
+- `experiments/smoothness_cv/make_checkpoint_04_figures.py`
+
+The development experiment uses the tracked real-series panel already used
+by the numerical work: GDPC1, SPY, AAPL, and BTC-USD.
+
+For every series it constructs **repeated non-overlapping outer test blocks**.
+The newest four blocks are reserved completely for a later confirmatory run.
+The `refine` preset evaluates six earlier outer blocks per series and never
+loads the reserved future into any individual outer decision.
+
+At each outer origin the experiment:
+
+1. chooses `L` separately for each `d=1,2,3,4` from historical Val1 only;
+2. recovers and tracks local minima on historical Val1 surfaces;
+3. refits through Val1 and stores Val2 error for every matched branch;
+4. selects one persistent branch using the frozen baseline `psi`;
+5. continues that branch to the final pre-test Val1 surface;
+6. applies every candidate `phi` rule to the **same branch history**;
+7. freshly refits the trend on the newest full window;
+8. scores the same untouched outer test;
+9. compares with pooled forecast-CV using the same selected `(d,L)`.
+
+Development rule grid:
+
+- `last`;
+- `mean_k3`, `mean_k5`;
+- `median_k3`, `median_k5`;
+- `val2_weighted`;
+- `recency_val2_hl3`, `recency_val2_hl5`, `recency_val2_hl10`;
+- `pooled_cv_same_config` baseline.
+
+For the weighted rules, the current final-Val1 minimum is deliberately not
+given a Val2 weight because its following block is the untouched outer test.
+The numerical stabilizer is scale-relative: `1e-8 * median(positive Val2 loss)`
+with a floor of `1e-12`.
+
+The `refine` run is development-only. It is allowed to choose the final
+`K` / half-life specification. It is **not** the confirmation test.
+
+## Run now
+
+From the repository root:
+
+~~~bash
+git pull
+pip install -e .
+pytest
+
+python experiments/smoothness_cv/run_checkpoint_04.py --preset smoke --jobs 8
+python experiments/smoothness_cv/analyze_checkpoint_04.py
+python experiments/smoothness_cv/make_checkpoint_04_figures.py
+~~~
+
+If smoke passes, run the development refinement. On the current 24-core /
+32-logical-processor machine, use 24 workers:
+
+~~~bash
+python experiments/smoothness_cv/run_checkpoint_04.py --preset refine --jobs 24
+python experiments/smoothness_cv/analyze_checkpoint_04.py
+python experiments/smoothness_cv/make_checkpoint_04_figures.py
+~~~
+
+Then commit and push the complete `results/smoothness_cv/checkpoint_04/`
+directory and stop. Do **not** evaluate the four reserved confirmation
+blocks yet. The final dynamic rule must be frozen from the refine output
+before a confirmation preset is implemented.
