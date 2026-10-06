@@ -1,140 +1,150 @@
 # AI Handoff
 
-Last updated: 2026-10-05
+Last updated: 2026-10-06
 
 ## Highest-priority instruction
 
-The repository now has TWO linked active methodological papers. Do not merge their contributions back together.
+There are exactly **two active papers** in this repository:
 
-### Paper A — paper_smoothness-cv/
+1. `paper_smoothness-cv/`
+2. `paper_numerical-methods/`
 
-Primary target: **Journal of Forecasting**. The active Wiley manuscript has already been rewritten for this journal; do not restore the inherited WTI/JFM text.
+Do not start or continue research work in other paper directories unless the user explicitly reactivates them.
 
-Question: **what smoothness criterion should be optimized?**
+## Paper A — dynamic smoothness-CV
+
+Primary target: **Journal of Forecasting**.
+
+The central research direction is no longer only the pooled selector
 
 \[
-S^\star_{d,L,h}\in\arg\min_{S\in[0,1]}F_{d,L,h}(S),
+\widehat S^{\mathrm{pool}}_{T,h}
+\in
+\arg\min_S F^{\mathrm{pool}}_{T,h}(S).
 \]
-where \(F\) is chronological rolling future-block forecast MSE.
 
-This paper is conceptually closest to Guerrero's controlled-smoothness PLS framework. Guerrero lets the analyst specify a smoothness percentage and maps it to a penalty. This paper asks whether that percentage can instead be selected endogenously from future forecast performance.
+That pooled criterion remains an important baseline.
 
-Hart (1994) must be cited as an important predictive-smoothing precedent, but do not present Hart's kernel/TSCV method as the same problem.
+The central object is now the temporal evolution of the **local minima** of origin-specific forecast-loss surfaces:
 
-Paper A may use a dense smoothness grid. Efficient root finding is not its contribution.
+\[
+\mathcal M_t
+=
+\{S_{1,t},\ldots,S_{K_t,t}\}.
+\]
+
+Nearby minima are tracked through time as data-driven branches using one-to-one continuation under
+
+\[
+|S_{j,t}-S_{j,t-1}|\le\varepsilon.
+\]
+
+Each branch stores at least
+
+\[
+V_j
+=
+[S_{j,t},\ell^{(1)}_{j,t},\ell^{(2)}_{j,t}]_t,
+\]
+
+where \(\ell^{(1)}\) is Validation-1 forecast loss and \(\ell^{(2)}\) is Validation-2 loss after refitting through Validation 1.
+
+The forecasting decision is explicitly two-stage:
+
+\[
+\widehat j_T
+=
+\psi(V_1,\ldots,V_J),
+\qquad
+\widehat S_T
+=
+\phi(V_{\widehat j_T}).
+\]
+
+The first dynamic \(\phi\) methods to compare are:
+
+- newest/last tracked local minimum;
+- recent mean;
+- recent median;
+- Validation-2 weighted mean;
+- recency + Validation-2 weighted mean.
+
+A direct forecast of the smoothness trajectory may be studied later.
 
 Read first:
-1. paper_smoothness-cv/README.md
-2. paper_smoothness-cv/AI_HANDOFF.md
-3. paper_smoothness-cv/notes/research_objective.md
-4. paper_smoothness-cv/notes/literature_positioning.md
-5. paper_smoothness-cv/notes/roadmap.md
 
-## Critical forecast-CV semantics
+1. `paper_smoothness-cv/AI_HANDOFF.md`
+2. `paper_smoothness-cv/notes/dynamic_tracked_smoothness.md`
+3. `paper_smoothness-cv/notes/validation_semantics.md`
+4. `paper_smoothness-cv/notes/research_objective.md`
 
-**All agents must preserve this exactly.** Forecast-CV selects the smoothness hyperparameter \(S\); it does not select or retain one of the intermediate validation-fold trend fits.
+### Non-negotiable refit rule
 
-At outer forecast origin \(T\), inner rolling validation uses only history available through \(T\) to estimate
+Validation folds and branch histories select the hyperparameter; they do not supply the final trend fit.
 
-\[
-\widehat S_{T,h}\in\arg\min_S F_{T,h}(S).
-\]
-
-After selecting \(\widehat S_{T,h}\), discard the fold-specific fits and **refit the trend on the most recent full \(L\)-observation window available at \(T\)**:
+After \(\widehat S_T\) is chosen, discard temporary historical fits and refit on the newest full window:
 
 \[
-\widehat\tau_T=H_{\lambda(\widehat S_{T,h})}y_{T-L+1:T}.
+\widehat\tau_T
+=
+H_{\lambda(\widehat S_T)}
+y_{T-L+1:T}.
 \]
 
-Then forecast the untouched future block with \(G_{d,h}\widehat\tau_T\). Inner CV averages forecast losses across historical pseudo-out-of-sample origins; it does not average trends. At the next outer origin, newly observed data become historical information and the complete select-\(S\) / refit / forecast cycle is repeated.
+Then forecast the untouched future block.
 
-Canonical documentation: `paper_smoothness-cv/notes/validation_semantics.md`. Any agent changing validation, experiments, or manuscript prose must read it first.
-### Paper B — paper_numerical-methods/
+We may average **losses** or **smoothness values** when a declared \(\phi\) rule requires it. We never average historical fitted trends.
 
-Question: **given \(F(S)\), how do we solve all relevant minima/global optimum efficiently and reliably?**
+## Paper B — numerical methods
 
-Current production design:
-1. sparse/adaptive evaluation in \(S\);
-2. derivative/curvature diagnostics;
-3. bracket roots of \(F'(S)\);
-4. Brent refinement;
-5. classify stationary points;
-6. compare local minima and exact endpoints.
+This paper owns two numerical layers:
 
-Brent is NOT a global-discovery algorithm.
+1. recover all relevant local minima of each multimodal \(F_t(S)\);
+2. track/correspond those minima across adjacent chronological surfaces.
 
-The rational/Sturm direction is stronger but not yet production-certified. The current Sturm mini-check is evidence of feasibility only.
+The frozen per-surface method remains:
+
+1. adaptive evaluation in normalized \(S\);
+2. analytic derivatives;
+3. adaptive interval subdivision;
+4. derivative-root bracketing;
+5. Brent refinement;
+6. stationary-point classification;
+7. exact endpoint comparison.
+
+The temporal baseline is one-to-one nearest-neighbor matching under `track_epsilon`.
+
+Do not confuse:
+
+- `candidate_spacing`: within-surface post-discovery separation;
+- `track_epsilon`: across-time branch continuation radius.
 
 Read first:
-1. paper_numerical-methods/README.md
-2. paper_numerical-methods/AI_HANDOFF.md
-3. paper_numerical-methods/notes/research_objective.md
-4. paper_numerical-methods/notes/paper_split_2026-10-05.md
-5. paper_numerical-methods/notes/results.md
-6. paper_numerical-methods/notes/sturm_minicheck.md
 
-## Shared equations
+1. `paper_numerical-methods/AI_HANDOFF.md`
+2. `paper_numerical-methods/notes/research_objective.md`
+3. `paper_numerical-methods/notes/temporal_minima_tracking.md`
+4. `paper_numerical-methods/notes/decisions.md`
 
-\[
-H_\lambda=(I+\lambda Q)^{-1},\quad Q=D_d^\top D_d,\quad
-\widehat\tau_\lambda=H_\lambda y.
-\]
+## Ownership boundary
 
-\[
-S(\lambda)=1-\frac1{N-d}\sum_{\delta_j>0}\frac1{1+\lambda\delta_j}.
-\]
+`paper_numerical-methods/` returns local minima and branch identities.
 
-\[
-\widehat z_T(\lambda)=G_{d,h}H_\lambda x_T,\qquad
-F(S)=f(\lambda(S)).
-\]
+`paper_smoothness-cv/` decides how a tracked branch is scored and converted into the current smoothness through \(\psi\) and \(\phi\), and evaluates forecasting performance.
 
-\[
-H'=-HQH,\qquad H''=2HQHQH.
-\]
-
-\[
-F'(S)=\frac{f'(\lambda)}{S'(\lambda)}.
-\]
-
-\[
-F''(S)=
-\frac{f''(\lambda)}{[S'(\lambda)]^2}
--
-\frac{f'(\lambda)S''(\lambda)}{[S'(\lambda)]^3}.
-\]
+Do not merge these contributions.
 
 ## Frozen numerical evidence
+
+The existing per-surface solver has frozen empirical evidence:
 
 - adversarial: 240/240 relevant known minima/boundary optima;
 - synthetic: 2105/2105 dense-reference interior minima across 1920 surfaces;
 - financial geometry stress: 473/473 dense-reference interior minima across 384 surfaces;
-- mean evaluation fractions about 1.57% and 1.84% of dense references in synthetic and financial suites.
+- mean evaluation fractions about 1.57% synthetic and 1.84% financial.
 
-These are benchmark results, not a theorem.
-
-## Legacy directory
-
-paper_numerical-smoothness-selection/ is a historical pre-split snapshot. Do not add new work there. The complete snapshot was copied to paper_numerical-methods/.
-
-## Stable experiment namespaces
-
-Do not rename experiments/numerical_smoothness_selection/ or results/numerical_smoothness_selection/ casually. Tests, frozen metadata, manuscript paths, and reproducibility records depend on those names.
-
-## Other papers
-
-paper_forecast-optimal-smoothing/ is PARKED and owns adaptive joint \((d,L,S)\) selection.
-
-paper_smoothness-recurrence/ is PARKED and owns applied model comparison/recurrence.
-
-paper_statistical-properties-penalized-trend/ is DRAFTING as a linked theory paper. It owns fixed-smoother statistical foundations and, especially, post-selection properties of the forecast-selected estimator. Its novelty audit and theorem agenda are not yet frozen.
-
-paper_bezier-trend/ is an IDEA / NOVELTY AUDIT PENDING. It studies Bernstein/Bézier control-space regularization and endpoint geometry for trend forecasting. Do not claim that Bézier smoothing, Bernstein regression, penalized Bézier fitting, P-spline forecasting, or financial Bézier filtering are new. Read its literature audit before implementing large experiments.
-
-## Validation invariant
-
-At origin \(T\), nothing after \(T\) may influence the fitted trend, hyperparameter choice, or forecast path. Future observations are revealed only for scoring.
+These results validate the tested **per-surface search**, not yet the temporal branch-matching layer.
 
 ## Repository policy
 
-Reusable algorithms live in src/trend_estimation/. Heavy paper builds stay manual-only.
+Reusable algorithms live in `src/trend_estimation/`. Heavy paper builds and large experiments remain manual-only.
