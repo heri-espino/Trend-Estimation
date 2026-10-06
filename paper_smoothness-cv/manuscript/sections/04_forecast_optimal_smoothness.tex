@@ -25,9 +25,9 @@ Equivalently, using backward differences at the end of the fitted trend,
 \qquad
 k=1,\ldots,h.
 \end{equation}
-For $d=1$ the continuation is constant; for $d=2$ it is linear; and for $d=3$ it is quadratic. This continuation is the extrapolation implied by the same finite-difference structure that defines the fitted trend.
+For $d=1$ the continuation is constant; for $d=2$ it is linear; and for $d=3$ it is quadratic.
 
-\subsection{Rolling future-block loss}
+\subsection{Origin-specific forecast-loss surfaces}
 
 Let
 \[
@@ -43,47 +43,157 @@ f_T(\lambda)
 z_T-G_{d,h}H_\lambda x_T
 \right\|_2^2.
 \end{equation}
-
-For chronological origins $\mathcal O=\{T_1,\ldots,T_M\}$, define
-\begin{equation}
-\label{eq:f_lambda}
-f_{d,L,h}(\lambda)
-=
-\frac{1}{M}
-\sum_{m=1}^{M}f_{T_m}(\lambda).
-\end{equation}
-No observation after $T_m$ may affect the fit or forecast at that origin; future observations are revealed only for scoring.
-
-Because $S(\lambda)$ is one-to-one, define
-\begin{equation}
-\label{eq:F_S}
-F_{d,L,h}(S)
-=
-f_{d,L,h}(\lambda(S)),
+Because $S(\lambda)$ is one-to-one, we write the same surface in normalized smoothness as
+\[
+F_T(S)=f_T(\lambda(S)),
 \qquad
 S\in[0,1].
+\]
+
+At a chronological sequence of historical forecast origins $T_1,\ldots,T_M$, each surface can have one or several local minima. Denote the local-minimum set at origin $T_m$ by
+\begin{equation}
+\label{eq:local_minimum_set}
+\mathcal M_m
+=
+\{S_{1,m},\ldots,S_{K_m,m}\}.
 \end{equation}
-The proposed selector is
+
+This sequence of local-minimum sets is the central dynamic object of the paper.
+
+\subsection{Pooled forecast-CV as a baseline}
+
+A natural static baseline averages forecast losses across historical origins:
+\begin{equation}
+\label{eq:F_S}
+F^{\mathrm{pool}}_{d,L,h}(S)
+=
+\frac{1}{M}
+\sum_{m=1}^{M}F_{T_m}(S).
+\end{equation}
+Its minimizer is
 \begin{equation}
 \label{eq:Sstar}
-\boxed{
-S^\star_{d,L,h}
+\widehat S^{\mathrm{pool}}_{d,L,h}
 \in
 \arg\min_{S\in[0,1]}
-F_{d,L,h}(S).
-}
+F^{\mathrm{pool}}_{d,L,h}(S).
 \end{equation}
 
-We call \eqref{eq:Sstar} \emph{forecast-optimal smoothness}. Optimality is conditional on the specified PLS family, difference order, window length, continuation rule, horizon, rolling-origin design, and loss.
+This selector asks which single smoothness value has the lowest average historical forecast loss. It remains an important benchmark, but it discards the temporal organization of the local minima themselves.
 
-\subsection{Why future blocks rather than only one-step errors}
+\subsection{Tracking local minima through time}
 
-A one-step criterion is appropriate when the operational task is one-step forecasting. For longer horizons, however, the smoothness choice affects both terminal derivatives and how those derivatives accumulate under extrapolation. The relevant tuning target can therefore change with $h$.
+To retain that organization, we connect nearby local minima across adjacent forecast origins. A current minimum $S_{j,m}$ may continue a previous branch when
+\begin{equation}
+\label{eq:epsilon_tracking}
+|S_{j,m}-S_{j,m-1}|
+\le
+\varepsilon,
+\end{equation}
+subject to one-to-one matching at each origin.
 
-The future-block construction makes this dependence explicit. If the decision problem evaluates $h$ future observations jointly, smoothness is selected against that same block rather than against a reconstruction surrogate.
+The radius $\varepsilon$ does not define a fixed exogenous region such as ``smoothness near 0.9.'' Instead, branch locations are determined by the data through the recovered local minima; $\varepsilon$ only controls whether minima on neighboring surfaces are close enough to be treated as the same temporal branch.
+
+For a tracked branch $j$, let $\ell^{(1)}_{j,m}$ denote its Validation-1 forecast loss at the origin where the local minimum is identified. The trend is then refit through Validation 1 using the same $(d,L,S_{j,m})$, and the immediately following block is scored to obtain $\ell^{(2)}_{j,m}$, the Validation-2 forecast loss.
+
+We collect the branch history as
+\begin{equation}
+\label{eq:branch_matrix}
+V_j
+=
+\begin{pmatrix}
+S_{j,t_1} & \ell^{(1)}_{j,t_1} & \ell^{(2)}_{j,t_1}\\
+S_{j,t_2} & \ell^{(1)}_{j,t_2} & \ell^{(2)}_{j,t_2}\\
+\vdots & \vdots & \vdots
+\end{pmatrix}.
+\end{equation}
+
+\subsection{Branch selection and current smoothness}
+
+The forecasting decision is separated into two steps. First, a historical branch-selection rule
+\begin{equation}
+\label{eq:branch_selector}
+\widehat j_T
+=
+\psi(V_1,\ldots,V_J)
+\end{equation}
+chooses among persistent branches using information available before the outer test. A simple baseline prefers branches with maximal support and then minimizes mean historical Validation-2 loss.
+
+Second, a branch-to-smoothness rule
+\begin{equation}
+\label{eq:phi_rule}
+\widehat S_T
+=
+\phi(V_{\widehat j_T})
+\end{equation}
+converts the selected branch history into the smoothness used at the current forecast origin.
+
+The simplest rule is the newest tracked minimum,
+\[
+\phi_{\mathrm{last}}(V_j)=S_{j,T}.
+\]
+Alternative stabilizing rules use the recent mean or median,
+\[
+\phi_{\mathrm{mean},K}(V_j)
+=
+\frac1K
+\sum_{r=0}^{K-1}
+S_{j,T-r},
+\]
+or
+\[
+\phi_{\mathrm{med},K}(V_j)
+=
+\operatorname{median}
+\{S_{j,T-K+1},\ldots,S_{j,T}\}.
+\]
+
+A loss-weighted rule gives more influence to historically predictive values:
+\[
+\phi_{\mathrm{V2}}(V_j)
+=
+\frac{
+\sum_t w_{j,t}S_{j,t}
+}{
+\sum_t w_{j,t}
+},
+\qquad
+w_{j,t}
+=
+\frac{1}{\ell^{(2)}_{j,t}+\delta},
+\]
+with $\delta>0$ used only for numerical stabilization. Recency may be incorporated through
+\[
+w_{j,t}
+=
+\frac{\rho^{T-t}}{\ell^{(2)}_{j,t}+\delta},
+\qquad
+0<\rho\le1.
+\]
+
+These rules are compared empirically rather than chosen retrospectively from the outer test.
+
+\subsection{Mandatory final refit}
+
+Neither the pooled selector nor the dynamic branch rules retain an old fitted trend. Once the current smoothness $\widehat S_T$ has been selected, all intermediate validation fits are discarded and the trend is refit using the most recent information available at the outer origin:
+\begin{equation}
+\label{eq:final_refit}
+\widehat\tau_T
+=
+H_{\lambda(\widehat S_T)}
+y_{T-L+1:T}.
+\end{equation}
+The operational forecast is then
+\[
+\widehat y_{T+1:T+h\mid T}
+=
+G_{d,h}\widehat\tau_T.
+\]
+
+Thus the proposed dynamic method can average historical losses or smoothness values when a declared decision rule requires it, but it never averages historical fitted trends.
 
 \subsection{Relationship to conventional cross-validation}
 
-The criterion in \eqref{eq:F_S} evaluates observations excluded from the fit at each origin, but it is neither ordinary leave-one-out CV nor GCV. Classical smoothing CV/GCV usually evaluates reconstruction under the same sample geometry; the proposed criterion evaluates extrapolation into a genuinely later block.
+The construction remains distinct from ordinary leave-one-out CV and GCV. The relevant losses are chronological extrapolation losses, and the dynamic extension additionally studies persistence of local minima across successive forecast-loss surfaces.
 
-This also separates the proposal from Hart's TSCV \cite{hart1994tscv}. Both use predictive performance to tune smoothness, but Hart's object is a kernel bandwidth under one-step prediction with a time-series error model. Here the object is normalized finite-difference smoothness and the forecast is the native continuation of the penalized trend over an arbitrary horizon.
+Hart's TSCV \cite{hart1994tscv} remains an important predictive-smoothing precedent. The present problem differs in estimator, normalized smoothness coordinate, multi-step continuation, multimodal objective geometry, and the explicit temporal tracking of local smoothness minima.
