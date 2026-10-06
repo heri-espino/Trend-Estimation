@@ -119,7 +119,7 @@ Current manuscript structure:
 7. Scope, interpretation, and implications
 8. Conclusion
 
-The manuscript deliberately contains **no fabricated empirical results**. Section 6 freezes the intended comparison protocol before the final test results are generated.
+The manuscript deliberately contains **no fabricated paper-scale empirical results**. Section 6 now records the frozen Checkpoint 03 simulation protocol before those final results are generated.
 
 ## Build
 
@@ -144,7 +144,7 @@ GitHub Actions also has a manual smoothness-cv target under **Build papers**. He
 ## Final empirical package still required
 
 The current manuscript is method/theory plus a prespecified evaluation protocol. Before submission, run and freeze:
-- forecast-CV versus CV/GCV/AICc/BIC;
+- forecast-CV versus one-step forecast-CV, CV, GCV, and AICc; BIC remains an exploratory criterion audit because CP02 found global left-boundary degeneracy;
 - forecast-optimal versus recovery-optimal smoothness in controlled simulations;
 - one-step tuning versus horizon-matched \(h\)-step tuning;
 - public multi-series forecast evaluation;
@@ -169,3 +169,7 @@ Checkpoint 01 empirical code is implemented. Read `checkpoints/CP01_EMPIRICAL_CO
 ## Current stop point
 
 CP01 smoke and quick results are in the repository and have been reviewed. CP02 is implemented in `experiments/smoothness_cv/`; run `paper_smoothness-cv/checkpoints/CP02_REFINE_SIMULATION_DESIGN.md` next. Do not run CP03 yet.
+
+## Current execution checkpoint
+
+CP01 and CP02 are complete. CP03 is frozen and implemented. The active handoff is `checkpoints/CP03_FROZEN_PAPER_SIMULATION.md`. Run CP03 smoke first; if it passes, run the paper preset and push the complete result bundle. Do not retune the frozen simulation design after viewing the paper results.
