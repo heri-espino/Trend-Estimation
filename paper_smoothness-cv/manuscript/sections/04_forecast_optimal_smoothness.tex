@@ -148,6 +148,24 @@ or
 \{S_{j,T-K+1},\ldots,S_{j,T}\}.
 \]
 
+An alternative weighted mean uses recency alone. Let $r=0$ denote the newest tracked smoothness value, with older values indexed by increasing $r$. Then
+\[
+\phi_{\mathrm{recency}}(V_j)
+=
+\frac{
+\sum_{r=0}^{R}\rho^r S_{j,T-r}
+}{
+\sum_{r=0}^{R}\rho^r
+},
+\qquad
+0<\rho<1.
+\]
+The newest value receives weight one and older values are exponentially discounted. For interpretability we parameterize $\rho$ by a half-life $H$,
+\[
+\rho=2^{-1/H},
+\]
+so the weight assigned to a value $H$ tracked origins old is one half of the newest weight.
+
 A loss-weighted rule gives more influence to historically predictive values:
 \[
 \phi_{\mathrm{V2}}(V_j)
