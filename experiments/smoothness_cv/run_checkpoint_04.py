@@ -635,6 +635,9 @@ def main() -> None:
             "mean_k5",
             "median_k3",
             "median_k5",
+            "recency_hl3",
+            "recency_hl5",
+            "recency_hl10",
             "val2_weighted",
             "recency_val2_hl3",
             "recency_val2_hl5",
@@ -643,6 +646,11 @@ def main() -> None:
         ],
         "confirmation_region_used": False,
         "confirmation_holdout_blocks": preset.confirmation_holdout_blocks,
+        "recency_rule_note": (
+            "Pure recency-weighted rules use exponential decay with half-life "
+            "measured in tracked origins and include the current final-Val1 "
+            "minimum with weight one."
+        ),
         "weighted_rule_note": (
             "Loss-weighted rules use only completed historical Validation-2 "
             "rows. The current local minimum has no Val2 weight because its "
