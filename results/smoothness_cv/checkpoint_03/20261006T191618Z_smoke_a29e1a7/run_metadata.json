@@ -1,0 +1,65 @@
+{
+  "created_at_utc": "2026-10-06T19:16:20.943383+00:00",
+  "git_commit": "a29e1a7",
+  "checkpoint": "03",
+  "preset": "smoke",
+  "design_frozen_before_paper_run": true,
+  "preset_definition": {
+    "name": "smoke",
+    "seeds": [
+      0
+    ],
+    "trend_kinds": [
+      "linear",
+      "oscillatory",
+      "recent_slope_change"
+    ],
+    "noise_models": [
+      "iid",
+      "ar1"
+    ],
+    "noise_stds": [
+      0.5
+    ],
+    "horizons": [
+      1,
+      6,
+      12
+    ],
+    "n_obs": 240,
+    "order": 2,
+    "window": 60,
+    "outer_origins": [
+      156,
+      204
+    ],
+    "inner_step": 4,
+    "max_inner_origins": 24,
+    "n_s_grid": 121
+  },
+  "feasible_selectors": [
+    "forecast_cv_h",
+    "forecast_cv_1",
+    "cv",
+    "gcv",
+    "aicc"
+  ],
+  "oracle_selectors": [
+    "recovery_oracle_train",
+    "latent_forecast_oracle"
+  ],
+  "bic_status": "omitted from CP03 primary comparisons because CP02 showed the published global BIC score was pinned to the left finite boundary on every audited curve.",
+  "common_random_numbers": "Within a seed/noise-model/noise-scale combination, the same random innovation stream is reused across trend mechanisms. Inference must therefore resample by seed, not by scenario row.",
+  "n_scenarios": 6,
+  "n_outer_horizon_blocks": 36,
+  "n_block_rows": 252,
+  "n_series_rows": 126,
+  "elapsed_seconds": 2.0876515000127256,
+  "files": {
+    "block_results": "block_results.csv.gz",
+    "series_results": "series_results.csv",
+    "paired_method_comparisons": "paired_method_comparisons.csv",
+    "oracle_comparisons": "oracle_comparisons.csv",
+    "objective_curves": "objective_curves.csv"
+  }
+}

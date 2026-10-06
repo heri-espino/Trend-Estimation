@@ -1,0 +1,16 @@
+selector,horizon,total_win_share,n_series,win_share_rate
+aicc,1,1.0,6,0.16666666666666666
+aicc,6,0.0,6,0.0
+aicc,12,0.0,6,0.0
+cv,1,0.0,6,0.0
+cv,6,0.0,6,0.0
+cv,12,0.0,6,0.0
+forecast_cv_1,1,1.0,6,0.16666666666666666
+forecast_cv_1,6,5.0,6,0.8333333333333334
+forecast_cv_1,12,0.0,6,0.0
+forecast_cv_h,1,1.0,6,0.16666666666666666
+forecast_cv_h,6,1.0,6,0.16666666666666666
+forecast_cv_h,12,6.0,6,1.0
+gcv,1,3.0,6,0.5
+gcv,6,0.0,6,0.0
+gcv,12,0.0,6,0.0
