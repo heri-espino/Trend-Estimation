@@ -1,157 +1,89 @@
 \section{Evaluation protocol}
 
-The empirical evaluation is designed to test whether forecast-oriented smoothness selection changes the selected trend and improves subsequent forecasts. The simulation design in this section was frozen after the exploratory Checkpoints 01--02 and before the paper-scale Checkpoint 03 run.
+The empirical program now has two layers. Checkpoint 03 is a frozen paper-scale evaluation of the simpler pooled forecast-CV selector and remains a baseline. The central dynamic extension evaluates tracked local-minimum branches and alternative rules for converting branch history into the smoothness used at the current forecast origin.
 
-\subsection{Simulation questions}
+\subsection{Layer 1: pooled forecast-CV baseline}
 
-The controlled simulation study addresses three questions:
+The frozen pooled baseline fixes
+\[
+d=2,\qquad L=60,\qquad h\in\{1,3,6,12\}.
+\]
+It compares horizon-matched pooled forecast-CV with one-step forecast-CV, ordinary CV, GCV, and AICc. BIC remains an exploratory diagnostic because its globally searched score was pinned to the left finite boundary in the refinement stage.
+
+The pooled study uses controlled latent mechanisms, iid Gaussian, AR(1), and finite-variance Student-$t$ noise, fixed outer origins, and untouched future blocks. Its design was frozen before the paper-scale Checkpoint 03 run and is not retuned after observing those results.
+
+\subsection{Layer 2: dynamic tracked-minimum evaluation}
+
+The central dynamic experiment operates on a chronological sequence of Validation-1 forecast-loss surfaces. At each origin $t$, all relevant local minima
+\[
+\mathcal M_t=\{S_{1,t},\ldots,S_{K_t,t}\}
+\]
+are recovered. Local minima are linked across adjacent origins by one-to-one matching under
+\[
+|S_{j,t}-S_{j,t-1}|\le\varepsilon.
+\]
+The resulting branch history is stored as
+\[
+V_j
+=
+\{(S_{j,t},\ell^{(1)}_{j,t},\ell^{(2)}_{j,t})\}_{t\in\mathcal T_j},
+\]
+where $\ell^{(1)}$ is Validation-1 forecast loss and $\ell^{(2)}$ is Validation-2 forecast loss after refitting through Validation 1.
+
+The dynamic protocol separates branch selection from final smoothness selection. A branch rule
+\[
+\widehat j_T=\psi(V_1,\ldots,V_J)
+\]
+uses historical branch support and Validation-2 performance only. Conditional on the selected branch, a rule
+\[
+\widehat S_T=\phi(V_{\widehat j_T})
+\]
+produces the smoothness used for the current forecast.
+
+The first comparison set for $\phi$ contains:
 \begin{enumerate}
-\item Does horizon-matched forecast-CV select a different amount of smoothness from one-step forecast tuning and conventional in-sample selectors?
-\item When the selected smoothness differs, does the horizon-matched choice improve genuinely later forecast loss?
-\item How far are the feasible selectors from two simulation-only targets: historical trend-recovery optimality and latent future forecast optimality?
+\item the newest tracked local minimum;
+\item a recent arithmetic mean;
+\item a recent median;
+\item a Validation-2-loss-weighted mean;
+\item a recency-and-Validation-2 weighted mean.
 \end{enumerate}
+A direct forecast of the smoothness trajectory is reserved as a later extension unless its specification can be frozen without using outer-test information.
 
-The primary design fixes the difference order at
-\[
-d=2
-\]
-and the estimation-window length at
-\[
-L=60.
-\]
-The operational forecast horizons are
-\[
-h\in\{1,3,6,12\}.
-\]
-Keeping $d$ and $L$ fixed is deliberate: the paper studies smoothness selection conditional on a forecasting configuration rather than joint adaptation of $(d,L,S)$.
+\subsection{Selection, refitting, and information boundaries}
 
-\subsection{Latent mechanisms and noise}
-
-Five latent trend mechanisms are retained in the frozen paper-scale design:
-\begin{enumerate}
-\item a linear null-space control;
-\item a smoothly nonlinear trend;
-\item an oscillatory trend with repeated local slope changes;
-\item a recent slope change;
-\item a terminal bend with local end-of-sample curvature.
-\end{enumerate}
-
-The retained set spans a simple correctly aligned control and several forms of local shape misspecification for linear continuation. Quadratic and turning-point mechanisms used during the exploratory refinement stage were excluded before the paper-scale run because they were structurally redundant with the retained smooth nonlinear and terminal-curvature cases.
-
-Observation noise is generated under three conditions: independent Gaussian noise, persistent AR(1) noise, and finite-variance Student-$t$ noise as a heavy-tail robustness condition. The marginal noise standard deviation is set to $0.3$ or $0.7$.
-
-The paper-scale simulation uses $100$ random seeds and series length $N=360$. For each generated series, the common outer forecast origins are
-\[
-T\in\{228,252,276,300,324,348\}.
-\]
-The same origins are used for every horizon. At each origin, all tuning uses only observations available at or before $T$; the future block is revealed only for scoring.
-
-\subsection{Smoothness search}
-
-The scientific criterion is evaluated on a deterministic grid of $601$ equally spaced smoothness values on $[0,1]$. A dense grid is sufficient here because numerical efficiency is not the contribution of this paper. The companion numerical-methods paper studies more efficient recovery of multimodal minima.
-
-\subsection{Selection versus final refitting}
-
-The rolling validation exercise selects the smoothness hyperparameter, not one of the intermediate fitted trends. At outer forecast origin \(T\), each candidate \(S\) is scored over historical pseudo-out-of-sample validation blocks contained entirely within \(y_{1:T}\). Let
-\[
-\widehat S_{T,h}
-\in
-\arg\min_S F_{T,h}(S)
-\]
-denote the selected smoothness. The fold-specific trend estimates used to construct \(F_{T,h}\) are then discarded.
-
-Before forecasting the untouched outer block, the trend is re-estimated using the most recent full estimation window available at the outer origin:
+Validation selects hyperparameters or branch summaries; it does not select a historical trend fit to carry into the test. For every candidate branch rule, after $\widehat S_T$ is obtained, all temporary Validation-1 and Validation-2 fits are discarded. The trend is freshly estimated using the most recent full window available at the outer origin:
 \[
 x_T=y_{T-L+1:T},
 \qquad
 \widehat\tau_T
 =
-H_{\lambda(\widehat S_{T,h})}x_T.
+H_{\lambda(\widehat S_T)}x_T.
 \]
-The operational forecast is therefore
+The operational forecast is
 \[
 \widehat y_{T+1:T+h\mid T}
 =
 G_{d,h}\widehat\tau_T.
 \]
-Thus the inner folds average forecast losses for candidate values of \(S\); they do not average trend estimates. When the evaluation advances to a later outer origin, observations that have become available are incorporated into the new historical information set and the full select-\(S\), refit, and forecast cycle is repeated.
+The outer future block is revealed only for scoring. At a later outer origin, observations that have become available enter the historical information set and the complete branch-selection, smoothness-selection, refit, and forecast cycle is repeated.
 
-\subsection{Competing selectors}
+Thus the procedure may average historical forecast losses or historical smoothness values when a declared rule requires it, but it never averages historical trend fits.
 
-The primary feasible comparison set is:
-\begin{enumerate}
-\item horizon-matched future-block forecast-CV defined in \eqref{eq:F_S};
-\item one-step rolling forecast-CV, whose selected smoothness is then used at the operational horizon;
-\item ordinary linear-smoother CV;
-\item GCV;
-\item AICc.
-\end{enumerate}
+\subsection{Fair comparison of branch-to-smoothness rules}
 
-The CV/GCV/AICc criteria follow the PLS comparison studied by Cort\'es-Toto et al.\ \cite{cortes2017smoothness}. BIC was also audited during the exploratory stage, but under a global search over the full smoothness path its published score was pinned to the left finite boundary in every audited criterion curve. Because a defensible additional search-domain restriction would need to be introduced externally, BIC is not treated as a primary feasible comparator in the frozen paper-scale experiment.
+All $\phi$ rules must be evaluated on exactly the same recovered branch histories, the same branch selector $\psi$, and the same untouched outer test blocks. Hyperparameters such as the continuation radius $\varepsilon$, recent-history length $K$, recency factor $\rho$, and weighting stabilizer $\delta$ must be fixed from development data before final test scoring.
 
-The one-step versus horizon-matched comparison isolates the main forecasting question. For $h>1$, the same finite-difference trend family is tuned once using one-step forecast loss and once using the same $h$-step future block used operationally.
+The dynamic experiment should report forecast MSFE and MAE, selected smoothness, branch support, branch switching or disappearance rates, and the distance between each feasible rule and a simulation-only latent forecast oracle where available. The pooled forecast-CV selector remains a direct baseline.
 
-\subsection{Simulation-only oracle targets}
+\subsection{Role of the numerical-methods companion paper}
 
-Two non-feasible selectors are retained for interpretation.
-
-The historical recovery oracle is
-\[
-S_{\mathrm{rec}}
-\in
-\arg\min_S
-\left\|
-\widehat\tau_S-\tau
-\right\|^2,
-\]
-where the latent historical trend is known only because the data are simulated.
-
-The latent future forecast oracle is
-\[
-S_{\mathrm{oracle},h}
-\in
-\arg\min_S
-\left\|
-\tau_{T+1:T+h}
--
-G_{2,h}H_{\lambda(S)}y_{T-L+1:T}
-\right\|^2.
-\]
-The historical fit still uses noisy observations; only the oracle choice of $S$ is allowed to see the latent future. These two oracles separate trend-recovery optimality from forecast optimality and are not presented as practical forecasting competitors.
-
-\subsection{Primary performance summaries}
-
-For each seed, trend mechanism, noise model, noise scale, horizon, and selector, outer-origin losses are first averaged to obtain a series-level MSFE. Paired method comparisons then use
-\[
-\log
-\frac{\operatorname{MSFE}_{\mathrm{forecast-CV},h}}
-     {\operatorname{MSFE}_{\mathrm{comparator}}}.
-\]
-For scale-free aggregation we report the geometric RMSFE ratio
-\[
-\exp\left[
-\frac12
-E\left\{
-\log
-\frac{\operatorname{MSFE}_{\mathrm{forecast-CV},h}}
-     {\operatorname{MSFE}_{\mathrm{comparator}}}
-\right\}
-\right].
-\]
-Values below one favor horizon-matched forecast-CV.
-
-The simulation uses common random numbers across trend mechanisms within each seed/noise-model/noise-scale combination. Consequently, uncertainty intervals are obtained by nonparametric bootstrap resampling of seeds rather than individual scenario rows. Results are also reported separately by noise model when the iid, dependent, and heavy-tailed conditions differ materially.
-
-Secondary summaries include MAE, selected smoothness $S$, effective degrees of freedom from \eqref{eq:edf}, endpoint-selection rates, and the gaps between feasible forecast-CV, the recovery oracle, and the latent future forecast oracle.
+The forecasting paper assumes that the relevant local minima on each surface and their cross-origin correspondences can be supplied reliably. Numerical discovery of those minima, endpoint handling, adaptive subdivision, derivative-root refinement, and the branch-correspondence problem belong to the companion numerical-methods paper. The forecasting paper evaluates what information in the resulting branch matrices is useful for selecting the current smoothness.
 
 \subsection{Public real-data evaluation}
 
-The submission-stage empirical analysis will complement the controlled simulations with a broad public multi-series forecasting panel. The real-data protocol must preserve the same chronological logic: tuning occurs only on historical information, forecast horizons are fixed in advance, and no series-specific manual tuning is allowed.
+The final paper should complement simulation with a heterogeneous public panel under the same chronology. No series-specific branch rule may be chosen from its test performance. If macroeconomic histories are used, historical backtests require real-time vintages rather than revised current histories.
 
-A public competition-style panel such as the M4 data is a suitable primary candidate because it provides many heterogeneous series and established forecast horizons. Any seasonal preprocessing must be prespecified so that the paper remains about trend smoothness rather than seasonal-model selection.
+\subsection{Freeze rules}
 
-A small real-time macroeconomic illustration may be added separately. Historical macroeconomic backtests require historical vintages; revised current histories are not treated as if they were available at earlier forecast origins.
-
-\subsection{Result-freeze rule}
-
-The paper-scale simulation design---seeds, mechanisms, noise conditions, horizons, window length, forecast origins, smoothness grid, and primary feasible comparator set---is frozen before inspecting the Checkpoint 03 paper-preset results. These quantities are not altered afterward because of favorable or unfavorable performance.
+The frozen Checkpoint 03 pooled design remains unchanged. The dynamic branch experiment receives its own freeze point: the branch matcher, $\psi$, candidate $\phi$ rules, $\varepsilon$, $K$, $\rho$, $\delta$, horizons, origins, and primary metrics must be recorded before the final dynamic paper-scale run. Unfavorable final results do not justify changing those choices.
