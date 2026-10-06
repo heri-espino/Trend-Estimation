@@ -1,0 +1,59 @@
+{
+  "created_at_utc": "2026-10-06T02:58:13.163181+00:00",
+  "git_commit": "d9630b5",
+  "checkpoint": "01",
+  "preset": "smoke",
+  "preset_definition": {
+    "seeds": [
+      0
+    ],
+    "trend_kinds": [
+      "linear",
+      "smooth_curve"
+    ],
+    "noise_models": [
+      "iid"
+    ],
+    "noise_stds": [
+      0.4
+    ],
+    "horizons": [
+      1,
+      6
+    ],
+    "n_obs": 220,
+    "order": 2,
+    "window": 60,
+    "outer_initial_train": 140,
+    "outer_step": 30,
+    "inner_step": 4,
+    "max_inner_origins": 18,
+    "n_s_grid": 81
+  },
+  "outer_origins": [
+    140,
+    170,
+    200
+  ],
+  "selectors": [
+    "forecast_cv_h",
+    "forecast_cv_1",
+    "cv",
+    "gcv",
+    "aicc",
+    "bic",
+    "recovery_oracle_train"
+  ],
+  "n_scenarios": 2,
+  "n_outer_horizon_blocks": 12,
+  "n_result_rows": 84,
+  "n_curve_rows": 324,
+  "elapsed_seconds": 0.50072569999611,
+  "files": {
+    "results": "results.csv",
+    "objective_curves": "objective_curves.csv",
+    "series_examples": "series_examples.csv",
+    "summary": "summary.csv",
+    "horizon_matching": "horizon_matching.csv"
+  }
+}
