@@ -20,6 +20,9 @@ DEFAULT_RULES = (
     DynamicRuleSpec("mean_k5", "recent_mean", k=5),
     DynamicRuleSpec("median_k3", "recent_median", k=3),
     DynamicRuleSpec("median_k5", "recent_median", k=5),
+    DynamicRuleSpec("recency_hl3", "recency_weighted", half_life=3.0),
+    DynamicRuleSpec("recency_hl5", "recency_weighted", half_life=5.0),
+    DynamicRuleSpec("recency_hl10", "recency_weighted", half_life=10.0),
     DynamicRuleSpec("val2_weighted", "val2_weighted"),
     DynamicRuleSpec(
         "recency_val2_hl3",
@@ -92,9 +95,10 @@ def apply_rule(
     the final pre-test Validation-1 surface and therefore has no Validation-2
     loss yet.
 
-    Recent mean/median rules include current_s. Loss-weighted rules use only
-    completed historical rows because assigning a Validation-2 weight to the
-    current point would require the untouched outer test.
+    Recent mean/median and pure recency-weighted rules include current_s.
+    Loss-weighted rules use only completed historical rows because assigning a
+    Validation-2 weight to the current point would require the untouched outer
+    test.
     """
 
     s, loss = _finite_history(history_s, history_val2_loss)
@@ -126,6 +130,23 @@ def apply_rule(
             "includes_current_s": True,
             "delta": np.nan,
             "rho": np.nan,
+        }
+
+    if spec.family == "recency_weighted":
+        half_life = float(spec.half_life)
+        if half_life <= 0.0:
+            raise ValueError("half_life must be positive.")
+        values = np.concatenate([s, np.asarray([current_s], dtype=float)])
+        rho = float(2.0 ** (-1.0 / half_life))
+        age = np.arange(values.size - 1, -1, -1, dtype=float)
+        weights = rho**age
+        selected = float(np.sum(weights * values) / np.sum(weights))
+        return selected, {
+            "n_history_used": int(s.size),
+            "includes_current_s": True,
+            "fallback_to_last": False,
+            "delta": np.nan,
+            "rho": rho,
         }
 
     if s.size == 0:
