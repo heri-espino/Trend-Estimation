@@ -431,6 +431,8 @@ def add_relative_losses(results: pd.DataFrame, baseline: str = "gcv") -> pd.Data
         "outer_origin",
         "horizon",
     ]
+    if "window" in results.columns:
+        keys.insert(5, "window")
     base = (
         results.loc[results["selector"] == baseline, keys + ["forecast_mse_observed"]]
         .rename(columns={"forecast_mse_observed": "baseline_mse"})
