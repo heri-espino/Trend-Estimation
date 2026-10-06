@@ -96,6 +96,25 @@ Smoothness grid:
 
 equally spaced values on \([0,1]\).
 
+## Mandatory inner-CV / outer-refit semantics
+
+At every outer origin \(T\), the inner rolling folds are used only to choose the smoothness value \(\widehat S_{T,h}\). Their fitted trends are not candidates for the final outer forecast.
+
+After selection, CP03 always performs a new fit using the most recent full window available before the outer test:
+
+\[
+\widehat\tau_T
+=
+H_{\lambda(\widehat S_{T,h})}y_{T-L+1:T}.
+\]
+
+The untouched outer forecast is then
+
+\[
+\widehat y_{T+1:T+h\mid T}=G_{d,h}\widehat\tau_T.
+\]
+
+Thus inner CV averages forecast losses across folds, not trend estimates. At later outer origins, data that have become observed are incorporated into the new history and the entire selection/refit cycle is repeated. This is a hard invariant; see `../notes/validation_semantics.md`.
 ## Feasible selectors
 
 Primary feasible comparison set:
@@ -195,7 +214,7 @@ Useful options:
 python experiments/smoothness_cv/run_checkpoint_03.py --preset smoke
 
 # explicit worker count
-python experiments/smoothness_cv/run_checkpoint_03.py --preset paper --jobs 0 --jobs 12
+python experiments/smoothness_cv/run_checkpoint_03.py --preset paper --jobs 12
 
 # serial debugging
 python experiments/smoothness_cv/run_checkpoint_03.py --preset smoke --jobs 1
@@ -229,7 +248,7 @@ Inspect that run only for code/IO failures.
 If smoke passes:
 
 ~~~bash
-python experiments/smoothness_cv/run_checkpoint_03.py --preset paper
+python experiments/smoothness_cv/run_checkpoint_03.py --preset paper --jobs 0
 python experiments/smoothness_cv/analyze_checkpoint_03.py
 python experiments/smoothness_cv/make_checkpoint_03_figures.py
 ~~~
