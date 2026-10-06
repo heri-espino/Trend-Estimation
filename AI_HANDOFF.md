@@ -66,6 +66,7 @@ The first dynamic \(\phi\) methods to compare are:
 - newest/last tracked local minimum;
 - recent mean;
 - recent median;
+- pure recency-weighted mean;
 - Validation-2 weighted mean;
 - recency + Validation-2 weighted mean.
 
