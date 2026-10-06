@@ -1,3 +1,9 @@
+> **2026-10-06 role update:** CP03 remains frozen and valid, but it is now
+> interpreted as the **pooled forecast-CV baseline**. It is not the final central
+> dynamic method. After CP03, move to
+> `CP04_DYNAMIC_BRANCH_RULES.md`, which compares decision rules on tracked
+> local-minimum branches. Do not retune CP03.
+
 # Checkpoint 03 — Frozen paper-scale simulation
 
 **Status: IMPLEMENTED — awaiting execution.**
