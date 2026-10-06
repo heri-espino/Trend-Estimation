@@ -4,94 +4,87 @@ trend_estimation is a library-first research repository for finite-difference pe
 
 ## Research map
 
-As of 2026-10-05, the former mixed numerical-smoothness project is split into two linked papers because it contains two different scientific questions.
+As of 2026-10-06, there are exactly **two active papers**.
 
-### Paper A — Smoothness selected by chronological forecast validation
+### Paper A — Dynamic forecast-optimal smoothness
 
-Directory: paper_smoothness-cv/
+Directory: `paper_smoothness-cv/`
 
-Working idea: **Forecast-Optimal Smoothness for Finite-Difference Penalized Trend Estimation**
+Primary target: **Journal of Forecasting**.
 
-Primary target: **Journal of Forecasting**. The active Wiley manuscript is in `paper_smoothness-cv/manuscript/` and builds through `python paper_smoothness-cv/build.py`.
+The pooled chronological selector remains a baseline,
 
-It asks:
-
-> Given a fixed finite-difference trend family and forecast horizon, what level of smoothness should be selected when the criterion is future chronological forecast error rather than an exogenously chosen percentage or an in-sample/recovery criterion?
-
-Core estimator:
 \[
-\widehat\tau_\lambda=(I+\lambda D_d^\top D_d)^{-1}y.
+\widehat S^{\mathrm{pool}}_{T,h}
+\in\arg\min_S F^{\mathrm{pool}}_{T,h}(S),
 \]
 
-Normalized smoothness:
+but the central research object is now the sequence of local minima of
+origin-specific forecast-loss surfaces,
+
 \[
-S(\lambda)=1-\frac{1}{N-d}\sum_{\delta_j>0}\frac{1}{1+\lambda\delta_j}.
+\mathcal M_t=\{S_{1,t},\ldots,S_{K_t,t}\}.
 \]
 
-For rolling origins \(T\in\mathcal O\),
+Nearby minima are tracked through time as data-driven branches. Each branch
+stores smoothness, Validation-1 loss, and subsequent Validation-2 loss,
+
 \[
-F_{d,L,h}(S)=
-\frac{1}{|\mathcal O|h}
-\sum_{T\in\mathcal O}
-\left\|z_T-G_{d,h}H_{\lambda(S)}x_T\right\|^2,
-\]
-and
-\[
-S^\star_{d,L,h}\in\arg\min_{S\in[0,1]}F_{d,L,h}(S).
+V_j=[S_{j,t},\ell^{(1)}_{j,t},\ell^{(2)}_{j,t}]_t.
 \]
 
-This paper owns the definition, interpretation, statistical motivation, and empirical behavior of forecast-optimal smoothness. It may use a dense grid because numerical efficiency is not its contribution.
+The forecasting decision is
 
-The direct methodological foundation is Guerrero's penalized least-squares/controlled-smoothness framework. Hart (1994) is important related work showing predictive smoothing-parameter selection in a different kernel/TSCV setting, but it is not the same estimator, smoothness coordinate, continuation rule, or future-block criterion.
+\[
+\widehat j_T=\psi(V_1,\ldots,V_J),
+\qquad
+\widehat S_T=\phi(V_{\widehat j_T}).
+\]
 
-### Paper B — Numerical methods for the smoothness objective
+Paper A owns branch scoring, branch selection, final smoothness rules, refitting,
+and forecast evaluation.
 
-Directory: paper_numerical-methods/
+### Paper B — Numerical recovery and tracking of minima
 
-Working title: **Numerical Solution of Multimodal Forecast-Smoothness Selection Problems**
+Directory: `paper_numerical-methods/`
 
-It asks:
+Paper B owns:
 
-> Once \(F(S)\) is defined, how can all relevant minima and the global optimum be located reliably and with far fewer evaluations than an exhaustive dense grid?
+1. recovery of all relevant local minima of each multimodal forecast-loss surface;
+2. exact endpoint handling;
+3. adaptive derivative-aware search and Brent refinement;
+4. temporal correspondence of minima across adjacent surfaces.
 
-Current numerical method:
+The current temporal baseline is one-to-one matching under
 
-1. sparse deterministic evaluation in \(S\);
-2. analytic \(F'\) and \(F''\);
-3. adaptive subdivision of suspicious intervals;
-4. bracketing roots of \(F'(S)\);
-5. Brent refinement;
-6. stationary-point classification;
-7. comparison with exact endpoints \(S=0\) and \(S=1\).
+\[
+|S_{j,t}-S_{j,t-1}|\le\varepsilon_{\mathrm{track}}.
+\]
 
-Brent is a root refiner, not a global discovery method. The current production algorithm still uses adaptive evaluations to discover brackets.
+Do not confuse `track_epsilon` with within-surface `candidate_spacing`.
 
-A stronger certified direction is under study. For fixed \((d,L,h)\), the forecast loss has rational structure in \(\lambda\), so stationary points can be related to roots of a polynomial numerator. The existing Sturm experiment is a proof-of-concept only.
+Frozen evidence for the per-surface solver remains 240/240 adversarial relevant
+optima, 2105/2105 synthetic reference minima, and 473/473 financial geometry
+stress minima.
 
-Frozen numerical evidence from the pre-split work remains part of Paper B: 240/240 adversarial relevant optima, 2105/2105 synthetic dense-reference interior minima over 1920 surfaces, and 473/473 financial geometry-stress interior minima over 384 surfaces.
+### Other directories
 
-## Other workspaces
+Other paper directories are historical, parked, tutorial, or idea workspaces.
+They are **not active research tracks**. Do not add new research work to them
+unless the user explicitly reactivates one.
 
-- paper_forecast-optimal-smoothing/ — PARKED; broader adaptive joint selection of \((d,L,S)\).
-- paper_smoothness-recurrence/ — PARKED; applied financial trend/recurrence comparison.
-- paper_statistical-properties-penalized-trend/ — DRAFTING; statistical consequences of forecast-selected smoothness, with novelty/theorem claims not yet frozen.
-- paper_penalized-trend-tutorial/ — tutorial companion.
-- paper_bezier-trend/ — IDEA / NOVELTY AUDIT PENDING; Bernstein/Bézier control-space regularization and endpoint-aware trend forecasting, with P-splines as a mandatory rival.
-
-The old paper_numerical-smoothness-selection/ directory is retained only as a pre-split historical snapshot. Do not edit it for new work.
+The legacy `paper_numerical-smoothness-selection/` directory is a historical
+pre-split snapshot and must not receive new work.
 
 ## Canonical reading order for another AI agent
 
-1. AI_HANDOFF.md
-2. RESEARCH_MAP.md
-3. paper_smoothness-cv/README.md
-4. paper_smoothness-cv/AI_HANDOFF.md
-5. paper_numerical-methods/README.md
-6. paper_numerical-methods/AI_HANDOFF.md
-7. paper_bezier-trend/README.md
-8. paper_bezier-trend/notes/literature_positioning.md
-
-Paper-specific notes override older root notes when scopes conflict.
+1. `AI_HANDOFF.md`
+2. `RESEARCH_MAP.md`
+3. `paper_smoothness-cv/AI_HANDOFF.md`
+4. `paper_smoothness-cv/notes/dynamic_tracked_smoothness.md`
+5. `paper_smoothness-cv/notes/validation_semantics.md`
+6. `paper_numerical-methods/AI_HANDOFF.md`
+7. `paper_numerical-methods/notes/temporal_minima_tracking.md`
 
 ## Stable implementation namespaces
 
