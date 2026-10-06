@@ -1,3 +1,7 @@
+> **2026-10-06 active override:** The only active papers are
+> `paper_numerical-methods/` and `paper_smoothness-cv/`. The frozen
+> per-surface solver remains complete. The next numerical phase is temporal
+> correspondence/tracking of local minima; see `notes/temporal_minima_tracking.md`.
 > **Scope update (2026-10-05):** This roadmap is now only for Paper B, \`paper_numerical-methods/\`. The statement below that this was the "sole active research track" is historical and superseded. Paper A is active separately at \`paper_smoothness-cv/\`. Do not move criterion-definition work back into this numerical roadmap.
 
 # Roadmap — Active Paper
