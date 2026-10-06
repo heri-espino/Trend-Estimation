@@ -82,7 +82,29 @@ This is the currently implemented tracked-minima forecast rule.
 \operatorname{median}\{S_{j,T-K+1},\ldots,S_{j,T}\}.
 \]
 
-### 4. Validation-2 weighted
+### 4. Pure recency-weighted mean
+
+Recent branch values may receive exponentially larger weights than older values:
+
+\[
+\phi_{\mathrm{recency}}(V_j)
+=
+\frac{\sum_{r=0}^{R} \rho^r S_{j,T-r}}
+{\sum_{r=0}^{R} \rho^r},
+\qquad 0<\rho<1.
+\]
+
+The newest value has weight one, the previous value has weight \(\rho\), and
+so on. We parameterize \(\rho\) by a half-life \(H\),
+
+\[
+\rho=2^{-1/H},
+\]
+
+so after \(H\) tracked origins the weight is one half of the newest value.
+CP04 compares half-lives 3, 5, and 10.
+
+### 5. Validation-2 weighted
 
 \[
 \phi_{\mathrm{V2}}(V_j)
@@ -91,7 +113,7 @@ This is the currently implemented tracked-minima forecast rule.
 {\sum_t 1/(\ell^{(2)}_{j,t}+\delta)}.
 \]
 
-### 5. Recency + Validation-2 weighted
+### 6. Recency + Validation-2 weighted
 
 \[
 \phi_{\mathrm{recency+V2}}(V_j)
@@ -132,9 +154,10 @@ Also save the full branch matrices used for each decision.
 1. dynamic `last` versus pooled forecast-CV;
 2. recent mean versus `last`;
 3. recent median versus `last`;
-4. Val2-weighted versus `last`;
-5. recency+Val2-weighted versus `last`;
-6. best frozen dynamic rule versus classical CV/GCV/AICc baselines.
+4. pure recency-weighted mean versus `last`;
+5. Val2-weighted versus `last`;
+6. recency+Val2-weighted versus `last`;
+7. best frozen dynamic rule versus classical CV/GCV/AICc baselines.
 
 ## Numerical-method dependency
 
@@ -194,12 +217,17 @@ Development rule grid:
 - `last`;
 - `mean_k3`, `mean_k5`;
 - `median_k3`, `median_k5`;
+- `recency_hl3`, `recency_hl5`, `recency_hl10`;
 - `val2_weighted`;
 - `recency_val2_hl3`, `recency_val2_hl5`, `recency_val2_hl10`;
 - `pooled_cv_same_config` baseline.
 
-For the weighted rules, the current final-Val1 minimum is deliberately not
-given a Val2 weight because its following block is the untouched outer test.
+Pure recency-weighted rules include the current final-Val1 minimum with the
+largest weight and exponentially discount older tracked smoothness values.
+
+For the Validation-2-weighted rules, the current final-Val1 minimum is
+deliberately not given a Val2 weight because its following block is the
+untouched outer test.
 The numerical stabilizer is scale-relative: `1e-8 * median(positive Val2 loss)`
 with a floor of `1e-12`.
 
