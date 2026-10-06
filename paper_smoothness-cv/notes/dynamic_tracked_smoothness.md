@@ -110,7 +110,18 @@ The central empirical comparison should include at least:
    \[\phi_{\text{mean},K}(V_j)=K^{-1}\sum_{r=0}^{K-1}S_{j,T-r}.\]
 3. **Median-K**
    \[\phi_{\text{med},K}(V_j)=\operatorname{median}\{S_{j,T-K+1:T}\}.\]
-4. **Validation-2 weighted**
+4. **Pure recency-weighted**
+   \[
+   \phi_{\text{recency}}(V_j)
+   =
+   \frac{\sum_{r=0}^{R}\rho^r S_{j,T-r}}
+   {\sum_{r=0}^{R}\rho^r},
+   \qquad 0<\rho<1.
+   \]
+   The newest smoothness receives weight one and older values are exponentially
+   discounted. The implementation parameterizes \(\rho\) by half-life
+   \(H\), with \(\rho=2^{-1/H}\).
+5. **Validation-2 weighted**
    \[
    \phi_{\text{V2}}(V_j)
    =
@@ -118,11 +129,11 @@ The central empirical comparison should include at least:
    \qquad
    w_{j,t}=\frac{1}{\ell^{(2)}_{j,t}+\delta}.
    \]
-5. **Recency + Validation-2 weighted**
+6. **Recency + Validation-2 weighted**
    \[
    w_{j,t}=\frac{\rho^{T-t}}{\ell^{(2)}_{j,t}+\delta}.
    \]
-6. **Predicted smoothness** as a later extension: fit a simple model to the
+7. **Predicted smoothness** as a later extension: fit a simple model to the
    branch trajectory and forecast its next `S` rather than using the last one.
 
 `Last` is the simplest dynamic rule and is already implemented by the
