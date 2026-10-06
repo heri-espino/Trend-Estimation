@@ -1,204 +1,187 @@
 # Research Map
 
-Last updated: 2026-10-05
+Last updated: 2026-10-06
 
-This file is the conceptual map of the repository so that a new researcher or AI agent can reconstruct the project without chat history.
+This is the conceptual map for the **two active papers**.
 
-## 1. Common mathematical foundation
+## 1. Common estimator
 
 \[
-\widehat\tau_\lambda=H_\lambda y,\qquad
-H_\lambda=(I+\lambda Q)^{-1},\qquad
+\widehat\tau_\lambda=H_\lambda y,
+\qquad
+H_\lambda=(I+\lambda Q)^{-1},
+\qquad
 Q=D_d^\top D_d.
 \]
 
-Because
-\[
-x^\top Qx=x^\top D_d^\top D_dx=\|D_dx\|_2^2\ge0,
-\]
-\(Q\) is symmetric positive semidefinite. Under the usual \(d\)-th difference operator it has \(d\) zero eigenvalues and \(N-d\) positive eigenvalues.
-
-If
-\[
-Q=U\operatorname{diag}(0,\ldots,0,\delta_1,\ldots,\delta_{N-d})U^\top,
-\]
-then
-\[
-H_\lambda=
-U\operatorname{diag}\left(
-1,\ldots,1,
-\frac1{1+\lambda\delta_1},\ldots,\frac1{1+\lambda\delta_{N-d}}
-\right)U^\top.
-\]
-
-## 2. Normalized smoothness
+Normalized smoothness is
 
 \[
-S(\lambda)=
-1-\frac1{N-d}\sum_{j=1}^{N-d}\frac1{1+\lambda\delta_j}.
-\]
-
-Hence
-\[
-S(0)=0,\qquad \lim_{\lambda\to\infty}S(\lambda)=1,
-\]
-and
-\[
-S'(\lambda)=
-\frac1{N-d}\sum_j\frac{\delta_j}{(1+\lambda\delta_j)^2}>0.
-\]
-
-So \(S\) is a strictly increasing reparameterization of \(\lambda\in[0,\infty]\) onto \(S\in[0,1]\).
-
-Interpretation: \(H_\lambda\) performs smoothing; \(S(\lambda)\) measures how much penalizable spectral flexibility has been suppressed.
-
-## 3. Forecasting
-
-Smoothing alone does not forecast. For the active zero-drift finite-difference family, define a continuation matrix \(G_{d,h}\):
-\[
-\widehat z_T(\lambda)=G_{d,h}H_\lambda x_T.
-\]
-
-For zero drift, \(d=1\) gives constant continuation, \(d=2\) linear continuation, and \(d=3\) quadratic continuation.
-
-## 4. Paper A: smoothness-CV
-
-At origin \(T\),
-\[
-r_T(\lambda)=z_T-GH_\lambda x_T,\qquad
-f_T(\lambda)=\frac1h\|r_T(\lambda)\|^2.
-\]
-
-Across rolling origins,
-\[
-f(\lambda)=\frac1M\sum_j f_{T_j}(\lambda).
-\]
-
-The same loss in smoothness coordinates is
-\[
-F(S)=f(\lambda(S)).
-\]
-
-The proposal is
-\[
-S^\star\in\arg\min_{S\in[0,1]}F(S).
-\]
-
-Paper A owns this definition and its scientific interpretation.
-
-The direct lineage is: Whittaker/finite-difference PLS -> Guerrero controlled smoothness -> endogenous forecast-based selection of the smoothness percentage.
-
-Hart's TSCV is relevant because it selects smoothing from predictive performance, but it uses a different kernel smoother, bandwidth, error-model construction, and one-step prediction problem.
-
-## 5. Paper B: numerical methods
-
-\[
-H'_\lambda=-H_\lambda QH_\lambda,\qquad
-H''_\lambda=2H_\lambda QH_\lambda QH_\lambda.
-\]
-
-Let
-\[
-a_T=GHQHx_T,\qquad b_T=GHQHQHx_T.
-\]
-
-Then
-\[
-f'_T(\lambda)=\frac{2}{h}r_T^\top a_T,
-\]
-and
-\[
-f''_T(\lambda)=
-\frac{2}{h}\left(\|a_T\|^2-2r_T^\top b_T\right).
-\]
-
-Because \(F(S)=f(\lambda(S))\),
-\[
-F'(S)=\frac{f'(\lambda)}{S'(\lambda)},
-\]
-\[
-F''(S)=
-\frac{f''(\lambda)}{[S'(\lambda)]^2}
--
-\frac{f'(\lambda)S''(\lambda)}{[S'(\lambda)]^3}.
-\]
-
-At a stationary point the second term vanishes. Since \(S'>0\), stationary candidates and nondegenerate min/max classification correspond between \(\lambda\) and \(S\).
-
-The production solver uses adaptive discovery plus Brent refinement. Brent alone is not global.
-
-## 6. Rational structure and Sturm direction
-
-For fixed \(d,L,h\),
-\[
-\widehat z_T(\lambda)=
-c_0+\sum_{j=1}^r\frac{c_j}{1+\lambda\delta_j}.
-\]
-
-Therefore
-\[
-f(\lambda)=\frac{P(\lambda)}{D(\lambda)^2},\qquad
-f'(\lambda)=\frac{R(\lambda)}{D(\lambda)^3}.
-\]
-
-Since \(D(\lambda)>0\) for \(\lambda\ge0\), interior stationary points correspond to nonnegative roots of \(R\), except degenerate cases.
-
-The repository contains a Sturm mini-check showing exact polynomial root isolation is feasible in a small controlled case. It is not yet a production certification theorem.
-
-## 7. Bézier/Bernstein control-space paper idea
-
-The repository also contains a parked novelty-audit workspace:
-
-paper_bezier-trend/
-
-For a Bernstein design matrix \(B_K\), the candidate control-space estimator is
-
-\[
-\widehat\beta_{\lambda,K,q}
+S(\lambda)
 =
-(B_K^\top B_K+\lambda D_q^\top D_q)^{-1}B_K^\top y,
+1-\frac1{N-d}
+\sum_{j=1}^{N-d}
+\frac1{1+\lambda\delta_j},
 \]
 
-with fitted trend
+which maps \([0,\infty]\) monotonically to \([0,1]\).
+
+Forecasting uses the native finite-difference continuation
 
 \[
-\widehat\tau^{(B)}
+\widehat z_T(S)
 =
-B_K\widehat\beta_{\lambda,K,q}.
+G_{d,h}H_{\lambda(S)}x_T.
 \]
 
-The candidate comparison is
+## 2. Static pooled forecast-CV baseline
+
+For historical forecast origins,
 
 \[
-\|D_d\tau\|^2
-\qquad\text{versus}\qquad
-\|D_q\beta\|^2,
+F^{\mathrm{pool}}_{T,h}(S)
+=
+\frac1M\sum_{m=1}^{M}\ell_{m,h}(S),
 \]
 
-together with explicit terminal Bézier level/slope/curvature and endpoint continuation.
+with
 
-This is not yet a paper contribution. Direct prior work already covers Bézier statistical smoothing, Bernstein regression, Bernstein time-series forecasting, penalized Bézier smoothing, P-spline forecasting, and financial piecewise-Bézier filtering. The workspace is valid only if a literature/equivalence audit leaves a distinct endpoint or regularization-geometry result.
+\[
+\widehat S^{\mathrm{pool}}_{T,h}
+\in
+\arg\min_S F^{\mathrm{pool}}_{T,h}(S).
+\]
 
-## 8. Paper ownership
+This remains a baseline and is the object studied by smoothness-CV CP01--CP03.
 
-paper_smoothness-cv/ owns the definition and interpretation of forecast-optimal smoothness.
+## 3. Dynamic tracked-smoothness object
 
-paper_numerical-methods/ owns optimization derivatives, multimodal search, Brent refinement, endpoints, benchmarks, rational structure, and possible Sturm certification.
+At each chronological origin \(t\), recover all relevant local minima
 
-paper_forecast-optimal-smoothing/ owns joint/time-varying \((d,L,S)\) adaptation.
+\[
+\mathcal M_t
+=
+\{S_{1,t},\ldots,S_{K_t,t}\}.
+\]
 
-paper_smoothness-recurrence/ owns applied model comparison and recurrence.
+Connect minima across adjacent surfaces by one-to-one temporal continuation,
 
-paper_statistical-properties-penalized-trend/ owns broader inference/statistical properties.
+\[
+|S_{j,t}-S_{j,t-1}|
+\le
+\varepsilon_{\mathrm{track}}.
+\]
 
-paper_bezier-trend/ owns only the exploratory Bernstein/Bézier representation, control-space regularization, endpoint geometry, and matched comparison with P-splines; it remains novelty-audit pending.
+A tracked branch stores
 
-## 9. Claim discipline
+\[
+V_j
+=
+\{(S_{j,t},\ell^{(1)}_{j,t},\ell^{(2)}_{j,t})\}_{t\in\mathcal T_j}.
+\]
 
-Do not claim PLS, controlled smoothness, predictive smoothing selection, rolling-origin validation, Brent, or multiple minima are individually new.
+The forecasting decision is
 
-Do not say the current adaptive-Brent algorithm guarantees every stationary point.
+\[
+\widehat j_T
+=
+\psi(V_1,\ldots,V_J),
+\qquad
+\widehat S_T
+=
+\phi(V_{\widehat j_T}).
+\]
 
-Do not say the Sturm mini-check certifies all production cases.
+Initial \(\phi\) rules are:
 
-Do not equate forecast-optimal smoothness with recovery-optimal smoothness or a universal population optimum.
+- last/newest local minimum;
+- recent mean;
+- recent median;
+- Validation-2 weighted mean;
+- recency + Validation-2 weighted mean.
+
+A direct forecast of the smoothness trajectory is a later extension.
+
+## 4. Mandatory final refit
+
+Whatever rule selects \(\widehat S_T\), all temporary validation fits are
+discarded. The operational estimator is refit using the newest full window:
+
+\[
+\widehat\tau_T
+=
+H_{\lambda(\widehat S_T)}
+y_{T-L+1:T},
+\]
+
+then the untouched future is forecast.
+
+We may average historical losses or smoothness values when a declared rule
+requires it. We never average historical fitted trends.
+
+## 5. Paper A ownership — `paper_smoothness-cv/`
+
+Paper A owns the forecasting/statistical decision problem:
+
+- branch matrix \(V_j\);
+- branch selector \(\psi\);
+- final smoothness functional \(\phi\);
+- Validation-1/refit/Validation-2 chronology;
+- comparison with pooled forecast-CV and classical selectors;
+- untouched-test forecast performance.
+
+Primary target: Journal of Forecasting.
+
+## 6. Paper B ownership — `paper_numerical-methods/`
+
+Paper B owns numerical support for the dynamic object:
+
+- derivative-aware recovery of multiple local minima on each \(F_t(S)\);
+- exact \(S=0\) and \(S=1\) handling;
+- adaptive interval subdivision;
+- Brent root refinement;
+- possible rational/Sturm certification;
+- temporal correspondence/tracking of minima across successive surfaces.
+
+Per-surface derivatives remain
+
+\[
+H'_\lambda=-H_\lambda QH_\lambda,
+\qquad
+H''_\lambda=2H_\lambda QH_\lambda QH_\lambda,
+\]
+
+with
+
+\[
+F'(S)=\frac{f'(\lambda)}{S'(\lambda)}.
+\]
+
+The frozen per-surface benchmark evidence remains valid. Temporal tracking is a
+new numerical layer and must be validated separately.
+
+## 7. Two distinct radii
+
+Do not conflate:
+
+- `candidate_spacing`: within one surface, after minimum discovery;
+- `track_epsilon`: across adjacent surfaces, for branch continuation.
+
+## 8. Claim discipline
+
+Do not claim that predictive smoothing selection, multiple minima, Brent, or
+rolling validation are individually new.
+
+Do not claim the current adaptive sampler certifies every stationary point.
+
+Do not claim the current greedy branch matcher is globally optimal or
+theoretically unique.
+
+Any novelty claim about temporal tracking of smoothing optima must be audited
+against the literature before submission.
+
+## 9. Active-work policy
+
+Only `paper_smoothness-cv/` and `paper_numerical-methods/` are active.
+All other paper directories are inactive unless the user explicitly reactivates
+one.
