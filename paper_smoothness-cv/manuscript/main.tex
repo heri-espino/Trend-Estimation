@@ -10,17 +10,17 @@
 
 \begin{document}
 
-\title{Forecast-Optimal Smoothness for Penalized Trend Estimation}
+\title{Dynamic Forecast-Optimal Smoothness for Penalized Trend Estimation}
 
 \author[1]{Heriberto Espino Montelongo}
 \authormark{ESPINO MONTELONGO}
-\titlemark{FORECAST-OPTIMAL SMOOTHNESS}
+\titlemark{DYNAMIC FORECAST-OPTIMAL SMOOTHNESS}
 
 \address[1]{\orgname{Universidad de las Am\'ericas Puebla}, \orgaddress{\state{Puebla}, \country{Mexico}}}
 \corres{Corresponding author: Heriberto Espino Montelongo. \email{[corresponding email]}}
 
 \abstract[Abstract]{
-Finite-difference penalized least squares provides a simple family of trend estimators indexed by a smoothing penalty, but the amount of smoothness is often chosen for estimation rather than for the forecast task that follows. Building on controlled-smoothness formulations of penalized trend estimation, this paper defines a normalized smoothness coordinate $S\in[0,1]$ and selects it directly from chronological future-block forecast performance. For fixed difference order $d$, estimation-window length $L$, and forecast horizon $h$, the proposed criterion averages genuinely out-of-sample squared forecast errors across rolling origins and defines forecast-optimal smoothness as the minimizer of that loss. The construction preserves temporal ordering and uses the continuation implied by the same finite-difference model used to estimate the trend. We establish the monotone correspondence between the penalty parameter and normalized smoothness, derive the exact relation between smoothness and effective degrees of freedom, characterize the two limiting smoothing regimes, and show that optimization in penalty space and smoothness space is equivalent. The contribution is distinct from classical CV/GCV smoothing criteria and from kernel time-series cross-validation: the target is explicitly a horizon-specific future-block forecast loss for finite-difference penalized trends. The accompanying evaluation protocol compares this target with conventional smoothing-parameter rules under controlled trend mechanisms and public forecasting data.
+Finite-difference penalized least squares yields a family of trend estimators indexed by smoothness, but chronological forecast-loss surfaces can be multimodal and their local minima can move through time. This paper studies smoothness selection as a dynamic forecasting problem. We first retain pooled forecast cross-validation as a static baseline: the smoothness value minimizing average historical future-block forecast loss. We then recover the local minima of origin-specific forecast-loss surfaces, connect nearby minima across adjacent origins into data-driven branches, and record each branch through its smoothness path together with Validation-1 and subsequent Validation-2 forecast loss. The forecasting decision is separated into two steps: select a historically persistent branch, then map that branch history into the current smoothness using rules such as the newest minimum, recent mean or median, and loss- or recency-weighted summaries. After smoothness is chosen, the trend is always refit on the newest information available before forecasting the untouched future block. The framework preserves the normalized smoothness coordinate and effective-degrees-of-freedom interpretation of controlled-smoothness penalized trends while allowing temporal persistence in multiple forecast-optimal smoothing regimes to enter the decision. A companion numerical paper addresses recovery and temporal correspondence of the local minima themselves.
 }
 
 \keywords{forecast evaluation; penalized least squares; smoothing parameter; trend estimation; time-series cross-validation; rolling-origin forecasting}
