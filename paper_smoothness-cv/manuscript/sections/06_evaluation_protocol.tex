@@ -1,62 +1,131 @@
 \section{Evaluation protocol}
 
-The final submission should evaluate the criterion as a forecasting method, not only as a mathematical reparameterization. This section fixes the comparison logic before final test results are inserted.
+The empirical evaluation is designed to test whether forecast-oriented smoothness selection changes the selected trend and improves subsequent forecasts. The simulation design in this section was frozen after the exploratory Checkpoints 01--02 and before the paper-scale Checkpoint 03 run.
 
 \subsection{Simulation questions}
 
-The simulation study is organized around three questions:
+The controlled simulation study addresses three questions:
 \begin{enumerate}
-\item Does forecast-CV select a different amount of smoothness from recovery-oriented or conventional in-sample selectors?
-\item When the selected smoothness differs, does the horizon-matched choice improve genuinely held-out forecast loss?
-\item How do sample size, noise dependence, trend roughness, and forecast horizon change the selected $S$?
+\item Does horizon-matched forecast-CV select a different amount of smoothness from one-step forecast tuning and conventional in-sample selectors?
+\item When the selected smoothness differs, does the horizon-matched choice improve genuinely later forecast loss?
+\item How far are the feasible selectors from two simulation-only targets: historical trend-recovery optimality and latent future forecast optimality?
 \end{enumerate}
 
-The baseline simulations use $d=2$ and fixed estimation windows, with $d=1$ and $d=3$ reserved for robustness. Each generated series is split chronologically into a smoothness-selection segment and a later test segment. All tuning occurs before the test observations are revealed.
-
-The latent trend mechanisms should include a nearly linear trend; a smoothly changing slope; a piecewise-smooth trend with a level or slope change; and a low-frequency nonlinear trend without an abrupt break. Observation noise is varied across independent Gaussian noise, persistent AR(1) noise, and a heavy-tailed robustness condition. Sample size and signal-to-noise ratio are crossed with the trend mechanisms.
-
-For each design, forecast horizons are prespecified rather than selected from the same test data. A central comparison is whether $S^\star_{d,L,h}$ changes materially as $h$ changes.
-
-\subsection{Competing smoothness selectors}
-
-The proposed horizon-matched rolling criterion is compared with established PLS selectors:
-\begin{enumerate}
-\item future-block forecast-CV defined in \eqref{eq:F_S};
-\item ordinary CV;
-\item GCV;
-\item AICc;
-\item BIC;
-\item selected fixed percentages of controlled smoothness used only as interpretable reference points.
-\end{enumerate}
-
-The CV/GCV/AICc/BIC set follows the PLS comparison studied by Cort\'es-Toto et al.\ \cite{cortes2017smoothness}. Their study asks how much smoothness these criteria induce; ours asks how the selected trends subsequently forecast when extrapolated.
-
-A second comparison isolates horizon matching. For $h>1$, the same trend family is tuned once using one-step rolling loss and once using the $h$-step future-block loss. This directly tests whether matching the tuning horizon to the operational horizon matters.
-
-\subsection{Evaluation metrics}
-
-For simulations with known latent trend, report both
+The primary design fixes the difference order at
 \[
-\text{trend-recovery MSE}
-\quad\text{and}\quad
-\text{future forecast MSE}.
+d=2
 \]
-This prevents a forecast-oriented selector from being judged only by its own objective and makes the recovery-versus-prediction distinction observable.
+and the estimation-window length at
+\[
+L=60.
+\]
+The operational forecast horizons are
+\[
+h\in\{1,3,6,12\}.
+\]
+Keeping $d$ and $L$ fixed is deliberate: the paper studies smoothness selection conditional on a forecasting configuration rather than joint adaptation of $(d,L,S)$.
 
-For real data, the primary endpoint is held-out forecast MSFE. Secondary summaries include MAE, selected smoothness $S$, effective degrees of freedom from \eqref{eq:edf}, and the stability of selected smoothness across adjacent forecast origins.
+\subsection{Latent mechanisms and noise}
 
-When comparing many series, report both per-series relative loss and aggregate summaries. Formal predictive-ability tests should be used only when their dependence assumptions match the evaluation design.
+Five latent trend mechanisms are retained in the frozen paper-scale design:
+\begin{enumerate}
+\item a linear null-space control;
+\item a smoothly nonlinear trend;
+\item an oscillatory trend with repeated local slope changes;
+\item a recent slope change;
+\item a terminal bend with local end-of-sample curvature.
+\end{enumerate}
+
+The retained set spans a simple correctly aligned control and several forms of local shape misspecification for linear continuation. Quadratic and turning-point mechanisms used during the exploratory refinement stage were excluded before the paper-scale run because they were structurally redundant with the retained smooth nonlinear and terminal-curvature cases.
+
+Observation noise is generated under three conditions: independent Gaussian noise, persistent AR(1) noise, and finite-variance Student-$t$ noise as a heavy-tail robustness condition. The marginal noise standard deviation is set to $0.3$ or $0.7$.
+
+The paper-scale simulation uses $100$ random seeds and series length $N=360$. For each generated series, the common outer forecast origins are
+\[
+T\in\{228,252,276,300,324,348\}.
+\]
+The same origins are used for every horizon. At each origin, all tuning uses only observations available at or before $T$; the future block is revealed only for scoring.
+
+\subsection{Smoothness search}
+
+The scientific criterion is evaluated on a deterministic grid of $601$ equally spaced smoothness values on $[0,1]$. A dense grid is sufficient here because numerical efficiency is not the contribution of this paper. The companion numerical-methods paper studies more efficient recovery of multimodal minima.
+
+\subsection{Competing selectors}
+
+The primary feasible comparison set is:
+\begin{enumerate}
+\item horizon-matched future-block forecast-CV defined in \eqref{eq:F_S};
+\item one-step rolling forecast-CV, whose selected smoothness is then used at the operational horizon;
+\item ordinary linear-smoother CV;
+\item GCV;
+\item AICc.
+\end{enumerate}
+
+The CV/GCV/AICc criteria follow the PLS comparison studied by Cort\'es-Toto et al.\ \cite{cortes2017smoothness}. BIC was also audited during the exploratory stage, but under a global search over the full smoothness path its published score was pinned to the left finite boundary in every audited criterion curve. Because a defensible additional search-domain restriction would need to be introduced externally, BIC is not treated as a primary feasible comparator in the frozen paper-scale experiment.
+
+The one-step versus horizon-matched comparison isolates the main forecasting question. For $h>1$, the same finite-difference trend family is tuned once using one-step forecast loss and once using the same $h$-step future block used operationally.
+
+\subsection{Simulation-only oracle targets}
+
+Two non-feasible selectors are retained for interpretation.
+
+The historical recovery oracle is
+\[
+S_{\mathrm{rec}}
+\in
+\arg\min_S
+\left\|
+\widehat\tau_S-\tau
+\right\|^2,
+\]
+where the latent historical trend is known only because the data are simulated.
+
+The latent future forecast oracle is
+\[
+S_{\mathrm{oracle},h}
+\in
+\arg\min_S
+\left\|
+\tau_{T+1:T+h}
+-
+G_{2,h}H_{\lambda(S)}y_{T-L+1:T}
+\right\|^2.
+\]
+The historical fit still uses noisy observations; only the oracle choice of $S$ is allowed to see the latent future. These two oracles separate trend-recovery optimality from forecast optimality and are not presented as practical forecasting competitors.
+
+\subsection{Primary performance summaries}
+
+For each seed, trend mechanism, noise model, noise scale, horizon, and selector, outer-origin losses are first averaged to obtain a series-level MSFE. Paired method comparisons then use
+\[
+\log
+\frac{\operatorname{MSFE}_{\mathrm{forecast-CV},h}}
+     {\operatorname{MSFE}_{\mathrm{comparator}}}.
+\]
+For scale-free aggregation we report the geometric RMSFE ratio
+\[
+\exp\left[
+\frac12
+E\left\{
+\log
+\frac{\operatorname{MSFE}_{\mathrm{forecast-CV},h}}
+     {\operatorname{MSFE}_{\mathrm{comparator}}}
+\right\}
+\right].
+\]
+Values below one favor horizon-matched forecast-CV.
+
+The simulation uses common random numbers across trend mechanisms within each seed/noise-model/noise-scale combination. Consequently, uncertainty intervals are obtained by nonparametric bootstrap resampling of seeds rather than individual scenario rows. Results are also reported separately by noise model when the iid, dependent, and heavy-tailed conditions differ materially.
+
+Secondary summaries include MAE, selected smoothness $S$, effective degrees of freedom from \eqref{eq:edf}, endpoint-selection rates, and the gaps between feasible forecast-CV, the recovery oracle, and the latent future forecast oracle.
 
 \subsection{Public real-data evaluation}
 
-The submission-stage empirical analysis should emphasize reproducibility and chronological integrity. Two complementary panels are suitable.
+The submission-stage empirical analysis will complement the controlled simulations with a broad public multi-series forecasting panel. The real-data protocol must preserve the same chronological logic: tuning occurs only on historical information, forecast horizons are fixed in advance, and no series-specific manual tuning is allowed.
 
-First, a broad public forecasting panel such as the M4 data can evaluate whether the criterion behaves sensibly across heterogeneous series, following the forecast-evaluation tradition represented by Stan\v{e}k \cite{stanek2023oos}. Series that require seasonal preprocessing should use a prespecified transformation so that the paper remains about trend smoothness rather than seasonal-model selection.
+A public competition-style panel such as the M4 data is a suitable primary candidate because it provides many heterogeneous series and established forecast horizons. Any seasonal preprocessing must be prespecified so that the paper remains about trend smoothness rather than seasonal-model selection.
 
-Second, a small macroeconomic panel can provide interpretable trend examples. Historical macroeconomic backtests require real-time vintages; revised current histories are acceptable only for exploratory analysis because they can contain information unavailable at the historical forecast origin.
-
-The repository already distinguishes exploratory external-validation snapshots from paper-final vintage requirements. That distinction must be preserved in the reported results.
+A small real-time macroeconomic illustration may be added separately. Historical macroeconomic backtests require historical vintages; revised current histories are not treated as if they were available at earlier forecast origins.
 
 \subsection{Result-freeze rule}
 
-All comparison rules, forecast origins, horizon sets, and primary metrics should be fixed before inspecting the final test block. Numerical optimization settings must not be tuned from test performance. The companion numerical-methods paper may provide a more efficient optimizer, but the scientific definition of the criterion is unchanged if a sufficiently fine deterministic grid is used for the present paper.
+The paper-scale simulation design---seeds, mechanisms, noise conditions, horizons, window length, forecast origins, smoothness grid, and primary feasible comparator set---is frozen before inspecting the Checkpoint 03 paper-preset results. These quantities are not altered afterward because of favorable or unfavorable performance.
