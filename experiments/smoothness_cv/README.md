@@ -6,9 +6,22 @@ Reusable estimator mathematics remains in src/trend_estimation/. This folder
 owns only the experimental design, frozen presets, paper-specific outputs, and
 figure/table construction.
 
+## Critical fit-select-refit semantics
+
+This experiment uses nested chronological logic:
+
+1. inner rolling folds evaluate each candidate smoothness \(S\) using historical pseudo-out-of-sample forecast loss;
+2. those losses are averaged and the minimizing \(\widehat S_{T,h}\) is selected;
+3. fold-specific fits are discarded;
+4. the trend is freshly refit on `history[-window:]`, i.e. the most recent \(L\) observations available at the current outer origin;
+5. that refitted trend is extrapolated into the untouched outer future block.
+
+The folds average losses, not trends. Never keep the last inner-fold trend as the outer forecast model. Never withhold information that is already available at the outer origin merely because it was previously used as validation data at an earlier origin.
+
+Canonical explanation: `paper_smoothness-cv/notes/validation_semantics.md`.
 ## Current checkpoint
 
-### Checkpoint 01 — empirical core
+### Checkpoints 01–02 complete; Checkpoint 03 is the active frozen paper simulation
 
 Goal:
 
