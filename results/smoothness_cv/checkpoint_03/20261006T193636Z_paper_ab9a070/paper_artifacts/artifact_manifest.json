@@ -1,0 +1,16 @@
+{
+  "source_run_dir": "results/smoothness_cv/checkpoint_03/20261006T193636Z_paper_ab9a070",
+  "figures": [
+    "figures/fig_sim01_horizon_matching_by_noise.pdf",
+    "figures/fig_sim02_forecast_cv_vs_competitors.pdf",
+    "figures/fig_sim03_selected_s_by_horizon.pdf",
+    "figures/fig_sim04_smoothness_targets.pdf",
+    "figures/fig_sim05_objective_curves.pdf"
+  ],
+  "tables": [
+    "tables/table_sim_primary_comparisons.csv",
+    "tables/table_sim_horizon_matching_by_noise.csv",
+    "tables/table_sim_selected_s.csv",
+    "tables/table_sim_oracle_summary.csv"
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "created_at_utc": "2026-10-06T21:36:37.994610+00:00",
+  "git_commit": "0641820",
+  "checkpoint": "04",
+  "stage": "development_rule_refinement",
+  "preset": "smoke",
+  "preset_definition": {
+    "name": "smoke",
+    "series": [
+      "GDPC1"
+    ],
+    "development_outer_blocks": 2,
+    "confirmation_holdout_blocks": 1,
+    "max_origins_override": 6,
+    "windows_override": {
+      "GDPC1": [
+        40
+      ]
+    }
+  },
+  "selection_metric": "level_rmse",
+  "track_epsilon": 0.1,
+  "candidate_spacing": 0.02,
+  "max_minima": 5,
+  "jobs": 8,
+  "rule_set": [
+    "last",
+    "mean_k3",
+    "mean_k5",
+    "median_k3",
+    "median_k5",
+    "recency_hl3",
+    "recency_hl5",
+    "recency_hl10",
+    "val2_weighted",
+    "recency_val2_hl3",
+    "recency_val2_hl5",
+    "recency_val2_hl10",
+    "pooled_cv_same_config"
+  ],
+  "confirmation_region_used": false,
+  "confirmation_holdout_blocks": 1,
+  "recency_rule_note": "Pure recency-weighted rules use exponential decay with half-life measured in tracked origins and include the current final-Val1 minimum with weight one.",
+  "weighted_rule_note": "Loss-weighted rules use only completed historical Validation-2 rows. The current local minimum has no Val2 weight because its following block is the untouched outer test.",
+  "n_outer_decisions": 2,
+  "elapsed_seconds": 1.5302290000254288
+}
