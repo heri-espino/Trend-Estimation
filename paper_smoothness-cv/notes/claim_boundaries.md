@@ -1,3 +1,9 @@
+> **2026-10-06 override:** Dynamic tracking of local smoothness minima is now
+> central to this paper. Any older statement below assigning time-varying
+> smoothness to another paper is superseded. The numerical recovery/tracking
+> algorithm belongs to `paper_numerical-methods/`; the forecasting decision
+> from tracked branches belongs here.
+
 # Claim boundaries
 
 ## Safe
