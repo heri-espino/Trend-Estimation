@@ -177,6 +177,37 @@ The paper-scale simulation must report:
 - experiments/smoothness_cv/analyze_checkpoint_03.py
 - experiments/smoothness_cv/make_checkpoint_03_figures.py
 
+## Parallel execution
+
+Checkpoint 03 is parallelized across complete simulation scenarios using
+multiple worker processes. This is the correct level of parallelism for the
+paper design because scenarios are independent once the frozen seed and DGP
+configuration are specified.
+
+By default, `--jobs 0` is used implicitly. It selects all but one logical CPU,
+capped at 16 workers. Each worker is forced to one BLAS/OpenMP thread to avoid
+nested oversubscription.
+
+Useful options:
+
+~~~bash
+# automatic parallelism
+python experiments/smoothness_cv/run_checkpoint_03.py --preset smoke
+
+# explicit worker count
+python experiments/smoothness_cv/run_checkpoint_03.py --preset paper --jobs 0 --jobs 12
+
+# serial debugging
+python experiments/smoothness_cv/run_checkpoint_03.py --preset smoke --jobs 1
+~~~
+
+On Windows, do not run more than 61 workers. A practical starting point is
+roughly 70--90% of the machine's logical CPUs; reduce the count if memory
+pressure becomes noticeable.
+
+Changing `--jobs` does not change the statistical design or random seeds. It
+only changes execution order/speed.
+
 ## Run smoke first
 
 From the repository root:
