@@ -166,3 +166,47 @@ No further primary numerical experiments or tuning are planned. Real financial
 results are interpreted only as numerical geometry stress tests, not as evidence
 of forecasting superiority, predictability, or trading value.
 
+
+## N016 — Temporal local-minimum tracking is now in scope
+
+**Date:** 2026-10-06  
+**Status:** active extension.
+
+The numerical paper no longer stops at solving each forecast-loss surface in isolation.
+It also owns the numerical correspondence problem for local minima across adjacent
+chronological surfaces.
+
+For per-origin minimum sets
+
+\[
+\mathcal M_t=\{S_{1,t},\ldots,S_{K_t,t}\},
+\]
+
+the baseline temporal continuation rule is one-to-one matching under
+
+\[
+|S_{j,t}-S_{j,t-1}|\le\varepsilon.
+\]
+
+This `track_epsilon` is distinct from N013 candidate spacing, which acts only
+within a single surface after root discovery.
+
+The frozen N009 per-surface solver remains unchanged. Temporal tracking is a
+new layer built on top of its recovered minima.
+
+The forecasting decision rules applied to a tracked branch, including last,
+mean/median, Validation-2 weighting, and recency weighting, belong to
+`paper_smoothness-cv/` rather than this numerical paper.
+
+## N017 — Only two papers are active
+
+**Date:** 2026-10-06  
+**Status:** active repository policy.
+
+The only active papers are:
+
+1. `paper_smoothness-cv/` — dynamic forecasting decision from tracked smoothness minima;
+2. `paper_numerical-methods/` — recovery and temporal tracking of those minima.
+
+Other paper directories are historical/parked and must not receive new research work
+unless the user explicitly reactivates them.
