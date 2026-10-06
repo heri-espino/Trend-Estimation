@@ -80,8 +80,8 @@ def _paired_table(decisions: pd.DataFrame, metric: str) -> pd.DataFrame:
     dynamic = dynamic.merge(baseline_pooled, on=keys, validate="many_to_one")
     dynamic["ratio_to_last"] = dynamic[metric] / dynamic["loss_last"]
     dynamic["ratio_to_pooled"] = dynamic[metric] / dynamic["loss_pooled"]
-    dynamic["rmsfe_ratio_to_last"] = np.sqrt(dynamic["ratio_to_last"])
-    dynamic["rmsfe_ratio_to_pooled"] = np.sqrt(dynamic["ratio_to_pooled"])
+    dynamic["rmsfe_ratio_to_last"] = dynamic["ratio_to_last"]
+    dynamic["rmsfe_ratio_to_pooled"] = dynamic["ratio_to_pooled"]
     return dynamic
 
 
@@ -166,7 +166,11 @@ def main() -> None:
         raise RuntimeError("CP04 development analysis must not use confirmation blocks.")
 
     decisions = pd.read_csv(run_dir / "decision_results.csv")
-    metric = "level_mse" if metadata["selection_metric"] == "level_rmse" else "log_mse"
+    metric = (
+        "level_rmse"
+        if metadata["selection_metric"] == "level_rmse"
+        else "log_rmse"
+    )
     paired = _paired_table(decisions, metric)
     rule_summary = _rule_summary(paired)
     by_series = _by_series_summary(paired)
