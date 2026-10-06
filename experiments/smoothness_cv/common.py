@@ -254,7 +254,7 @@ def forecast_cv_curve(
     window: int,
     horizon: int,
     step: int,
-    max_origins: int,
+    max_inner_origins: int,
     s_grid: np.ndarray,
 ) -> np.ndarray:
     splits = inner_splits(
@@ -262,7 +262,7 @@ def forecast_cv_curve(
         window=window,
         horizon=horizon,
         step=step,
-        max_origins=max_origins,
+        max_origins=max_inner_origins,
     )
     prepared = prepare_rolling_pure_forecast_objective(
         history,
