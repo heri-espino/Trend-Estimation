@@ -20,7 +20,7 @@ def resolve_run_dir(value: Path | None) -> Path:
         return value
     latest = Path("results/smoothness_cv/checkpoint_01/LATEST.txt")
     if not latest.exists():
-        raise FileNotFoundError("Checkpoint 01 LATEST.txt was not found.")
+        raise FileNotFoundError("No completed Checkpoint 01 run was found. run_checkpoint_01.py must finish successfully before analysis.")
     return Path(latest.read_text(encoding="utf-8").strip())
 
 
