@@ -1,0 +1,15 @@
+{
+  "source_run_dir": "results/smoothness_cv/checkpoint_02/20261006T032101Z_refine_bacbea8",
+  "figures": [
+    "figures/fig_cp02_selected_s_by_mechanism.pdf",
+    "figures/fig_cp02_recovery_vs_forecast_oracle.pdf",
+    "figures/fig_cp02_forecast_cv_vs_oracle.pdf",
+    "figures/fig_cp02_horizon_matching_by_window.pdf",
+    "figures/fig_cp02_method_comparison.pdf",
+    "figures/fig_cp02_bic_score_audit.pdf"
+  ],
+  "tables": [
+    "tables/table_cp02_method_comparison.csv",
+    "tables/table_cp02_oracle_targets.csv"
+  ]
+}
