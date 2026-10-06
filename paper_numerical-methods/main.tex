@@ -2,7 +2,7 @@
 
 \usepackage{booktabs}
 
-\title{Numerical Selection of Forecast-Optimal Smoothness in Penalized Trend Estimation}
+\title{Numerical Recovery and Temporal Tracking of Forecast-Smoothness Minima}
 
 \author[1]{Heriberto Espino Montelongo}
 \affil[1]{Universidad de las Am\'ericas Puebla, San Andr\'es Cholula, Puebla, Mexico.}
@@ -281,10 +281,28 @@ S=1\Longleftrightarrow\lambda=\infty.
 \]
 The \(S=1\) objective is evaluated through the exact null-space limit rather than by replacing one with a value such as \(0.999999\).
 
-When several nearby minima are useful for downstream inspection, a post-processing radius \(\varepsilon\) may be applied after discovery. Candidates are ordered by objective value and worse minima within \(\varepsilon\) of an accepted minimum are suppressed. Because this operation occurs after root discovery and ranking, it does not change the selected best minimum. The numerical benchmarks below therefore assess the search before this optional summarization step.
+When several nearby minima are useful for downstream inspection, a within-surface post-processing spacing radius may be applied after discovery. Candidates are ordered by objective value and worse minima inside that radius are suppressed. This quantity is denoted \(\varepsilon_{\mathrm{space}}\) here to distinguish it from the temporal tracking radius introduced below. Because spacing occurs after root discovery and ranking, it does not change the selected best minimum. The frozen numerical benchmarks below therefore assess the search before this optional summarization step.
 
 No finite adaptive sampler can certify recovery of every stationary point of an arbitrary smooth scalar function. The empirical validation is consequently designed around missed local minima, selected-smoothness error, positive objective regret, and evaluation cost rather than a universal root-recovery claim.
 
+\subsection{Temporal correspondence of local minima}
+
+The dynamic forecasting problem motivating the companion paper requires more than solving one surface in isolation. Let
+\[
+\mathcal M_t=\{S_{1,t},\ldots,S_{K_t,t}\}
+\]
+be the local minima recovered from the forecast-loss surface at chronological origin $t$. A second numerical layer assigns minima on adjacent surfaces to persistent branches.
+
+The current transparent baseline uses one-to-one nearest-neighbor continuation in the normalized smoothness coordinate. A minimum may continue an existing branch when
+\begin{equation}
+\label{eq:track_epsilon}
+|S_{j,t}-S_{j,t-1}|\le\varepsilon_{\mathrm{track}}.
+\end{equation}
+The matching is one-to-one, so two previous branches cannot be assigned to the same current minimum. Branches may disappear when no admissible current minimum exists, and newly appearing minima may initialize new branches when the protocol allows it.
+
+The temporal radius $\varepsilon_{\mathrm{track}}$ is conceptually distinct from the within-surface representative-spacing radius $\varepsilon_{\mathrm{space}}$. The former defines correspondence across time; the latter only summarizes minima already recovered on one surface.
+
+The greedy nearest-neighbor matcher is a baseline rather than a certified continuation method. The active numerical extension therefore studies sensitivity to $\varepsilon_{\mathrm{track}}$, branch births and deaths, near-crossings, and comparison with globally optimal bipartite assignment. The downstream forecasting paper uses the resulting branch identities together with Validation-1 and Validation-2 losses to decide which branch and which current smoothness to use; those forecasting decision rules are outside the numerical contribution of this paper.
 \section{Experimental design}
 
 \subsection{Adversarial analytic objectives}
@@ -454,7 +472,7 @@ The numerical benefit of the normalized smoothness coordinate is not that it mak
 
 Compactification also creates a numerical issue: a large range of \(\lambda\) is compressed near \(S=1\). The early diagnostic runs showed that several derivative roots can occupy the same coarse upper-tail cell. Endpoint-aware refinement was introduced in response to that observed geometry, then frozen before the paper-scale benchmark. The subsequent sensitivity experiment independently reproduces the failure when endpoint refinement is removed. This is a useful example of a transformation that improves global search organization while still requiring explicit attention to its boundary geometry.
 
-The paper's scope is narrower than general smoothing-parameter selection. CV, GCV, information criteria, marginal likelihood, controlled smoothness, and simulation-calibrated HP parameters remain legitimate answers to their respective statistical objectives \cite{craven1979gcv,guerrero2008smoothness,cortes2017smoothness,biessy2026wh,franke2026hp}. Here the target is specifically rolling future-block forecast MSE. The contribution is therefore the numerical treatment of that criterion when multiple local minima are possible, not a claim that forecast loss is universally preferable to the alternatives. The applied cases also show why retaining several detected minima can be informative: they form a finite set of distinct smoothing choices whose validation ranking may or may not persist out of sample. This candidate set should be interpreted as a selection-sensitivity diagnostic, not as a confidence set or probability distribution over smoothness.
+The paper's scope is narrower than general smoothing-parameter selection. CV, GCV, information criteria, marginal likelihood, controlled smoothness, and simulation-calibrated HP parameters remain legitimate answers to their respective statistical objectives \cite{craven1979gcv,guerrero2008smoothness,cortes2017smoothness,biessy2026wh,franke2026hp}. Here the target is specifically rolling future-block forecast MSE. The contribution is therefore the numerical treatment of that criterion when multiple local minima are possible, together with the numerical correspondence problem that arises when those minima are followed across successive forecast origins. It is not a claim that forecast loss is universally preferable to the alternatives. The applied cases also show why retaining several detected minima can be informative: they form a finite set of distinct smoothing choices whose validation ranking may or may not persist out of sample. This candidate set should be interpreted as a selection-sensitivity diagnostic, not as a confidence set or probability distribution over smoothness.
 
 Several limitations remain. First, no finite sampler can guarantee detection of every stationary root of an arbitrary smooth function without additional assumptions. The adversarial stationary inflection illustrates this distinction: it is stationary but not a local minimum. Second, the dense reference grid is a benchmark rather than mathematical ground truth. Third, the analytic derivative formulas rely on a fixed affine trend-continuation operator. If additional forecasting parameters were re-estimated as functions of \(S\), for example inside an ARIMA continuation model, the derivative expressions would change. Finally, the financial experiment is only a real-data numerical stress test and provides no evidence of trading value or financial predictability.
 
