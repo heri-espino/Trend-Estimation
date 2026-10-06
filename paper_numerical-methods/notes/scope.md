@@ -1,3 +1,8 @@
+> **2026-10-06 override:** Temporal correspondence of local minima across
+> forecast origins is now in scope for this numerical paper. Forecasting
+> decisions from the resulting branch matrices remain in
+> `paper_smoothness-cv/`. Any older ownership statements below are historical.
+
 # Scope and Boundaries
 
 ## This paper owns
