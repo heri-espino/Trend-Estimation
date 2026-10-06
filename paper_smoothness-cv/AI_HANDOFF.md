@@ -65,6 +65,7 @@ Minimum `phi` comparison set:
 - last local minimum;
 - recent mean;
 - recent median;
+- pure recency-weighted mean, with exponentially larger weight on newer smoothness values;
 - Validation-2 weighted mean;
 - recency + Validation-2 weighted mean;
 - later: explicit forecast of the smoothness trajectory.
