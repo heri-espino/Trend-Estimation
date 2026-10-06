@@ -1,24 +1,45 @@
 \section{Introduction}
 
-Smoothing parameters are often introduced as technical constants, although in forecasting they determine a substantive modeling choice: how much recent movement is treated as signal and how much is treated as noise. A small penalty lets the fitted trend track the observations closely, while a large penalty forces the fitted path toward a low-degree polynomial. If that trend is subsequently extrapolated, the smoothing choice also changes the future trajectory.
+Smoothing parameters are often treated as technical constants, although in forecasting they determine a substantive choice: how much recent movement is treated as signal and how much is suppressed before extrapolation. Finite-difference penalized least squares (PLS) makes this trade-off especially transparent because the penalty can be translated into an interpretable normalized smoothness scale.
 
-Finite-difference penalized least squares (PLS) makes this trade-off especially transparent. Guerrero \cite{guerrero2007penalized,guerrero2008smoothness} showed that the penalty can be translated into an interpretable percentage of smoothness. This controlled-smoothness view is useful because the same numerical penalty does not represent the same effective amount of smoothing across sample sizes and difference orders. The remaining practical question is immediate: if the fitted trend will be used for forecasting, which percentage of smoothness should be chosen?
+Guerrero \cite{guerrero2007penalized,guerrero2008smoothness} develops this controlled-smoothness view. The forecasting problem begins once smoothness is no longer specified ex ante. A natural first approach is to choose the value that minimizes historical chronological forecast loss. That pooled selector remains an important baseline in this paper, but it ignores a feature that becomes visible when the loss surface is inspected repeatedly through time: the same surface can contain several local minima, and those minima can persist, drift, appear, or disappear across neighboring forecast origins.
 
-The forecasting literature provides strong precedents for choosing tuning parameters by predictive performance. Forecast-error minimization has long been used to estimate exponential-smoothing parameters \cite{taylor2004stes}; time-series cross-validation selects a kernel bandwidth through one-step-ahead prediction in dependent data \cite{hart1994tscv}; and recent work in the \emph{Journal of Forecasting} continues to connect hyperparameter selection, trend filtering, and out-of-sample loss to forecast performance \cite{zafar2022filter,stanek2023oos,wolff2024stock,franjic2025predictor,xu2025vix}. These papers motivate forecast-oriented tuning, but they do not define the smoothness percentage of a finite-difference penalized trend through a horizon-specific rolling future-block loss.
+The paper therefore studies forecast-optimal smoothness dynamically. At each chronological origin $t$, let
+\[
+\mathcal M_t=\{S_{1,t},\ldots,S_{K_t,t}\}
+\]
+be the local minima of the origin-specific forecast-loss surface. Nearby minima on adjacent surfaces are connected into data-driven branches. A branch is represented by its smoothness trajectory together with the Validation-1 loss at which the local minimum is identified and the subsequent Validation-2 forecast loss obtained after refitting through Validation 1.
 
-For fixed difference order $d$, estimation-window length $L$, and forecast horizon $h$, let $S\in[0,1]$ denote normalized smoothness. At each historical forecast origin, the trend is fitted using only observations available at that origin, extrapolated by the continuation implied by the same finite-difference model, and scored against the next $h$ realized observations. Averaging these errors yields a chronological criterion $F_{d,L,h}(S)$. We define
-\begin{equation}
-\label{eq:main_target_intro}
-S^\star_{d,L,h}
-\in
-\arg\min_{S\in[0,1]}F_{d,L,h}(S)
-\end{equation}
-as the \emph{forecast-optimal smoothness} for that forecasting configuration.
+This produces a branch state
+\[
+V_j=[S_{j,t},\ell^{(1)}_{j,t},\ell^{(2)}_{j,t}]_t.
+\]
+The forecasting decision then has two stages. First, a historical rule $\psi$ selects a persistent branch. Second, a rule $\phi$ maps the selected branch history into the current smoothness:
+\[
+\widehat j_T=\psi(V_1,\ldots,V_J),
+\qquad
+\widehat S_T=\phi(V_{\widehat j_T}).
+\]
 
-The proposal is deliberately narrower than a general automatic forecasting system. The order $d$, window length $L$, and horizon $h$ are treated as fixed when defining the continuous smoothness problem. Joint adaptation of all three quantities is a different model-selection problem. Likewise, the present paper defines and studies the forecast target; a companion numerical study treats the separate problem of efficiently recovering multiple minima when the one-dimensional objective is non-unimodal.
+The simplest dynamic rule uses the newest tracked minimum. More stable alternatives can use a recent mean or median, Validation-2-weighted smoothness, or a combination of recency and historical predictive performance. These rules use the same branch history and are compared on untouched future blocks rather than chosen retrospectively.
 
-The distinction from existing smoothing criteria is also important. Classical cross-validation and generalized cross-validation are usually motivated by estimation or reconstruction performance, while information criteria optimize different statistical objectives. Cort\'es-Toto et al.\ \cite{cortes2017smoothness} study the smoothness achieved by several such selectors inside PLS. The criterion proposed here is not intended to dominate those methods universally. It answers a different question: conditional on using the penalized trend as a forecasting device with a specified continuation and horizon, which amount of smoothness minimizes chronological forecast loss?
+The older pooled criterion remains useful as a benchmark. For historical origins $T_1,\ldots,T_M$,
+\[
+F^{\mathrm{pool}}_{d,L,h}(S)
+=
+\frac1M\sum_{m=1}^{M}F_{T_m}(S),
+\]
+with
+\[
+\widehat S^{\mathrm{pool}}_{d,L,h}
+\in\arg\min_S F^{\mathrm{pool}}_{d,L,h}(S).
+\]
+It answers which single smoothness value has the lowest average historical forecast loss. The dynamic method asks instead whether the temporal organization of multiple local optima contains useful predictive information.
 
-The contribution has four parts. First, controlled smoothness is converted into an endogenous forecast-based selection rule. Second, the normalized $S\in[0,1]$ coordinate makes the unsmoothed and maximally smoothed finite-difference limits explicit. Third, the target is horizon-specific through genuine future blocks rather than only one-step reconstruction or leave-one-out error. Fourth, tuning is embedded in a strictly chronological rolling-origin protocol, so the information set matches actual forecast use.
+The forecasting literature provides strong precedents for choosing tuning parameters by predictive performance. Forecast-error minimization is standard in exponential smoothing \cite{taylor2004stes}; Hart \cite{hart1994tscv} studies predictive smoothing selection in dependent data; and more recent forecasting work continues to connect tuning and out-of-sample loss \cite{zafar2022filter,stanek2023oos,wolff2024stock,franjic2025predictor,xu2025vix}. The present contribution is narrower: it focuses on the normalized smoothness of finite-difference penalized trends and the temporal evolution of multiple minima of their forecast-loss surfaces.
 
-The remainder of the paper positions the proposal relative to controlled smoothness, predictive smoothing selection, and forecast evaluation; develops the finite-difference PLS representation; defines the forecast-optimal criterion; establishes its basic properties; and specifies the simulation and empirical protocol required to evaluate when forecast-based smoothness differs materially from conventional alternatives.
+The distinction from numerical optimization is also explicit. The companion numerical paper studies how to recover all relevant local minima of each surface and how to correspond them across time. This paper studies what those tracked branches mean for forecasting and how they should be converted into the current smoothness.
+
+Finally, validation never supplies the trend fit used in the final forecast. Once $\widehat S_T$ is chosen, all temporary validation fits are discarded, the trend is refit on the newest $L$ observations available at $T$, and only then is the untouched future block forecast.
+
+The remainder of the paper develops the penalized-trend representation, defines the pooled and dynamic selectors, states the chronological information rules, and specifies the empirical comparisons needed to determine when temporal persistence in forecast-smoothness minima is useful.
