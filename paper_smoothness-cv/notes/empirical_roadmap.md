@@ -179,9 +179,9 @@ Questions:
 
 Run smoke first, then quick. Stop and push results.
 
-### CP02 — refine and freeze simulation design
+### CP02 — refine and freeze simulation design: IMPLEMENTED, awaiting execution
 
-Depends on CP01 outputs.
+CP01 quick outputs have been reviewed. See checkpoints/CP02_REFINE_SIMULATION_DESIGN.md.
 
 Tasks:
 - remove uninformative DGPs;
