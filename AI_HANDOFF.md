@@ -30,6 +30,25 @@ Read first:
 4. paper_smoothness-cv/notes/literature_positioning.md
 5. paper_smoothness-cv/notes/roadmap.md
 
+## Critical forecast-CV semantics
+
+**All agents must preserve this exactly.** Forecast-CV selects the smoothness hyperparameter \(S\); it does not select or retain one of the intermediate validation-fold trend fits.
+
+At outer forecast origin \(T\), inner rolling validation uses only history available through \(T\) to estimate
+
+\[
+\widehat S_{T,h}\in\arg\min_S F_{T,h}(S).
+\]
+
+After selecting \(\widehat S_{T,h}\), discard the fold-specific fits and **refit the trend on the most recent full \(L\)-observation window available at \(T\)**:
+
+\[
+\widehat\tau_T=H_{\lambda(\widehat S_{T,h})}y_{T-L+1:T}.
+\]
+
+Then forecast the untouched future block with \(G_{d,h}\widehat\tau_T\). Inner CV averages forecast losses across historical pseudo-out-of-sample origins; it does not average trends. At the next outer origin, newly observed data become historical information and the complete select-\(S\) / refit / forecast cycle is repeated.
+
+Canonical documentation: `paper_smoothness-cv/notes/validation_semantics.md`. Any agent changing validation, experiments, or manuscript prose must read it first.
 ### Paper B — paper_numerical-methods/
 
 Question: **given \(F(S)\), how do we solve all relevant minima/global optimum efficiently and reliably?**
