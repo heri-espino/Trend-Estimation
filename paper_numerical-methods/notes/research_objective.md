@@ -1,53 +1,58 @@
 # Canonical research objective — numerical methods
 
-**Status: active source of truth after the 2026-10-05 split.**
-
 ## Research question
 
-Given a potentially multimodal one-dimensional forecast-smoothness objective \(F(S)\) on \(S\in[0,1]\), can its relevant local minima and global optimum be located reliably with substantially fewer objective evaluations than exhaustive dense search?
+Given a time-indexed sequence of potentially multimodal forecast-smoothness
+objectives
 
-## Input from Paper A
-
-paper_smoothness-cv/ defines the scientific criterion. For fixed \(d,L,h\),
 \[
-F(S)=CV_h(S).
+F_t(S),\qquad S\in[0,1],
 \]
 
-This paper treats \(F\) as the object to solve.
+can we (i) recover the relevant local minima of each surface reliably with far
+fewer evaluations than dense search, and (ii) maintain meaningful numerical
+correspondence of those minima across neighboring chronological surfaces?
 
-## Derivative structure
+## Per-surface component
 
-Let \(f(\lambda)=F(S(\lambda))\). Since \(S'(\lambda)>0\),
+For each `t`, recover
+
 \[
-F'(S)=\frac{f'(\lambda)}{S'(\lambda)},
+\mathcal M_t=\{S_{1,t},\ldots,S_{K_t,t}\}.
 \]
-so
+
+The frozen production method uses compact normalized-`S` search, analytic
+derivatives, adaptive interval refinement, derivative-root bracketing, Brent
+refinement, stationary-point classification, and exact endpoint comparison.
+
+## Temporal component
+
+Given `M_{t-1}` and `M_t`, assign minima to persistent branches. The current
+baseline uses one-to-one nearest-neighbor continuation subject to
+
 \[
-F'(S)=0\iff f'(\lambda)=0.
+|S_{j,t}-S_{j,t-1}|\le\varepsilon.
 \]
 
-At stationary points,
-\[
-F''(S^\star)=
-\frac{f''(\lambda^\star)}{[S'(\lambda^\star)]^2},
-\]
-so nondegenerate min/max classification is preserved.
+The research problem is to characterize when this rule is reliable and when
+more global assignment or additional local geometry is needed.
 
-## Current numerical contribution
+## Distinct numerical radii
 
-- compact \(S\in[0,1]\) search;
-- analytic derivatives;
-- adaptive interval refinement;
-- derivative-root bracketing;
-- Brent refinement;
-- stationary-point classification;
-- exact endpoint comparison;
-- controlled dense-reference benchmarking.
+`candidate_spacing` acts within one recovered surface after discovery.
+`track_epsilon` acts across adjacent surfaces to define temporal continuation.
+They are conceptually and algorithmically distinct.
 
-The method does not prove discovery of every stationary point of an arbitrary smooth objective.
+## Input/output boundary with Paper A
+
+`paper_smoothness-cv/` supplies the forecast-loss surfaces and uses the tracked
+branches to make forecasting decisions. This numerical paper supplies local
+minima and branch identities. It does not choose the forecasting functional
+`phi(V_j)`.
 
 ## Stronger possible contribution
 
-Exploit rational structure in \(\lambda\). If the polynomial numerator of \(f'\) can be constructed stably for practical configurations, use certified real-root isolation to produce all relevant nonnegative stationary-root brackets, then use Brent only for numerical refinement.
-
-That would change "adaptive discovery + Brent" into "certified isolation + Brent." It remains a future extension until generalized and benchmarked.
+Certified polynomial/Sturm isolation may strengthen the per-surface recovery
+problem. For temporal tracking, stronger candidates include globally optimal
+bipartite assignment and branch-continuation diagnostics based on distance,
+objective value, and curvature.
