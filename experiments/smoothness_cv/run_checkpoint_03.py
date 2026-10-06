@@ -14,10 +14,10 @@ import time
 # Each worker should use one BLAS/OpenMP thread. Parallelism is provided at the
 # scenario level below; allowing every process to spawn its own BLAS thread pool
 # can oversubscribe the machine badly.
-os.environ.setdefault("OMP_NUM_THREADS", "1")
-os.environ.setdefault("OPENBLAS_NUM_THREADS", "1")
-os.environ.setdefault("MKL_NUM_THREADS", "1")
-os.environ.setdefault("NUMEXPR_NUM_THREADS", "1")
+os.environ["OMP_NUM_THREADS"] = "1"
+os.environ["OPENBLAS_NUM_THREADS"] = "1"
+os.environ["MKL_NUM_THREADS"] = "1"
+os.environ["NUMEXPR_NUM_THREADS"] = "1"
 
 import numpy as np
 import pandas as pd
