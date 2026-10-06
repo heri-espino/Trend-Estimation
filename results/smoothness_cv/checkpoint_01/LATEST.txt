@@ -1,1 +1,1 @@
-results/smoothness_cv/checkpoint_01/20261006T030110Z_quick_81e91b1
+results/smoothness_cv/checkpoint_01/20261006T031348Z_quick_abb5c96

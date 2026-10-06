@@ -1,0 +1,17 @@
+{
+  "source_run_dir": "results/smoothness_cv/checkpoint_01/20261006T031348Z_quick_abb5c96",
+  "figures": [
+    "figures/fig01_s_lambda.pdf",
+    "figures/fig01b_edf_s.pdf",
+    "figures/fig02_objective_curves.pdf",
+    "figures/fig03_selected_s_by_horizon.pdf",
+    "figures/fig04_forecast_vs_recovery.pdf",
+    "figures/fig05_method_comparison.pdf",
+    "figures/fig06_horizon_matching.pdf"
+  ],
+  "tables": [
+    "tables/table_method_comparison.csv",
+    "tables/table_horizon_matching.csv",
+    "tables/table_forecast_vs_recovery.csv"
+  ]
+}
