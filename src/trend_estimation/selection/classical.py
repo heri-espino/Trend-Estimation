@@ -110,12 +110,20 @@ def pure_smoother_score(
             score = float(rss_scaled / (denom**2))
     elif criterion == "aicc":
         denom = float(n) - edf - 2.0
-        if denom <= eps:
+        if denom <= eps or rss <= eps:
             score = float("inf")
         else:
             score = float(np.log(rss_scaled) + (2.0 * edf + 1.0) / denom)
     else:
-        score = float(np.log(rss_scaled) + edf * np.log(float(n)) / float(n))
+        # At the exact interpolating endpoint lambda=0, RSS=0 and log(RSS)
+        # is not a meaningful finite information-criterion score. Classical
+        # AIC/BIC smoothing-parameter searches are defined for lambda>0, so
+        # exclude that degenerate endpoint rather than letting numerical
+        # clipping make it an artificial optimum.
+        if rss <= eps:
+            score = float("inf")
+        else:
+            score = float(np.log(rss_scaled) + edf * np.log(float(n)) / float(n))
 
     return ClassicalSmoothnessScore(
         criterion=criterion,
