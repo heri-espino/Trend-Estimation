@@ -1,6 +1,6 @@
 # Checkpoint 06 — Order-stability mechanism study
 
-**Status: FROZEN POST-HOC MECHANISM STUDY BEFORE RUN.**
+**Status: COMPLETE — mechanism identified; no post-hoc winner claimed.**
 
 CP05 is complete and must not be redefined. Its external-panel result is
 negative against pooled forecast-CV overall but strongly positive against the
@@ -92,3 +92,6 @@ python experiments/smoothness_cv/analyze_checkpoint_06.py
 ~~~
 
 Commit and push `results/smoothness_cv/checkpoint_06/`.
+
+
+Observed result: allowing d=3 and d=4 creates the heavy forecast-error tail. Dynamic/pooled gRMSE was 1.353 for {1,2,3,4}, 1.200 for {1,2,3}, 1.073 for {1,2}, and 1.045 for d=2 only. Dynamic/last moved from 0.691 to 0.994 as the order set was restricted to d=2, indicating that much of the recency rule's apparent gain over last is stabilization of high-order continuation. CP06 is explanatory and does not validate a post-hoc order restriction.
