@@ -1,6 +1,6 @@
 # Checkpoint 04 — Dynamic branch decision rules
 
-**Status: DEVELOPMENT EXPERIMENT IMPLEMENTED — run smoke, then refine.**
+**Status: DEVELOPMENT COMPLETE; PRIMARY DYNAMIC RULE FROZEN; CONFIRMATION READY.**
 
 Checkpoint 03 remains the frozen pooled forecast-CV baseline. CP04 introduces
 the central dynamic method without altering CP03.
@@ -283,3 +283,68 @@ The already committed first refine output contains no `inf` or `NaN` in
 `decision_results.csv`, but because historical branch ranking can encounter
 these extreme candidates, rerun smoke/refine after this patch before freezing
 the final dynamic rule. The reserved confirmation blocks remain untouched.
+
+
+## Development decision and frozen confirmation rule
+
+The overflow-safe rerun reproduced the same development ranking as the first
+refine execution.
+
+Across the 24 development outer tests, the best dynamic rule was
+
+[
+oxed{phi_{mathrm{recency},H=3}}
+]
+
+implemented as `recency_hl3`.
+
+Its development geometric RMSFE ratio was
+
+[
+0.7989
+]
+
+relative to the newest-minimum rule `last`, with a 58.3% outer-test win rate.
+Relative to `pooled_cv_same_config`, its geometric RMSFE ratio was
+
+[
+1.0491,
+]
+
+so the development evidence does **not** establish superiority to the pooled
+baseline. This is precisely what the reserved confirmation blocks must test
+without further tuning.
+
+The frozen confirmation specification is now:
+
+- primary dynamic rule: `recency_hl3`;
+- branch selector: existing persistence + historical mean-Val2 rule;
+- selection metric: level RMSE;
+- `track_epsilon = 0.10`;
+- `candidate_spacing = 0.02`;
+- `max_minima = 5`;
+- all four difference orders remain eligible;
+- window selection remains historical and order-specific;
+- comparison baselines: `last` and `pooled_cv_same_config`;
+- confirmation sample: the four previously reserved latest non-overlapping
+  outer blocks of each of GDPC1, SPY, AAPL, and BTC-USD.
+
+No alternative dynamic `phi` rule is evaluated in confirmation. The
+confirmation preset enforces the frozen numerical parameters and will raise an
+error if they are changed.
+
+## Run the frozen confirmation once
+
+~~~bash
+git pull
+pip install -e .
+pytest
+
+python experiments/smoothness_cv/run_checkpoint_04.py --preset confirmation --jobs 24
+python experiments/smoothness_cv/analyze_checkpoint_04.py
+python experiments/smoothness_cv/make_checkpoint_04_figures.py
+~~~
+
+After this run, commit and push the complete new CP04 confirmation directory.
+Do not rerun confirmation to choose another rule. Any later method change must
+be treated as a separate new study.
