@@ -1,0 +1,50 @@
+{
+  "created_at_utc": "2026-10-07T06:56:04.069384+00:00",
+  "git_commit": "e71c847",
+  "checkpoint": "07",
+  "preset": "smoke",
+  "design_frozen_before_run": true,
+  "preset_definition": {
+    "name": "smoke",
+    "seeds": [
+      0,
+      1
+    ],
+    "mechanisms": [
+      "stationary_smooth",
+      "switch_to_rough"
+    ],
+    "observation_noise_sds": [
+      0.02
+    ]
+  },
+  "order": 2,
+  "window": 120,
+  "horizon": 20,
+  "n_obs": 720,
+  "outer_blocks": 8,
+  "step": 5,
+  "max_origins": 30,
+  "track_epsilon": 0.1,
+  "candidate_spacing": 0.02,
+  "max_minima": 5,
+  "oracle_grid": 201,
+  "primary_metric": "observed log RMSE",
+  "frozen_dynamic_rule": "recency_hl3",
+  "mechanism_groups": {
+    "stationary": [
+      "stationary_smooth",
+      "stationary_rough"
+    ],
+    "changing": [
+      "switch_to_rough",
+      "switch_to_smooth",
+      "gradual_roughening",
+      "gradual_smoothing"
+    ]
+  },
+  "n_scenarios": 4,
+  "n_outer_decisions": 32,
+  "jobs": 8,
+  "elapsed_seconds": 5.874955200000841
+}
