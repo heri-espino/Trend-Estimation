@@ -9,6 +9,7 @@ from experiments.smoothness_cv.dynamic_branch_rules import (
     evaluate_rule_set,
 )
 from experiments.smoothness_cv.run_checkpoint_04 import (
+    PRESETS,
     _outer_stops,
     _stable_error_metrics,
 )
@@ -108,3 +109,20 @@ def test_cp04_metric_helper_keeps_rmse_finite_when_mse_is_unrepresentable():
     assert np.isinf(mse)
     assert np.isfinite(rmse)
     assert np.isfinite(mae)
+
+
+
+def test_confirmation_preset_uses_exact_reserved_latest_blocks():
+    preset = PRESETS["confirmation"]
+    stops = _outer_stops(
+        1000,
+        horizon=20,
+        development_blocks=preset.development_outer_blocks,
+        holdout_blocks=preset.confirmation_holdout_blocks,
+    )
+    assert stops == [940, 960, 980, 1000]
+    assert preset.rule_names == (
+        "recency_hl3",
+        "last",
+        "pooled_cv_same_config",
+    )
