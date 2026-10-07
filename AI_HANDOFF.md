@@ -159,3 +159,19 @@ CP04 compares multiple `phi(V_j)` rules on repeated development-only outer
 tests while reserving the newest four blocks of every tracked real series for
 a later one-shot confirmation. Do not run or inspect that confirmation region
 until the development rule is frozen.
+
+
+## CP04 confirmation now frozen
+
+The dynamic-rule development stage is complete. The primary rule is frozen as
+`recency_hl3`: exponential recency weighting of the selected branch with a
+three-origin half-life.
+
+Development geometric RMSFE ratio:
+- vs newest-minimum `last`: 0.7989;
+- vs pooled forecast-CV: 1.0491.
+
+The four reserved latest blocks per real series remain the one-shot
+confirmation sample. The confirmation run may evaluate only
+`recency_hl3`, `last`, and `pooled_cv_same_config` under the frozen
+tracking specification.
