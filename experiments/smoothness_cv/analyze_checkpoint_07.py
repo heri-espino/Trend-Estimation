@@ -3,6 +3,37 @@ import argparse
 import numpy as np
 import pandas as pd
 
+
+def _markdown_table(frame: pd.DataFrame, digits: int = 4) -> str:
+    """Render a compact Markdown table without optional tabulate dependency."""
+    if frame.empty:
+        return "_No rows._"
+    clean = frame.copy()
+    for column in clean.select_dtypes(include=[np.number]).columns:
+        clean[column] = clean[column].map(
+            lambda x: "" if pd.isna(x) else f"{float(x):.{digits}g}"
+        )
+    headers = [str(col) for col in clean.columns]
+    rows = [[str(value) for value in row] for row in clean.to_numpy()]
+    widths = [
+        max(len(headers[j]), *(len(row[j]) for row in rows))
+        for j in range(len(headers))
+    ]
+    header = "| " + " | ".join(
+        headers[j].ljust(widths[j]) for j in range(len(headers))
+    ) + " |"
+    divider = "| " + " | ".join(
+        "-" * widths[j] for j in range(len(headers))
+    ) + " |"
+    body = [
+        "| " + " | ".join(
+            row[j].ljust(widths[j]) for j in range(len(headers))
+        ) + " |"
+        for row in rows
+    ]
+    return "\n".join([header, divider, *body])
+
+
 def main():
     p = argparse.ArgumentParser()
     p.add_argument('--run-dir', type=Path, default=None)
@@ -51,7 +82,7 @@ def main():
     summary.to_csv(diag / 'group_summary.csv', index=False)
     (run_dir / 'checkpoint_report.md').write_text(
         '# Checkpoint 07 dynamic roughness simulation\n\n' +
-        summary.to_markdown(index=False) + '\n',
+        _markdown_table(summary) + '\n',
         encoding='utf-8',
     )
     print(summary.to_string(index=False))
