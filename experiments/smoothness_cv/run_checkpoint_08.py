@@ -64,8 +64,8 @@ PRESETS = {
         mechanisms=('stationary_smooth', 'switch_to_rough'),
         observation_noise_sds=(0.02,),
     ),
-    'development': CP08Preset(
-        name='development',
+    'paper': CP08Preset(
+        name='paper',
         seeds=tuple(range(100, 200)),
         mechanisms=cp07.MECHANISMS,
         observation_noise_sds=(0.01, 0.03),
@@ -75,7 +75,7 @@ PRESETS = {
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(
-        description='CP08 development: forecast the selected smoothness branch trajectory.'
+        description='CP08 demonstration: instantiate multiple branch-to-smoothness trajectory rules.'
     )
     p.add_argument('--preset', choices=tuple(PRESETS), default='smoke')
     p.add_argument('--jobs', type=int, default=0)
@@ -247,8 +247,6 @@ def main() -> None:
     args = parse_args()
     preset = PRESETS[args.preset]
     jobs = _resolve_jobs(args.jobs)
-    if preset.name == 'development' and (min(preset.seeds) < 100 or max(preset.seeds) >= 200):
-        raise RuntimeError('CP08 development may use only seeds 100..199.')
     run_dir = args.output_dir or _default_run_dir(preset.name)
     run_dir.mkdir(parents=True, exist_ok=True)
 
@@ -288,18 +286,17 @@ def main() -> None:
         'git_commit': _git_short_sha(),
         'checkpoint': '08',
         'preset': preset.name,
-        'study_type': 'development_trajectory_rule_selection',
+        'study_type': 'trajectory_rule_family_demonstration',
         'design_frozen_before_run': True,
         'preset_definition': asdict(preset),
-        'development_seed_range': [100, 199],
-        'reserved_confirmation_seed_range': [200, 399],
+        'demonstration_seed_range': [100, 199],
         'trajectory_rules': list(TRAJECTORY_RULE_NAMES),
         'baselines': ['recency_hl3','last','pooled_cv_same_config'],
         'order': ORDER, 'window': WINDOW, 'horizon': HORIZON,
         'track_epsilon': TRACK_EPSILON,
         'candidate_spacing': CANDIDATE_SPACING,
         'max_minima': MAX_MINIMA,
-        'primary_development_group': 'changing',
+        'interpretation': 'illustrative_rule_family_not_winner_selection',
         'primary_metric': 'observed log RMSE geometric ratio vs pooled CV',
         'n_scenarios': len(tasks),
         'n_outer_decisions': len(tasks) * OUTER_BLOCKS,
