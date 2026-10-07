@@ -170,3 +170,23 @@ The confirmation preset evaluates only:
 Frozen parameters: level RMSE, track epsilon 0.10, candidate spacing 0.02,
 max minima 5. Run `run_checkpoint_04.py --preset confirmation` exactly once,
 then analyze and push the result.
+
+
+## CP04 completed confirmation result
+
+CP04 is complete. The frozen `recency_hl3` rule was evaluated once on the
+reserved confirmation blocks.
+
+Confirmation geometric RMSE ratios:
+- vs pooled forecast-CV: **0.6920**, wins 13/16;
+- vs newest tracked minimum: **0.8137**, wins 9/16.
+
+The pooled comparison favors the dynamic rule in aggregate for AAPL, GDPC1,
+and SPY; BTC-USD is slightly above one. Leave-one-series-out dynamic/pooled
+ratios all remain below one.
+
+Do not retune CP04.
+
+The active next checkpoint is `checkpoints/CP05_EXTERNAL_PANEL.md`, a frozen
+64-series external Yahoo panel excluding AAPL, SPY, and BTC-USD. The only
+dynamic rule is still `recency_hl3`.
