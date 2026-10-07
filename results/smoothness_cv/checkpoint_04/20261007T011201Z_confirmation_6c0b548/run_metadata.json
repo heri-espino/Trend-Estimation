@@ -28,24 +28,20 @@
   "max_minima": 5,
   "jobs": 24,
   "rule_set": [
-    "last",
-    "mean_k3",
-    "mean_k5",
-    "median_k3",
-    "median_k5",
     "recency_hl3",
-    "recency_hl5",
-    "recency_hl10",
-    "val2_weighted",
-    "recency_val2_hl3",
-    "recency_val2_hl5",
-    "recency_val2_hl10",
+    "last",
     "pooled_cv_same_config"
   ],
-  "confirmation_region_used": false,
+  "confirmation_region_used": true,
   "confirmation_holdout_blocks": 0,
   "recency_rule_note": "Pure recency-weighted rules use exponential decay with half-life measured in tracked origins and include the current final-Val1 minimum with weight one.",
   "weighted_rule_note": "Loss-weighted rules use only completed historical Validation-2 rows. The current local minimum has no Val2 weight because its following block is the untouched outer test.",
   "n_outer_decisions": 16,
-  "elapsed_seconds": 8.014161399998557
+  "elapsed_seconds": 8.014161399998557,
+  "frozen_primary_dynamic_rule": "recency_hl3",
+  "postrun_metadata_correction": {
+    "corrected_at_utc": "2026-10-07",
+    "reason": "The confirmation run used the four reserved latest outer blocks and only the frozen primary dynamic rule plus two baselines, but the runner version wrote stale development metadata. Forecast outputs and decision_results.csv were not changed.",
+    "evidence": "outer_manifest.csv contains the four previously reserved latest blocks for every series; decision_results.csv contains only recency_hl3, last, and pooled_cv_same_config."
+  }
 }
