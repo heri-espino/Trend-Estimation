@@ -175,3 +175,17 @@ The four reserved latest blocks per real series remain the one-shot
 confirmation sample. The confirmation run may evaluate only
 `recency_hl3`, `last`, and `pooled_cv_same_config` under the frozen
 tracking specification.
+
+
+## Immediate next run — CP05
+
+CP04 confirmation is complete and audited. Frozen `recency_hl3` achieved
+geometric RMSE ratio 0.6920 vs pooled forecast-CV and 0.8137 vs `last` on
+the 16 reserved confirmation decisions.
+
+The next run is CP05, an external 64-series financial panel selected
+mechanically from the frozen Yahoo snapshot. AAPL, SPY, and BTC-USD are
+excluded because they were used in CP04. No CP05 tuning is allowed.
+
+Run smoke first, then the full panel; see
+`paper_smoothness-cv/checkpoints/CP05_EXTERNAL_PANEL.md`.
