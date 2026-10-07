@@ -40,10 +40,19 @@ expanded.
 - [x] Confirm it once on the four-series CP04 holdout.
 - [x] Freeze an objective 64-series external Yahoo panel excluding CP04 financial series.
 - [x] Implement CP05 runner, analyzer, figures, and conservative no-continuation fallback.
-- [ ] Run CP05 smoke.
-- [ ] Run CP05 full panel.
-- [ ] Report overall, stock, ETF, and crypto results without retuning.
+- [x] Run CP05 smoke.
+- [x] Run CP05 full panel.
+- [x] Report overall, stock, ETF, and crypto results without retuning.
 
+## Phase 2C — Order-stability mechanism
+
+- [x] Diagnose CP05 failures by selected difference order.
+- [x] Freeze a post-hoc mechanism study on earlier historical blocks.
+- [x] Compare order sets `{1,2,3,4}`, `{1,2,3}`, `{1,2}`, and `{2}`.
+- [ ] Run CP06 smoke.
+- [ ] Run CP06 full mechanism study.
+- [ ] Decide whether the next prospective simulation should include an explicit
+  continuation-stability control.
 ## Phase 3 — Main dynamic simulation
 
 - [ ] Construct DGPs where forecast-optimal smoothness is stable, drifting,
