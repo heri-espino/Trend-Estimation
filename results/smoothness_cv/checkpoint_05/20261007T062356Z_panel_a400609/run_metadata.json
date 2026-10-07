@@ -1,0 +1,49 @@
+{
+  "created_at_utc": "2026-10-07T06:25:31.018393+00:00",
+  "git_commit": "a400609",
+  "checkpoint": "05",
+  "preset": "panel",
+  "design_frozen_before_run": true,
+  "snapshot_manifest_updated_at": "2026-09-29T21:40:44.625057+00:00",
+  "excluded_cp04_series": [
+    "AAPL",
+    "SPY",
+    "BTC-USD"
+  ],
+  "frozen_primary_rule": "recency_hl3",
+  "baselines": [
+    "last",
+    "pooled_cv_same_config"
+  ],
+  "track_epsilon": 0.1,
+  "candidate_spacing": 0.02,
+  "max_minima": 5,
+  "selection_metric": "level_rmse",
+  "orders": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "windows": [
+    63,
+    126,
+    252,
+    504
+  ],
+  "tail_observations": 2060,
+  "horizon": 60,
+  "outer_blocks": 4,
+  "max_origins": 30,
+  "step": 5,
+  "fallback_policy": "pooled_equal_ratios_if_no_branch_continues",
+  "panel_counts": {
+    "etf": 20,
+    "stock": 36,
+    "crypto": 8
+  },
+  "n_series": 64,
+  "n_outer_decisions": 256,
+  "jobs": 24,
+  "elapsed_seconds": 93.6720426000029
+}

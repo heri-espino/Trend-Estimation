@@ -1,0 +1,4 @@
+series,label,asset_class,n_snapshot_rows_used,n_outer_blocks
+IVV,iShares Core S&P 500 ETF,etf,2060,1
+AMZN,Amazon,stock,2060,1
+SOL-USD,Solana / USD,crypto,2060,1

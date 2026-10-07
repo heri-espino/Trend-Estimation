@@ -1,0 +1,65 @@
+series,label,asset_class,n_snapshot_rows_used,n_outer_blocks
+IJH,iShares Core S&P Mid-Cap ETF,etf,2060,4
+IJR,iShares Core S&P Small-Cap ETF,etf,2060,4
+ITOT,iShares Core S&P Total US Stock Market ETF,etf,2060,4
+IVV,iShares Core S&P 500 ETF,etf,2060,4
+IWD,iShares Russell 1000 Value ETF,etf,2060,4
+IWF,iShares Russell 1000 Growth ETF,etf,2060,4
+MDY,SPDR S&P MidCap 400 ETF,etf,2060,4
+SCHB,Schwab US Broad Market ETF,etf,2060,4
+SMH,VanEck Semiconductor ETF,etf,2060,4
+VB,Vanguard Small-Cap ETF,etf,2060,4
+VEA,Vanguard FTSE Developed Markets ETF,etf,2060,4
+VO,Vanguard Mid-Cap ETF,etf,2060,4
+VTV,Vanguard Value ETF,etf,2060,4
+VUG,Vanguard Growth ETF,etf,2060,4
+VWO,Vanguard FTSE Emerging Markets ETF,etf,2060,4
+XLB,Materials Select Sector SPDR Fund,etf,2060,4
+XLI,Industrial Select Sector SPDR Fund,etf,2060,4
+XLP,Consumer Staples Select Sector SPDR Fund,etf,2060,4
+XLU,Utilities Select Sector SPDR Fund,etf,2060,4
+XLY,Consumer Discretionary Select Sector SPDR Fund,etf,2060,4
+ABBV,AbbVie,stock,2060,4
+ADBE,Adobe,stock,2060,4
+AMD,Advanced Micro Devices,stock,2060,4
+AMZN,Amazon,stock,2060,4
+AVGO,Broadcom,stock,2060,4
+BA,Boeing,stock,2060,4
+BLK,BlackRock,stock,2060,4
+C,Citigroup,stock,2060,4
+COP,ConocoPhillips,stock,2060,4
+COST,Costco,stock,2060,4
+CRM,Salesforce,stock,2060,4
+CSCO,Cisco,stock,2060,4
+DE,Deere,stock,2060,4
+DIS,Walt Disney,stock,2060,4
+FDX,FedEx,stock,2060,4
+GE,GE Aerospace,stock,2060,4
+GOOGL,Alphabet Class A,stock,2060,4
+GS,Goldman Sachs,stock,2060,4
+IBM,IBM,stock,2060,4
+LLY,Eli Lilly,stock,2060,4
+MCD,McDonald's,stock,2060,4
+META,Meta Platforms,stock,2060,4
+MMM,3M,stock,2060,4
+MRK,Merck,stock,2060,4
+MS,Morgan Stanley,stock,2060,4
+NKE,Nike,stock,2060,4
+NVDA,NVIDIA,stock,2060,4
+ORCL,Oracle,stock,2060,4
+OXY,Occidental Petroleum,stock,2060,4
+PEP,PepsiCo,stock,2060,4
+PFE,Pfizer,stock,2060,4
+SLB,SLB,stock,2060,4
+TGT,Target,stock,2060,4
+TSLA,Tesla,stock,2060,4
+UNH,UnitedHealth Group,stock,2060,4
+UPS,UPS,stock,2060,4
+ADA-USD,Cardano / USD,crypto,2060,4
+AVAX-USD,Avalanche / USD,crypto,2060,4
+BCH-USD,Bitcoin Cash / USD,crypto,2060,4
+DOGE-USD,Dogecoin / USD,crypto,2060,4
+DOT-USD,Polkadot / USD,crypto,2060,4
+LINK-USD,Chainlink / USD,crypto,2060,4
+SOL-USD,Solana / USD,crypto,2060,4
+XLM-USD,Stellar / USD,crypto,2060,4
