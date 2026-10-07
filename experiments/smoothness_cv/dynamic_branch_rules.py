@@ -42,6 +42,17 @@ DEFAULT_RULES = (
 )
 
 
+TRAJECTORY_RULES = (
+    DynamicRuleSpec("linear_k3", "linear_extrapolation", k=3),
+    DynamicRuleSpec("linear_k5", "linear_extrapolation", k=5),
+    DynamicRuleSpec("linear_k10", "linear_extrapolation", k=10),
+    DynamicRuleSpec("ew_linear_hl3", "recency_linear_extrapolation", half_life=3.0),
+    DynamicRuleSpec("ew_linear_hl5", "recency_linear_extrapolation", half_life=5.0),
+    DynamicRuleSpec("delta_hl3", "recency_delta_extrapolation", half_life=3.0),
+    DynamicRuleSpec("delta_hl5", "recency_delta_extrapolation", half_life=5.0),
+)
+
+
 def _finite_history(
     smoothness: np.ndarray,
     val2_loss: np.ndarray,
@@ -79,6 +90,28 @@ def _recent_values(
     if values.size == 0:
         raise ValueError("No finite smoothness values are available.")
     return values[-min(k, values.size) :]
+
+
+
+def _linear_prediction(values: np.ndarray, weights: np.ndarray | None = None) -> float:
+    values = np.asarray(values, dtype=float)
+    if values.size < 2:
+        return float(values[-1])
+    x = np.arange(values.size, dtype=float)
+    if weights is None:
+        weights = np.ones(values.size, dtype=float)
+    weights = np.asarray(weights, dtype=float)
+    weights = weights / np.sum(weights)
+    x_bar = float(np.sum(weights * x))
+    y_bar = float(np.sum(weights * values))
+    denominator = float(np.sum(weights * (x - x_bar) ** 2))
+    if denominator <= 0.0:
+        return float(values[-1])
+    slope = float(
+        np.sum(weights * (x - x_bar) * (values - y_bar)) / denominator
+    )
+    intercept = y_bar - slope * x_bar
+    return float(intercept + slope * values.size)
 
 
 def apply_rule(
@@ -130,6 +163,60 @@ def apply_rule(
             "includes_current_s": True,
             "delta": np.nan,
             "rho": np.nan,
+        }
+
+    if spec.family == "linear_extrapolation":
+        values = _recent_values(s, current_s=current_s, k=int(spec.k))
+        predicted = _linear_prediction(values)
+        return predicted, {
+            "n_history_used": int(max(values.size - 1, 0)),
+            "includes_current_s": True,
+            "fallback_to_last": values.size < 2,
+            "delta": np.nan,
+            "rho": np.nan,
+        }
+
+    if spec.family == "recency_linear_extrapolation":
+        half_life = float(spec.half_life)
+        if half_life <= 0.0:
+            raise ValueError("half_life must be positive.")
+        values = np.concatenate([s, np.asarray([current_s], dtype=float)])
+        rho = float(2.0 ** (-1.0 / half_life))
+        age = np.arange(values.size - 1, -1, -1, dtype=float)
+        weights = rho**age
+        predicted = _linear_prediction(values, weights=weights)
+        return predicted, {
+            "n_history_used": int(s.size),
+            "includes_current_s": True,
+            "fallback_to_last": values.size < 2,
+            "delta": np.nan,
+            "rho": rho,
+        }
+
+    if spec.family == "recency_delta_extrapolation":
+        half_life = float(spec.half_life)
+        if half_life <= 0.0:
+            raise ValueError("half_life must be positive.")
+        values = np.concatenate([s, np.asarray([current_s], dtype=float)])
+        if values.size < 2:
+            return current_s, {
+                "n_history_used": int(s.size),
+                "includes_current_s": True,
+                "fallback_to_last": True,
+                "delta": np.nan,
+                "rho": np.nan,
+            }
+        rho = float(2.0 ** (-1.0 / half_life))
+        deltas = np.diff(values)
+        age = np.arange(deltas.size - 1, -1, -1, dtype=float)
+        weights = rho**age
+        drift = float(np.sum(weights * deltas) / np.sum(weights))
+        return float(current_s + drift), {
+            "n_history_used": int(s.size),
+            "includes_current_s": True,
+            "fallback_to_last": False,
+            "delta": np.nan,
+            "rho": rho,
         }
 
     if spec.family == "recency_weighted":
@@ -220,7 +307,9 @@ def evaluate_rule_set(
                 "rule_family": spec.family,
                 "k": spec.k,
                 "half_life": spec.half_life,
+                "raw_selected_s": float(selected_s),
                 "selected_s": float(np.clip(selected_s, 0.0, 1.0)),
+                "clipped": bool(selected_s < 0.0 or selected_s > 1.0),
                 **meta,
             }
         )
