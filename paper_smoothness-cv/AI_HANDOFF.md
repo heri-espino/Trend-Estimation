@@ -240,5 +240,11 @@ simulation.
 
 The next experiment is CP08. It uses fresh seeds and tests the original
 forward-looking extension: predict/extrapolate the selected branch's smoothness
-trajectory rather than averaging it backward. CP08 is development-only; a
-separate fresh seed range will be reserved for confirmation.
+trajectory rather than averaging it backward.
+
+CP08 is **not** a competition to find a universally best \(\phi\). Its role is
+to demonstrate that the branch matrix \(V_j\) supports many coherent
+branch-to-smoothness rules: means, medians, recency weighting, loss weighting,
+linear extrapolation, weighted trend extrapolation, and increment
+extrapolation. Their empirical differences are reported as behavior of the
+design space, not as a winner-selection exercise.
