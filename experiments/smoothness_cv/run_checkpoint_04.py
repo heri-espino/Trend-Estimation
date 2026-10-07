@@ -114,9 +114,9 @@ PRESETS = {
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description=(
-            "Checkpoint 04 development experiment: compare branch-to-smoothness "
-            "rules on repeated chronological outer tests while reserving the "
-            "latest blocks for a later confirmatory run."
+            "Checkpoint 04 dynamic tracked-branch experiment. Smoke/refine are "
+            "development-only; confirmation evaluates the frozen primary rule "
+            "on the previously reserved latest blocks."
         )
     )
     parser.add_argument("--preset", choices=tuple(PRESETS), default="smoke")
@@ -587,6 +587,31 @@ def _run_outer_task(task: tuple) -> tuple[list[dict], list[dict], list[dict], li
 def main() -> None:
     args = parse_args()
     preset = PRESETS[args.preset]
+    if preset.name == "confirmation":
+        frozen = {
+            "selection_metric": "level_rmse",
+            "track_epsilon": 0.10,
+            "candidate_spacing": 0.02,
+            "max_minima": 5,
+        }
+        actual = {
+            "selection_metric": args.selection_metric,
+            "track_epsilon": float(args.track_epsilon),
+            "candidate_spacing": float(args.candidate_spacing),
+            "max_minima": int(args.max_minima),
+        }
+        for key, expected in frozen.items():
+            value = actual[key]
+            if isinstance(expected, float):
+                matches = np.isclose(float(value), expected)
+            else:
+                matches = value == expected
+            if not matches:
+                raise ValueError(
+                    f"Confirmation is frozen: {key} must be {expected!r}, "
+                    f"got {value!r}."
+                )
+
     if not 0.0 < args.track_epsilon <= 1.0:
         raise ValueError("--track-epsilon must be in (0, 1].")
     if not 0.0 < args.candidate_spacing <= 1.0:
