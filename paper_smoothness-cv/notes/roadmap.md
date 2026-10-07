@@ -57,8 +57,17 @@ expanded.
 - [x] Freeze CP07 with d=2, L=120, h=20.
 - [x] Run CP07 smoke.
 - [x] Run CP07 paper preset.
-- [ ] Analyze CP07 paper results.
-- [ ] Decide whether dynamic tracking helps specifically under changing roughness.
+- [x] Analyze CP07 paper results.
+- [x] Conclude that backward-looking recency averaging does not beat pooled CV even under changing roughness.
+
+## Phase 2E — Forecast the smoothness trajectory
+
+- [x] Freeze CP08 development on fresh seeds 100--199.
+- [x] Implement recent-linear, exponentially weighted linear, and increment extrapolation rules.
+- [ ] Run CP08 smoke.
+- [ ] Run CP08 development.
+- [ ] Freeze exactly one trajectory rule from changing-roughness performance.
+- [ ] Confirm once on untouched seeds 200--399.
 
 ## Phase 3 — Main dynamic simulation
 
