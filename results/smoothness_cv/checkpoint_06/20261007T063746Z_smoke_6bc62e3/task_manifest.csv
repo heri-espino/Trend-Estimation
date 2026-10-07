@@ -1,0 +1,13 @@
+series,asset_class,order_set,outer_number,outer_stop,horizon,cp05_holdout_blocks_skipped
+SOL-USD,crypto,d12,1,1760,60,4
+SOL-USD,crypto,d1234,1,1760,60,4
+SOL-USD,crypto,d12,2,1820,60,4
+SOL-USD,crypto,d1234,2,1820,60,4
+IVV,etf,d12,1,1760,60,4
+IVV,etf,d1234,1,1760,60,4
+IVV,etf,d12,2,1820,60,4
+IVV,etf,d1234,2,1820,60,4
+AMZN,stock,d12,1,1760,60,4
+AMZN,stock,d1234,1,1760,60,4
+AMZN,stock,d12,2,1820,60,4
+AMZN,stock,d1234,2,1820,60,4

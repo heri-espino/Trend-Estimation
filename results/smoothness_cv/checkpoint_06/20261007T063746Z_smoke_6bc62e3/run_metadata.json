@@ -1,0 +1,36 @@
+{
+  "created_at_utc": "2026-10-07T06:37:49.102658+00:00",
+  "git_commit": "6bc62e3",
+  "checkpoint": "06",
+  "preset": "smoke",
+  "study_type": "post_hoc_mechanism_not_confirmation",
+  "cp05_external_test_blocks_rescored": false,
+  "cp05_holdout_blocks_skipped": 4,
+  "order_sets": {
+    "d1234": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "d12": [
+      1,
+      2
+    ]
+  },
+  "frozen_dynamic_rule": "recency_hl3",
+  "track_epsilon": 0.1,
+  "candidate_spacing": 0.02,
+  "max_minima": 5,
+  "windows": [
+    63,
+    252
+  ],
+  "max_origins": 8,
+  "step": 5,
+  "horizon": 60,
+  "n_series": 3,
+  "n_tasks": 12,
+  "jobs": 8,
+  "elapsed_seconds": 2.7721811999981583
+}
