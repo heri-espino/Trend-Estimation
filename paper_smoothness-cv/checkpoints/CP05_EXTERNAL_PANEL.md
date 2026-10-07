@@ -1,6 +1,6 @@
 # Checkpoint 05 — Frozen external financial panel
 
-**Status: FROZEN BEFORE RUN.**
+**Status: COMPLETE — external panel run committed and analyzed.**
 
 CP04 produced a pre-specified confirmation result for the dynamic tracked-branch
 rule `recency_hl3`. CP05 is a new external validation panel. It does not
@@ -145,3 +145,87 @@ python experiments/smoothness_cv/make_checkpoint_05_figures.py
 ~~~
 
 Commit and push the complete `results/smoothness_cv/checkpoint_05/` directory.
+
+
+## Observed CP05 result
+
+The frozen 64-series panel run is
+`results/smoothness_cv/checkpoint_05/20261007T062356Z_panel_a400609`.
+
+Primary external-panel result:
+
+\[
+\boxed{
+\operatorname{gRMSFE}
+(\text{recency-hl3}/\text{pooled CV})
+=
+1.6421
+}
+\]
+
+with a descriptive series-cluster bootstrap interval
+\([1.1678,\,2.7033]\).
+
+Thus the CP04 confirmation advantage over pooled CV **did not generalize** to
+the broad external financial panel.
+
+The dynamic rule beat pooled CV in 46.5% of outer blocks and in 39.1% of
+series on a series-aggregate basis.
+
+Against the newest tracked minimum,
+
+\[
+\boxed{
+\operatorname{gRMSFE}
+(\text{recency-hl3}/\text{last})
+=
+0.5246
+}
+\]
+
+with descriptive interval \([0.2001,\,0.9052]\). The recency average
+therefore strongly stabilizes the newest-minimum rule on this panel even
+though it does not outperform pooled CV.
+
+By asset class, dynamic / pooled geometric ratios were:
+
+- crypto: 1.098;
+- ETF: 1.152;
+- stock: 2.186.
+
+No branch-continuation fallback was triggered.
+
+## Post-hoc mechanism signal
+
+The aggregate failure against pooled CV is concentrated in higher-order
+continuations. Conditioning on the order selected by the frozen all-order
+procedure gives approximately:
+
+- `d=1`: 1.008 dynamic / pooled;
+- `d=2`: 1.018;
+- `d=3`: 1.249;
+- `d=4`: 7.960.
+
+The largest failures include `d=4` forecasts for Citigroup, IBM, Amazon, XLI,
+MCD, MRK, SCHB, and SMH. In these cases the tracked smoothness can be only
+moderately below one but the 60-step cubic continuation becomes extremely
+large. Pooled CV often selects a value closer to one and remains much more
+stable.
+
+Removing the single worst dynamic/pooled outer block reduces the aggregate
+geometric ratio from 1.642 to about 1.342; removing the worst five reduces it
+to about 1.155. These are post-hoc diagnostics, not revised CP05 estimates.
+
+The strong dynamic/last result is also partly explained by the same mechanism:
+recency averaging frequently shrinks an even more extreme newest-minimum
+forecast, so both tracked rules can be unstable while the average is less
+unstable.
+
+## Consequence
+
+Do not retune CP05.
+
+The next checkpoint is `CP06_ORDER_STABILITY.md`. It uses earlier historical
+outer blocks, not the CP05 external-test blocks, to study whether the
+instability frontier is specifically caused by allowing high-order polynomial
+continuation.
