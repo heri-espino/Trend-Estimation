@@ -62,12 +62,11 @@ expanded.
 
 ## Phase 2E — Forecast the smoothness trajectory
 
-- [x] Freeze CP08 development on fresh seeds 100--199.
+- [x] Freeze CP08 rule-family demonstration on fresh seeds 100--199.
 - [x] Implement recent-linear, exponentially weighted linear, and increment extrapolation rules.
 - [ ] Run CP08 smoke.
-- [ ] Run CP08 development.
-- [ ] Freeze exactly one trajectory rule from changing-roughness performance.
-- [ ] Confirm once on untouched seeds 200--399.
+- [ ] Run CP08 paper demonstration.
+- [ ] Summarize how the different \(\phi(V_j)\) rules behave; do not select a universal winner.
 
 ## Phase 3 — Main dynamic simulation
 
