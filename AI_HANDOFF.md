@@ -210,3 +210,25 @@ The next active experiment is
 It compares nested order sets on earlier historical outer blocks that precede
 all CP05 external-test blocks. It is a post-hoc mechanism study, not a new
 confirmation test.
+
+
+## CP07 result and CP08 trajectory forecasting
+
+CP07 fixed d=2 and prospectively tested the frozen backward-looking recency
+average under stationary and changing latent roughness.
+
+Results:
+- all mechanisms: dynamic / pooled gRMSE = 1.037;
+- changing roughness: 1.028;
+- stationary roughness: 1.056;
+- dynamic / newest-minimum = 0.945 overall.
+
+Therefore recency averaging stabilizes the newest tracked minimum but does not
+outperform pooled forecast-CV even when roughness changes.
+
+CP08 now tests a different, forward-looking use of the branch matrix: forecast
+the smoothness trajectory itself. It is development-only on fresh seeds
+100--199. Candidate rules are recent linear extrapolation, exponentially
+weighted linear extrapolation, and exponentially weighted branch-increment
+extrapolation. Seeds 200--399 are reserved and must not be used until exactly
+one trajectory rule has been frozen.
