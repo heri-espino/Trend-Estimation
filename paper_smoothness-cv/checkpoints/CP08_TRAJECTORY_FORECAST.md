@@ -1,15 +1,16 @@
 # Checkpoint 08 — Forecast the tracked smoothness trajectory
 
-**Status: FROZEN DEVELOPMENT DESIGN BEFORE RUN.**
+**Status: FROZEN DEMONSTRATION DESIGN BEFORE RUN.**
 
 CP07 showed that backward-looking recency averaging stabilizes the newest
 tracked minimum but does not beat pooled forecast-CV. CP08 tests the forward-
 looking extension that motivated the branch-matrix formulation: predict the
 next smoothness value from the selected branch trajectory.
 
-CP08 is a **development** experiment. It uses fresh simulation seeds
-`100..199`. Seeds `200..399` are reserved for a later one-shot confirmation
-after one trajectory rule is frozen.
+CP08 is a **method-family demonstration**. It uses fresh simulation seeds
+`100..199` to show that the tracked branch matrix supports several coherent
+ways to construct the next smoothness value. The purpose is not to select a
+universally best `phi` rule.
 
 ## Fixed forecasting environment
 
@@ -56,24 +57,24 @@ Baselines are:
 - `last`;
 - `pooled_cv_same_config`.
 
-## Development decision rule
+## Interpretation
 
-The candidate trajectory rule with the smallest geometric observed-log-RMSE
-ratio relative to pooled CV over the **changing-roughness mechanisms** is the
-development winner.
+The rules above are examples of admissible branch-to-smoothness maps
 
-Ties or nearly equal rules are resolved conservatively by, in order:
+\[
+\widehat S_T=\phi(V_j).
+\]
 
-1. lower clipping rate;
-2. better stationary-mechanism ratio;
-3. simpler rule / shorter specification.
+CP08 reports how differently these functionals behave, including their selected
+smoothness values, clipping frequency, forecast loss, and distance to the
+simulation-only oracle. Relative performance is informative about their
+behavior, but the paper does **not** define a competition whose goal is to find
+one universally best rule.
 
-No trajectory rule is declared confirmed from CP08.
+The contribution is the branch representation and the resulting design space:
+once a persistent branch has been summarized in \(V_j\), many decision rules
+can be constructed from the same information without changing the underlying
+trend estimator or the numerical minimum-tracking layer.
 
-## Confirmation boundary
-
-After CP08 is observed, exactly one trajectory rule may be frozen. The
-confirmation experiment must use seeds `200..399` and may compare only that
-frozen trajectory rule with `recency_hl3`, `last`, and pooled CV.
-
-Do not use seeds `200..399` during CP08 development.
+Accordingly, CP08 has no winner-selection step and no follow-up confirmation
+stage tied to a selected trajectory rule.
