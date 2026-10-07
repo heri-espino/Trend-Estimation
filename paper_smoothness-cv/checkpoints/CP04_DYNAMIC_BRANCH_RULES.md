@@ -1,6 +1,6 @@
 # Checkpoint 04 — Dynamic branch decision rules
 
-**Status: DEVELOPMENT COMPLETE; PRIMARY DYNAMIC RULE FROZEN; CONFIRMATION READY.**
+**Status: COMPLETE — frozen confirmation evaluated once and audited.**
 
 Checkpoint 03 remains the frozen pooled forecast-CV baseline. CP04 introduces
 the central dynamic method without altering CP03.
@@ -348,3 +348,63 @@ python experiments/smoothness_cv/make_checkpoint_04_figures.py
 After this run, commit and push the complete new CP04 confirmation directory.
 Do not rerun confirmation to choose another rule. Any later method change must
 be treated as a separate new study.
+
+
+## Final CP04 confirmation outcome
+
+The one-shot confirmation run is
+`results/smoothness_cv/checkpoint_04/20261007T011201Z_confirmation_6c0b548`.
+
+The saved outer manifest confirms that the run used exactly the four previously
+reserved latest blocks per series. Only `recency_hl3`, `last`, and
+`pooled_cv_same_config` were forecast on those blocks.
+
+Primary confirmation:
+
+[
+\boxed{
+\operatorname{gRMSFE}
+(\text{recency-hl3}/\text{pooled CV})
+=
+0.6920
+}
+]
+
+with wins in 13/16 outer blocks.
+
+Against the newest tracked minimum:
+
+[
+\boxed{
+\operatorname{gRMSFE}
+(\text{recency-hl3}/\text{last})
+=
+0.8137
+}
+]
+
+with wins in 9/16 outer blocks.
+
+By series, the dynamic/pooled geometric ratios were:
+
+- AAPL: 0.4561;
+- BTC-USD: 1.0391;
+- GDPC1: 0.8176;
+- SPY: 0.5917.
+
+The dynamic/pooled ratio remains below one after omitting any one of the four
+series. The dynamic/last advantage is less stable and disappears when AAPL is
+omitted.
+
+A stale reporting path in the runner initially marked the saved confirmation
+metadata as development-only. This was audited and corrected **without changing
+any forecast output**. See the run's corrected `checkpoint_report.md` and
+`run_metadata.json`.
+
+CP04 is now closed. Do not retune `recency_hl3` using these blocks.
+
+## Next checkpoint
+
+Proceed to `CP05_EXTERNAL_PANEL.md`: a 64-series external financial panel
+selected mechanically from the frozen repository snapshot, excluding the three
+financial series used in CP04.
