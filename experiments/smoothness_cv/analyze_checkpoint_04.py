@@ -162,8 +162,7 @@ def main() -> None:
     args = parse_args()
     run_dir = _resolve_run_dir(args.run_dir)
     metadata = json.loads((run_dir / "run_metadata.json").read_text(encoding="utf-8"))
-    if metadata.get("confirmation_region_used", True):
-        raise RuntimeError("CP04 development analysis must not use confirmation blocks.")
+    confirmation = bool(metadata.get("confirmation_region_used", False))
 
     decisions = pd.read_csv(run_dir / "decision_results.csv")
     metric = (
@@ -183,39 +182,72 @@ def main() -> None:
     by_series.to_csv(diagnostics / "rule_summary_by_series.csv", index=False)
     baselines.to_csv(diagnostics / "baseline_summary.csv", index=False)
 
-    report = [
-        "# Checkpoint 04 development report",
-        "",
-        f"Source run: {run_dir.as_posix()}",
-        "",
-        "This is a development-only comparison. The latest confirmation blocks",
-        "remain untouched and must not be inspected before the dynamic rule is",
-        "frozen.",
-        "",
-        "## Dynamic-rule ranking",
-        "",
-        "Geometric RMSFE ratios below one favor the dynamic rule over the named",
-        "baseline. Ranking is descriptive and is used only to freeze the later",
-        "confirmatory specification.",
-        "",
-        _markdown_table(rule_summary),
-        "",
-        "## Baselines",
-        "",
-        _markdown_table(baselines),
-        "",
-        "## By-series diagnostics",
-        "",
-        _markdown_table(by_series),
-        "",
-        "## Freeze discipline",
-        "",
-        "Do not run the reserved confirmation region yet. First inspect this",
-        "development run, choose the final K/half-life rule family, and record",
-        "that choice in CP04_DYNAMIC_BRANCH_RULES.md. The confirmation blocks",
-        "must then be evaluated once under that frozen specification.",
-        "",
-    ]
+    if confirmation:
+        report = [
+            "# Checkpoint 04 frozen confirmation report",
+            "",
+            f"Source run: {run_dir.as_posix()}",
+            "",
+            "The primary dynamic rule was frozen before these blocks were",
+            "evaluated: recency_hl3. No alternative dynamic rule is evaluated",
+            "in this confirmation run.",
+            "",
+            "## Frozen primary result",
+            "",
+            "Geometric RMSFE ratios below one favor recency_hl3 over the named",
+            "baseline.",
+            "",
+            _markdown_table(rule_summary),
+            "",
+            "## Baselines",
+            "",
+            _markdown_table(baselines),
+            "",
+            "## By-series confirmation diagnostics",
+            "",
+            _markdown_table(by_series),
+            "",
+            "## Interpretation",
+            "",
+            "This run is confirmatory. Do not select another phi rule from these",
+            "blocks. Any later method changes require a new explicitly labeled",
+            "study rather than reusing this confirmation sample for tuning.",
+            "",
+        ]
+    else:
+        report = [
+            "# Checkpoint 04 development report",
+            "",
+            f"Source run: {run_dir.as_posix()}",
+            "",
+            "This is a development-only comparison. The latest confirmation blocks",
+            "remain untouched and must not be inspected before the dynamic rule is",
+            "frozen.",
+            "",
+            "## Dynamic-rule ranking",
+            "",
+            "Geometric RMSFE ratios below one favor the dynamic rule over the named",
+            "baseline. Ranking is descriptive and is used only to freeze the later",
+            "confirmatory specification.",
+            "",
+            _markdown_table(rule_summary),
+            "",
+            "## Baselines",
+            "",
+            _markdown_table(baselines),
+            "",
+            "## By-series diagnostics",
+            "",
+            _markdown_table(by_series),
+            "",
+            "## Freeze discipline",
+            "",
+            "Do not run the reserved confirmation region yet. First inspect this",
+            "development run, choose the final K/half-life rule family, and record",
+            "that choice in CP04_DYNAMIC_BRANCH_RULES.md. The confirmation blocks",
+            "must then be evaluated once under that frozen specification.",
+            "",
+        ]
     (run_dir / "checkpoint_report.md").write_text(
         "\n".join(report),
         encoding="utf-8",
