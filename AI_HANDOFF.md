@@ -189,3 +189,24 @@ excluded because they were used in CP04. No CP05 tuning is allowed.
 
 Run smoke first, then the full panel; see
 `paper_smoothness-cv/checkpoints/CP05_EXTERNAL_PANEL.md`.
+
+
+## CP05 result and immediate CP06
+
+The frozen 64-series external financial panel is complete.
+
+`recency_hl3` did not beat pooled forecast-CV overall:
+- geometric RMSE ratio = **1.6421**.
+
+It did strongly beat the newest tracked minimum:
+- geometric RMSE ratio = **0.5246**.
+
+The broad-panel failure against pooled CV is concentrated in high-order native
+continuation, especially d=4 cubic extrapolation. This is now a boundary of
+the method, not something to hide or retune away.
+
+The next active experiment is
+`paper_smoothness-cv/checkpoints/CP06_ORDER_STABILITY.md`.
+It compares nested order sets on earlier historical outer blocks that precede
+all CP05 external-test blocks. It is a post-hoc mechanism study, not a new
+confirmation test.
