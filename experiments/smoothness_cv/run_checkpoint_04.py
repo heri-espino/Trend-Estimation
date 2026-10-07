@@ -45,6 +45,7 @@ class CP04Preset:
     confirmation_holdout_blocks: int
     max_origins_override: int | None
     windows_override: dict[str, tuple[int, ...]]
+    rule_names: tuple[str, ...]
 
 
 PRESETS = {
@@ -55,6 +56,21 @@ PRESETS = {
         confirmation_holdout_blocks=1,
         max_origins_override=6,
         windows_override={"GDPC1": (40,)},
+        rule_names=(
+            "last",
+            "mean_k3",
+            "mean_k5",
+            "median_k3",
+            "median_k5",
+            "recency_hl3",
+            "recency_hl5",
+            "recency_hl10",
+            "val2_weighted",
+            "recency_val2_hl3",
+            "recency_val2_hl5",
+            "recency_val2_hl10",
+            "pooled_cv_same_config",
+        ),
     ),
     "refine": CP04Preset(
         name="refine",
@@ -63,6 +79,34 @@ PRESETS = {
         confirmation_holdout_blocks=4,
         max_origins_override=None,
         windows_override={},
+        rule_names=(
+            "last",
+            "mean_k3",
+            "mean_k5",
+            "median_k3",
+            "median_k5",
+            "recency_hl3",
+            "recency_hl5",
+            "recency_hl10",
+            "val2_weighted",
+            "recency_val2_hl3",
+            "recency_val2_hl5",
+            "recency_val2_hl10",
+            "pooled_cv_same_config",
+        ),
+    ),
+    "confirmation": CP04Preset(
+        name="confirmation",
+        series=("GDPC1", "SPY", "AAPL", "BTC-USD"),
+        development_outer_blocks=4,
+        confirmation_holdout_blocks=0,
+        max_origins_override=None,
+        windows_override={},
+        rule_names=(
+            "recency_hl3",
+            "last",
+            "pooled_cv_same_config",
+        ),
     ),
 }
 
@@ -424,6 +468,11 @@ def _run_outer_task(task: tuple) -> tuple[list[dict], list[dict], list[dict], li
         current_s=current_s,
         val2_loss_column=val2_column,
     )
+    requested_dynamic = {
+        name for name in preset.rule_names
+        if name != "pooled_cv_same_config"
+    }
+    rules = rules.loc[rules["rule"].isin(requested_dynamic)].copy()
 
     pooled_s, pooled_score, pooled_evaluations = _pooled_smoothness(
         key,
@@ -432,27 +481,28 @@ def _run_outer_task(task: tuple) -> tuple[list[dict], list[dict], list[dict], li
         window=window,
         max_origins=max_origins,
     )
-    rules = pd.concat(
-        [
-            rules,
-            pd.DataFrame(
-                [
-                    {
-                        "rule": "pooled_cv_same_config",
-                        "rule_family": "pooled_cv",
-                        "k": np.nan,
-                        "half_life": np.nan,
-                        "selected_s": pooled_s,
-                        "n_history_used": max_origins,
-                        "includes_current_s": True,
-                        "delta": np.nan,
-                        "rho": np.nan,
-                    }
-                ]
-            ),
-        ],
-        ignore_index=True,
-    )
+    if "pooled_cv_same_config" in preset.rule_names:
+        rules = pd.concat(
+            [
+                rules,
+                pd.DataFrame(
+                    [
+                        {
+                            "rule": "pooled_cv_same_config",
+                            "rule_family": "pooled_cv",
+                            "k": np.nan,
+                            "half_life": np.nan,
+                            "selected_s": pooled_s,
+                            "n_history_used": max_origins,
+                            "includes_current_s": True,
+                            "delta": np.nan,
+                            "rho": np.nan,
+                        }
+                    ]
+                ),
+            ],
+            ignore_index=True,
+        )
 
     common = {
         "series": key,
@@ -644,7 +694,11 @@ def main() -> None:
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
         "git_commit": _git_short_sha(),
         "checkpoint": "04",
-        "stage": "development_rule_refinement",
+        "stage": (
+            "frozen_confirmation"
+            if preset.name == "confirmation"
+            else "development_rule_refinement"
+        ),
         "preset": preset.name,
         "preset_definition": asdict(preset),
         "selection_metric": args.selection_metric,
@@ -693,7 +747,10 @@ def main() -> None:
     print("")
     print(f"Checkpoint 04 development run complete: {run_dir}")
     print(f"Outer decisions: {len(tasks)}")
-    print("Latest confirmation blocks remain untouched.")
+    if preset.name == "confirmation":
+        print("Frozen confirmation blocks evaluated exactly once.")
+    else:
+        print("Latest confirmation blocks remain untouched.")
     print(
         "Next: python experiments/smoothness_cv/analyze_checkpoint_04.py "
         f"--run-dir {run_dir}"
