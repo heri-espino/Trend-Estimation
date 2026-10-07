@@ -32,7 +32,17 @@ expanded.
   recency+Val2-weighted rules.
 - [ ] Decide/freeze `K`, `epsilon`, `rho`, and numerical stabilizer `delta` using
   development data only.
-- [ ] Evaluate all frozen rules on untouched outer test blocks.
+- [x] Evaluate frozen `recency_hl3` once on the reserved CP04 confirmation blocks.
+
+## Phase 2B — External financial validation
+
+- [x] Freeze `recency_hl3` from CP04 development.
+- [x] Confirm it once on the four-series CP04 holdout.
+- [x] Freeze an objective 64-series external Yahoo panel excluding CP04 financial series.
+- [x] Implement CP05 runner, analyzer, figures, and conservative no-continuation fallback.
+- [ ] Run CP05 smoke.
+- [ ] Run CP05 full panel.
+- [ ] Report overall, stock, ETF, and crypto results without retuning.
 
 ## Phase 3 — Main dynamic simulation
 
