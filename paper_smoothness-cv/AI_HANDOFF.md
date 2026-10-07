@@ -219,3 +219,26 @@ astronomically large.
 The active next checkpoint is `checkpoints/CP06_ORDER_STABILITY.md`, a
 post-hoc mechanism study on earlier historical outer blocks. It must not be
 described as independent confirmation.
+
+
+## CP07 completed dynamic-roughness result
+
+CP07 fixed d=2 and isolated time-varying latent roughness from high-order
+continuation instability.
+
+Frozen recency_hl3 versus pooled forecast-CV:
+- all mechanisms: gRMSE ratio 1.037;
+- changing roughness: 1.028;
+- stationary roughness: 1.056.
+
+Frozen recency_hl3 versus newest tracked minimum:
+- all mechanisms: 0.945.
+
+Therefore backward-looking recency averaging stabilizes a tracked minimum but
+does not beat pooled forecast-CV, even in the prospective changing-roughness
+simulation.
+
+The next experiment is CP08. It uses fresh seeds and tests the original
+forward-looking extension: predict/extrapolate the selected branch's smoothness
+trajectory rather than averaging it backward. CP08 is development-only; a
+separate fresh seed range will be reserved for confirmation.
