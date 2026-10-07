@@ -1,0 +1,52 @@
+{
+  "created_at_utc": "2026-10-07T07:22:42.190814+00:00",
+  "git_commit": "be492a8",
+  "checkpoint": "08",
+  "preset": "smoke",
+  "study_type": "trajectory_rule_family_demonstration",
+  "design_frozen_before_run": true,
+  "preset_definition": {
+    "name": "smoke",
+    "seeds": [
+      100,
+      101
+    ],
+    "mechanisms": [
+      "stationary_smooth",
+      "switch_to_rough"
+    ],
+    "observation_noise_sds": [
+      0.02
+    ]
+  },
+  "demonstration_seed_range": [
+    100,
+    199
+  ],
+  "trajectory_rules": [
+    "linear_k3",
+    "linear_k5",
+    "linear_k10",
+    "ew_linear_hl3",
+    "ew_linear_hl5",
+    "delta_hl3",
+    "delta_hl5"
+  ],
+  "baselines": [
+    "recency_hl3",
+    "last",
+    "pooled_cv_same_config"
+  ],
+  "order": 2,
+  "window": 120,
+  "horizon": 20,
+  "track_epsilon": 0.1,
+  "candidate_spacing": 0.02,
+  "max_minima": 5,
+  "interpretation": "illustrative_rule_family_not_winner_selection",
+  "primary_metric": "observed log RMSE geometric ratio vs pooled CV",
+  "n_scenarios": 4,
+  "n_outer_decisions": 32,
+  "jobs": 8,
+  "elapsed_seconds": 5.974536499998067
+}
