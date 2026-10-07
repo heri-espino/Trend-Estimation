@@ -49,10 +49,17 @@ expanded.
 - [x] Diagnose CP05 failures by selected difference order.
 - [x] Freeze a post-hoc mechanism study on earlier historical blocks.
 - [x] Compare order sets `{1,2,3,4}`, `{1,2,3}`, `{1,2}`, and `{2}`.
-- [ ] Run CP06 smoke.
-- [ ] Run CP06 full mechanism study.
-- [ ] Decide whether the next prospective simulation should include an explicit
-  continuation-stability control.
+- [x] Run CP06 smoke.
+- [x] Run CP06 full mechanism study.
+- [x] Decide that the next prospective simulation must isolate smoothness dynamics from high-order continuation.
+## Phase 2D — Dynamic roughness simulation
+
+- [x] Freeze CP07 with d=2, L=120, h=20.
+- [x] Run CP07 smoke.
+- [x] Run CP07 paper preset.
+- [ ] Analyze CP07 paper results.
+- [ ] Decide whether dynamic tracking helps specifically under changing roughness.
+
 ## Phase 3 — Main dynamic simulation
 
 - [ ] Construct DGPs where forecast-optimal smoothness is stable, drifting,
