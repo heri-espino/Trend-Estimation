@@ -190,3 +190,32 @@ Do not retune CP04.
 The active next checkpoint is `checkpoints/CP05_EXTERNAL_PANEL.md`, a frozen
 64-series external Yahoo panel excluding AAPL, SPY, and BTC-USD. The only
 dynamic rule is still `recency_hl3`.
+
+
+## CP05 completed external-panel result
+
+CP05 is complete on 64 previously unused Yahoo series.
+
+Frozen `recency_hl3` versus pooled forecast-CV:
+- geometric RMSE ratio: **1.6421**;
+- descriptive series-cluster interval: **[1.1678, 2.7033]**;
+- outer-block win rate: 46.5%;
+- series-level win rate: 39.1%.
+
+Therefore the CP04 pooled-CV advantage did **not** generalize.
+
+Frozen `recency_hl3` versus newest tracked minimum:
+- geometric RMSE ratio: **0.5246**;
+- descriptive interval: **[0.2001, 0.9052]**.
+
+The tracked recency average strongly stabilizes `last`, but this does not make
+it better than pooled CV overall.
+
+Post-hoc mechanism diagnostics point strongly to high-order continuation:
+dynamic/pooled geometric ratios are roughly 1.008 for d=1, 1.018 for d=2,
+1.249 for d=3, and 7.960 for d=4. Several d=4 cubic extrapolations become
+astronomically large.
+
+The active next checkpoint is `checkpoints/CP06_ORDER_STABILITY.md`, a
+post-hoc mechanism study on earlier historical outer blocks. It must not be
+described as independent confirmation.
