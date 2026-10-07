@@ -1,6 +1,6 @@
 # Checkpoint 07 — Dynamic roughness simulation
 
-**Status: FROZEN BEFORE RUN.**
+**Status: COMPLETE — central recency-smoothing hypothesis not supported against pooled CV.**
 
 CP07 fixes d=2 so the experiment isolates smoothness selection from the separate instability of higher-order polynomial continuation.
 
@@ -35,3 +35,57 @@ Observation noise levels are 0.01 and 0.03 on the log scale. The paper preset us
 Primary comparison is dynamic versus pooled log-RMSE, reported separately for stationary and changing-roughness mechanisms. Secondary comparisons include dynamic versus last and distance to a simulation-only latent-future oracle smoothness.
 
 No parameter is changed after the paper preset is observed.
+
+
+## Observed CP07 result
+
+The paper preset completed 1200 scenarios and 9600 outer forecast decisions.
+
+The frozen recency rule did **not** beat pooled forecast-CV:
+
+[
+\operatorname{gRMSE}
+(\text{recency-hl3}/\text{pooled})
+=
+1.037
+]
+
+overall. Under changing roughness the ratio was 1.028, compared with 1.056
+under stationary roughness. The difference is directionally consistent with
+the dynamic motivation, but it is not enough to produce a forecasting gain.
+
+By mechanism, dynamic / pooled geometric RMSE ratios were approximately:
+
+- gradual roughening: 1.050;
+- gradual smoothing: 1.023;
+- switch to rough: 1.037;
+- switch to smooth: 1.001;
+- stationary rough: 1.102;
+- stationary smooth: 1.012.
+
+Against the newest tracked minimum, recency averaging remained beneficial:
+
+[
+\operatorname{gRMSE}
+(\text{recency-hl3}/\text{last})
+=
+0.945,
+]
+
+with similar gains in stationary and changing mechanisms.
+
+Thus the evidence now supports a narrower statement: averaging along a tracked
+branch stabilizes the newest local minimum, but a backward-looking average of
+branch smoothness does not outperform pooled forecast-CV even when latent trend
+roughness changes.
+
+## Consequence
+
+The next experiment does not retune the half-life on CP07. Instead it tests a
+different branch functional that was part of the original research plan:
+**forecast the smoothness trajectory itself**.
+
+CP08 uses fresh simulation seeds and treats CP07 only as motivation. Candidate
+rules extrapolate the tracked branch by recent linear trend or exponentially
+weighted branch increments. A later, disjoint seed set will be reserved for
+confirmation after one trajectory rule is frozen.
