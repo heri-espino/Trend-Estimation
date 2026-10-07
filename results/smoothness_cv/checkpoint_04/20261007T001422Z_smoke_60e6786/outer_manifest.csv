@@ -1,0 +1,3 @@
+series,outer_number,outer_stop,horizon,confirmation_holdout_blocks
+GDPC1,1,232,8,1
+GDPC1,2,240,8,1
