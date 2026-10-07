@@ -226,9 +226,13 @@ Results:
 Therefore recency averaging stabilizes the newest tracked minimum but does not
 outperform pooled forecast-CV even when roughness changes.
 
-CP08 now tests a different, forward-looking use of the branch matrix: forecast
-the smoothness trajectory itself. It is development-only on fresh seeds
-100--199. Candidate rules are recent linear extrapolation, exponentially
-weighted linear extrapolation, and exponentially weighted branch-increment
-extrapolation. Seeds 200--399 are reserved and must not be used until exactly
-one trajectory rule has been frozen.
+CP08 now demonstrates a different, forward-looking use of the branch matrix:
+forecast the smoothness trajectory itself. Candidate rules include recent
+linear extrapolation, exponentially weighted linear extrapolation, and
+exponentially weighted branch-increment extrapolation.
+
+The paper's objective is **not** to identify one universally best way to choose
+\(S\). The central contribution is that tracking local-minimum branches creates
+a reusable state \(V_j\) from which many legitimate decision rules
+\(\phi(V_j)\) can be constructed and studied. CP08 is therefore a
+rule-family demonstration, not a tuning/confirmation tournament.
