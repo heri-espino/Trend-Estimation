@@ -80,15 +80,8 @@ def _rule_summary(paired: pd.DataFrame) -> pd.DataFrame:
             'mean_abs_s_error_to_oracle': float(frame['s_error_rule'].mean()),
         })
     out = pd.DataFrame(rows)
-    trajectory = out['rule'].isin(TRAJECTORY_RULE_NAMES)
-    rank = out.loc[trajectory].sort_values(
-        ['changing_g_ratio_vs_pooled','clipping_rate','stationary_g_ratio_vs_pooled','rule']
-    ).index
-    rank_map = {idx: pos for pos, idx in enumerate(rank, start=1)}
-    out['development_rank'] = [rank_map.get(idx, np.nan) for idx in out.index]
     return out.sort_values(
-        ['development_rank','changing_g_ratio_vs_pooled','rule'],
-        na_position='last'
+        ['rule']
     ).reset_index(drop=True)
 
 
@@ -127,10 +120,8 @@ def main() -> None:
     args = parse_args()
     run_dir = _resolve_run_dir(args.run_dir)
     metadata = json.loads((run_dir / 'run_metadata.json').read_text(encoding='utf-8'))
-    if metadata.get('study_type') != 'development_trajectory_rule_selection':
-        raise RuntimeError('CP08 analyzer expects the development experiment.')
-    if metadata.get('reserved_confirmation_seed_range') != [200, 399]:
-        raise RuntimeError('Reserved CP08 confirmation seed range changed.')
+    if metadata.get('study_type') != 'trajectory_rule_family_demonstration':
+        raise RuntimeError('CP08 analyzer expects the rule-family demonstration.')
 
     decisions = pd.read_csv(run_dir / 'decision_results.csv.gz')
     paired = _paired(decisions)
@@ -142,28 +133,27 @@ def main() -> None:
     rules.to_csv(diagnostics / 'rule_summary.csv', index=False)
     mechanisms.to_csv(diagnostics / 'mechanism_summary.csv', index=False)
 
-    best = rules.loc[rules['development_rank'].eq(1)].iloc[0]
     report = [
-        '# Checkpoint 08 trajectory-forecast development report',
+        '# Checkpoint 08 trajectory-rule family demonstration',
         '',
-        'CP08 is development-only. Seeds 200..399 remain reserved for later confirmation.',
+        'CP08 is not a winner-selection experiment. It demonstrates several',
+        'branch-to-smoothness functionals that can be constructed from the same',
+        'tracked branch matrix.',
         '',
-        '## Rule ranking',
+        '## Rule behavior summary',
         '',
         _markdown_table(rules),
         '',
-        '## Development winner',
+        '## Interpretation',
         '',
-        f"The predeclared changing-roughness ranking selects **{best['rule']}**.",
-        f"Its changing-roughness geometric RMSE ratio versus pooled CV is {best['changing_g_ratio_vs_pooled']:.4f}.",
-        f"Its clipping rate is {best['clipping_rate']:.2%}.",
-        '',
-        'Do not run confirmation yet. Freeze exactly one trajectory rule first.',
+        'Forecast ratios, clipping rates, and oracle-distance diagnostics describe',
+        'how the rules behave. They are not used to declare one universally best',
+        'smoothness-selection rule.',
         '',
     ]
     (run_dir / 'checkpoint_report.md').write_text('\n'.join(report), encoding='utf-8')
     print(rules.to_string(index=False))
-    print(f"Development winner: {best['rule']}")
+    print('CP08 summarizes rule behavior; no winner is selected.')
 
 
 if __name__ == '__main__':
