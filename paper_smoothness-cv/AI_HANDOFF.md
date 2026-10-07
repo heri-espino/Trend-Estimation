@@ -147,3 +147,26 @@ while reserving the newest four non-overlapping blocks for later confirmation.
 After refine, push the result bundle and stop. Do not inspect the reserved
 confirmation region until `phi`, K/half-life, and the confirmation protocol
 have been frozen in `checkpoints/CP04_DYNAMIC_BRANCH_RULES.md`.
+
+
+## Frozen CP04 confirmation specification
+
+The development rerun is complete. `recency_hl3` is frozen as the primary
+dynamic rule before inspecting the reserved confirmation blocks.
+
+Development result:
+- geometric RMSFE vs `last`: 0.7989;
+- geometric RMSFE vs `pooled_cv_same_config`: 1.0491.
+
+The latter means the dynamic rule did not beat the pooled baseline on aggregate
+development data; confirmation is therefore genuinely informative rather than
+a formality.
+
+The confirmation preset evaluates only:
+- `recency_hl3`;
+- `last`;
+- `pooled_cv_same_config`.
+
+Frozen parameters: level RMSE, track epsilon 0.10, candidate spacing 0.02,
+max minima 5. Run `run_checkpoint_04.py --preset confirmation` exactly once,
+then analyze and push the result.
