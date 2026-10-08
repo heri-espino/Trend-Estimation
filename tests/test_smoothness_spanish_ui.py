@@ -14,7 +14,7 @@ import pandas as pd
 import pytest
 
 
-APP_PATH = Path(__file__).resolve().parents[1] / "apps" / "smoothness_lab.py"
+APP_PATH = Path(__file__).resolve().parents[1] / "apps" / "smoothness_lab_advanced.py"
 
 
 def test_aplicacion_tiene_sintaxis_python_valida():
@@ -44,7 +44,7 @@ def test_titulos_secciones_y_etiquetas_formales_espanolas():
 def ui():
     pytest.importorskip("plotly")
     pytest.importorskip("streamlit")
-    import apps.smoothness_lab as app
+    import apps.smoothness_lab_advanced as app
 
     return app
 
