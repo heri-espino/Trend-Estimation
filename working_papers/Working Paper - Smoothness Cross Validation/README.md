@@ -4,6 +4,17 @@
 
 **Status:** active independent statistical-methodology working paper. **Intended journal:** *Communications in Statistics—Simulation and Computation*. The manuscript is an interim working draft, **not submission-ready**.
 
+## Simulation study and forecast/recovery targets
+
+The new [shared simulation and evaluation protocol](../SIMULATION_EVALUATION_PROTOCOL.md)
+specifies: a source-inspired Cortés-Toto 2^4 design (linear/Beta-mixture,
+seasonality on/off, noise SD and N), extra linear/quadratic/cubic and
+non-polynomial trends, true-latent reconstruction versus genuine
+h-step forecast risk, raw and normalized smoothness, EDF, fixed/ad-hoc
+S and CV/GCV/AICc/BIC baselines. Use equal outer origins for
+every method and keep oracle trend data out of feasible selectors.
+The new experiments **have not been run**.
+
 ## Current protocol: weighted historical F, then its global minimum
 
 **Prospective method (2026-10-08):** the original equal-weight
