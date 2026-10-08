@@ -35,9 +35,9 @@ confirmation panel but not in the broad financial panel or changing-
 roughness simulation; they must not be presented as a necessary part
 of the proposed forecast-CV method.
 
-Numerical note: adaptive stationary-point bracketing and Brent refinement
-are implemented in the companion. Sturm-based certified isolation
-remains an exploratory proof of concept, not a completed solver.
+Numerical note: adaptive stationary-point bracketing, Brent refinement,
+and endpoint comparisons are used in the paper-scale experiments.
+They do not require a unimodal objective.
 
 ## Highest-priority works
 
