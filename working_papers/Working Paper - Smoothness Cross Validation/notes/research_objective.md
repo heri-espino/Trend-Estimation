@@ -10,6 +10,38 @@ The apparent paradox—how can the future determine present smoothness if the fu
 
 The object of interest is **normalized smoothness \(S\in[0,1]\)**. The penalty \(\lambda\) is an equivalent algebraic/numerical coordinate; in the scientific decision we choose \(S\).
 
+## Central contribution framing: an integration tailored to horizon h
+
+**This study does not invent several unrelated new methods. It combines established components into a single, operationally coherent procedure for selecting PLS smoothness for a declared forecasting horizon \(h\).** The scientific value, if supported, lies in the *specific predictive decision and what we can establish about its behavior*, not in claiming priority over each ingredient.
+
+The component methods are established:
+
+1. **Finite-difference penalized least squares (PLS):** estimate \(\widehat\tau=H_\lambda x\), with \(H_\lambda=(I+\lambda D_d^\top D_d)^{-1}\).
+2. **Orthogonal spectral decomposition:** diagonalize \(Q=D_d^\top D_d=U\operatorname{diag}(\delta_j)U^\top\) and represent the smoothing response as \(H_\lambda=U\operatorname{diag}((1+\lambda\delta_j)^{-1})U^\top\). This eigenvalue/EDF connection predates this project.
+3. **Trace-based normalized smoothness:** use the existing Guerrero-type EDF index, rescaled to the attainable range \(S(\lambda)=[L-\sum_j(1+\lambda\delta_j)^{-1}]/(L-d)\in[0,1]\). The rescaling is a mathematically equivalent coordinate for a fixed objective, **not a new smoother or novel statistical index**.
+4. **Finite-difference continuation for a declared horizon \(h\):** forecast the next \(h\) observations with the fixed operator \(G_{d,h}\), applied to the PLS-smoothed training window; the horizon is part of the decision problem, **not incidental notation**.
+5. **Chronological fixed-window rolling-origin time-series CV:** at each eligible *historical* origin, use a length-\(L\) past window to forecast a future block of the **same length \(h\)**. Forecast-based parameter tuning and rolling-origin CV are established tools.
+6. **Forecast-directed hyperparameter selection:** pool historical \(h\)-step forecast MSE across origins and minimize over \(S\in[0,1]\); refit the final length-\(L\) window at \(T\) before predicting the genuinely unknown \(T+1,\ldots,T+h\).
+
+In one expression, for fixed \(d,L,h\), the **integrated decision rule under investigation** is
+
+\[
+\boxed{
+\widehat S_{T,d,L,h}\in
+\arg\min_{S\in[0,1]}
+\frac{1}{Mh}\sum_{m=1}^M
+\left\|y_{t_m+1:t_m+h}
+-G_{d,h}H(S)y_{t_m-L+1:t_m}\right\|_2^2,
+\qquad t_m+h\le T.
+}
+\]
+
+**Precise claim:** we investigate and evaluate this *horizon-matched integration* of familiar smoothing, spectral, numerical and time-series validation tools. **Not claimed:** the invention of PLS, spectral EDF, Guerrero's index, reparameterization to \([0,1]\), the continuation concept, or rolling-origin CV. **Still to establish:** whether this exact combination and its mathematical/numerical analysis materially add to previous work, and in which settings it improves untouched out-of-sample forecasts.
+
+A synthesis is a potentially worthwhile applied/statistical-methodology contribution when it defines a useful decision problem, produces careful mathematics or numerical methods, and supplies compelling comparisons. Merely listing known tools together is **not** sufficient evidence of novelty or efficacy.
+
+**One-sentence paper framing:** “We investigate horizon-matched rolling-origin cross-validation for forecast-directed selection of spectrally parameterized, normalized penalized least-squares trend smoothness.”
+
 ## Mathematical definition
 
 For fixed difference order \(d\), estimation length \(L\), and horizon \(h\), define
