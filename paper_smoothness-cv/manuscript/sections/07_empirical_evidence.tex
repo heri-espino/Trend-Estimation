@@ -44,6 +44,49 @@ $h$ & vs.\ one-step forecast-CV & vs.\ GCV \\
 \end{tabular}
 \end{table}
 
+Three figures visualize distinct features of the primary
+forecast-CV experiment. \Cref{fig:cp03_loss_surfaces} illustrates
+how the chosen horizon changes the forecast-MSE surface over
+normalized smoothness. \Cref{fig:cp03_horizon_noise} compares
+horizon-matched selection with one-step tuning across the noise
+mechanisms. \Cref{fig:cp03_oracles} distinguishes the feasible
+predictive choice from two simulation-only latent oracles.
+The latent oracles are diagnostics, not deployable selection
+rules.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/fig_sim05_objective_curves.pdf}
+\caption{Checkpoint 03 example of horizon-specific forecast-loss
+surfaces over normalized smoothness, with each curve scaled by its
+minimum. The figure uses a fixed synthetic scenario with oscillatory
+trend and AR(1) observation noise. It illustrates the effect of the
+forecast horizon on the objective, not outer-test performance.}
+\label{fig:cp03_loss_surfaces}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/fig_sim01_horizon_matching_by_noise.pdf}
+\caption{Checkpoint 03 geometric forecast-RMSFE ratios of
+horizon-matched forecast-CV to one-step forecast-CV,
+stratified by observation-noise mechanism. Intervals are
+seed-resampling uncertainty summaries from the frozen
+simulation; values below one favor horizon matching.}
+\label{fig:cp03_horizon_noise}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/fig_sim04_smoothness_targets.pdf}
+\caption{Checkpoint 03 mean selected smoothness across forecast
+horizons for feasible forecast-CV, a latent historical
+trend-recovery oracle, and a latent future-forecast oracle.
+Both oracles use unobserved simulation information and are
+included solely to distinguish statistical targets.}
+\label{fig:cp03_oracles}
+\end{figure}
+
 \subsection{Optional time-adaptive extension: tracked-minimum decisions}
 
 Checkpoint 04 evaluated branch-based smoothness selection on a small
