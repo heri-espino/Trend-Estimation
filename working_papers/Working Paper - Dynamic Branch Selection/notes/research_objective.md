@@ -1,30 +1,47 @@
-# Research objective — dynamic branch selection
+# Research objective — method-dependent weighted-F branch tracking
 
-**Status:** active, independent exploratory working paper.
+**Active prospective redesign | 2026-10-08.** The current hypothesis is that
+temporal **trajectories of local minima of weighted forecast-loss surfaces**
+can support a better smoothing decision at a declared horizon \(h\).
+This paper is distinct from pooled forecast-CV: it preserves the history
+and identity of competing minima rather than selecting one global
+minimum of the latest aggregate.
 
-At each historical forecast origin t, consider the future-block MSE
-surface F_t(S) with S in [0,1], and detect local minimizing candidates.
-Match candidates between chronologically adjacent origins only when
-their validation blocks are **fully completed** by the operational
-forecast origin. A one-to-one correspondence may be chosen using
-a proximity radius epsilon or a more sophisticated matching rule;
-branch identities are data- and algorithm-dependent.
+At the current outer origin \(T\), freeze \((m,d,L,h)\) and the
+method's recency lookback/weights. \(m\) **weights historical loss curves**,
+not previous S values. For completed origins \(t_q+h\le T\),
 
-Store each branch as
 \[
-V_j=[(S_{j,t},\ell^{(1)}_{j,t},\ell^{(2)}_{j,t})]_t.
+\ell_{t_q}(S)=h^{-1}\|y_{t_q+1:t_q+h}
+-G_{d,h}H_{d,L}(S)y_{t_q-L+1:t_q}\|^2,
+\quad
+F_r^{(m,d,L,h)}(S)=
+\frac{\sum_{q\in I_m(r)}w^{(m)}_{r,q}\ell_{t_q}(S)}
+{\sum_{q\in I_m(r)}w^{(m)}_{r,q}}.
 \]
-Choose a branch j with \(\psi(V_1,\ldots,V_J)\), obtain today's
-smoothness \(\widehat S_T=\phi(V_j)\), refit the trend using the newest
-available window, and forecast the untouched future.
 
-Core empirical questions:
-1. Is the branch correspondence stable to stride, losses, crossings
-   and disappearing minima?
-2. Which, if any, branch decision maps beat pooled historical
-   forecast-CV on out-of-sample data?
-3. How should validation stride, order, window and horizon be frozen or
-   selected without looking at future test outcomes?
+For **each** predeclared method \(m\) and order \(d\), identify and
+track local minima of \(F_r\), including eligible endpoints. Associate
+minima between adjacent completed historical surfaces with one-to-one
+distance-limited correspondence. New/unmatched minima create new
+branches, lost minima retire. Multiple branches are *possible*, not
+assumed, for any \((m,d,L,h)\).
 
-Do not mistake per-fold grid minima for certified interior minima;
-do not treat the existence of V as evidence that its decisions improve forecasts.
+Store \(V_j=[(r,t_r,S^*_{j,r},F_r(S^*_{j,r}))]\).
+Choose an active branch \(\widehat j_T=\psi(V)\) from **completed
+historical** evidence using a fixed support and loss-ranking policy.
+Then map the selected branch to one operational S via a separately
+specified \(\phi\), initially **mean of its last three minima**.
+Refit on the newest length-\(L\) window, issue a fresh \(h\)-step
+forecast, and evaluate against an untouched outer block. Neither
+branch construction nor selection requires a second inner Val2.
+
+This is the **new** protocol, not the Val1/Val2 transformed-loss method
+used in historical CP04–CP08. Those frozen results must not be
+relabelled as tests of the proposed redesign. The objective remains
+empirical: when, if ever, does retaining the temporal identities
+of local minima improve genuinely out-of-sample prediction relative
+to simply minimizing the latest weighted surface?
+
+Full common definition: [Weighted-surface protocol](../../WEIGHTED_SURFACE_PROTOCOL.md).
+Implementation: [Dynamic decision notes](dynamic_tracked_smoothness.md).
