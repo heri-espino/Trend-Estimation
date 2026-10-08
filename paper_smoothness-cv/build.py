@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the Journal of Forecasting smoothness-CV manuscript.
+"""Build the plain, single-column LaTeX forecasting manuscript.
 
 Usage
 -----
@@ -35,26 +35,17 @@ WORKFLOW_FIGURE = SOURCE_DIR / "figures" / "fig_workflow_tutorial.pdf"
 WORKFLOW_GENERATOR = (
     "python experiments/smoothness_cv/make_workflow_tutorial_figure.py"
 )
-VENDOR_DIR = PAPER_DIR / "vendor" / "wiley_njd_v5"
 BUILD_DIR = PAPER_DIR / "build"
 STAGE_DIR = BUILD_DIR / "stage"
 MAIN_TEX = SOURCE_DIR / "main.tex"
 FINAL_PDF = PAPER_DIR / "EspinoMontelongo-2026-Forecast_Optimal_Smoothness.pdf"
 
-EXPECTED_CLASS = r"\documentclass[APA,Utopia2COL]{WileyNJDv5}"
-EXPECTED_JOURNAL = r"\journal{Journal of Forecasting}"
-LEGACY_RESERVE_INSERTS = r"\reserveinserts{28}"
-GUARDED_RESERVE_INSERTS = r"\ifdefined\reserveinserts\reserveinserts{28}\fi"
+EXPECTED_CLASS = r"\documentclass[11pt]{article}"
 
 
 def validate_layout() -> None:
-    required = [
-        MAIN_TEX,
-        SOURCE_DIR / "references.bib",
-        VENDOR_DIR / "WileyNJDv5.cls",
-        VENDOR_DIR / "wileyNJD-Harvard.bst",
-    ]
-    missing = [p.relative_to(PAPER_DIR) for p in required if not p.exists()]
+    required = [MAIN_TEX, SOURCE_DIR / "references.bib"]
+    missing = [p.relative_to(PAPER_DIR) for p in required if not p.is_file()]
     if missing:
         raise SystemExit(
             "Manuscript layout check failed; missing:\n- "
@@ -64,10 +55,16 @@ def validate_layout() -> None:
     source = MAIN_TEX.read_text(encoding="utf-8")
     if EXPECTED_CLASS not in source:
         raise SystemExit("main.tex must use " + EXPECTED_CLASS)
-    if EXPECTED_JOURNAL not in source:
-        raise SystemExit("main.tex must identify Journal of Forecasting")
+    for removed_command in (
+        r"\journal{", r"\articletype{", r"\bmsection",
+        r"\documentclass[APA,Utopia2COL]{WileyNJDv5}",
+    ):
+        if removed_command in source:
+            raise SystemExit(
+                f"main.tex still has a Wiley-specific command: {removed_command}"
+            )
 
-    expected_sections = [
+    expected_sections = (
         "01_introduction.tex",
         "02_related_work.tex",
         "03_penalized_trend.tex",
@@ -77,10 +74,10 @@ def validate_layout() -> None:
         "07_empirical_evidence.tex",
         "07_scope_and_implications.tex",
         "08_conclusion.tex",
-    ]
+    )
     missing_sections = [
         name for name in expected_sections
-        if not (SOURCE_DIR / "sections" / name).exists()
+        if not (SOURCE_DIR / "sections" / name).is_file()
     ]
     if missing_sections:
         raise SystemExit(
@@ -92,7 +89,6 @@ def validate_layout() -> None:
             f"Missing workflow tutorial figure: {WORKFLOW_FIGURE}. "
             f"From the repository root, run: {WORKFLOW_GENERATOR}"
         )
-
     missing_figures = [
         name for name in FIGURE_NAMES
         if not (FIGURE_SOURCE_DIR / name).is_file()
@@ -115,25 +111,11 @@ def prepare_stage() -> None:
     if STAGE_DIR.exists():
         shutil.rmtree(STAGE_DIR)
     STAGE_DIR.parent.mkdir(parents=True, exist_ok=True)
-
-    shutil.copytree(VENDOR_DIR, STAGE_DIR)
-    shutil.copytree(SOURCE_DIR, STAGE_DIR, dirs_exist_ok=True)
-
+    shutil.copytree(SOURCE_DIR, STAGE_DIR)
     staged_figures = STAGE_DIR / "figures"
     staged_figures.mkdir(parents=True, exist_ok=True)
     for name in FIGURE_NAMES:
         shutil.copy2(FIGURE_SOURCE_DIR / name, staged_figures / name)
-
-    staged_class = STAGE_DIR / "WileyNJDv5.cls"
-    source = staged_class.read_text(encoding="utf-8")
-    if LEGACY_RESERVE_INSERTS in source:
-        staged_class.write_text(
-            source.replace(LEGACY_RESERVE_INSERTS, GUARDED_RESERVE_INSERTS),
-            encoding="utf-8",
-        )
-
-    # Prefer the TeX distribution's internally consistent listings package.
-    (STAGE_DIR / "listings.sty").unlink(missing_ok=True)
 
 
 def run(command: list[str]) -> None:
@@ -145,43 +127,33 @@ def build() -> Path:
     validate_layout()
     prepare_stage()
 
-    latexmk = shutil.which("latexmk")
-    xelatex = shutil.which("xelatex")
+    pdflatex = shutil.which("pdflatex")
     bibtex = shutil.which("bibtex")
+    latexmk = shutil.which("latexmk")
+    if not pdflatex or not bibtex:
+        raise SystemExit(
+            "A standard LaTeX installation with pdflatex and bibtex "
+            "is required. Run with --check to validate sources only."
+        )
 
-    if latexmk and xelatex:
+    if latexmk:
         run([
-            latexmk,
-            "-xelatex",
-            "-bibtex",
-            "-interaction=nonstopmode",
-            "-halt-on-error",
-            "-file-line-error",
-            "main.tex",
+            latexmk, "-pdf", "-interaction=nonstopmode",
+            "-halt-on-error", "-file-line-error", "main.tex",
         ])
-    elif xelatex and bibtex:
+    else:
         common = [
-            xelatex,
-            "-interaction=nonstopmode",
-            "-halt-on-error",
-            "-file-line-error",
-            "main.tex",
+            pdflatex, "-interaction=nonstopmode",
+            "-halt-on-error", "-file-line-error", "main.tex",
         ]
         run(common)
         run([bibtex, "main"])
         run(common)
         run(common)
-    else:
-        raise SystemExit(
-            "XeLaTeX toolchain not found. Install xelatex and bibtex "
-            "(latexmk recommended), or run with --check."
-        )
 
     staged_pdf = STAGE_DIR / "main.pdf"
-    if not staged_pdf.exists():
+    if not staged_pdf.is_file():
         raise SystemExit("Compilation finished without main.pdf")
-
-    FINAL_PDF.unlink(missing_ok=True)
     shutil.copy2(staged_pdf, FINAL_PDF)
     print(f"Built {FINAL_PDF}")
     return FINAL_PDF
@@ -202,7 +174,7 @@ def main(argv: list[str] | None = None) -> int:
             return 0
     if args.check:
         validate_layout()
-        print("Journal of Forecasting manuscript layout check passed")
+        print("Standard article LaTeX layout check passed")
         return 0
     build()
     return 0
