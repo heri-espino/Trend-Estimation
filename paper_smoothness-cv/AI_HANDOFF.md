@@ -1,375 +1,98 @@
-# AI Handoff — Forecast-optimal smoothness CV paper
+# AI handoff — living forecast-smoothness cross-validation research
 
-## Identity and priority
+**UPDATED 2026-10-08. READ THIS BEFORE MODIFYING THE FORECASTING PROJECT.**
 
-**Central contribution:** choose normalized smoothness for a
-finite-difference PLS trend by minimizing historical chronological
-$h$-step **forecast MSE** with a declared continuation operator
-and an information-safe final refit.
+## Current priority / how to work
 
-**Not central:** temporal branches. Those are an optional
-hyperparameter adaptation layer, not required for pooled forecast-CV.
+**The completed notes are the research source of truth. The existing LaTeX manuscript is a CSSC-oriented working draft, NOT a finalized article or an instruction to reuse CP03 results unchanged in the final submission.** The plan is to finish the conceptual, numerical, prior-art and experimental work, then rewrite the final paper from the notes. Do not opportunistically patch the manuscript to fit whatever preliminary result looks favorable.
 
-Core formulation:
+Start with:
+1. notes/INDEX.md — notes/navigation.
+2. notes/research_objective.md — scientific objective.
+3. notes/mathematical_foundations.md — eigendecomposition, index, forecast MSE, analytic derivatives, roots.
+4. notes/validation_semantics.md — chronology, no future leakage, mandatory refit.
+5. notes/claim_boundaries.md — evidence versus conjecture.
+6. notes/research_log_2026-10.md — completed experiment history.
+7. notes/next_experiments.md and notes/roadmap.md — next decision gates.
+8. notes/literature_positioning.md — closest prior literature.
+
+## The actual question
+
+A smoothing penalty makes a historical PLS trend appear regular. But which smoothing value gives the best **forecast** of the trend's continuation over a declared horizon \(h\)? We investigate choosing the **normalized smoothness index** \(S\in[0,1]\) using MSE on the subsequently realized future blocks of *previous historical forecast origins*. Today's actual future remains unknown.
+
+For length-\(L\) history \(x_t\), \(d\)th-difference penalty \(Q=D_d^\top D_d\), and smoothing matrix \(H_\lambda=(I+\lambda Q)^{-1}\), the normalized spectral index is
 
 \[
-H_\lambda=(I+\lambda D_d^\top D_d)^{-1},
-\qquad \widehat\tau_T=H_\lambda x_T,
+S(\lambda)=1-\frac1{L-d}\sum_{j=1}^{L-d}(1+\lambda\delta_j)^{-1}.
 \]
 
+\(S\) maps the full penalty range \([0,\infty]\) to \([0,1]\), including the exact limiting polynomial least-squares projection. It is a monotone rescaling of an established Guerrero-type index, **not a new smoothing operator or an optimizer that changes the exact fitted-trend optimum by itself**.
+
+For historical origins \(t_m\) whose validation blocks have ended by \(T\):
+
 \[
-F^{\mathrm{pool}}_{d,L,h}(S)
-=\frac1M\sum_{m=1}^M\frac1h
+F^{\mathrm{pool}}_{T,d,L,h}(S)=\frac1{Mh}\sum_m
 \|y_{t_m+1:t_m+h}-G_{d,h}H_{\lambda(S)}x_{t_m}\|_2^2,
 \]
 
-\[
-\widehat S_{T,d,L,h}^{\mathrm{FCV}}
-\in\arg\min_{S\in[0,1]}F^{\mathrm{pool}}_{d,L,h}(S).
-\]
-
-The smoothness index and PLS smoother are established;
-the paper investigates their explicit horizon-matched
-forecast-loss tuning, compared with one-step CV, ordinary
-CV, GCV, AICc, and simulation oracles. CP03 is the
-core controlled experiment (3,000 scenarios and
-72,000 origin-horizon decisions).
-
-## Numerical search
-
-The forecast-MSE objective can contain several interior minima.
-The implementation uses an adaptive search over bounded S,
-Brent refinement of bracketed derivatives, and comparison with
-both limiting endpoints. This statistical manuscript stands alone.
-
-## Optional time-adaptive formulation
-
-If a user assumes stable or evolving preferred smoothness
-regimes, chronological minima may be tracked into histories
-`V_j=[S, Val1 loss, Val2 loss]`.
-Select a branch with `psi` and choose smoothness with
-`phi(V_j)`. Recency, historical predictive loss, medians,
-means, and extrapolations express different assumptions.
-CP04–CP08 evaluate this option, including mixed and
-unfavorable aggregate comparisons with pooled CV.
-
-See `notes/dynamic_tracked_smoothness.md` for the
-extension's mechanics. Do not replace the core forecast-CV
-framing with the extension's goals.
-
-## Non-negotiable validation semantics
-
-At an outer forecast origin `T`, no observation after `T` may affect branch
-selection, the final smoothness rule, or the trend fit.
-
-After `S_hat_T` is produced, discard all historical fold-specific trend fits and
-perform a fresh fit on
+with the \(S=1\) endpoint defined by the projection limit, and
 
 \[
-y_{T-L+1:T}.
+\widehat S_{T,d,L,h}^{\mathrm{FCV}}\in\arg\min_{S\in[0,1]}
+F^{\mathrm{pool}}_{T,d,L,h}(S).
 \]
 
-Then forecast the untouched future block. We may average losses or values of
-`S` when a declared `phi` rule requires it; **we never average old trend fits**.
+After selecting \(S\), **discard historical fits**, refit on \(y_{T-L+1:T}\), and use \(G_{d,h}\) to forecast the as-yet-unobserved \(y_{T+1:T+h}\). With fixed \(d\), the continuation is a polynomial of degree at most \(d-1\); choosing \(S\) changes its fitted coefficients, **not its degree**.
 
-## Current implementation mapping
+## Mathematical elements to carry forward
 
-`experiments/numerical_smoothness_selection/run_two_stage_order_validation.py`
-already implements:
+- \(Q\) is PSD, with \(d\) zero eigenvalues and \(L-d\) positive eigenvalues. Spectral shrinkage of \(H_\lambda\) gives an intuitive interpretation and permits reuse across candidate smoothness.
+- Effective degrees of freedom: \(\operatorname{edf}=L-(L-d)S\).
+- The forecast error has a quadratic expansion in \(GH_\lambda x\), but is not generally a quadratic/convex function of \(S\).
+- Matrix resolvent derivatives:
+  \[
+  H_\lambda'=-H_\lambda QH_\lambda,\quad
+  H_\lambda''=2H_\lambda QH_\lambda QH_\lambda,\quad
+  H_\lambda^{(n)}=(-1)^n n!\,H_\lambda(QH_\lambda)^n.
+  \]
+- The forecast MSE gradient/Hessian and \(S\)-chain rule are derived in notes/mathematical_foundations.md. Use analytic derivatives where possible.
+- Multiple minima are possible. All recovered interior candidates and the *exact* endpoints must be considered. The pooled optimum need not equal an average of individual-origin minima.
+- Small exact-rational Sturm isolation is a possible numerical diagnostic. Do not confuse small-case algebraic root completeness with proof of global minimum ordering or scalable certified root-finding.
 
-- local-minimum recovery at each rolling origin;
-- epsilon branch tracking;
-- one-to-one branch continuation;
-- Validation-1 loss;
-- refit through Validation 1;
-- Validation-2 loss;
-- persistence summaries;
-- branch selection by historical Validation-2 loss;
-- final `last` local-minimum rule;
-- untouched-test scoring.
+## Experimental facts, status and priorities
 
-It also records branch mean/median and recent-five mean/median as diagnostics.
-Those summaries are not yet competing final `phi` methods.
+The old runs are **real and remain preserved**, not “not executed” or “wrong”:
 
-## Relationship to CP03
+| Checkpoint(s) | Historical finding | Current interpretation |
+| --- | --- | --- |
+| CP01–CP02 | Developed/adjusted the original simulation design | Historical, not independent final evidence |
+| CP03 | 3,000 scenarios / 72,000 outer decisions; matched-horizon FCV favored vs one-step CV in the frozen aggregate at longer \(h\) | **Provisional old method/results**; preserve exact artifacts, do not automatically reuse as final simulation |
+| CP04 | Small four-series held-out test favored a recency branch rule | Exploratory, limited generality |
+| CP05 | 64-series external panel disfavored that branch rule versus pooled CV | Important negative result |
+| CP06 | Post-hoc continuation-order instability diagnosis | Mechanism study, not new confirmation |
+| CP07 | Changing-roughness experiment did not favor recency versus pooled CV | Negative/limited extension evidence |
+| CP08 | Demonstrated many possible \(\phi(V_j)\) smoothness maps without a universal winner | Optional method-family illustration |
 
-CP01--CP03 develop and validate the primary pooled forecast-CV method.
-The CP03 design and observed results are frozen; they form the central
-empirical evidence of the forecasting manuscript. CP04--CP08 then
-study optional dynamic `phi(V_j)` rules on their own terms.
+**Next:** (1) test old and new numerical solvers on *exactly the same* forecast-loss surfaces; (2) evaluate spectral caching, analytic gradients and endpoint/minimum recovery; (3) decide/freeze a new statistical simulation design only after solver comparison; (4) investigate the closest prior art; (5) only then write the final paper from the notes.
 
-## Paper boundary
+A new solver may change approximate solutions and even empirical outcomes, but **must not be credited with changing the true exact optimum for an identical objective**. Do not interpret the historical numbers as guaranteed values under a new implementation, or erase them in expectation of a new run.
 
-`paper_smoothness-cv/` owns the horizon-matched forecast-MSE
-smoothness selector, validation/refit protocol, comparative forecast
-evidence, and optional `V_j`, `psi`, and `phi` extensions.
+## Optional branch histories — independent of primary CV
 
-The implementation and results are documented within this
-manuscript's own source and frozen experiment artifacts.
+Previous explorations tracked historical single-origin minimum locations and losses into \(V_j=[S_{j,t},\ell^{(1)}_{j,t},\ell^{(2)}_{j,t}]_t\). Under an explicit persistence assumption, a branch selector \(\psi\) and rule \(\phi(V_j)\) can choose current \(S\). This is **not required** for pooled forecast-CV and is not universally better in existing experiments. Tracking identity is ambiguous near crossings and births; origin \(T\)'s unseen test data must never enter the branch state.
 
-## Intended journal
+Detailed formulas: notes/dynamic_tracked_smoothness.md. Prior runners, frozen parameters and exact panel results remain documented in checkpoints/ and results/smoothness_cv/.
 
-Communications in Statistics--Simulation and Computation.
+## Literature and journal
 
-## Claim rule
+Working outlet: *Communications in Statistics—Simulation and Computation*. Closest work: Guerrero (2007, 2008); Cortés-Toto et al. (2017); Islas, Guerrero and Silva (2019); Islas Camargo and Zumaya Galván (2025); Hart (1994); Vilar-Fernández and Cao (2007); Franke et al. (2026); Biessy (2026).
 
-Do not claim the first predictive smoothing selector or universal superiority.
-Any novelty claim about tracked minima must be audited against the literature
-before submission.
+**Do not claim that smoothing for forecasting, selecting smoothing by prediction error, PLS, or normalized smoothness are independently new.** Whether the *precise* finite-difference PLS \(h\)-step CV criterion is novel is an open literature question. Distinguish target recovery from future observation MSE.
 
-## Current execution checkpoint — CP04
+## Safe editing instructions
 
-CP03 pooled paper-scale results have been committed. CP04 is now implemented
-as the development experiment for dynamic tracked-branch rules.
-
-Run `run_checkpoint_04.py --preset smoke` first, then `--preset refine` if
-smoke passes. The refine preset uses six development outer blocks per series
-while reserving the newest four non-overlapping blocks for later confirmation.
-
-After refine, push the result bundle and stop. Do not inspect the reserved
-confirmation region until `phi`, K/half-life, and the confirmation protocol
-have been frozen in `checkpoints/CP04_DYNAMIC_BRANCH_RULES.md`.
-
-
-## Frozen CP04 confirmation specification
-
-The development rerun is complete. `recency_hl3` is frozen as the primary
-dynamic rule before inspecting the reserved confirmation blocks.
-
-Development result:
-- geometric RMSFE vs `last`: 0.7989;
-- geometric RMSFE vs `pooled_cv_same_config`: 1.0491.
-
-The latter means the dynamic rule did not beat the pooled baseline on aggregate
-development data; confirmation is therefore genuinely informative rather than
-a formality.
-
-The confirmation preset evaluates only:
-- `recency_hl3`;
-- `last`;
-- `pooled_cv_same_config`.
-
-Frozen parameters: level RMSE, track epsilon 0.10, candidate spacing 0.02,
-max minima 5. Run `run_checkpoint_04.py --preset confirmation` exactly once,
-then analyze and push the result.
-
-
-## CP04 completed confirmation result
-
-CP04 is complete. The frozen `recency_hl3` rule was evaluated once on the
-reserved confirmation blocks.
-
-Confirmation geometric RMSE ratios:
-- vs pooled forecast-CV: **0.6920**, wins 13/16;
-- vs newest tracked minimum: **0.8137**, wins 9/16.
-
-The pooled comparison favors the dynamic rule in aggregate for AAPL, GDPC1,
-and SPY; BTC-USD is slightly above one. Leave-one-series-out dynamic/pooled
-ratios all remain below one.
-
-Do not retune CP04.
-
-The active next checkpoint is `checkpoints/CP05_EXTERNAL_PANEL.md`, a frozen
-64-series external Yahoo panel excluding AAPL, SPY, and BTC-USD. The only
-dynamic rule is still `recency_hl3`.
-
-
-## CP05 completed external-panel result
-
-CP05 is complete on 64 previously unused Yahoo series.
-
-Frozen `recency_hl3` versus pooled forecast-CV:
-- geometric RMSE ratio: **1.6421**;
-- descriptive series-cluster interval: **[1.1678, 2.7033]**;
-- outer-block win rate: 46.5%;
-- series-level win rate: 39.1%.
-
-Therefore the CP04 pooled-CV advantage did **not** generalize.
-
-Frozen `recency_hl3` versus newest tracked minimum:
-- geometric RMSE ratio: **0.5246**;
-- descriptive interval: **[0.2001, 0.9052]**.
-
-The tracked recency average strongly stabilizes `last`, but this does not make
-it better than pooled CV overall.
-
-Post-hoc mechanism diagnostics point strongly to high-order continuation:
-dynamic/pooled geometric ratios are roughly 1.008 for d=1, 1.018 for d=2,
-1.249 for d=3, and 7.960 for d=4. Several d=4 cubic extrapolations become
-astronomically large.
-
-The active next checkpoint is `checkpoints/CP06_ORDER_STABILITY.md`, a
-post-hoc mechanism study on earlier historical outer blocks. It must not be
-described as independent confirmation.
-
-
-## CP07 completed dynamic-roughness result
-
-CP07 fixed d=2 and isolated time-varying latent roughness from high-order
-continuation instability.
-
-Frozen recency_hl3 versus pooled forecast-CV:
-- all mechanisms: gRMSE ratio 1.037;
-- changing roughness: 1.028;
-- stationary roughness: 1.056.
-
-Frozen recency_hl3 versus newest tracked minimum:
-- all mechanisms: 0.945.
-
-Therefore backward-looking recency averaging stabilizes a tracked minimum but
-does not beat pooled forecast-CV, even in the prospective changing-roughness
-simulation.
-
-The next experiment is CP08. It uses fresh seeds and tests the original
-forward-looking extension: predict/extrapolate the selected branch's smoothness
-trajectory rather than averaging it backward.
-
-CP08 is **not** a competition to find a universally best \(\phi\). Its role is
-to demonstrate that the branch matrix \(V_j\) supports many coherent
-branch-to-smoothness rules: means, medians, recency weighting, loss weighting,
-linear extrapolation, weighted trend extrapolation, and increment
-extrapolation. Their empirical differences are reported as behavior of the
-design space, not as a winner-selection exercise.
-
-
-## CP08 result — rule-family demonstration complete
-
-The CP08 paper preset finished 1,200 scenarios and 9,600 forecast decisions.
-It demonstrates different branch-to-smoothness maps from the same tracked
-branch history, without selecting a universal winner.
-
-Examples of geometric observed-log RMSE ratios relative to pooled forecast-CV:
-- recency_hl3: 1.0409, clipping rate 0%;
-- ew_linear_hl5: 1.0627, clipping rate 10.8%;
-- linear_k10: 1.0790, clipping rate 18.4%;
-- delta_hl3: 1.1103, clipping rate 22.3%.
-
-No aggregate superiority over pooled CV was found for the tested rules.
-The contribution being developed is the branch representation and the family
-of legitimate mappings phi(V_j), not a winning selector.
-
-Next: generate figures with make_checkpoint_08_figures.py and consolidate
-the manuscript. Do not continue a winner-selection sequence.
-
-## Manuscript integration checkpoint
-
-CP08 figures are committed in its frozen paper run under
-`results/smoothness_cv/checkpoint_08/20261007T072243Z_paper_be492a8/paper_artifacts/figures/`.
-All three figures are referenced by the new manuscript section
-`manuscript/sections/07_empirical_evidence.tex`, integrating CP03--CP08.
-`build.py` now stages the frozen figure PDFs from the committed results.
-
-The current manuscript abstract, introduction, protocol, discussion,
-and conclusion reflect the measured results, not hypothetical planned
-results. It explicitly rejects any blanket claim that dynamic branch rules
-outperform pooled forecast-CV. The primary contribution is horizon-matched pooled forecast-CV over S;
-tracked histories and phi(V_j) are an optional adaptation layer.
-
-The next user action is to run `python paper_smoothness-cv/build.py --check`,
-then `python paper_smoothness-cv/build.py` with a local XeLaTeX/BibTeX toolchain.
-Review the resulting PDF for table/float layout before submission.
-
-## Workflow tutorial figure
-
-The forecasting paper now references `figures/fig_workflow_tutorial.pdf`
-in `manuscript/sections/06_evaluation_protocol.tex`, via a full-width
-`figure*` float capped to the available text height.
-
-The generator is
-`experiments/smoothness_cv/make_workflow_tutorial_figure.py`.
-It plots five horizontal panels: chronology (train, historical Val1 and
-Val2, a distinct final Val1, untouched test), fresh fitted trends,
-three test forecasts, **final Val1 forecast-loss surface**, and tracked
-branches with `phi(V_j)` decisions. No test observation enters smoothness
-selection or the plotted validation objective.
-
-The deterministic illustrated case is CP07 DGP: seed 100, switch to
-roughness, noise_sd 0.01, outer number 8, d=2, L=120, H=20.
-Output PDF, PNG and JSON provenance go to the manuscript figures folder.
-The figure is educational; do not claim superior performance from it.
-
-Run generator first, then `python paper_smoothness-cv/build.py --check`,
-then `python paper_smoothness-cv/build.py`. Missing figure fails preflight
-with a specific error. The figure has not yet been rendered or reviewed on
-the user's local machine.
-
-
-## Workflow figure visual audit and fail-fast manuscript build
-
-The committed five-panel PNG was visually inspected. Its chronology,
-refits, surface, and branch plot are legible and the three example S
-decisions match JSON provenance. A minor issue in Panel A was fixed:
-shaded-region labels are moved down away from the observed series,
-with the legend shifted to the upper left.
-
-The latest user commit (88bf9065) added only the figure PDF/PNG/JSON;
-it did not change the compiled Wiley manuscript PDF, whose most recent
-commit was 81a2030. Therefore that commit alone does NOT verify a
-successful updated paper build.
-
-New Windows script:
-`paper_smoothness-cv/build-workflow-paper.ps1`.
-It tests chronology, regenerates the figure, runs build preflight,
-compiles Wiley LaTeX, checks the PDF timestamp/size, stops on any
-failure, and prints git status. User should run this after git pull,
-then commit the resulting figure and main PDF if successful. Visually
-inspect the complete compiled PDF before publication.
-
-## Standard LaTeX article conversion
-
-The forecasting manuscript `manuscript/main.tex` now uses standard
-`\documentclass[11pt]{article}`: one column, default font and margins,
-plain title/abstract and sections. Scientific content, figures,
-citations, and manuscript sections are retained. No Wiley journal class
-or two-column template is loaded. Bibliography uses BibTeX `plain`.
-
-`paper_smoothness-cv/build.py` stages the manuscript and frozen CP08
-figures without staging Wiley vendor files. It runs standard `pdflatex`
-and `bibtex`, using `latexmk` optionally. The output PDF path is unchanged.
-The workflow tutorial is now a one-column figure float, with height cap.
-
-`build-workflow-paper.ps1` regenerates the tutorial, runs chronology
-and standard article tests, validates layout, and compiles the PDF.
-The new test file is `tests/test_smoothness_plain_article.py`.
-
-The new PDF has not yet been compiled locally; the last committed PDF
-may still contain Wiley formatting. Next: git pull, run PowerShell build,
-and push the rebuilt PDF.
-
-## Platform split — Windows preparation, macOS compilation
-
-**Current operational workflow; supersedes older mixed-machine build instructions.**
-
-- Windows: `paper_smoothness-cv/prepare-paper.ps1` installs Python package,
-  runs targeted pytest, generates tutorial PDF/PNG/JSON, and calls
-  `build.py --check` only. It does not compile LaTeX. Push figure assets.
-- macOS: `paper_smoothness-cv/compile-paper.sh` runs source preflight
-  and the real `build.py` pdflatex/BibTeX compilation. It does not
-  regenerate figures or run experimental Python. Push the compiled paper PDF.
-- `build-workflow-paper.ps1` is now a backward-compatible Windows-only
-  alias to `prepare-paper.ps1`; older text saying it compiles is obsolete.
-
-Build inputs exchange through GitHub; perform `git pull` before each stage.
-Unit tests in `tests/test_paper_platform_workflows.py` protect separation.
-Do not change any numerical experiment or frozen result for this split.
-
-## macOS compilation failure: request first TeX log error
-
-The user reported a failed `latexmk` / `pdflatex` run, but pasted only
-the final wrapper and Python `CalledProcessError`. These contain NO
-underlying LaTeX error, so the cause cannot be identified yet.
-
-Static checks found balanced braces/environments, balanced inline/display
-math delimiters, only ASCII in manuscript sections and `.bib`, and
-four expected included figure paths; these do not prove successful TeX.
-
-`build.py` now catches the compilation subprocess failure and prints
-the first error from retained `build/stage/main.log`, rather than a
-generic Python traceback. `python3 paper_smoothness-cv/build.py --diagnose`
-prints the same first error from the prior log without recompiling.
-
-Next user action, **on macOS**:
-`git pull` then `python3 paper_smoothness-cv/build.py --diagnose`.
-Ask user to paste its first error/context, then fix the responsible `.tex`
-line or package in GitHub. Do not guess source of error or claim it is fixed.
-Do not run TeX from Windows.
+- If the user requests notes, modify notes and handoff/docs; do not silently rerun simulations or rewrite final paper.
+- Preserve originals in checkpoints and results; historical “next” instructions are archival.
+- Use GitHub as source of truth; document any new methodology, parameters, and protocol changes.
+- Report what is derived, implemented, tested, and still merely a hypothesis as different statuses.
+- The current manuscript is not submission-ready merely because a CSSC-oriented draft exists.

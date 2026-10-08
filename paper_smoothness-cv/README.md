@@ -4,7 +4,17 @@
 
 **Intended journal:** *Communications in Statistics—Simulation and Computation*.
 
-**Working title:** *Forecast-Optimal Smoothness Selection by Chronological Cross-Validation*.
+**Provisional working title:** *Horizon-Matched Cross-Validation for Forecast-Optimal Penalized Trend Smoothness*.
+
+## Research status — important 2026-10-08 update
+
+**Research is ongoing; the present LaTeX article is a WORKING DRAFT, not the final publication text.** The current source of truth is [notes/INDEX.md](notes/INDEX.md), followed by [notes/research_objective.md](notes/research_objective.md), [notes/mathematical_foundations.md](notes/mathematical_foundations.md), [notes/research_log_2026-10.md](notes/research_log_2026-10.md), and [notes/next_experiments.md](notes/next_experiments.md).
+
+The main problem is choosing the normalized index S over [0,1] by *historical completed future-block forecast MSE* to produce an extrapolatable trend; no current unobserved future enters the selection. Eigenvalue decomposition, analytic derivatives, and multi-minimum optimization are central technical topics. Branch tracking remains optional.
+
+CP01–CP08 have already run and their results are preserved. **We plan to compare numerical solvers and may rerun/redesign simulations**; historical CP03 results should not automatically be treated as the definitive experiments for the final article. Changing the numerical solver does not change the exact minimizer of an unchanged mathematical objective.
+
+**Editorial timing:** after mathematical/numerical verification and new experiment decisions, rewrite the final independent article from the completed notes. Earlier build and submission-ready checklists are provisional.
 
 ## Manuscript for Communications in Statistics—Simulation and Computation
 
@@ -71,10 +81,10 @@ After selection, discard all historical fitted trends, refit
 on the latest `L` observations, and extrapolate into the
 untouched future block.
 
-Primary comparison: horizon-matched forecast-CV against
+Earlier primary comparison: horizon-matched forecast-CV against
 one-step forecast-CV, ordinary CV, GCV, AICc, and
-simulation-only signal-recovery oracles. CP03 is the frozen
-paper-scale core evaluation.
+simulation-only signal-recovery oracles. CP03 was the frozen
+paper-scale evaluation **for the older design**, not necessarily the next final suite.
 
 ## Numerical implementation
 
@@ -110,7 +120,7 @@ a universally best map. See
   with conventional selectors, and optional adaptation examples.
 - Numerical implementation: bracket and refine competing stationary
   roots and compare both limiting smoothness endpoints.
-- Neither paper claims invention of PLS, predictive cross-validation
+- This study does not claim invention of PLS, predictive cross-validation
   in general, or the Guerrero smoothness index.
 
 ## Completed empirical evidence
@@ -131,8 +141,7 @@ a universally best map. See
   reproducible figures and boundary-clipping diagnostics.
 
 CP08 closes the rule-family demonstration stage; no universally best
-functional is claimed. The next step is to compile and review the
-manuscript, including the completed empirical section and illustrations.
+functional is claimed. The next research step is **numerical verification and a new experimental decision**, not merely compiling the existing working draft. A PDF can still be built for inspection.
 
 
 ## Read first
@@ -146,7 +155,7 @@ manuscript, including the completed empirical section and illustrations.
 
 ## Build: separate Windows and macOS stages
 
-The manuscript uses standard `article` LaTeX, one column, and BibTeX `plain`.
+The working manuscript uses standard `article` LaTeX, one column, and BibTeX `plainnat` with author-year citations.
 The Python preparation and the LaTeX build are **not** run on the same
 machine. The two stages exchange generated assets through GitHub.
 

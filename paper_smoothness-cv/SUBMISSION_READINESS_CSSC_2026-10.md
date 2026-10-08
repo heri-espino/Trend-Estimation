@@ -1,3 +1,7 @@
+> **2026-10-08: WORKING-DRAFT CHECKLIST ONLY.** This submission-preparation file documents the October CSSC-oriented *interim* manuscript, **not the final stage of the project**. Numerical methods are being reassessed and new simulations may replace old CP03 results in a future submission, while all old outputs remain archived. We intend to finish research notes, select numerical methods, run/freeze any new experiments, complete prior-art work, and **only then rewrite the final paper**. Compilation/style checks listed below are still relevant but are not the next scientific priority. See [notes/INDEX.md](notes/INDEX.md), [notes/research_log_2026-10.md](notes/research_log_2026-10.md), [notes/next_experiments.md](notes/next_experiments.md).
+
+---
+
 # Submission preparation: Communications in Statistics—Simulation and Computation
 
 Updated: October 8, 2026

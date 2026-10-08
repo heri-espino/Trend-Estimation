@@ -1,3 +1,7 @@
+> **RESEARCH UPDATE 2026-10-08:** This is a **dated CSSC literature audit**, not the final prior-art verdict or a declaration that the paper is finished. The current research question is explicit (h)-step PLS forecast-CV over normalized smoothness (Sin[0,1]), with spectral computation, analytic derivatives and a multimodal objective. We still need to determine whether an exactly equivalent forecast-tuning method has appeared before. CP03 and later checkpoint results are historical, potentially not the final new simulations; notes are the current research source. See [notes/INDEX.md](notes/INDEX.md) and [notes/literature_positioning.md](notes/literature_positioning.md).
+
+---
+
 # Literature and citation audit — October 2026
 
 This note documents the reference revision of
