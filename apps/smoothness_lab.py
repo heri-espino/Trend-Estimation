@@ -1246,11 +1246,22 @@ def main() -> None:
                 & resultado.evaluations["rama"].eq(b_v)
                 & resultado.evaluations["regla"].eq(r_v)
             ]
+            mostrar_otras = st.toggle(
+                "Mostrar las demás ramas con menor opacidad",
+                value=False, key="v_mostrar_otras_ramas",
+            )
+            otras = resultado.evaluations.loc[
+                resultado.evaluations["d"].eq(d_v)
+                & resultado.evaluations["regla"].eq(r_v)
+                & resultado.evaluations["rama"].ne(b_v)
+            ] if mostrar_otras else None
             st.plotly_chart(
-                _v_figure(subset, d_v, b_v, r_v), use_container_width=True
+                _v_figure(subset, d_v, b_v, r_v, others=otras),
+                use_container_width=True,
             )
             st.plotly_chart(
-                _v_losses(subset, d_v, b_v, r_v), use_container_width=True
+                _v_losses(subset, d_v, b_v, r_v, others=otras),
+                use_container_width=True,
             )
             st.dataframe(
                 _v_table(subset), use_container_width=True, hide_index=True,
@@ -1338,6 +1349,21 @@ def main() -> None:
             "Mostrar la función verdadera de la simulación",
             value="latent" in frame, disabled="latent" not in frame,
         )
+        if revelar:
+            st.plotly_chart(
+                _test_forecast_figure(
+                    frame, resultado, unidad, truth=latente
+                ),
+                use_container_width=True,
+            )
+            st.caption(
+                "Comparación retrospectiva: la línea de tendencia punteada "
+                "se calculó **antes de conocer las observaciones del test**. "
+                "Los valores reales se muestran únicamente para evaluar y "
+                "visualizar cómo habría funcionado el pronóstico. "
+                "No intervienen en la selección de d, rama, regla ni S."
+            )
+        st.subheader("Pronóstico posterior al último dato real")
         st.plotly_chart(
             _forecast_figure(
                 frame, resultado, unidad,
