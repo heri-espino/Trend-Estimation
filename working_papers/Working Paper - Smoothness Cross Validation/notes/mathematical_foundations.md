@@ -138,6 +138,41 @@ Therefore, for **finite** \(\lambda\), \(\ker(H_\lambda)=\{0\}\): the \(d\) zero
 
 **Numerical nuance:** invertibility is not the same as good conditioning. When \(d\ge1\), \(\kappa_2(A_\lambda)=1+\lambda\,\delta_{\max}\) and can grow without bound as \(\lambda\) increases, even though every finite \(A_\lambda\) is invertible. Reusing a spectral factorization or solving a structured linear system is preferable to explicitly constructing an unstable matrix inverse.
 
+### C2. Why the smoother always has real eigenvalues and real eigenvectors
+
+**Scope:** real consecutive-difference \(\displaystyle D_d\), \(1\le d<L\), pure zero-drift PLS, and finite \(\lambda\ge0\). We are discussing **the smoothing matrix** \(H_\lambda\), not the generally rectangular forecast continuation operator \(G_{d,h}\). The source code's forecasting module has also used the name \`H\` for a continuation matrix; use \(G_{d,h}\) in this manuscript to avoid a symbol collision.
+
+1. \(Q=D_d^\top D_d\) is **real symmetric**, since \(Q^\top=Q\), and **PSD**, since \(v^\top Qv=\|D_dv\|^2\ge0\). The real symmetric **spectral theorem** guarantees an orthonormal basis \(u_1,\ldots,u_L\in\mathbb R^L\) with **real**, nonnegative eigenvalues \(\delta_j\):
+   \[
+   Qu_j=\delta_j u_j,\qquad U^\top U=I.
+   \]
+   Nonnegativity also follows from \(\delta_j\|u_j\|^2=\|D_du_j\|^2\ge0\).
+
+2. Hence
+   \[
+   (I+\lambda Q)u_j=(1+\lambda\delta_j)u_j.
+   \]
+   Since \(1+\lambda\delta_j\ge1>0\), inversion is valid. Therefore the **same real orthonormal eigenvectors** diagonalize \(H_\lambda\), with
+   \[
+   \boxed{H_\lambda u_j=\mu_j(\lambda)u_j,\qquad
+   \mu_j(\lambda)=\frac{1}{1+\lambda\delta_j}\in(0,1].}
+   \]
+   In particular, \(H_\lambda=H_\lambda^\top\succ0\) for finite \(\lambda\ge0\); it has a complete real eigenbasis and **only real positive eigenvalues**.
+
+3. Exactly \(d\) eigenvalues of \(Q\) are zero; they become **eigenvalues equal to one**, not zero, in \(H_\lambda\). As \(\lambda\to\infty\), the remaining \(L-d\) eigenvalues converge to zero. The exact endpoint \(H_\infty=U_0U_0^\top\) remains real symmetric and PSD but **not** strictly positive definite or invertible. Its eigenvalues are exactly \(d\) ones and \(L-d\) zeros.
+
+4. Each response factor \(\mu_j(\lambda)\) measures the retained weight of a spectral direction, so
+   \[
+   \operatorname{edf}(\lambda)=\operatorname{tr}(H_\lambda)
+   =\sum_{j=1}^{L}\mu_j(\lambda),\qquad
+   S=\frac{L-\operatorname{edf}}{L-d}.
+   \]
+   Thus the EDF need **not** be an integer: partial spectral shrinkage gives fractional model complexity; at \(d=2\), its minimum is **2**, corresponding to a least-squares line (not 1 EDF). \(\lambda=0\) gives \(L\) EDF; \(S=1\) gives \(d\) EDF.
+
+**Important limitations:** these real-spectral guarantees rely on the symmetric pure PLS smoother. They do not automatically transfer to an arbitrary non-symmetric fitting operator, a forecast operator \(G_{d,h}\in\mathbb R^{h\times L}\), or a modified penalty without its own assumptions. This is a statement about eigenvalues of **matrices**, distinct from whether the forecast-MSE objective \(F(S)\) is convex or has a unique optimum.
+
+**Numerical implementation:** \`src/trend_estimation/core/pure.py\` uses \`np.linalg.eigh\` to diagonalize \(Q\) (real symmetric), and \`src/trend_estimation/core/smoothness.py\` uses the resulting eigenvalues to compute EDF. This is **spectral diagonalization**, not Cholesky factorization. Cholesky could alternatively solve \((I+\lambda Q)\widehat\tau=y\) for valid \(d\), since the coefficient matrix is SPD, but would not by itself provide the spectral response \(\mu_j(\lambda)\).
+
 ### D. The exact limiting model S=1 does NOT need an epsilon
 
 The equality \(S=1\) is reached only in the limit \(\lambda\to\infty\), never by finite \(\lambda\), because the \(L-d\) positive-eigenvalue shrinkage terms are strictly positive at finite penalty. The expression \((I+\infty Q)^{-1}\) is **not** an ordinary matrix inversion. Instead take the spectral limit, letting \(U_0\in\mathbb R^{L\times d}\) contain an orthonormal basis of \(\ker(D_d)\):
