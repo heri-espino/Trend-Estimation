@@ -22,29 +22,33 @@ Universidad de las Am\'ericas Puebla, Puebla, Mexico}
 \maketitle
 
 \begin{abstract}
-Finite-difference penalized least squares produces trends with a continuum
-of smoothness levels. Selecting that smoothness for extrapolation is a
-different task from recovering a historical signal. We propose a
-horizon-matched, chronological forecast cross-validation criterion:
-for each normalized smoothness value, smooth the historical training
-window, extrapolate the trend over a specified $h$-step validation
-block, and minimize the pooled historical forecast mean squared error.
-After selection, the final trend is refitted using the latest
-observations before forecasting an untouched future block. The
-smoothness index and the penalized smoother are established
-constructions; the methodological focus is their explicit
-forecast-targeted selection and evaluation. A controlled simulation
-comprising 3,000 scenarios and 72,000 outer-origin--horizon
-evaluations favors horizon-matched selection over one-step forecast
-tuning and GCV in aggregate. The objective may have several local minima, requiring an
-endpoint-aware search without a unimodality assumption.
-We also examine an optional time-adaptive extension that constructs
-smoothness decisions from histories of tracked minima. Results
-on larger financial panels and changing-roughness simulations do
-not establish general superiority of those adaptive rules over the
-pooled criterion. Thus forecast-optimal smoothness selection is
-a self-contained method, while dynamic branch selection is a
-further, assumption-dependent option.
+A penalized least-squares smoother can fit a historical trend without
+selecting the smoothness best suited to extrapolation. We formulate
+a forecast-targeted cross-validation method in the normalized
+smoothness coordinate $S\in[0,1]$, which maps the unbounded
+penalty range $\lambda\in[0,\infty]$ onto a compact scale with
+two meaningful limiting trend models. For each candidate $S$,
+the smoothing matrix $H(S)$ is applied to a historical training
+window and its fitted terminal differences are continued as
+a polynomial trend over the intended $h$-step forecast horizon.
+The selected smoothness minimizes chronological future-block
+mean squared error across historical origins. All validation
+outcomes precede the operational forecast, and the chosen
+trend is refitted on the most recent observations. The
+underlying PLS estimator and trace-based smoothness index
+are established constructions: the methodological object
+is horizon-matched \emph{predictive} selection on the bounded
+smoothness scale, rather than post-hoc trend reconstruction.
+In 3,000 controlled simulation scenarios with 72,000
+outer-origin--horizon evaluations, the horizon-matched
+selector outperforms one-step tuning and GCV in aggregate,
+especially at longer horizons. The loss surface need not be
+unimodal, so interior candidates and both exact endpoints
+must be considered. As a separate optional extension,
+historical minima can define time-adaptive smoothness rules,
+but broader financial and changing-roughness evaluations
+do not establish their general superiority over pooled
+forecast cross-validation.
 \end{abstract}
 
 \noindent\textbf{Keywords:} forecast cross-validation; horizon-matched mean squared error; penalized least squares; smoothness index; trend extrapolation.
