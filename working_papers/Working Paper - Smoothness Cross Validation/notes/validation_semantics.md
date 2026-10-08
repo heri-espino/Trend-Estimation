@@ -149,24 +149,3 @@ These code mappings describe the older implementation's intended information flo
 - `observed_future = y[origin:origin+horizon]` is passed only to outer scoring.
 
 Any future refactor must preserve these semantics.
-
-## Dynamic branch extension
-
-The same information rule applies when `S` is selected from a tracked branch.
-At historical origin `t`, a local minimum produces a Validation-1 loss.
-After that minimum is identified, the model is refit through Validation 1
-and forecasts the immediately following Validation-2 block. This produces
-the row
-
-\[
-(S_{j,t},\ell^{(1)}_{j,t},\ell^{(2)}_{j,t})
-\]
-
-stored in branch matrix `V_j`.
-
-At the outer forecast origin `T`, `psi` may use only historical branch rows
-and `phi(V_j)` may use only smoothness/loss information already observed.
-Once `S_hat_T` is produced, a fresh final refit on `y[T-L+1:T]` is mandatory.
-
-A recent-mean or weighted `phi` rule averages **smoothness values**. It does
-not average historical trend estimates.

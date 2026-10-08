@@ -20,7 +20,6 @@ Additional implementation guide:
 
 Secondary/historical documents:
 
-- [Old empirical plan](empirical_roadmap.md) — archived CP01–03 development design, superseded schedule.
 - [Former Journal of Forecasting positioning](journal_of_forecasting_positioning.md) — historical venue analysis, not current editorial target.
 - [AI handoff](../AI_HANDOFF.md) — short continuity guide for new assistants.
 - [Checkpoint histories](../checkpoints/) — original complete experiment records and frozen evidence.

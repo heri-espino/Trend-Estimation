@@ -1,6 +1,6 @@
 # Canonical research objective — forecast-optimal normalized smoothness
 
-**Current research direction | 2026-10-08.** This note overrides older statements making the dynamic minima mechanism the main contribution. The latest manuscript is a working document; completed research notes will eventually drive the final rewrite.
+**Current independent research objective | 2026-10-08.** The latest manuscript is a working document; completed research notes will eventually drive the final rewrite.
 
 ## Motivation: choosing a trend for an unknown future
 
@@ -60,7 +60,7 @@ The selected value is then used to **refit** \(H(\widehat S_T)y_{T-L+1:T}\) and 
 4. Definition and interpretation of \(G_{d,h}\) and how smoothing changes the coefficients of future polynomial continuation.
 5. Quadratic expansion of forecast MSE, analytic \(H',H'',H^{(n)}\), analytic \(F',F''\), and the \(S\)-chain rule.
 6. Multimodality: all competing minima and endpoints must be considered; numerical completeness is not automatic.
-7. Why the pooled minimum is not the average of historical minima; optional tracking of individual minima answers a different question.
+7. Why the pooled minimum is not the average of the per-fold smoothness minimizers.
 
 Full mathematics: [mathematical_foundations.md](mathematical_foundations.md).
 
@@ -70,10 +70,9 @@ Full mathematics: [mathematical_foundations.md](mathematical_foundations.md).
 - The forecast horizon may materially affect optimal smoothing and future MSE.
 - Spectral reuse and analytic derivatives may improve reliable and efficient evaluation relative to repeated matrix inversions.
 - The pooled surface can be multimodal, requiring robust detection and ranking of minima.
-- Tracking individual minima may reveal how historical preferred smoothness changes, but **the value of that tracking for the next forecast is unproven**.
 
 ## Evidence and writing policy
 
-CP01–CP08 were **actually run** and remain archived. Their existing results are informative historical observations, not automatically the future submission's final evidence. A changed numerical root-finding method may justify a same-objective comparison and a separately frozen new simulation, but cannot retroactively invalidate or overwrite the old results.
+CP01–CP03 were **actually run** and are preserved as the historical evidence of this working paper. Their existing results are informative historical observations, not automatically the future submission's final evidence. A changed numerical root-finding method may justify a same-objective comparison and a separately frozen new simulation, but cannot retroactively invalidate or overwrite the old results.
 
 For now, **notes are authoritative; the current CSSC-oriented LaTeX manuscript is a dated working draft**. Once the numerical approach, comparative experiments, and prior-art audit settle, reconstruct the final paper from verified notes and reproducible results. Keep this paper independent of other manuscripts; do not define its contribution by the existence of another paper.

@@ -24,14 +24,13 @@
 
 ## Completed but provisional empirical observations
 
-CP01–CP08 were completed, with preserved artifacts. The old CP03 simulation showed lower aggregate RMSFE for horizon matching under its frozen DGPs, especially at longer horizons. CP04's small panel favored a recency branch rule, whereas CP05, CP07 and CP08 did not establish a broad advantage over pooled CV. **These are historical findings**, not verified predictions of a changed numerical algorithm or next experiment.
+CP01–CP03 were completed, with preserved artifacts. The historical CP03 simulation showed lower aggregate RMSFE for horizon matching under its frozen DGPs, especially at longer horizons. **These are historical findings**, not predictions of a changed solver or simulation protocol.
 
 ## Open hypotheses
 
 - Accurate multi-minimum recovery may matter for choosing the best forecast smoothness.
 - Spectral precomputation and analytic derivatives may provide speed/accuracy benefits for large windows.
 - Horizon-matched future-block CV may outperform traditional criteria under some or many, but not necessarily all, DGPs.
-- Individual historical minima might trace informative smoothness regimes. Their stable identity, detectability and forecast utility must be demonstrated.
 - The exact originality of the **specific** PLS normalized-index multi-step procedure remains to be determined through more focused prior-art review.
 
 ## Do NOT claim
@@ -45,12 +44,11 @@ CP01–CP08 were completed, with preserved artifacts. The old CP03 simulation sh
 - “Every stationary root was found by an unverified Brent/grid search”; or “large-window global minima are rigorously Sturm-certified.”
 - “Numerical root completeness implies a certified exact ordering of objective values.”
 - “The old simulations are invalid because we plan new ones.”
-- “The branch \(V_j\) extension beats pooled CV generally.”
 - “Financial stock/ETF examples demonstrate market predictability or profitable trading.”
 - “The current CSSC manuscript has been rebuilt and is submission-ready” unless compiled, visually checked and editorially verified.
 
 ## When editing the paper
 
-Keep the main contribution the direct historical future-block MSE selector for \(S\); include spectral and derivative mathematics insofar as they explain efficient evaluation and competing minima. Treat tracking, branch selection, and \(\phi(V_j)\) as an optional question with separate evidence. Maintain full outer-test chronology. Cite the closest literature honestly.
+Keep the main contribution the direct historical future-block MSE selector for \(S\); include spectral and derivative mathematics insofar as they explain efficient evaluation and competing minima. Maintain full outer-test chronology. Cite the closest literature honestly.
 
 See [research_log_2026-10.md](research_log_2026-10.md), [literature_positioning.md](literature_positioning.md), and [next_experiments.md](next_experiments.md).
