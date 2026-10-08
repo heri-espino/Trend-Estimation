@@ -288,3 +288,20 @@ step on known previous labels, not cumulative tracking.
 Next: run smoke and paper presets, commit their reports, inspect the
 outcomes, then add measured tracking comparisons to the manuscript.
 Rebuild numerical PDF with `paper_numerical-methods/build-paper.bat`.
+
+ 
+## Five-panel forecasting workflow figure
+
+The first (`paper_smoothness-cv`) manuscript now references a new full-width
+five-horizontal-panel tutorial figure. Its script is
+`experiments/smoothness_cv/make_workflow_tutorial_figure.py`.
+It uses the frozen CP07 synthetic example (seed 100, switch_to_rough,
+noise_sd 0.01, outer number 8), and explicitly keeps final Validation-1
+loss distinct from the untouched test loss.
+
+Output is committed by the user after running the generator:
+`paper_smoothness-cv/manuscript/figures/fig_workflow_tutorial.pdf`,
+`.png`, and `.json`. The manuscript and `build.py` are already updated
+to include/check the PDF. Tests cover index chronology.
+Run generator before `python paper_smoothness-cv/build.py --check`,
+then compile and visually inspect the resulting Wiley PDF.
