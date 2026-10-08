@@ -76,7 +76,7 @@ For $d=2$, the endpoints are therefore the unsmoothed historical path and its le
 
 For finite $S<1$, $H_{\lambda(S)}$ is continuous. The limiting matrix at $S=1$ exists by \cref{eq:H_spectral}. Thus the forecast loss has a continuous extension to the compact domain $[0,1]$ and at least one global minimizer exists.
 
-Uniqueness is not assumed. Distinct smoothing regimes can produce similar validation loss, and the criterion may contain several local minima. This is statistically meaningful because competing minima can imply different effective degrees of freedom and terminal slopes. Reliable numerical recovery of competing minima is delegated to the companion numerical-methods paper. Its implemented solver uses adaptive derivative bracketing, Brent root refinement, and endpoint comparison. Sturm-based certified isolation remains a proof-of-concept direction, not a completed guarantee. The core forecast-CV definition in \cref{eq:Sstar} does not require tracking minima through time.
+Uniqueness is not assumed. Distinct smoothing regimes can produce similar validation loss, and the criterion may contain several local minima. This is statistically meaningful because competing minima can imply different effective degrees of freedom and terminal slopes. The implemented numerical search uses adaptive derivative bracketing, Brent root refinement, and exact endpoint comparison. The mathematical criterion in \cref{eq:Sstar} is independent of numerical search details and does not require tracking minima through time.
 
 \subsection{Forecast optimality versus recovery optimality}
 
