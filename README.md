@@ -2,47 +2,34 @@
 
 trend_estimation is a library-first research repository for finite-difference penalized trend estimation, forecasting, chronological validation, and smoothness selection.
 
+## New independent pooled F Streamlit app
+
+- **[Pooled Forecast-CV Lab](apps/pooled_forecast_cv.py):** individual F_t(S) curves, pooled F(S), the fold-by-S validation MSE heatmap, rolling-CV controls, trend fits and forecasts, spectral views and downloadable results. It **does not** track minimum branches.
+- **[Existing tracked-minima lab](apps/smoothness_lab.py):** the more general branch and validation-rule experiment. It is **unchanged**.
+
+Launch the new app from the repository root:
+
+~~~bash
+python -m pip install -e ".[dashboard,finance]"
+streamlit run apps/pooled_forecast_cv.py
+~~~
+
+See [the complete guide](paper_smoothness-cv/notes/POOLED_APP.md).
+
 ## Research map
 
-As of 2026-10-06, there are exactly **two active papers**.
+**Current direction (2026-10-08):** The forecasting study focuses on choosing normalized PLS smoothness by minimizing pooled, horizon-matched historical forecast MSE. The current intended journal is *Communications in Statistics—Simulation and Computation*. The manuscript is an interim draft; the numerical method and final simulations remain under investigation. [Canonical research notes](paper_smoothness-cv/notes/INDEX.md).
 
-### Paper A — Dynamic forecast-optimal smoothness
+### Paper A — Horizon-matched forecast-optimal smoothness
 
-Directory: `paper_smoothness-cv/`
-
-Primary target: **Journal of Forecasting**.
-
-The pooled chronological selector remains a baseline,
+Directory: paper_smoothness-cv/
 
 \[
-\widehat S^{\mathrm{pool}}_{T,h}
-\in\arg\min_S F^{\mathrm{pool}}_{T,h}(S),
+\widehat S_{T,d,L,h}^{\mathrm{pool}}
+\in\arg\min_{S\in[0,1]}\frac1M\sum_{m=1}^{M}F_{t_m}(S).
 \]
 
-but the central research object is now the sequence of local minima of
-origin-specific forecast-loss surfaces,
-
-\[
-\mathcal M_t=\{S_{1,t},\ldots,S_{K_t,t}\}.
-\]
-
-Nearby minima are tracked through time as data-driven branches. Each branch
-stores smoothness, Validation-1 loss, and subsequent Validation-2 loss,
-
-\[
-V_j=[S_{j,t},\ell^{(1)}_{j,t},\ell^{(2)}_{j,t}]_t.
-\]
-
-The forecasting decision is
-
-\[
-\widehat j_T=\psi(V_1,\ldots,V_J),
-\qquad
-\widehat S_T=\phi(V_{\widehat j_T}).
-\]
-
-Paper A owns branch scoring, branch selection, final smoothness rules, refitting,
-and forecast evaluation.
+The F curves score forecasts issued at earlier historical origins against their subsequent, **now-observed** future blocks. After tuning, the estimator refits at the current origin and predicts the genuinely unknown future. Tracking individual minima across folds is a separate, optional hypothesis and is not required for the pooled criterion. Frozen CP01–CP08 outputs remain preserved as historical evidence.
 
 ### Paper B — Numerical recovery and tracking of minima
 

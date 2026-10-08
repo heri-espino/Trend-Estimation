@@ -15,6 +15,10 @@
 9. [Roadmap](roadmap.md) — executable phases and decision gates.
 10. [Dynamic minima](dynamic_tracked_smoothness.md) — optional \(V_j,\psi,\phi\), not the central method.
 
+Additional implementation guide:
+
+- [Pooled-only Streamlit app](POOLED_APP.md) — independent visualization of every F, pooled F, validation matrix, CV controls, forecasts and exports.
+
 Secondary/historical documents:
 
 - [Old empirical plan](empirical_roadmap.md) — archived CP01–03 development design, superseded schedule.

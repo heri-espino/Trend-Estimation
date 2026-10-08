@@ -16,6 +16,18 @@ CP01–CP08 have already run and their results are preserved. **We plan to compa
 
 **Editorial timing:** after mathematical/numerical verification and new experiment decisions, rewrite the final independent article from the completed notes. Earlier build and submission-ready checklists are provisional.
 
+## New independent Streamlit app: pooled forecast-loss laboratory
+
+This new app shows **individual historical forecast MSE curves and their pooled F** without any minimum-branch tracking. The original interactive apps remain unchanged.
+
+~~~powershell
+git pull --ff-only
+python -m pip install -e ".[dashboard,finance]"
+streamlit run apps/pooled_forecast_cv.py
+~~~
+
+Change the order d, fitting window L, future horizon h, rolling-origin spacing Delta, number of completed CV folds, candidate smoothness grid and data source; visualize the validation-loss matrix, historical forecasts, final fitted trends, an optional held-out outer test, and smoothing matrix. Data sources include synthetic formulas, Yahoo Finance and uploaded CSV. See [notes/POOLED_APP.md](notes/POOLED_APP.md) for the mathematical and chronology guarantees and export descriptions.
+
 ## Manuscript for Communications in Statistics—Simulation and Computation
 
 The standalone manuscript is under `manuscript/` and uses a
