@@ -11,6 +11,18 @@ minima of **temporally weighted historical forecast-loss functions**
 help select a useful PLS smoothing parameter, beyond choosing the
 global minimum of the latest aggregate (Paper 1)?
 
+## Simulation study and matched Paper 1 comparison
+
+Use the identical DGPs, external origins and baseline selectors
+defined in the [shared simulation protocol](../SIMULATION_EVALUATION_PROTOCOL.md).
+The decisive comparison is **tracked branches versus the global
+minimum of the same method-specific weighted F**, conditional on
+the same \((m,d,L,h)\). Include stationary mechanisms as negative
+controls, curvature/slope changes as adaptation tests, and
+compare external observed forecast MSE, latent-trend error,
+smoothness, EDF, and branch stability. The new experiments
+**have not been run**.
+
 ## Current proposed method
 
 For each predeclared weighting method \(m\), difference order \(d\),
