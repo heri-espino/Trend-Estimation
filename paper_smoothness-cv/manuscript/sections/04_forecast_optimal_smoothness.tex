@@ -76,7 +76,7 @@ This sequence of local-minimum sets is the central dynamic object of the paper.
 
 \subsection{Horizon-matched pooled forecast cross-validation}
 
-The proposed pooled criterion averages forecast losses across historical origins for fixed $(d,L,h)$:
+At outer forecast origin $T$, let $T_1,\ldots,T_M$ denote historical validation origins satisfying $T_m+h\le T$; their fitting windows use only observations through $T_m$. The proposed pooled criterion averages their forecast losses for fixed $(d,L,h)$:
 \begin{equation}
 \label{eq:F_S}
 F^{\mathrm{pool}}_{d,L,h}(S)
@@ -87,7 +87,7 @@ F^{\mathrm{pool}}_{d,L,h}(S)
 Its minimizer is
 \begin{equation}
 \label{eq:Sstar}
-\widehat S^{\mathrm{pool}}_{d,L,h}
+\widehat S^{\mathrm{FCV}}_{T,d,L,h}
 \in
 \arg\min_{S\in[0,1]}
 F^{\mathrm{pool}}_{d,L,h}(S).
