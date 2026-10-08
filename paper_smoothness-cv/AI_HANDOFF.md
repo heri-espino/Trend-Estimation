@@ -368,3 +368,20 @@ The new test file is `tests/test_smoothness_plain_article.py`.
 The new PDF has not yet been compiled locally; the last committed PDF
 may still contain Wiley formatting. Next: git pull, run PowerShell build,
 and push the rebuilt PDF.
+
+## Platform split — Windows preparation, macOS compilation
+
+**Current operational workflow; supersedes older mixed-machine build instructions.**
+
+- Windows: `paper_smoothness-cv/prepare-paper.ps1` installs Python package,
+  runs targeted pytest, generates tutorial PDF/PNG/JSON, and calls
+  `build.py --check` only. It does not compile LaTeX. Push figure assets.
+- macOS: `paper_smoothness-cv/compile-paper.sh` runs source preflight
+  and the real `build.py` pdflatex/BibTeX compilation. It does not
+  regenerate figures or run experimental Python. Push the compiled paper PDF.
+- `build-workflow-paper.ps1` is now a backward-compatible Windows-only
+  alias to `prepare-paper.ps1`; older text saying it compiles is obsolete.
+
+Build inputs exchange through GitHub; perform `git pull` before each stage.
+Unit tests in `tests/test_paper_platform_workflows.py` protect separation.
+Do not change any numerical experiment or frozen result for this split.
