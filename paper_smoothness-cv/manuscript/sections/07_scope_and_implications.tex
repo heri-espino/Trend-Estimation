@@ -26,7 +26,7 @@ After the current smoothness is selected, the trend is always refit on the newes
 
 \subsection{Static and dynamic targets}
 
-The pooled selector asks which single value of $S$ performs best on average over historical forecast origins. The dynamic selector asks whether local minima form persistent branches and whether branch history improves the current choice of $S$.
+The pooled selector asks which single value of $S$ performs best on average over historical forecast origins. The branch formulation asks how a time-indexed collection of local minima can be organized and converted into multiple admissible current values of $S$. Predictive improvement is a possible outcome of particular decisions, not a property guaranteed by the representation itself.
 
 Neither target is automatically the smoothness that best reconstructs a latent historical trend. Forecasting and signal recovery remain distinct objectives.
 
@@ -34,9 +34,32 @@ Neither target is automatically the smoothness that best reconstructs a latent h
 
 The forecasting paper does not claim that a particular root-search or assignment algorithm is the substantive contribution. Recovery of multiple minima, exact endpoint handling, and temporal correspondence of minima belong to the companion numerical-methods paper.
 
+
+\subsection{Boundary behavior of smoothness forecasts}
+
+Normalized smoothness is restricted to $[0,1]$. Convex means of historically
+admissible values remain in that interval, whereas linear or increment
+extrapolations of the branch trajectory need not. Truncation back to the
+admissible interval is therefore part of defining these functionals,
+not an innocuous plotting convention. The simulations show that the
+frequency of truncation varies substantially with the form of $\phi$.
+This is a concrete difference between equally admissible constructions
+of the next smoothness value.
+
+\subsection{Limits of predictive interpretation}
+
+A favorable four-series confirmation result is not sufficient to establish
+universal superiority. The broad financial panel and controlled changing-
+roughness experiments did not reproduce an aggregate advantage over
+pooled forecast-CV. Their errors are evaluated on different scales, and
+the series within the financial panel are not independent.
+Accordingly, the paper claims a reusable representation for chronologically
+tracked forecast-loss minima and an illustrative family of decision maps;
+it does not claim that tracked branches inevitably improve forecasting.
+
 \subsection{Limitations}
 
-The baseline estimator assumes equally spaced observations, a fixed difference order, a fixed final estimation window, and deterministic continuation of the estimated trend. The current branch construction also introduces design quantities such as the tracking radius, recent-history length, and weighting parameters. Those quantities must be selected on development data and frozen before outer-test evaluation.
+The baseline estimator assumes equally spaced observations, a fixed difference order, a fixed final estimation window, and deterministic continuation of the estimated trend. Checkpoints 05 and 06 show that high-order native polynomial continuation can amplify small differences in selected $S$ into extreme forecast errors. In particular, restricting higher difference orders reduced the catastrophic error tail in a post-hoc diagnostic, but does not validate a revised forecasting selector. The current branch construction also introduces design quantities such as the tracking radius, recent-history length, and weighting parameters. Those quantities must be selected on development data and frozen before outer-test evaluation.
 
 Local-minimum identity can become ambiguous when branches approach or cross. The initial greedy one-to-one matcher is therefore a transparent baseline rather than a mathematical definition of true branch identity. Sensitivity to the numerical correspondence rule must be reported separately from forecasting performance.
 
