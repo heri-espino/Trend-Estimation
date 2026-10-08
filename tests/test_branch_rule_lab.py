@@ -145,6 +145,11 @@ def test_late_validation_losses_are_not_known_to_past_rules():
         )
 
 
+def test_polynomial_last_baseline_is_always_included():
+    result = _run(_sample(), rules=("mean_k3",))
+    assert set(result.evaluations["regla"]) == {"last", "mean_k3"}
+
+
 def test_reserved_test_does_not_affect_branch_selection_or_backtest():
     y = _sample()
     result = _run(y)
