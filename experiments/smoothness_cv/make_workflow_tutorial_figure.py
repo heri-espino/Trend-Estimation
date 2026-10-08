@@ -257,9 +257,9 @@ def _panel_a(ax, ex: dict):
         i, j = areas[code]
         ax.axvspan(dates.iloc[i], dates.iloc[j - 1], color=BLOCK_SHADE[code], alpha=0.82)
         ax.text(
-            dates.iloc[(i + j - 1) // 2], 0.94, label,
-            ha="center", va="top", transform=ax.get_xaxis_transform(),
-            fontsize=7.7,
+            dates.iloc[(i + j - 1) // 2], 0.09, label,
+            ha="center", va="bottom", transform=ax.get_xaxis_transform(),
+            fontsize=7.6,
         )
         ax.axvline(dates.iloc[i], linewidth=0.7, linestyle=":", color="0.6")
     lower = areas["train"][0]
@@ -274,7 +274,7 @@ def _panel_a(ax, ex: dict):
             dates.iloc[i:j], path, lw=1.35, linestyle="--",
             color=style, label=label,
         )
-    ax.legend(loc="lower left", ncol=3, frameon=False, fontsize=7.5)
+    ax.legend(loc="upper left", ncol=3, frameon=False, fontsize=7.5)
     ax.set_ylabel("Log level")
     ax.set_xlim(dates.iloc[lower], dates.iloc[-1])
     _style_ax(ax, "A", "Chronology: historical validation, current Val1, outer test")
