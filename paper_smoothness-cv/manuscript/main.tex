@@ -8,6 +8,9 @@
 % environments must be declared explicitly before \begin{document}.
 \newtheorem{proposition}{Proposition}[section]
 
+% cleveref must load after hyperref and theorem definitions.
+\usepackage[noabbrev]{cleveref}
+
 \begin{document}
 
 \title{Dynamic Forecast-Optimal Smoothness for Penalized Trend Estimation}

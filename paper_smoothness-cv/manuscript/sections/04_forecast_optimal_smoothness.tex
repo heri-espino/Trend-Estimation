@@ -3,9 +3,10 @@
 \subsection{Continuation of the fitted trend}
 
 A trend estimate does not become a forecast until a continuation rule is specified. In the baseline model, the fitted finite-difference structure is continued by imposing zero future $d$th differences. This yields a fixed linear operator
-\[
+\begin{equation}
+\label{eq:continuation_operator_space}
 G_{d,h}\in\mathbb{R}^{h\times L}
-\]
+\end{equation}
 such that
 \begin{equation}
 \label{eq:forecast_operator}
@@ -30,9 +31,10 @@ For $d=1$ the continuation is constant; for $d=2$ it is linear; and for $d=3$ it
 \subsection{Origin-specific forecast-loss surfaces}
 
 Let
-\[
+\begin{equation}
+\label{eq:future_observation_block}
 z_T=(y_{T+1},\ldots,y_{T+h})^\top
-\]
+\end{equation}
 be the realized future block at origin $T$. For candidate $\lambda$,
 \begin{equation}
 \label{eq:origin_loss}
@@ -44,11 +46,12 @@ z_T-G_{d,h}H_\lambda x_T
 \right\|_2^2.
 \end{equation}
 Because $S(\lambda)$ is one-to-one, we write the same surface in normalized smoothness as
-\[
+\begin{equation}
+\label{eq:origin_loss_smoothness}
 F_T(S)=f_T(\lambda(S)),
 \qquad
 S\in[0,1].
-\]
+\end{equation}
 
 At a chronological sequence of historical forecast origins $T_1,\ldots,T_M$, each surface can have one or several local minima. Denote the local-minimum set at origin $T_m$ by
 \begin{equation}
@@ -129,27 +132,31 @@ Second, a branch-to-smoothness rule
 converts the selected branch history into the smoothness used at the current forecast origin.
 
 The simplest rule is the newest tracked minimum,
-\[
+\begin{equation}
+\label{eq:rule_latest}
 \phi_{\mathrm{last}}(V_j)=S_{j,T}.
-\]
+\end{equation}
 Alternative stabilizing rules use the recent mean or median,
-\[
+\begin{equation}
+\label{eq:rule_recent_mean}
 \phi_{\mathrm{mean},K}(V_j)
 =
 \frac1K
 \sum_{r=0}^{K-1}
 S_{j,T-r},
-\]
+\end{equation}
 or
-\[
+\begin{equation}
+\label{eq:rule_recent_median}
 \phi_{\mathrm{med},K}(V_j)
 =
 \operatorname{median}
 \{S_{j,T-K+1},\ldots,S_{j,T}\}.
-\]
+\end{equation}
 
 An alternative weighted mean uses recency alone. Let $r=0$ denote the newest tracked smoothness value, with older values indexed by increasing $r$. Then
-\[
+\begin{equation}
+\label{eq:rule_recency}
 \phi_{\mathrm{recency}}(V_j)
 =
 \frac{
@@ -159,15 +166,17 @@ An alternative weighted mean uses recency alone. Let $r=0$ denote the newest tra
 },
 \qquad
 0<\rho<1.
-\]
+\end{equation}
 The newest value receives weight one and older values are exponentially discounted. For interpretability we parameterize $\rho$ by a half-life $H$,
-\[
+\begin{equation}
+\label{eq:recency_half_life}
 \rho=2^{-1/H},
-\]
+\end{equation}
 so the weight assigned to a value $H$ tracked origins old is one half of the newest weight.
 
 A loss-weighted rule gives more influence to historically predictive values:
-\[
+\begin{equation}
+\label{eq:rule_validation2}
 \phi_{\mathrm{V2}}(V_j)
 =
 \frac{
@@ -179,32 +188,36 @@ A loss-weighted rule gives more influence to historically predictive values:
 w_{j,t}
 =
 \frac{1}{\ell^{(2)}_{j,t}+\delta},
-\]
+\end{equation}
 with $\delta>0$ used only for numerical stabilization. Recency may be incorporated through
-\[
+\begin{equation}
+\label{eq:recency_validation2_weights}
 w_{j,t}
 =
 \frac{\rho^{T-t}}{\ell^{(2)}_{j,t}+\delta},
 \qquad
 0<\rho\le1.
-\]
+\end{equation}
 
 A distinct class of maps treats the branch smoothness values as a series to be extrapolated. For a branch with values $S_{j,t_1},\ldots,S_{j,t_m}$, fit the auxiliary trend
-\[
+\begin{equation}
+\label{eq:branch_linear_fit}
 (\widehat a,\widehat b)
 \in
 \arg\min_{a,b}
 \sum_{u=1}^{m}
 \omega_u\bigl(S_{j,t_u}-a-bu\bigr)^2.
-\]
+\end{equation}
 The resulting branch-based smoothness decision is
-\[
+\begin{equation}
+\label{eq:rule_linear_trend}
 \phi_{\mathrm{trend}}(V_j)
 =
 \Pi_{[0,1]}\bigl(\widehat a+\widehat b(m+1)\bigr),
-\]
+\end{equation}
 where $\Pi_{[0,1]}$ truncates to the admissible normalized-smoothness interval. Uniform weights, recent-window weights, or exponentially increasing recency weights lead to different examples. Alternatively, one can extrapolate the branch increments:
-\[
+\begin{equation}
+\label{eq:rule_increment_extrapolation}
 \phi_{\Delta,\rho}(V_j)
 =
 \Pi_{[0,1]}
@@ -218,13 +231,14 @@ S_{j,t_m}
 \sum_{r=0}^{m-2}\rho^r
 }
 \right].
-\]
+\end{equation}
 These auxiliary models forecast the next \emph{smoothness value}, not the underlying observations or an old fitted trend. The final observation forecast still follows the fresh-refit procedure below.
 
 The examples above are not intended to define a tournament for one universally best smoothness rule. Their role is to show that the tracked branch state $V_j$ supports a family of admissible decision maps
-\[
+\begin{equation}
+\label{eq:branch_decision_map}
 \phi:V_j\mapsto \widehat S_T.
-\]
+\end{equation}
 Different applications may emphasize persistence, recency, historical forecast performance, robustness, or forward extrapolation of the smoothness trajectory. Empirical comparisons describe the behavior of these choices under controlled conditions; they do not make one functional part of the definition of the framework.
 
 \subsection{Mandatory final refit}
@@ -238,11 +252,12 @@ H_{\lambda(\widehat S_T)}
 y_{T-L+1:T}.
 \end{equation}
 The operational forecast is then
-\[
+\begin{equation}
+\label{eq:final_operational_forecast}
 \widehat y_{T+1:T+h\mid T}
 =
 G_{d,h}\widehat\tau_T.
-\]
+\end{equation}
 
 Thus the proposed dynamic method can average historical losses or smoothness values when a declared decision rule requires it, but it never averages historical fitted trends.
 

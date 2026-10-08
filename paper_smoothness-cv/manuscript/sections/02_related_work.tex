@@ -7,13 +7,15 @@ The direct methodological foundation is the controlled-smoothness formulation of
 Cort\'es-Toto et al.\ \cite{cortes2017smoothness} study what smoothness is produced when the PLS penalty is selected by CV, GCV, AICc, and BIC. Their results make an important distinction for the present paper: a rule for selecting $\lambda$ and the amount of smoothness ultimately induced by that rule are not the same object.
 
 The present paper reverses the controlled-smoothness direction:
-\[
+\begin{equation}
+\label{eq:related_controlled_smoothness}
 \text{user chooses }S\longrightarrow\lambda(S)
-\]
+\end{equation}
 becomes
-\[
+\begin{equation}
+\label{eq:related_forecast_smoothness}
 \text{chronological forecast loss}\longrightarrow S^\star.
-\]
+\end{equation}
 The percentage of smoothness remains the interpretable object, but it is selected endogenously for the forecast task.
 
 \subsection{Predictive selection of smoothing and tuning parameters}

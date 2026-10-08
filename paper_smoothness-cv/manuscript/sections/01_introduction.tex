@@ -5,35 +5,40 @@ Smoothing parameters are often treated as technical constants, although in forec
 Guerrero \cite{guerrero2007penalized,guerrero2008smoothness} develops this controlled-smoothness view. The forecasting problem begins once smoothness is no longer specified ex ante. A natural first approach is to choose the value that minimizes historical chronological forecast loss. That pooled selector remains an important baseline in this paper, but it ignores a feature that becomes visible when the loss surface is inspected repeatedly through time: the same surface can contain several local minima, and those minima can persist, drift, appear, or disappear across neighboring forecast origins.
 
 The paper therefore studies forecast-optimal smoothness dynamically. At each chronological origin $t$, let
-\[
+\begin{equation}
+\label{eq:intro_local_minimum_set}
 \mathcal M_t=\{S_{1,t},\ldots,S_{K_t,t}\}
-\]
+\end{equation}
 be the local minima of the origin-specific forecast-loss surface. Nearby minima on adjacent surfaces are connected into data-driven branches. A branch is represented by its smoothness trajectory together with the Validation-1 loss at which the local minimum is identified and the subsequent Validation-2 forecast loss obtained after refitting through Validation 1.
 
 This produces a branch state
-\[
+\begin{equation}
+\label{eq:intro_branch_state}
 V_j=[S_{j,t},\ell^{(1)}_{j,t},\ell^{(2)}_{j,t}]_t.
-\]
+\end{equation}
 The forecasting decision then has two stages. First, a historical rule $\psi$ selects a persistent branch. Second, a rule $\phi$ maps the selected branch history into the current smoothness:
-\[
+\begin{equation}
+\label{eq:intro_branch_decision}
 \widehat j_T=\psi(V_1,\ldots,V_J),
 \qquad
 \widehat S_T=\phi(V_{\widehat j_T}).
-\]
+\end{equation}
 
 The simplest dynamic rule uses the newest tracked minimum. Other admissible maps can use a recent mean or median, Validation-2-weighted smoothness, recency weights, or forecasts of the smoothness trajectory itself. They operate on the same branch history; the purpose of presenting several examples is to make the decision space explicit, not to define a universal best rule.
 
 The older pooled criterion remains useful as a benchmark. For historical origins $T_1,\ldots,T_M$,
-\[
+\begin{equation}
+\label{eq:intro_pooled_loss}
 F^{\mathrm{pool}}_{d,L,h}(S)
 =
 \frac1M\sum_{m=1}^{M}F_{T_m}(S),
-\]
+\end{equation}
 with
-\[
+\begin{equation}
+\label{eq:intro_pooled_choice}
 \widehat S^{\mathrm{pool}}_{d,L,h}
 \in\arg\min_S F^{\mathrm{pool}}_{d,L,h}(S).
-\]
+\end{equation}
 It answers which single smoothness value has the lowest average historical forecast loss. The dynamic framework retains the temporal organization of multiple local optima and makes it available to a family of smoothness decisions. Whether any particular decision improves future forecasts remains an empirical question.
 
 The forecasting literature provides strong precedents for choosing tuning parameters by predictive performance. Forecast-error minimization is standard in exponential smoothing \cite{taylor2004stes}; Hart \cite{hart1994tscv} studies predictive smoothing selection in dependent data; and more recent forecasting work continues to connect tuning and out-of-sample loss \cite{zafar2022filter,stanek2023oos,wolff2024stock,franjic2025predictor,xu2025vix}. The present contribution is narrower: it focuses on the normalized smoothness of finite-difference penalized trends and the temporal evolution of multiple minima of their forecast-loss surfaces.

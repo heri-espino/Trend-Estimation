@@ -3,15 +3,17 @@
 \subsection{Penalized least squares}
 
 At forecast origin $T$, let
-\[
+\begin{equation}
+\label{eq:observation_window}
 x_T=(y_{T-L+1},\ldots,y_T)^\top\in\mathbb{R}^{L}
-\]
+\end{equation}
 denote the estimation window. For difference order $d<L$, let
-\[
+\begin{equation}
+\label{eq:penalty_gram_matrix}
 D_d\in\mathbb{R}^{(L-d)\times L},
 \qquad
 Q=D_d^\top D_d.
-\]
+\end{equation}
 The baseline estimator solves
 \begin{equation}
 \label{eq:pls_problem}
@@ -33,20 +35,23 @@ H_\lambda x_T,
 H_\lambda=(I+\lambda Q)^{-1}.
 \end{equation}
 
-The paper uses the zero-drift, identity-weight formulation in \eqref{eq:pls_problem} to isolate the smoothness-selection question. Guerrero's broader statistical formulation allows nonzero mean differences and more general covariance weighting \cite{guerrero2007penalized}; these are natural extensions but are not silently imposed in the baseline criterion.
+The paper uses the zero-drift, identity-weight formulation in \cref{eq:pls_problem} to isolate the smoothness-selection question. Guerrero's broader statistical formulation allows nonzero mean differences and more general covariance weighting \cite{guerrero2007penalized}; these are natural extensions but are not silently imposed in the baseline criterion.
 
 \subsection{Spectral representation}
 
 Because
-\[
+\begin{equation}
+\label{eq:penalty_positive_semidefinite}
 v^\top Qv=\|D_dv\|_2^2\ge0,
-\]
+\end{equation}
 $Q$ is symmetric positive semidefinite. Under the standard difference operator,
-\[
+\begin{equation}
+\label{eq:penalty_rank}
 \operatorname{rank}(Q)=L-d,
-\]
+\end{equation}
 so $Q$ has $d$ zero eigenvalues and $L-d$ positive eigenvalues. Write
-\[
+\begin{equation}
+\label{eq:penalty_spectral_decomposition}
 Q=
 U\operatorname{diag}
 \left(
@@ -55,7 +60,7 @@ U\operatorname{diag}
 \right)U^\top,
 \qquad
 \delta_j>0.
-\]
+\end{equation}
 Then
 \begin{equation}
 \label{eq:H_spectral}
@@ -71,9 +76,10 @@ U\operatorname{diag}
 \end{equation}
 
 Thus the $d$ null-space directions are reproduced without shrinkage, while each penalizable direction is attenuated by
-\[
+\begin{equation}
+\label{eq:spectral_shrinkage}
 \alpha_j(\lambda)=\frac{1}{1+\lambda\delta_j}.
-\]
+\end{equation}
 For $d=2$, the null space consists of discrete linear sequences, so increasing $\lambda$ moves the fitted path toward a linear trend.
 
 \subsection{Normalized smoothness}
@@ -90,17 +96,19 @@ S(\lambda)
 \end{equation}
 
 The normalization excludes the $d$ directions that cannot be penalized, so
-\[
+\begin{equation}
+\label{eq:smoothness_endpoints}
 S(0)=0,
 \qquad
 \lim_{\lambda\to\infty}S(\lambda)=1.
-\]
+\end{equation}
 
 For a fixed linear smoother,
-\[
+\begin{equation}
+\label{eq:edf_definition}
 \operatorname{edf}(\lambda)=\operatorname{tr}(H_\lambda).
-\]
-Combining \eqref{eq:H_spectral} and \eqref{eq:S},
+\end{equation}
+Combining \cref{eq:H_spectral} and \cref{eq:S},
 \begin{equation}
 \label{eq:edf}
 \boxed{
