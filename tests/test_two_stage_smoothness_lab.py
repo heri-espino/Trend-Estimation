@@ -32,8 +32,8 @@ def test_main_ui_is_valid_python_and_identifies_three_stages():
     source = APP.read_text(encoding="utf-8")
     ast.parse(source, filename=str(APP))
     for label in (
-        "Validación 1: mínimos de S",
-        "Validación 2: elección de d y S",
+        "Validación 1: ECM y mínimos por d",
+        "Validación 2: reglas y comparación",
         "Tendencia y pronóstico",
         "División cronológica",
         "Matriz de comparación de candidatos",
