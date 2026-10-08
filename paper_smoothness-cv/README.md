@@ -197,3 +197,37 @@ manuscript, including the completed empirical section and illustrations.
 python paper_smoothness-cv/build.py --check
 python paper_smoothness-cv/build.py
 ~~~
+
+
+## Five-panel workflow tutorial
+
+The forecasting manuscript includes a full-width pedagogical figure,
+`fig_workflow_tutorial.pdf`, at the end of its evaluation-design section.
+The five horizontal panels show:
+
+- a historical Train/Validation-1/Validation-2 pair, followed by a
+  **separate current/final Validation-1 block** and an untouched outer test;
+- fresh penalized trend fits on the latest window for pooled CV, the newest
+  tracked minimum, and the recency-weighted mean;
+- the three forecasts against the subsequently observed outer test;
+- the **current Validation-1 forecast-loss curve** (never the test-loss
+  curve), recovered minima, and all three smoothness decisions;
+- historical tracked minimum branches and the final branch-to-smoothness
+  maps \(\phi(V_j)\).
+
+The figure uses a deterministic example: CP07 switch-to-rough simulation,
+seed 100, observation-noise SD 0.01, outer decision 8. It is not selected
+using test performance. The script writes PDF, PNG, and machine-readable
+provenance directly to `manuscript/figures/`.
+
+From the repository root, in this order:
+
+~~~powershell
+python experiments/smoothness_cv/make_workflow_tutorial_figure.py
+python paper_smoothness-cv/build.py --check
+python paper_smoothness-cv/build.py
+~~~
+
+`build.py --check` intentionally reports a missing figure if the generator
+has not been run. `build.py` stages the manuscript source (including its
+`figures/` folder) and the separately frozen CP08 figures.
