@@ -683,9 +683,21 @@ def _branch_rank_figure(result) -> go.Figure:
     return fig
 
 
-def _v_figure(v: pd.DataFrame, d: int, branch: str, rule: str) -> go.Figure:
+def _v_figure(
+    v: pd.DataFrame, d: int, branch: str, rule: str,
+    *, others: pd.DataFrame | None = None,
+) -> go.Figure:
     v = v.sort_values("origin")
     fig = go.Figure()
+    if others is not None and not others.empty:
+        for other_branch, group in others.groupby("rama", sort=True):
+            group = group.sort_values("origin")
+            fig.add_scatter(
+                x=group["origin"], y=group["s_aplicado"],
+                mode="lines+markers", name=f"Otra rama {other_branch}: S aplicada",
+                line={"color": "#808080", "width": 1.5},
+                marker={"size": 5}, opacity=0.23,
+            )
     fig.add_scatter(
         x=v["origin"], y=v["s_minimo"], mode="lines+markers",
         name="Entrada del mínimo de ECM transformado",
@@ -705,9 +717,27 @@ def _v_figure(v: pd.DataFrame, d: int, branch: str, rule: str) -> go.Figure:
     return fig
 
 
-def _v_losses(v: pd.DataFrame, d: int, branch: str, rule: str) -> go.Figure:
+def _v_losses(
+    v: pd.DataFrame, d: int, branch: str, rule: str,
+    *, others: pd.DataFrame | None = None,
+) -> go.Figure:
     v = v.sort_values("origin")
     fig = go.Figure()
+    if others is not None and not others.empty:
+        for other_branch, group in others.groupby("rama", sort=True):
+            group = group.sort_values("origin")
+            fig.add_scatter(
+                x=group["origin"], y=group["val1_mse"],
+                mode="lines", name=f"Otra rama {other_branch}: ECM V1",
+                line={"color": COLORES_D[1], "width": 1.3},
+                opacity=0.20, legendgroup=f"otra_{other_branch}",
+            )
+            fig.add_scatter(
+                x=group["origin"], y=group["val2_mse"],
+                mode="lines", name=f"Otra rama {other_branch}: ECM V2",
+                line={"color": COLORES_D[2], "width": 1.3, "dash": "dot"},
+                opacity=0.20, legendgroup=f"otra_{other_branch}",
+            )
     fig.add_scatter(
         x=v["origin"], y=v["val1_mse"], mode="lines+markers",
         name="ECM de validación 1 (S aplicado)",
