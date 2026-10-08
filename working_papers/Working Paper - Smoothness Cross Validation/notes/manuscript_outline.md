@@ -4,6 +4,14 @@
 
 **Working topic:** *Horizon-Matched Cross-Validation for Forecast-Optimal Penalized Trend Smoothness*. Title is provisional.
 
+## Main thesis that the eventual manuscript must communicate
+
+**The contribution is the investigated integration, not the invention of each component.** For a specified \(h\), combine established finite-difference PLS smoothing, spectral/EDF reparameterization of \(S\in[0,1]\), \(h\)-step polynomial continuation, and **fixed-window rolling-origin TSCV** with an \(h\)-matched pooled future-block MSE. Report the operating assumptions \(d,L,h\), and refit at the true forecast origin. The novelty claim must be restricted to what the closest literature audit and empirical/analytical results actually support.
+
+The introduction and contributions section should make this synthesis clear *before* presenting algebra: “We bring together existing components to study a well-defined forecast-directed smoothing choice at horizon \(h\).” The spectral form is essential for implementation, reuse, EDF interpretation, analytic differentiation, and endpoint behavior, but is not itself a novel eigendecomposition or a newly discovered smoothness index. Likewise, rolling-origin CV is established; here it is applied to a *particular PLS forecast-continuation loss*.
+
+**The testable comparison** is against LOOCV/GCV/AICc/BIC, one-step forecast-CV, and (where simulations reveal it) latent-trend recovery criteria, all with truly unseen outer forecasts. Do not imply established superiority merely because the method combines more components.
+
 ## Intended narrative
 
 1. **Introduction — the counterfactual future problem.** The smoothness producing the best retrospective trend is not necessarily the one producing the best forecast. At \(T\), we cannot see future \(y_{T+1:T+h}\). We can score forecasts made at past origins after their futures have been observed. Define the horizon-matched problem.
