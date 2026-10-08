@@ -33,6 +33,12 @@ CP01–CP03 were completed, with preserved artifacts. The historical CP03 simula
 - Horizon-matched future-block CV may outperform traditional criteria under some or many, but not necessarily all, DGPs.
 - The exact originality of the **specific** PLS normalized-index multi-step procedure remains to be determined through more focused prior-art review.
 
+## Synthesis and priority boundary
+
+The proposed contribution is the *integration* of already established techniques **for a particular horizon \(h\)**: pure finite-difference PLS, spectral evaluation of the established EDF-based smoothness index normalized to \([0,1]\), native \(h\)-step continuation, fixed-window rolling-origin TSCV, and pooled historical \(h\)-step forecast-MSE minimization. This combines existing statistical and numerical machinery into a concrete selector. A new use-case or combination can be publishable **if** its precise distinction from close antecedents and its mathematical or empirical value are demonstrated. Do not label each component a separate methodological invention.
+
+An operational claim should always specify \(h\) (and the fixed \(d,L\) and continuation \(G_{d,h}\)); \(\widehat S_{T,d,L,h}\) is not assumed optimal for other horizons or operators. The novelty of this exact combination remains an open prior-art question.
+
 ## Do NOT claim
 
 - “We predict the genuinely unseen future during validation.”
