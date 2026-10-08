@@ -1,7 +1,7 @@
-"""Aplicación principal: selección de orden y suavidad en dos validaciones.
+"""Laboratorio de órdenes, mínimos locales, ramas y reglas de suavidad.
 
-Ejecutar: streamlit run apps/smoothness_lab.py
-Análisis avanzado de ramas: streamlit run apps/smoothness_lab_advanced.py
+Modo principal: seguimiento histórico de ramas con matrices V.
+Caso particular: comparación directa en dos bloques de validación.
 """
 from __future__ import annotations
 
@@ -23,6 +23,7 @@ from experiments.smoothness_cv.live_lab import (
     transform_observations,
 )
 from experiments.smoothness_cv.two_stage_lab import run_two_stage_lab
+from experiments.smoothness_cv.branch_rule_lab import run_branch_lab, RULE_SPECS
 
 
 TRANSFORMACIONES = {
@@ -85,7 +86,9 @@ def yahoo_history(symbols: tuple[str, ...], period: str, interval: str):
 
 
 @st.cache_data(show_spinner=False, max_entries=40)
-def analyze(values: tuple[float, ...], **kwargs):
+def analyze(values: tuple[float, ...], *, mode: str = "ramas", **kwargs):
+    if mode == "ramas":
+        return run_branch_lab(np.asarray(values), **kwargs)
     return run_two_stage_lab(np.asarray(values), **kwargs)
 
 
@@ -332,19 +335,211 @@ def _matrix_figure(H: np.ndarray) -> go.Figure:
     return fig
 
 
+
+REGLAS_ES = {
+    "last": "Último mínimo (referencia polinómica)",
+    "mean_k3": "Media de los últimos 3 mínimos",
+    "mean_k5": "Media de los últimos 5 mínimos",
+    "median_k3": "Mediana de los últimos 3 mínimos",
+    "median_k5": "Mediana de los últimos 5 mínimos",
+    "recency_hl3": "Media ponderada por recencia (semivida 3)",
+    "recency_hl5": "Media ponderada por recencia (semivida 5)",
+    "recency_hl10": "Media ponderada por recencia (semivida 10)",
+    "val2_weighted": "Ponderación por ECM histórico de validación 2",
+    "recency_val2_hl3": "Recencia y error histórico (semivida 3)",
+    "recency_val2_hl5": "Recencia y error histórico (semivida 5)",
+    "recency_val2_hl10": "Recencia y error histórico (semivida 10)",
+    "linear_k3": "Extrapolación lineal (últimos 3 mínimos)",
+    "linear_k5": "Extrapolación lineal (últimos 5 mínimos)",
+    "linear_k10": "Extrapolación lineal (últimos 10 mínimos)",
+    "ew_linear_hl3": "Regresión lineal ponderada (semivida 3)",
+    "ew_linear_hl5": "Regresión lineal ponderada (semivida 5)",
+    "delta_hl3": "Extrapolación de incrementos (semivida 3)",
+    "delta_hl5": "Extrapolación de incrementos (semivida 5)",
+}
+ETIQUETAS_V = {
+    "d": "Orden de diferencias, d",
+    "rama": "Rama de mínimos locales",
+    "regla": "Regla de suavidad",
+    "origin": "Origen de validación",
+    "val1_start": "Inicio de validación 1 (índice cero)",
+    "val1_end": "Fin de validación 1 (exclusivo)",
+    "val2_end": "Fin de validación 2 (exclusivo)",
+    "s_minimo": "Mínimo local de S en validación 1",
+    "s_aplicado": "S elegido por la regla",
+    "s_sin_recortar": "S antes de restringir a [0, 1]",
+    "val1_mse": "ECM de validación 1 con S de la regla",
+    "val2_mse": "ECM de validación 2 con el mismo S",
+    "val2_rmse": "RECM de validación 2 con el mismo S",
+    "n_historial_disponible": "Orígenes terminados conocidos al elegir S",
+    "n_historial_utilizado": "Mínimos históricos utilizados",
+    "usa_s_actual": "Incluye el mínimo actual de validación 1",
+    "fallback": "Utiliza regla alternativa por historia insuficiente",
+    "acotado": "S restringido al intervalo [0, 1]",
+    "n_origenes": "Orígenes evaluados",
+    "n_validos": "Errores finitos",
+    "ec_medio_val1": "ECM medio de validación 1",
+    "ec_medio_val2": "ECM medio de validación 2",
+    "re_cm_val2": "RECM agregado de validación 2",
+    "soporte": "Proporción de orígenes evaluados",
+    "elegible": "Admisible para selección",
+}
+
+
+def _branch_figure(result, order: int) -> go.Figure:
+    data = result.branches.loc[result.branches["d"].eq(order)]
+    fig = go.Figure()
+    for branch, group in data.groupby("rama", sort=True):
+        group = group.sort_values("origin")
+        fig.add_scatter(
+            x=group["origin"], y=group["s_minimo"],
+            name=f"Rama {branch}", mode="lines+markers",
+            line={"width": 2}, marker={"size": 7},
+            hovertemplate=(
+                "Origen = %{x}<br>Suavidad mínima S = %{y:.4f}<extra></extra>"
+            ),
+        )
+    _style(
+        fig, f"Trayectorias de mínimos locales — orden d = {order}",
+        "Número de origen cronológico", "Suavidad normalizada del mínimo local, S",
+        height=430,
+    )
+    fig.update_yaxes(range=[-0.03, 1.03])
+    return fig
+
+
+def _historical_loss_figure(result, order: int) -> go.Figure:
+    rows = result.historical_surfaces.query("d == @order")
+    pivot = rows.pivot(index="origin", columns="smoothness", values="val1_mse")
+    fig = go.Figure(go.Heatmap(
+        x=pivot.columns, y=pivot.index, z=pivot.values,
+        colorscale="Blues",
+        colorbar={"title": {"text": "ECM"}},
+        hovertemplate=(
+            "Origen = %{y}<br>S = %{x:.3f}<br>ECM Val. 1 = %{z:.6g}"
+            "<extra></extra>"
+        ),
+    ))
+    local = result.branches.loc[result.branches["d"].eq(order)]
+    fig.add_scatter(
+        x=local["s_minimo"], y=local["origin"],
+        mode="markers", name="Mínimos locales seguidos",
+        marker={"symbol": "circle-open", "size": 8,
+                "line": {"width": 1.5, "color": "#C44E52"}},
+    )
+    _style(
+        fig, f"Superficie histórica del ECM — orden d = {order}",
+        "Suavidad normalizada, S", "Origen de validación 1",
+        height=445,
+    )
+    return fig
+
+
+def _branch_rank_figure(result) -> go.Figure:
+    ranked = result.summary.sort_values("ec_medio_val2")
+    ranked = ranked.loc[np.isfinite(ranked["ec_medio_val2"])].head(35)
+    fig = go.Figure()
+    for d, group in ranked.groupby("d", sort=True):
+        fig.add_scatter(
+            x=group["soporte"],
+            y=group["ec_medio_val2"], mode="markers",
+            name=f"Orden d = {d}",
+            marker={"size": 11, "color": COLORES_D[int(d)],
+                    "opacity": 0.85},
+            customdata=group[["rama", "regla", "n_origenes", "elegible"]].values,
+            hovertemplate=(
+                "Rama = %{customdata[0]}<br>Regla = %{customdata[1]}"
+                "<br>Orígenes = %{customdata[2]}"
+                "<br>Elegible = %{customdata[3]}"
+                "<br>Soporte = %{x:.1%}<br>ECM medio = %{y:.6g}"
+                "<extra></extra>"
+            ),
+        )
+    winner = result.summary.loc[
+        result.summary["d"].eq(result.selected_order)
+        & result.summary["rama"].eq(result.selected_branch)
+        & result.summary["regla"].eq(result.selected_rule)
+    ].iloc[0]
+    fig.add_scatter(
+        x=[winner["soporte"]], y=[winner["ec_medio_val2"]],
+        mode="markers", name="Configuración seleccionada",
+        marker={"symbol": "star", "color": "#202020", "size": 19},
+    )
+    _style(
+        fig, "Comparación histórica de ramas y reglas por ECM de validación 2",
+        "Proporción de orígenes con rama evaluada",
+        "ECM medio de validación 2 (unidades al cuadrado)", height=480,
+    )
+    return fig
+
+
+def _v_figure(v: pd.DataFrame, d: int, branch: str, rule: str) -> go.Figure:
+    v = v.sort_values("origin")
+    fig = go.Figure()
+    fig.add_scatter(
+        x=v["origin"], y=v["s_minimo"], mode="lines+markers",
+        name="Mínimo local observado en validación 1",
+        line={"color": COLORES_D[d], "width": 2},
+    )
+    fig.add_scatter(
+        x=v["origin"], y=v["s_aplicado"], mode="lines+markers",
+        name="Suavidad S aplicada por la regla",
+        line={"color": "#D55E00", "width": 2.5, "dash": "dash"},
+    )
+    _style(
+        fig, f"Historial de suavidad — d = {d}, rama {branch}",
+        "Origen cronológico de validación", "Suavidad normalizada, S",
+        height=380,
+    )
+    fig.update_yaxes(range=[-0.03, 1.03])
+    return fig
+
+
+def _v_losses(v: pd.DataFrame, d: int, branch: str, rule: str) -> go.Figure:
+    v = v.sort_values("origin")
+    fig = go.Figure()
+    fig.add_scatter(
+        x=v["origin"], y=v["val1_mse"], mode="lines+markers",
+        name="ECM de validación 1 (S aplicado)",
+        line={"color": COLORES_D[1], "width": 2},
+    )
+    fig.add_scatter(
+        x=v["origin"], y=v["val2_mse"], mode="lines+markers",
+        name="ECM de validación 2 (mismo S aplicado)",
+        line={"color": COLORES_D[2], "width": 2},
+    )
+    _style(
+        fig, f"Matriz V: errores registrados — d = {d}, rama {branch}",
+        "Origen cronológico de validación",
+        "Error cuadrático medio (unidades al cuadrado)", height=380,
+    )
+    return fig
+
+
+def _v_table(table: pd.DataFrame) -> pd.DataFrame:
+    translated = table.rename(columns=ETIQUETAS_V).copy()
+    label = ETIQUETAS_V["regla"]
+    if label in translated:
+        translated[label] = translated[label].map(
+            lambda k: REGLAS_ES.get(k, k)
+        )
+    return translated
+
+
 def main() -> None:
     st.set_page_config(page_title="Selección de suavidad y orden", layout="wide")
-    st.title("Selección predictiva de la suavidad y el orden de tendencia")
+    st.title("Seguimiento de mínimos locales y selección predictiva de suavidad")
     st.caption(
-        "Mínimos cuadrados penalizados · validación cronológica en dos etapas · "
-        "pronóstico desde el último origen disponible."
+        "Mínimos cuadrados penalizados · varias validaciones cronológicas · "
+        "ramas persistentes · reglas de agregación de suavidad."
     )
     st.markdown(
-        "**Validación 1:** detectar los mínimos locales de suavidad para "
-        "cada orden. **Validación 2:** seleccionar el par (orden, suavidad) "
-        "con menor error predictivo. **Prueba:** evaluar sin reoptimizar. "
-        "**Pronóstico futuro:** reajustar el mismo modelo con todas las "
-        "observaciones disponibles y extrapolar desde el último dato real."
+        "**Validación 1:** recuperar los mínimos locales para cada orden d. "
+        "**Ramas:** relacionar mínimos entre orígenes. **Reglas V:** obtener "
+        "S a partir de los mínimos presentes y anteriores. "
+        "**Validación 2:** medir el error de ese mismo S sin volver a elegirlo. "
+        "**Selección:** menor ECM medio histórico de validación 2. "
+        "**Prueba:** comparar contra valores que realmente ocurrieron."
     )
 
     with st.sidebar:
@@ -439,7 +634,13 @@ def main() -> None:
         ultimas = st.slider("Observaciones más recientes", 90, 600, 260, 10)
         frame = frame.tail(ultimas).reset_index(drop=True)
 
-        st.header("3. Diseño de las dos validaciones")
+        st.header("3. Diseño de las validaciones")
+        modo_nombre = st.radio(
+            "Procedimiento",
+            ["Seguimiento histórico de ramas (general)",
+             "Selección directa en dos bloques (caso particular)"],
+        )
+        modo = ("ramas" if modo_nombre.startswith("Seguimiento") else "directo")
         ordenes = st.multiselect(
             "Órdenes de diferencias que se compararán, d",
             [1, 2, 3, 4], default=[1, 2, 3, 4],
@@ -464,15 +665,45 @@ def main() -> None:
             "Profundidad de la búsqueda numérica",
             options=[3, 5, 8], value=5,
         )
+        if modo == "ramas":
+            st.header("4. Seguimiento de ramas y reglas de V")
+            paso = st.slider("Separación entre orígenes, en periodos", 1, 20, 5)
+            n_origenes = st.slider("Máximo de orígenes históricos", 2, 24, 10)
+            n_ramas = st.slider("Máximo de ramas por orden d", 1, 10, 5)
+            distancia = st.slider(
+                "Distancia máxima para continuar una rama, ΔS",
+                0.02, 0.30, 0.10, 0.01,
+            )
+            soporte = st.slider(
+                "Proporción mínima de orígenes para elegir una rama",
+                0.25, 1.00, 0.65, 0.05,
+            )
+            reglas = st.multiselect(
+                "Reglas históricas de suavidad (matriz V)",
+                options=list(REGLAS_ES),
+                default=["last", "mean_k3", "recency_hl3",
+                         "val2_weighted", "linear_k3"],
+                format_func=lambda k: REGLAS_ES[k],
+            )
+            st.caption(
+                "El método 'Último mínimo' conserva la continuación "
+                "polinómica original sin ponderación histórica. Las reglas "
+                "son idénticas entre validación 1 y validación 2; nunca se "
+                "usan errores futuros para calcular S."
+            )
+        else:
+            reglas = []
         st.caption(
-            "Los órdenes altos pueden producir pronósticos inestables. "
-            "La elección se realiza exclusivamente con validación 2."
+            "Los órdenes d = 3 y 4 pueden producir extrapolaciones inestables."
         )
 
     if not ordenes:
         st.error("Seleccione al menos un orden d.")
         st.stop()
-    minimo = L + 2 * h + test_size
+    if modo == "ramas" and not reglas:
+        st.error("Seleccione al menos una regla de suavidad.")
+        st.stop()
+    minimo = L + (3 if modo == "ramas" else 2) * h + test_size
     if len(frame) < minimo:
         st.error(
             f"El diseño necesita al menos {minimo} observaciones. "
@@ -480,36 +711,60 @@ def main() -> None:
         )
         st.stop()
     valores = frame["observed"].to_numpy(dtype=float)
-    with st.spinner("Buscando mínimos y evaluándolos en la segunda validación..."):
+    with st.spinner(
+        "Recuperando mínimos, siguiendo ramas y evaluando reglas cronológicas..."
+    ):
         try:
-            resultado = analyze(
-                tuple(valores), orders=tuple(sorted(ordenes)), window=L,
-                horizon=h, test_size=test_size,
-                future_horizon=h_futuro, candidate_spacing=spacing,
-                grid_points=grid, search_depth=depth,
+            config = dict(
+                orders=tuple(sorted(ordenes)), window=L, horizon=h,
+                test_size=test_size, future_horizon=h_futuro,
+                candidate_spacing=spacing, grid_points=grid, search_depth=depth,
             )
+            if modo == "ramas":
+                config.update(
+                    rules=tuple(reglas), step=paso, max_origins=n_origenes,
+                    track_epsilon=distancia, max_branches=n_ramas,
+                    min_support=soporte,
+                )
+            resultado = analyze(tuple(valores), mode=modo, **config)
         except (ValueError, ArithmeticError, RuntimeError) as exc:
             st.error(f"La selección no pudo completarse: {exc}")
             st.stop()
 
-    st.subheader("Modelo seleccionado mediante validación 2")
+    st.subheader(
+        "Modelo seleccionado por ECM histórico de validación 2"
+        if modo == "ramas" else "Modelo seleccionado mediante validación 2"
+    )
     metricas = st.columns(4)
     metricas[0].metric("Orden seleccionado, d*", str(resultado.selected_order))
     metricas[1].metric("Suavidad seleccionada, S*", f"{resultado.selected_s:.4f}")
     metricas[2].metric("ECM de validación 2", f"{resultado.selected_val2_mse:.5g}")
-    metricas[3].metric("Mínimos candidatos evaluados", len(resultado.candidates))
+    metricas[3].metric(
+        "Combinaciones (d, rama, regla)"
+        if modo == "ramas" else "Mínimos candidatos evaluados",
+        len(resultado.summary) if modo == "ramas" else len(resultado.candidates),
+    )
+    if modo == "ramas":
+        st.write(
+            f"**Rama seleccionada:** {resultado.selected_branch} · "
+            f"**Regla de suavidad:** "
+            f"{REGLAS_ES.get(resultado.selected_rule, resultado.selected_rule)}."
+        )
+        st.caption(resultado.selection_status)
     st.caption(
         f"Serie: {serie} · Transformación: {transformacion_es} · "
         f"Método: {resultado.method} · Ventana L = {L} · "
         f"Horizonte h = {h}. Ninguna observación de prueba intervino en la selección."
     )
 
-    tab_diseno, tab_val1, tab_val2, tab_final, tab_h = st.tabs([
+    tab_diseno, tab_val1, tab_ramas, tab_v, tab_val2, tab_final, tab_h = st.tabs([
         "División cronológica",
-        "Validación 1: mínimos de S",
-        "Validación 2: elección de d y S",
-        "Tendencia y pronóstico",
-        "Matriz de suavizamiento",
+        "Validación 1: ECM y mínimos por d",
+        "Trayectorias de ramas",
+        "Matrices V: suavidades y errores",
+        "Validación 2: reglas y comparación",
+        "Tendencia, prueba y pronóstico",
+        "Matriz H de suavizamiento",
     ])
 
     with tab_diseno:
