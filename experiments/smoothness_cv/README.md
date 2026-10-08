@@ -1,5 +1,11 @@
 # Chronological Smoothness-CV experiment infrastructure
 
+Also see the [full-sample source-paper factorial runner](run_cortes_toto_replication.py):
+the original Cortés-Toto 2^4 CV/GCV/AICc/BIC experiment is
+reproduced on full N=50/200 sequences, **separately from new
+rolling-window forecast experiments**, with seed-level reports and
+raw/normalized smoothness.
+
 ## Prospective 2026-10-08 high-throughput simulation campaign
 
 **New**: [CAMPAIGN_README.md](CAMPAIGN_README.md) documents 528
