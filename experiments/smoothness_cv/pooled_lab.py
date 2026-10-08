@@ -7,6 +7,7 @@ The objective is observation-forecast MSE of pure PLS polynomial continuation.
 from __future__ import annotations
 
 from dataclasses import dataclass
+from functools import lru_cache
 
 import numpy as np
 import pandas as pd
@@ -108,16 +109,42 @@ def fold_loss_at_lambda(prepared, lambda_: float) -> np.ndarray:
     return np.mean((prepared.targets - forecast) ** 2, axis=1)
 
 
-def all_grid_fold_losses(prepared, grid: np.ndarray, window: int, order: int) -> np.ndarray:
-    """Compute F_t(S_k) for all origins and candidate smoothness points."""
-    weights = np.empty((len(grid), window), dtype=float)
+@lru_cache(maxsize=40)
+def cached_uniform_spectral_weights(window: int, order: int, grid_points: int) -> np.ndarray:
+    """Reusable spectral response for a *uniform* S grid.
+
+    Crucial for large simulations: this matrix depends on (L,d,grid),
+    not on the time series, forecast origin, or random seed. Cached per
+    worker process to avoid thousands of repeated lambda inversions.
+    Treat the returned array as read-only.
+    """
+    grid = np.linspace(0., 1., grid_points)
+    eigvals = cached_pure_solver(window, order).eigvals
+    weights = np.empty((grid_points, window), dtype=float)
     for i, s in enumerate(grid):
         lam = smoothness_to_lambda(float(s), window, order)
         if np.isinf(lam):
-            weights[i] = 0.0
-            weights[i, :order] = 1.0
+            weights[i] = 0.
+            weights[i, :order] = 1.
         else:
-            weights[i] = 1.0 / (1.0 + lam * prepared.eigvals)
+            weights[i] = 1. / (1. + lam*eigvals)
+    weights.setflags(write=False)
+    return weights
+
+
+def all_grid_fold_losses(prepared, grid: np.ndarray, window: int, order: int) -> np.ndarray:
+    """Compute F_t(S_k) for all origins and candidate smoothness points."""
+    if np.array_equal(grid, np.linspace(0., 1., len(grid))):
+        weights = cached_uniform_spectral_weights(window, order, len(grid))
+    else:
+        weights = np.empty((len(grid), window), dtype=float)
+        for i, s in enumerate(grid):
+            lam = smoothness_to_lambda(float(s), window, order)
+            if np.isinf(lam):
+                weights[i] = 0.0
+                weights[i, :order] = 1.0
+            else:
+                weights[i] = 1.0 / (1.0 + lam * prepared.eigvals)
     # Spectral histories are (folds, L), weights (grid, L), future map (h, L).
     predicted = np.einsum(
         "ml,kl,hl->mkh",
