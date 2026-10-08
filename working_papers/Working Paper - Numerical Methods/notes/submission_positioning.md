@@ -4,7 +4,7 @@
 
 This is a scientific-computing/numerical-analysis paper.
 
-The criterion \(F(S)\) is defined in the companion paper_smoothness-cv/ workspace. This manuscript should introduce only enough of that criterion to be self-contained.
+This independent manuscript defines the forecast-loss objective \(F(S)\), its assumptions and numerical search conditions explicitly.
 
 ## Core question
 

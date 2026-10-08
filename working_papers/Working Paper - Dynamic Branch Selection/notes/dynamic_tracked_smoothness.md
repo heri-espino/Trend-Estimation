@@ -1,16 +1,15 @@
-> **2026-10-08: OPTIONAL / HISTORICAL EXTENSION.** This documents previously investigated (V_j,psi,phi) branch rules, not the paper's central method. CP04–CP08 have been run; their results were mixed or unfavorable to the dynamic rules versus pooled forecast-CV. “The central experiment” or “next implement” instructions below are archived research intentions, not active tasks. Tracking minima is *not required* to define the horizon-matched pooled objective. See [research_objective.md](research_objective.md) and [next_experiments.md](next_experiments.md).
+# Dynamic branch selection — mathematical decision notes
 
----
+**Active independent working paper; historical CP04–CP08 evidence preserved.**
+This note defines branch histories \(V_j\), correspondence of local minima
+and decision functions \(\psi,\phi\). Historical results were mixed; larger
+external and controlled-roughness experiments did not establish a general
+advantage over pooled forecast-CV. Branch stability and policy benefit
+remain research hypotheses.
 
-# Dynamic tracked smoothness — canonical formulation
-
-**Status: optional time-adaptive extension of the pooled forecast-CV method.**
-
-The forecasting paper's primary methodology is horizon-matched pooled
-forecast-CV over normalized PLS smoothness. This note documents a separate
-extension: tracking local minima and using their histories to choose a
-possibly time-varying smoothing hyperparameter. None of these branches or
-maps is required for the core pooled method.
+See [research objective](research_objective.md),
+[tracking](temporal_minima_tracking.md),
+and [completed evidence](results_and_boundaries.md).
 
 ## 1. Local forecast-loss surfaces through time
 
@@ -108,7 +107,7 @@ Define
 \widehat S_T=\phi(V_{\widehat j_T}).
 \]
 
-The central empirical comparison should include at least:
+Decision-map candidates and historically tested rules include:
 
 1. **Last**
    \[\phi_{\text{last}}(V_j)=S_{j,T}.\]
@@ -142,9 +141,7 @@ The central empirical comparison should include at least:
 7. **Predicted smoothness** as a later extension: fit a simple model to the
    branch trajectory and forecast its next `S` rather than using the last one.
 
-`Last` is the simplest dynamic rule and is already implemented by the
-`tracked_minima` experiment. Mean/median recent summaries are already stored
-as diagnostics but are not yet used as final selectors.
+The historical `tracked_minima` implementation included the newest-minimum rule. Other maps were investigated under the frozen CP04–CP08 protocols; listing a candidate is not proof it was evaluated.
 
 ## 4. Mandatory final refit
 
@@ -205,4 +202,4 @@ assumptions about persistence, not a statistical consequence of PLS.
 
 Completed CP04–CP08 experiments did not establish that a universal branch rule
 outperforms pooled forecast-CV. See the preserved checkpoint records and
-[research_log_2026-10.md](research_log_2026-10.md).
+[results_and_boundaries.md](results_and_boundaries.md).
