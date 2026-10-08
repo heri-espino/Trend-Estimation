@@ -17,7 +17,7 @@
 \maketitle
 
 \begin{abstract}
-Selecting smoothness for penalized trend forecasting requires numerical care when chronological forecast-loss objectives contain multiple local minima. We distinguish recovery of the minima on each surface from the separate task of corresponding minima across forecast origins. For per-surface recovery, we search an interpretable normalized smoothness coordinate $S\in[0,1]$ using adaptive subdivision, analytic derivatives, derivative-root bracketing, Brent refinement, and exact limiting boundary values. Under the previously frozen numerical specification, all 240 relevant adversarial optima, 2105 synthetic dense-reference interior minima, and 473 financial-data dense-reference interior minima were recovered, with approximately 1.6--1.8\% of dense-grid evaluation counts in the latter two experiments. For temporal tracking, we formalize one-to-one correspondence with a distance threshold and make explicit the distinction between within-surface minimum spacing and across-surface continuation. An existing four-series rolling experiment illustrates persistent and intermittent branches, but cannot establish correct identity without known ground truth. We give a counterexample in which greedy nearest-neighbor correspondence misses a feasible pair of links, motivating a separate controlled benchmark of greedy and exact pairwise assignment under drift, near-mergers, crossings, births, and deaths. The numerical component supplies local minima and correspondence diagnostics; the downstream choice of smoothness from branch histories belongs to a companion forecasting study.
+Selecting smoothness for penalized trend forecasting requires numerical care when chronological forecast-loss objectives contain multiple local minima. We distinguish recovery of the minima on each surface from the separate task of corresponding minima across forecast origins. For per-surface recovery, we search an interpretable normalized smoothness coordinate $S\in[0,1]$ using adaptive subdivision, analytic derivatives, derivative-root bracketing, Brent refinement, and exact limiting boundary values. Under the previously frozen numerical specification, all 240 relevant adversarial optima, 2105 synthetic dense-reference interior minima, and 473 financial-data dense-reference interior minima were recovered, with approximately 1.6--1.8\% of dense-grid evaluation counts in the latter two experiments. For temporal tracking, we formalize one-to-one correspondence with a distance threshold and make explicit the distinction between within-surface minimum spacing and across-surface continuation. An existing four-series rolling experiment illustrates persistent and intermittent branches, but cannot establish correct identity without known ground truth. We give a counterexample in which greedy nearest-neighbor correspondence misses a feasible pair of links, motivating a separate controlled benchmark of greedy and exact pairwise assignment under drift, near-mergers, crossings, births, and deaths. For small rational-input instances, we further derive a rational stationary equation and implement exact Sturm root counting and isolation. These proofs of root completeness apply only to the stated bounded-size exact instances; the frozen large-window benchmarks continue to use the adaptive method.
 \end{abstract}
 
 \vspace{1em}
@@ -40,7 +40,7 @@ The difficulty is numerical as well as statistical. The resulting forecast-valid
 
 This paper studies both numerical layers. The PLS estimator is reparameterized by a normalized smoothness coordinate \(S\in[0,1]\), derived from the controlled-smoothness index but rescaled so that the two limiting smoothing regimes are represented exactly by \(S=0\) and \(S=1\). Analytic first and second derivatives of the forecast loss are combined with a derivative-aware adaptive search that detects and classifies relevant stationary points, refines derivative roots with Brent's method \cite{brent1971zero}, and compares all detected local minima with the exact smoothness-domain endpoints. The recovered minimum sets then become inputs to a temporal correspondence layer that links nearby minima across adjacent forecast origins.
 
-The contribution is deliberately narrow. We do not propose a new smoother or a new forecasting model, and we do not choose the downstream forecasting functional applied to a tracked branch. Instead, the numerical contribution is to recover multimodal minimum sets and to study the correspondence problem needed to maintain their identities through time. The per-surface method is validated on analytic adversarial objectives, 1920 synthetic rolling forecast objectives, and 384 real financial-data objective surfaces. The temporal layer is demonstrated with recorded branch paths in an existing four-series experiment. Their behavior is observable but their ground-truth identities are not. We therefore also isolate the correspondence problem in a controlled benchmark design, without presenting the per-surface root-recovery success rate as a validation of temporal identity.
+The contribution is numerical: reliable recovery of multiple local minima of a forecast-validation objective, including its limiting smoothness regimes; an exact Sturm alternative for small rational instances; and the separate question of corresponding local minima across nearby forecast origins. This paper defines the objective, algorithms, and evaluation without depending on a distinct forecasting manuscript. The adaptive per-surface method is validated on analytic adversarial objectives, 1920 synthetic rolling forecast objectives, and 384 real financial-data objective surfaces. The exact Sturm implementation is a separate small-instance diagnostic and is not included in those performance counts. The temporal layer is demonstrated with recorded branch paths in an existing four-series experiment. Their behavior is observable but their ground-truth identities are not. We therefore also isolate the correspondence problem in a controlled benchmark design, without presenting the per-surface root-recovery success rate as a validation of temporal identity.
 
 \section{Penalized trend estimation and forecast validation}
 
@@ -285,6 +285,83 @@ When several nearby minima are useful for downstream inspection, a within-surfac
 
 No finite adaptive sampler can certify recovery of every stationary point of an arbitrary smooth scalar function. The empirical validation is consequently designed around missed local minima, selected-smoothness error, positive objective regret, and evaluation cost rather than a universal root-recovery claim.
 
+\subsection{Exact Sturm root isolation for small rational instances}
+\label{sec:sturm}
+
+The adaptive search above is numerical and cannot prove that every
+stationary point of a general smooth objective has been found. For
+the finite-difference PLS model with rational observations and a
+fixed finite forecast operator, an exact alternative exists in
+small dimensions. Because
+\begin{equation}
+\label{eq:sturm_rational}
+H_{\lambda}=(I+\lambda D_d^\top D_d)^{-1},
+\qquad
+f(\lambda)=\frac{P(\lambda)}{R(\lambda)},
+\end{equation}
+with polynomial numerator and denominator over the rational
+numbers, differentiation yields another rational function
+\begin{equation}
+\label{eq:sturm_derivative}
+f'(\lambda)=\frac{N(\lambda)}{D(\lambda)}.
+\end{equation}
+For $\lambda\ge0$, the matrix $I+\lambda D_d^\top D_d$
+is positive definite, hence the reduced rational
+denominator has no poles on the search half-line. Positive
+interior stationary points are therefore exactly the positive
+roots of $N$. A square-free Sturm chain of $N$,
+\begin{equation}
+\label{eq:sturm_chain}
+p_0=N,\qquad p_1=N',\qquad
+p_{k+1}=-\operatorname{rem}(p_{k-1},p_k),
+\end{equation}
+counts distinct real stationary roots by the difference in sign
+variations. In particular, for roots in $(0,\infty)$,
+\begin{equation}
+\label{eq:sturm_count}
+n_{+}=V(0^+)-V(+\infty).
+\end{equation}
+Zero entries in a sign list are omitted; at positive infinity
+each polynomial has the sign of its leading coefficient.
+Repeated roots require square-free handling for the Sturm
+count and must be preserved with their multiplicities in the
+reported isolated-root intervals. A stationary point of even
+multiplicity may have no derivative sign change and can be
+missed by ordinary Brent bracketing alone.
+
+The implementation \texttt{sturm\_forecast\_smoothness} constructs
+the exact rational forecast MSE for one or several pooled
+historical origins, isolates every positive stationary root
+with rational intervals, classifies its local behavior, and
+includes both exact limiting endpoint losses in the global
+comparison. This is a symbolic calculation in $\lambda$
+\emph{only because} that coordinate makes the rational
+polynomial representation algebraically accessible.
+The reported and optimized \emph{statistical} smoothness
+coordinate remains
+\begin{equation}
+\label{eq:sturm_map_to_s}
+S_j=S(\lambda_j)\in(0,1),
+\qquad
+S(0)=0,\quad S(\infty)=1.
+\end{equation}
+Thus the exact algebraic auxiliary variable should not be
+confused with the search/reporting parameter $S$.
+
+The exact-root count certifies completeness for the
+\emph{finite rationalized objective} built from the supplied
+decimal inputs. It does not certify arbitrary floating-point
+data-generating mechanisms, interval arithmetic of the
+reported approximate root coordinates, or the large-window
+experiments. Symbolic inversion and high-degree polynomial
+remainders scale poorly; the implementation consequently
+rejects windows larger than eight observations by default.
+It is an opt-in diagnostic and an exact small-window
+alternative, not a silent replacement for the scalable
+adaptive solver. Run it with
+\texttt{python experiments/numerical\_smoothness\_selection/run\_sturm\_minicheck.py}
+after installing the optional \texttt{symbolic} dependencies.
+
 \subsection{Temporal correspondence of local minima}
 \label{sec:tracking}
 
@@ -417,8 +494,8 @@ paired validation origins was 24 for GDP and 30 for the daily series.
 The numerical output records branch identifiers, matched and missing
 origins, smoothness values, continuation distances, and current
 candidate counts. Validation-2 and true-test forecast scores are
-generated by the companion forecasting procedure and are not treated
-as tests of numerical branch identity.
+recorded in the underlying rolling-origin demonstration and are
+not treated as tests of numerical branch identity.
 
 A separate controlled benchmark is specified in
 \texttt{CP05\_TRACKING\_CORRESPONDENCE.md}. It feeds known labeled
@@ -571,8 +648,7 @@ makes available.
 Left: tracked smoothness locations by difference order. Middle:
 historical Validation-2 losses. Right: candidate forecasts on the
 reserved test block. Highlighted branches were selected using
-historical forecast information by the companion procedure, not
-by an identity oracle. This figure demonstrates the interface and
+historical forecast information rather than an identity oracle. This figure demonstrates the interface and
 does not validate numerical matching against known branch labels.}
 \label{fig:tracked_examples}
 \end{figure}
@@ -584,7 +660,7 @@ pairwise assignment would preserve both. Whether this happens
 frequently on realistic paths, and how a pairwise-optimal assignment
 behaves at genuine crossings, are empirical questions of the
 controlled benchmark. Those results are not inferred from the
-forecast-error experiments in the companion paper.
+other forecast-error comparisons lacking known branch identities.
 
 \section{Discussion}
 
@@ -600,7 +676,7 @@ is not globally pairwise optimal. Branches can approach or cross, new minima
 may appear after initialization, and the tracking radius can be sensitive
 to scale and step length. The controlled matching benchmark is therefore
 needed before stronger temporal correspondence claims can be made.
-First, no finite sampler can guarantee detection of every stationary root of an arbitrary smooth function without additional assumptions. The adversarial stationary inflection illustrates this distinction: it is stationary but not a local minimum. Second, the dense reference grid is a benchmark rather than mathematical ground truth. Third, the analytic derivative formulas rely on a fixed affine trend-continuation operator. If additional forecasting parameters were re-estimated as functions of \(S\), for example inside an ARIMA continuation model, the derivative expressions would change. Finally, the financial experiment is only a real-data numerical stress test and provides no evidence of trading value or financial predictability.
+First, no finite adaptive sampler can guarantee detection of every stationary root of an arbitrary smooth function without additional assumptions. Exact Sturm isolation provides a distinct, conditional guarantee only when the stationary equation is explicitly available as a manageable polynomial over the rationals. The adversarial stationary inflection illustrates this distinction: it is stationary but not a local minimum. Second, the dense reference grid is a benchmark rather than mathematical ground truth. Third, the analytic derivative formulas rely on a fixed affine trend-continuation operator. If additional forecasting parameters were re-estimated as functions of \(S\), for example inside an ARIMA continuation model, the derivative expressions would change. Finally, the financial experiment is only a real-data numerical stress test and provides no evidence of trading value or financial predictability.
 
 The implementation, frozen experiment scripts, tracked data snapshots, and result summaries are available in the project repository at \url{https://github.com/heri-espino/Trend-Estimation}. The final benchmark inputs are versioned so the figures and tables in this paper can be regenerated from fixed result directories.
 
@@ -610,7 +686,7 @@ Forecast-optimal smoothness selection for penalized trend estimation can require
 
 Under a protocol frozen before the confirmatory experiments, the method recovered all relevant adversarial optima, all 2105 dense-reference minima across 1920 synthetic forecast surfaces, and all 473 dense-reference minima across 384 financial real-data surfaces. The synthetic and financial benchmarks required on average only 1.57\% and 1.84\% of the corresponding dense-grid evaluation counts. Sensitivity analysis identified endpoint refinement as the principal structural safeguard near the compactified upper boundary. In the applied case studies, separated minima occurred for several SPY, AAPL, and BTC--USD configurations but not for GDP, and one frozen SPY candidate set exhibited a validation--test rank reversal.
 
-These results support the proposed per-surface search as an accurate and computationally economical numerical procedure for the tested rolling forecast-validation problems. They do not establish universal recovery of all stationary points. The dynamic forecasting formulation now adds a second numerical requirement: correspondence of recovered minima across adjacent surfaces. That tracking layer is conceptually separate from root recovery: the observed 924 matches among 1392 recorded branch--origin states establish only that the existing method can produce usable branch histories. They do not establish correct cross-time identity. A simple two-branch counterexample shows that greedy continuation can lose an admissible link, and a controlled pairwise-assignment benchmark is the necessary next validation step. The overall method is intended as numerical support for forecast-based PLS smoothness selection rather than as a replacement for other statistical smoothing criteria.
+These results support the adaptive per-surface search as an accurate and computationally economical numerical procedure for the tested rolling forecast-validation problems. They do not establish universal recovery of all stationary points. The additional Sturm method gives a rigorous root count and isolating intervals for exact rational small-window objectives; it has not been benchmarked on the large-window datasets and cannot be substituted into the frozen cost comparisons. Correspondence of recovered minima across adjacent surfaces is a second numerical problem studied here, independent of the stationary-root search. That tracking layer is conceptually separate from root recovery: the observed 924 matches among 1392 recorded branch--origin states establish only that the existing method can produce usable branch histories. They do not establish correct cross-time identity. A simple two-branch counterexample shows that greedy continuation can lose an admissible link, and a controlled pairwise-assignment benchmark is the necessary next validation step. The overall method is intended as numerical support for forecast-based PLS smoothness selection rather than as a replacement for other statistical smoothing criteria.
 
 \bibliographystyle{abbrv}
 \bibliography{bibliografia}
