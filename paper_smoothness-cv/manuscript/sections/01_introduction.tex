@@ -1,50 +1,90 @@
 \section{Introduction}
 
-Smoothing parameters are often treated as technical constants, although in forecasting they determine a substantive choice: how much recent movement is treated as signal and how much is suppressed before extrapolation. Finite-difference penalized least squares (PLS) makes this trade-off especially transparent because the penalty can be translated into an interpretable normalized smoothness scale.
+The smoothness of an estimated trend is not automatically the
+smoothness that yields the best forecast. In finite-difference
+penalized least squares (PLS), the penalty $\lambda$ controls the
+trade-off between fidelity to observed data and regularity of a
+fitted historical path. If the purpose is extrapolation, its
+smoothness should instead be evaluated by predictive accuracy at
+the intended horizon $h$. A trend that recovers the latent signal
+well need not have a stable terminal extrapolation.
 
-Guerrero \cite{guerrero2007penalized,guerrero2008smoothness} develops this controlled-smoothness view. The forecasting problem begins once smoothness is no longer specified ex ante. A natural first approach is to choose the value that minimizes historical chronological forecast loss. That pooled selector remains an important baseline in this paper, but it ignores a feature that becomes visible when the loss surface is inspected repeatedly through time: the same surface can contain several local minima, and those minima can persist, drift, appear, or disappear across neighboring forecast origins.
+The PLS smoother and the smoothness index are established by the
+work of Guerrero \cite{guerrero2007penalized,guerrero2008smoothness},
+while Cort\'es-Toto et al.\ \cite{cortes2017smoothness} analyze the
+smoothness induced by conventional model-selection criteria.
+For a length-$L$ training window $x_t$, let
+$H_\lambda=(I+\lambda D_d^\top D_d)^{-1}$ be its smoothing matrix
+and let $S(\lambda)\in[0,1]$ denote a normalized trace-based
+smoothness index. Let $G_{d,h}$ extrapolate the fitted trend over
+$h$ future observations using its declared finite-difference
+continuation rule.
 
-The paper therefore studies forecast-optimal smoothness dynamically. At each chronological origin $t$, let
-\begin{equation}
-\label{eq:intro_local_minimum_set}
-\mathcal M_t=\{S_{1,t},\ldots,S_{K_t,t}\}
-\end{equation}
-be the local minima of the origin-specific forecast-loss surface. Nearby minima on adjacent surfaces are connected into data-driven branches. A branch is represented by its smoothness trajectory together with the Validation-1 loss at which the local minimum is identified and the subsequent Validation-2 forecast loss obtained after refitting through Validation 1.
-
-This produces a branch state
-\begin{equation}
-\label{eq:intro_branch_state}
-V_j=[S_{j,t},\ell^{(1)}_{j,t},\ell^{(2)}_{j,t}]_t.
-\end{equation}
-The forecasting decision then has two stages. First, a historical rule $\psi$ selects a persistent branch. Second, a rule $\phi$ maps the selected branch history into the current smoothness:
-\begin{equation}
-\label{eq:intro_branch_decision}
-\widehat j_T=\psi(V_1,\ldots,V_J),
-\qquad
-\widehat S_T=\phi(V_{\widehat j_T}).
-\end{equation}
-
-The simplest dynamic rule uses the newest tracked minimum. Other admissible maps can use a recent mean or median, Validation-2-weighted smoothness, recency weights, or forecasts of the smoothness trajectory itself. They operate on the same branch history; the purpose of presenting several examples is to make the decision space explicit, not to define a universal best rule.
-
-The older pooled criterion remains useful as a benchmark. For historical origins $T_1,\ldots,T_M$,
+The paper's principal proposal is to select smoothness by
+chronological, horizon-specific forecast cross-validation. For
+historical forecast origins $t_1,\ldots,t_M$, define
 \begin{equation}
 \label{eq:intro_pooled_loss}
 F^{\mathrm{pool}}_{d,L,h}(S)
 =
-\frac1M\sum_{m=1}^{M}F_{T_m}(S),
+\frac1M\sum_{m=1}^M\frac1h
+\left\|y_{t_m+1:t_m+h}
+-G_{d,h}H_{\lambda(S)}x_{t_m}\right\|_2^2.
 \end{equation}
-with
+Then select
 \begin{equation}
 \label{eq:intro_pooled_choice}
-\widehat S^{\mathrm{pool}}_{d,L,h}
-\in\arg\min_S F^{\mathrm{pool}}_{d,L,h}(S).
+\widehat S^{\mathrm{FCV}}_{T,d,L,h}
+\in\arg\min_{S\in[0,1]}
+F^{\mathrm{pool}}_{d,L,h}(S).
 \end{equation}
-It answers which single smoothness value has the lowest average historical forecast loss. The dynamic framework retains the temporal organization of multiple local optima and makes it available to a family of smoothness decisions. Whether any particular decision improves future forecasts remains an empirical question.
+Every validation block used in \cref{eq:intro_pooled_loss}
+has been observed by the outer origin $T$. The future test
+observations after $T$ never enter smoothness selection.
 
-A substantial literature already studies automatic smoothness selection and the use of controlled trends for prediction. Cort\'es-Toto et al.\ \cite{cortes2017smoothness} examine PLS penalties chosen by conventional optimality criteria; Islas-Camargo et al.\ \cite{islas2019remittances} and Islas-Camargo and Zumaya-Galv\'an \cite{islas2025exchange} use controlled-smoothness trends in forecasting. Predictive smoothing selection is also studied by Hart \cite{hart1994tscv} and, in the intended journal, by Vilar-Fern\'andez and Cao \cite{vilar2007nonparametric}. Recent work on Whittaker--Henderson extrapolation and data-driven HP penalties further emphasizes the need to separate forecast loss from signal-recovery loss \cite{biessy2026whittaker,franke2026hp}. The present contribution is narrower: it concerns the normalized smoothness of finite-difference penalized trends and the temporal evolution of multiple minima of their forecast-loss surfaces.
+This is a complete procedure without a time-varying branch state.
+Its defining choices are the smoothing matrix $H_\lambda$, the
+normalized smoothness parameter, a fixed extrapolation rule, and
+historical mean squared \emph{forecast} error computed at the
+intended horizon. Once smoothness has been selected, all validation
+fits are discarded; the trend is refitted using the latest
+$L$ observations and extrapolated into the untouched test block.
+The paper does not introduce PLS, normalized smoothness, or
+predictive cross-validation in isolation. Forecast-based smoothing
+selection has precedents in Hart \cite{hart1994tscv} and
+Vilar-Fern\'andez and Cao \cite{vilar2007nonparametric};
+controlled-smoothness trends have been used in prediction by
+Islas-Camargo et al.\ \cite{islas2019remittances} and
+Islas-Camargo and Zumaya-Galv\'an \cite{islas2025exchange}.
+Our focus is their particular combination into a directly
+horizon-matched PLS trend-extrapolation objective and
+its comparison with established alternatives.
 
-The distinction from numerical optimization is also explicit. The companion numerical paper studies how to recover all relevant local minima of each surface and how to correspond them across time. This paper studies what those tracked branches mean for forecasting and how they should be converted into the current smoothness.
+A numerical complication is that the forecast-MSE surface may
+have multiple local minima. The companion numerical-methods
+paper investigates adaptive stationary-point discovery, Brent
+root refinement, and explicit endpoint comparisons. Potential
+certification through rational structure and Sturm sequences
+is exploratory; it is not a completed feature of the solver.
 
-Finally, validation never supplies the trend fit used in the final forecast. Once $\widehat S_T$ is chosen, all temporary validation fits are discarded, the trend is refit on the newest $L$ observations available at $T$, and only then is the untouched future block forecast.
+An optional extension treats the desirable smoothness as a
+time-varying hyperparameter. If the analyst assumes that
+recent smoothing regimes carry information about the next
+forecast, historical local minima can be tracked into
+branch states $V_j$, with rules for choosing a branch and
+converting its history into the current smoothness.
+The resulting maps embody different assumptions about
+recency, persistence, and predictive relevance. They are
+not necessary for \cref{eq:intro_pooled_choice} and are
+not guaranteed to outperform it.
 
-The empirical record is informative but mixed. Horizon-matched pooled selection improves forecast accuracy in the controlled baseline simulation. A frozen branch-based recency rule performs favorably in a small confirmation panel but not in a broader financial panel; simulations under changing latent roughness also fail to establish a general improvement over pooled forecast-CV. The principal contribution is thus the explicit separation between recovering and tracking multiple forecast-loss minima, selecting a branch, and defining a current smoothness decision from that branch. The remainder of the paper develops these objects, reports the frozen empirical results, and illustrates several distinct decision maps under common information restrictions.
+The empirical analysis therefore distinguishes the main
+method from its extension. A frozen 3,000-scenario simulation
+evaluates horizon-matched pooled forecast-CV against one-step
+forecast tuning and classical criteria over 72,000
+outer-origin--horizon decisions. Further financial and
+changing-roughness experiments evaluate branch-based rules,
+whose predictive advantages are not uniform. The primary
+contribution is a forecast-targeted methodology for choosing
+PLS trend smoothness; temporal branch adaptation is a
+secondary, assumption-dependent use of the same objective.
