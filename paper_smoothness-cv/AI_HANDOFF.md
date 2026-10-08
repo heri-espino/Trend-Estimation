@@ -1,76 +1,63 @@
-# AI Handoff — Dynamic smoothness-CV paper
+# AI Handoff — Forecast-optimal smoothness CV paper
 
-## Identity
+## Identity and priority
 
-This paper now studies **dynamic forecast-optimal smoothness**.
+**Central contribution:** choose normalized smoothness for a
+finite-difference PLS trend by minimizing historical chronological
+$h$-step **forecast MSE** with a declared continuation operator
+and an information-safe final refit.
 
-The older pooled selector
+**Not central:** temporal branches. Those are an optional
+hyperparameter adaptation layer, not required for pooled forecast-CV.
 
-\[
-\widehat S^{\mathrm{pool}}_{T,h}
-\in\arg\min_S F^{\mathrm{pool}}_{T,h}(S)
-\]
-
-remains a primary baseline, but it is no longer the whole research question.
-
-The central object is a time sequence of local minima of forecast-loss surfaces
-and the persistent branches they form.
-
-Read `notes/dynamic_tracked_smoothness.md` before changing the method,
-experiments, or manuscript.
-
-## Canonical dynamic object
-
-At each chronological origin `t`, recover
+Core formulation:
 
 \[
-\mathcal M_t=\{S_{1,t},\ldots,S_{K_t,t}\}.
+H_\lambda=(I+\lambda D_d^\top D_d)^{-1},
+\qquad \widehat\tau_T=H_\lambda x_T,
 \]
-
-A current minimum may continue a previous branch if
 
 \[
-|S_{j,t}-S_{j,t-1}|\le\varepsilon,
+F^{\mathrm{pool}}_{d,L,h}(S)
+=\frac1M\sum_{m=1}^M\frac1h
+\|y_{t_m+1:t_m+h}-G_{d,h}H_{\lambda(S)}x_{t_m}\|_2^2,
 \]
-
-with one-to-one matching.
-
-Each branch is represented by
 
 \[
-V_j=
-\begin{pmatrix}
-S_{j,t_1} & \ell^{(1)}_{j,t_1} & \ell^{(2)}_{j,t_1}\\
-\vdots & \vdots & \vdots
-\end{pmatrix}.
+\widehat S_{T,d,L,h}^{\mathrm{FCV}}
+\in\arg\min_{S\in[0,1]}F^{\mathrm{pool}}_{d,L,h}(S).
 \]
 
-`ell1` is Validation-1 loss on the surface where the local minimum is found.
-`ell2` is Validation-2 forecast loss after refitting through Validation 1 with
-the same `d,L,S`.
+The smoothness index and PLS smoother are established;
+the paper investigates their explicit horizon-matched
+forecast-loss tuning, compared with one-step CV, ordinary
+CV, GCV, AICc, and simulation oracles. CP03 is the
+core controlled experiment (3,000 scenarios and
+72,000 origin-horizon decisions).
 
-The decision has two layers:
+## Numerical-methods companion
 
-\[
-\widehat j_T=\psi(V_1,\ldots,V_J),
-\qquad
-\widehat S_T=\phi(V_{\widehat j_T}).
-\]
+All-relevant-minimum discovery for the possibly multimodal
+forecast-loss surface is treated in
+`paper_numerical-methods/`. The implemented solver
+uses adaptive brackets, Brent refinement, and endpoint
+comparison. Sturm-based certified isolation remains a
+research prototype, **not completed implementation**.
 
-`psi` selects a persistent branch using historical information only.
-`phi` turns the selected branch history into the smoothness used today.
+## Optional time-adaptive formulation
 
-Minimum `phi` comparison set:
+If a user assumes stable or evolving preferred smoothness
+regimes, chronological minima may be tracked into histories
+`V_j=[S, Val1 loss, Val2 loss]`.
+Select a branch with `psi` and choose smoothness with
+`phi(V_j)`. Recency, historical predictive loss, medians,
+means, and extrapolations express different assumptions.
+CP04–CP08 evaluate this option, including mixed and
+unfavorable aggregate comparisons with pooled CV.
 
-- last local minimum;
-- recent mean;
-- recent median;
-- pure recency-weighted mean, with exponentially larger weight on newer smoothness values;
-- Validation-2 weighted mean;
-- recency + Validation-2 weighted mean;
-- later: explicit forecast of the smoothness trajectory.
-
-Do not silently choose one rule as final before it is evaluated out of sample.
+See `notes/dynamic_tracked_smoothness.md` for the
+extension's mechanics. Do not replace the core forecast-CV
+framing with the extension's goals.
 
 ## Non-negotiable validation semantics
 
