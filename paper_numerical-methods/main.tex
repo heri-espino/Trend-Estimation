@@ -356,6 +356,43 @@ reported isolated-root intervals. A stationary point of even
 multiplicity may have no derivative sign change and can be
 missed by ordinary Brent bracketing alone.
 
+\paragraph{Finite-instance completeness.}
+Assume $1\le d<L$, rational training and validation
+observations, a fixed integer finite-difference operator,
+and the associated linear continuation rule. Then the
+chronological forecast-MSE objective is rational in
+$\lambda$, with no poles for $\lambda\ge0$.
+If its derivative is not identically zero, there are
+finitely many distinct interior stationary smoothness
+values. Sturm counting and rational root isolation
+recover their number and enclosing intervals without
+a sampling-grid assumption. Indeed, the matrix
+$I+\lambda D_d^\top D_d$ is invertible on the
+nonnegative half-line; its inverse is rational in
+$\lambda$ by the adjugate formula. The squared
+forecast residuals and their derivative are therefore
+rational functions. The roots of the derivative
+numerator give all interior stationary points.
+Sturm's theorem counts these roots, while the strict
+monotonicity of $S(\lambda)$ carries each isolating
+interval $(a_i,b_i)$ into the smoothness bracket
+\begin{equation}
+\label{eq:sturm_s_brackets}
+S(a_i)<S_i<S(b_i).
+\end{equation}
+The endpoints $S=0$ and $S=1$ must be compared
+separately. If the derivative vanishes identically,
+the objective is constant and every smoothness is
+optimal; no finite set of isolated stationary roots
+can represent that degenerate case.
+
+This is completeness of \emph{root isolation} for the
+finite rational problem. Unless function-value
+intervals are also certified, selecting the smallest
+numerically evaluated objective among these roots
+and the endpoints is still an approximate ranking,
+not a formal certificate of global-value ordering.
+
 The implementation \texttt{sturm\_forecast\_smoothness} constructs
 the exact rational forecast MSE for one or several pooled
 historical origins, isolates every positive stationary root
@@ -375,9 +412,12 @@ S(0)=0,\quad S(\infty)=1.
 Thus the exact algebraic auxiliary variable should not be
 confused with the search/reporting parameter $S$.
 
-The exact-root count certifies completeness for the
-\emph{finite rationalized objective} built from the supplied
-decimal inputs. It does not certify arbitrary floating-point
+The exact-root count certifies completeness of the distinct
+positive stationary-root set for the \emph{finite rationalized
+objective} built from the supplied decimal inputs. The software
+retains exact rational root-interval endpoints alongside convenient
+floating-point approximations; ranking the losses at those
+approximate locations is not an exact comparison certificate. It does not certify arbitrary floating-point
 data-generating mechanisms, interval arithmetic of the
 reported approximate root coordinates, or the large-window
 experiments. Symbolic inversion and high-degree polynomial
