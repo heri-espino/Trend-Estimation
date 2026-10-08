@@ -105,11 +105,17 @@ El procedimiento para cada origen cronológico es:
 6. Mantener el mismo método, d* y S* y volver a estimar con las últimas
    L observaciones disponibles para pronosticar más allá de la serie real.
 
-Los paneles muestran el esquema cronológico, las curvas ECM(S) para diferentes
-órdenes d, el seguimiento gráfico de ramas, las matrices V específicas de cada
-(d, rama, regla), la comparación de ECM históricos, el test real y el
-suavizador matricial H_lambda. Se pueden descargar matrices V completas y
-subconjuntos particulares.
+Los paneles muestran el esquema cronológico y permiten elegir con controles
+separados el orden d y la regla r para representar el ECM de validación 1
+**transformado por el método** para cada rama. También se muestra el
+seguimiento de ramas y la matriz V para cada (d, r, rama), con la opción de
+superponer otras ramas con menor opacidad. Una figura retrospectiva aproxima
+visualmente la continuación de tendencia pronosticada en el test con la
+serie real reservada: se utiliza la tendencia estimada antes del test y se
+muestran los valores reservados **solo después**, para fines informativos.
+Un gráfico distinto muestra el modelo final reajustado y el pronóstico
+operativo posterior a la última observación. Se mantienen las descargas y
+la visualización del suavizador matricial H_lambda.
 
 **Caso particular:** en la barra lateral se puede elegir selección directa en
 dos bloques. Esta omite el seguimiento histórico y selecciona el par (d,S)
