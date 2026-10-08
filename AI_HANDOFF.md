@@ -305,3 +305,17 @@ Output is committed by the user after running the generator:
 to include/check the PDF. Tests cover index chronology.
 Run generator before `python paper_smoothness-cv/build.py --check`,
 then compile and visually inspect the resulting Wiley PDF.
+
+
+## Workflow figure audit: compiled PDF still needs update
+
+At 2026-10-07 latest user push 88bf9065 added the five-panel workflow
+figure as PDF/PNG/JSON. The figure was visually inspected in chat.
+Minor Panel A label overlap was fixed in code. The main forecasting
+manuscript PDF was last committed in 81a2030, before the tutorial
+figure was generated; its newer compilation is unverified.
+
+Run `paper_smoothness-cv/build-workflow-paper.ps1` via PowerShell after
+pulling. This is a fail-fast test/generate/preflight/compile workflow
+that refuses to report success if the compiled PDF is missing/stale.
+Then commit and push the updated figure and the main manuscript PDF.
