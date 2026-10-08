@@ -1,31 +1,26 @@
-\documentclass[APA,Utopia2COL]{WileyNJDv5}
+\documentclass[11pt]{article}
 
-\usepackage{amsmath,amssymb,amsthm,booktabs}
-\usepackage{graphicx}
-\hypersetup{hidelinks}
-
-\articletype{Research Article}
-\journal{Journal of Forecasting}
-\raggedbottom
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs,graphicx}
+\usepackage[hidelinks]{hyperref}
 
 \begin{document}
 
 \title{Dynamic Forecast-Optimal Smoothness for Penalized Trend Estimation}
 
-\author[1]{Heriberto Espino Montelongo}
-\authormark{ESPINO MONTELONGO}
-\titlemark{DYNAMIC FORECAST-OPTIMAL SMOOTHNESS}
-
-\address[1]{\orgname{Universidad de las Am\'ericas Puebla}, \orgaddress{\state{Puebla}, \country{Mexico}}}
-\corres{Corresponding author: Heriberto Espino Montelongo. \email{[corresponding email]}}
-
-\abstract[Abstract]{
-A penalized trend estimator has a continuum of admissible smoothness values, but selecting one for extrapolation is a different task from recovering a historical signal. Moreover, chronological forecast-loss surfaces may contain several local minima that evolve through time. We construct a time-indexed representation of these minima by matching nearby candidates across forecast origins and recording each persistent branch through its smoothness values, initial validation loss, and subsequent refitted forecast loss. The resulting branch state separates two decisions: which branch to use and how to map its history into the smoothness selected for the next forecast. This provides a common representation for recent means and medians, loss- and recency-weighted rules, and extrapolations of the smoothness trajectory. Controlled simulations support horizon-matched tuning of the pooled benchmark. A small confirmation panel favors a recency-based branch rule, but a larger financial panel and changing-roughness simulations do not establish general superiority over pooled forecast cross-validation. A separate simulation illustrates how alternative branch functionals differ in prediction and boundary behavior. The contribution is a transparent, reproducible framework for constructing and evaluating multiple smoothness decisions from tracked forecast-loss minima, rather than a universally preferred selection rule.
-}
-
-\keywords{forecast evaluation; penalized least squares; smoothing parameter; trend estimation; time-series cross-validation; rolling-origin forecasting}
+\author{Heriberto Espino Montelongo\\
+Universidad de las Am\'ericas Puebla, Puebla, Mexico}
+\date{}
 
 \maketitle
+
+\begin{abstract}
+A penalized trend estimator has a continuum of admissible smoothness values, but selecting one for extrapolation is a different task from recovering a historical signal. Moreover, chronological forecast-loss surfaces may contain several local minima that evolve through time. We construct a time-indexed representation of these minima by matching nearby candidates across forecast origins and recording each persistent branch through its smoothness values, initial validation loss, and subsequent refitted forecast loss. The resulting branch state separates two decisions: which branch to use and how to map its history into the smoothness selected for the next forecast. This provides a common representation for recent means and medians, loss- and recency-weighted rules, and extrapolations of the smoothness trajectory. Controlled simulations support horizon-matched tuning of the pooled benchmark. A small confirmation panel favors a recency-based branch rule, but a larger financial panel and changing-roughness simulations do not establish general superiority over pooled forecast cross-validation. A separate simulation illustrates how alternative branch functionals differ in prediction and boundary behavior. The contribution is a transparent, reproducible framework for constructing and evaluating multiple smoothness decisions from tracked forecast-loss minima, rather than a universally preferred selection rule.
+\end{abstract}
+
+\noindent\textbf{Keywords:} forecast evaluation; penalized least squares; smoothing parameter; trend estimation; time-series cross-validation; rolling-origin forecasting.
+
+\medskip
 
 \input{sections/01_introduction}
 \input{sections/02_related_work}
@@ -37,15 +32,16 @@ A penalized trend estimator has a continuum of admissible smoothness values, but
 \input{sections/07_scope_and_implications}
 \input{sections/08_conclusion}
 
-\bmsection*{Data availability}
+\section*{Data availability}
 The numerical experiments and their fixed simulation seeds are documented in the accompanying repository. The financial evaluation uses a frozen historical market-data snapshot with a machine-readable manifest; data availability and licensing remain subject to the original providers. Results using revised macroeconomic series are exploratory rather than claims of real-time-vintage forecasting performance.
 
-\bmsection*{Code availability}
+\section*{Code availability}
 Reusable implementations of finite-difference penalized trend estimation, chronological forecast objectives, rolling-origin validation, and smoothness transformations are maintained in the \texttt{trend\_estimation} package at \url{https://github.com/heri-espino/Trend-Estimation}. The repository also contains the manuscript source, experiment protocols, and frozen result artifacts used for the paper.
 
-\bmsection*{Conflict of interest}
+\section*{Conflict of interest}
 The author declares no conflict of interest.
 
+\bibliographystyle{plain}
 \bibliography{references}
 
 \end{document}
