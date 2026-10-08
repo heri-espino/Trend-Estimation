@@ -205,6 +205,76 @@ def _estilo(fig: go.Figure, *, titulo: str, eje_x: str, eje_y: str,
     return fig
 
 
+def _grafica_cronologia(
+    n: int, *, ventana: int, horizonte: int, paso: int, reserva: int
+) -> go.Figure:
+    """Representación esquemática de los cortes temporales, sin datos futuros."""
+    fin_preprueba = n - reserva
+    fin_historico = fin_preprueba - horizonte
+    cortes = td.rolling_origin_splits(
+        fin_historico, initial_train=ventana, horizon=horizonte,
+        expanding=False, train_window=ventana, step=paso,
+    )
+    pares = [
+        corte for corte in cortes
+        if corte.validation.stop + horizonte <= fin_historico
+    ]
+    if not pares:
+        raise ValueError("No existe un origen histórico con dos validaciones.")
+    ultimo = pares[-1]
+    origen = ultimo.validation.start
+    segmentos = [
+        (3, origen - ventana, origen, "Ajuste histórico", "Ajuste L", "#6B7280"),
+        (3, origen, origen + horizonte, "Validación 1", "Validación 1", "#0072B2"),
+        (3, origen + horizonte, origen + 2*horizonte,
+         "Validación 2", "Validación 2", "#009E73"),
+        (2, fin_preprueba - horizonte - ventana, fin_preprueba - horizonte,
+         "Ajuste antes de validación final", "Ajuste L", "#6B7280"),
+        (2, fin_preprueba - horizonte, fin_preprueba,
+         "Validación final 1", "Validación 1", "#0072B2"),
+        (1, fin_preprueba - ventana, fin_preprueba,
+         "Nuevo ajuste definitivo", "Ajuste L", "#6B7280"),
+        (1, fin_preprueba, n, "Prueba fuera de muestra", "Prueba", "#D55E00"),
+    ]
+    fig = go.Figure()
+    visibles = set()
+    for fila, inicio, fin, descripcion, tipo, color in segmentos:
+        fig.add_trace(go.Bar(
+            orientation="h",
+            y=[fila], base=[inicio], x=[fin - inicio],
+            width=0.45,
+            marker={"color": color, "line": {"width": 0}},
+            name=tipo,
+            legendgroup=tipo,
+            showlegend=tipo not in visibles,
+            customdata=[[inicio + 1, fin]],
+            hovertemplate=(
+                descripcion + "<br>Observaciones %{customdata[0]} a "
+                "%{customdata[1]}<extra></extra>"
+            ),
+        ))
+        visibles.add(tipo)
+    fig = _estilo(
+        fig,
+        titulo="Esquema cronológico de ajuste, validación y prueba",
+        eje_x="Número de observación (límites de cada bloque)",
+        eje_y="Etapa del procedimiento",
+        altura=370,
+    )
+    fig.update_layout(barmode="overlay", hovermode="closest")
+    fig.update_yaxes(
+        tickmode="array", tickvals=[1, 2, 3],
+        ticktext=[
+            "Ajuste definitivo y prueba",
+            "Última validación 1",
+            "Validación histórica en dos etapas",
+        ],
+        range=[0.4, 3.6], showgrid=False,
+    )
+    fig.update_xaxes(range=[0, n + 1])
+    return fig
+
+
 def _grafica_serie(
     frame: pd.DataFrame,
     result,
@@ -514,7 +584,7 @@ def main() -> None:
             )
             n = st.slider("Número de observaciones", 90, 600, 220, 10)
             desviacion = st.slider(
-                "Desviación estándar de las innovaciones", 0.0, 5.0, 0.35, 0.05
+                "Escala de las innovaciones de ruido, σ", 0.0, 5.0, 0.35, 0.05
             )
             tipo_ruido = st.selectbox("Distribución del ruido", list(RUIDOS))
             phi = st.slider(
@@ -661,7 +731,7 @@ def main() -> None:
     st.subheader("Resultado del procedimiento de selección")
     columnas = st.columns(4)
     columnas[0].metric("Suavidad seleccionada, S", f"{resultado.final_s:.4f}")
-    columnas[1].metric("Penalización correspondiente, λ", f"{resultado.final_lambda:.4g}")
+    columnas[1].metric("Penalización correspondiente, λ", ("∞" if np.isinf(resultado.final_lambda) else f"{resultado.final_lambda:.4g}"))
     columnas[2].metric(
         "Suavidad de la validación agrupada", f"{resultado.pooled_s:.4f}"
     )
@@ -680,8 +750,18 @@ def main() -> None:
         f"Orden d = {orden} · Ventana L = {ventana} · Horizonte h = {horizonte}. "
         + estado
     )
+    with st.expander("Glosario breve de las cantidades representadas"):
+        st.markdown(
+            "**Suavidad (S):** índice normalizado entre 0 y 1. "
+            "**ECM:** error cuadrático medio de pronóstico, calculado fuera "
+            "de la ventana de ajuste. **RECM:** raíz del ECM. "
+            "**Validación 1:** identifica los mínimos de la superficie predictiva. "
+            "**Validación 2:** evalúa el pronóstico después del nuevo ajuste. "
+            "**Rama:** sucesión de mínimos locales que persisten entre orígenes. "
+            "**Hλ:** matriz de pesos que transforma observaciones en tendencias."
+        )
     st.info(
-        "**Cómo interpretar la suavidad:** S = 0 reproduce la serie dentro de "
+        "**Cómo interpretar la suavidad:** S = 0 reproduce la serie dentro de 
         "la ventana; S = 1 corresponde al límite de máxima penalización, cuya "
         f"tendencia es un polinomio de grado {orden - 1}. "
         "El parámetro λ controla la intensidad de la penalización."
@@ -697,6 +777,22 @@ def main() -> None:
 
     with pestana_tendencia:
         st.subheader("Estimación de tendencia y pronóstico fuera de muestra")
+        with st.expander("Distribución cronológica de los datos", expanded=True):
+            st.plotly_chart(
+                _grafica_cronologia(
+                    len(observados), ventana=ventana, horizonte=horizonte,
+                    paso=paso, reserva=reserva,
+                ),
+                use_container_width=True,
+            )
+            st.caption(
+                "La primera fila histórica presenta un ajuste, una validación "
+                "para localizar mínimos y otra para evaluar su pronóstico. "
+                "La última validación 1 permite continuar la rama sin acceder "
+                "a la prueba. Después, el modelo se ajusta de nuevo con las "
+                "últimas L observaciones anteriores a la prueba. "
+                "El bloque de prueba permanece fuera de la selección."
+            )
         opciones = st.columns(3)
         vista_es = opciones[0].selectbox("Representación gráfica", list(VISTAS))
         mostrar_agrupado = opciones[1].checkbox(
