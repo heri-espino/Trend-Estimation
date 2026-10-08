@@ -44,12 +44,53 @@ Because
 \label{eq:penalty_positive_semidefinite}
 v^\top Qv=\|D_dv\|_2^2\ge0,
 \end{equation}
-$Q$ is symmetric positive semidefinite. Under the standard difference operator,
+$Q$ is symmetric positive semidefinite. The dimension of its null
+space, and the existence of the smoother at every finite penalty, follow
+directly from the difference operator.
+
+\begin{proposition}[Null space and finite-penalty well-posedness]
+\label{prop:pls_wellposed}
+For the standard consecutive order-$d$ difference operator with
+$1\le d<L$,
 \begin{equation}
 \label{eq:penalty_rank}
-\operatorname{rank}(Q)=L-d,
+\operatorname{rank}(D_d)=\operatorname{rank}(Q)=L-d,
+\qquad
+\ker(Q)=\ker(D_d),\qquad
+\dim\ker(Q)=d.
 \end{equation}
-so $Q$ has $d$ zero eigenvalues and $L-d$ positive eigenvalues. Write
+For every finite $\lambda\ge0$, $A_\lambda=I+\lambda Q$
+and $H_\lambda=A_\lambda^{-1}$ are symmetric positive definite and
+invertible. The objective in \cref{eq:pls_problem} therefore has the
+unique minimizer $H_\lambda x_T$.
+\end{proposition}
+
+\begin{proof}
+The condition $D_dv=0$ is the order-$d$ homogeneous
+difference recurrence. Its first $d$ entries are arbitrary, and the
+remaining entries are uniquely determined because the coefficient of
+each successive new entry is nonzero. Thus
+$\dim\ker(D_d)=d$, so rank--nullity gives
+$\operatorname{rank}(D_d)=L-d$.
+Clearly $D_dv=0$ implies $Qv=D_d^\top D_dv=0$.
+Conversely, if $Qv=0$, then
+$0=v^\top Qv=\|D_dv\|_2^2$, which implies $D_dv=0$.
+The kernels are therefore equal, and rank--nullity also gives the
+stated rank of $Q$. Finally, for every nonzero $v$,
+\[
+v^\top A_\lambda v
+=\|v\|_2^2+\lambda\|D_dv\|_2^2>0
+\qquad(0\le\lambda<\infty).
+\]
+Hence $A_\lambda$ is symmetric positive definite and invertible;
+its inverse $H_\lambda$ is likewise positive definite. The Hessian
+of the penalized objective is $2A_\lambda\succ0$; the objective is
+strictly convex and coercive, so its stationary point $H_\lambda x_T$
+is its unique minimizer.
+\end{proof}
+
+In particular, $Q$ has exactly $d$ zero eigenvalues and
+$L-d$ strictly positive eigenvalues. Write
 \begin{equation}
 \label{eq:penalty_spectral_decomposition}
 Q=
@@ -81,6 +122,15 @@ Thus the $d$ null-space directions are reproduced without shrinkage, while each 
 \alpha_j(\lambda)=\frac{1}{1+\lambda\delta_j}.
 \end{equation}
 For $d=2$, the null space consists of discrete linear sequences, so increasing $\lambda$ moves the fitted path toward a linear trend.
+
+For finite $\lambda$, the $d$ zero eigenvalues of $Q$ become
+$d$ unit eigenvalues of $H_\lambda$; the remaining eigenvalues
+belong to $(0,1]$. Consequently $\ker(H_\lambda)=\{0\}$ for
+finite $\lambda$, despite $\dim\ker(Q)=d$. As $\lambda$ grows,
+$A_\lambda$ can become ill-conditioned even though it remains
+invertible, motivating spectral shrinkage and exact treatment
+of the limiting projection rather than numerical inversion
+at an arbitrarily large penalty.
 
 \subsection{Normalized smoothness}
 

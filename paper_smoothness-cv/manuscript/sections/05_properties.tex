@@ -65,12 +65,46 @@ so interior stationary points correspond exactly.
 A strictly increasing bijection preserves the minimizing set. The derivative identity follows from the chain rule.
 \end{proof}
 
-\begin{proposition}[Endpoint interpretation]
+\begin{proposition}[Exact endpoints and the unique limiting fit]
 \label{prop:endpoints}
-At $S=0$, $H_\lambda=I$ and the historical trend reproduces the observations. At $S=1$, interpreted as $\lambda\to\infty$, $H_\lambda$ converges to the orthogonal projection onto $\ker(D_d)$.
+Under the conditions of \cref{prop:pls_wellposed}, $H(0)=I$.
+Let $U_0\in\mathbb R^{L\times d}$ have orthonormal columns spanning
+$\ker(D_d)$. At $S=1$, interpreted as $\lambda\to\infty$,
+\begin{equation}
+\label{eq:exact_limiting_projection}
+H(1)=H_\infty=U_0U_0^\top=P_{\ker(D_d)}.
+\end{equation}
+Although $H_\infty$ is singular with rank $d$ and nullity $L-d$,
+the limiting trend is uniquely defined by
+\begin{equation}
+\label{eq:exact_limiting_constrained_fit}
+H_\infty x_T
+=\operatorname*{arg\,min}_{\tau:\,D_d\tau=0}
+\|x_T-\tau\|_2^2.
+\end{equation}
+Thus no $1-\varepsilon$ surrogate is required for $S=1$.
 \end{proposition}
 
-For $d=2$, the endpoints are therefore the unsmoothed historical path and its least-squares linear projection. Endpoint comparison is part of the scientific selection problem, not merely a numerical detail.
+\begin{proof}
+At $\lambda=0$, $H_0=I$. By \cref{eq:H_spectral}, the
+$d$ unit eigenvalues on $\ker(D_d)$ remain one, whereas
+$(1+\lambda\delta_j)^{-1}\to0$ for every $\delta_j>0$.
+This proves the projection formula. Any feasible
+$\tau\in\ker(D_d)$ has the form $\tau=U_0a$.
+Since $U_0^\top U_0=I$, the least-squares objective
+$\|x_T-U_0a\|_2^2$ has the unique minimizer
+$a=U_0^\top x_T$. Hence $\tau=U_0U_0^\top x_T$ is unique,
+even though the projection matrix itself is not invertible.
+\end{proof}
+
+For $d=2$, the endpoints are the unsmoothed historical path and
+its unique least-squares linear projection. The expression
+$(I+\infty Q)^{-1}$ is not an ordinary matrix inverse:
+$S=1$ must be computed as the exact spectral projection.
+A large finite penalty or $S=1-\varepsilon$ is only an
+approximation and can introduce avoidable numerical error.
+Endpoint comparison is part of the scientific selection problem,
+not merely a numerical detail.
 
 \subsection{The future polynomial family}
 
@@ -113,7 +147,7 @@ nested model-selection experiment.
 
 \subsection{Existence and possible nonuniqueness}
 
-For finite $S<1$, $H_{\lambda(S)}$ is continuous. The limiting matrix at $S=1$ exists by \cref{eq:H_spectral}. Thus the forecast loss has a continuous extension to the compact domain $[0,1]$ and at least one global minimizer exists.
+The fitting problem has a unique solution for every $S\in[0,1]$: for $S<1$ this follows from strict convexity in \cref{prop:pls_wellposed}, and for $S=1$ from the constrained least-squares argument in \cref{prop:endpoints}. For finite $S<1$, $H_{\lambda(S)}$ depends continuously on $S$; the exact projection limit at $S=1$ makes the full family continuous on $[0,1]$. Thus, with a fixed finite collection of historical folds, $F^{\mathrm{pool}}_{T,d,L,h}(S)$ is continuous on the compact interval $[0,1]$ and attains at least one global minimum. \emph{Existence does not imply a unique minimizing $S$.}
 
 Uniqueness is not assumed. Distinct smoothing regimes can produce similar validation loss, and the criterion may contain several local minima. This is statistically meaningful because competing minima can imply different effective degrees of freedom and terminal slopes. The implemented numerical search uses adaptive derivative bracketing, Brent root refinement, and exact endpoint comparison. The mathematical criterion in \cref{eq:Sstar} is independent of numerical search details and does not require tracking minima through time.
 

@@ -27,6 +27,17 @@ Q=U\operatorname{diag}(0,\ldots,0,\delta_1,\ldots,\delta_{L-d})U^\top,
 
 The \(d\)-dimensional kernel consists of discrete polynomials of degree at most \(d-1\). Eigenvectors diagonalize the *smoothing action*; one decomposition for fixed \(L,d\) can be reused.
 
+**Structural facts (standard consecutive differences, \(1\le d<L\)):**
+\[
+\operatorname{nullity}(D_d)=\operatorname{nullity}(Q)=d,\quad
+\operatorname{rank}(D_d)=\operatorname{rank}(Q)=L-d.
+\]
+The first \(d\) values determine every sequence with \(D_dx=0\) (rank-nullity). Equality of the kernels follows since \(Qx=0\Rightarrow x^\top Qx=\|D_dx\|^2=0\Rightarrow D_dx=0\); the converse is immediate.
+
+For every **finite** \(\lambda\ge0\), \(A_\lambda=I+\lambda Q\succ0\) because \(v^\top A_\lambda v=\|v\|^2+\lambda\|D_dv\|^2>0\) for all \(v\ne0\). Thus \(H_\lambda=A_\lambda^{-1}\succ0\) is invertible, and the PLS criterion has a unique minimizer. At the exact **\(S=1\)** limit, \(H(1)=U_0U_0^\top\) is a **singular projection** of rank \(d\), nullity \(L-d\); the fitted trend is nevertheless the unique constrained least-squares polynomial. No artificial \(1-\varepsilon\) endpoint is needed.
+
+
+
 ## Smoother and scalar smoothness
 
 \[

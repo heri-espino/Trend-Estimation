@@ -60,6 +60,129 @@ H_\infty=P_{\ker D_d}
 
 which must be evaluated as a **projection limit**, not by substituting a large guessed \(\lambda\). At \(\lambda=0\), \(H_0=I\).
 
+## 2A. Why the nullity is exactly d, why fitting is always solvable, and why S=1 is exact
+
+**Assumptions for all claims here:** the usual consecutive finite-difference operator \(D_d\in\mathbb R^{(L-d)\times L}\), \(1\le d<L\), real-valued observations, the *pure* PLS penalty \(Q=D_d^\top D_d\), and \(\lambda\ge0\). Different constraints, penalty matrices, boundary conditions, or negative penalties need their own proofs.
+
+### A. Rank-nullity and the d free initial observations
+
+The null space of \(D_d\) is the set of vectors satisfying \(D_dx=0\), or equivalently a homogeneous recurrence of order \(d\), \(\Delta^d x_t=0\). The coefficient multiplying the newest unknown value \(x_{t+d}\) is nonzero, so choosing \(x_1,\ldots,x_d\) freely determines every subsequent value uniquely. There are **exactly \(d\) free scalar choices**, not \(L-d\). Consequently,
+
+\[
+\dim\ker(D_d)=d,\qquad
+\operatorname{rank}(D_d)=L-d
+\]
+
+by the rank-nullity theorem \(\operatorname{rank}(A)+\operatorname{nullity}(A)=\text{number of columns of }A\). The rank equals the number of *rows* here only because the consecutive-difference rows are independent; this equality does **not** hold for arbitrary matrices. These null-space sequences are discrete polynomial sequences of degree at most \(d-1\), with basis \(1,t,\ldots,t^{d-1}\).
+
+**Concrete example:** for \(L=4,d=2\),
+
+\[
+D_2=\begin{pmatrix}1&-2&1&0\\0&1&-2&1\end{pmatrix},\qquad
+D_2x=0\iff
+x=a(1,1,1,1)^\top+b(0,1,2,3)^\top.
+\]
+
+Two freely chosen coefficients \(a,b\) give nullity 2. The notion is the **dimension of a subspace**, not a claim that the kernel itself is the number 2.
+
+### B. Why Q inherits exactly the same kernel
+
+One inclusion is immediate: \(D_dx=0\) implies \(Qx=D_d^\top(D_dx)=0\). The converse is the subtle direction; we cannot simply *cancel* \(D_d^\top\). If \(Qx=0\), premultiply by \(x^\top\):
+
+\[
+0=x^\top Qx
+=x^\top D_d^\top D_dx
+=(D_dx)^\top(D_dx)
+=\|D_dx\|_2^2.
+\]
+
+A sum of squares of **real** numbers can equal zero only if each summand is zero. Thus \(D_dx=0\). Both inclusions hold, hence
+
+\[
+\boxed{\ker(Q)=\ker(D_d),\quad
+\operatorname{nullity}(Q)=d,\quad
+\operatorname{rank}(Q)=L-d.}
+\]
+
+Because \(Q\) is symmetric PSD, this means exactly \(d\) zero eigenvalues (counted with multiplicity), not that \(H_\lambda\) has \(d\) zero eigenvalues.
+
+### C. Existence and uniqueness for every finite penalty
+
+Let \(A_\lambda=I+\lambda Q\). For each **nonzero** \(v\in\mathbb R^L\) and finite \(\lambda\ge0\),
+
+\[
+v^\top A_\lambda v
+=v^\top v+\lambda v^\top Qv
+=\|v\|_2^2+\lambda\|D_dv\|_2^2
+>0.
+\]
+
+The strict inequality comes from \(\|v\|^2>0\), even if \(v\in\ker(D_d)\). Thus \(A_\lambda\) is **symmetric positive definite (SPD)**, not merely PSD, and therefore invertible. Its inverse \(H_\lambda=A_\lambda^{-1}\) is SPD and invertible as well.
+
+The objective
+
+\[
+J_\lambda(\tau)=\|x-\tau\|_2^2+\lambda\|D_d\tau\|_2^2
+\]
+
+has gradient \(2(I+\lambda Q)\tau-2x\) and Hessian \(2(I+\lambda Q)\succ0\). It is strictly convex and coercive: a finite, **unique global minimizer always exists** for each finite \(\lambda\ge0\) and every observed vector \(x\), namely \(\widehat\tau_\lambda=H_\lambda x\). This result holds even though \(Q\) itself is singular.
+
+For the spectral eigenvalues, \(\delta_1=\cdots=\delta_d=0\), \(\delta_j>0\) otherwise, we have
+
+\[
+\operatorname{eig}(A_\lambda)=1+\lambda\delta_j\ge1,\qquad
+\operatorname{eig}(H_\lambda)=(1+\lambda\delta_j)^{-1}\in(0,1].
+\]
+
+Therefore, for **finite** \(\lambda\), \(\ker(H_\lambda)=\{0\}\): the \(d\) zero eigenvalues of \(Q\) become \(d\) eigenvalues **equal to one**, not zero, in \(H_\lambda\).
+
+**Numerical nuance:** invertibility is not the same as good conditioning. When \(d\ge1\), \(\kappa_2(A_\lambda)=1+\lambda\,\delta_{\max}\) and can grow without bound as \(\lambda\) increases, even though every finite \(A_\lambda\) is invertible. Reusing a spectral factorization or solving a structured linear system is preferable to explicitly constructing an unstable matrix inverse.
+
+### D. The exact limiting model S=1 does NOT need an epsilon
+
+The equality \(S=1\) is reached only in the limit \(\lambda\to\infty\), never by finite \(\lambda\), because the \(L-d\) positive-eigenvalue shrinkage terms are strictly positive at finite penalty. The expression \((I+\infty Q)^{-1}\) is **not** an ordinary matrix inversion. Instead take the spectral limit, letting \(U_0\in\mathbb R^{L\times d}\) contain an orthonormal basis of \(\ker(D_d)\):
+
+\[
+\boxed{H(1)=H_\infty=\lim_{\lambda\to\infty}H_\lambda
+=U_0U_0^\top=P_{\ker(D_d)}.}
+\]
+
+\(H_\infty\) is symmetric PSD, idempotent, **rank \(d\)**, and **nullity \(L-d\)**. It is singular (for \(1\le d<L\)), but that does **not** mean the fitted trend ceases to exist.
+
+At the endpoint the right optimization problem is the **unique constrained least-squares fit**
+
+\[
+\boxed{\widehat\tau_\infty
+=\underset{\tau:\,D_d\tau=0}{\arg\min}\|x-\tau\|_2^2
+=U_0U_0^\top x.}
+\]
+
+**Proof of uniqueness:** every feasible \(\tau=U_0a\); minimizing \(\|x-U_0a\|^2\) in \(a\) gives the unique solution \(a=U_0^\top x\), since \(U_0^\top U_0=I_d\). So \(H_\infty\) is a *singular operator with a uniquely determined output*; we are not trying to invert it.
+
+With \(d=2\), this is simply the ordinary least-squares line fitted to the \(L\) observations. There is no reason to replace \(S=1\) by \(1-\varepsilon\). Such a replacement is an approximation and may miss a global forecast-loss minimum at the true endpoint.
+
+### E. What exactly is guaranteed for the forecast-CV paper?
+
+1. **Unique fitted trend:** for each fixed \(S\in[0,1]\), the fit \(H(S)x\) is uniquely defined (finite penalty or exact constrained endpoint).
+2. **Existence of an optimal selected smoothness:** \(H(S)\) extends continuously to \(S=1\); consequently, every fixed finite-fold pooled forecast-MSE function \(F^{\mathrm{pool}}(S)\) is continuous on compact \([0,1]\) and **attains a global minimum** (Weierstrass theorem).
+3. **NOT guaranteed:** a unique optimal \(S\), a convex/unimodal forecast-loss surface, numerically complete discovery of all minima, or superior out-of-sample forecasting. Existence is not the same as these stronger properties.
+
+Finally, the \(d\) unshrunk eigen-directions imply
+
+\[
+\operatorname{edf}(\lambda)=\operatorname{tr}(H_\lambda)\in[d,L],\quad
+S_{\mathrm{raw}}=1-\frac{\operatorname{edf}}L\in[0,1-d/L].
+\]
+
+Rescaling to the **attainable** range produces
+
+\[
+\boxed{S=\frac{S_{\mathrm{raw}}}{1-d/L}
+=\frac{L-\operatorname{edf}}{L-d}\in[0,1].}
+\]
+
+This normalized index is an equivalent coordinate for a known smoother, **not a new estimator or a change to its exact optimal trend**. The matrix facts justify why the denominator is \(L-d\) and why both endpoints are mathematically admissible.
+
 ## 3. Why optimize the index \(S\), not a truncated \(\lambda\) grid?
 
 The Guerrero-type trace index, normalized to its attainable range, is

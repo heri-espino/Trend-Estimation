@@ -4,7 +4,9 @@
 
 ## Established mathematical facts (under stated model)
 
-- \(Q=D_d^\top D_d\) is symmetric PSD; its kernel has dimension \(d\) for the standard operator.
+- For standard consecutive differences \(1\le d<L\), rank-nullity gives \(\operatorname{rank}(D_d)=L-d\), \(\dim\ker(D_d)=d\); the identity \(x^\top Qx=\|D_dx\|^2\) proves \(\ker(Q)=\ker(D_d)\), hence \(\operatorname{nullity}(Q)=d\).
+- For each finite \(\lambda\ge0\), \(I+\lambda Q\succ0\) and \(H_\lambda\succ0\) are invertible; the penalized least-squares fit exists and is unique for all data.
+- At \(S=1\), \(H_\infty=U_0U_0^\top\) is singular (rank \(d\), nullity \(L-d\)), but its constrained least-squares fitted trend remains unique. This is an exact projection limit, not a finite matrix inverse or \(1-\varepsilon\) approximation.
 - The PLS estimator is \(H_\lambda x\) with \(H_\lambda=(I+\lambda Q)^{-1}\).
 - Orthogonal diagonalization of \(Q\) yields scalar spectral shrinkage and an exact polynomial null-space limit.
 - The normalized Guerrero-type index \(S\) is continuous, monotone, maps \([0,\infty]\) onto \([0,1]\), and satisfies \(\operatorname{edf}=L-(L-d)S\).
@@ -37,6 +39,7 @@ CP01–CP08 were completed, with preserved artifacts. The old CP03 simulation sh
 - “We predict the genuinely unseen future during validation.”
 - “Forecast-based smoothing, CV, controlled-smoothness forecasting, or Guerrero's \(S\) index was invented here.”
 - “Rescaling to \(S\) changes the mathematical optimum or guarantees a unique minimum.”
+- “Every (H(S)) is invertible,” “(S=1) has no fitted solution,” or “we must subtract an epsilon at (S=1).”
 - “Using future MSE automatically recovers the true trend.”
 - “The same optimizer produces the same statistical results when we changed the objective or data.”
 - “Every stationary root was found by an unverified Brent/grid search”; or “large-window global minima are rigorously Sturm-certified.”

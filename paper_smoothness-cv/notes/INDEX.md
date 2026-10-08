@@ -5,7 +5,7 @@
 ## Read in this order
 
 1. [Research objective](research_objective.md) — central question, hypotheses, and information boundary.
-2. [Mathematical foundations](mathematical_foundations.md) — PLS eigendecomposition, \(S\), forecast operator, MSE, analytic derivatives, multimodality and computation.
+2. [Mathematical foundations](mathematical_foundations.md) — explicit rank-nullity/kernel proof, finite-penalty SPD and unique solution, exact singular endpoint \(S=1\) with no epsilon, PLS eigendecomposition, \(S\), forecast operator, MSE, analytic derivatives, multimodality and computation.
 3. [Validation semantics](validation_semantics.md) — what a historical pseudo-future is; tuning/outer-test separation; mandatory final refit.
 4. [Claim boundaries](claim_boundaries.md) — what is known, evidenced, hypothesized, and not yet verified.
 5. [Research log](research_log_2026-10.md) — previous directions and frozen checkpoint outcomes without treating them as future promises.
