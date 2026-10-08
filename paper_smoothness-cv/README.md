@@ -144,14 +144,16 @@ CP08 closes the rule-family demonstration stage; no universally best
 functional is claimed. The next research step is **numerical verification and a new experimental decision**, not merely compiling the existing working draft. A PDF can still be built for inspection.
 
 
-## Read first
+## Read first — current research direction
 
-1. `AI_HANDOFF.md`
-2. `notes/dynamic_tracked_smoothness.md`
-3. `notes/validation_semantics.md`
-4. `notes/research_objective.md`
-5. `notes/roadmap.md`
-6. `manuscript/main.tex`
+1. [notes/INDEX.md](notes/INDEX.md) — canonical map of research notes.
+2. [notes/research_objective.md](notes/research_objective.md) — the prediction-based S selection question.
+3. [notes/mathematical_foundations.md](notes/mathematical_foundations.md) — eigendecomposition, smoothness, derivatives, multimodal forecast MSE.
+4. [notes/validation_semantics.md](notes/validation_semantics.md) — historical pseudo-futures and mandatory final refit.
+5. [notes/research_log_2026-10.md](notes/research_log_2026-10.md) — actual CP01–CP08 archival outcomes.
+6. [notes/next_experiments.md](notes/next_experiments.md) — old/new numerical comparison and prospective simulation design.
+7. [AI_HANDOFF.md](AI_HANDOFF.md) — continuity for another research assistant.
+8. `manuscript/main.tex` — *interim* CSSC-oriented LaTeX draft, not the final re-written article.
 
 ## Build: separate Windows and macOS stages
 
