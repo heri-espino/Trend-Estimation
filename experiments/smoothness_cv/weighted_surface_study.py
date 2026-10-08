@@ -248,7 +248,8 @@ def run_weighted_surface_study(
     observed,
     *,
     methods: tuple[LossWeighting, ...] = (
-        LossWeighting("uniform", "uniform", lookback=8),
+        LossWeighting("uniform_all", "uniform", lookback=None),
+        LossWeighting("recent_uniform", "uniform", lookback=8),
         LossWeighting("recent_linear", "linear", lookback=8),
         LossWeighting("recent_exponential", "exponential", lookback=8, decay=0.8),
     ),
