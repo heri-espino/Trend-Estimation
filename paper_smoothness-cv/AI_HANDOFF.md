@@ -385,3 +385,24 @@ and push the rebuilt PDF.
 Build inputs exchange through GitHub; perform `git pull` before each stage.
 Unit tests in `tests/test_paper_platform_workflows.py` protect separation.
 Do not change any numerical experiment or frozen result for this split.
+
+## macOS compilation failure: request first TeX log error
+
+The user reported a failed `latexmk` / `pdflatex` run, but pasted only
+the final wrapper and Python `CalledProcessError`. These contain NO
+underlying LaTeX error, so the cause cannot be identified yet.
+
+Static checks found balanced braces/environments, balanced inline/display
+math delimiters, only ASCII in manuscript sections and `.bib`, and
+four expected included figure paths; these do not prove successful TeX.
+
+`build.py` now catches the compilation subprocess failure and prints
+the first error from retained `build/stage/main.log`, rather than a
+generic Python traceback. `python3 paper_smoothness-cv/build.py --diagnose`
+prints the same first error from the prior log without recompiling.
+
+Next user action, **on macOS**:
+`git pull` then `python3 paper_smoothness-cv/build.py --diagnose`.
+Ask user to paste its first error/context, then fix the responsible `.tex`
+line or package in GitHub. Do not guess source of error or claim it is fixed.
+Do not run TeX from Windows.
