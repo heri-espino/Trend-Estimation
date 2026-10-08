@@ -74,6 +74,9 @@ def analyze(run_dir: Path, *, allow_partial: bool=False) -> dict[str,int]:
            AVG(forecast_mse_conditional) AS conditional_msfe,
            AVG(selected_s) AS mean_selected_s,
            AVG(edf) AS mean_edf,
+           AVG(branch_support) AS mean_branch_support,
+           AVG(n_branches) AS mean_branch_count,
+           AVG(n_local_minima) AS mean_local_minima_count,
            AVG(CASE WHEN selected_s<=0.0001 THEN 1.0 ELSE 0.0 END) AS at_zero,
            AVG(CASE WHEN selected_s>=0.9999 THEN 1.0 ELSE 0.0 END) AS at_one
       FROM outcomes
@@ -97,6 +100,9 @@ def analyze(run_dir: Path, *, allow_partial: bool=False) -> dict[str,int]:
         mean_s=("mean_selected_s","mean"),
         sd_s=("mean_selected_s","std"),
         mean_edf=("mean_edf","mean"),
+        mean_branch_support=("mean_branch_support","mean"),
+        mean_branch_count=("mean_branch_count","mean"),
+        mean_local_minima_count=("mean_local_minima_count","mean"),
         fraction_s_zero=("at_zero","mean"),
         fraction_s_one=("at_one","mean"),
     ).reset_index()
@@ -164,6 +170,8 @@ def analyze(run_dir: Path, *, allow_partial: bool=False) -> dict[str,int]:
             n_cells=("scenario","size"),
             mean_s=("mean_s","mean"),
             mean_edf=("mean_edf","mean"),
+            mean_branch_count=("mean_branch_count","mean"),
+            mean_branch_support=("mean_branch_support","mean"),
             mean_msfe=("mean_msfe","mean"),
             mean_recovery_mse=("mean_recovery_mse","mean"),
             mean_latent_msfe=("mean_latent_msfe","mean"),
