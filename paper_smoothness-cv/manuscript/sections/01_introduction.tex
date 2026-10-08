@@ -60,12 +60,20 @@ Our focus is their particular combination into a directly
 horizon-matched PLS trend-extrapolation objective and
 its comparison with established alternatives.
 
-A numerical complication is that the forecast-MSE surface may
-have multiple local minima. The companion numerical-methods
-paper investigates adaptive stationary-point discovery, Brent
-root refinement, and explicit endpoint comparisons. Potential
-certification through rational structure and Sturm sequences
-is exploratory; it is not a completed feature of the solver.
+The bounded domain $S\in[0,1]$ is operational: validation searches
+normalized smoothness rather than scanning an arbitrarily truncated
+penalty interval $\lambda\in[0,\infty)$. The endpoints represent the
+observed-data fit ($S=0$) and the limiting least-squares polynomial
+trend of degree $d-1$ ($S=1$). Intermediate values produce different
+fitted terminal levels and differences, hence different extrapolations.
+The degree is determined by $d$; optimizing $S$ does not itself
+select the polynomial degree.
+
+The forecast-MSE surface may have multiple local minima. The
+numerical search must therefore consider competing interior
+candidates and both exact limiting endpoints. In the reported
+experiments, adaptive derivative bracketing and Brent refinement
+provide that numerical search without assuming a single minimum.
 
 An optional extension treats the desirable smoothness as a
 time-varying hyperparameter. If the analyst assumes that
