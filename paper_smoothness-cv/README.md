@@ -61,15 +61,13 @@ one-step forecast-CV, ordinary CV, GCV, AICc, and
 simulation-only signal-recovery oracles. CP03 is the frozen
 paper-scale core evaluation.
 
-## Separate numerical paper
+## Numerical implementation
 
-`paper_numerical-methods/` studies multimodal objective
-optimization: discovering all relevant interior minima,
-adaptive derivative bracketing, Brent root refinement,
-classification, and both endpoints. Rational/Sturm certified
-root isolation remains **exploratory**, not a completed
-guaranteed solver. The forecasting criterion is meaningful
-independently of the chosen optimizer.
+Forecast-CV searches the normalized smoothness domain S in [0,1].
+The objective can be multimodal, so the numerical implementation
+uses adaptive derivative brackets, Brent refinement, and exact
+endpoint comparisons. Root-search details do not change the
+statistical definition of horizon-specific forecast-CV.
 
 ## Optional time-adaptive extension
 
@@ -95,9 +93,8 @@ a universally best map. See
 - This paper: horizon-matched forecast-MSE selection of PLS
   smoothness, information-safe refitting, controlled comparison
   with conventional selectors, and optional adaptation examples.
-- Numerical companion: discovery, Brent refinement, endpoint
-  comparison, correspondence of local minima, prospective Sturm
-  certification.
+- Numerical implementation: bracket and refine competing stationary
+  roots and compare both limiting smoothness endpoints.
 - Neither paper claims invention of PLS, predictive cross-validation
   in general, or the Guerrero smoothness index.
 
