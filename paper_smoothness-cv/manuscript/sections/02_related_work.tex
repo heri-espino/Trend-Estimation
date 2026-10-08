@@ -15,7 +15,9 @@ quantity to include the attainable full-range
 limit one; it does not generate a new
 smoothing operator.
 
-Of direct relevance to \emph{Communications in
+The classical generalized cross-validation formulation of
+\citet{craven1979gcv} underlies the GCV benchmark used
+here. Of direct relevance to \emph{Communications in
 Statistics---Simulation and Computation},
 \citet{cortes2017smoothness} compared the
 smoothness achieved by PLS under CV, GCV,
@@ -47,6 +49,11 @@ These studies establish forecasting use of
 controlled trends, while their downstream
 predictive models and smoothing rules
 are different from the criterion studied here.
+
+The role of dependent noise in controlled-smoothness PLS
+was examined by \citet{guerrero2018autocorr}; our
+simulations include dependent disturbances but retain
+an identity-weight smoothing operator.
 
 \subsection{Forecast-based cross-validation}
 
