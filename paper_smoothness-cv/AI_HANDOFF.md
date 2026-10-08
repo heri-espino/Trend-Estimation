@@ -248,3 +248,23 @@ branch-to-smoothness rules: means, medians, recency weighting, loss weighting,
 linear extrapolation, weighted trend extrapolation, and increment
 extrapolation. Their empirical differences are reported as behavior of the
 design space, not as a winner-selection exercise.
+
+
+## CP08 result — rule-family demonstration complete
+
+The CP08 paper preset finished 1,200 scenarios and 9,600 forecast decisions.
+It demonstrates different branch-to-smoothness maps from the same tracked
+branch history, without selecting a universal winner.
+
+Examples of geometric observed-log RMSE ratios relative to pooled forecast-CV:
+- recency_hl3: 1.0409, clipping rate 0%;
+- ew_linear_hl5: 1.0627, clipping rate 10.8%;
+- linear_k10: 1.0790, clipping rate 18.4%;
+- delta_hl3: 1.1103, clipping rate 22.3%.
+
+No aggregate superiority over pooled CV was found for the tested rules.
+The contribution being developed is the branch representation and the family
+of legitimate mappings phi(V_j), not a winning selector.
+
+Next: generate figures with make_checkpoint_08_figures.py and consolidate
+the manuscript. Do not continue a winner-selection sequence.
