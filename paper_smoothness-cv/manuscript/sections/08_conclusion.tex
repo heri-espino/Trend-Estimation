@@ -1,22 +1,45 @@
 \section{Conclusion}
 
-Controlled-smoothness penalized trend estimation makes the strength of regularization interpretable, but forecasting introduces a further issue: the forecast-loss surface can be multimodal and its local optima can evolve through time. This paper therefore treats smoothness selection as a dynamic problem rather than only as the minimization of one pooled cross-validation curve.
+In penalized trend estimation, smoothness is usually represented by a
+single regularization parameter. The normalized smoothness coordinate
+offers an interpretable alternative, but chronological forecast-loss
+surfaces may admit several local minima whose locations vary across
+forecast origins. Treating these minima as unrelated tuning outcomes
+discards their temporal structure.
 
-The static pooled selector remains a benchmark:
-\[
-\widehat S^{\mathrm{pool}}_{T,h}
-\in
-\arg\min_S F^{\mathrm{pool}}_{T,h}(S).
-\]
-The dynamic formulation instead follows the local minima of successive forecast-loss surfaces, collects each persistent branch in a state matrix containing smoothness, Validation-1 loss, and subsequent Validation-2 loss, and separates the forecasting decision into branch selection and current-smoothness selection:
+This paper formulates that structure through tracked branches. For each
+branch, a history of smoothness values and successive Validation-1 and
+Validation-2 forecast losses defines a state $V_j$. The decomposition
 \[
 \widehat j_T=\psi(V_1,\ldots,V_J),
 \qquad
-\widehat S_T=\phi(V_{\widehat j_T}).
+\widehat S_T=\phi(V_{\widehat j_T})
 \]
+separates selecting a historically credible branch from deciding how its
+information should produce today's smoothness. The map $\phi$ need not
+be unique: the newest minimum, convex recency averages, predictive-loss
+weights, and extrapolations of the smoothness trajectory are all
+well-defined examples. This family of decisions is the central
+methodological contribution, not the identification of a universally
+optimal smoothing rule.
 
-This decomposition makes several empirically testable strategies explicit. The current smoothness may be the newest local minimum on the selected branch, a recent mean or median, or a loss- and recency-weighted summary. These alternatives can be compared without changing the underlying branch history or the untouched outer test.
+The empirical record sets clear limits on forecasting claims.
+Horizon-matched pooled forecast-CV is useful in controlled simulation.
+The frozen recency-based branch rule improves on pooled CV in one small
+confirmation panel, but does not retain that advantage on a broader
+financial panel or in the simulation with changing latent roughness.
+High-order polynomial continuation also introduces a stability
+problem that is separate from tracking itself. Finally, the
+trajectory-rule demonstrations reveal meaningful differences in
+boundary behavior and forecast error, without establishing superiority
+for the extrapolative rules.
 
-Whatever rule is used, the operational estimator is always refit with the newest information available before forecasting. Thus the method uses historical forecast performance to choose regularization while preserving a clean information boundary.
-
-The central empirical question is now whether temporal persistence in local forecast-smoothness minima contains useful information beyond a single pooled optimum. The companion numerical paper addresses the separate problem of recovering and tracking those minima reliably. Together, the two papers separate the forecasting decision from the numerical machinery required to support it.
+After every smoothness decision, the operational trend is estimated
+afresh on the latest available data; historical validation fits are
+never averaged into the forecast. This chronology makes the proposed
+branch representation usable for future decision rules and empirical
+settings while preserving the distinction between a flexible
+forecasting framework and an empirically validated predictive gain.
+The companion numerical study addresses the separate task of
+recovering local minima and maintaining their correspondence through
+time.
