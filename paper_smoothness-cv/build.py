@@ -120,8 +120,10 @@ def validate_math_references() -> None:
             problems.append(
                 f"{relative}: replace unnumbered display math with labeled equation environments"
             )
+        if re.search(r"\\begin\{(?:displaymath|equation\*|align\*|gather\*|multline\*|flalign\*)\}", source):
+            problems.append(f"{relative}: unnumbered display environment is not allowed")
         if re.search(r"\\(?:eqref|autoref|ref)\{", source):
-            problems.append(f"{relative}: use cleveref's \cref or \Cref")
+            problems.append(f"{relative}: use cleveref for cross-references")
 
         for match in re.finditer(
             r"\\begin\{equation\}(.*?)\\end\{equation\}", source, re.DOTALL
