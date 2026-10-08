@@ -98,15 +98,15 @@ Do not retune it based on optional extension results.
 ## Phase 5 — Manuscript
 
 - [x] Existing manuscript contains the pooled criterion and PLS foundation.
-- [ ] Rewrite abstract/introduction after dynamic results exist.
-- [ ] Make tracked branches the central method and pooled selector the baseline.
+- [x] Reframe the abstract/introduction around the primary pooled forecast-CV criterion.
+- [x] Separate tracked branches into an optional extension in the manuscript.
 - [ ] Add only results actually observed.
-- [ ] Audit novelty around dynamic smoothing-parameter tracking before claiming
-  precedence.
+- [x] Distinguish existing PLS, index, and predictive CV precedents from
+  the specific horizon-matched forecast-MSE construction.
 
 ## Canonical notes
 
-- `notes/dynamic_tracked_smoothness.md` — central method.
+- `notes/dynamic_tracked_smoothness.md` — optional adaptation layer.
 - `notes/validation_semantics.md` — information/refit invariant.
 - `notes/research_objective.md` — formal research question.
 
