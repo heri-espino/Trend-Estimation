@@ -1,0 +1,50 @@
+\section{Introduction and independent problem formulation}
+\label{sec:branch_introduction}
+A time-indexed family of rolling-origin forecast-validation loss
+functions can have multiple local minima, and the locations of
+these minima can vary as new observations become available.
+This study asks whether historical minima can be connected
+across origins and converted into a useful forecast-time
+smoothness decision. The question is distinct from merely
+minimizing a pooled forecast-validation loss.
+
+For an observed fitting window $x_t\in\mathbb R^L$,
+difference order $1\le d<L$ and forecast horizon $h$,
+define $D_d\in\mathbb R^{(L-d)\times L}$ and
+$Q=D_d^\top D_d$. For $0\le\lambda<\infty$,
+$H_\lambda=(I+\lambda Q)^{-1}$ is a well-defined
+symmetric positive definite smoother; at the limiting
+polynomial projection it is defined by continuity.
+Use the attained-smoothness index $S\in[0,1]$ and a
+fixed finite-difference polynomial continuation matrix
+$G_{d,h}$ to construct forecasts. If $z_t$ denotes
+the subsequently observed $h$-step block, write
+\begin{equation}
+\label{eq:branch_origin_mse}
+F_t(S)=\frac{1}{h}
+\|z_t-G_{d,h}H(S)x_t\|_2^2.
+\end{equation}
+All $z_t$ used at operational origin $T$ must satisfy
+$t+h\le T$; $z_T$ is not observed at selection time.
+
+An ordinary historical benchmark selects
+\begin{equation}
+\label{eq:F_S}
+\widehat S_T^{\mathrm{pool}}
+\in\operatorname*{arg\,min}_{S\in[0,1]}
+\frac{1}{M}\sum_{m=1}^M F_{t_m}(S).
+\end{equation}
+The dynamic object instead retains each surface's
+locally optimal smoothness values and tests whether
+their temporal trajectories contain predictive
+information that this pooled reduction ignores.
+The resulting branch policies require separate
+assumptions, outer evaluation, and evidence; they
+do not inherit forecast optimality from the pooled
+criterion.
+
+In all procedures, a selected $S$ is used to refit
+$H(S)y_{T-L+1:T}$ at the current origin, before applying
+$G_{d,h}$. No historical trend estimates are averaged
+or carried into the final forecast. The retained
+historical observations alone determine the decision.

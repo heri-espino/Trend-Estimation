@@ -1,0 +1,46 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[round,authoryear]{natbib}
+\usepackage{microtype,booktabs,graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage[noabbrev]{cleveref}
+
+\begin{document}
+\title{Dynamic Branch Selection for Forecast-Optimal Trend Smoothness}
+\author{Heriberto Espino Montelongo\\Universidad de las Am\'ericas Puebla, Puebla, Mexico}
+\date{}
+\maketitle
+
+\begin{abstract}
+Historical forecast-loss functions indexed by normalized trend smoothness
+can exhibit several local minima. We investigate whether their locations
+can be associated across forecast origins and summarized in temporal
+branches to guide the smoothing parameter used for a new forecast.
+A branch contains smoothness, initial validation error, and a separately
+realized refit-and-forecast validation error; branch and smoothing
+selection are treated as distinct decisions. Historical experiments
+include a reserved four-series confirmation, a subsequent 64-series
+financial panel, controlled roughness changes, and trajectory-based
+smoothness decision rules. Although a small confirmation favored one
+recency rule, broader evaluations did not demonstrate a consistent
+improvement over pooled forecast-CV. Branch identification and policy
+selection therefore remain hypotheses requiring further evidence.
+\end{abstract}
+\noindent\textbf{Keywords:} local minima; branch correspondence; penalized
+trend smoothness; forecast validation; time-adaptive selection.
+
+\input{sections/01_formulation}
+\input{sections/02_branch_rules}
+\input{sections/03_experiments}
+\input{sections/04_discussion}
+
+\section*{Data and code availability}
+The experiments, frozen seeds and versioned result artifacts are maintained
+with the trend-estimation research code at
+\url{https://github.com/heri-espino/Trend-Estimation}.
+Financial market observations retain their provider and licensing limits.
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+\end{document}
