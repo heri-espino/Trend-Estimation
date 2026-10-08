@@ -251,3 +251,19 @@ rules are above one relative to pooled CV on aggregate geometric log-RMSE,
 so no unconditional forecast-superiority claim is supported.
 
 Next: reproducible CP08 figures, manuscript synthesis, explicit claim limits.
+
+## Manuscript integration after CP08
+
+The frozen CP08 run has three committed figure pairs (PDF/PNG) explaining
+selected S across a fixed scenario, how often raw extrapolations need
+clipping to [0,1], and predictive-error behavior by roughness regime.
+
+The manuscript now has a completed `07_empirical_evidence.tex` integrating
+CP03--CP08 evidence and includes all three figures. Its abstract,
+evaluation protocol, scope, introduction, and conclusion were updated to
+present the framework as a **family of branch-based smoothness decisions**
+without claiming superiority to pooled forecast-CV.
+
+Run `python paper_smoothness-cv/build.py --check` and then
+`python paper_smoothness-cv/build.py` on a machine with XeLaTeX and BibTeX,
+inspect page layout, commit the generated PDF, and push.
