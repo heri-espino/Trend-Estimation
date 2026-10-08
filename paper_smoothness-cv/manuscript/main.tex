@@ -13,7 +13,7 @@
 
 \begin{document}
 
-\title{Dynamic Forecast-Optimal Smoothness for Penalized Trend Estimation}
+\title{Forecast-Optimal Smoothness Selection by Chronological Cross-Validation}
 
 \author{Heriberto Espino Montelongo\\
 Universidad de las Am\'ericas Puebla, Puebla, Mexico}
@@ -22,10 +22,32 @@ Universidad de las Am\'ericas Puebla, Puebla, Mexico}
 \maketitle
 
 \begin{abstract}
-A penalized trend estimator has a continuum of admissible smoothness values, but selecting one for extrapolation is a different task from recovering a historical signal. Moreover, chronological forecast-loss surfaces may contain several local minima that evolve through time. We construct a time-indexed representation of these minima by matching nearby candidates across forecast origins and recording each persistent branch through its smoothness values, initial validation loss, and subsequent refitted forecast loss. The resulting branch state separates two decisions: which branch to use and how to map its history into the smoothness selected for the next forecast. This provides a common representation for recent means and medians, loss- and recency-weighted rules, and extrapolations of the smoothness trajectory. Controlled simulations support horizon-matched tuning of the pooled benchmark. A small confirmation panel favors a recency-based branch rule, but a larger financial panel and changing-roughness simulations do not establish general superiority over pooled forecast cross-validation. A separate simulation illustrates how alternative branch functionals differ in prediction and boundary behavior. The contribution is a transparent, reproducible framework for constructing and evaluating multiple smoothness decisions from tracked forecast-loss minima, rather than a universally preferred selection rule.
+Finite-difference penalized least squares produces trends with a continuum
+of smoothness levels. Selecting that smoothness for extrapolation is a
+different task from recovering a historical signal. We propose a
+horizon-matched, chronological forecast cross-validation criterion:
+for each normalized smoothness value, smooth the historical training
+window, extrapolate the trend over a specified $h$-step validation
+block, and minimize the pooled historical forecast mean squared error.
+After selection, the final trend is refitted using the latest
+observations before forecasting an untouched future block. The
+smoothness index and the penalized smoother are established
+constructions; the methodological focus is their explicit
+forecast-targeted selection and evaluation. A controlled simulation
+comprising 3,000 scenarios and 72,000 outer-origin--horizon
+evaluations favors horizon-matched selection over one-step forecast
+tuning and GCV in aggregate. The objective may have several local
+minima, motivating a separate study of their numerical recovery.
+We also examine an optional time-adaptive extension that constructs
+smoothness decisions from histories of tracked minima. Results
+on larger financial panels and changing-roughness simulations do
+not establish general superiority of those adaptive rules over the
+pooled criterion. Thus forecast-optimal smoothness selection is
+a self-contained method, while dynamic branch selection is a
+further, assumption-dependent option.
 \end{abstract}
 
-\noindent\textbf{Keywords:} forecast evaluation; penalized least squares; smoothing parameter; trend estimation; time-series cross-validation; rolling-origin forecasting.
+\noindent\textbf{Keywords:} forecast cross-validation; horizon-matched mean squared error; penalized least squares; smoothness index; trend extrapolation.
 
 \medskip
 
@@ -34,6 +56,7 @@ A penalized trend estimator has a continuum of admissible smoothness values, but
 \input{sections/03_penalized_trend}
 \input{sections/04_forecast_optimal_smoothness}
 \input{sections/05_properties}
+\input{sections/05_dynamic_extension}
 \input{sections/06_evaluation_protocol}
 \input{sections/07_empirical_evidence}
 \input{sections/07_scope_and_implications}
