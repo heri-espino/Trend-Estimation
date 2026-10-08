@@ -347,3 +347,24 @@ compiles Wiley LaTeX, checks the PDF timestamp/size, stops on any
 failure, and prints git status. User should run this after git pull,
 then commit the resulting figure and main PDF if successful. Visually
 inspect the complete compiled PDF before publication.
+
+## Standard LaTeX article conversion
+
+The forecasting manuscript `manuscript/main.tex` now uses standard
+`\documentclass[11pt]{article}`: one column, default font and margins,
+plain title/abstract and sections. Scientific content, figures,
+citations, and manuscript sections are retained. No Wiley journal class
+or two-column template is loaded. Bibliography uses BibTeX `plain`.
+
+`paper_smoothness-cv/build.py` stages the manuscript and frozen CP08
+figures without staging Wiley vendor files. It runs standard `pdflatex`
+and `bibtex`, using `latexmk` optionally. The output PDF path is unchanged.
+The workflow tutorial is now a one-column figure float, with height cap.
+
+`build-workflow-paper.ps1` regenerates the tutorial, runs chronology
+and standard article tests, validates layout, and compiles the PDF.
+The new test file is `tests/test_smoothness_plain_article.py`.
+
+The new PDF has not yet been compiled locally; the last committed PDF
+may still contain Wiley formatting. Next: git pull, run PowerShell build,
+and push the rebuilt PDF.
