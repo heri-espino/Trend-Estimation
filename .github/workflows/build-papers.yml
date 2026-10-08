@@ -1,20 +1,17 @@
-name: Build papers
+name: Build working papers
 
 on:
   workflow_dispatch:
     inputs:
       target:
-        description: Paper target to compile
+        description: Independent working paper to compile
         required: true
-        default: numerical
+        default: smoothness-cv
         type: choice
         options:
-          - numerical
           - smoothness-cv
-          - adaptive
-          - recurrence
-          - tutorial
-          - statistical
+          - numerical
+          - branches
           - all
 
 jobs:
@@ -36,113 +33,52 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
-            latexmk \
-            texlive-latex-base \
-            texlive-latex-extra \
-            texlive-fonts-recommended \
-            texlive-xetex
+            latexmk texlive-latex-base texlive-latex-extra \
+            texlive-fonts-recommended texlive-xetex
 
-      - name: Build smoothness-CV paper
+      - name: Build Smoothness Cross Validation
         if: ${{ inputs.target == 'smoothness-cv' || inputs.target == 'all' }}
         shell: bash
-        run: python paper_smoothness-cv/build.py
+        run: |
+          python "working_papers/Working Paper - Smoothness Cross Validation/build.py"
 
-      - name: Build numerical paper
+      - name: Build Numerical Methods
         if: ${{ inputs.target == 'numerical' || inputs.target == 'all' }}
         shell: bash
         run: |
-          cd paper_numerical-methods
+          cd "working_papers/Working Paper - Numerical Methods"
           mkdir -p build
-          latexmk -pdf -interaction=nonstopmode \
-            -outdir=build \
-            main.tex
+          latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=build main.tex
 
-      - name: Build adaptive paper
-        if: ${{ inputs.target == 'adaptive' || inputs.target == 'all' }}
+      - name: Build Dynamic Branch Selection
+        if: ${{ inputs.target == 'branches' || inputs.target == 'all' }}
         shell: bash
         run: |
-          mkdir -p paper_forecast-optimal-smoothing/build
-          latexmk -pdf -interaction=nonstopmode \
-            -outdir=paper_forecast-optimal-smoothing/build \
-            paper_forecast-optimal-smoothing/main.tex
+          python "working_papers/Working Paper - Dynamic Branch Selection/build.py"
 
-      - name: Build recurrence paper
-        if: ${{ inputs.target == 'recurrence' || inputs.target == 'all' }}
-        shell: bash
-        run: |
-          mkdir -p paper_smoothness-recurrence/build
-          latexmk -pdf -interaction=nonstopmode \
-            -outdir=paper_smoothness-recurrence/build \
-            paper_smoothness-recurrence/main.tex
-
-      - name: Build statistical-properties paper
-        if: ${{ inputs.target == 'statistical' || inputs.target == 'all' }}
-        shell: bash
-        run: |
-          mkdir -p paper_statistical-properties-penalized-trend/build
-          latexmk -pdf -interaction=nonstopmode \
-            -outdir=paper_statistical-properties-penalized-trend/build \
-            paper_statistical-properties-penalized-trend/main.tex
-
-      - name: Build tutorial paper
-        if: ${{ inputs.target == 'tutorial' || inputs.target == 'all' }}
-        shell: bash
-        run: |
-          mkdir -p paper_penalized-trend-tutorial/build
-          latexmk -pdf -interaction=nonstopmode \
-            -outdir=paper_penalized-trend-tutorial/build \
-            paper_penalized-trend-tutorial/main.tex
-
-      - name: Upload smoothness-CV paper
+      - name: Upload Smoothness Cross Validation PDF
         if: ${{ inputs.target == 'smoothness-cv' || inputs.target == 'all' }}
         uses: actions/upload-artifact@v4
         with:
-          name: trend-estimation-smoothness-cv-${{ steps.meta.outputs.short_sha }}
-          path: paper_smoothness-cv/forecast_optimal_smoothness.pdf
+          name: smoothness-cv-${{ steps.meta.outputs.short_sha }}
+          path: working_papers/Working Paper - Smoothness Cross Validation/EspinoMontelongo-2026-Forecast_Optimal_Smoothness.pdf
           if-no-files-found: error
           retention-days: 30
 
-      - name: Upload numerical paper
+      - name: Upload Numerical Methods PDF
         if: ${{ inputs.target == 'numerical' || inputs.target == 'all' }}
         uses: actions/upload-artifact@v4
         with:
-          name: trend-estimation-numerical-smoothness-${{ steps.meta.outputs.short_sha }}
-          path: paper_numerical-methods/build/main.pdf
+          name: numerical-methods-${{ steps.meta.outputs.short_sha }}
+          path: working_papers/Working Paper - Numerical Methods/build/main.pdf
           if-no-files-found: error
           retention-days: 30
 
-      - name: Upload adaptive paper
-        if: ${{ inputs.target == 'adaptive' || inputs.target == 'all' }}
+      - name: Upload Dynamic Branch Selection PDF
+        if: ${{ inputs.target == 'branches' || inputs.target == 'all' }}
         uses: actions/upload-artifact@v4
         with:
-          name: trend-estimation-adaptive-${{ steps.meta.outputs.short_sha }}
-          path: paper_forecast-optimal-smoothing/build/main.pdf
-          if-no-files-found: error
-          retention-days: 30
-
-      - name: Upload recurrence paper
-        if: ${{ inputs.target == 'recurrence' || inputs.target == 'all' }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: trend-estimation-smoothness-recurrence-${{ steps.meta.outputs.short_sha }}
-          path: paper_smoothness-recurrence/build/main.pdf
-          if-no-files-found: error
-          retention-days: 30
-
-      - name: Upload statistical-properties paper
-        if: ${{ inputs.target == 'statistical' || inputs.target == 'all' }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: trend-estimation-statistical-properties-${{ steps.meta.outputs.short_sha }}
-          path: paper_statistical-properties-penalized-trend/build/main.pdf
-          if-no-files-found: error
-          retention-days: 30
-
-      - name: Upload tutorial paper
-        if: ${{ inputs.target == 'tutorial' || inputs.target == 'all' }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: trend-estimation-penalized-trend-tutorial-${{ steps.meta.outputs.short_sha }}
-          path: paper_penalized-trend-tutorial/build/main.pdf
+          name: dynamic-branch-selection-${{ steps.meta.outputs.short_sha }}
+          path: working_papers/Working Paper - Dynamic Branch Selection/build/main.pdf
           if-no-files-found: error
           retention-days: 30
