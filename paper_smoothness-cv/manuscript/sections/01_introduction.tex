@@ -21,7 +21,7 @@ The forecasting decision then has two stages. First, a historical rule $\psi$ se
 \widehat S_T=\phi(V_{\widehat j_T}).
 \]
 
-The simplest dynamic rule uses the newest tracked minimum. More stable alternatives can use a recent mean or median, Validation-2-weighted smoothness, or a combination of recency and historical predictive performance. These rules use the same branch history and are compared on untouched future blocks rather than chosen retrospectively.
+The simplest dynamic rule uses the newest tracked minimum. Other admissible maps can use a recent mean or median, Validation-2-weighted smoothness, recency weights, or forecasts of the smoothness trajectory itself. They operate on the same branch history; the purpose of presenting several examples is to make the decision space explicit, not to define a universal best rule.
 
 The older pooled criterion remains useful as a benchmark. For historical origins $T_1,\ldots,T_M$,
 \[
@@ -34,7 +34,7 @@ with
 \widehat S^{\mathrm{pool}}_{d,L,h}
 \in\arg\min_S F^{\mathrm{pool}}_{d,L,h}(S).
 \]
-It answers which single smoothness value has the lowest average historical forecast loss. The dynamic method asks instead whether the temporal organization of multiple local optima contains useful predictive information.
+It answers which single smoothness value has the lowest average historical forecast loss. The dynamic framework retains the temporal organization of multiple local optima and makes it available to a family of smoothness decisions. Whether any particular decision improves future forecasts remains an empirical question.
 
 The forecasting literature provides strong precedents for choosing tuning parameters by predictive performance. Forecast-error minimization is standard in exponential smoothing \cite{taylor2004stes}; Hart \cite{hart1994tscv} studies predictive smoothing selection in dependent data; and more recent forecasting work continues to connect tuning and out-of-sample loss \cite{zafar2022filter,stanek2023oos,wolff2024stock,franjic2025predictor,xu2025vix}. The present contribution is narrower: it focuses on the normalized smoothness of finite-difference penalized trends and the temporal evolution of multiple minima of their forecast-loss surfaces.
 
@@ -42,4 +42,4 @@ The distinction from numerical optimization is also explicit. The companion nume
 
 Finally, validation never supplies the trend fit used in the final forecast. Once $\widehat S_T$ is chosen, all temporary validation fits are discarded, the trend is refit on the newest $L$ observations available at $T$, and only then is the untouched future block forecast.
 
-The remainder of the paper develops the penalized-trend representation, defines the pooled and dynamic selectors, states the chronological information rules, and specifies the empirical comparisons needed to determine when temporal persistence in forecast-smoothness minima is useful.
+The empirical record is informative but mixed. Horizon-matched pooled selection improves forecast accuracy in the controlled baseline simulation. A frozen branch-based recency rule performs favorably in a small confirmation panel but not in a broader financial panel; simulations under changing latent roughness also fail to establish a general improvement over pooled forecast-CV. The principal contribution is thus the explicit separation between recovering and tracking multiple forecast-loss minima, selecting a branch, and defining a current smoothness decision from that branch. The remainder of the paper develops these objects, reports the frozen empirical results, and illustrates several distinct decision maps under common information restrictions.
