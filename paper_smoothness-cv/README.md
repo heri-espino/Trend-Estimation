@@ -191,12 +191,32 @@ manuscript, including the completed empirical section and illustrations.
 5. `notes/roadmap.md`
 6. `manuscript/main.tex`
 
-## Build
+## Build: standard LaTeX
 
-~~~bash
+The manuscript now uses `\\documentclass[11pt]{article}`, in **one column**
+with default LaTeX fonts and margins. There is no Wiley journal class,
+publisher-specific front matter, or dependency on `vendor/wiley_njd_v5`.
+The source is `manuscript/main.tex`; the bibliography uses standard BibTeX
+style `plain`.
+
+To build with a standard installation of **pdflatex** and **bibtex**:
+
+~~~powershell
 python paper_smoothness-cv/build.py --check
 python paper_smoothness-cv/build.py
 ~~~
+
+Or from Windows PowerShell, regenerate the tutorial figure, check the
+layout, and compile the document with fail-fast errors:
+
+~~~powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\\paper_smoothness-cv\\build-workflow-paper.ps1
+~~~
+
+The generated PDF keeps its existing path:
+`paper_smoothness-cv/EspinoMontelongo-2026-Forecast_Optimal_Smoothness.pdf`.
+The previously used Wiley template remains archived under `vendor/`,
+but it is not copied or loaded by the current build.
 
 
 ## Five-panel workflow tutorial
