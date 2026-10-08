@@ -155,11 +155,11 @@ def main():
         source = st.radio("Source", ["Synthetic function", "Yahoo Finance", "Upload CSV"])
         if source == "Synthetic function":
             formulas = {
-                "Linear + cycle": "0.02*t + sin(t/12)",
-                "Piecewise slope": "0.015*t + where(t>100, 0.06*(t-100), 0)",
-                "Nonlinear trend": "0.00015*(t-120)**2 + 0.8*sin(t/18)",
-                "Level shift": "0.015*t + where(t>110, 3, 0)",
-                "Custom expression": "0.02*t + sin(t/12)",
+                "Linear + cycle": "10 + 0.02*t + sin(t/12)",
+                "Piecewise slope": "10 + 0.015*t + where(t>100, 0.06*(t-100), 0)",
+                "Nonlinear trend": "10 + 0.00015*(t-120)**2 + 0.8*sin(t/18)",
+                "Level shift": "10 + 0.015*t + where(t>110, 3, 0)",
+                "Custom expression": "10 + 0.02*t + sin(t/12)",
             }
             preset = st.selectbox("Function template", tuple(formulas))
             expression = st.text_input(
