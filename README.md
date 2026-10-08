@@ -78,11 +78,14 @@ Usa la selección directa **en dos validaciones cronológicas**:
 2. **Validación 2:** reajustar cada candidato con las últimas L
    observaciones disponibles al terminar validación 1 y pronosticar el bloque
    de validación 2. Elegir el par (d*, S*) que minimiza su **ECM**.
-3. **Pronóstico:** fijar el método (mínimos cuadrados penalizados), el
-   orden d* y la suavidad S*. Reajustar con las últimas L
-   observaciones antes de la prueba y pronosticar desde ese origen.
+3. **Prueba retrospectiva:** sin reoptimizar, pronosticar el bloque reservado
+   desde el último origen anterior a él y calcular el error fuera de muestra.
+4. **Pronóstico operativo:** con el mismo método, d* y S*, reajustar usando
+   las últimas L observaciones de **toda la serie disponible** (incluidas las
+   observaciones de prueba ya evaluadas), y pronosticar después del último dato.
 
-La prueba se reserva exclusivamente para evaluación, nunca para seleccionar.
+La prueba se reserva para evaluar y nunca se utiliza para seleccionar
+hiperparámetros. Solo después se incorpora al reajuste operativo futuro.
 La matriz comparativa de candidatos incluye d, S, lambda, ECM de validación 1,
 ECM/RECM de validación 2 y procedencia del mínimo. No exige seguimiento
 temporal de ramas; la comparación de otros estimadores queda pendiente
