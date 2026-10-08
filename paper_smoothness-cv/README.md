@@ -247,60 +247,64 @@ has not been run. `build.py` stages the manuscript source (including its
 
 ## Aplicaciones interactivas (no son checkpoints congelados)
 
-### Aplicación principal: selección cronológica en dos validaciones
+### Laboratorio principal: seguimiento de mínimos para todos los órdenes d
 
-La aplicación en apps/smoothness_lab.py representa el procedimiento solicitado
-de forma directa, con títulos, tablas y explicaciones en español:
+La interfaz apps/smoothness_lab.py sigue el diseño experimental general:
+para cada origen cronológico y orden d obtiene la superficie ECM(S) de
+validación 1 y sus mínimos locales; identifica ramas por vecindad entre
+orígenes; aplica varias reglas al historial de S de cada rama; y registra
+una matriz V por combinación (d, rama, regla). Cada fila de V contiene
+S_minimo, S_aplicado, ECM_val1 y ECM_val2.
 
-1. **Validación 1:** para cada orden d (1 a 4), construir la pérdida predictiva
-   ECM(S), recuperar sus mínimos locales mediante la búsqueda numérica basada
-   en derivadas e incluir los extremos cuando corresponda.
-2. **Validación 2:** para cada mínimo recuperado, reajustar el mismo estimador
-   con los últimos L datos anteriores a validación 2, pronosticar h observaciones
-   y calcular el ECM. Comparar todos los pares (d,S) sobre el mismo bloque.
-3. **Selección:** elegir directamente el par (d*,S*) de menor ECM de validación 2,
-   con desempate determinista por ECM de validación 1, orden y suavidad.
-4. **Evaluación de prueba:** desde el origen anterior al bloque reservado,
-   pronosticar sin reoptimizar y medir su error retrospectivo.
-5. **Pronóstico operativo:** sin cambiar d*, S* ni el método, reajustar usando
-   la última ventana de L observaciones de toda la serie, incluida la prueba
-   ya evaluada. El pronóstico futuro empieza después del último dato real.
-   La prueba nunca interviene en la selección, solo en la evaluación y en
-   el reajuste operativo posterior.
+La regla se define **antes de conocer validación 2** del origen actual.
+Al iniciar la evaluación de validación 2, no se selecciona otro S ni otro
+orden: se usa el S producido por esa regla en validación 1. La tendencia
+puede estimarse de nuevo a medida que se desplaza el origen y entran datos
+nuevos, pero con el mismo método, d y S de la decisión. Cuando una regla
+utiliza errores de validación 2 históricos, estos deben pertenecer a bloques
+que **habían terminado antes** del origen actual, especialmente si se
+solapan las ventanas.
 
-Para inspeccionar cada etapa, hay un esquema cronológico de la partición,
-una curva ECM(S) por orden, una comparación de todos los candidatos en
-validación 2, un gráfico del pronóstico final y la matriz H_lambda. Las series
-pueden ser sintéticas, descargadas de Yahoo Finance o importadas desde CSV.
+Se incluyen el método original de **continuación polinómica del último
+mínimo** (last), medias, medianas, reglas ponderadas por recencia o por
+error de validación 2 y extrapolación temporal de los mínimos locales.
+El criterio global selecciona (d, rama, regla) por menor ECM histórico
+medio en validación 2, sujeto a cobertura mínima. En una validación 1
+final, separada de las anteriores, se continúa la rama y se fija S
+para el test, que permanece no visto hasta su evaluación. Se reportan
+las observaciones reales y el pronóstico reservado para calcular errores
+verdaderamente fuera de muestra. Posteriormente se reajusta el mismo
+modelo, con d y S fijos, para pronosticar desde la última observación real.
 
-La matriz de comparación contiene método, d, S, penalización, ECM de
-validación 1, ECM y RECM de validación 2. La aplicación principal **no**
-requiere continuación de ramas, selección por persistencia ni reglas phi.
-Actualmente solo se compara el estimador de mínimos cuadrados penalizados;
-incorporar otros estimadores es una extensión, no una funcionalidad ya validada.
+Se mantienen las curvas ECM(S) por d, junto a los gráficos de ramas,
+las matrices V por d y regla, comparaciones de ECM en validación 2,
+la tendencia y el pronóstico, el test real y la matriz H_lambda.
 
-### Laboratorio avanzado: seguimiento de ramas históricas
+### Caso particular: dos bloques sin seguimiento
 
-La implementación interactiva anterior se conserva por separado en
-apps/smoothness_lab_advanced.py. Esta sí contiene trayectorias de mínimos,
-matrices históricas V_j, reglas phi(V_j) y comparaciones con validación
-agrupada. No se utiliza para seleccionar el modelo en la aplicación principal.
+La misma barra lateral permite cambiar al procedimiento directo:
+los mínimos de una única validación 1 se comparan en una única
+validación 2. Se conserva para que la generalización de ramas
+pueda contrastarse con un caso sencillo.
+
+La versión dinámica previa también se conserva sin cambios en
+apps/smoothness_lab_advanced.py. El protocolo principal actualizado
+se implementa en experiments/smoothness_cv/branch_rule_lab.py; el caso
+directo se implementa en experiments/smoothness_cv/two_stage_lab.py.
 
 ### Ejecución
-
-Desde la raíz del repositorio:
 
 ~~~bash
 python -m pip install -e ".[dashboard,finance]"
 streamlit run apps/smoothness_lab.py
 ~~~
 
-Para la aplicación avanzada:
+Pruebas de invariancia temporal, regla original y matrices V:
 
 ~~~bash
-streamlit run apps/smoothness_lab_advanced.py
+python -m pytest tests/test_branch_rule_lab.py tests/test_two_stage_smoothness_lab.py tests/test_live_smoothness_lab.py
 ~~~
 
-Ambos laboratorios son exploratorios y no modifican ni recomputan los
-checkpoints congelados CP03–CP08. Las pruebas de selección sin fuga desde
-la prueba se encuentran en tests/test_two_stage_smoothness_lab.py.
+Estas interfaces son exploratorias y no modifican los experimentos
+congelados CP03–CP08 ni sus resultados. El motor no afirma superioridad
+predictiva hasta que se obtengan comparaciones válidas fuera de muestra.
