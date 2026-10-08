@@ -1,10 +1,25 @@
-# Forecast-optimal smoothness by chronological cross-validation
+# Horizon-Matched Cross-Validation for Forecast-Optimal Penalized Trend Smoothness
 
 **Status: ACTIVE.**
 
 **Intended journal:** *Communications in Statistics—Simulation and Computation*.
 
 **Working title:** *Forecast-Optimal Smoothness Selection by Chronological Cross-Validation*.
+
+## Manuscript for Communications in Statistics—Simulation and Computation
+
+The standalone manuscript is under `manuscript/` and uses a
+standard single-column LaTeX submission draft with author-year
+references. The revised main text emphasizes the primary
+horizon-matched S-domain forecast-CV method and frozen CP03
+Monte Carlo results. CP04–CP08 exploratory branch-based
+experiments are retained in the appendices, not presented
+as necessary components of the primary method.
+
+**Current status:** manuscript sources revised and structurally
+audited. A new PDF compilation and visual review remain
+necessary. This is not a final submission approval.
+See `SUBMISSION_READINESS_CSSC_2026-10.md`.
 
 ## Primary scientific question
 
