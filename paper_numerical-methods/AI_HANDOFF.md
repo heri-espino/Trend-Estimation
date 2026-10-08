@@ -77,11 +77,27 @@ This paper owns:
 Sturm remains a possible certified per-surface root-isolation extension. It
 does not by itself solve temporal branch identity.
 
-## Current next task
+## Current checkpoint: manuscript tracking integration and CP05 benchmark
 
-Keep the frozen per-surface solver unchanged. Build a controlled branch-
-tracking benchmark around the existing tracked-minima experiment: branch
-birth/death, crossings, epsilon sensitivity, and greedy versus bipartite
-matching.
+The numerical manuscript has been updated to incorporate the existing tracked
+minima demonstration (four series; 1392 initialized branch-origin states,
+924 matched and 468 missing under epsilon 0.10), the distinct two radii,
+and the limits of greedy correspondence.
+
+The new controlled diagnostic is implemented at
+`experiments/numerical_smoothness_selection/run_tracking_correspondence_benchmark.py`;
+its frozen design is `checkpoints/CP05_TRACKING_CORRESPONDENCE.md`. It compares
+the existing greedy one-to-one matcher with an exact maximum-cardinality,
+minimum-distance **pairwise** assignment for labeled minima in five mechanisms.
+The benchmark must be run before adding quantitative identity-accuracy claims
+to the paper.
+
+The diagnostic conditions each adjacent-origin step on known previous true
+states. It does not validate an end-to-end tracker with label propagation or
+birth initialization. The current real-world tracker initializes only the
+first origin's minima and does not automatically initialize later births.
+
+**Do not modify the frozen per-surface optimizer.** Do not infer tracking
+accuracy from the 240/240, 2105/2105, or 473/473 per-surface recovery results.
 
 Only `paper_numerical-methods/` and `paper_smoothness-cv/` are active.
