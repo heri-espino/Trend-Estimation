@@ -210,3 +210,25 @@ The only active papers are:
 
 Other paper directories are historical/parked and must not receive new research work
 unless the user explicitly reactivates them.
+
+## N018 — Greedy temporal continuation is a baseline, not an optimum
+
+**Date:** 2026-10-07
+
+The paper includes an explicit counterexample to greedy
+maximum-cardinality matching. The controlled CP05 numerical extension
+compares the existing greedy implementation against exact pairwise
+max-cardinality/minimum-distance assignment. This is separate from
+and does not modify the frozen per-surface N009 search.
+
+## N019 — Do not conflate real tracking output with known identity
+
+**Date:** 2026-10-07
+
+The committed four-series example documents 924 matched and 468 missing
+branch-origin rows. With no true latent branch labels, neither count
+is an identification-success rate. The proposed controlled benchmark
+has known labels but independently resets earlier identities for each
+adjacent-origin pair, so its results cannot be reported as cumulative
+multi-time tracking accuracy. Downstream branch scoring and smoothness
+functional phi belong to the forecasting paper.
