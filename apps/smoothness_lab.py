@@ -185,6 +185,7 @@ def _val1_figure(result, order: int) -> go.Figure:
     curve = result.surfaces.loc[result.surfaces["d"].eq(order)]
     minima = result.candidates.loc[result.candidates["d"].eq(order)]
     selected = minima.loc[minima["rank"].eq(1)]
+    raw_minima = minima.loc[minima["source"].ne("regla_aplicada")]
     fig = go.Figure()
     fig.add_scatter(
         x=curve["smoothness"], y=curve["val1_mse"],
@@ -192,8 +193,8 @@ def _val1_figure(result, order: int) -> go.Figure:
         line={"color": COLORES_D[order], "width": 2.4},
     )
     fig.add_scatter(
-        x=minima["smoothness"], y=minima["val1_mse"],
-        mode="markers", name="Mínimos locales candidatos",
+        x=raw_minima["smoothness"], y=raw_minima["val1_mse"],
+        mode="markers", name="Mínimos de la función original ECM(S)",
         marker={"symbol": "diamond", "color": "#3F3F46", "size": 9},
         hovertemplate="S = %{x:.4f}<br>ECM = %{y:.6g}<extra></extra>",
     )
@@ -201,7 +202,8 @@ def _val1_figure(result, order: int) -> go.Figure:
         fig.add_scatter(
             x=selected["smoothness"], y=selected["val1_mse"],
             mode="markers",
-            name=("Mínimo de la rama elegida" if hasattr(result, "selected_rule")
+            name=("Suavidad aplicada de la regla ganadora"
+                  if hasattr(result, "selected_rule")
                   else "Candidato seleccionado en validación 2"),
             marker={"symbol": "star", "size": 17, "color": COLORES_D[2],
                     "line": {"color": "white", "width": 1}},
@@ -373,9 +375,11 @@ ETIQUETAS_V = {
     "val1_start": "Inicio de validación 1 (índice cero)",
     "val1_end": "Fin de validación 1 (exclusivo)",
     "val2_end": "Fin de validación 2 (exclusivo)",
-    "s_minimo": "Mínimo local de S en validación 1",
-    "s_aplicado": "S elegido por la regla",
+    "s_minimo": "Argumento S del mínimo de ECM transformado",
+    "s_aplicado": "Suavidad efectiva elegida por la regla",
     "s_sin_recortar": "S antes de restringir a [0, 1]",
+    "objetivo_plano": "Objetivo transformado constante en S",
+    "origen_minimo": "Identificación del mínimo bajo la regla",
     "val1_mse": "ECM de validación 1 con S de la regla",
     "val2_mse": "ECM de validación 2 con el mismo S",
     "val2_rmse": "RECM de validación 2 con el mismo S",
@@ -449,30 +453,36 @@ def _branch_timeline(result) -> go.Figure:
     return fig
 
 
-def _branch_figure(result, order: int) -> go.Figure:
+def _branch_figure(
+    result, order: int, rule: str | None = None
+) -> go.Figure:
     data = result.branches.loc[result.branches["d"].eq(order)]
+    if rule is not None:
+        data = data.loc[data["regla"].eq(rule)]
     fig = go.Figure()
     origenes = np.arange(1, int(result.branches["origin"].max())+1)
     for branch, group in data.groupby("rama", sort=True):
         group = group.set_index("origin").reindex(origenes)
         fig.add_scatter(
-            x=origenes, y=group["s_minimo"],
-            name=f"Rama {branch}", mode="lines+markers",
+            x=origenes, y=group["s_aplicado"],
+            name=f"Rama {branch}: S aplicada", mode="lines+markers",
             line={"width": 2}, marker={"size": 7},
             hovertemplate=(
                 "Origen = %{x}<br>Suavidad mínima S = %{y:.4f}<extra></extra>"
             ),
         )
     _style(
-        fig, f"Trayectorias de mínimos locales — orden d = {order}",
-        "Número de origen cronológico", "Suavidad normalizada del mínimo local, S",
+        fig, f"Ramas según la regla fijada — orden d = {order}",
+        "Número de origen cronológico", "Suavidad aplicada por la regla, S",
         height=430,
     )
     fig.update_yaxes(range=[-0.03, 1.03])
     return fig
 
 
-def _historical_loss_figure(result, order: int) -> go.Figure:
+def _historical_loss_figure(
+    result, order: int, rule: str | None = None
+) -> go.Figure:
     rows = result.historical_surfaces.query("d == @order")
     pivot = rows.pivot(index="origin", columns="smoothness", values="val1_mse")
     fig = go.Figure(go.Heatmap(
@@ -485,14 +495,16 @@ def _historical_loss_figure(result, order: int) -> go.Figure:
         ),
     ))
     local = result.branches.loc[result.branches["d"].eq(order)]
+    if rule is not None:
+        local = local.loc[local["regla"].eq(rule)]
     fig.add_scatter(
-        x=local["s_minimo"], y=local["origin"],
-        mode="markers", name="Mínimos locales seguidos",
+        x=local["s_aplicado"], y=local["origin"],
+        mode="markers", name="Suavidades aplicadas por la regla",
         marker={"symbol": "circle-open", "size": 8,
                 "line": {"width": 1.5, "color": "#C44E52"}},
     )
     _style(
-        fig, f"Superficie histórica del ECM — orden d = {order}",
+        fig, f"ECM original y S aplicada por la regla — orden d = {order}",
         "Suavidad normalizada, S", "Origen de validación 1",
         height=445,
     )
@@ -542,7 +554,7 @@ def _v_figure(v: pd.DataFrame, d: int, branch: str, rule: str) -> go.Figure:
     fig = go.Figure()
     fig.add_scatter(
         x=v["origin"], y=v["s_minimo"], mode="lines+markers",
-        name="Mínimo local observado en validación 1",
+        name="Entrada del mínimo de ECM transformado",
         line={"color": COLORES_D[d], "width": 2},
     )
     fig.add_scatter(
@@ -888,9 +900,11 @@ def main() -> None:
     with tab_val1:
         st.subheader("Curvas del ECM de validación 1 para distintos órdenes d")
         st.write(
-            "Los rombos señalan mínimos locales de la curva de error de pronóstico "
-            "en función de S. El valor de suavidad aplicado por una regla histórica "
-            "puede quedar entre dos mínimos."
+            "La línea es el ECM de la continuación polinómica sin ponderación. "
+            "Los rombos son sus mínimos; la estrella o línea naranja indica "
+            "la suavidad aplicada por la combinación (d, rama, regla) ganadora. "
+            "Para reglas distintas de 'Último mínimo', el mínimo de V1 se "
+            "calcula sobre la pérdida transformada por esa misma regla."
             if modo == "ramas" else
             "Los rombos identifican los mínimos candidatos; todos se comparan "
             "posteriormente en validación 2."
@@ -912,27 +926,40 @@ def main() -> None:
     with tab_ramas:
         if modo == "ramas":
             st.subheader("Evolución cronológica de los mínimos locales")
-            d_ramas = st.selectbox(
-                "Orden d para el seguimiento de mínimos",
+            col_d, col_r = st.columns(2)
+            d_ramas = col_d.selectbox(
+                "Orden d del procedimiento",
                 sorted(ordenes), key="orden_ramas",
             )
-            st.plotly_chart(
-                _branch_figure(resultado, d_ramas), use_container_width=True
+            regla_ramas = col_r.selectbox(
+                "Regla fija para validar y seguir ramas",
+                list(dict.fromkeys(resultado.evaluations["regla"].tolist())),
+                format_func=lambda k: REGLAS_ES[k],
+                key="regla_ramas",
             )
             st.plotly_chart(
-                _historical_loss_figure(resultado, d_ramas),
+                _branch_figure(resultado, d_ramas, regla_ramas),
+                use_container_width=True
+            )
+            st.plotly_chart(
+                _historical_loss_figure(resultado, d_ramas, regla_ramas),
                 use_container_width=True,
             )
             st.dataframe(
                 _v_table(resultado.branches.loc[
                     resultado.branches["d"].eq(d_ramas)
+                    & resultado.branches["regla"].eq(regla_ramas)
                 ]),
                 use_container_width=True, hide_index=True,
             )
             st.caption(
-                "La identificación de ramas utiliza la cercanía entre "
-                "mínimos locales en periodos consecutivos. Puede haber "
-                "nacimientos de ramas y orígenes sin coincidencia."
+                "Cada regla define su propia función de error de validación 1 "
+                "al transformar las suavidades con su historial. Las ramas "
+                "se identifican por proximidad entre las **suavidades aplicadas** "
+                "de ese mismo par (d, regla), no se comparten entre métodos. "
+                "Los círculos del mapa señalan S aplicada sobre el ECM original "
+                "como referencia, no mínimos de la curva original."
+            )
             )
         else:
             st.info(
@@ -944,32 +971,34 @@ def main() -> None:
         if modo == "ramas":
             st.subheader("Matriz V por orden, rama y regla de selección")
             st.write(
-                "Cada fila registra el mínimo S observado en validación 1, "
-                "el S que la regla decidió aplicar y los errores de ese **mismo "
-                "valor** tanto en validación 1 como en validación 2. "
-                "Las reglas ponderadas por ECM solo acceden a validaciones "
-                "2 que ya habían concluido al iniciar el pronóstico."
+                "Cada fila registra el argumento que minimizó el ECM de V1 "
+                "**transformado con la regla seleccionada**, la suavidad efectiva "
+                "producida por esa regla y los errores obtenidos con ese mismo S "
+                "en V1 y V2. La regla y d son fijos en ambas validaciones. "
+                "Una regla que no depende del argumento actual puede tener "
+                "ECM transformado constante: no se inventan mínimos en ese caso."
             )
             c1, c2, c3 = st.columns(3)
             d_v = c1.selectbox(
                 "Orden d", sorted(ordenes), key="orden_v",
             )
-            ramas_disponibles = sorted(
-                resultado.evaluations.loc[
-                    resultado.evaluations["d"].eq(d_v), "rama"
-                ].unique()
-            )
-            b_v = c2.selectbox(
-                "Rama de mínimos locales", ramas_disponibles,
-                key=f"rama_v_{d_v}",
-            )
             reglas_calculadas = list(
                 dict.fromkeys(resultado.evaluations["regla"].tolist())
             )
-            r_v = c3.selectbox(
-                "Regla de suavidad", reglas_calculadas,
+            r_v = c2.selectbox(
+                "Regla fija de V1 y V2", reglas_calculadas,
                 format_func=lambda k: REGLAS_ES[k],
                 key="regla_v",
+            )
+            ramas_disponibles = sorted(
+                resultado.evaluations.loc[
+                    resultado.evaluations["d"].eq(d_v)
+                    & resultado.evaluations["regla"].eq(r_v), "rama"
+                ].unique()
+            )
+            b_v = c3.selectbox(
+                "Rama específica de esta regla", ramas_disponibles,
+                key=f"rama_v_{d_v}_{r_v}",
             )
             subset = resultado.evaluations.loc[
                 resultado.evaluations["d"].eq(d_v)
@@ -1162,17 +1191,18 @@ def main() -> None:
 
     with st.expander("Definiciones y alcance de las reglas históricas"):
         st.write(
-            "**Rama:** secuencia de mínimos locales asociados por vecindad "
-            "en suavidad. **Regla:** transforma el mínimo actual de validación 1 "
-            "y su historia disponible en un único S aplicado. "
+            "**Rama:** trayectoria de mínimos de ECM de V1 bajo el mismo "
+            "orden d y la misma regla, vinculados por cercanía en suavidad "
+            "aplicada. **Regla:** transforma el argumento candidato y su "
+            "historia disponible en un único S efectivo. "
             "**Matriz V:** historial de S mínimo, S aplicado y errores de "
             "ambas validaciones por (d, rama, regla). "
             "**Último mínimo:** continuidad polinómica original sin promedio. "
             "**Soporte:** proporción de orígenes históricos evaluados."
         )
         st.write(
-            "La regla está fijada al principio del experimento; se aplica "
-            "de la misma manera en ambas validaciones. La tendencia puede "
+            "La pareja (d, regla) está fijada al principio del experimento; "
+            "define los mínimos y las ramas en V1 y se aplica igualmente en V2. La tendencia puede "
             "reestimarse al cambiar el origen y disponer de nuevos datos, "
             "pero no se vuelve a optimizar S en validación 2. "
             "El test real permanece fuera de la elección de d, rama y regla."
