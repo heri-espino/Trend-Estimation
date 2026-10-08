@@ -1,4 +1,6 @@
-> **Scope note (2026-10-05):** This file records the broader adaptive-paper program before the smoothness-CV / numerical-methods split. It is no longer the global source of truth. Start with AI_HANDOFF.md and RESEARCH_MAP.md. For current methodological work use paper_smoothness-cv/ and paper_numerical-methods/.
+> **Historical archive (2026-10-08):** This note predates the current three-independent-working-paper structure and is not an active roadmap. See [working papers](../working_papers/README.md) and [research map](../RESEARCH_MAP.md). The original historical discussion below is retained without rewriting past decisions.
+
+> **Scope note (2026-10-05):** This file records the broader adaptive-paper program before the smoothness-CV / numerical-methods split. It is no longer the global source of truth. Start with AI_HANDOFF.md and RESEARCH_MAP.md. For current methodological work use working_papers/Working Paper - Smoothness Cross Validation/ and working_papers/Working Paper - Numerical Methods/.
 
 # Current Project State
 

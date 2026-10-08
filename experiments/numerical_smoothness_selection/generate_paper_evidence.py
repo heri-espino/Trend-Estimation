@@ -43,7 +43,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--output-dir",
         type=Path,
-        default=Path("paper_numerical-methods"),
+        default=Path("working_papers/Working Paper - Numerical Methods"),
     )
     return parser.parse_args()
 

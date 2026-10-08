@@ -1,37 +1,22 @@
-> **Namespace note (2026-10-05):** This experiment directory keeps its historical name for reproducibility. It now supports primarily the active numerical-methods paper at \`../../paper_numerical-methods/\`. Criterion-definition experiments may also be reused by \`../../paper_smoothness-cv/\`. Do not rename this directory or the matching results namespace without updating tests, frozen metadata, and manuscript paths.
+# Numerical smoothness-selection experiments
 
-# Numerical smoothness selection experiments
-## Cross-paper dynamic tracked-smoothness interface
+This historical experiment namespace is intentionally kept stable
+to preserve test paths and frozen reproducibility metadata.
+The **independent Numerical Methods working paper** is at
+\`../../working_papers/Working Paper - Numerical Methods/\`.
 
-The tracked-minima experiment is now the prototype shared by the two active
-papers.
+Numerical search, Sturm root isolation, and per-surface
+benchmarks belong to the Numerical Methods study. The additional
+historical scripts for temporal minimum association and branch
+forecasting are retained as reproducible computational records;
+their independent manuscript and scientific scope are at
+\`../../working_papers/Working Paper - Dynamic Branch Selection/\`.
+Neither paper's results should be interpreted as conditions
+for another paper's validity.
 
-`paper_numerical-methods/` owns recovery of local minima and their temporal
-branch identities. `paper_smoothness-cv/` owns how a branch is scored and
-converted into the final forecast smoothness.
-
-For each matched branch/origin, the key scientific row is
-
-~~~text
-[S, Validation-1 loss, Validation-2 loss]
-~~~
-
-and the branch matrix is `V_j` formed by stacking those rows through time.
-
-The current `run_two_stage_order_validation.py` uses the **last/newest local
-minimum** on the selected branch for the final forecast. It already records
-`smoothness_mean`, `smoothness_median`, `smoothness_recent5_mean`, and
-`smoothness_recent5_median`, but those columns are diagnostics only.
-
-The next forecasting experiment will hold the recovered branch histories fixed
-and compare alternative final rules: last, recent mean, recent median,
-Validation-2 weighting, and recency + Validation-2 weighting.
-
-Do not change the per-surface numerical solver merely to improve one of those
-forecasting rules.
-
-
-Reusable numerical logic stays in src/trend_estimation/. The numerical benchmark and root-search experiments in this namespace belong to paper_numerical-methods/.
+Reusable implementations remain in \`src/trend_estimation/\`.
+Do not rename the experiment namespace, frozen result names,
+or historical checkpoint IDs without migration tests.
 
 ## Experimental order
 
@@ -68,7 +53,7 @@ first two derivatives against the production implementation at several
 
 This is a structural proof-of-concept, not the production optimizer and not yet
 a general certified-root theorem. See
-\`paper_numerical-methods/notes/sturm_minicheck.md\`.
+\`working_papers/Working Paper - Numerical Methods/notes/sturm_minicheck.md\`.
 
 ## Synthetic benchmark
 
@@ -278,7 +263,7 @@ python experiments/numerical_smoothness_selection/generate_paper_evidence.py
 This writes into the active paper directory:
 
 ~~~text
-paper_numerical-methods/
+working_papers/Working Paper - Numerical Methods/
 ├── tables/
 │   ├── benchmark_summary.csv
 │   ├── benchmark_summary.tex

@@ -1,6 +1,6 @@
-# Smoothness-CV paper experiments
+# Chronological Smoothness-CV experiment infrastructure
 
-This directory contains paper-specific empirical code for paper_smoothness-cv/.
+This versioned namespace holds both pooled-future-block experiments (historical CP01–CP03, now documented under `working_papers/Working Paper - Smoothness Cross Validation/`) and dynamic minimum/branch experiments (historical CP04–CP08, documented under `working_papers/Working Paper - Dynamic Branch Selection/`). Scientific claims, notes and manuscripts are independent; the same shared code is not evidence of a common research question.
 
 Reusable estimator mathematics remains in src/trend_estimation/. This folder
 owns only the experimental design, frozen presets, paper-specific outputs, and
@@ -18,7 +18,7 @@ This experiment uses nested chronological logic:
 
 The folds average losses, not trends. Never keep the last inner-fold trend as the outer forecast model. Never withhold information that is already available at the outer origin merely because it was previously used as validation data at an earlier origin.
 
-Canonical explanation: `paper_smoothness-cv/notes/validation_semantics.md`.
+Canonical explanation: `working_papers/Working Paper - Smoothness Cross Validation/notes/validation_semantics.md`.
 ## Current checkpoint
 
 ### Checkpoints 01–02 complete; Checkpoint 03 is the active frozen paper simulation

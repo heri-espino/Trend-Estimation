@@ -1,3 +1,5 @@
+> **Historical archive (2026-10-08):** This note predates the current three-independent-working-paper structure and is not an active roadmap. See [working papers](../working_papers/README.md) and [research map](../RESEARCH_MAP.md). The original historical discussion below is retained without rewriting past decisions.
+
 # Roadmap: Forecast-Optimal Trend Smoothing
 
 This is the canonical active-paper roadmap. It records both **what** we are doing and **why**.

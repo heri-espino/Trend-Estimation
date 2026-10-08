@@ -1,6 +1,6 @@
 # Smoothness/Recurrence Experiments
 
-Executable entry points for `paper_smoothness-recurrence/`.
+Historical/inactive experimental entry points preserved for the idea under `ideas/smoothness_recurrence/`. Not an active working paper.
 
 Reusable estimator, smoothness, derivative, validation, and recurrence
 primitives belong in `src/trend_estimation/`.

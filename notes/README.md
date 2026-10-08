@@ -1,4 +1,4 @@
-> **Repository note (2026-10-05):** Root \`notes/\` is now shared/historical material, dominated by the parked adaptive-paper program. Paper-local documentation is authoritative for current work. Start with \`../AI_HANDOFF.md\` and \`../RESEARCH_MAP.md\`.
+> **Repository note (2026-10-08):** Top-level notes are shared or historical. The three independent active workspaces are listed in `../working_papers/README.md`; each working paper's local notes are authoritative for its claims. Inactive concepts belong in `../ideas/`.
 
 # Research Notes
 
