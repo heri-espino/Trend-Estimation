@@ -414,10 +414,11 @@ now has the following concrete files in the research repository:
 **528 predeclared scenario cells in extensive preset**: 16 original
 2^4 source-paper cells, 384 complexity/curvature cells, and 128
 regime-change/robustness cells. With **100 seeds per cell**, the
-main campaign contains **52,800 independent simulated series**,
+main campaign contains **52,800 scenario–seed simulation instances**,
 each evaluated at common outer origins and horizons, with multiple
-methods measured on the same realized observations. Seeds, not
-outer origins or candidate methods, are the replication units.
+methods measured on the same realized observations. Independent seeds **within each DGP cell**, not outer origins or
+candidate methods, are the replication units; reusing the same seed
+across different DGP cells may induce paired dependence across cells.
 The runner can use **32 logical CPU processes**, one BLAS thread
 per worker, with SQLite transactions and manifest-checked restart.
 The RTX Ada GPU is not currently required or used.
