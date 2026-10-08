@@ -249,9 +249,9 @@ def _panel_a(ax, ex: dict):
     y = np.log(case["value"].to_numpy())
     areas = ex["regions"]
     labels = [
-        ("train", "Train"), ("val1", "Historical Val1"),
-        ("val2", "Historical Val2"),
-        ("current", "Current Val1"), ("test", "Untouched test"),
+        ("train", "Train"), ("val1", "Val1"),
+        ("val2", "Val2"), ("current", "Final Val1"),
+        ("test", "Test"),
     ]
     for code, label in labels:
         i, j = areas[code]
