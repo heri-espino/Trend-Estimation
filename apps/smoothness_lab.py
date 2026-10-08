@@ -761,7 +761,7 @@ def main() -> None:
             "**Hλ:** matriz de pesos que transforma observaciones en tendencias."
         )
     st.info(
-        "**Cómo interpretar la suavidad:** S = 0 reproduce la serie dentro de 
+        "**Cómo interpretar la suavidad:** S = 0 reproduce la serie dentro de "
         "la ventana; S = 1 corresponde al límite de máxima penalización, cuya "
         f"tendencia es un polinomio de grado {orden - 1}. "
         "El parámetro λ controla la intensidad de la penalización."
