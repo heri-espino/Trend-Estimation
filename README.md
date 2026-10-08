@@ -67,54 +67,59 @@ Frozen evidence for the per-surface solver remains 240/240 adversarial relevant
 optima, 2105/2105 synthetic reference minima, and 473/473 financial geometry
 stress minima.
 
-## Interactive smoothness laboratory
+## Laboratorio interactivo de selección de tendencia
 
-The primary **live** Streamlit app now lives at `apps/smoothness_lab.py`.
-It does not replace the separate frozen-results viewer at
-`experiments/numerical_smoothness_selection/dashboard_tracked_minima.py`.
+La aplicación principal en español se encuentra en apps/smoothness_lab.py.
+Usa la selección directa **en dos validaciones cronológicas**:
 
-Install and launch from the repository root:
+1. **Validación 1:** para cada orden de diferencias d, recuperar todos los
+   mínimos locales de la pérdida predictiva en suavidad normalizada S.
+   Conservar los candidatos, no solamente el mínimo global.
+2. **Validación 2:** reajustar cada candidato con las últimas L
+   observaciones disponibles al terminar validación 1 y pronosticar el bloque
+   de validación 2. Elegir el par (d*, S*) que minimiza su **ECM**.
+3. **Pronóstico:** fijar el método (mínimos cuadrados penalizados), el
+   orden d* y la suavidad S*. Reajustar con las últimas L
+   observaciones antes de la prueba y pronosticar desde ese origen.
+
+La prueba se reserva exclusivamente para evaluación, nunca para seleccionar.
+La matriz comparativa de candidatos incluye d, S, lambda, ECM de validación 1,
+ECM/RECM de validación 2 y procedencia del mínimo. No exige seguimiento
+temporal de ramas; la comparación de otros estimadores queda pendiente
+como posible extensión.
+
+Instalación y ejecución desde la raíz del repositorio:
 
 ~~~bash
 python -m pip install -e ".[dashboard,finance]"
 streamlit run apps/smoothness_lab.py
 ~~~
 
-The app provides synthetic functions with reproducible additive noise (including
-AR(1), heavy-tailed and heteroskedastic variants), Yahoo Finance multi-ticker
-downloads, and CSV uploads. For price levels, select level, log level, indexed
-level, simple returns or log returns. It exposes rolling-window order `d`,
-window `L`, horizon `h`, branch tracking radius and CP08 `phi(V_j)` rules.
+La interfaz admite series sintéticas, Yahoo Finance y archivos CSV, con
+representaciones en nivel, logaritmo, índice 100 o rendimientos. Incluye
+curvas del ECM para cada d, mínimos locales, comparación de candidatos,
+pronóstico final y matriz de suavizamiento H_lambda.
 
-You can inspect the forecast **Validation-1 MSE** surface heatmap (origin by
-smoothness), the final local minima, the per-branch
-`V_j = [S, Validation-1 loss, Validation-2 loss]` histories, the
-Validation-2 MSE for each tracked branch, and the smoothing matrix
-`H_lambda=(I+lambda D_d.T D_d)^-1`. Selected and pooled trend continuations
-are shown alongside each other; manual smoothness and trend-view modes are
-available. CSV exports include downloaded observations, branches, loss
-surfaces, and the matrix.
-
-**Validation contract:** The final test block is never used to choose a
-smoothness, track a branch, or fit a trend. Validation-1 finds local minima;
-Validation-2 is scored only after a fresh fit through Validation-1. Branch
-selection uses support and historical Validation-2 RMSE, then the chosen
-`phi(V_j)` selects smoothness for a **fresh pre-test fit**. The final test may
-be revealed separately as a diagnostic. A lack of final branch continuation
-is explicitly labeled and falls back to a coarse pooled-CV grid.
-
-**Interpretation:** This is an *exploratory interactive companion*, not a new
-checkpoint, a reproduction of every frozen preset, or a finding of universal
-superiority. For responsiveness, its default derivative-search depth is 5,
-versus 8 in the frozen numerical experiments. The pooled baseline in this app
-is grid-based; the frozen paper implementation remains authoritative for
-published quantitative comparisons. Large order `d=3,4` can yield unstable
-polynomial forecast extensions. The app does not modify CP03–CP08 outputs.
-
-Run the targeted pure-engine tests with:
+**Laboratorio avanzado anterior:** el seguimiento de ramas históricas,
+la matriz dinámica V_j y las reglas phi(V_j) siguen disponibles en
+apps/smoothness_lab_advanced.py; no intervienen en la aplicación principal.
+Ejecutar con:
 
 ~~~bash
-python -m pytest tests/test_live_smoothness_lab.py
+streamlit run apps/smoothness_lab_advanced.py
+~~~
+
+El visor de resultados congelados permanece en
+experiments/numerical_smoothness_selection/dashboard_tracked_minima.py.
+
+Estos laboratorios son exploratorios, no modifican los checkpoints congelados
+CP03–CP08 ni constituyen evidencia de superioridad universal. Por defecto
+la búsqueda numérica es menos exhaustiva que en los experimentos congelados.
+
+Pruebas:
+
+~~~bash
+python -m pytest tests/test_two_stage_smoothness_lab.py tests/test_live_smoothness_lab.py tests/test_smoothness_spanish_ui.py
 ~~~
 
 ### Other directories
