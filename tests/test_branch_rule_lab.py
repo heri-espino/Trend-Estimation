@@ -294,6 +294,60 @@ def test_validation_rejects_unknown_rules_and_short_data():
         _run(_sample()[:30])
 
 
+
+
+def test_inspection_of_v1_curves_respects_fixed_order_rule_and_test_reserve():
+    from experiments.smoothness_cv.branch_rule_lab import (
+        inspect_method_val1_curves,
+    )
+
+    y = _sample()
+    result = _run(y)
+    last, last_minima = inspect_method_val1_curves(
+        y, result, order=1, rule="last", grid_points=13
+    )
+    mean, mean_minima = inspect_method_val1_curves(
+        y, result, order=1, rule="mean_k3", grid_points=13
+    )
+    assert set(last["regla"]) == {"last"}
+    assert set(mean["regla"]) == {"mean_k3"}
+    assert last.groupby("rama").size().eq(13).all()
+    assert mean.groupby("rama").size().eq(13).all()
+    np.testing.assert_allclose(last["s_candidato"], last["s_aplicado"])
+    assert (mean["s_aplicado"].between(0, 1)).all()
+    assert not last_minima.empty and not mean_minima.empty
+    assert not np.allclose(
+        mean.iloc[:13]["s_candidato"], mean.iloc[:13]["s_aplicado"]
+    )
+
+    changed = y.copy()
+    changed[result.pretest_end:] = np.array([-999., 1000., 600.])
+    changed_curves, changed_minima = inspect_method_val1_curves(
+        changed, result, order=1, rule="mean_k3", grid_points=13
+    )
+    pd.testing.assert_frame_equal(mean, changed_curves)
+    pd.testing.assert_frame_equal(mean_minima, changed_minima)
+
+
+def test_selected_input_is_compatible_with_selected_method():
+    from experiments.smoothness_cv.branch_rule_lab import (
+        inspect_method_val1_curves,
+    )
+    y = _sample()
+    result = _run(y)
+    assert 0 <= result.selected_input_s <= 1
+    curves, _ = inspect_method_val1_curves(
+        y, result, order=result.selected_order,
+        rule=result.selected_rule, grid_points=13
+    )
+    selected = curves.loc[curves["rama"].eq(result.selected_branch)]
+    assert not selected.empty
+    if result.selected_rule == "last":
+        assert np.isclose(result.selected_input_s, result.selected_s)
+
+
+
+
 @pytest.fixture(scope="module")
 def app():
     pytest.importorskip("plotly")
@@ -322,3 +376,53 @@ def test_branch_figures_and_v_matrices_render(app):
         subset, d, str(first["rama"]), str(first["regla"])
     ).data
     assert app._branch_timeline(r).data
+
+    from experiments.smoothness_cv.branch_rule_lab import inspect_method_val1_curves
+    curves, minima = inspect_method_val1_curves(
+        _sample(), r, order=d, rule=r.selected_rule, grid_points=13,
+    )
+    fig = app._val1_method_figure(
+        curves, minima, order=d, rule=r.selected_rule,
+        selected_branch=r.selected_branch,
+        selected_input_s=r.selected_input_s,
+    )
+    assert "método" in fig.layout.title.text
+    assert "Suavidad candidata" in fig.layout.xaxis.title.text
+    assert "S candidata utilizada en la prueba" in [p.name for p in fig.data]
+
+    alternate = subset.copy()
+    alternate["rama"] = "b_otra"
+    with_others = app._v_figure(
+        subset, d, str(first["rama"]), str(first["regla"]),
+        others=alternate,
+    )
+    other_traces = [trace for trace in with_others.data
+                    if trace.name.startswith("Otra rama")]
+    assert len(other_traces) == 1
+    assert other_traces[0].opacity < 0.3
+    assert len(app._v_figure(
+        subset, d, str(first["rama"]), str(first["regla"])
+    ).data) == 2
+    with_losses = app._v_losses(
+        subset, d, str(first["rama"]), str(first["regla"]),
+        others=alternate,
+    )
+    assert len([trace for trace in with_losses.data
+                if trace.name.startswith("Otra rama")]) == 2
+    for dated in (False, True):
+        frame = pd.DataFrame({"observed": _sample()})
+        if dated:
+            frame["date"] = pd.date_range("2025-01-01", periods=len(frame))
+        test_fig = app._test_forecast_figure(frame, r, "Unidades")
+        assert test_fig.layout.xaxis.title.text == (
+            "Fecha" if dated else "Número de observación"
+        )
+        real = next(trace for trace in test_fig.data
+                    if trace.name == "Serie real del test reservado")
+        predicted = next(trace for trace in test_fig.data
+                         if trace.name == "Tendencia pronosticada sin observar el test")
+        np.testing.assert_allclose(real.y, _sample()[r.pretest_end:r.test_end])
+        np.testing.assert_allclose(
+            np.asarray(predicted.y)[1:], r.evaluation_forecast
+        )
+

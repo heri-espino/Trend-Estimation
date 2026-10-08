@@ -23,7 +23,9 @@ from experiments.smoothness_cv.live_lab import (
     transform_observations,
 )
 from experiments.smoothness_cv.two_stage_lab import run_two_stage_lab
-from experiments.smoothness_cv.branch_rule_lab import run_branch_lab, RULE_SPECS
+from experiments.smoothness_cv.branch_rule_lab import (
+    run_branch_lab, RULE_SPECS, inspect_method_val1_curves,
+)
 
 
 TRANSFORMACIONES = {
@@ -218,6 +220,72 @@ def _val1_figure(result, order: int) -> go.Figure:
     return fig
 
 
+
+def _val1_method_figure(
+    curves: pd.DataFrame,
+    minima: pd.DataFrame,
+    *,
+    order: int,
+    rule: str,
+    selected_branch: str | None = None,
+    selected_input_s: float | None = None,
+) -> go.Figure:
+    """Plot E1(phi_r(V_j, s)) for each method-specific tracked branch."""
+    fig = go.Figure()
+    branches = curves["rama"].drop_duplicates().tolist()
+    colors = ["#0072B2", "#D55E00", "#009E73", "#8A57A1",
+              "#B88700", "#555555", "#CC79A7", "#56B4E9"]
+    for i, branch in enumerate(branches):
+        group = curves.loc[curves["rama"].eq(branch)].sort_values("s_candidato")
+        focus = (branch == selected_branch)
+        color = colors[i % len(colors)]
+        fig.add_scatter(
+            x=group["s_candidato"], y=group["val1_mse"],
+            mode="lines", name=f"Rama {branch}: ECM del método",
+            line={"color": color, "width": 3 if focus else 1.8},
+            opacity=1 if focus else 0.68,
+            customdata=group[["s_aplicado"]].to_numpy(),
+            hovertemplate=(
+                "S candidata = %{x:.4f}<br>S aplicada = %{customdata[0]:.4f}"
+                "<br>ECM de V1 = %{y:.6g}<extra></extra>"
+            ),
+        )
+        local = minima.loc[minima["rama"].eq(branch)]
+        stable = local.loc[~local["objetivo_plano"]]
+        if not stable.empty:
+            fig.add_scatter(
+                x=stable["s_candidato"], y=stable["val1_mse"],
+                mode="markers", name=f"Rama {branch}: mínimos de V1",
+                marker={"color": color, "symbol": "diamond", "size": 9},
+                customdata=stable[["s_aplicado"]].to_numpy(),
+                hovertemplate=(
+                    "S candidata = %{x:.4f}<br>S aplicada = %{customdata[0]:.4f}"
+                    "<br>ECM de V1 = %{y:.6g}<extra></extra>"
+                ),
+            )
+    if selected_branch in branches and selected_input_s is not None:
+        points = curves.loc[curves["rama"].eq(selected_branch)]
+        if not points.empty:
+            xi = points["s_candidato"].to_numpy(float)
+            yi = points["val1_mse"].to_numpy(float)
+            fig.add_scatter(
+                x=[selected_input_s],
+                y=[float(np.interp(selected_input_s, xi, yi))],
+                mode="markers", name="S candidata utilizada en la prueba",
+                marker={"symbol": "star", "color": "#222222", "size": 18},
+            )
+    _style(
+        fig,
+        f"ECM de V1 por método — orden d = {order} · "
+        f"{REGLAS_ES.get(rule, rule)}",
+        "Suavidad candidata, s (antes de aplicar la regla)",
+        "ECM de validación 1 (unidades al cuadrado)",
+        height=490,
+    )
+    fig.update_xaxes(range=[0, 1])
+    return fig
+
+
 def _val2_figure(result) -> go.Figure:
     fig = go.Figure()
     table = result.candidates
@@ -325,6 +393,71 @@ def _forecast_figure(frame: pd.DataFrame, result, unidad: str, *,
     )
 
 
+
+def _test_forecast_figure(
+    frame: pd.DataFrame, result, unidad: str, *, truth: bool = False
+) -> go.Figure:
+    """The test prediction is fixed at the pretest origin, before observing test y.
+
+    Only evaluation_trend/evaluation_forecast are used for the orange trend.
+    The final full-data trend is intentionally excluded from this backtest plot.
+    """
+    x, x_title = _axis(frame)
+    y = frame["observed"].to_numpy(dtype=float)
+    cutoff, end = int(result.pretest_end), int(result.test_end)
+    L = int(result.window)
+    left = max(0, cutoff-min(L, 45))
+    historical_x = x[left:cutoff]
+    historical_trend = np.asarray(result.evaluation_trend, dtype=float)[
+        left-(cutoff-L):
+    ]
+    forecast = np.asarray(result.evaluation_forecast, dtype=float)
+    if len(forecast) != end-cutoff:
+        raise ValueError("Pronóstico de prueba y periodo reservado desalineados.")
+    fig = go.Figure()
+    fig.add_scatter(
+        x=historical_x, y=y[left:cutoff],
+        name="Observaciones conocidas antes de la prueba",
+        mode="lines+markers", marker={"size": 4},
+        line={"color": "#777777", "width": 1.7},
+    )
+    fig.add_scatter(
+        x=historical_x, y=historical_trend,
+        name="Tendencia estimada antes del test",
+        mode="lines", line={"color": "#D55E00", "width": 2.6},
+    )
+    fig.add_scatter(
+        x=[x[cutoff-1]]+list(x[cutoff:end]),
+        y=[float(historical_trend[-1])]+list(forecast),
+        name="Tendencia pronosticada sin observar el test",
+        mode="lines+markers", marker={"size": 7},
+        line={"color": "#D55E00", "width": 3, "dash": "dash"},
+    )
+    fig.add_scatter(
+        x=x[cutoff:end], y=y[cutoff:end],
+        name="Serie real del test reservado",
+        mode="lines+markers", marker={"size": 9},
+        line={"color": "#202020", "width": 2.5},
+    )
+    if truth and "latent" in frame:
+        latent = frame["latent"].to_numpy(float)
+        fig.add_scatter(
+            x=x[cutoff:end], y=latent[cutoff:end],
+            name="Tendencia verdadera sintética en test",
+            mode="lines", line={"color": "#8A57A1", "dash": "dot"},
+        )
+    _style(
+        fig, "Pronóstico de tendencia frente a la serie real — prueba reservada",
+        x_title, unidad, height=515,
+    )
+    fig.add_shape(
+        type="line", x0=x[cutoff-1], x1=x[cutoff-1],
+        yref="paper", y0=0, y1=1,
+        line={"color": "#999999", "dash": "dot", "width": 1.5},
+    )
+    return fig
+
+
 def _matrix_figure(H: np.ndarray) -> go.Figure:
     max_abs = float(np.max(np.abs(H)))
     fig = go.Figure(go.Heatmap(
@@ -367,6 +500,29 @@ REGLAS_ES = {
     "delta_hl3": "Extrapolación de incrementos (semivida 3)",
     "delta_hl5": "Extrapolación de incrementos (semivida 5)",
 }
+
+REGLAS_BREVE = {
+    "last": "Último mínimo",
+    "mean_k3": "Media 3",
+    "mean_k5": "Media 5",
+    "median_k3": "Mediana 3",
+    "median_k5": "Mediana 5",
+    "recency_hl3": "Recencia 3",
+    "recency_hl5": "Recencia 5",
+    "recency_hl10": "Recencia 10",
+    "val2_weighted": "ECM histórico",
+    "recency_val2_hl3": "Recencia + ECM 3",
+    "recency_val2_hl5": "Recencia + ECM 5",
+    "recency_val2_hl10": "Recencia + ECM 10",
+    "linear_k3": "Lineal 3",
+    "linear_k5": "Lineal 5",
+    "linear_k10": "Lineal 10",
+    "ew_linear_hl3": "Lineal ponderada",
+    "ew_linear_hl5": "Lineal ponderada 5",
+    "delta_hl3": "Incrementos 3",
+    "delta_hl5": "Incrementos 5",
+}
+
 ETIQUETAS_V = {
     "d": "Orden de diferencias, d",
     "rama": "Rama de mínimos locales",
@@ -550,9 +706,21 @@ def _branch_rank_figure(result) -> go.Figure:
     return fig
 
 
-def _v_figure(v: pd.DataFrame, d: int, branch: str, rule: str) -> go.Figure:
+def _v_figure(
+    v: pd.DataFrame, d: int, branch: str, rule: str,
+    *, others: pd.DataFrame | None = None,
+) -> go.Figure:
     v = v.sort_values("origin")
     fig = go.Figure()
+    if others is not None and not others.empty:
+        for other_branch, group in others.groupby("rama", sort=True):
+            group = group.sort_values("origin")
+            fig.add_scatter(
+                x=group["origin"], y=group["s_aplicado"],
+                mode="lines+markers", name=f"Otra rama {other_branch}: S aplicada",
+                line={"color": "#808080", "width": 1.5},
+                marker={"size": 5}, opacity=0.23,
+            )
     fig.add_scatter(
         x=v["origin"], y=v["s_minimo"], mode="lines+markers",
         name="Entrada del mínimo de ECM transformado",
@@ -572,9 +740,27 @@ def _v_figure(v: pd.DataFrame, d: int, branch: str, rule: str) -> go.Figure:
     return fig
 
 
-def _v_losses(v: pd.DataFrame, d: int, branch: str, rule: str) -> go.Figure:
+def _v_losses(
+    v: pd.DataFrame, d: int, branch: str, rule: str,
+    *, others: pd.DataFrame | None = None,
+) -> go.Figure:
     v = v.sort_values("origin")
     fig = go.Figure()
+    if others is not None and not others.empty:
+        for other_branch, group in others.groupby("rama", sort=True):
+            group = group.sort_values("origin")
+            fig.add_scatter(
+                x=group["origin"], y=group["val1_mse"],
+                mode="lines", name=f"Otra rama {other_branch}: ECM V1",
+                line={"color": COLORES_D[1], "width": 1.3},
+                opacity=0.20, legendgroup=f"otra_{other_branch}",
+            )
+            fig.add_scatter(
+                x=group["origin"], y=group["val2_mse"],
+                mode="lines", name=f"Otra rama {other_branch}: ECM V2",
+                line={"color": COLORES_D[2], "width": 1.3, "dash": "dot"},
+                opacity=0.20, legendgroup=f"otra_{other_branch}",
+            )
     fig.add_scatter(
         x=v["origin"], y=v["val1_mse"], mode="lines+markers",
         name="ECM de validación 1 (S aplicado)",
@@ -901,30 +1087,83 @@ def main() -> None:
             )
 
     with tab_val1:
-        st.subheader("Curvas del ECM de validación 1 para distintos órdenes d")
+        st.subheader("Curvas del ECM de validación 1 para distintos órdenes d y métodos")
         st.write(
-            "La línea es el ECM de la continuación polinómica sin ponderación. "
-            "Los rombos son sus mínimos; la estrella o línea naranja indica "
-            "la suavidad aplicada por la combinación (d, rama, regla) ganadora. "
-            "Para reglas distintas de 'Último mínimo', el mínimo de V1 se "
-            "calcula sobre la pérdida transformada por esa misma regla."
+            "Seleccione un orden y una regla fija de suavidad. Se representa "
+            "el **ECM de V1 después de aplicar esa regla**, para cada rama "
+            "que tiene historial. La abscisa es la suavidad candidata antes "
+            "de aplicar la regla; al pasar el cursor se muestra también "
+            "la suavidad efectiva utilizada."
             if modo == "ramas" else
-            "Los rombos identifican los mínimos candidatos; todos se comparan "
-            "posteriormente en validación 2."
+            "En el caso directo se muestra el ECM original y sus mínimos "
+            "locales para el orden seleccionado."
         )
-        for order in sorted(ordenes):
-            plot = _val1_figure(resultado, order)
-            if modo == "ramas" and order == resultado.selected_order:
-                plot.add_vline(
-                    x=resultado.selected_s, line_dash="dash",
-                    line_color="#D55E00", line_width=2,
+        col_orden, col_metodo = st.columns([1, 3])
+        d_graf = col_orden.segmented_control(
+            "Orden de diferencias, d",
+            options=sorted(ordenes),
+            default=(resultado.selected_order if modo == "ramas"
+                     else sorted(ordenes)[0]),
+            key="ecm_orden",
+        )
+        if modo == "ramas":
+            metodos_disponibles = list(
+                dict.fromkeys(resultado.evaluations["regla"].tolist())
+            )
+            r_graf = col_metodo.segmented_control(
+                "Método de selección de suavidad",
+                options=metodos_disponibles,
+                default=resultado.selected_rule,
+                format_func=lambda key: REGLAS_BREVE.get(key, key),
+                key="ecm_metodo",
+            )
+            st.caption(f"Regla elegida: {REGLAS_ES.get(r_graf, r_graf)}.")
+            curvas, minimos = inspect_method_val1_curves(
+                valores, resultado, order=int(d_graf), rule=r_graf,
+                grid_points=grid,
+            )
+            st.plotly_chart(
+                _val1_method_figure(
+                    curvas, minimos, order=int(d_graf), rule=r_graf,
+                    selected_branch=(resultado.selected_branch
+                                     if (int(d_graf) == resultado.selected_order
+                                         and r_graf == resultado.selected_rule)
+                                     else None),
+                    selected_input_s=(resultado.selected_input_s
+                                      if (int(d_graf) == resultado.selected_order
+                                          and r_graf == resultado.selected_rule)
+                                      else None),
+                ),
+                use_container_width=True,
+            )
+            if bool(minimos["objetivo_plano"].any()):
+                st.info(
+                    "En algunas ramas esta regla determina S exclusivamente "
+                    "a partir del historial: el ECM transformado es constante "
+                    "respecto de la suavidad candidata. Por eso no tiene "
+                    "un mínimo local único."
                 )
-            st.plotly_chart(plot, use_container_width=True)
-        st.caption(
-            "Se muestran las curvas de la validación 1 final, previa al bloque "
-            "de prueba. En modo histórico, también puede examinarse cada "
-            "origen por separado en la sección de ramas."
-        )
+            st.caption(
+                "Estas son las curvas de la validación 1 final anterior al "
+                "test reservado. Los rombos marcan los mínimos del objetivo "
+                "propio de cada regla, no necesariamente los de la función "
+                "polinómica sin ponderación."
+            )
+        else:
+            col_metodo.segmented_control(
+                "Método de selección de suavidad",
+                options=["last"], default="last",
+                format_func=lambda key: REGLAS_BREVE.get(key, key),
+                key="ecm_metodo_directo",
+            )
+            st.plotly_chart(
+                _val1_figure(resultado, int(d_graf)),
+                use_container_width=True,
+            )
+            st.caption(
+                "La selección directa es el caso sin agregación histórica "
+                "de mínimos ni ramas por método."
+            )
 
     with tab_ramas:
         if modo == "ramas":
@@ -1007,11 +1246,22 @@ def main() -> None:
                 & resultado.evaluations["rama"].eq(b_v)
                 & resultado.evaluations["regla"].eq(r_v)
             ]
+            mostrar_otras = st.toggle(
+                "Mostrar las demás ramas con menor opacidad",
+                value=False, key="v_mostrar_otras_ramas",
+            )
+            otras = resultado.evaluations.loc[
+                resultado.evaluations["d"].eq(d_v)
+                & resultado.evaluations["regla"].eq(r_v)
+                & resultado.evaluations["rama"].ne(b_v)
+            ] if mostrar_otras else None
             st.plotly_chart(
-                _v_figure(subset, d_v, b_v, r_v), use_container_width=True
+                _v_figure(subset, d_v, b_v, r_v, others=otras),
+                use_container_width=True,
             )
             st.plotly_chart(
-                _v_losses(subset, d_v, b_v, r_v), use_container_width=True
+                _v_losses(subset, d_v, b_v, r_v, others=otras),
+                use_container_width=True,
             )
             st.dataframe(
                 _v_table(subset), use_container_width=True, hide_index=True,
@@ -1099,6 +1349,21 @@ def main() -> None:
             "Mostrar la función verdadera de la simulación",
             value="latent" in frame, disabled="latent" not in frame,
         )
+        if revelar:
+            st.plotly_chart(
+                _test_forecast_figure(
+                    frame, resultado, unidad, truth=latente
+                ),
+                use_container_width=True,
+            )
+            st.caption(
+                "Comparación retrospectiva: la línea de tendencia punteada "
+                "se calculó **antes de conocer las observaciones del test**. "
+                "Los valores reales se muestran únicamente para evaluar y "
+                "visualizar cómo habría funcionado el pronóstico. "
+                "No intervienen en la selección de d, rama, regla ni S."
+            )
+        st.subheader("Pronóstico posterior al último dato real")
         st.plotly_chart(
             _forecast_figure(
                 frame, resultado, unidad,
