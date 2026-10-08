@@ -35,6 +35,17 @@ each historical F(S), pooled F, CV windows and stride, loss matrix,
 smoothing matrix and trend forecasts. The existing
 [branch laboratory](apps/smoothness_lab.py) remains separate.
 
+Both `apps/smoothness_lab.py` and `apps/smoothness_lab_advanced.py`
+also offer two reproducible article-inspired simulation designs:
+the linear trend `tau_t = 4*t/N` and the beta-density mixture
+`tau_t = 0.6*BetaPDF(t/N;30,17) + 0.4*BetaPDF(t/N;3,11)`.
+The article's sample sizes `N=50,200`, Gaussian noise levels
+`sigma=0.5,2.0`, and optional quarterly additive seasonality
+`[1,-0.5,-2.5,2]` are user-selectable. In generated data,
+`latent` remains the true trend and `observed` adds noise and
+optional seasonality. Both apps call the same implementation,
+`experiments/smoothness_cv/article_simulations.py`.
+
 ## Shared research infrastructure
 
 - `src/trend_estimation/`: reusable statistical software.
