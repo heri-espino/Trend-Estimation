@@ -1,6 +1,6 @@
-# Roadmap — Dynamic smoothness-CV paper
+# Roadmap — forecast-optimal smoothness CV with optional adaptation
 
-**Primary target:** Journal of Forecasting.
+**Intended target:** Communications in Statistics—Simulation and Computation.
 
 ## Phase 0 — Baseline criterion
 
@@ -17,8 +17,8 @@
 - [x] Freeze CP03 pooled-selector paper-scale design.
 - [ ] Finish/push CP03 paper-scale results.
 
-CP03 remains a valid baseline. Do not retune it because the central method has
-expanded.
+CP03 is the primary, frozen horizon-matched forecast-CV experiment.
+Do not retune it based on optional extension results.
 
 ## Phase 2 — Dynamic tracked minima
 
