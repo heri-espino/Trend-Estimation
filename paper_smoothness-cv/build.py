@@ -116,7 +116,7 @@ def validate_math_references() -> None:
         source = path.read_text(encoding="utf-8")
         relative = path.relative_to(PAPER_DIR)
 
-        if r"\[" in source or r"\]" in source or "$" in source:
+        if r"\[" in source or r"\]" in source or ("$" * 2) in source:
             problems.append(
                 f"{relative}: replace unnumbered display math with labeled equation environments"
             )
