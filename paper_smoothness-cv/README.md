@@ -244,6 +244,21 @@ fi
 git push
 ~~~
 
+### If LaTeX fails on macOS
+
+The generic `latexmk` message or Python `CalledProcessError` reports only
+the failure status, not the underlying TeX error. The build helper now
+prints the first actual error from the retained log automatically.
+You can also inspect the previous failure **without rebuilding**:
+
+~~~bash
+python3 paper_smoothness-cv/build.py --diagnose
+~~~
+
+The full log is `paper_smoothness-cv/build/stage/main.log`.
+Share the first TeX error and surrounding context, rather than the
+last `latexmk` or Python traceback lines. Do not use `latexmk -f` to
+force a build with unresolved TeX errors.
 The compiled PDF keeps its existing repository path. The older
 `build-workflow-paper.ps1` remains as a compatibility alias for
 **Windows preparation only**, and does not compile LaTeX.
