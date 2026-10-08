@@ -45,6 +45,35 @@ future true latent-trend MSE; past true latent-trend MSE; conditional
 signal error when seasonality exists; selected S, lambda, EDF, original
 Guerrero S; branch counts, detected local minima and selected support.
 
+## Dedicated full-sample replication of Cortés-Toto et al. (2017)
+
+**Important distinction:** in Experiment A of the rolling-forecast
+campaign we recreate the original *generating mechanisms* but
+select on historical fitting windows of length \(L\), not the
+source-paper full sample \(N\). To reproduce the source paper's
+**attained smoothness** comparison itself, use a **separate**
+full-\(N\) replication that applies CV/GCV/AICc/BIC to
+all \(N=50\) or \(200\) observations:
+
+~~~bash
+python -m experiments.smoothness_cv.run_cortes_toto_replication --seeds 100 --jobs 32 --grid-points 501 --run-dir results/smoothness_cv/source_factorial_v1
+~~~
+
+This independently resumable 2^4 design has **16 cells × 100 seeds =
+1,600 complete simulated series**, with **four classical PLS
+selectors**, and exports:
+- \`reports/source_factorial_by_cell.csv\`: achieved raw Guerrero
+  smoothness, our normalized smoothness, EDF and latent recovery;
+- \`reports/main_effect_contrasts.csv\`: high-minus-low main factor
+  effects across the original balanced 2^4 cells;
+- \`reports/source_factorial_replicates.csv.gz\`: seed-level audit
+  trail, with \`source_factorial.sqlite\` preserving atomic progress.
+
+It is a close methodological replication with a finer/more systematic
+grid and new random draws, not literal replication of their
+particular R samples or significance levels. The new h-step forecast
+comparisons are **reported separately**.
+
 ## Recommended workflow on the university workstation
 
 From the repository root, after \`git pull --ff-only\` and installation
