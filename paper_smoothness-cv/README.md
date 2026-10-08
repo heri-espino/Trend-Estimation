@@ -10,7 +10,7 @@
 
 How should the normalized smoothness of a finite-difference
 penalized-least-squares trend be selected when that trend will be
-extrapolated over a specified forecast horizon \`h\`?
+extrapolated over a specified forecast horizon `h`?
 
 The principal statistical construction minimizes **chronological,
 horizon-matched forecast MSE** for the normalized smoothness
@@ -34,8 +34,8 @@ index, not a new smoother.
 
 ### Proposed forecast-CV selection
 
-For historical origins \`t_m\`, use the fitted trend and the
-declared finite-difference continuation operator \`G_{d,h}\`
+For historical origins `t_m`, use the fitted trend and the
+declared finite-difference continuation operator `G_{d,h}`
 to forecast each subsequently observed validation block:
 
 \[
@@ -50,10 +50,10 @@ F^{\mathrm{pool}}_{d,L,h}(S)
 F^{\mathrm{pool}}_{d,L,h}(S).
 \]
 
-At the current outer forecast origin \`T\`, all historical
+At the current outer forecast origin `T`, all historical
 validation outcomes used for tuning are already observed.
 After selection, discard all historical fitted trends, refit
-on the latest \`L\` observations, and extrapolate into the
+on the latest `L` observations, and extrapolate into the
 untouched future block.
 
 Primary comparison: horizon-matched forecast-CV against
@@ -63,7 +63,7 @@ paper-scale core evaluation.
 
 ## Separate numerical paper
 
-\`paper_numerical-methods/\` studies multimodal objective
+`paper_numerical-methods/` studies multimodal objective
 optimization: discovering all relevant interior minima,
 adaptive derivative bracketing, Brent root refinement,
 classification, and both endpoints. Rational/Sturm certified
@@ -76,10 +76,10 @@ independently of the chosen optimizer.
 If the analyst assumes that recent favorable smoothing
 regimes inform future performance, individual local minima
 may be tracked across historical origins into branch
-histories \`V_j=[S, Validation-1 loss, Validation-2 loss]\`.
-Then use a historical branch selector \`psi\` and a
-decision map \`phi(V_j)\` to choose current smoothness.
-Possible \`phi\` mappings include newest, recent mean,
+histories `V_j=[S, Validation-1 loss, Validation-2 loss]`.
+Then use a historical branch selector `psi` and a
+decision map `phi(V_j)` to choose current smoothness.
+Possible `phi` mappings include newest, recent mean,
 median, recency weighting, validation-loss weighting,
 and extrapolation of the smoothness trajectory.
 
@@ -87,7 +87,7 @@ Different maps encode different assumptions. They are
 not part of the core forecast-CV definition, and the
 completed CP04–CP08 experiments do **not** establish
 a universally best map. See
-\`notes/dynamic_tracked_smoothness.md\` for this
+`notes/dynamic_tracked_smoothness.md` for this
 **optional** layer.
 
 ## Paper boundary
