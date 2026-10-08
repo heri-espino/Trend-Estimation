@@ -50,6 +50,7 @@ class BranchLabResult:
     selected_branch: str
     selected_rule: str
     selected_s: float
+    selected_input_s: float
     selected_lambda: float
     selected_val1_mse: float
     selected_val2_mse: float
@@ -590,7 +591,7 @@ def run_branch_lab(
         final_candidates=minima_df,
         selected_order=chosen_d, selected_branch=chosen_branch,
         selected_rule=chosen_rule, selected_s=applied_s,
-        selected_lambda=float(final.lambda_),
+        selected_input_s=current_s, selected_lambda=float(final.lambda_),
         selected_val1_mse=float(best["ec_medio_val1"]),
         selected_val2_mse=float(best["ec_medio_val2"]),
         selected_val2_rmse=float(best["re_cm_val2"]),
@@ -607,3 +608,87 @@ def run_branch_lab(
         forecast_start=len(y), forecast_end=len(y)+future_horizon,
         future_horizon=future_horizon, window=window, horizon=horizon,
     )
+
+
+
+def inspect_method_val1_curves(
+    observed,
+    result: BranchLabResult,
+    *,
+    order: int,
+    rule: str,
+    grid_points: int = 81,
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Inspect the final V1 objective for fixed (d, rule) and each branch.
+
+    F_{d,r,j}(s) = MSE_Val1(phi_r(V_{d,r,j,<origin}, s)).
+
+    Only completed V2 observations before the final pretest origin enter V.
+    The input may contain outer-test observations, which are never accessed.
+    Returns (curves, method-specific local minima). An identically flat curve
+    carries an objetivo_plano flag and no unique local minimizer.
+    """
+    if rule not in RULE_SPECS or order not in (1, 2, 3, 4):
+        raise ValueError("Orden o regla no disponible.")
+    if grid_points < 5:
+        raise ValueError("La malla necesita al menos cinco puntos.")
+
+    y = np.asarray(observed, dtype=float)
+    if y.ndim != 1 or len(y) < result.pretest_end:
+        raise ValueError("Serie insuficiente para inspeccionar validación 1.")
+    end = int(result.pretest_end)
+    if not np.all(np.isfinite(y[:end])):
+        raise ValueError("La historia anterior al test debe ser finita.")
+    history = result.evaluations.loc[
+        result.evaluations["d"].eq(order)
+        & result.evaluations["regla"].eq(rule)
+        & result.evaluations["val2_end"].le(end)
+    ]
+    if history.empty:
+        raise ValueError("No hay ramas históricas para este orden y regla.")
+
+    split = td.RollingOriginSplit(
+        train=slice(result.val1_start-result.window, result.val1_start),
+        validation=slice(result.val1_start, result.val1_end),
+    )
+    prepared = td.prepare_rolling_pure_forecast_objective(
+        y[:end], [split], order=order
+    )
+    points = np.linspace(0, 1, grid_points)
+    rows: list[dict] = []
+    minima_rows: list[dict] = []
+    spec = RULE_SPECS[rule]
+    for branch, section in history.groupby("rama", sort=True):
+        section = section.sort_values("origin")
+        s_hist = section["s_minimo"].to_numpy(float)
+        losses = section["val2_mse"].to_numpy(float)
+        last_input = float(section.iloc[-1]["s_minimo"])
+        for candidate in points:
+            raw, _ = apply_rule(
+                spec, history_s=s_hist,
+                history_val2_loss=losses, current_s=float(candidate)
+            )
+            applied = float(np.clip(raw, 0, 1))
+            loss = float(prepared.evaluate(
+                td.smoothness_to_lambda(applied, result.window, order)
+            ).value)
+            rows.append({
+                "d": order, "regla": rule, "rama": str(branch),
+                "s_candidato": float(candidate), "s_aplicado": applied,
+                "val1_mse": loss,
+            })
+        minima = _method_minima(
+            prepared, order=order, window=result.window,
+            rule=spec, history=section, observed_at=end,
+            spacing=0.02, depth=4, last_input=last_input,
+        )
+        for point in minima:
+            minima_rows.append({
+                "d": order, "regla": rule, "rama": str(branch),
+                "s_candidato": float(point["s_minimo"]),
+                "s_aplicado": float(point["s_aplicado"]),
+                "val1_mse": float(point["val1_mse"]),
+                "objetivo_plano": bool(point["objetivo_plano"]),
+                "procedencia": str(point["source"]),
+            })
+    return pd.DataFrame(rows), pd.DataFrame(minima_rows)
