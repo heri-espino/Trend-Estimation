@@ -1,31 +1,53 @@
-> **2026-10-06 override:** Dynamic tracking of local smoothness minima is now
-> central to this paper. Any older statement below assigning time-varying
-> smoothness to another paper is superseded. The numerical recovery/tracking
-> algorithm belongs to `paper_numerical-methods/`; the forecasting decision
-> from tracked branches belongs here.
+# Claim boundaries — facts, interpretations, hypotheses
 
-# Claim boundaries
+**Current as of 2026-10-08. Supersedes all “dynamic tracking is central” overrides.** This paper has its own independent statistical question; its research notes will be used to write a new final manuscript once the study stabilizes.
 
-## Safe
+## Established mathematical facts (under stated model)
 
-- Forecast-optimal smoothness is conditional on estimator family, difference order, window, horizon, continuation rule, loss, and validation protocol.
-- Normalized smoothness is a monotone reparameterization of penalty strength under stated assumptions.
-- Forecast-optimal and recovery-optimal smoothness are different targets and may differ.
-- Selected smoothness may depend on horizon and data-generating mechanism.
-- Chronological scoring prevents future observations from entering the fit at the same origin.
+- \(Q=D_d^\top D_d\) is symmetric PSD; its kernel has dimension \(d\) for the standard operator.
+- The PLS estimator is \(H_\lambda x\) with \(H_\lambda=(I+\lambda Q)^{-1}\).
+- Orthogonal diagonalization of \(Q\) yields scalar spectral shrinkage and an exact polynomial null-space limit.
+- The normalized Guerrero-type index \(S\) is continuous, monotone, maps \([0,\infty]\) onto \([0,1]\), and satisfies \(\operatorname{edf}=L-(L-d)S\).
+- \(S\) and \(\lambda\) yield the **same fitted estimator family** and interior/global optimum for a fixed objective, including limit endpoints.
+- With \(G_{d,h}\) fixed, the derivative identities for \(H\), the prediction, and squared forecast loss are analytic and exact.
+- A continuous pooled loss has at least one global minimizer on compact \(S\in[0,1]\); it need not be unique.
 
-## Not safe without additional work
+## Correct statistical interpretation
 
-- "First predictive smoothing-parameter selector."
-- "First forecast-based smoothness method."
-- Universal superiority over GCV/AIC/BIC/marginal likelihood.
-- \(S^\star\) as a universal/population-optimal amount of smoothness.
-- Forecast optimality outside the stated family/protocol.
-- Causal interpretation.
-- Financial predictability/economic value from illustrative price series.
+- Tuning at \(T\) **does not know the future of \(T\)**. It knows past origins' subsequently observed outcomes.
+- The procedure uses past pseudo-out-of-sample future blocks to choose a hyperparameter, then refits and predicts an untouched block.
+- It selects smoothness for the **specified** \(d,L,h,G\), loss and historical origin protocol, not an intrinsic timeless property of a series.
+- A selected PLS trend extrapolates a polynomial of degree at most \(d-1\). Tuning \(S\) alters polynomial **coefficients**, not \(d\) or the degree.
+- Historical latent-trend recovery and future predictive error are different loss targets; whether their minimizers differ depends on data.
 
-## Scope discipline
+## Completed but provisional empirical observations
 
-If the paper starts jointly learning \(d,L,S\) by regime, it belongs to paper_forecast-optimal-smoothing/.
+CP01–CP08 were completed, with preserved artifacts. The old CP03 simulation showed lower aggregate RMSFE for horizon matching under its frozen DGPs, especially at longer horizons. CP04's small panel favored a recency branch rule, whereas CP05, CP07 and CP08 did not establish a broad advantage over pooled CV. **These are historical findings**, not verified predictions of a changed numerical algorithm or next experiment.
 
-If it starts focusing on Brent, adaptive root discovery, Sturm, or evaluation counts, it belongs to paper_numerical-methods/.
+## Open hypotheses
+
+- Accurate multi-minimum recovery may matter for choosing the best forecast smoothness.
+- Spectral precomputation and analytic derivatives may provide speed/accuracy benefits for large windows.
+- Horizon-matched future-block CV may outperform traditional criteria under some or many, but not necessarily all, DGPs.
+- Individual historical minima might trace informative smoothness regimes. Their stable identity, detectability and forecast utility must be demonstrated.
+- The exact originality of the **specific** PLS normalized-index multi-step procedure remains to be determined through more focused prior-art review.
+
+## Do NOT claim
+
+- “We predict the genuinely unseen future during validation.”
+- “Forecast-based smoothing, CV, controlled-smoothness forecasting, or Guerrero's \(S\) index was invented here.”
+- “Rescaling to \(S\) changes the mathematical optimum or guarantees a unique minimum.”
+- “Using future MSE automatically recovers the true trend.”
+- “The same optimizer produces the same statistical results when we changed the objective or data.”
+- “Every stationary root was found by an unverified Brent/grid search”; or “large-window global minima are rigorously Sturm-certified.”
+- “Numerical root completeness implies a certified exact ordering of objective values.”
+- “The old simulations are invalid because we plan new ones.”
+- “The branch \(V_j\) extension beats pooled CV generally.”
+- “Financial stock/ETF examples demonstrate market predictability or profitable trading.”
+- “The current CSSC manuscript has been rebuilt and is submission-ready” unless compiled, visually checked and editorially verified.
+
+## When editing the paper
+
+Keep the main contribution the direct historical future-block MSE selector for \(S\); include spectral and derivative mathematics insofar as they explain efficient evaluation and competing minima. Treat tracking, branch selection, and \(\phi(V_j)\) as an optional question with separate evidence. Maintain full outer-test chronology. Cite the closest literature honestly.
+
+See [research_log_2026-10.md](research_log_2026-10.md), [literature_positioning.md](literature_positioning.md), and [next_experiments.md](next_experiments.md).

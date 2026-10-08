@@ -1,66 +1,79 @@
-# Canonical research objective — forecast-optimal smoothness CV
+# Canonical research objective — forecast-optimal normalized smoothness
 
-## Primary research question
+**Current research direction | 2026-10-08.** This note overrides older statements making the dynamic minima mechanism the main contribution. The latest manuscript is a working document; completed research notes will eventually drive the final rewrite.
 
-Can we choose the normalized smoothness index of a finite-difference
-penalized trend to minimize actual historical forecast MSE at the
-intended horizon `h`, rather than the error of recovering a
-historical trend or fitting contemporaneous observations?
+## Motivation: choosing a trend for an unknown future
 
-## Statistical construction
+We are not merely asking how to make a realized series look smoother. We want to know **which smoothing of today's observed series is most suitable for extrapolating its trend into an unknown future**.
 
-At each historical origin `t`, fit the training window
-`x_t` with the matrix
+The apparent paradox—how can the future determine present smoothness if the future is unknown?—is resolved through chronological cross-validation. At current origin \(T\), the actual future \(y_{T+1:T+h}\) is unavailable. But the *futures of previous forecast origins* are now observed. We can retrospectively generate forecasts at those past origins without leaking their later data into their training windows, score against their subsequently realized observations, and select the smoothness that historically forecast best. Then we refit the final trend at \(T\).
 
-\[
-H_\lambda=(I+\lambda D_d^\top D_d)^{-1},
-\qquad \widehat\tau_t=H_\lambda x_t.
-\]
+The object of interest is **normalized smoothness \(S\in[0,1]\)**. The penalty \(\lambda\) is an equivalent algebraic/numerical coordinate; in the scientific decision we choose \(S\).
 
-Let `S(lambda)` be the normalized, monotone trace-based
-smoothness coordinate; let `G_{d,h}` extrapolate the fitted
-trend for `h` observations.
+## Mathematical definition
 
-The proposed chronological cross-validation criterion is
+For fixed difference order \(d\), estimation length \(L\), and horizon \(h\), define
 
 \[
-F^{\mathrm{pool}}_{d,L,h}(S)
-=\frac1M\sum_{m=1}^{M}\frac1h
-\|y_{t_m+1:t_m+h}-G_{d,h}H_{\lambda(S)}x_{t_m}\|_2^2.
+Q=D_d^\top D_d,\quad H_\lambda=(I+\lambda Q)^{-1},
+\quad H(S)=H_{\lambda(S)}\ (S<1),\quad H(1)=P_{\ker D_d}.
 \]
 
-Choose
+The trace-based normalized smoothness index is
 
 \[
-\widehat S^{\mathrm{FCV}}_{T,d,L,h}
-\in\arg\min_{S\in[0,1]}F^{\mathrm{pool}}_{d,L,h}(S).
+S(\lambda)=1-\frac1{L-d}\sum_{j=1}^{L-d}(1+\lambda\delta_j)^{-1},
+\quad S(0)=0,\quad S(\infty)=1.
 \]
 
-All validation blocks must be realized by the outer forecast
-origin `T`. Then refit the trend on the latest available
-window. Never average historical fitted trends into the
-operational forecast.
+At historical origin \(t_m\) whose subsequent \(h\) observations are already available by \(T\), predict through the fixed continuation operator \(G_{d,h}\):
 
-## Contribution boundaries
+\[
+\widehat z_{t_m}(S)=G_{d,h}H(S)y_{t_m-L+1:t_m}.
+\]
 
-1. **Forecasting paper:** definition and evaluation of this
-   horizon-matched CV selection procedure over normalized PLS
-   smoothness. CP03 is the central experimental evidence.
-2. **Numerical-methods paper:** locating multiple minima in
-   the forecast-MSE objective, derivative bracketing, Brent
-   refinement and endpoint comparisons. Exact rational/Sturm
-   isolation is still experimental; it is not a completed
-   certified root solver.
-3. **Optional forecasting extension:** represent historical
-   local minima by chronological branch states
-   `V_j=[S, Validation-1 loss, Validation-2 loss]`, and,
-   subject to assumptions about regime persistence, use
-   `psi` and `phi(V_j)` to produce a time-adaptive
-   smoothness choice. The different maps are alternative
-   modeling decisions, not a universal winning method.
+Select smoothness via **pooled chronological future-block MSE**:
 
-Neither PLS itself, the original Guerrero index, nor the
-general idea of selecting a tuning parameter by future-block
-forecast error is independently claimed as new. The specific
-horizon-matched PLS selection criterion is the primary
-scientific object.
+\[
+\widehat S^{\mathrm{FCV}}_{T,d,L,h}\in\arg\min_{S\in[0,1]}
+\frac1{Mh}\sum_{m=1}^M
+\left\|y_{t_m+1:t_m+h}
+-G_{d,h}H(S)y_{t_m-L+1:t_m}\right\|_2^2,\quad t_m+h\le T.
+\]
+
+The selected value is then used to **refit** \(H(\widehat S_T)y_{T-L+1:T}\) and forecast \(y_{T+1:T+h}\). Do not average old historical fitted trends. Do not use the unknown future to tune the current smoothing parameter.
+
+## What the method is / is not
+
+- **Is:** a horizon-targeted choice of PLS smoothing, evaluated by forecasts of observations that were future at past origins.
+- **Is:** a compact \(S\)-space optimization that searches between the unsmoothed and limiting polynomial trends.
+- **Is:** a selected **future polynomial extrapolation** (degree at most \(d-1\) when \(d\) is fixed), whose coefficients change when \(S\) changes.
+- **Is not:** post-hoc historical fit optimization, oracle access to today's unknown future, or selection of the polynomial degree itself.
+- **Is not:** an invention of PLS, of Guerrero's controlled-smoothness index, or of predictive cross-validation.
+- **Is not proven:** the first exact use of this specific criterion or a universally best forecasting approach.
+
+## Mathematics we must understand and keep
+
+1. PSD penalty \(Q=D_d^\top D_d\) and orthogonal eigenvalue decomposition.
+2. Reusable spectral form of \(H_\lambda\), null space and exact endpoints.
+3. Why \(S(\lambda)\) is strictly monotone and compact and how it relates to effective degrees of freedom.
+4. Definition and interpretation of \(G_{d,h}\) and how smoothing changes the coefficients of future polynomial continuation.
+5. Quadratic expansion of forecast MSE, analytic \(H',H'',H^{(n)}\), analytic \(F',F''\), and the \(S\)-chain rule.
+6. Multimodality: all competing minima and endpoints must be considered; numerical completeness is not automatic.
+7. Why the pooled minimum is not the average of historical minima; optional tracking of individual minima answers a different question.
+
+Full mathematics: [mathematical_foundations.md](mathematical_foundations.md).
+
+## Current hypotheses, not settled results
+
+- Direct \(h\)-step CV may select different \(S\) from ordinary CV/GCV, one-step CV, or latent-trend-recovery criteria.
+- The forecast horizon may materially affect optimal smoothing and future MSE.
+- Spectral reuse and analytic derivatives may improve reliable and efficient evaluation relative to repeated matrix inversions.
+- The pooled surface can be multimodal, requiring robust detection and ranking of minima.
+- Tracking individual minima may reveal how historical preferred smoothness changes, but **the value of that tracking for the next forecast is unproven**.
+
+## Evidence and writing policy
+
+CP01–CP08 were **actually run** and remain archived. Their existing results are informative historical observations, not automatically the future submission's final evidence. A changed numerical root-finding method may justify a same-objective comparison and a separately frozen new simulation, but cannot retroactively invalidate or overwrite the old results.
+
+For now, **notes are authoritative; the current CSSC-oriented LaTeX manuscript is a dated working draft**. Once the numerical approach, comparative experiments, and prior-art audit settle, reconstruct the final paper from verified notes and reproducible results. Keep this paper independent of other manuscripts; do not define its contribution by the existence of another paper.

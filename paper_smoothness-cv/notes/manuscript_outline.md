@@ -1,62 +1,39 @@
-# Manuscript outline — Journal of Forecasting
+# Proposed final manuscript outline — CSSC (not yet frozen)
 
-## Title
+**2026-10-08:** The present \`manuscript/\` is a *working CSSC-oriented draft* based on old frozen runs. We will assemble the final research article only after validating the new numerical approach and conducting the chosen comparisons. This outline is a plan, not evidence that a new run has happened.
 
-**Forecast-Optimal Smoothness for Penalized Trend Estimation**
+**Working topic:** *Horizon-Matched Cross-Validation for Forecast-Optimal Penalized Trend Smoothness*. Title is provisional.
 
-## Journal-facing abstract logic
+## Intended narrative
 
-1. Trend forecasts require a smoothing choice.
-2. Guerrero's controlled-smoothness framework makes that choice interpretable as a percentage rather than an opaque penalty.
-3. Forecasting research already selects smoothing/bandwidth/hyperparameters through predictive loss.
-4. Define the controlled smoothness percentage endogenously by chronological future-block forecast error.
-5. Put the complete penalty path on normalized \(S\in[0,1]\).
-6. Establish monotonicity, endpoint semantics, effective degrees of freedom, and equivalence of optimization in \(S\) and \(\lambda\).
-7. Test whether horizon-matched forecast smoothness differs from conventional PLS selectors and from recovery-optimal smoothness.
-8. Leave efficient multimodal root recovery to the numerical companion paper.
+1. **Introduction — the counterfactual future problem.** The smoothness producing the best retrospective trend is not necessarily the one producing the best forecast. At \(T\), we cannot see future \(y_{T+1:T+h}\). We can score forecasts made at past origins after their futures have been observed. Define the horizon-matched problem.
+2. **Closest literature and novelty limits.** Guerrero (2007/08), Cortés-Toto et al. (2017) in CSSC, Hart (1994), Vilar-Fernández and Cao (2007) in CSSC, Islas et al. (2019), Islas Camargo and Zumaya Galván (2025), Franke et al. (2026), Biessy (2026). Do not overclaim the index, PLS, predictive tuning or trend forecasting.
+3. **PLS smoothing and spectral interpretation.** \(D_d,Q,U,\delta,H_\lambda\), exact endpoints, why diagonalization is useful computationally.
+4. **Normalized index \(S\in[0,1]\).** Relation to trace/edf, monotone mapping, inverse \(\lambda(S)\), meaning of a bounded common optimization domain. Explicit caveat: equivalent global estimator to \(\lambda\) tuning.
+5. **Future continuation and chronological CV.** Native \(G_{d,h}\), polynomial degree \(d-1\), candidate future-block loss, pooled \(F_{T,d,L,h}^{\mathrm{pool}}(S)\), information availability, mandatory final refit.
+6. **Mathematical analysis of forecast-MSE objective.** Quadratic-in-predictions expansion; resolvent \(H',H'',H^{(n)}\); analytic \(f',f''\) and chain rule to \(S\). Examples of multiple extrema, endpoints, existence and nonuniqueness. Separate method and numerical guarantees clearly.
+7. **Numerical experiments and implementation diagnostics (to redesign).** Same-objective algorithm comparisons, eigen-based speed/correctness, endpoint and multi-root cases; describe *only what has actually been run*.
+8. **Statistical simulation evidence (to decide and freeze).** Horizon-matched vs one-step CV, ordinary CV/GCV/AICc, latent reconstruction and future oracles; paired outer origins, noise/trend mechanisms and horizon dependence.
+9. **Discussion.** Loss target versus recovery; what changes with \(d\), \(L\), \(h\); failures; literature limits; optional temporal tracking as further question.
+10. **Conclusion.** Exactly what has been demonstrated, with reproducibility and caveats. Appendix only if tracking \(V_j\) has a clear role after new tests.
 
-## Active manuscript sections
+## Figures worth considering (not promises)
 
-1. Introduction
-2. Related work and positioning
-3. Finite-difference penalized trend estimation
-4. Forecast-optimal smoothness
-5. Basic properties
-6. Evaluation protocol
-7. Scope, interpretation, and implications
-8. Conclusion
+- \(S(\lambda)\), eigenvalue shrinkage and edf for a fixed \((L,d)\);
+- several fitted historical trends and their *future continuations* from the same origin as \(S\) changes;
+- forecast-MSE \(F_h(S)\) across horizons, with **all** recovered minima and both endpoints;
+- same-input old vs new numerical method: objective regret, root recovery, runtime;
+- paired outer-test forecast ratios and selected \(S\) by horizon/mechanism;
+- latent-recovery vs forecast-selected \(S\), clearly marked oracle data.
 
-## Core equation
+Avoid a manuscript dominated by lengthy CP04–08 branches unless they answer the current statistical question. Their archived figures/results remain accessible separately.
 
-\[
-\boxed{
-S^\star_{d,L,h}
-\in
-\arg\min_{S\in[0,1]}
-\frac{1}{Mh}
-\sum_{j=1}^M
-\left\|
-z_{T_j}
--
-G_{d,h}H_{\lambda(S)}x_{T_j}
-\right\|^2
-}
-\]
+## Reader should leave knowing
 
-## Main empirical figure/table logic after experiments
+- Why it makes sense to choose \(S\) by **historically observed futures** rather than by the future we cannot observe now.
+- How \(H(S)\), eigenshrinkage, terminal differences and future polynomial forecasts fit together.
+- How/why we differentiate and numerically minimize an MSE surface with potentially many minima.
+- What was genuinely better in outer forecasting and under what assumptions.
+- Which aspects were already in the literature and what remains conjectural.
 
-The paper should remain small enough that every display answers a forecasting question.
-
-Likely figures:
-1. the \(S\leftrightarrow\lambda\) path and endpoint interpretation;
-2. representative simulated \(F_h(S)\) curves showing horizon dependence;
-3. forecast-optimal versus recovery-optimal smoothness across controlled mechanisms;
-4. held-out relative forecast loss across public series.
-
-Likely tables:
-1. simulation design and frozen comparison rules;
-2. aggregate held-out forecast performance of forecast-CV versus CV/GCV/AICc/BIC;
-3. horizon-matching comparison;
-4. robustness summaries.
-
-Do not fill the manuscript with the numerical paper's derivative/root-search diagnostics.
+[Research objective](research_objective.md) · [Mathematical foundations](mathematical_foundations.md) · [Next experiments](next_experiments.md)
