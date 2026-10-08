@@ -236,3 +236,18 @@ The paper's objective is **not** to identify one universally best way to choose
 a reusable state \(V_j\) from which many legitimate decision rules
 \(\phi(V_j)\) can be constructed and studied. CP08 is therefore a
 rule-family demonstration, not a tuning/confirmation tournament.
+
+
+## CP08 complete — rule-family illustration
+
+The CP08 paper preset completed 1,200 simulated scenarios and 9,600 outer
+decisions. It demonstrates that a tracked branch state supports multiple
+maps from V_j to a current smoothness value S, including moving averages,
+weighted averages, extrapolation of trends, and extrapolation of increments.
+
+The purpose is NOT to discover one best phi. Its measured forecast ratios
+and clipping rates characterize different rule behavior. All tested CP08
+rules are above one relative to pooled CV on aggregate geometric log-RMSE,
+so no unconditional forecast-superiority claim is supported.
+
+Next: reproducible CP08 figures, manuscript synthesis, explicit claim limits.
