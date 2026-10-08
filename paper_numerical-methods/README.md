@@ -52,6 +52,26 @@ Canonical tracking note: `notes/temporal_minima_tracking.md`.
 Brent refines roots after a bracket is identified; it is not a global
 root-discovery algorithm.
 
+## Small-window exact Sturm mode
+
+The numerical library now provides `sturm_forecast_smoothness` for
+forecast MSE on small rational-data windows (default limit: 8 observations).
+It constructs the exact rational stationary equation, uses a Sturm
+sequence to count/isolate all positive roots, and compares interior
+minima with exact endpoints. It returns the selected normalized
+smoothness `S`, not merely the penalty `lambda`.
+
+Install the optional symbolic dependency and run:
+
+    python -m pip install -e ".[symbolic,dev]"
+    python experiments/numerical_smoothness_selection/run_sturm_minicheck.py
+    python -m pytest tests/test_sturm_forecast_smoothness.py
+
+The finite rationalized objective is certified; the entire smooth
+real-world data-generating process is not. Long windows still use
+the adaptive `S`-domain search with Brent refinement. The frozen
+large-window benchmark counts do not test this new exact mode.
+
 ## Two different epsilon-like quantities
 
 Do not conflate:
@@ -112,9 +132,9 @@ figure is linked to the frozen experimental result directory.
 
 ## Stronger algebraic direction
 
-The rational/Sturm direction remains a possible route to certified per-surface
-stationary-root isolation. It is still a proof-of-concept and does not solve
-the cross-time correspondence problem by itself.
+The small rational-input Sturm root-isolation mode is implemented.
+It does not solve cross-time correspondence or automatically
+scale to large estimation windows.
 
 ## Active papers
 
