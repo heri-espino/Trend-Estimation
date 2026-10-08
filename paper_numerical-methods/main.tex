@@ -17,7 +17,7 @@
 \maketitle
 
 \begin{abstract}
-Selecting smoothness for penalized trend forecasting becomes a numerical problem when chronological forecast-loss surfaces are multimodal and their local minima evolve through time. We separate two numerical tasks. First, we recover the relevant local minima of each finite-difference penalized least-squares forecast-loss surface on a normalized smoothness coordinate (S\in[0,1]) using adaptive subdivision, endpoint refinement, analytic derivatives, Brent root refinement, and exact boundary evaluation. With this per-surface algorithm frozen before the final runs, it recovered 240/240 relevant adversarial optima, 2105/2105 synthetic reference minima, and 473/473 minima on financial-series stress tests, while using about 1.6--1.8\% of the dense-grid evaluations in the latter two benchmarks. Second, we formulate the temporal correspondence problem required to follow local minima across neighboring forecast origins. The current baseline uses one-to-one nearest-neighbor continuation within a radius in normalized smoothness, distinct from within-surface candidate spacing. The frozen benchmarks validate the per-surface recovery component; temporal branch correspondence is treated as a separate numerical layer whose robustness must be assessed independently.
+Selecting smoothness for penalized trend forecasting requires numerical care when chronological forecast-loss objectives contain multiple local minima. We distinguish recovery of the minima on each surface from the separate task of corresponding minima across forecast origins. For per-surface recovery, we search an interpretable normalized smoothness coordinate $S\in[0,1]$ using adaptive subdivision, analytic derivatives, derivative-root bracketing, Brent refinement, and exact limiting boundary values. Under the previously frozen numerical specification, all 240 relevant adversarial optima, 2105 synthetic dense-reference interior minima, and 473 financial-data dense-reference interior minima were recovered, with approximately 1.6--1.8\% of dense-grid evaluation counts in the latter two experiments. For temporal tracking, we formalize one-to-one correspondence with a distance threshold and make explicit the distinction between within-surface minimum spacing and across-surface continuation. An existing four-series rolling experiment illustrates persistent and intermittent branches, but cannot establish correct identity without known ground truth. We give a counterexample in which greedy nearest-neighbor correspondence misses a feasible pair of links, motivating a separate controlled benchmark of greedy and exact pairwise assignment under drift, near-mergers, crossings, births, and deaths. The numerical component supplies local minima and correspondence diagnostics; the downstream choice of smoothness from branch histories belongs to a companion forecasting study.
 \end{abstract}
 
 \vspace{1em}
@@ -40,7 +40,7 @@ The difficulty is numerical as well as statistical. The resulting forecast-valid
 
 This paper studies both numerical layers. The PLS estimator is reparameterized by a normalized smoothness coordinate \(S\in[0,1]\), derived from the controlled-smoothness index but rescaled so that the two limiting smoothing regimes are represented exactly by \(S=0\) and \(S=1\). Analytic first and second derivatives of the forecast loss are combined with a derivative-aware adaptive search that detects and classifies relevant stationary points, refines derivative roots with Brent's method \cite{brent1971zero}, and compares all detected local minima with the exact smoothness-domain endpoints. The recovered minimum sets then become inputs to a temporal correspondence layer that links nearby minima across adjacent forecast origins.
 
-The contribution is deliberately narrow. We do not propose a new smoother or a new forecasting model, and we do not choose the downstream forecasting functional applied to a tracked branch. Instead, the numerical contribution is to recover multimodal minimum sets and to study the correspondence problem needed to maintain their identities through time. The per-surface method is validated on analytic adversarial objectives, 1920 synthetic rolling forecast objectives, and 384 real financial-data objective surfaces. The temporal tracking layer is evaluated separately so that evidence for minimum recovery is not misrepresented as evidence for branch identity.
+The contribution is deliberately narrow. We do not propose a new smoother or a new forecasting model, and we do not choose the downstream forecasting functional applied to a tracked branch. Instead, the numerical contribution is to recover multimodal minimum sets and to study the correspondence problem needed to maintain their identities through time. The per-surface method is validated on analytic adversarial objectives, 1920 synthetic rolling forecast objectives, and 384 real financial-data objective surfaces. The temporal layer is demonstrated with recorded branch paths in an existing four-series experiment. Their behavior is observable but their ground-truth identities are not. We therefore also isolate the correspondence problem in a controlled benchmark design, without presenting the per-surface root-recovery success rate as a validation of temporal identity.
 
 \section{Penalized trend estimation and forecast validation}
 
@@ -286,23 +286,69 @@ When several nearby minima are useful for downstream inspection, a within-surfac
 No finite adaptive sampler can certify recovery of every stationary point of an arbitrary smooth scalar function. The empirical validation is consequently designed around missed local minima, selected-smoothness error, positive objective regret, and evaluation cost rather than a universal root-recovery claim.
 
 \subsection{Temporal correspondence of local minima}
+\label{sec:tracking}
 
-The dynamic forecasting problem motivating the companion paper requires more than solving one surface in isolation. Let
+Let
 \[
 \mathcal M_t=\{S_{1,t},\ldots,S_{K_t,t}\}
 \]
-be the local minima recovered from the forecast-loss surface at chronological origin $t$. A second numerical layer assigns minima on adjacent surfaces to persistent branches.
-
-The current transparent baseline uses one-to-one nearest-neighbor continuation in the normalized smoothness coordinate. A minimum may continue an existing branch when
+be the local minima recovered at chronological forecast origin $t$.
+Given a set of active branches at $t-1$ and the current minimum set
+$\mathcal M_t$, a matching defines an injective partial map from previous
+branches to current candidates. A pair is admissible only if
 \begin{equation}
 \label{eq:track_epsilon}
-|S_{j,t}-S_{j,t-1}|\le\varepsilon_{\mathrm{track}}.
+|S_{j,t-1}-S_{k,t}|\le\varepsilon_{\mathrm{track}}.
 \end{equation}
-The matching is one-to-one, so two previous branches cannot be assigned to the same current minimum. Branches may disappear when no admissible current minimum exists, and newly appearing minima may initialize new branches when the protocol allows it.
+The partial-map formulation permits unmatched previous branches and
+unmatched current minima. The latter may represent newly appearing
+minima, but automatic birth initialization is a separate policy rather than
+a consequence of pairwise matching.
 
-The temporal radius $\varepsilon_{\mathrm{track}}$ is conceptually distinct from the within-surface representative-spacing radius $\varepsilon_{\mathrm{space}}$. The former defines correspondence across time; the latter only summarizes minima already recovered on one surface.
+The temporal radius $\varepsilon_{\mathrm{track}}$ is distinct from the
+within-surface representative-spacing radius $\varepsilon_{\mathrm{space}}$:
+the first controls the links between origins; the second may summarize
+candidates already recovered on a single surface. Neither radius
+constitutes a statistical confidence threshold.
 
-The greedy nearest-neighbor matcher is a baseline rather than a certified continuation method. The active numerical extension therefore studies sensitivity to $\varepsilon_{\mathrm{track}}$, branch births and deaths, near-crossings, and comparison with globally optimal bipartite assignment. The downstream forecasting paper uses the resulting branch identities together with Validation-1 and Validation-2 losses to decide which branch and which current smoothness to use; those forecasting decision rules are outside the numerical contribution of this paper.
+The implemented baseline constructs all admissible previous--current
+pairs, sorts them by increasing absolute smoothness distance, and
+accepts each pair provided neither endpoint has already been matched.
+This greedy one-to-one algorithm is deterministic under its tie-breaking,
+but is not necessarily optimal even for a pair of neighboring origins.
+For example, suppose two previous branches lie at $0.40$ and $0.48$,
+and the current candidates are $0.34$ and $0.43$, with
+$\varepsilon_{\mathrm{track}}=0.10$. The shortest pair links $0.40$ to
+$0.43$ at cost $0.03$, leaving $0.48$ unmatched because its distance to
+$0.34$ exceeds the radius. Yet two admissible pairs exist: $0.40$
+to $0.34$ at distance $0.06$ and $0.48$ to $0.43$ at distance $0.05$.
+
+This suggests a distinct pairwise assignment criterion. For admissible
+links $E_t$, find a partial one-to-one matching $A_t\subseteq E_t$
+lexicographically minimizing
+\begin{equation}
+\label{eq:assignment}
+\left(
+-|A_t|,
+\sum_{(j,k)\in A_t}|S_{j,t-1}-S_{k,t}|
+\right).
+\end{equation}
+The first component maximizes the number of continued branches;
+conditional on that, the second minimizes total displacement. This
+is a pairwise criterion, not a joint minimum-cost path across all times.
+It also does not establish correct physical branch identity when minima
+cross or become observationally indistinguishable: the nearest-position
+assignment can exchange their underlying labels.
+
+The existing rolling experiment initializes up to five branches at its
+first origin and attempts to continue them in later origins. It records
+unmatched states but does not automatically create new branches from
+unassigned current minima. A separate controlled diagnostic compares
+the greedy matcher with the exact pairwise objective
+\eqref{eq:assignment}; true identities are known only in that synthetic
+diagnostic. This distinction prevents observed temporal smoothness
+paths from being mistaken for certified correspondence.
+
 \section{Experimental design}
 
 \subsection{Adversarial analytic objectives}
@@ -357,6 +403,35 @@ test block. A validation--test rank reversal is recorded when the lowest-CV
 candidate is not the lowest-test-error candidate among this already frozen set.
 The test ranking is retrospective diagnostic information; it is never fed back
 into candidate or configuration selection.
+
+\subsection{Temporal tracking demonstration and controlled design}
+\label{sec:tracking_design}
+
+A chronological tracking demonstration was carried out on the versioned
+GDPC1, SPY, AAPL, and BTC--USD series. For each difference order, the
+window length was chosen from historical Validation-1 loss before tracking.
+The maximum number of initialized minima was five, with
+$\varepsilon_{\mathrm{space}}=0.02$ and
+$\varepsilon_{\mathrm{track}}=0.10$. The maximum number of historical
+paired validation origins was 24 for GDP and 30 for the daily series.
+The numerical output records branch identifiers, matched and missing
+origins, smoothness values, continuation distances, and current
+candidate counts. Validation-2 and true-test forecast scores are
+generated by the companion forecasting procedure and are not treated
+as tests of numerical branch identity.
+
+A separate controlled benchmark is specified in
+\texttt{CP05\_TRACKING\_CORRESPONDENCE.md}. It feeds known labeled
+minima to the existing greedy algorithm and an exact pairwise
+maximum-cardinality/minimum-distance comparator. The simulated
+mechanisms include separated branches, gradual drift, a near-merger,
+crossing paths, and branch birth/death. The continuation radii are
+$\{0.03,0.06,0.10,0.15\}$ over 42 origins. Comparisons use 100 seeds in
+the paper preset. At each adjacent pair, previous candidates are reset
+to their known true labels to isolate one-step correspondence errors.
+The benchmark therefore does not claim to validate full multi-time
+tracking under accumulated labeling mistakes. Its numerical results
+will be added only after the independent preset is run and committed.
 
 \subsection{Frozen protocol and sensitivity}
 
@@ -466,6 +541,51 @@ unimodal optimization run would discard.
 
 
 
+\subsection{Observed branch persistence and correspondence limits}
+\label{sec:tracking_results}
+
+The existing four-series tracking run records 1392 initialized
+branch--origin states across 16 series--order configurations. Of these,
+924 were successfully matched to a new local minimum and 468 were
+recorded as missing under the fixed temporal radius. These are
+\emph{tracking-state counts}, not ground-truth success and failure rates:
+a missing state may reflect disappearance of a minimum, movement beyond
+the continuation radius, or an assignment decision. The count also
+depends on the number of branches initialized at the first origin.
+Consequently, the empirical continuation fraction does not estimate
+the probability of preserving a physically meaningful branch label.
+
+Figure~\ref{fig:tracked_examples} illustrates the tracked locations
+under different difference orders in GDP, SPY, AAPL, and BTC--USD,
+alongside Validation-2 forecast errors and an untouched test block.
+This visualization shows that the matched paths can be used to build
+chronological branch histories. The Val2 and final forecast panels
+belong to the downstream decision layer; they are included only to
+document what information the numerical correspondence interface
+makes available.
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth]{../results/numerical_smoothness_selection/20261002T074706Z_tracked-minima-paper_8fe5437/tracked_minima_validation.pdf}
+\caption{An existing four-series temporal-minimum demonstration.
+Left: tracked smoothness locations by difference order. Middle:
+historical Validation-2 losses. Right: candidate forecasts on the
+reserved test block. Highlighted branches were selected using
+historical forecast information by the companion procedure, not
+by an identity oracle. This figure demonstrates the interface and
+does not validate numerical matching against known branch labels.}
+\label{fig:tracked_examples}
+\end{figure}
+
+The explicit counterexample in Section~\ref{sec:tracking}
+establishes that the greedy continuation algorithm can lose an
+admissible branch match even when a globally maximum-cardinality
+pairwise assignment would preserve both. Whether this happens
+frequently on realistic paths, and how a pairwise-optimal assignment
+behaves at genuine crossings, are empirical questions of the
+controlled benchmark. Those results are not inferred from the
+forecast-error experiments in the companion paper.
+
 \section{Discussion}
 
 The numerical benefit of the normalized smoothness coordinate is not that it makes the forecast objective convex. It does not. Its value is that it turns an unbounded penalty parameter into a compact, interpretable domain whose endpoints correspond to exact limiting estimators. Because \(S'(\lambda)>0\), stationary points and their local minimum/maximum classification are preserved in the interior. This allows the search to operate in a meaningful smoothness coordinate while derivative calculations continue to exploit the simple matrix dependence on \(\lambda\).
@@ -474,7 +594,13 @@ Compactification also creates a numerical issue: a large range of \(\lambda\) is
 
 The paper's scope is narrower than general smoothing-parameter selection. CV, GCV, information criteria, marginal likelihood, controlled smoothness, and simulation-calibrated HP parameters remain legitimate answers to their respective statistical objectives \cite{craven1979gcv,guerrero2008smoothness,cortes2017smoothness,biessy2026wh,franke2026hp}. Here the target is specifically rolling future-block forecast MSE. The contribution is therefore the numerical treatment of that criterion when multiple local minima are possible, together with the numerical correspondence problem that arises when those minima are followed across successive forecast origins. It is not a claim that forecast loss is universally preferable to the alternatives. The applied cases also show why retaining several detected minima can be informative: they form a finite set of distinct smoothing choices whose validation ranking may or may not persist out of sample. This candidate set should be interpreted as a selection-sensitivity diagnostic, not as a confidence set or probability distribution over smoothness.
 
-Several limitations remain. First, no finite sampler can guarantee detection of every stationary root of an arbitrary smooth function without additional assumptions. The adversarial stationary inflection illustrates this distinction: it is stationary but not a local minimum. Second, the dense reference grid is a benchmark rather than mathematical ground truth. Third, the analytic derivative formulas rely on a fixed affine trend-continuation operator. If additional forecasting parameters were re-estimated as functions of \(S\), for example inside an ARIMA continuation model, the derivative expressions would change. Finally, the financial experiment is only a real-data numerical stress test and provides no evidence of trading value or financial predictability.
+Several limitations remain. The per-surface recovery experiments do not test
+temporal label correctness, and the current greedy correspondence algorithm
+is not globally pairwise optimal. Branches can approach or cross, new minima
+may appear after initialization, and the tracking radius can be sensitive
+to scale and step length. The controlled matching benchmark is therefore
+needed before stronger temporal correspondence claims can be made.
+First, no finite sampler can guarantee detection of every stationary root of an arbitrary smooth function without additional assumptions. The adversarial stationary inflection illustrates this distinction: it is stationary but not a local minimum. Second, the dense reference grid is a benchmark rather than mathematical ground truth. Third, the analytic derivative formulas rely on a fixed affine trend-continuation operator. If additional forecasting parameters were re-estimated as functions of \(S\), for example inside an ARIMA continuation model, the derivative expressions would change. Finally, the financial experiment is only a real-data numerical stress test and provides no evidence of trading value or financial predictability.
 
 The implementation, frozen experiment scripts, tracked data snapshots, and result summaries are available in the project repository at \url{https://github.com/heri-espino/Trend-Estimation}. The final benchmark inputs are versioned so the figures and tables in this paper can be regenerated from fixed result directories.
 
@@ -484,7 +610,7 @@ Forecast-optimal smoothness selection for penalized trend estimation can require
 
 Under a protocol frozen before the confirmatory experiments, the method recovered all relevant adversarial optima, all 2105 dense-reference minima across 1920 synthetic forecast surfaces, and all 473 dense-reference minima across 384 financial real-data surfaces. The synthetic and financial benchmarks required on average only 1.57\% and 1.84\% of the corresponding dense-grid evaluation counts. Sensitivity analysis identified endpoint refinement as the principal structural safeguard near the compactified upper boundary. In the applied case studies, separated minima occurred for several SPY, AAPL, and BTC--USD configurations but not for GDP, and one frozen SPY candidate set exhibited a validation--test rank reversal.
 
-These results support the proposed per-surface search as an accurate and computationally economical numerical procedure for the tested rolling forecast-validation problems. They do not establish universal recovery of all stationary points. The dynamic forecasting formulation now adds a second numerical requirement: correspondence of recovered minima across adjacent surfaces. That tracking layer is conceptually separate from root recovery and requires its own sensitivity and ambiguity analysis. The overall method is intended as numerical support for forecast-based PLS smoothness selection rather than as a replacement for other statistical smoothing criteria.
+These results support the proposed per-surface search as an accurate and computationally economical numerical procedure for the tested rolling forecast-validation problems. They do not establish universal recovery of all stationary points. The dynamic forecasting formulation now adds a second numerical requirement: correspondence of recovered minima across adjacent surfaces. That tracking layer is conceptually separate from root recovery: the observed 924 matches among 1392 recorded branch--origin states establish only that the existing method can produce usable branch histories. They do not establish correct cross-time identity. A simple two-branch counterexample shows that greedy continuation can lose an admissible link, and a controlled pairwise-assignment benchmark is the necessary next validation step. The overall method is intended as numerical support for forecast-based PLS smoothness selection rather than as a replacement for other statistical smoothing criteria.
 
 \bibliographystyle{abbrv}
 \bibliography{bibliografia}
