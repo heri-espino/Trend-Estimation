@@ -61,21 +61,9 @@ Do not conflate:
 - `track_epsilon`: maximum distance used to continue a minimum from one
   chronological surface to the **next** surface.
 
-The dynamic forecasting paper uses the tracked branches downstream.
-
-## Interface with `paper_smoothness-cv/`
-
-The numerical paper returns the local minima and their branch identities.
-The forecasting paper then augments each branch with Validation-2 forecast loss
-and forms
-
-\[
-V_j=[S_{j,t},\ell^{(1)}_{j,t},\ell^{(2)}_{j,t}]_t.
-\]
-
-The forecasting paper owns branch selection `psi(V_1,...,V_J)` and the final
-smoothness rule `phi(V_j)`. This numerical paper does **not** claim those
-decision rules as its contribution.
+This numerical paper studies recovered minima and their temporal
+correspondence as mathematical objects, without assuming any separate
+forecasting decision procedure.
 
 ## Frozen numerical evidence
 
@@ -130,4 +118,4 @@ the cross-time correspondence problem by itself.
 
 ## Active papers
 
-Only `paper_numerical-methods/` and `paper_smoothness-cv/` are active.
+This manuscript defines and evaluates its own numerical objectives.
