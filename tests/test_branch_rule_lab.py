@@ -60,6 +60,7 @@ def test_tracks_methods_v_matrices_and_all_orders():
         "last", "mean_k3", "val2_weighted"
     }
     assert set(result.branches["d"]) == {1, 2}
+    assert set(result.branches["regla"]) == set(result.evaluations["regla"])
     assert result.summary.shape[0] >= 2
     assert result.selected_rule in set(result.evaluations["regla"])
     assert result.selected_branch in set(result.branches["rama"])
@@ -147,7 +148,7 @@ def test_late_validation_losses_are_not_known_to_past_rules():
 
 def test_each_rule_has_own_v1_minima_and_independent_branch_history():
     data = _sample()
-    result = _run(data, step=3, max_origins=6)
+    result = _run(data, step=3, max_origins=6, track_epsilon=0.29)
     v = result.evaluations
     b = result.branches
     # A branch label is meaningful only together with its order AND its rule.
