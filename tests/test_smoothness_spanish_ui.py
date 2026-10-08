@@ -133,6 +133,21 @@ def test_errores_muestran_ecm_absoluto_en_hover_aun_con_colores_relativos(ui):
     assert fig.layout.xaxis.range == (0, 1)
 
 
+def test_cronologia_separa_validaciones_y_prueba(ui):
+    fig = ui._grafica_cronologia(
+        90, ventana=28, horizonte=3, paso=5, reserva=5,
+    )
+    assert "Esquema cronológico" in fig.layout.title.text
+    assert len(fig.data) == 7
+    assert {trace.name for trace in fig.data} == {
+        "Ajuste L", "Validación 1", "Validación 2", "Prueba",
+    }
+    prueba = next(trace for trace in fig.data if trace.name == "Prueba")
+    assert prueba.base[0] == 85
+    assert prueba.x[0] == 5
+    assert prueba.y[0] == 1
+
+
 def test_graficos_ramas_usen_ejes_y_etiquetas_en_espanol(ui):
     result = _resultado_ficticio()
     fig = ui._grafica_ramas(result, variable="val2_mse")
