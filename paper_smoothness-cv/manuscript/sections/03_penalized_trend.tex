@@ -130,3 +130,14 @@ L-(L-d)S(\lambda).
 }
 \end{equation}
 Hence $S$ is a normalized complement of effective degrees of freedom.
+
+The practical CV search uses $S$, not a truncated grid of $\lambda$.
+The parameter transformation covers both limiting smoothing regimes:
+$S=0$ corresponds to $\lambda=0$, whereas $S=1$ corresponds to
+$\lambda\to\infty$, the least-squares projection onto the
+$d$-dimensional null space of $D_d$. A uniform grid in $S$
+therefore has an interpretable common bounded domain, unlike an
+arbitrarily bounded grid in $\lambda$. Because the mapping is
+strictly increasing, it does not invent new minima or make the
+forecast loss convex; its advantage is coordinate choice and
+endpoint handling.
