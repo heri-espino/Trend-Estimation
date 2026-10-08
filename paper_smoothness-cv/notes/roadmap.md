@@ -70,11 +70,12 @@ expanded.
 
 ## Phase 2F — Representation figures and manuscript consolidation
 
-- [ ] Generate CP08 explanatory figures from the frozen results.
+- [x] Generate CP08 explanatory figures from the frozen results.
 - [ ] Illustrate origin-specific minima, tracked branches, and branch matrix V_j.
 - [ ] Show several phi(V_j) maps acting on the same branch history.
 - [ ] Separate methodological flexibility from claims of forecasting superiority.
-- [ ] Integrate frozen CP03--CP08 results into the manuscript.
+- [x] Integrate frozen CP03--CP08 results into the manuscript.
+- [ ] Compile and visually inspect the updated Wiley manuscript PDF.
 
 ## Phase 3 — Main dynamic simulation
 
