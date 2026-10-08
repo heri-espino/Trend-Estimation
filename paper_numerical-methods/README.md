@@ -29,7 +29,7 @@ For a sequence of neighboring forecast-loss surfaces, recover
 
 and determine which minima belong to the same temporal branch.
 
-The current baseline continuation rule is one-to-one nearest-neighbor matching
+The implemented baseline continuation rule is greedy one-to-one nearest-neighbor matching
 under
 
 \[
@@ -90,19 +90,37 @@ protocol:
 These validate the per-surface search empirically. They do not yet validate
 temporal branch correspondence.
 
-## New numerical work required
+## Temporal tracking status and controlled CP05
 
-The temporal extension must evaluate:
+An existing four-series rolling experiment yielded 1392 initialized
+branch-origin states, with 924 matches and 468 missing states. These counts
+demonstrate the interface, **not numerical identity accuracy**: the real
+branch labels are unobserved, and missing states have several possible causes.
 
-- sensitivity to `track_epsilon`;
-- branch birth/death;
-- near-crossings and ambiguous matches;
-- greedy one-to-one matching versus globally optimal bipartite matching;
-- stability when minima become very close;
-- possible use of curvature/objective information as secondary correspondence
-  features.
+The paper now gives a deterministic two-branch counterexample where greedy
+one-to-one matching recovers only one link even though a feasible two-link
+assignment exists.
 
-Do not claim certified tracking until those cases are studied.
+A controlled benchmark has been implemented to compare the existing greedy
+matcher against the exact **pairwise** maximum-cardinality,
+minimum-displacement assignment. Its labeled mechanisms cover separated
+branches, drift, near-mergers, crossings, and branch births/deaths. The
+benchmark is not yet run, and its outcomes must not be described as verified
+results.
+
+The benchmark tests correspondence conditional on known previous identities;
+end-to-end identity propagation, automatic birth handling, and the potential
+benefit of objective/curvature features remain separate open questions.
+
+Run:
+
+~~~powershell
+python experiments/numerical_smoothness_selection/run_tracking_correspondence_benchmark.py --preset smoke
+python experiments/numerical_smoothness_selection/run_tracking_correspondence_benchmark.py --preset paper
+~~~
+
+The manuscript is `main.tex` in this directory. Its latest tracked-minimum
+figure is linked to the frozen experimental result directory.
 
 ## Stronger algebraic direction
 
