@@ -10,6 +10,8 @@ import ast
 from dataclasses import dataclass
 from typing import Callable
 
+from trend_estimation.core.pure import cached_pure_solver
+
 import numpy as np
 import pandas as pd
 
@@ -399,10 +401,7 @@ def smoothing_matrix(n: int, order: int, smoothness: float) -> np.ndarray:
     """H_lambda = Q diag[(1 + lambda * delta)^-1] Q.T."""
     if n > 250:
         raise ValueError("Display matrix capped at 250 observations.")
-    solver = td.core.pure.cached_pure_solver(n, order) if hasattr(td, "core") else None
-    if solver is None:
-        from trend_estimation.core.pure import cached_pure_solver
-        solver = cached_pure_solver(n, order)
+    solver = cached_pure_solver(n, order)
     lam = solver.lambda_from_s(smoothness)
     alpha = np.zeros_like(solver.eigvals) if np.isinf(lam) else 1 / (1 + lam * solver.eigvals)
     if np.isinf(lam):
