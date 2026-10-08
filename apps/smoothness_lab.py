@@ -295,7 +295,7 @@ def _grafica_serie(
                   dash="dot", markers=True)
             titulo = "Sensibilidad de la tendencia al nivel de suavidad"
         eje_y = unidad
-        if x_prueba:
+        if len(x_prueba) > 0:
             fig.add_vrect(
                 x0=x_prueba[0], x1=x_prueba[-1],
                 fillcolor="#E9EDF2", opacity=0.40, line_width=0,
