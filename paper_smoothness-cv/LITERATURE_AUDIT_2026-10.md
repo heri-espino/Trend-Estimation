@@ -11,21 +11,33 @@ exhaustive coverage of every CSSC issue.
 
 The PLS estimator, trace-based smoothness index, automatic choice of
 penalty, and use of controlled-smoothness trends for forecasting
-**predate this manuscript**. The defensible claim concerns chronological
-tracking of multiple forecast-loss minima, the resulting branch histories,
-and separated decisions for choosing a branch and mapping its history
-to a fresh smoothing level. Forecast-optimal tuning itself is not novel.
+**predate this manuscript individually**. The principal proposed
+method is the explicit, chronological $h$-step forecast-MSE criterion
+for choosing normalized PLS smoothness under a declared continuation
+operator, with refitting before the untouched test block.
+The exact combination and its empirical comparison with ordinary CV,
+GCV, AICc, and one-step forecast-CV are the central statistical focus.
+General forecast-based tuning is not claimed as an independent invention.
+Tracking minima into branch histories and mapping those histories into
+a possibly time-adaptive smoothness is a separate optional extension.
 
 The manuscript uses the rescaled index
 `S = [L/(L-d)] * (1 - trace(H)/L)` for `d>=1`, so that the
 upper endpoint is one. This is a monotone rescaling of Guerrero's
 index, **not** a new PLS estimator or a claim of new spectral theory.
 
-The strongest scientific difficulty remains the empirical result:
-branch-based rules improve upon pooled CV only in the small
-confirmation panel, not in the larger financial panel or most of
-the controlled-roughness comparison. Citation revision cannot
-establish a forecasting performance advantage that the data do not show.
+Core CP03 simulation results support the relevance of horizon-matched
+forecast-CV: longer-horizon pooled losses improved relative to
+one-step forecast tuning and GCV in that controlled study. This is
+not a proof of universal superiority across data-generating processes.
+The optional branch rules improve over pooled CV in a small
+confirmation panel but not in the broad financial panel or changing-
+roughness simulation; they must not be presented as a necessary part
+of the proposed forecast-CV method.
+
+Numerical note: adaptive stationary-point bracketing and Brent refinement
+are implemented in the companion. Sturm-based certified isolation
+remains an exploratory proof of concept, not a completed solver.
 
 ## Highest-priority works
 
