@@ -267,3 +267,24 @@ without claiming superiority to pooled forecast-CV.
 Run `python paper_smoothness-cv/build.py --check` and then
 `python paper_smoothness-cv/build.py` on a machine with XeLaTeX and BibTeX,
 inspect page layout, commit the generated PDF, and push.
+
+## Numerical-methods paper update: tracking evidence and benchmark
+
+The numerical manuscript (`paper_numerical-methods/main.tex`) has been
+updated without changing the frozen per-surface optimizer. It now contains
+a separate temporal-correspondence formulation, an explicit greedy matching
+counterexample, and a figure and descriptive tracking counts from the
+frozen four-series run (924 matched and 468 missing rows among 1392
+initialized branch-origin states). These are not ground-truth identity
+success rates.
+
+A controlled CP05 benchmark has been implemented at
+`experiments/numerical_smoothness_selection/run_tracking_correspondence_benchmark.py`
+to compare greedy with exact pairwise max-cardinality/minimum-displacement
+matching on known minima and 5 path mechanisms, including crossings and
+birth/death. The benchmark has not yet been run. It conditions each
+step on known previous labels, not cumulative tracking.
+
+Next: run smoke and paper presets, commit their reports, inspect the
+outcomes, then add measured tracking comparisons to the manuscript.
+Rebuild numerical PDF with `paper_numerical-methods/build-paper.bat`.
