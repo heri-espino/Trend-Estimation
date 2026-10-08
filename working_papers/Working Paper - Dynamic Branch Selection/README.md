@@ -5,6 +5,32 @@ no unconditional forecast-performance advantage established.
 
 **Working title:** *Dynamic Branch Selection for Forecast-Optimal Trend Smoothness*.
 
+## Current method versus historical results
+
+**New prospective method (2026-10-08):** for every predeclared
+temporal loss-weighting scheme \(m\), difference order \(d\),
+window \(L\), and horizon \(h\), construct chronological
+**weighted forecast-loss surfaces** \(F_r^{(m,d,L,h)}(S)\).
+Detect and follow local minima across consecutive completed
+surfaces. An outer-origin selector chooses a branch using only
+historical weighted-\(F\) evidence; a separate branch-to-S rule
+(e.g., mean of last three local minima) determines the **actual**
+smoothed trend and \(h\)-step forecast. No separate internal Val2
+is required.
+
+The prior two-stage, Val1/Val2, method-dependent
+**transformed-\(S\)** loss documented in older CP04–CP08 records
+is **historical**, not the current prospectively implemented protocol.
+Its original results remain preserved, and do not establish
+performance of this redesigned algorithm.
+
+- [Canonical protocol shared by Paper 1 and 2](../WEIGHTED_SURFACE_PROTOCOL.md).
+- [Current active branch specification](notes/dynamic_tracked_smoothness.md).
+- [Runnable manual comparison](../../experiments/smoothness_cv/run_weighted_surface_study.py).
+
+The existing \`manuscript/main.tex\` is a **dated working draft**
+and has not yet been rewritten around these new experiments.
+
 ## Research question
 
 Do the histories of individual minima of chronological future-block forecast
