@@ -1,5 +1,12 @@
 # Dynamic Branch Selection — independent notes
 
+**Current design (2026-10-08):** track local minima of **temporally
+weighted forecast-loss surfaces** by fixed method \(m\), order \(d\),
+window \(L\), horizon \(h\). The current method does **not** use
+the old Val1/Val2 transformed-loss branch definition.
+See [shared protocol](../../WEIGHTED_SURFACE_PROTOCOL.md)
+and [current mathematical specification](dynamic_tracked_smoothness.md).
+
 - [Research question and protocol](research_objective.md)
 - [Tracked smoothness and V/psi/phi rules](dynamic_tracked_smoothness.md)
 - [Temporal minima correspondence](temporal_minima_tracking.md)
