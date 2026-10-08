@@ -24,7 +24,7 @@ def _sample(n=88, seed=18):
 def _run(y, *, orders=(1, 2)):
     return run_two_stage_lab(
         y, orders=orders, window=26, horizon=3,
-        test_size=4, search_depth=3, grid_points=15,
+        test_size=4, future_horizon=4, search_depth=3, grid_points=15,
     )
 
 
@@ -64,7 +64,7 @@ def test_val1_minima_are_all_evaluated_on_val2_for_each_order():
 def test_fit_val1_val2_and_final_forecast_are_chronologically_disjoint():
     data = _sample()
     result = _run(data)
-    assert result.train_start == result.val1_start - result.window
+    assert result.train_start == len(data) - result.window
     assert result.val1_end == result.val1_start + result.horizon
     assert result.val2_end == result.val1_end + result.horizon
     assert result.pretest_end == result.val2_end
@@ -72,6 +72,10 @@ def test_fit_val1_val2_and_final_forecast_are_chronologically_disjoint():
     assert result.test_end - result.pretest_end == 4
     assert result.trend.shape == (26,)
     assert result.forecast.shape == (4,)
+    assert result.evaluation_trend.shape == (26,)
+    assert result.evaluation_forecast.shape == (4,)
+    assert result.forecast_start == len(data)
+    assert result.forecast_end == len(data) + 4
     assert np.all(np.isfinite(result.trend))
 
 
@@ -85,8 +89,15 @@ def test_changing_test_targets_never_changes_model_selection_or_forecasts():
     assert original.selected_s == altered.selected_s
     pd.testing.assert_frame_equal(original.candidates, altered.candidates)
     pd.testing.assert_frame_equal(original.surfaces, altered.surfaces)
-    np.testing.assert_allclose(original.trend, altered.trend)
-    np.testing.assert_allclose(original.forecast, altered.forecast)
+    np.testing.assert_allclose(
+        original.evaluation_trend, altered.evaluation_trend
+    )
+    np.testing.assert_allclose(
+        original.evaluation_forecast, altered.evaluation_forecast
+    )
+    # Las observaciones de prueba sí pasan al nuevo reajuste operativo:
+    # cambiar esos datos debe alterar normalmente el pronóstico futuro.
+    assert not np.allclose(original.forecast, altered.forecast)
 
 
 def test_smoothing_parameters_are_reused_without_val2_reoptimization():
@@ -96,9 +107,15 @@ def test_smoothing_parameters_are_reused_without_val2_reoptimization():
     result = _run(data)
     final = td.PurePenalizedTrend(
         order=result.selected_order, smoothness=result.selected_s
-    ).fit(data[result.pretest_end-26:result.pretest_end])
+    ).fit(data[-26:])
     np.testing.assert_allclose(final.trend_, result.trend)
     np.testing.assert_allclose(final.forecast(4), result.forecast)
+    evaluation = td.PurePenalizedTrend(
+        order=result.selected_order, smoothness=result.selected_s
+    ).fit(data[result.pretest_end-26:result.pretest_end])
+    np.testing.assert_allclose(
+        evaluation.forecast(4), result.evaluation_forecast
+    )
 
 
 def test_missing_orders_and_insufficient_data_are_rejected():
@@ -139,4 +156,4 @@ def test_forecast_graph_supports_dates_and_integer_indices(app):
         assert fig.layout.xaxis.title.text == (
             "Fecha" if dated else "Número de observación"
         )
-        assert any("Pronóstico con S" in trace.name for trace in fig.data)
+        assert any("Pronóstico futuro con S" in trace.name for trace in fig.data)
