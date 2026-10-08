@@ -230,52 +230,58 @@ has not been run. `build.py` stages the manuscript source (including its
 `figures/` folder) and the separately frozen CP08 figures.
 
 
-## Interactive companion (not a frozen checkpoint)
+## Aplicaciones interactivas (no son checkpoints congelados)
 
-A separate Streamlit app at `../apps/smoothness_lab.py` lets you explore the
-latest dynamic tracked-minima design, using reproducible synthetic functions,
-Yahoo Finance market series or a local CSV. It shows time-origin by smoothness
-Validation-1 MSE heatmaps, local minima, Validation-2 MSE paths, the branch
-matrices `V_j`, and `H_lambda` smoothing-matrix heatmaps. Plot choices
-include the underlying generating trend (when known), level/log/return
-representations, residuals, first differences and polynomial forecast
-continuations. You can compare dynamic `phi(V_j)`, pooled forecast-CV and
-manual smoothing, and export the inputs and resulting numerical matrices.
+### Aplicación principal: selección cronológica en dos validaciones
 
-Run from repository root:
+La aplicación en apps/smoothness_lab.py representa el procedimiento solicitado
+de forma directa, con títulos, tablas y explicaciones en español:
+
+1. **Validación 1:** para cada orden d (1 a 4), construir la pérdida predictiva
+   ECM(S), recuperar sus mínimos locales mediante la búsqueda numérica basada
+   en derivadas e incluir los extremos cuando corresponda.
+2. **Validación 2:** para cada mínimo recuperado, reajustar el mismo estimador
+   con los últimos L datos anteriores a validación 2, pronosticar h observaciones
+   y calcular el ECM. Comparar todos los pares (d,S) sobre el mismo bloque.
+3. **Selección:** elegir directamente el par (d*,S*) de menor ECM de validación 2,
+   con desempate determinista por ECM de validación 1, orden y suavidad.
+4. **Pronóstico:** sin cambiar d*, S* ni el método, ajustar la última ventana de
+   L observaciones anteriores a la prueba. Pronosticar desde ese último origen
+   conocido. La prueba nunca interviene en la selección ni en el reajuste.
+
+Para inspeccionar cada etapa, hay un esquema cronológico de la partición,
+una curva ECM(S) por orden, una comparación de todos los candidatos en
+validación 2, un gráfico del pronóstico final y la matriz H_lambda. Las series
+pueden ser sintéticas, descargadas de Yahoo Finance o importadas desde CSV.
+
+La matriz de comparación contiene método, d, S, penalización, ECM de
+validación 1, ECM y RECM de validación 2. La aplicación principal **no**
+requiere continuación de ramas, selección por persistencia ni reglas phi.
+Actualmente solo se compara el estimador de mínimos cuadrados penalizados;
+incorporar otros estimadores es una extensión, no una funcionalidad ya validada.
+
+### Laboratorio avanzado: seguimiento de ramas históricas
+
+La implementación interactiva anterior se conserva por separado en
+apps/smoothness_lab_advanced.py. Esta sí contiene trayectorias de mínimos,
+matrices históricas V_j, reglas phi(V_j) y comparaciones con validación
+agrupada. No se utiliza para seleccionar el modelo en la aplicación principal.
+
+### Ejecución
+
+Desde la raíz del repositorio:
 
 ~~~bash
 python -m pip install -e ".[dashboard,finance]"
 streamlit run apps/smoothness_lab.py
 ~~~
 
-The newest test block is excluded from selection and is revealed only on
-request. Unlike the paper's frozen settings, the app uses a configurable,
-lighter numerical-search depth and a grid-pooled benchmark for responsiveness.
-No CP03--CP08 evidence is recomputed or changed. See the repository README for
-the full validation contract.
+Para la aplicación avanzada:
 
+~~~bash
+streamlit run apps/smoothness_lab_advanced.py
+~~~
 
-### Guía de la interfaz interactiva en español
-
-La aplicación se ejecuta desde la raíz del repositorio mediante
-`streamlit run apps/smoothness_lab.py`.
-
-Los cinco apartados de la interfaz distinguen explícitamente:
-
-- **Tendencia y pronóstico:** serie observada, tendencia estimada,
-  extrapolación y un esquema cronológico de ajuste, dos validaciones y prueba.
-- **Errores de validación 1:** superficie del error cuadrático medio
-  (ECM) para cada origen histórico y nivel normalizado de suavidad.
-  El color relativo es solo una transformación de presentación; al consultar
-  la matriz se muestra el ECM original.
-- **Ramas y validación 2:** trayectoria temporal de los mínimos locales,
-  ECM de validación 2 y matriz histórica `V_j=[S, ℓ₁, ℓ₂]`.
-- **Matriz de suavizamiento:** pesos `H_ij`, traza del suavizador,
-  grados de libertad efectivos y suavidad normalizada.
-- **Tablas y descargas:** valores sin redondeo gráfico, con títulos y
-  encabezados formales en español.
-
-Los parámetros numéricos, la notación `d, L, h, S, λ` y los nombres internos
-del motor permanecen invariantes. Las pruebas específicas de visualización se
-encuentran en `tests/test_smoothness_spanish_ui.py`.
+Ambos laboratorios son exploratorios y no modifican ni recomputan los
+checkpoints congelados CP03–CP08. Las pruebas de selección sin fuga desde
+la prueba se encuentran en tests/test_two_stage_smoothness_lab.py.
