@@ -1,62 +1,52 @@
 \section{Conclusion}
 
-The choice of smoothness for a penalized trend is a prediction
-decision whenever the fitted trend will be extrapolated. We therefore
-formulate a chronological, horizon-specific cross-validation
-criterion for finite-difference penalized least squares. For each
-candidate normalized smoothness value, the historical window is
-smoothed using $H_{\lambda(S)}$, extrapolated through the declared
-$h$-step continuation operator $G_{d,h}$, and scored on the subsequent
-realized validation block. The method chooses the value minimizing
-pooled historical forecast mean squared error:
-\begin{equation}
-\label{eq:conclusion_core_cv}
-\widehat S^{\mathrm{FCV}}_{T,d,L,h}
-\in\arg\min_{S\in[0,1]}
-\frac1M\sum_{m=1}^{M}
-\frac1h\left\|y_{t_m+1:t_m+h}
--G_{d,h}H_{\lambda(S)}x_{t_m}\right\|_2^2.
-\end{equation}
-After selection, the operational trend is refitted on the latest
-available data before the untouched future block is forecast.
-This definition does not require any adaptive tracking of
-local minima.
+Selecting smoothness for a trend that
+will be extrapolated is a forecasting
+problem, not merely a post-hoc
+descriptive smoothing problem.
+We formulated chronological,
+horizon-matched forecast
+cross-validation over a normalized
+PLS smoothness index $S\in[0,1]$.
+The criterion compares historical
+future-block errors from an explicitly
+defined continuation, includes the
+two limiting smoothing regimes, and
+refits the selected trend before
+issuing a genuinely out-of-sample
+forecast.
 
-The penalized smoother, trace-based index, and general idea
-of predictive validation are not new individually. The contribution
-examined here is their explicit assembly as a horizon-matched
-trend-extrapolation selection procedure, together with its
-performance assessment against classical and one-step smoothing
-criteria. The controlled pooled-selector simulation supports the
-value of matching the tuning horizon to the forecast objective,
-particularly at longer horizons.
+The PLS smoother, trace-based
+smoothness index, and predictive
+cross-validation principle are
+established methods. The contribution
+studied here is their particular
+operational combination for
+finite-difference trend extrapolation
+and a frozen simulation comparison
+with conventional smoothing criteria.
+At horizons $3$, $6$, and $12$,
+the simulated geometric RMSFE
+ratios to one-step tuning were
+$0.947$, $0.861$, and $0.762$,
+respectively, supporting the value
+of selecting smoothness for the
+forecast horizon within this design.
 
-A second, numerical issue arises because the forecast-loss surface
-can be multimodal. Finding the correct global candidate requires
-recovery of potentially multiple interior minima and comparison
-with the endpoints. The practical implementation searches for competing stationary
-points using adaptive derivative bracketing and Brent refinement,
-then compares interior candidates with both limiting endpoints.
-
-Finally, a separate time-adaptive formulation tracks local-minimum
-histories $V_j$ and allows branch-selection and smoothness mappings:
-\begin{equation}
-\label{eq:conclusion_branch_decisions}
-\widehat j_T=\psi(V_1,\ldots,V_J),
-\qquad
-\widehat S_T=\phi(V_{\widehat j_T}).
-\end{equation}
-This is an optional hyperparameter-selection mechanism for
-settings in which past favorable smoothing regimes plausibly
-inform future ones. Recent means, loss weights, and smoothness
-extrapolations embody different assumptions; no universal rule
-is implied. The small confirmation experiment favored one
-recency rule, but larger financial and changing-roughness
-evaluations did not establish its superiority over pooled CV.
-
-These findings separate three issues: defining smoothness for
-forecasting, solving the resulting multimodal optimization problem,
-and optionally adapting the hyperparameter over time. The first is the central statistical contribution; the second is
-a computational requirement for implementing the criterion; and
-the third remains an application-dependent extension with
-clearly delimited empirical support.
+The objective can have multiple
+local minima, and changing from
+$\lambda$ to $S$ does not remove them.
+Consequently, practical selection
+must compare competing numerical
+candidates and both endpoints.
+The evidence does not establish
+universal superiority of forecast-CV,
+optimality across all polynomial
+continuation orders, or a general
+gain from tracked-minimum adaptation.
+The principal result is a transparent
+prediction-targeted tuning criterion
+whose modeling assumptions,
+computational search, and
+information set can be stated
+and evaluated explicitly.

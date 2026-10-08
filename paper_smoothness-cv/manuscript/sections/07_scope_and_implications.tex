@@ -1,68 +1,90 @@
-\section{Scope, interpretation, and implications}
+\section{Interpretation and limitations}
+\label{sec:discussion}
 
-\subsection{What forecast-optimal smoothness means}
+\subsection{A prediction-targeted smoothing choice}
 
-A smoothness value is not an immutable property of a series; it is selected relative to a forecast objective, horizon $h$, difference order $d$, estimation window $L$, and continuation rule. The same historical observations may warrant different smoothness for different forecasting tasks. This interpretation is already provided by the pooled criterion, without tracking any minima through time.
-
-For a final selected value $\widehat S_T$, the effective-degrees-of-freedom interpretation remains
+Normalized smoothness describes the effective action
+of the historical PLS smoother. For fixed $(d,L)$,
 \begin{equation}
 \label{eq:scope_smoothness_edf}
-\widehat S_T
-=
-\frac{L-\operatorname{edf}_T}{L-d}.
+S=\frac{L-\operatorname{tr}\{H(S)\}}{L-d}.
 \end{equation}
-A value near zero corresponds to a flexible trend; a value near one corresponds to a trend close to the null-space polynomial. If an additional persistence assumption is appropriate, today's smoothness may instead be informed by a history of favorable local minima; that is an extension of, rather than a substitute definition for, the pooled criterion.
+A value near zero preserves much of the historical
+variation; a value near one approaches the
+least-squares polynomial null space. When
+the trend is to be forecast, the operative
+criterion is the accuracy of its continuation,
+not just its apparent historical regularity.
+The same series may therefore warrant
+different smoothness values at different
+forecast horizons.
 
-\subsection{Optional branch histories and their assumptions}
+The continuation remains a discrete polynomial
+of degree at most $d-1$ for fixed difference
+order $d$. Changing $S$ changes the fitted
+terminal level and differences and therefore
+the coefficients of that future polynomial.
+Forecast-CV does not, by itself, select the
+polynomial degree. Joint order selection or
+a stochastic residual forecast requires
+a separately specified validation design.
 
-If an analyst chooses time-adaptive hyperparameters, the continuation radius $\varepsilon$ does not define a preassigned category such as ``smoothness around 0.9.'' Branch locations arise from local minima of successive forecast-loss surfaces. The radius only determines whether two neighboring minima are close enough to be interpreted as the same branch.
+\subsection{What the compact index does and does not do}
 
-Consequently, a branch can drift over time. Its identity reflects local continuity of the optimum, not membership in a fixed interval.
+Using $S\in[0,1]$ avoids a finite arbitrary
+upper boundary on $\lambda$ and gives the two
+limiting smoothers an explicit role in
+validation. However, $S(\lambda)$ is one-to-one:
+the reparameterization preserves all fitted
+trends and interior stationary points.
+It is not a new smoothing estimator, it
+does not guarantee a unique minimizer,
+and it does not itself produce predictive
+improvement. Large changes in the
+unbounded penalty may be compressed
+near $S=1$, so numerical search must
+treat boundary regions carefully.
 
-\subsection{What may be averaged}
+\subsection{Simulation scope and statistical caution}
 
-The pooled method averages historical $h$-step forecast losses across validation origins, thereby choosing a single smoothness for the current forecast. It does not average old fitted trend paths. Historical smoothness values may also be averaged in an optional time-adaptive rule, but this requires a separately declared mapping from historical minimum states.
+The main evidence is a factorial Monte Carlo
+comparison of smoothness \emph{selection rules}
+for one specified PLS forecast-continuation
+family. The paired decisions share seeds
+and, in some conditions, innovations.
+Thus the reported 72,000 outer evaluations
+are not independent observations.
+The aggregate geometric forecast-RMSFE
+ratios do not establish uniform or
+distribution-free optimality.
 
-After the current smoothness is selected, the trend is always refit on the newest information available before the forecast.
+The baseline uses an identity-weight
+PLS fit with equally spaced observations,
+a fixed training length, fixed difference
+order, and deterministic polynomial
+continuation. AR(1) and heavy-tailed
+disturbances enter the simulation, but
+the fitting method does not estimate
+their complete covariance structure.
+Forecast-targeted smoothing cannot
+eliminate all end-of-sample and
+model-misspecification issues
+\citep{hamilton2018hp}.
+In particular, the method can perform
+poorly if the true future evolution
+is incompatible with its extrapolation
+class.
 
-\subsection{Static and dynamic targets}
-
-The core selector asks which value of $S$ minimizes the pooled historical predictive MSE for the intended $h$-step forecast. This defines a complete forecasting method. The optional branch formulation asks how a time-indexed collection of local minima could be used to choose a different current value. Any gain from such a choice is contingent on series dynamics, modeling assumptions, and out-of-sample evidence.
-
-Neither target is automatically the smoothness that best reconstructs a latent historical trend. Forecasting and signal recovery remain distinct objectives.
-
-\subsection{Numerical boundary}
-
-The forecast-MSE optimization problem is defined independently of a particular numerical algorithm. Its practical computation involves detecting multiple local minima, refining stationary roots, and comparing the exact endpoints. None of these computational requirements changes the selection criterion or requires temporal branch histories.
-
-
-\subsection{Boundary behavior of smoothness forecasts}
-
-Normalized smoothness is restricted to $[0,1]$. Convex means of historically
-admissible values remain in that interval, whereas linear or increment
-extrapolations of the branch trajectory need not. Truncation back to the
-admissible interval is therefore part of defining these functionals,
-not an innocuous plotting convention. The simulations show that the
-frequency of truncation varies substantially with the form of $\phi$.
-This is a concrete difference between equally admissible constructions
-of the next smoothness value.
-
-\subsection{Limits of predictive interpretation}
-
-A favorable four-series confirmation result is not sufficient to establish
-universal superiority. The broad financial panel and controlled changing-
-roughness experiments did not reproduce an aggregate advantage over
-pooled forecast-CV. Their errors are evaluated on different scales, and
-the series within the financial panel are not independent.
-Accordingly, the primary claim concerns horizon-matched forecast-CV for
-selecting PLS smoothness, supported by its controlled simulation.
-The branch-history representation is an optional additional mechanism;
-it does not guarantee improvements over pooled forecast-CV.
-
-\subsection{Limitations}
-
-The baseline estimator assumes equally spaced observations, a fixed difference order, a fixed final estimation window, and deterministic continuation of the estimated trend. Checkpoints 05 and 06 show that high-order native polynomial continuation can amplify small differences in selected $S$ into extreme forecast errors. In particular, restricting higher difference orders reduced the catastrophic error tail in a post-hoc diagnostic, but does not validate a revised forecasting selector. The current branch construction also introduces design quantities such as the tracking radius, recent-history length, and weighting parameters. Those quantities must be selected on development data and frozen before outer-test evaluation.
-
-Local-minimum identity can become ambiguous when branches approach or cross. The initial greedy one-to-one matcher is therefore a transparent baseline rather than a mathematical definition of true branch identity. Sensitivity to the numerical correspondence rule must be reported separately from forecasting performance.
-
-Finally, the framework isolates trend extrapolation. It does not yet add a separate stochastic residual forecast model. That restriction keeps the interpretation of any forecast gain tied to smoothness selection rather than to another predictive component.
+The optional branch rules in
+\cref{app:adaptive_evaluation} were
+tested on different panels and scales.
+Their favorable small confirmation
+result did not generalize to a larger
+financial panel or controlled
+changing-roughness simulations.
+These outcomes underscore that
+temporal adaptation requires
+substantive assumptions and
+independent predictive evidence;
+it is not required by the central
+pooled CV formulation.
