@@ -95,26 +95,25 @@ Those summaries are not yet competing final `phi` methods.
 
 ## Relationship to CP03
 
-CP01--CP03 belong to the simpler pooled-selector baseline. CP03 remains frozen
-and should not be changed after results are observed. It becomes baseline
-evidence, not the final dynamic method.
-
-The next smoothness-CV checkpoint must compare dynamic `phi(V_j)` rules using
-identical branch histories and identical untouched test blocks.
+CP01--CP03 develop and validate the primary pooled forecast-CV method.
+The CP03 design and observed results are frozen; they form the central
+empirical evidence of the forecasting manuscript. CP04--CP08 then
+study optional dynamic `phi(V_j)` rules on their own terms.
 
 ## Paper boundary
 
-`paper_smoothness-cv/` owns the forecasting/statistical decision rule:
-`V_j`, `psi`, `phi`, validation design, and forecast evidence.
+`paper_smoothness-cv/` owns the horizon-matched forecast-MSE
+smoothness selector, validation/refit protocol, comparative forecast
+evidence, and optional `V_j`, `psi`, and `phi` extensions.
 
 `paper_numerical-methods/` owns recovery of the multiple local minima and the
 numerical correspondence/tracking problem across surfaces.
 
 Only these two papers are active.
 
-## Primary target
+## Intended journal
 
-Journal of Forecasting.
+Communications in Statistics--Simulation and Computation.
 
 ## Claim rule
 
