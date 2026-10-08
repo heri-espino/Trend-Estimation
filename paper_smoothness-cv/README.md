@@ -245,9 +245,13 @@ de forma directa, con títulos, tablas y explicaciones en español:
    y calcular el ECM. Comparar todos los pares (d,S) sobre el mismo bloque.
 3. **Selección:** elegir directamente el par (d*,S*) de menor ECM de validación 2,
    con desempate determinista por ECM de validación 1, orden y suavidad.
-4. **Pronóstico:** sin cambiar d*, S* ni el método, ajustar la última ventana de
-   L observaciones anteriores a la prueba. Pronosticar desde ese último origen
-   conocido. La prueba nunca interviene en la selección ni en el reajuste.
+4. **Evaluación de prueba:** desde el origen anterior al bloque reservado,
+   pronosticar sin reoptimizar y medir su error retrospectivo.
+5. **Pronóstico operativo:** sin cambiar d*, S* ni el método, reajustar usando
+   la última ventana de L observaciones de toda la serie, incluida la prueba
+   ya evaluada. El pronóstico futuro empieza después del último dato real.
+   La prueba nunca interviene en la selección, solo en la evaluación y en
+   el reajuste operativo posterior.
 
 Para inspeccionar cada etapa, hay un esquema cronológico de la partición,
 una curva ECM(S) por orden, una comparación de todos los candidatos en
