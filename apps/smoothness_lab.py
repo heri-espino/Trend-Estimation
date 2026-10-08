@@ -23,6 +23,9 @@ from experiments.smoothness_cv.live_lab import (
     transform_observations,
 )
 from experiments.smoothness_cv.two_stage_lab import run_two_stage_lab
+from experiments.smoothness_cv.article_simulations import (
+    ARTICLE_TRENDS, make_article_synthetic,
+)
 from experiments.smoothness_cv.branch_rule_lab import (
     run_branch_lab, RULE_SPECS, inspect_method_val1_curves,
 )
@@ -812,24 +815,79 @@ def main() -> None:
             "Origen de los datos",
             ["Función sintética", "Yahoo Finance", "Archivo CSV"],
         )
+        simulacion_corta_articulo = False
         if fuente == "Función sintética":
-            familia = st.selectbox("Función generadora", list(FUNCIONES))
-            formula = st.text_input(
-                "Expresión f(t)", FUNCIONES[familia], key=f"funcion_{familia}"
+            familia = st.selectbox(
+                "Función generadora",
+                list(ARTICLE_TRENDS) + list(FUNCIONES),
             )
-            n = st.slider("Número de observaciones", 90, 600, 220, 10)
-            ruido_sd = st.slider("Escala del ruido, σ", 0.0, 5.0, 0.35, 0.05)
-            ruido = st.selectbox("Distribución del ruido", list(RUIDOS))
-            phi = st.slider("Autocorrelación AR(1), φ", -0.90, 0.90, 0.0, 0.05)
-            semilla = st.number_input("Semilla aleatoria", 0, 999999, 42)
-            try:
-                frame = make_synthetic(
-                    formula, n, ruido_sd, RUIDOS[ruido], phi, int(semilla)
+            articulo = familia in ARTICLE_TRENDS
+            if articulo:
+                st.caption(
+                    "Diseño de simulación del artículo: "
+                    "t = 1,…,N y tiempo normalizado u = t/N."
                 )
-            except (ValueError, ArithmeticError) as exc:
-                st.error(f"No se pudo construir la serie: {exc}")
-                st.stop()
-            serie = "Serie sintética"
+                if ARTICLE_TRENDS[familia] == "linear":
+                    st.latex(r"\tau_t=\frac{4t}{N}")
+                else:
+                    st.latex(
+                        r"\tau_t=0.6\beta_{30,17}(t/N)"
+                        r"+0.4\beta_{3,11}(t/N)"
+                    )
+                n = st.radio(
+                    "Número de observaciones, N",
+                    options=[50, 200], index=1, horizontal=True,
+                    key="articulo_N",
+                )
+                ruido_sd = st.radio(
+                    "Desviación estándar del ruido gaussiano, σ",
+                    options=[0.5, 2.0], index=0, horizontal=True,
+                    key="articulo_sigma",
+                )
+                estacionalidad = st.checkbox(
+                    "Incluir estacionalidad trimestral (periodo de cuatro observaciones)",
+                    value=False, key="articulo_estacionalidad",
+                )
+                if estacionalidad:
+                    st.latex(
+                        r"\xi_t=D_{1,t}-0.5D_{2,t}"
+                        r"-2.5D_{3,t}+2D_{4,t}"
+                    )
+                semilla = st.number_input(
+                    "Semilla aleatoria", 0, 999999, 42,
+                    key="articulo_semilla",
+                )
+                simulacion_corta_articulo = (n == 50)
+                try:
+                    frame = make_article_synthetic(
+                        ARTICLE_TRENDS[familia], n=n,
+                        noise_sd=ruido_sd,
+                        seasonality=estacionalidad,
+                        seed=int(semilla),
+                    )
+                except (ValueError, ArithmeticError) as exc:
+                    st.error(f"No se pudo construir la serie: {exc}")
+                    st.stop()
+            else:
+                formula = st.text_input(
+                    "Expresión f(t)", FUNCIONES[familia],
+                    key=f"funcion_{familia}",
+                )
+                n = st.slider("Número de observaciones", 90, 600, 220, 10)
+                ruido_sd = st.slider("Escala del ruido, σ", 0.0, 5.0, 0.35, 0.05)
+                ruido = st.selectbox("Distribución del ruido", list(RUIDOS))
+                phi = st.slider(
+                    "Autocorrelación AR(1), φ", -0.90, 0.90, 0.0, 0.05
+                )
+                semilla = st.number_input("Semilla aleatoria", 0, 999999, 42)
+                try:
+                    frame = make_synthetic(
+                        formula, n, ruido_sd, RUIDOS[ruido], phi, int(semilla)
+                    )
+                except (ValueError, ArithmeticError) as exc:
+                    st.error(f"No se pudo construir la serie: {exc}")
+                    st.stop()
+            serie = familia
         elif fuente == "Yahoo Finance":
             symbols_text = st.text_input(
                 "Símbolos separados por comas", "SPY, AAPL, BTC-USD"
@@ -909,10 +967,17 @@ def main() -> None:
             "Órdenes de diferencias que se compararán, d",
             [1, 2, 3, 4], default=[1, 2, 3, 4],
         )
-        L = st.slider("Observaciones por ventana de ajuste, L", 25, 160, 60, 5)
-        h = st.slider("Horizonte de cada validación, h", 1, 20, 5)
+        L = st.slider(
+            "Observaciones por ventana de ajuste, L", 25, 160,
+            25 if simulacion_corta_articulo else 60, 5,
+        )
+        h = st.slider(
+            "Horizonte de cada validación, h", 1, 20,
+            3 if simulacion_corta_articulo else 5,
+        )
         test_size = st.slider(
-            "Observaciones reservadas para la prueba", 1, 20, 5
+            "Observaciones reservadas para la prueba", 1, 20,
+            3 if simulacion_corta_articulo else 5,
         )
         h_futuro = st.slider(
             "Horizonte del pronóstico posterior al último dato", 1, 30, 5

@@ -20,6 +20,9 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
+from experiments.smoothness_cv.article_simulations import (
+    ARTICLE_TRENDS, make_article_synthetic,
+)
 from experiments.smoothness_cv.live_lab import (
     RULES,
     make_synthetic,
@@ -571,35 +574,85 @@ def main() -> None:
         fuente = st.radio(
             "Tipo de datos", ["Función sintética", "Yahoo Finance", "Archivo CSV"]
         )
+        simulacion_corta_articulo = False
         if fuente == "Función sintética":
-            plantilla = st.selectbox("Familia de tendencia", list(FORMULAS))
-            expresion = st.text_input(
-                "Función generadora f(t)", FORMULAS[plantilla],
-                key=f"formula_{plantilla}",
-                help=(
-                    "Puede modificar la expresión usando t, números y operaciones. "
-                    "Funciones permitidas: sin, cos, tan, exp, log, sqrt, abs, "
-                    "tanh, where, minimum, maximum y clip."
-                ),
+            plantilla = st.selectbox(
+                "Familia de tendencia", list(ARTICLE_TRENDS) + list(FORMULAS)
             )
-            n = st.slider("Número de observaciones", 90, 600, 220, 10)
-            desviacion = st.slider(
-                "Escala de las innovaciones de ruido, σ", 0.0, 5.0, 0.35, 0.05
-            )
-            tipo_ruido = st.selectbox("Distribución del ruido", list(RUIDOS))
-            phi = st.slider(
-                "Autocorrelación del ruido AR(1), φ", -0.90, 0.90, 0.0, 0.05
-            )
-            semilla = st.number_input("Semilla aleatoria", 0, 999999, 42)
-            try:
-                datos = make_synthetic(
-                    expresion, n, desviacion,
-                    RUIDOS[tipo_ruido], phi, int(semilla),
+            articulo = plantilla in ARTICLE_TRENDS
+            if articulo:
+                st.caption(
+                    "Diseño del artículo con t = 1,…,N y u = t/N."
                 )
-            except (ValueError, ArithmeticError) as exc:
-                st.error(f"No se pudo generar la función: {exc}")
-                st.stop()
-            serie_nombre = "Serie sintética"
+                if ARTICLE_TRENDS[plantilla] == "linear":
+                    st.latex(r"\tau_t=\frac{4t}{N}")
+                else:
+                    st.latex(
+                        r"\tau_t=0.6\beta_{30,17}(t/N)"
+                        r"+0.4\beta_{3,11}(t/N)"
+                    )
+                n = st.radio(
+                    "Número de observaciones, N",
+                    [50, 200], index=1, horizontal=True,
+                    key="avanzado_articulo_N",
+                )
+                desviacion = st.radio(
+                    "Desviación estándar del ruido gaussiano, σ",
+                    [0.5, 2.0], index=0, horizontal=True,
+                    key="avanzado_articulo_sigma",
+                )
+                estacionalidad = st.checkbox(
+                    "Incluir estacionalidad trimestral (periodo de cuatro observaciones)",
+                    value=False, key="avanzado_articulo_estacionalidad",
+                )
+                if estacionalidad:
+                    st.latex(
+                        r"\xi_t=D_{1,t}-0.5D_{2,t}"
+                        r"-2.5D_{3,t}+2D_{4,t}"
+                    )
+                semilla = st.number_input(
+                    "Semilla aleatoria", 0, 999999, 42,
+                    key="avanzado_articulo_semilla",
+                )
+                simulacion_corta_articulo = (n == 50)
+                try:
+                    datos = make_article_synthetic(
+                        ARTICLE_TRENDS[plantilla],
+                        n=n, noise_sd=desviacion,
+                        seasonality=estacionalidad,
+                        seed=int(semilla),
+                    )
+                except (ValueError, ArithmeticError) as exc:
+                    st.error(f"No se pudo generar la función: {exc}")
+                    st.stop()
+            else:
+                expresion = st.text_input(
+                    "Función generadora f(t)", FORMULAS[plantilla],
+                    key=f"formula_{plantilla}",
+                    help=(
+                        "Puede modificar la expresión usando t, números y operaciones. "
+                        "Funciones permitidas: sin, cos, tan, exp, log, sqrt, abs, "
+                        "tanh, where, minimum, maximum y clip."
+                    ),
+                )
+                n = st.slider("Número de observaciones", 90, 600, 220, 10)
+                desviacion = st.slider(
+                    "Escala de las innovaciones de ruido, σ", 0.0, 5.0, 0.35, 0.05
+                )
+                tipo_ruido = st.selectbox("Distribución del ruido", list(RUIDOS))
+                phi = st.slider(
+                    "Autocorrelación del ruido AR(1), φ", -0.90, 0.90, 0.0, 0.05
+                )
+                semilla = st.number_input("Semilla aleatoria", 0, 999999, 42)
+                try:
+                    datos = make_synthetic(
+                        expresion, n, desviacion,
+                        RUIDOS[tipo_ruido], phi, int(semilla),
+                    )
+                except (ValueError, ArithmeticError) as exc:
+                    st.error(f"No se pudo generar la función: {exc}")
+                    st.stop()
+            serie_nombre = plantilla
         elif fuente == "Yahoo Finance":
             texto = st.text_input(
                 "Símbolos bursátiles (separados por comas)", "SPY, AAPL, BTC-USD"
@@ -674,12 +727,17 @@ def main() -> None:
             "Orden de la penalización por diferencias, d",
             options=[1, 2, 3, 4], value=2,
         )
-        ventana = st.slider("Longitud de la ventana de ajuste, L", 25, 160, 60, 5)
+        ventana = st.slider(
+            "Longitud de la ventana de ajuste, L", 25, 160,
+            25 if simulacion_corta_articulo else 60, 5,
+        )
         horizonte = st.slider(
-            "Horizonte de pronóstico por validación, h", 1, 20, 5
+            "Horizonte de pronóstico por validación, h", 1, 20,
+            3 if simulacion_corta_articulo else 5,
         )
         reserva = st.slider(
-            "Número de observaciones reservadas para prueba", 1, 20, 5
+            "Número de observaciones reservadas para prueba", 1, 20,
+            3 if simulacion_corta_articulo else 5,
         )
         paso = st.slider("Separación entre orígenes históricos", 1, 20, 5)
         origenes = st.slider("Máximo de orígenes históricos", 3, 30, 12)
