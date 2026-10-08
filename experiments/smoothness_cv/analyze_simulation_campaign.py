@@ -13,6 +13,7 @@ From repo root:
 from __future__ import annotations
 
 import argparse
+import gzip
 from pathlib import Path
 import sqlite3
 import json
@@ -37,6 +38,99 @@ def _summarize_independent(
     frame["ci95_high"]=frame["mean"]+1.96*frame["se"]
     frame.loc[frame.n_replicates<2,["se","ci95_low","ci95_high"]]=np.nan
     return frame
+
+
+
+def _stream_by_scenario(conn, query, filename, aggregate):
+    """Stream grouped seed-level records without loading millions of rows.
+
+    ORDER BY scenario is mandatory. Holds only one scenario's independent
+    replicates in memory, then releases them after aggregation.
+    """
+    pieces=[]
+    current=None
+    aggregates=[]
+    total=0
+    with gzip.open(filename, "wt", encoding="utf-8", newline="") as dest:
+        first=True
+        for chunk in pd.read_sql_query(query, conn, chunksize=20000):
+            labels=chunk["scenario"].to_numpy()
+            if len(labels)==0:
+                continue
+            boundaries=np.r_[0,np.flatnonzero(labels[:-1]!=labels[1:])+1,len(labels)]
+            for start,end in zip(boundaries[:-1],boundaries[1:]):
+                part=chunk.iloc[int(start):int(end)].copy()
+                name=str(labels[int(start)])
+                if current is not None and name!=current:
+                    frame=pd.concat(pieces,ignore_index=True)
+                    aggregates.append(aggregate(frame))
+                    pieces=[]
+                current=name
+                part.to_csv(dest,index=False,header=first)
+                first=False
+                total+=len(part)
+                pieces.append(part)
+        if pieces:
+            aggregates.append(aggregate(pd.concat(pieces,ignore_index=True)))
+    return pd.concat(aggregates,ignore_index=True) if aggregates else pd.DataFrame(),total
+
+
+def _aggregate_seed_means(seed_means):
+    group=[
+        "study","scenario","shape","n_obs","noise","sigma","seasonal",
+        "d","h","selector","is_oracle"
+    ]
+    agg=seed_means.groupby(group,dropna=False).agg(
+        n_replicates=("seed","nunique"),
+        n_outer_mean=("n_outer","mean"),
+        mean_msfe=("observed_msfe","mean"),
+        sd_msfe=("observed_msfe","std"),
+        mean_latent_msfe=("latent_msfe","mean"),
+        mean_recovery_mse=("recovery_mse","mean"),
+        mean_conditional_msfe=("conditional_msfe","mean"),
+        mean_s=("mean_selected_s","mean"),
+        sd_s=("mean_selected_s","std"),
+        mean_edf=("mean_edf","mean"),
+        mean_branch_support=("mean_branch_support","mean"),
+        mean_branch_count=("mean_branch_count","mean"),
+        mean_local_minima_count=("mean_local_minima_count","mean"),
+        fraction_s_zero=("at_zero","mean"),
+        fraction_s_one=("at_one","mean"),
+    ).reset_index()
+    agg["rmse_obs"]=np.sqrt(agg["mean_msfe"])
+    agg["rmse_latent"]=np.sqrt(agg["mean_latent_msfe"])
+    agg["se_msfe"]=agg.sd_msfe/np.sqrt(agg.n_replicates)
+    agg["ci95_msfe_low"]=agg.mean_msfe-1.96*agg.se_msfe
+    agg["ci95_msfe_high"]=agg.mean_msfe+1.96*agg.se_msfe
+    agg.loc[agg.n_replicates<2,["se_msfe","ci95_msfe_low","ci95_msfe_high"]]=np.nan
+    return agg
+
+
+def _aggregate_paired_seed_means(paired_seeds):
+    pair_group=[
+        "study","scenario","shape","n_obs","noise","sigma","seasonal",
+        "d","h","selector","is_oracle"
+    ]
+    paired=paired_seeds.groupby(pair_group,dropna=False).agg(
+        n_replicates=("seed","nunique"),
+        mean_paired_msfe_diff=("paired_msfe_diff","mean"),
+        sd_paired_msfe_diff=("paired_msfe_diff","std"),
+        mean_paired_latent_diff=("paired_latent_diff","mean"),
+        mean_paired_recovery_diff=("paired_recovery_diff","mean"),
+        mean_method_msfe=("method_msfe","mean"),
+        mean_baseline_msfe=("baseline_msfe","mean"),
+        win_fraction=("paired_msfe_diff",lambda x:float(np.mean(x<0))),
+    ).reset_index()
+    paired["relative_rmse"]=np.sqrt(
+        paired.mean_method_msfe/paired.mean_baseline_msfe
+    )
+    paired["se_paired_diff"]=paired.sd_paired_msfe_diff/np.sqrt(paired.n_replicates)
+    paired["ci95_paired_low"]=paired.mean_paired_msfe_diff-1.96*paired.se_paired_diff
+    paired["ci95_paired_high"]=paired.mean_paired_msfe_diff+1.96*paired.se_paired_diff
+    paired.loc[paired.n_replicates<2,[
+        "se_paired_diff","ci95_paired_low","ci95_paired_high"
+    ]]=np.nan
+    return paired
 
 
 def analyze(run_dir: Path, *, allow_partial: bool=False) -> dict[str,int]:
@@ -82,36 +176,11 @@ def analyze(run_dir: Path, *, allow_partial: bool=False) -> dict[str,int]:
       FROM outcomes
      GROUP BY study,scenario,shape,n_obs,noise,sigma,seasonal,
               seed,d,h,selector,is_oracle
+     ORDER BY scenario,seed,d,h,selector
     """
-    seed_means=pd.read_sql_query(query,conn)
-    seed_means.to_csv(output/"replicate_means.csv.gz",index=False,compression="gzip")
-    group=[
-        "study","scenario","shape","n_obs","noise","sigma","seasonal",
-        "d","h","selector","is_oracle"
-    ]
-    agg=seed_means.groupby(group,dropna=False).agg(
-        n_replicates=("seed","nunique"),
-        n_outer_mean=("n_outer","mean"),
-        mean_msfe=("observed_msfe","mean"),
-        sd_msfe=("observed_msfe","std"),
-        mean_latent_msfe=("latent_msfe","mean"),
-        mean_recovery_mse=("recovery_mse","mean"),
-        mean_conditional_msfe=("conditional_msfe","mean"),
-        mean_s=("mean_selected_s","mean"),
-        sd_s=("mean_selected_s","std"),
-        mean_edf=("mean_edf","mean"),
-        mean_branch_support=("mean_branch_support","mean"),
-        mean_branch_count=("mean_branch_count","mean"),
-        mean_local_minima_count=("mean_local_minima_count","mean"),
-        fraction_s_zero=("at_zero","mean"),
-        fraction_s_one=("at_one","mean"),
-    ).reset_index()
-    agg["rmse_obs"]=np.sqrt(agg["mean_msfe"])
-    agg["rmse_latent"]=np.sqrt(agg["mean_latent_msfe"])
-    agg["se_msfe"]=agg.sd_msfe/np.sqrt(agg.n_replicates)
-    agg["ci95_msfe_low"]=agg.mean_msfe-1.96*agg.se_msfe
-    agg["ci95_msfe_high"]=agg.mean_msfe+1.96*agg.se_msfe
-    agg.loc[agg.n_replicates<2,["se_msfe","ci95_msfe_low","ci95_msfe_high"]]=np.nan
+    agg, n_seed_rows = _stream_by_scenario(
+        conn, query, output/"replicate_means.csv.gz", _aggregate_seed_means
+    )
     agg.to_csv(output/"scenario_method_summary.csv",index=False)
     agg[agg.is_oracle==1].to_csv(output/"oracles_diagnostic_only.csv",index=False)
 
@@ -133,32 +202,12 @@ def analyze(run_dir: Path, *, allow_partial: bool=False) -> dict[str,int]:
        AND b.selector='pooled_uniform_all'
      GROUP BY a.study,a.scenario,a.shape,a.n_obs,a.noise,a.sigma,a.seasonal,
               a.seed,a.d,a.h,a.selector,a.is_oracle
+     ORDER BY a.scenario,a.seed,a.d,a.h,a.selector
     """
-    paired_seeds=pd.read_sql_query(pair_query,conn)
-    paired_seeds.to_csv(output/"paired_replicate_differences.csv.gz",index=False,compression="gzip")
-    pair_group=[
-        "study","scenario","shape","n_obs","noise","sigma","seasonal",
-        "d","h","selector","is_oracle"
-    ]
-    paired=paired_seeds.groupby(pair_group,dropna=False).agg(
-        n_replicates=("seed","nunique"),
-        mean_paired_msfe_diff=("paired_msfe_diff","mean"),
-        sd_paired_msfe_diff=("paired_msfe_diff","std"),
-        mean_paired_latent_diff=("paired_latent_diff","mean"),
-        mean_paired_recovery_diff=("paired_recovery_diff","mean"),
-        mean_method_msfe=("method_msfe","mean"),
-        mean_baseline_msfe=("baseline_msfe","mean"),
-        win_fraction=("paired_msfe_diff",lambda x:float(np.mean(x<0))),
-    ).reset_index()
-    paired["relative_rmse"]=np.sqrt(
-        paired.mean_method_msfe/paired.mean_baseline_msfe
+    paired, n_paired_rows = _stream_by_scenario(
+        conn, pair_query, output/"paired_replicate_differences.csv.gz",
+        _aggregate_paired_seed_means
     )
-    paired["se_paired_diff"]=paired.sd_paired_msfe_diff/np.sqrt(paired.n_replicates)
-    paired["ci95_paired_low"]=paired.mean_paired_msfe_diff-1.96*paired.se_paired_diff
-    paired["ci95_paired_high"]=paired.mean_paired_msfe_diff+1.96*paired.se_paired_diff
-    paired.loc[paired.n_replicates<2,[
-        "se_paired_diff","ci95_paired_low","ci95_paired_high"
-    ]]=np.nan
     paired.to_csv(output/"paired_scenario_comparisons.csv",index=False)
 
     # Across-scenario factor contrasts are descriptive and give equal weight
@@ -216,7 +265,7 @@ def analyze(run_dir: Path, *, allow_partial: bool=False) -> dict[str,int]:
     return {
         "replications_complete":finished,
         "replications_expected":expected,
-        "rows_seed_means":len(seed_means),
+        "rows_seed_means":n_seed_rows,
         "scenario_method_rows":len(agg),
         "paired_comparison_rows":len(paired),
     }
