@@ -36,7 +36,7 @@ def test_main_ui_is_valid_python_and_identifies_three_stages():
         "Validación 2: reglas y comparación",
         "Tendencia y pronóstico",
         "División cronológica",
-        "Matriz de comparación de candidatos",
+        "Matrices V: suavidades y errores",
     ):
         assert label in source
 
