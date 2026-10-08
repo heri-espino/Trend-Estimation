@@ -1,5 +1,19 @@
 # Working papers
 
+## Shared experimental evaluation
+
+Both papers now have a single proposed [simulation and evaluation
+protocol](SIMULATION_EVALUATION_PROTOCOL.md). It separately measures
+**future observed-series forecasting**, **past latent-trend recovery**,
+**future latent-trend forecasting**, and **selected normalized/raw
+smoothness and EDF**. Experiment A reuses Cortés-Toto et al.'s 2^4
+factorial design; Experiments B/C extend to polynomial degree,
+nonlinear shapes, dependent noise and nonstationary branch behavior.
+CV/GCV/AICc/BIC are **competing selection criteria**, not forecast
+metrics. Fixed/ad-hoc S values, original pooled CV, weighted pooled
+CV and matched tracked policies share identical outer evaluation.
+**This is a plan, not completed new simulation results.**
+
 ## Shared prospective F-weighting method, different decisions
 
 Papers 1 and 2 share the **same underlying PLS \(h\)-step historical
