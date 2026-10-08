@@ -392,7 +392,7 @@ def run_branch_lab(
                     matches.append((
                         branch, new, 0.0,
                         pd.DataFrame(columns=[
-                            "origin", "val2_end", "s_minimo", "val2_rmse"
+                            "origin", "val2_end", "s_minimo", "val2_mse"
                         ]),
                     ))
 
