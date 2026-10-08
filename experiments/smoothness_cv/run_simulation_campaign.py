@@ -44,19 +44,22 @@ from .simulation_evaluation import evaluate_replication
 FIELDS = (
     "task_key", "study", "scenario", "shape", "n_obs", "noise",
     "sigma", "seasonal", "seed", "origin", "d", "L", "h",
-    "selector", "is_oracle", "selected_s", "selected_lambda",
+    "selector", "is_oracle", "branch_support", "n_branches", "n_local_minima",
+    "selected_s", "selected_lambda",
     "edf", "raw_guerrero_s", "forecast_mse_obs", "forecast_mae_obs",
     "forecast_mse_latent", "forecast_mse_conditional",
     "past_recovery_mse", "fit_residual_mse", "lead_squared_errors",
 )
 NUMERIC = {
     "n_obs", "sigma", "seasonal", "seed", "origin", "d", "L", "h",
-    "is_oracle", "selected_s", "selected_lambda", "edf",
+    "is_oracle", "branch_support", "n_branches", "n_local_minima",
+    "selected_s", "selected_lambda", "edf",
     "raw_guerrero_s", "forecast_mse_obs", "forecast_mae_obs",
     "forecast_mse_latent", "forecast_mse_conditional",
     "past_recovery_mse", "fit_residual_mse",
 }
-INTS = {"n_obs","seasonal","seed","origin","d","L","h","is_oracle"}
+INTS = {"n_obs","seasonal","seed","origin","d","L","h","is_oracle",
+        "branch_support","n_branches","n_local_minima"}
 
 
 def utc_now() -> str:
