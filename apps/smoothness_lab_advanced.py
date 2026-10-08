@@ -23,6 +23,7 @@ import streamlit as st
 from experiments.smoothness_cv.article_simulations import (
     ARTICLE_TRENDS, make_article_synthetic,
 )
+from experiments.smoothness_cv.full_series import smooth_full_series
 from experiments.smoothness_cv.live_lab import (
     RULES,
     make_synthetic,
@@ -561,12 +562,22 @@ def _grafica_matriz(H: np.ndarray, *, solo_magnitud: bool) -> go.Figure:
     return fig
 
 
+@st.cache_data(show_spinner=False, max_entries=16)
+def cached_full_series(
+    values: tuple[float, ...], order: int, smoothness: float,
+) -> np.ndarray:
+    return smooth_full_series(
+        np.asarray(values, dtype=float), order=order, smoothness=smoothness,
+    )
+
+
 def main() -> None:
-    st.set_page_config(page_title="Laboratorio de suavizamiento", layout="wide")
-    st.title("Laboratorio de suavizamiento de tendencias para pronósticos")
+    st.set_page_config(page_title="CV dinámico de ramas · Legado", layout="wide")
+    st.title("Laboratorio de ramas dinámicas · Versión histórica (legado)")
     st.caption(
-        "Mínimos locales de pérdida predictiva, validación cronológica y "
-        "selección dinámica de suavidad mediante ramas persistentes."
+        "Versión histórica del Laboratorio de suavizamiento de tendencias para "
+        "pronósticos. Sigue mínimos locales y compara la regla dinámica con "
+        "la validación agrupada; el laboratorio de F promedio es independiente."
     )
 
     with st.sidebar:
@@ -591,14 +602,14 @@ def main() -> None:
                         r"\tau_t=0.6\beta_{30,17}(t/N)"
                         r"+0.4\beta_{3,11}(t/N)"
                     )
-                n = st.radio(
+                n = st.slider(
                     "Número de observaciones, N",
-                    [50, 200], index=1, horizontal=True,
+                    min_value=50, max_value=200, value=200, step=10,
                     key="avanzado_articulo_N",
                 )
-                desviacion = st.radio(
+                desviacion = st.slider(
                     "Desviación estándar del ruido gaussiano, σ",
-                    [0.5, 2.0], index=0, horizontal=True,
+                    min_value=0.5, max_value=2.0, value=0.5, step=0.05,
                     key="avanzado_articulo_sigma",
                 )
                 estacionalidad = st.checkbox(
@@ -872,6 +883,45 @@ def main() -> None:
             "Ajustar el eje vertical a los datos históricos", True,
             help="Los pronósticos extremadamente alejados pueden quedar fuera del gráfico.",
         )
+        mostrar_toda = st.checkbox(
+            "Suavizar toda la serie con el orden d y S del método dinámico",
+            value=False, key="legado_tendencia_completa",
+        )
+        if mostrar_toda:
+            tendencia_completa = cached_full_series(
+                tuple(float(v) for v in observados), orden, resultado.final_s
+            )
+            x_completo, eje_completo = _eje_x(transformados)
+            figura_completa = go.Figure()
+            figura_completa.add_scatter(
+                x=x_completo, y=observados, mode="lines",
+                name="Observaciones completas",
+                line={"color": COLORES["observado"], "width": 1.6},
+            )
+            figura_completa.add_scatter(
+                x=x_completo, y=tendencia_completa, mode="lines",
+                name="Tendencia descriptiva de la serie completa",
+                line={"color": COLORES["seleccionado"], "width": 3},
+            )
+            if "latent" in transformados:
+                figura_completa.add_scatter(
+                    x=x_completo, y=transformados["latent"], mode="lines",
+                    name="Tendencia verdadera sintética",
+                    line={"color": COLORES["latente"], "dash": "dot"},
+                )
+            st.plotly_chart(
+                _estilo(
+                    figura_completa,
+                    titulo="Suavizamiento retrospectivo de la serie completa",
+                    eje_x=eje_completo, eje_y=unidad, altura=470,
+                ),
+                use_container_width=True,
+            )
+            st.caption(
+                "Se usa S seleccionado antes del test, pero la curva incluye "
+                "todas las observaciones, también las reservadas. Por tanto "
+                "es un ajuste descriptivo, NO un pronóstico fuera de muestra."
+            )
         st.plotly_chart(
             _grafica_serie(
                 transformados, resultado, vista=VISTAS[vista_es],
