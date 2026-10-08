@@ -74,7 +74,8 @@ def _download_table(label: str, frame: pd.DataFrame, file_name: str) -> None:
 
 def _line_plot(frame: pd.DataFrame, result, *, chart_type: str,
                display_s: float, manual_s: float, order: int,
-               reveal_test: bool, show_baseline: bool) -> go.Figure:
+               reveal_test: bool, show_baseline: bool,
+               show_latent: bool) -> go.Figure:
     y = frame["observed"].to_numpy(dtype=float)
     x = (pd.to_datetime(frame["date"]) if "date" in frame.columns
          else np.arange(len(frame)))
@@ -105,6 +106,12 @@ def _line_plot(frame: pd.DataFrame, result, *, chart_type: str,
             fig.add_scatter(x=x[end:], y=y[end:], mode="lines+markers",
                             name="Untouched test (reveal only)",
                             line={"dash": "dot"})
+        if show_latent and "latent" in frame:
+            fig.add_scatter(
+                x=x[:end], y=frame["latent"].to_numpy(dtype=float)[:end],
+                mode="lines", name="Known latent function",
+                line={"dash": "dot", "width": 2},
+            )
         if chart_type == "Trend, residual and forecast":
             fig.add_scatter(x=train_x, y=result.trend, mode="lines",
                             name="Selected trend")
@@ -286,12 +293,16 @@ def main():
     ])
     show_baseline = other.checkbox("Overlay pooled-CV baseline", True)
     reveal_test = third.checkbox("Reveal untouched test observations", False)
+    show_latent = st.checkbox(
+        "Overlay generating function (synthetic truth)",
+        value=True, disabled="latent" not in transformed,
+    )
     manual_s = st.slider("Manual comparison smoothness S", 0.0, 1.0, 0.75, 0.01)
     st.plotly_chart(
         _line_plot(transformed, result, chart_type=view,
                    display_s=result.final_s, manual_s=manual_s,
                    order=order, reveal_test=reveal_test,
-                   show_baseline=show_baseline),
+                   show_baseline=show_baseline, show_latent=show_latent),
         use_container_width=True,
     )
     if reveal_test:
