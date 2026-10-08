@@ -100,7 +100,7 @@ def _safe_rule(rule, *, current_s: float, prior: pd.DataFrame, observed_at: int)
     # History S values are the Val1 local minima; historical losses refer to
     # THIS rule, hence weighted rules cannot use a different rule's score.
     s = history["s_minimo"].to_numpy(dtype=float)
-    losses = history["val2_rmse"].to_numpy(dtype=float)
+    losses = history["val2_mse"].to_numpy(dtype=float)
     raw, meta = apply_rule(
         rule, history_s=s, history_val2_loss=losses,
         current_s=current_s,
@@ -145,7 +145,7 @@ def _method_minima(
 
     cache = {}
     s_hist = known["s_minimo"].to_numpy(float)
-    errors = known["val2_rmse"].to_numpy(float)
+    errors = known["val2_mse"].to_numpy(float)
 
     def evaluate(input_s):
         key = round(float(np.clip(input_s, 0, 1)), 12)
