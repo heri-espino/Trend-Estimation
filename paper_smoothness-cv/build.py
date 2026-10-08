@@ -87,6 +87,7 @@ def validate_layout() -> None:
         "04_forecast_optimal_smoothness.tex",
         "05_properties.tex",
         "05_dynamic_extension.tex",
+        "09_exploratory_evaluation.tex",
         "06_evaluation_protocol.tex",
         "07_empirical_evidence.tex",
         "07_scope_and_implications.tex",

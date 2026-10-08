@@ -1,145 +1,101 @@
-\section{Evaluation design}
+\section{Simulation and evaluation design}
 \label{sec:evaluation}
 
-The primary experiment asks whether chronological, horizon-matched
-forecast-MSE minimization is a useful rule for selecting normalized PLS
-smoothness compared with conventional smoothing criteria. This question
-is complete without time-adaptive smoothing. Separate experiments
-investigate optional dynamic decisions based on local-minimum histories:
-first comparing branch-based rules against pooled forecast-CV and then
-examining multiple mappings $\phi(V_j)$ on the same branches. These
-additional maps encode distinct assumptions; no universally best
-functional is prespecified.
+\subsection{Forecast-origin chronology and refitting}
 
-\subsection{Chronological information and refitting}
+The primary experiment asks whether a
+chronological horizon-matched mean
+squared forecast-error criterion gives
+better smoothness decisions than
+conventional smoothing criteria.
+At each outer origin $T$, only completed
+historical $h$-step validation blocks
+can contribute to the selection:
+$t_m+h\le T$. Every candidate $S$
+is used to fit the window ending at
+$t_m$, and the fitted trend is continued
+through that historical validation
+block. Once smoothness has been
+selected, all intermediate fits are
+discarded and a new trend is fitted
+on the latest $L$ observations.
+Neither the current forecast's future
+outcomes nor its outer-test errors
+are used for tuning.
 
-For a forecast origin $T$, pooled forecast-CV uses only historical
-training/validation windows for which the $h$-step outcome has already
-been observed by $T$. Optional branch histories must satisfy the same
-information restriction.
-A completed branch row contains the minimum located using Validation 1,
-then a Validation-2 score computed after the trend is refit through
-Validation 1. These scores are available for historical branch rows only.
-The current final-Validation-1 minimum has no realized Validation-2 score
-and is not assigned one when loss-weighting past observations.
+The feasible comparators are
+horizon-matched forecast-CV, one-step
+forecast-CV, ordinary CV, generalized
+CV (GCV), and AICc. Non-feasible
+latent signal-recovery and latent
+forecast oracles are computed only in
+simulations and are distinguished
+from operational selectors.
 
-For every evaluated rule the final trend is re-estimated on the latest
-$L$ observations available at $T$. The temporary fits used to find minima
-or score the validation blocks never enter the operational forecast as
-historical fitted-trend averages. When forecast origins advance, the
-information set and the branch histories advance chronologically.
+\subsection{Frozen factorial Monte Carlo design}
 
-\subsection{Pooled forecast tuning}
+Checkpoint 03 fixes $d=2$ and $L=60$
+and crosses five latent trend mechanisms,
+three observation-noise mechanisms
+(iid Gaussian, AR(1), and Student-$t$),
+two noise scales, and 100 seeds.
+The resulting $5\times3\times2\times100$
+configurations comprise 3,000 scenarios.
+Each scenario has six outer forecast origins
+evaluated at $h\in\{1,3,6,12\}$, giving
+\begin{equation}
+\label{eq:simulation_sample_count}
+3000\times6\times4=72{,}000
+\end{equation}
+outer-origin--horizon evaluations. Designs,
+seeds, and output artifacts were frozen for
+the paper-scale run. Innovations are reused
+across some trend mechanisms within a seed,
+so these evaluations are neither
+statistically independent nor separate
+confirmations of one preferred model.
 
-The proposed pooled forecast-CV method averages historical forecast errors across origins
-for fixed $(d,L,h)$ and minimizes the resulting objective in normalized
-smoothness. Checkpoint 03 fixes $d=2$, $L=60$, horizons $1,3,6,12$,
-five latent trend mechanisms, and iid Gaussian, AR(1), and Student-$t$
-disturbances. It compares horizon-matched forecast-CV with one-step
-forecast-CV, ordinary CV, GCV, and AICc, as well as non-feasible
-simulation-only latent oracles. The simulation reuses innovations across
-different trend mechanisms within a given seed; uncertainty calculations
-must therefore respect the seed as the resampling unit.
+\subsection{Losses and uncertainty units}
 
-\subsection{Tracked-minimum evaluation}
+The tuning objective is historical
+future-block mean squared error (MSE)
+at the actual forecast horizon.
+Outer-test accuracy is summarized by
+root mean squared forecast error (RMSFE).
+A geometric average of paired RMSFE
+ratios below one favors the numerator
+selection method. Such a geometric ratio
+is not the same statistic as the
+RMSFE obtained by pooling all test
+errors over origins and horizons.
+Comparisons use a common panel and
+loss scale; their numbers should
+not be pooled with distinct empirical
+evaluation programs.
 
-The branch experiments recover local minima at historical rolling
-origins, connect nearby candidates with a one-to-one correspondence
-under a fixed continuation radius, and summarize each branch by
-persistence and the subsequent Validation-2 loss. The baseline
-historical selector $\psi$ prefers persistent, predictive branches.
-Different maps $\phi$ act on the selected branch while sharing the
-same numerical candidate recovery, branch identities, and outer
-test blocks.
+Seed-level resampling, rather than
+treating every outer forecast as
+independent, is appropriate for assessing
+the variability of the paired
+simulation comparisons. The checkpoint
+provides descriptive seed-resampling
+summaries. No uniform risk inequality
+or universal statistical dominance
+is inferred from their numerical values.
 
-Checkpoint 04 used a four-series development and reserved-confirmation
-design. The recency-weighted rule with three-origin half-life was
-frozen before evaluating the 16 held-out confirmation blocks.
-Checkpoint 05 applied it without retuning to 64 other financial
-series, each with four outer blocks. Its broader results motivated
-Checkpoint 06, a \emph{post-hoc} analysis of native continuation
-stability using earlier blocks from the same series. The order
-restriction in that diagnostic is explanatory; it is not a new
-external confirmation.
+\subsection{Bounded smoothness optimization}
 
-\subsection{Controlled dynamic roughness and the rule family}
-
-Checkpoint 07 fixes $d=2$ and studies 1,200 simulated scenarios with
-constant, gradually changing, or abruptly switching latent
-slope-innovation variance, using 100 seeds and two observation-noise
-scales. It provides a controlled comparison between the pooled
-selector, the newest local minimum, and recency averaging along a
-tracked branch.
-
-Checkpoint 08 uses a disjoint set of 100 seeds and the same family
-of roughness mechanisms. It fixes the underlying branch selection
-while evaluating several maps $\phi$, including linear trends fitted
-to recent smoothness values, exponentially weighted linear trends,
-and weighted increments. A raw extrapolated smoothness outside
-$[0,1]$ is projected onto that interval before the fresh final fit.
-The frequency of projection is reported alongside forecast-error
-ratios, since it is a distinctive behavior of extrapolative
-functionals.
-
-\subsection{Metrics and interpretation}
-
-The financial panels use \emph{level} RMSE; the controlled
-roughness simulations use \emph{log}-scale RMSE. For comparisons
-performed on a common outer test block, the summary is the
-geometric mean of the paired RMSE ratios. Ratios below one favor
-the numerator's rule, but these ratios must not be compared across
-incompatible series panels or scales as though they were one
-pooled experiment.
-
-Uncertainty summaries from the four-series confirmation and
-64-series financial panels are descriptive, especially because
-asset returns share shocks and the confirmation sample has only
-four series. Results from different checkpoints cannot be treated
-as repeated independent confirmations of a single rule.
-The forecast-MSE tuning criterion can be evaluated without tracking
-local minima. The optional adaptive analysis additionally studies
-how histories of minima may be used for hyperparameter decisions.
-These analyses share the same information-safe forecast protocol.
-
-
-\subsection{Illustrated chronology}
-
-\Cref{fig:workflow_tutorial} follows one fixed synthetic example
-through the complete information flow. A historical Validation-1 block
-identifies local minima, and the following Validation-2 block scores their
-forecasts after refitting through Validation 1. These observations contribute
-to tracked branch histories. A later, \emph{current} Validation-1 block
-continues the existing branches but has no Validation-2 score from the
-untouched outer test. Only then do the pooled and branch-based rules
-produce their selected smoothness values. The operational trend is
-refitted on the latest available window, and the future test outcomes
-are revealed solely for the final forecast illustration and evaluation.
-The same three decisions are displayed throughout the figure; their
-example-specific accuracy is not used to select a preferred
-$\phi(V_j)$.
-
-\begin{figure}[p]
-\centering
-\includegraphics[
-    width=\textwidth,
-    height=0.73\textheight,
-    keepaspectratio
-]{figures/fig_workflow_tutorial.pdf}
-\caption{A chronological tutorial of forecast-smoothness selection,
-using the pre-specified synthetic seed 100 with a switch to roughness
-($d=2$, $L=120$, $h=20$).
-(A) A historical train/Validation-1/Validation-2 sequence followed by
-a separate current Validation-1 block and the untouched test; the
-historical Validation-2 forecast is refitted after Validation 1.
-(B) New trend fits on the latest $L$ observations for pooled forecast-CV,
-the newest tracked minimum, and a recency-weighted branch mean.
-(C) Their multi-step test forecasts, shown with realized observations
-only after selection.
-(D) The \emph{current Validation-1} forecast-loss curve, its recovered
-local minima, and the three smoothness choices. This is not a test-loss
-curve; pooled and aggregated choices need not be minima of this surface.
-(E) Historical local-minimum branches, the current continued minimum,
-and final decisions $\phi(V_j)$. The illustration is pedagogical and
-was not selected for favorable outer-test performance.}
-\label{fig:workflow_tutorial}
-\end{figure}
+Numerical search takes place over
+$S\in[0,1]$ and includes the
+exact two limiting smoothing models.
+Forecast-loss curves are not assumed
+unimodal. Adaptive derivative sampling,
+Brent refinement of bracketed roots,
+and endpoint comparison produce
+candidate minimizers without a
+truncated penalty grid in $\lambda$.
+These operations are a numerical
+implementation of the statistical CV
+criterion; the adaptive search is not
+a mathematical certificate that every
+possible stationary root was found.
