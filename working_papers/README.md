@@ -2,7 +2,7 @@
 
 ## Shared prospective F-weighting method, different decisions
 
-Papers 1 and 3 share the **same underlying PLS \(h\)-step historical
+Papers 1 and 2 share the **same underlying PLS \(h\)-step historical
 forecast-loss curves** and **method-dependent temporally weighted
 surfaces** \(F_r^{(m,d,L,h)}(S)\), defined in
 [WEIGHTED_SURFACE_PROTOCOL.md](WEIGHTED_SURFACE_PROTOCOL.md).
@@ -28,8 +28,8 @@ manuscripts are working drafts, not synchronized submission versions.
 **Three active independent research manuscripts, in priority order:**
 
 1. [Working Paper - Smoothness Cross Validation](Working%20Paper%20-%20Smoothness%20Cross%20Validation/)
-2. [Working Paper - Numerical Methods](Working%20Paper%20-%20Numerical%20Methods/)
-3. [Working Paper - Dynamic Branch Selection](Working%20Paper%20-%20Dynamic%20Branch%20Selection/)
+2. [Working Paper - Dynamic Branch Selection](Working%20Paper%20-%20Dynamic%20Branch%20Selection/)
+3. [Working Paper - Numerical Methods](Working%20Paper%20-%20Numerical%20Methods/)
 
 Each paper has its own thesis, manuscript, bibliography,
 experiments, research log and unresolved questions.
