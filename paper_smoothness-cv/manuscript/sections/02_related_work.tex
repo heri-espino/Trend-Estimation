@@ -135,11 +135,12 @@ continuation operator and an operational final refit. Its
 performance is compared with one-step forecast tuning and
 classical criteria for the smoothing penalty.
 
-The objective can be multimodal. The companion numerical-methods
-paper addresses stationary-point discovery, Brent refinement,
-and endpoint comparison; Sturm-based certification remains
-exploratory. The forecasting paper additionally illustrates
-time-adaptive selection from tracked histories of local minima.
-This optional extension requires assumptions about how
-past preferred smoothing regimes inform future choices;
-it is not the defining contribution of the pooled criterion.
+The objective can be multimodal, making stationary-point discovery,
+Brent refinement, and endpoint comparison relevant to practical
+implementation. These numerical requirements do not alter the
+statistical definition of the forecast-MSE criterion. In particular,
+searching a normalized $S$ grid covers the full interval between
+limiting smoothing regimes, without imposing an arbitrary finite
+upper limit on $\lambda$. Time-adaptive selection from historical
+minima is an additional, optional decision layer requiring
+assumptions about persistence and changing data dynamics.
