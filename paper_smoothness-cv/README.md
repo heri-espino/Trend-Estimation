@@ -8,9 +8,11 @@
 
 ## Central scientific question
 
-For a finite-difference penalized trend, can the local minima of a chronological
-forecast-loss surface be tracked through time and used to choose the current
-smoothness more effectively than a single pooled forecast-CV optimum?
+For a finite-difference penalized trend, how can local minima of chronological
+forecast-loss surfaces be represented as persistent temporal branches, and
+which distinct smoothness-decision functionals can be defined on the resulting
+branch histories? Whether a particular rule improves forecasts relative to
+pooled forecast-CV is an empirical question, not a property of the framework.
 
 The paper now distinguishes two objects.
 
@@ -76,9 +78,11 @@ for branch selection and
 
 for the current smoothness extracted from the selected branch.
 
-Candidate `phi` rules include the newest local minimum, recent mean/median,
-Validation-2 weighted smoothness, recency-plus-Validation-2 weighting, and
-later a forecast of the smoothness trajectory itself.
+Examples of `phi` include the newest minimum, recent mean/median,
+Validation-2 weighted smoothness, recency-plus-Validation-2 weighting,
+and extrapolation of the smoothness trajectory using recent linear trends
+or historical smoothness increments. These are demonstrations of a design
+family, not contestants for one universal winner.
 
 Canonical formulation: `notes/dynamic_tracked_smoothness.md`.
 
@@ -156,20 +160,27 @@ This paper owns:
 
 Do not merge those contributions.
 
-## Current empirical status
+## Completed empirical evidence
 
-CP01 and CP02 explored the simpler pooled selector. CP03 is a frozen
-paper-scale run of that pooled baseline and should be retained as baseline
-evidence even though the paper's central direction has now expanded.
+- CP03: frozen 3,000-scenario, 72,000-block simulation of horizon-matched
+  pooled forecast-CV and classical smoothness benchmarks.
+- CP04: 16 reserved outer tests from four heterogeneous time series;
+  frozen recency branch rule / pooled CV gRMSE = 0.692.
+- CP05: 64 previously unused financial series, 256 outer tests;
+  frozen recency / pooled CV gRMSE = 1.642. Broad-panel superiority
+  was not established.
+- CP06: post-hoc continuation-order diagnostics identify high-order
+  extrapolation as a major source of unstable forecast paths.
+- CP07: 1,200 controlled roughness scenarios, 9,600 outer decisions;
+  recency / pooled CV observed-log-RMSE = 1.037 overall.
+- CP08: fresh 1,200-scenario demonstration of several maps
+  \(\phi(V_j)\) from identical branch histories, including three
+  reproducible figures and boundary-clipping diagnostics.
 
-The next experiment must compare dynamic branch rules on the **same tracked
-branches and same untouched test blocks**. Do not retune CP03 after viewing its
-results.
+CP08 closes the rule-family demonstration stage; no universally best
+functional is claimed. The next step is to compile and review the
+manuscript, including the completed empirical section and illustrations.
 
-Existing `experiments/numerical_smoothness_selection/run_two_stage_order_validation.py`
-already implements the core branch-tracking chronology and the `last` rule.
-It also stores mean/median/recent smoothness summaries. The next smoothness-CV
-checkpoint should formalize and compare `phi` rules without test leakage.
 
 ## Read first
 
