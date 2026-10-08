@@ -138,17 +138,19 @@ def _style(fig: go.Figure, title: str, xaxis: str, yaxis: str,
 def _timeline(result) -> go.Figure:
     """Cada fila muestra el intervalo exacto utilizado en el experimento."""
     L = result.window
-    a, b, c, e, n = (
-        result.val1_start, result.val1_end,
-        result.val2_end, result.pretest_end, result.test_end,
+    a, b, c, e, n, f = (
+        result.val1_start, result.val1_end, result.val2_end,
+        result.pretest_end, result.test_end, result.forecast_end,
     )
     spans = [
-        (3, a-L, a, "Ajuste inicial", "#737373"),
-        (3, a, b, "Validación 1", COLORES_D[1]),
-        (2, b-L, b, "Nuevo ajuste", "#737373"),
-        (2, b, c, "Validación 2", COLORES_D[3]),
-        (1, e-L, e, "Ajuste final", "#737373"),
-        (1, e, n, "Prueba reservada", COLORES_D[2]),
+        (4, a-L, a, "Ajuste inicial", "#737373"),
+        (4, a, b, "Validación 1", COLORES_D[1]),
+        (3, b-L, b, "Nuevo ajuste", "#737373"),
+        (3, b, c, "Validación 2", COLORES_D[3]),
+        (2, e-L, e, "Ajuste retrospectivo", "#737373"),
+        (2, e, n, "Prueba reservada", COLORES_D[2]),
+        (1, n-L, n, "Ajuste con todos los datos", "#737373"),
+        (1, n, f, "Pronóstico futuro", COLORES_D[3]),
     ]
     fig = go.Figure()
     for row, left, right, label, color in spans:
@@ -167,12 +169,12 @@ def _timeline(result) -> go.Figure:
     )
     fig.update_layout(barmode="overlay", hovermode="closest")
     fig.update_yaxes(
-        tickmode="array", tickvals=[1, 2, 3],
-        ticktext=["Ajuste definitivo y prueba", "Selección en validación 2",
-                  "Búsqueda en validación 1"],
-        range=[0.5, 3.5], showgrid=False,
+        tickmode="array", tickvals=[1, 2, 3, 4],
+        ticktext=["Pronóstico operativo", "Evaluación en prueba",
+                  "Selección en validación 2", "Búsqueda en validación 1"],
+        range=[0.5, 4.5], showgrid=False,
     )
-    fig.update_xaxes(range=[0, n+1])
+    fig.update_xaxes(range=[0, f+1])
     return fig
 
 
@@ -242,48 +244,70 @@ def _val2_figure(result) -> go.Figure:
     return fig
 
 
+def _future_axis(frame: pd.DataFrame, length: int):
+    """Future labels; dates are approximations, not market calendars."""
+    if "date" not in frame.columns:
+        return np.arange(len(frame)+1, len(frame)+length+1)
+    dates = pd.to_datetime(frame["date"])
+    tail = pd.DatetimeIndex(dates.iloc[-min(14, len(dates)):])
+    try:
+        frequency = pd.infer_freq(tail)
+    except (TypeError, ValueError):
+        frequency = None
+    if frequency:
+        return pd.date_range(start=tail[-1], periods=length+1, freq=frequency)[1:]
+    delta = pd.Series(tail).diff().dropna().median()
+    if pd.isna(delta) or delta <= pd.Timedelta(0):
+        delta = pd.Timedelta(days=1)
+    if delta <= pd.Timedelta(days=1) and all(d.weekday() < 5 for d in tail):
+        return pd.bdate_range(start=tail[-1], periods=length+1)[1:]
+    return [tail[-1] + i*delta for i in range(1, length+1)]
+
+
 def _forecast_figure(frame: pd.DataFrame, result, unidad: str, *,
                      reveal: bool, truth: bool) -> go.Figure:
     x, label_x = _axis(frame)
     y = frame["observed"].to_numpy(dtype=float)
-    a, e, n = result.train_start, result.pretest_end, result.test_end
+    a, n = result.train_start, result.test_end
+    x_futuro = _future_axis(frame, result.future_horizon)
     fig = go.Figure()
     fig.add_scatter(
-        x=x[:e], y=y[:e], mode="lines", name="Serie observada anterior a la prueba",
+        x=x, y=y, mode="lines", name="Serie observada (todos los datos disponibles)",
         line={"color": "#656565", "width": 1.75},
     )
     if truth and "latent" in frame:
         fig.add_scatter(
-            x=x[:e], y=frame["latent"].to_numpy(dtype=float)[:e],
+            x=x, y=frame["latent"].to_numpy(dtype=float),
             mode="lines", name="Componente verdadera de la simulación",
             line={"color": "#9C6BB3", "dash": "dot", "width": 1.8},
         )
     fig.add_scatter(
-        x=x[a:e], y=result.trend,
-        mode="lines", name=f"Tendencia reajustada (d = {result.selected_order})",
+        x=x[a:n], y=result.trend,
+        mode="lines", name=f"Tendencia final reajustada (d = {result.selected_order})",
         line={"color": "#D55E00", "width": 3},
     )
     fig.add_scatter(
-        x=x[e:n], y=result.forecast,
-        mode="lines+markers", name=f"Pronóstico con S = {result.selected_s:.4f}",
+        x=x_futuro, y=result.forecast,
+        mode="lines+markers", name=f"Pronóstico futuro con S = {result.selected_s:.4f}",
         marker={"size": 8},
         line={"color": "#D55E00", "width": 2.8, "dash": "dash"},
     )
     if reveal:
+        e = result.pretest_end
         fig.add_scatter(
-            x=x[e:n], y=y[e:n], mode="lines+markers",
-            name="Observaciones de prueba (solo evaluación)",
-            marker={"size": 7},
-            line={"color": "#202020", "dash": "dot", "width": 1.8},
+            x=x[e:n], y=result.evaluation_forecast,
+            mode="lines+markers", name="Pronóstico retrospectivo para prueba",
+            marker={"size": 6},
+            line={"color": "#0072B2", "width": 2, "dash": "dot"},
         )
-    if e < n:
+    if len(x_futuro):
         fig.add_vrect(
-            x0=x[e], x1=x[n-1], fillcolor="#E5E7EB",
-            opacity=0.5, line_width=0, layer="below",
+            x0=x_futuro[0], x1=x_futuro[-1],
+            fillcolor="#E5E7EB", opacity=0.5, line_width=0, layer="below",
         )
-        fig.add_vline(x=x[e], line_dash="dot", line_color="#858585")
+        fig.add_vline(x=x[-1], line_dash="dot", line_color="#858585")
     return _style(
-        fig, "Tendencia estimada y pronóstico desde el último origen",
+        fig, "Tendencia reajustada y pronóstico posterior al último dato real",
         label_x, unidad, height=540,
     )
 
