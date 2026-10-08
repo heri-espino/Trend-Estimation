@@ -1,5 +1,5 @@
 # Backward-compatible Windows alias. Now preparation ONLY; never compiles LaTeX.
-# Prefer paper_smoothness-cv/prepare-paper.ps1.
+# Prefer working_papers/Working Paper - Smoothness Cross Validation/prepare-paper.ps1.
 param(
     [switch]$SkipInstall,
     [switch]$SkipTests

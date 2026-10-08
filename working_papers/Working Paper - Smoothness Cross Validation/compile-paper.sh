@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # macOS: compile LaTeX ONLY. All figures are generated and committed on Windows.
-# From the repository root: bash paper_smoothness-cv/compile-paper.sh
+# From the repository root: bash working_papers/Working Paper - Smoothness Cross Validation/compile-paper.sh
 set -euo pipefail
 
-ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$ROOT"
 
 if ! command -v python3 >/dev/null 2>&1; then
@@ -20,12 +20,12 @@ if ! command -v bibtex >/dev/null 2>&1; then
 fi
 
 echo "=== Validate committed LaTeX sources and figures ==="
-python3 paper_smoothness-cv/build.py --check
+python3 "working_papers/Working Paper - Smoothness Cross Validation/build.py" --check
 
 echo "=== Compile standard article using pdflatex/BibTeX ==="
-python3 paper_smoothness-cv/build.py
+python3 "working_papers/Working Paper - Smoothness Cross Validation/build.py"
 
-PDF="paper_smoothness-cv/EspinoMontelongo-2026-Forecast_Optimal_Smoothness.pdf"
+PDF="working_papers/Working Paper - Smoothness Cross Validation/EspinoMontelongo-2026-Forecast_Optimal_Smoothness.pdf"
 if [[ ! -s "$PDF" ]]; then
   echo "ERROR: compiled PDF not found or empty: $PDF" >&2
   exit 1

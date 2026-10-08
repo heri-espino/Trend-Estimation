@@ -3,9 +3,9 @@
 
 Usage
 -----
-python paper_smoothness-cv/build.py
-python paper_smoothness-cv/build.py --check
-python paper_smoothness-cv/build.py --clean
+python "working_papers/Working Paper - Smoothness Cross Validation/build.py"
+python "working_papers/Working Paper - Smoothness Cross Validation/build.py" --check
+python "working_papers/Working Paper - Smoothness Cross Validation/build.py" --clean
 """
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ import re
 PAPER_DIR = Path(__file__).resolve().parent
 SOURCE_DIR = PAPER_DIR / "manuscript"
 CORE_FIGURE_SOURCE_DIR = (
-    PAPER_DIR.parent
+    PAPER_DIR.parent.parent
     / "results"
     / "smoothness_cv"
     / "checkpoint_03"
@@ -33,24 +33,7 @@ CORE_FIGURE_NAMES = (
     "fig_sim04_smoothness_targets.pdf",
 )
 
-FIGURE_SOURCE_DIR = (
-    PAPER_DIR.parent
-    / "results"
-    / "smoothness_cv"
-    / "checkpoint_08"
-    / "20261007T072243Z_paper_be492a8"
-    / "paper_artifacts"
-    / "figures"
-)
-FIGURE_NAMES = (
-    "fig_cp08_illustrative_smoothness_selections.pdf",
-    "fig_cp08_rule_clipping.pdf",
-    "fig_cp08_rule_family_losses.pdf",
-)
-WORKFLOW_FIGURE = SOURCE_DIR / "figures" / "fig_workflow_tutorial.pdf"
-WORKFLOW_GENERATOR = (
-    "python experiments/smoothness_cv/make_workflow_tutorial_figure.py"
-)
+
 BUILD_DIR = PAPER_DIR / "build"
 STAGE_DIR = BUILD_DIR / "stage"
 MAIN_TEX = SOURCE_DIR / "main.tex"
@@ -86,8 +69,6 @@ def validate_layout() -> None:
         "03_penalized_trend.tex",
         "04_forecast_optimal_smoothness.tex",
         "05_properties.tex",
-        "05_dynamic_extension.tex",
-        "09_exploratory_evaluation.tex",
         "06_evaluation_protocol.tex",
         "07_empirical_evidence.tex",
         "07_scope_and_implications.tex",
@@ -104,15 +85,6 @@ def validate_layout() -> None:
 
     validate_math_references()
 
-    if not WORKFLOW_FIGURE.is_file():
-        raise SystemExit(
-            f"Missing workflow tutorial figure: {WORKFLOW_FIGURE}. "
-            f"From the repository root, run: {WORKFLOW_GENERATOR}"
-        )
-    missing_figures = [
-        name for name in FIGURE_NAMES
-        if not (FIGURE_SOURCE_DIR / name).is_file()
-    ]
     missing_core_figures = [
         name for name in CORE_FIGURE_NAMES
         if not (CORE_FIGURE_SOURCE_DIR / name).is_file()
@@ -125,13 +97,6 @@ def validate_layout() -> None:
             + "\n- ".join(missing_core_figures)
         )
 
-    if missing_figures:
-        raise SystemExit(
-            "Missing CP08 figures; run "
-            "'python experiments/smoothness_cv/make_checkpoint_08_figures.py' "
-            "from the repository root, then retry. Missing:\n- "
-            + "\n- ".join(missing_figures)
-        )
 
 
 def validate_math_references() -> None:
@@ -198,8 +163,6 @@ def prepare_stage() -> None:
     staged_figures.mkdir(parents=True, exist_ok=True)
     for name in CORE_FIGURE_NAMES:
         shutil.copy2(CORE_FIGURE_SOURCE_DIR / name, staged_figures / name)
-    for name in FIGURE_NAMES:
-        shutil.copy2(FIGURE_SOURCE_DIR / name, staged_figures / name)
 
 
 def run(command: list[str]) -> None:
@@ -248,7 +211,7 @@ def report_latex_failure() -> None:
     print(f"\nFull log: {log_path}", file=sys.stderr)
     print(
         "To print this again without rebuilding: "
-        "python3 paper_smoothness-cv/build.py --diagnose",
+        "python3 "working_papers/Working Paper - Smoothness Cross Validation/build.py" --diagnose",
         file=sys.stderr,
     )
 
