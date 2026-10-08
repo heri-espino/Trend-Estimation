@@ -1,143 +1,56 @@
-# Numerical methods for multimodal forecast-smoothness selection
+# Working Paper — Numerical Methods
 
-**Status: ACTIVE.**
+**Working title:** *Numerical Recovery of Multimodal Forecast-Smoothness Minima: Adaptive Search and Sturm Isolation*.
 
-**Working title:** *Numerical Recovery of Forecast-Smoothness Minima: Adaptive Search, Sturm Isolation, and Temporal Matching*.
+**Status:** active independent numerical-analysis working paper.
+The objective is the reliable, efficient **recovery and ranking of
+stationary points and minima on a single forecast-loss surface**, not
+selection of temporal branches.
 
-## Objective
+## The numerical problem
 
-The numerical paper now has two linked tasks.
+Consider a PLS forecast-validation objective \(F(S)\) over normalized
+smoothness \(S\in[0,1]\). The function may have multiple local minima
+and minima near the exact limiting endpoints. Recover all *relevant*
+interior and boundary candidates, and compare their objective values
+while controlling numerical cost.
 
-### Task A — recover minima on one surface
+Methods under study:
+1. Analytic derivatives in penalty and smoothness coordinates.
+2. Adaptive sampling and derivative-sign root brackets.
+3. Brent refinement and stationary-point classification.
+4. Explicit boundary \(S=0,1\) comparisons.
+5. Rational stationary equations and Sturm isolation for *small* instances.
 
-Given
+## Available evidence and limits
 
-\[
-F_t(S),\qquad S\in[0,1],
-\]
+The historical adaptive-search protocol recovered 240/240 adversarial
+relevant optima, 2105/2105 synthetic dense-reference minima
+and 473/473 financial geometry dense-reference minima.
+Those are results **relative to the tested reference protocols**,
+not a proof of global completeness for arbitrary objectives.
+Exact rational Sturm root counting is proven only for the finite
+rationalized instance on which the certificate is constructed.
 
-recover all relevant local minima and the global optimum efficiently and
-reliably, without assuming unimodality.
+The independent working manuscript is [main.tex](main.tex).
+Notes and checkpoint evidence are local to this directory.
+No branch tracking, chronological matching policy, or
+branch-based forecasting decision is necessary for this numerical problem.
 
-### Task B — track minima across time
+## Reproduce
 
-For a sequence of neighboring forecast-loss surfaces, recover
-
-\[
-\mathcal M_t=\{S_{1,t},\ldots,S_{K_t,t}\}
-\]
-
-and determine which minima belong to the same temporal branch.
-
-The implemented baseline continuation rule is greedy one-to-one nearest-neighbor matching
-under
-
-\[
-|S_{j,t}-S_{j,t-1}|\le\varepsilon.
-\]
-
-Canonical tracking note: `notes/temporal_minima_tracking.md`.
-
-## Current per-surface solver
-
-1. sparse deterministic evaluation in normalized `S`;
-2. analytic first/second derivatives;
-3. adaptive interval subdivision;
-4. derivative sign-change brackets;
-5. Brent root refinement;
-6. stationary-point classification;
-7. exact/limiting endpoint comparison;
-8. optional within-surface spacing of nearby representative minima.
-
-Brent refines roots after a bracket is identified; it is not a global
-root-discovery algorithm.
-
-## Small-window exact Sturm mode
-
-The numerical library now provides `sturm_forecast_smoothness` for
-forecast MSE on small rational-data windows (default limit: 8 observations).
-It constructs the exact rational stationary equation and uses a Sturm
-sequence to count/isolate all positive roots. It returns normalized
-smoothness `S`, both exact endpoint losses, and the rational root
-intervals alongside floating-point approximations. Root completeness
-is exact for the rationalized input problem; comparing approximate
-function values is not a formal proof of global-value ordering.
-
-Install the optional symbolic dependency and run:
-
-    python -m pip install -e ".[symbolic,dev]"
-    python experiments/numerical_smoothness_selection/run_sturm_minicheck.py
-    python -m pytest tests/test_sturm_forecast_smoothness.py
-
-The finite rationalized objective is certified; the entire smooth
-real-world data-generating process is not. Long windows still use
-the adaptive `S`-domain search with Brent refinement. The frozen
-large-window benchmark counts do not test this new exact mode.
-
-## Two different epsilon-like quantities
-
-Do not conflate:
-
-- `candidate_spacing`: post-discovery separation of redundant/nearby minima on
-  the **same** surface;
-- `track_epsilon`: maximum distance used to continue a minimum from one
-  chronological surface to the **next** surface.
-
-This numerical paper studies recovered minima and their temporal
-correspondence as mathematical objects, without assuming any separate
-forecasting decision procedure.
-
-## Frozen numerical evidence
-
-The existing per-surface solver remains frozen under the previous benchmark
-protocol:
-
-- 240/240 relevant adversarial minima/boundary optima;
-- 2105/2105 synthetic dense-reference interior minima across 1920 surfaces;
-- 473/473 financial dense-reference interior minima across 384 surfaces;
-- mean evaluation fractions about 1.57% synthetic and 1.84% financial.
-
-These validate the per-surface search empirically. They do not yet validate
-temporal branch correspondence.
-
-## Temporal tracking status and controlled CP05
-
-An existing four-series rolling experiment yielded 1392 initialized
-branch-origin states, with 924 matches and 468 missing states. These counts
-demonstrate the interface, **not numerical identity accuracy**: the real
-branch labels are unobserved, and missing states have several possible causes.
-
-The paper now gives a deterministic two-branch counterexample where greedy
-one-to-one matching recovers only one link even though a feasible two-link
-assignment exists.
-
-A controlled benchmark has been implemented to compare the existing greedy
-matcher against the exact **pairwise** maximum-cardinality,
-minimum-displacement assignment. Its labeled mechanisms cover separated
-branches, drift, near-mergers, crossings, and branch births/deaths. The
-benchmark is not yet run, and its outcomes must not be described as verified
-results.
-
-The benchmark tests correspondence conditional on known previous identities;
-end-to-end identity propagation, automatic birth handling, and the potential
-benefit of objective/curvature features remain separate open questions.
-
-Run:
-
-~~~powershell
-python experiments/numerical_smoothness_selection/run_tracking_correspondence_benchmark.py --preset smoke
-python experiments/numerical_smoothness_selection/run_tracking_correspondence_benchmark.py --preset paper
+~~~bash
+python -m pip install -e ".[symbolic,dev]"
+python experiments/numerical_smoothness_selection/run_sturm_minicheck.py
+python -m pytest tests/test_sturm_forecast_smoothness.py
 ~~~
 
-The manuscript is `main.tex` in this directory. Its latest tracked-minimum
-figure is linked to the frozen experimental result directory.
+Manual LaTeX build from this folder:
 
-## Stronger algebraic direction
+~~~bash
+cd "working_papers/Working Paper - Numerical Methods"
+mkdir -p build
+latexmk -pdf -interaction=nonstopmode -outdir=build main.tex
+~~~
 
-The small rational-input Sturm root-isolation mode is implemented.
-It does not solve cross-time correspondence or automatically
-scale to large estimation windows.
-
-## Active papers
-
-This manuscript defines and evaluates its own numerical objectives.
+Frozen numerical outputs remain in shared repository \`results/\`.
