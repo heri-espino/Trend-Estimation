@@ -193,7 +193,7 @@ manuscript, including the completed empirical section and illustrations.
 
 ## Build: standard LaTeX
 
-The manuscript now uses `\\documentclass[11pt]{article}`, in **one column**
+The manuscript now uses `\documentclass[11pt]{article}`, in **one column**
 with default LaTeX fonts and margins. There is no Wiley journal class,
 publisher-specific front matter, or dependency on `vendor/wiley_njd_v5`.
 The source is `manuscript/main.tex`; the bibliography uses standard BibTeX
@@ -210,7 +210,7 @@ Or from Windows PowerShell, regenerate the tutorial figure, check the
 layout, and compile the document with fail-fast errors:
 
 ~~~powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\\paper_smoothness-cv\\build-workflow-paper.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File .\paper_smoothness-cv\build-workflow-paper.ps1
 ~~~
 
 The generated PDF keeps its existing path:
