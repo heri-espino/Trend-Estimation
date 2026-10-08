@@ -290,13 +290,19 @@ def _forecast_figure(frame: pd.DataFrame, result, unidad: str, *,
         line={"color": "#D55E00", "width": 3},
     )
     fig.add_scatter(
-        x=x_futuro, y=result.forecast,
+        x=[x[-1]] + list(x_futuro),
+        y=[float(result.trend[-1])] + list(result.forecast),
         mode="lines+markers", name=f"Pronóstico futuro con S = {result.selected_s:.4f}",
         marker={"size": 8},
         line={"color": "#D55E00", "width": 2.8, "dash": "dash"},
     )
     if reveal:
         e = result.pretest_end
+        fig.add_scatter(
+            x=x[e:n], y=y[e:n], mode="markers",
+            name="Valores reales reservados de prueba",
+            marker={"color": "#222222", "size": 9, "symbol": "circle-open"},
+        )
         fig.add_scatter(
             x=x[e:n], y=result.evaluation_forecast,
             mode="lines+markers", name="Pronóstico retrospectivo para prueba",
@@ -954,8 +960,11 @@ def main() -> None:
                 "Rama de mínimos locales", ramas_disponibles,
                 key=f"rama_v_{d_v}",
             )
+            reglas_calculadas = list(
+                dict.fromkeys(resultado.evaluations["regla"].tolist())
+            )
             r_v = c3.selectbox(
-                "Regla de suavidad", reglas,
+                "Regla de suavidad", reglas_calculadas,
                 format_func=lambda k: REGLAS_ES[k],
                 key="regla_v",
             )
