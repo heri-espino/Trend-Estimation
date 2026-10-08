@@ -141,6 +141,28 @@ def test_campaign_sqlite_is_atomic_and_resumable(tmp_path):
         assert (reports/name).is_file()
 
 
+def test_source_paper_factorial_uses_full_N_not_rolling_window(tmp_path):
+    from experiments.smoothness_cv.run_cortes_toto_replication import main
+    folder=tmp_path/"source"
+    assert main([
+        "--seeds","1","--jobs","1","--grid-points","11",
+        "--max-tasks","1","--run-dir",str(folder),
+    ])==0
+    conn=sqlite3.connect(folder/"source_factorial.sqlite")
+    rows=conn.execute(
+        "SELECT N,criterion,edf,S_Guerrero,S_normalized "
+        "FROM outcomes ORDER BY criterion"
+    ).fetchall()
+    conn.close()
+    assert len(rows)==4
+    assert all(N==50 for N,_,_,_,_ in rows)
+    assert {name for _,name,_,_,_ in rows}=={"cv","gcv","aicc","bic"}
+    for N,_,edf,raw,s in rows:
+        assert raw==pytest.approx(1-edf/N)
+        assert s==pytest.approx((N-edf)/(N-2))
+    assert (folder/"reports"/"source_factorial_by_cell.csv").is_file()
+
+
 def test_cpu_worker_count_can_use_all_32_logical_cores():
     assert resolve_jobs(32)==32
     assert resolve_jobs(1)==1
