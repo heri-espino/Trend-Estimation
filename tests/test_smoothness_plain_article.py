@@ -8,14 +8,15 @@ import runpy
 ROOT = Path(__file__).resolve().parents[1]
 PAPER = ROOT / "paper_smoothness-cv"
 MAIN = PAPER / "manuscript" / "main.tex"
-EVALUATION = PAPER / "manuscript" / "sections" / "06_evaluation_protocol.tex"
+EVALUATION = PAPER / "manuscript" / "sections" / "09_exploratory_evaluation.tex"
 BUILD = PAPER / "build.py"
 
 
 def test_plain_article_has_no_wiley_front_matter():
     main = MAIN.read_text(encoding="utf-8")
     assert r"\documentclass[11pt]{article}" in main
-    assert r"\bibliographystyle{plain}" in main
+    assert r"\bibliographystyle{plainnat}" in main
+    assert r"\usepackage[round,authoryear]{natbib}" in main
     for command in (
         r"\journal{", r"\articletype{", r"\bmsection",
         r"\authormark", r"\titlemark", r"\abstract[",
