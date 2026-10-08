@@ -300,3 +300,28 @@ pairwise matching, and branch-identity diagnostics. It does not select
 
 A new controlled numerical tracking benchmark is implemented but not yet
 run. It is separate from completed CP03--CP08 forecast evaluations.
+
+ 
+## Workflow tutorial figure
+
+The forecasting paper now references `figures/fig_workflow_tutorial.pdf`
+in `manuscript/sections/06_evaluation_protocol.tex`, via a full-width
+`figure*` float capped to the available text height.
+
+The generator is
+`experiments/smoothness_cv/make_workflow_tutorial_figure.py`.
+It plots five horizontal panels: chronology (train, historical Val1 and
+Val2, a distinct final Val1, untouched test), fresh fitted trends,
+three test forecasts, **final Val1 forecast-loss surface**, and tracked
+branches with `phi(V_j)` decisions. No test observation enters smoothness
+selection or the plotted validation objective.
+
+The deterministic illustrated case is CP07 DGP: seed 100, switch to
+roughness, noise_sd 0.01, outer number 8, d=2, L=120, H=20.
+Output PDF, PNG and JSON provenance go to the manuscript figures folder.
+The figure is educational; do not claim superior performance from it.
+
+Run generator first, then `python paper_smoothness-cv/build.py --check`,
+then `python paper_smoothness-cv/build.py`. Missing figure fails preflight
+with a specific error. The figure has not yet been rendered or reviewed on
+the user's local machine.
