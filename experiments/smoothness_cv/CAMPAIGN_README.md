@@ -20,14 +20,17 @@ and the same untouched outer forecast origins.
 | C (regime adaptation) | 128 | 8 regime shapes × N (240,400) × SD (.25,.8) × 4 noise mechanisms | stationarity controls, breaks and tracking |
 
 At **100 independent seeds per DGP cell**, the extensive campaign
-contains **52,800 independently generated time series**.
+contains **52,800 scenario–seed simulation instances**.
 Each of those is evaluated over multiple outer origins, forecast horizons,
 candidate smoothness levels and methods; these additional evaluations are
 *paired repeated measurements*, **NOT 52,800 times a misleading large
 multiplier of independent replications**.
 
-The user may increase independent seeds (e.g. \`--seeds 200\` gives 105,600
-series). The previous experiments included thousands of outcomes, but
+Each scenario cell has independently drawn seed replications; reusing seed IDs
+across scenario cells can intentionally induce paired/common-random-number
+dependence. Therefore the 52,800 instances are **not** globally
+independent observations for statistical inference. The user may increase independent seeds (e.g. \`--seeds 200\` gives 105,600
+scenario–seed instances). The previous experiments included thousands of outcomes, but
 these new results have their **own** independent method/manifest identifier.
 
 **Default compared methods:**
