@@ -452,10 +452,11 @@ def _branch_timeline(result) -> go.Figure:
 def _branch_figure(result, order: int) -> go.Figure:
     data = result.branches.loc[result.branches["d"].eq(order)]
     fig = go.Figure()
+    origenes = np.arange(1, int(result.branches["origin"].max())+1)
     for branch, group in data.groupby("rama", sort=True):
-        group = group.sort_values("origin")
+        group = group.set_index("origin").reindex(origenes)
         fig.add_scatter(
-            x=group["origin"], y=group["s_minimo"],
+            x=origenes, y=group["s_minimo"],
             name=f"Rama {branch}", mode="lines+markers",
             line={"width": 2}, marker={"size": 7},
             hovertemplate=(
