@@ -34,7 +34,7 @@ def test_main_ui_is_valid_python_and_identifies_three_stages():
     for label in (
         "Validación 1: ECM y mínimos por d",
         "Validación 2: reglas y comparación",
-        "Tendencia y pronóstico",
+        "Tendencia, prueba y pronóstico",
         "División cronológica",
         "Matrices V: suavidades y errores",
     ):
