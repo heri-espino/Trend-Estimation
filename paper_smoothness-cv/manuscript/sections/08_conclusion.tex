@@ -34,10 +34,9 @@ particularly at longer horizons.
 A second, numerical issue arises because the forecast-loss surface
 can be multimodal. Finding the correct global candidate requires
 recovery of potentially multiple interior minima and comparison
-with the endpoints. This is investigated in the companion
-numerical-methods study, where adaptive derivative bracketing
-and Brent refinement are implemented; Sturm-based certification
-remains a possible future extension.
+with the endpoints. The practical implementation searches for competing stationary
+points using adaptive derivative bracketing and Brent refinement,
+then compares interior candidates with both limiting endpoints.
 
 Finally, a separate time-adaptive formulation tracks local-minimum
 histories $V_j$ and allows branch-selection and smoothness mappings:
@@ -57,8 +56,7 @@ evaluations did not establish its superiority over pooled CV.
 
 These findings separate three issues: defining smoothness for
 forecasting, solving the resulting multimodal optimization problem,
-and optionally adapting the hyperparameter over time. The first
-is the central statistical question of this paper; the second
-belongs to its numerical companion; and the third remains an
-application-dependent extension with clearly delimited
-empirical support.
+and optionally adapting the hyperparameter over time. The first is the central statistical contribution; the second is
+a computational requirement for implementing the criterion; and
+the third remains an application-dependent extension with
+clearly delimited empirical support.
