@@ -20,5 +20,5 @@ def test_standalone_pooled_app_renders_synthetic_defaults():
 
     at = AppTest.from_file(str(APP), default_timeout=90).run()
     assert len(at.exception) == 0, [e.message for e in at.exception]
-    assert at.title and "Pooled Forecast-CV" in at.title[0].value
+    assert at.title and "CV · Promedio histórico de F(S)" in at.title[0].value
     assert at.metric and any("Pooled selected S" in x.label for x in at.metric)

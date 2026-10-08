@@ -24,7 +24,7 @@ def test_aplicacion_tiene_sintaxis_python_valida():
 def test_titulos_secciones_y_etiquetas_formales_espanolas():
     source = APP_PATH.read_text(encoding="utf-8")
     for text in (
-        "Laboratorio de suavizamiento de tendencias para pronósticos",
+        "Laboratorio de ramas dinámicas · Versión histórica (legado)",
         "Tendencia y pronóstico",
         "Errores de validación 1",
         "Ramas y validación 2",

@@ -23,6 +23,7 @@ from experiments.smoothness_cv.live_lab import (
     transform_observations,
 )
 from experiments.smoothness_cv.two_stage_lab import run_two_stage_lab
+from experiments.smoothness_cv.full_series import smooth_full_series
 from experiments.smoothness_cv.article_simulations import (
     ARTICLE_TRENDS, make_article_synthetic,
 )
@@ -461,6 +462,41 @@ def _test_forecast_figure(
     return fig
 
 
+@st.cache_data(show_spinner=False, max_entries=16)
+def cached_full_series(values: tuple[float, ...], d: int, s: float) -> np.ndarray:
+    return smooth_full_series(
+        np.asarray(values, dtype=float), order=d, smoothness=s,
+    )
+
+
+def _full_series_figure(
+    frame: pd.DataFrame, full_trend: np.ndarray, *,
+    d: int, s: float, unidad: str,
+) -> go.Figure:
+    x, label_x = _axis(frame)
+    fig = go.Figure()
+    fig.add_scatter(
+        x=x, y=frame["observed"], mode="lines",
+        name="Serie real completa",
+        line={"color": "#6B7280", "width": 1.6},
+    )
+    fig.add_scatter(
+        x=x, y=full_trend, mode="lines",
+        name=f"Tendencia completa (d = {d}, S = {s:.4f})",
+        line={"color": "#D55E00", "width": 3.0},
+    )
+    if "latent" in frame:
+        fig.add_scatter(
+            x=x, y=frame["latent"], mode="lines",
+            name="Tendencia verdadera de la simulación",
+            line={"color": "#8A57A1", "width": 1.8, "dash": "dot"},
+        )
+    return _style(
+        fig, "Suavizamiento retrospectivo sobre toda la serie",
+        label_x, unidad, height=500,
+    )
+
+
 def _matrix_figure(H: np.ndarray) -> go.Figure:
     max_abs = float(np.max(np.abs(H)))
     fig = go.Figure(go.Heatmap(
@@ -793,8 +829,8 @@ def _v_table(table: pd.DataFrame) -> pd.DataFrame:
 
 
 def main() -> None:
-    st.set_page_config(page_title="Selección de suavidad y orden", layout="wide")
-    st.title("Seguimiento de mínimos locales y selección predictiva de suavidad")
+    st.set_page_config(page_title="CV dinámico · Ramas de mínimos", layout="wide")
+    st.title("Laboratorio de CV dinámico · Seguimiento de ramas")
     st.caption(
         "Mínimos cuadrados penalizados · varias validaciones cronológicas · "
         "ramas persistentes · reglas de agregación de suavidad."
@@ -834,14 +870,14 @@ def main() -> None:
                         r"\tau_t=0.6\beta_{30,17}(t/N)"
                         r"+0.4\beta_{3,11}(t/N)"
                     )
-                n = st.radio(
+                n = st.slider(
                     "Número de observaciones, N",
-                    options=[50, 200], index=1, horizontal=True,
+                    min_value=50, max_value=200, value=200, step=10,
                     key="articulo_N",
                 )
-                ruido_sd = st.radio(
+                ruido_sd = st.slider(
                     "Desviación estándar del ruido gaussiano, σ",
-                    options=[0.5, 2.0], index=0, horizontal=True,
+                    min_value=0.5, max_value=2.0, value=0.5, step=0.05,
                     key="articulo_sigma",
                 )
                 estacionalidad = st.checkbox(
@@ -953,7 +989,15 @@ def main() -> None:
         except ValueError as exc:
             st.error(f"Transformación inválida: {exc}")
             st.stop()
-        ultimas = st.slider("Observaciones más recientes", 90, 600, 260, 10)
+        if len(frame) <= 90:
+            ultimas = len(frame)
+            st.caption(f"Se utilizarán las {ultimas} observaciones disponibles.")
+        else:
+            ultimas = st.slider(
+                "Observaciones más recientes", min_value=90,
+                max_value=min(600, len(frame)),
+                value=min(260, len(frame)), step=1,
+            )
         frame = frame.tail(ultimas).reset_index(drop=True)
 
         st.header("3. Diseño de las validaciones")
@@ -1427,6 +1471,43 @@ def main() -> None:
                 "Los valores reales se muestran únicamente para evaluar y "
                 "visualizar cómo habría funcionado el pronóstico. "
                 "No intervienen en la selección de d, rama, regla ni S."
+            )
+        st.subheader("Suavizamiento de toda la serie (opcional)")
+        ajustar_toda = st.checkbox(
+            "Suavizar toda la serie observada con d y S seleccionados",
+            value=False, key="ramas_tendencia_completa",
+        )
+        if ajustar_toda:
+            tendencia_completa = cached_full_series(
+                tuple(float(y) for y in valores),
+                resultado.selected_order, resultado.selected_s,
+            )
+            st.plotly_chart(
+                _full_series_figure(
+                    frame, tendencia_completa,
+                    d=resultado.selected_order,
+                    s=resultado.selected_s, unidad=unidad,
+                ),
+                use_container_width=True,
+            )
+            st.caption(
+                "Este ajuste usa toda la serie, incluidas las observaciones "
+                "reservadas del test. Se mantienen d, rama, regla y S elegidos "
+                "ANTES del test, pero la tendencia se vuelve a estimar con "
+                "todos los datos. Es una visualización descriptiva y no debe "
+                "confundirse con el pronóstico histórico del test."
+            )
+            archivo_tendencia = pd.DataFrame({
+                "serie_real": valores, "tendencia_completa": tendencia_completa,
+            })
+            if "date" in frame:
+                archivo_tendencia.insert(
+                    0, "fecha", frame["date"].to_numpy()
+                )
+            st.download_button(
+                "Descargar serie y tendencia completa (CSV)",
+                archivo_tendencia.to_csv(index=False).encode("utf-8-sig"),
+                file_name="tendencia_completa_ramas.csv", mime="text/csv",
             )
         st.subheader("Pronóstico posterior al último dato real")
         st.plotly_chart(

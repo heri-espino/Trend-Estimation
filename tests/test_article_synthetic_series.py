@@ -86,6 +86,7 @@ def test_zero_noise_splits_trend_from_quarterly_component():
 
 
 @pytest.mark.parametrize("path", [
+    "apps/pooled_forecast_cv.py",
     "apps/smoothness_lab.py",
     "apps/smoothness_lab_advanced.py",
 ])
@@ -95,7 +96,9 @@ def test_both_streamlits_expose_identical_article_presets(path):
     for snippet in (
         "ARTICLE_TRENDS", "make_article_synthetic",
         "estacionalidad", "Desviación estándar del ruido gaussiano",
-        "Número de observaciones, N", "[50, 200]",
+        "Número de observaciones, N", "min_value=50", "max_value=200",
+        "Desviación estándar del ruido gaussiano, σ",
+        "min_value=0.5", "max_value=2.0", "st.slider(",
     ):
         assert snippet in source
     assert set(ARTICLE_TRENDS.values()) == {"linear", "beta_mixture"}

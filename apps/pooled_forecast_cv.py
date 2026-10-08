@@ -22,6 +22,10 @@ import plotly.graph_objects as go
 import streamlit as st
 
 from experiments.smoothness_cv.live_lab import make_synthetic, transform_observations
+from experiments.smoothness_cv.article_simulations import (
+    ARTICLE_TRENDS, make_article_synthetic,
+)
+from experiments.smoothness_cv.full_series import smooth_full_series
 from experiments.smoothness_cv.pooled_lab import (
     analyze_pooled,
     fit_window_forecast,
@@ -315,12 +319,46 @@ def spectral_plot(result) -> go.Figure:
     return style(fig, "Penalty eigen-direction (ascending δ)", "Smoother eigenvalue", 335)
 
 
+@st.cache_data(show_spinner=False, max_entries=16)
+def cached_full_series(values: tuple[float, ...], order: int, smoothness: float) -> np.ndarray:
+    return smooth_full_series(
+        np.asarray(values, dtype=float), order=order, smoothness=smoothness,
+    )
+
+
+def complete_trend_plot(
+    frame: pd.DataFrame, trend: np.ndarray, *, order: int, smoothness: float,
+) -> go.Figure:
+    x = frame["date"] if "date" in frame.columns else np.arange(1, len(frame) + 1)
+    fig = go.Figure()
+    fig.add_scatter(
+        x=x, y=frame["observed"], name="Serie observada completa",
+        mode="lines", line={"color": COLOR["Observed"], "width": 1.6},
+    )
+    fig.add_scatter(
+        x=x, y=trend,
+        name=f"Tendencia completa (d={order}, S={smoothness:.4f})",
+        mode="lines", line={"color": COLOR["Pooled CV"], "width": 3},
+    )
+    if "latent" in frame:
+        fig.add_scatter(
+            x=x, y=frame["latent"], mode="lines",
+            name="Tendencia verdadera de la simulación",
+            line={"color": "#9867AD", "dash": "dot", "width": 1.7},
+        )
+    return style(
+        fig, "Fecha" if "date" in frame else "Número de observación",
+        "Observaciones y tendencia suavizada (ajuste completo)", 465,
+    )
+
+
 def main() -> None:
-    st.set_page_config(page_title="Pooled Forecast-CV Lab", layout="wide")
-    st.title("Pooled Forecast-CV · Smoothness Laboratory")
+    st.set_page_config(page_title="CV · Promedio histórico de F(S)", layout="wide")
+    st.title("Laboratorio de CV · Promedio histórico de F(S)")
     st.caption(
-        "A standalone, interactive view of the paper's simplest method. "
-        "No tracking of minimum branches; no modification of the existing Streamlit apps."
+        "Se minimiza el promedio de las funciones de pérdida F_t(S) de "
+        "los orígenes históricos. No se siguen mínimos ni ramas dinámicas; "
+        "este procedimiento es distinto del laboratorio de ramas."
     )
 
     with st.sidebar:
@@ -329,14 +367,52 @@ def main() -> None:
         frame = None
         try:
             if source == "Synthetic function":
-                preset = st.selectbox("Function", list(EXPRESSIONS))
-                expr = st.text_input("f(t) (restricted numeric expression)", EXPRESSIONS[preset])
-                n = st.slider("Series length", 90, 900, 260, 10)
-                noise = st.selectbox("Innovation distribution", NOISE)
-                noise_sd = st.slider("Innovation standard deviation", 0.0, 3.0, 0.35, 0.05)
-                phi = st.slider("AR(1) correlation φ", -0.90, 0.90, 0.15, 0.05)
-                seed = st.number_input("Random seed", 0, 100_000, 42)
-                frame = make_synthetic(expr, n, noise_sd, noise, phi, int(seed))
+                preset = st.selectbox(
+                    "Function / Función generadora",
+                    list(ARTICLE_TRENDS) + list(EXPRESSIONS),
+                )
+                if preset in ARTICLE_TRENDS:
+                    kind = ARTICLE_TRENDS[preset]
+                    st.latex(
+                        r"\tau_t=\frac{4t}{N}" if kind == "linear"
+                        else r"\tau_t=0.6\beta_{30,17}(t/N)+0.4\beta_{3,11}(t/N)"
+                    )
+                    n = st.slider(
+                        "Número de observaciones, N", min_value=50,
+                        max_value=200, value=200, step=10,
+                        key="pooled_articulo_n",
+                    )
+                    noise_sd = st.slider(
+                        "Desviación estándar del ruido gaussiano, σ",
+                        min_value=0.5, max_value=2.0, value=0.5, step=0.05,
+                        key="pooled_articulo_sigma",
+                    )
+                    seasonality = st.checkbox(
+                        "Estacionalidad trimestral aditiva",
+                        value=False, key="pooled_articulo_estacionalidad",
+                    )
+                    seed = st.number_input(
+                        "Random seed / Semilla", 0, 100_000, 42,
+                        key="pooled_articulo_semilla",
+                    )
+                    frame = make_article_synthetic(
+                        kind, n=n, noise_sd=noise_sd,
+                        seasonality=seasonality, seed=int(seed),
+                    )
+                else:
+                    expr = st.text_input(
+                        "f(t) (restricted numeric expression)", EXPRESSIONS[preset],
+                    )
+                    n = st.slider("Series length", 90, 900, 260, 10)
+                    noise = st.selectbox("Innovation distribution", NOISE)
+                    noise_sd = st.slider(
+                        "Innovation standard deviation", 0.0, 3.0, 0.35, 0.05,
+                    )
+                    phi = st.slider("AR(1) correlation φ", -0.90, 0.90, 0.15, 0.05)
+                    seed = st.number_input("Random seed", 0, 100_000, 42)
+                    frame = make_synthetic(
+                        expr, n, noise_sd, noise, phi, int(seed),
+                    )
             elif source == "Yahoo Finance":
                 ticker = st.text_input("Ticker", "SPY").strip().upper()
                 period = st.selectbox("Lookback", ["6mo", "1y", "2y", "5y", "10y"], index=3)
@@ -466,6 +542,37 @@ def main() -> None:
             "from the *same* zero-future-difference continuation rule. "
             "An outer holdout is displayed only after the selectors have been computed."
         )
+        mostrar_toda = st.checkbox(
+            "Suavizar toda la serie observada (ajuste descriptivo)",
+            value=False, key="pooled_tendencia_completa",
+        )
+        if mostrar_toda:
+            tendencia_completa = cached_full_series(
+                tuple(float(v) for v in values), r.order, r.pooled_s,
+            )
+            st.plotly_chart(
+                complete_trend_plot(
+                    frame, tendencia_completa, smoothness=r.pooled_s,
+                    order=r.order,
+                ),
+                use_container_width=True,
+            )
+            st.caption(
+                "La suavidad S y el orden d proceden exclusivamente del CV "
+                "de F promedio. Esta curva se reajusta utilizando TODAS las "
+                "observaciones, incluido el test si está reservado. "
+                "Es una descripción retrospectiva, NO un pronóstico fuera de muestra."
+            )
+            export = pd.DataFrame({
+                "observado": values, "tendencia_completa": tendencia_completa,
+            })
+            if "date" in frame.columns:
+                export.insert(0, "fecha", frame["date"].to_numpy())
+            st.download_button(
+                "Descargar tendencia de la serie completa (CSV)",
+                export.to_csv(index=False).encode("utf-8-sig"),
+                file_name="tendencia_completa_cv_promedio.csv", mime="text/csv",
+            )
         if r.holdout:
             scores = pd.DataFrame([
                 {"Method": k, "Selected S": (
