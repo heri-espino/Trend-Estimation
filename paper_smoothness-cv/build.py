@@ -17,6 +17,20 @@ import sys
 
 PAPER_DIR = Path(__file__).resolve().parent
 SOURCE_DIR = PAPER_DIR / "manuscript"
+FIGURE_SOURCE_DIR = (
+    PAPER_DIR.parent
+    / "results"
+    / "smoothness_cv"
+    / "checkpoint_08"
+    / "20261007T072243Z_paper_be492a8"
+    / "paper_artifacts"
+    / "figures"
+)
+FIGURE_NAMES = (
+    "fig_cp08_illustrative_smoothness_selections.pdf",
+    "fig_cp08_rule_clipping.pdf",
+    "fig_cp08_rule_family_losses.pdf",
+)
 VENDOR_DIR = PAPER_DIR / "vendor" / "wiley_njd_v5"
 BUILD_DIR = PAPER_DIR / "build"
 STAGE_DIR = BUILD_DIR / "stage"
@@ -56,6 +70,7 @@ def validate_layout() -> None:
         "04_forecast_optimal_smoothness.tex",
         "05_properties.tex",
         "06_evaluation_protocol.tex",
+        "07_empirical_evidence.tex",
         "07_scope_and_implications.tex",
         "08_conclusion.tex",
     ]
@@ -66,6 +81,18 @@ def validate_layout() -> None:
     if missing_sections:
         raise SystemExit(
             "Missing manuscript sections:\n- " + "\n- ".join(missing_sections)
+        )
+
+    missing_figures = [
+        name for name in FIGURE_NAMES
+        if not (FIGURE_SOURCE_DIR / name).is_file()
+    ]
+    if missing_figures:
+        raise SystemExit(
+            "Missing CP08 figures; run "
+            "'python experiments/smoothness_cv/make_checkpoint_08_figures.py' "
+            "from the repository root, then retry. Missing:\n- "
+            + "\n- ".join(missing_figures)
         )
 
 
@@ -81,6 +108,11 @@ def prepare_stage() -> None:
 
     shutil.copytree(VENDOR_DIR, STAGE_DIR)
     shutil.copytree(SOURCE_DIR, STAGE_DIR, dirs_exist_ok=True)
+
+    staged_figures = STAGE_DIR / "figures"
+    staged_figures.mkdir(parents=True, exist_ok=True)
+    for name in FIGURE_NAMES:
+        shutil.copy2(FIGURE_SOURCE_DIR / name, staged_figures / name)
 
     staged_class = STAGE_DIR / "WileyNJDv5.cls"
     source = staged_class.read_text(encoding="utf-8")
