@@ -67,63 +67,75 @@ Frozen evidence for the per-surface solver remains 240/240 adversarial relevant
 optima, 2105/2105 synthetic reference minima, and 473/473 financial geometry
 stress minima.
 
-## Laboratorio interactivo de selección de tendencia
+## Laboratorio interactivo de mínimos, ramas y suavidad
 
-La aplicación principal en español se encuentra en apps/smoothness_lab.py.
-Usa la selección directa **en dos validaciones cronológicas**:
+La aplicación principal **en español** en apps/smoothness_lab.py implementa
+el protocolo más general: **seguir mínimos locales para cada orden de
+diferencias d, construir matrices V por rama y por regla de suavidad, y elegir
+entre ellas según su error histórico en validación 2**.
 
-1. **Validación 1:** para cada orden de diferencias d, recuperar todos los
-   mínimos locales de la pérdida predictiva en suavidad normalizada S.
-   Conservar los candidatos, no solamente el mínimo global.
-2. **Validación 2:** reajustar cada candidato con las últimas L
-   observaciones disponibles al terminar validación 1 y pronosticar el bloque
-   de validación 2. Elegir el par (d*, S*) que minimiza su **ECM**.
-3. **Prueba retrospectiva:** sin reoptimizar, pronosticar el bloque reservado
-   desde el último origen anterior a él y calcular el error fuera de muestra.
-4. **Pronóstico operativo:** con el mismo método, d* y S*, reajustar usando
-   las últimas L observaciones de **toda la serie disponible** (incluidas las
-   observaciones de prueba ya evaluadas), y pronosticar después del último dato.
+El procedimiento para cada origen cronológico es:
 
-La prueba se reserva para evaluar y nunca se utiliza para seleccionar
-hiperparámetros. Solo después se incorpora al reajuste operativo futuro.
-La matriz comparativa de candidatos incluye d, S, lambda, ECM de validación 1,
-ECM/RECM de validación 2 y procedencia del mínimo. No exige seguimiento
-temporal de ramas; la comparación de otros estimadores queda pendiente
-como posible extensión.
+1. Construir la función de pérdida predictiva de **validación 1** para cada
+   d y recuperar todos los mínimos locales candidatos de suavidad normalizada
+   S. Mantener como ramas las trayectorias de mínimos cercanos entre orígenes.
+2. Para cada (d, rama, regla) construir S_aplicado usando exclusivamente el
+   mínimo obtenido en la validación 1 actual y la información histórica
+   disponible de la misma rama. Las reglas incluyen: usar el último mínimo
+   (la **continuación polinómica original**, sin ponderación), medias y
+   medianas recientes, pesos por recencia, pesos por ECM histórico de
+   validación 2, combinaciones de pesos y extrapolaciones.
+3. Registrar en la matriz V específica de la combinación los valores del
+   mínimo local, S_aplicado, ECM de validación 1 y ECM de validación 2.
+   **En validación 2 no se vuelve a optimizar S**: al desplazarse el origen,
+   la tendencia se estima mecánicamente con los datos hasta ese origen,
+   pero conserva el método, d y S_aplicado que ya fijó la regla.
+4. Comparar el **ECM medio histórico de validación 2** por (d, rama, regla);
+   únicamente seleccionar ramas con soporte mínimo. Errores de validaciones
+   2 aún no terminadas nunca alimentan las reglas retrospectivamente.
+5. Con la regla ganadora y la última validación 1 disponible, obtener
+   S* y pronosticar la **prueba reservada** sin reoptimizar ningún
+   hiperparámetro. Mostrar lado a lado el pronóstico y los **valores reales**
+   que ocurrieron, e informar su ECM.
+6. Mantener el mismo método, d* y S* y volver a estimar con las últimas
+   L observaciones disponibles para pronosticar más allá de la serie real.
 
-Instalación y ejecución desde la raíz del repositorio:
+Los paneles muestran el esquema cronológico, las curvas ECM(S) para diferentes
+órdenes d, el seguimiento gráfico de ramas, las matrices V específicas de cada
+(d, rama, regla), la comparación de ECM históricos, el test real y el
+suavizador matricial H_lambda. Se pueden descargar matrices V completas y
+subconjuntos particulares.
+
+**Caso particular:** en la barra lateral se puede elegir selección directa en
+dos bloques. Esta omite el seguimiento histórico y selecciona el par (d,S)
+por la segunda validación. La selección directa sigue disponible en
+experiments/smoothness_cv/two_stage_lab.py; la generalización con reglas se
+implementa en experiments/smoothness_cv/branch_rule_lab.py. La versión
+histórica anterior continúa disponible por separado en
+apps/smoothness_lab_advanced.py, sin sustituir los checkpoints congelados.
+
+Instalar y lanzar desde la raíz del repositorio:
 
 ~~~bash
 python -m pip install -e ".[dashboard,finance]"
 streamlit run apps/smoothness_lab.py
 ~~~
 
-La interfaz admite series sintéticas, Yahoo Finance y archivos CSV, con
-representaciones en nivel, logaritmo, índice 100 o rendimientos. Incluye
-curvas del ECM para cada d, mínimos locales, comparación de candidatos,
-pronóstico final y matriz de suavizamiento H_lambda.
-
-**Laboratorio avanzado anterior:** el seguimiento de ramas históricas,
-la matriz dinámica V_j y las reglas phi(V_j) siguen disponibles en
-apps/smoothness_lab_advanced.py; no intervienen en la aplicación principal.
-Ejecutar con:
+Ejecutar las pruebas relevantes:
 
 ~~~bash
-streamlit run apps/smoothness_lab_advanced.py
+python -m pytest tests/test_branch_rule_lab.py tests/test_two_stage_smoothness_lab.py tests/test_live_smoothness_lab.py tests/test_smoothness_spanish_ui.py
 ~~~
 
-El visor de resultados congelados permanece en
-experiments/numerical_smoothness_selection/dashboard_tracked_minima.py.
-
-Estos laboratorios son exploratorios, no modifican los checkpoints congelados
-CP03–CP08 ni constituyen evidencia de superioridad universal. Por defecto
-la búsqueda numérica es menos exhaustiva que en los experimentos congelados.
-
-Pruebas:
-
-~~~bash
-python -m pytest tests/test_two_stage_smoothness_lab.py tests/test_live_smoothness_lab.py tests/test_smoothness_spanish_ui.py
-~~~
+**Alcance:** se comparan reglas para convertir los mínimos históricos en
+suavidad aplicada, no distintos modelos estadísticos de extrapolación.
+La extrapolación de la tendencia sigue siendo la polinómica por diferencias
+penalizadas. El ECM de validación 1 es descriptivo, ya que sus datos también
+se utilizaron para encontrar el mínimo; el ECM histórico de validación 2
+separa selección y evaluación dentro de cada origen. La elección global
+de (d, rama, regla) usa esos resultados históricos y debe juzgarse sobre
+la prueba realmente reservada. Los experimentos son exploratorios y no
+modifican CP03–CP08.
 
 ### Other directories
 
