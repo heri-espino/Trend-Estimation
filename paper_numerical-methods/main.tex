@@ -2,7 +2,7 @@
 
 \usepackage{booktabs}
 
-\title{Numerical Recovery and Temporal Tracking of Forecast-Smoothness Minima}
+\title{Numerical Recovery of Forecast-Smoothness Minima: Adaptive Search, Sturm Isolation, and Temporal Matching}
 
 \author[1]{Heriberto Espino Montelongo}
 \affil[1]{Universidad de las Am\'ericas Puebla, San Andr\'es Cholula, Puebla, Mexico.}
@@ -17,12 +17,38 @@
 \maketitle
 
 \begin{abstract}
-Selecting smoothness for penalized trend forecasting requires numerical care when chronological forecast-loss objectives contain multiple local minima. We distinguish recovery of the minima on each surface from the separate task of corresponding minima across forecast origins. For per-surface recovery, we search an interpretable normalized smoothness coordinate $S\in[0,1]$ using adaptive subdivision, analytic derivatives, derivative-root bracketing, Brent refinement, and exact limiting boundary values. Under the previously frozen numerical specification, all 240 relevant adversarial optima, 2105 synthetic dense-reference interior minima, and 473 financial-data dense-reference interior minima were recovered, with approximately 1.6--1.8\% of dense-grid evaluation counts in the latter two experiments. For temporal tracking, we formalize one-to-one correspondence with a distance threshold and make explicit the distinction between within-surface minimum spacing and across-surface continuation. An existing four-series rolling experiment illustrates persistent and intermittent branches, but cannot establish correct identity without known ground truth. We give a counterexample in which greedy nearest-neighbor correspondence misses a feasible pair of links, motivating a separate controlled benchmark of greedy and exact pairwise assignment under drift, near-mergers, crossings, births, and deaths. For small rational-input instances, we further derive a rational stationary equation and implement exact Sturm root counting and isolation. These proofs of root completeness apply only to the stated bounded-size exact instances; the frozen large-window benchmarks continue to use the adaptive method.
+Selecting the smoothness of a penalized least-squares trend by
+chronological forecast error yields a scalar objective over a
+normalized index $S\in[0,1]$. Although the smoothing-parameter
+domain $\lambda\in[0,\infty)$ is unbounded, the normalized coordinate
+includes both limiting estimators and permits an explicit numerical
+comparison of candidate forecast trends. The objective need not
+be unimodal. We study two complementary approaches to its stationary
+points: a scalable derivative-aware adaptive search with Brent
+refinement and exact endpoint evaluations, and Sturm-sequence
+root counting and isolation for small, exactly rationalized
+finite-difference problems. The latter provides conditional
+completeness on its finite polynomial instance; it does not
+certify arbitrary large-window calculations. Under an earlier
+frozen adaptive-search protocol, 240 relevant adversarial
+optima, 2,105 synthetic dense-reference interior minima and
+473 financial-data dense-reference minima were recovered;
+the synthetic and financial searches used approximately
+1.6--1.8\% of the corresponding dense-grid evaluation counts.
+A worked six-observation Sturm example yields three positive
+stationary roots, including two distinct minima. We also study
+the separate numerical problem of matching minimum locations
+across chronological origins. A counterexample demonstrates that
+greedy nearest-neighbor matching can omit admissible links,
+while existing tracking counts do not establish identity accuracy.
+The paper distinguishes numerical search accuracy, conditional
+root certification, and temporal matching without assuming
+that they imply improved predictive performance.
 \end{abstract}
 
 \vspace{1em}
 
-\noindent\textbf{Keywords:} penalized least squares; smoothing parameter; trend estimation; rolling-origin evaluation; numerical optimization; time series.
+\noindent\textbf{Keywords:} penalized least squares; normalized smoothness; Sturm sequences; Brent root search; multimodal optimization; forecast validation.
 
 \vspace{10pt}
 
@@ -38,9 +64,9 @@ Nor is the possibility of multiple minima unique to the present criterion. Biess
 
 The difficulty is numerical as well as statistical. The resulting forecast-validation objective is one-dimensional, but it need not have a single local minimum. A coarse grid may miss relevant minima, while a very dense grid is reliable only at a substantial evaluation cost. Searching directly in \(\lambda\in[0,\infty)\) also requires arbitrary finite bounds and devotes numerical resolution unevenly across smoothing regimes.
 
-This paper studies both numerical layers. The PLS estimator is reparameterized by a normalized smoothness coordinate \(S\in[0,1]\), derived from the controlled-smoothness index but rescaled so that the two limiting smoothing regimes are represented exactly by \(S=0\) and \(S=1\). Analytic first and second derivatives of the forecast loss are combined with a derivative-aware adaptive search that detects and classifies relevant stationary points, refines derivative roots with Brent's method \cite{brent1971zero}, and compares all detected local minima with the exact smoothness-domain endpoints. The recovered minimum sets then become inputs to a temporal correspondence layer that links nearby minima across adjacent forecast origins.
+Our primary numerical object is the collection of stationary points and global candidates of a forecast-loss curve parameterized by $S\in[0,1]$. The bounded coordinate is a monotone rescaling of the controlled-smoothness index, so that $S=0$ and $S=1$ encode both exact limiting trends. We develop derivative-aware adaptive sampling and Brent refinement \cite{brent1971zero}, then give a distinct exact-algebra route: for small problems with rational input values, the stationary equation can be reduced to a polynomial and its positive roots counted and isolated by a Sturm sequence. The roots are mapped back to $S$ for interpretation. A further numerical question concerns matching multiple minima across nearby chronological origins.
 
-The contribution is numerical: reliable recovery of multiple local minima of a forecast-validation objective, including its limiting smoothness regimes; an exact Sturm alternative for small rational instances; and the separate question of corresponding local minima across nearby forecast origins. This paper defines the objective, algorithms, and evaluation without depending on a distinct forecasting manuscript. The adaptive per-surface method is validated on analytic adversarial objectives, 1920 synthetic rolling forecast objectives, and 384 real financial-data objective surfaces. The exact Sturm implementation is a separate small-instance diagnostic and is not included in those performance counts. The temporal layer is demonstrated with recorded branch paths in an existing four-series experiment. Their behavior is observable but their ground-truth identities are not. We therefore also isolate the correspondence problem in a controlled benchmark design, without presenting the per-surface root-recovery success rate as a validation of temporal identity.
+The contribution is numerical rather than a new PLS filter or a general guarantee of predictive superiority. It comprises a fast empirical algorithm for multimodal smoothness search, a conditionally complete exact-rational solver on small inputs, and an analysis of temporal matching as a distinct assignment problem. We keep the proof scope and experiment protocols separate. The adaptive per-surface method is validated on analytic adversarial objectives, 1920 synthetic rolling forecast objectives, and 384 real financial-data objective surfaces. The exact Sturm implementation is a separate small-instance diagnostic and is not included in those performance counts. The temporal layer is demonstrated with recorded branch paths in an existing four-series experiment. Their behavior is observable but their ground-truth identities are not. We therefore also isolate the correspondence problem in a controlled benchmark design, without presenting the per-surface root-recovery success rate as a validation of temporal identity.
 
 \section{Penalized trend estimation and forecast validation}
 
@@ -314,10 +340,10 @@ Its Sturm chain is
 \begin{equation}
 \label{eq:sturm_chain}
 p_0=N_{\mathrm{sf}},\qquad p_1=N_{\mathrm{sf}}',\qquad
-p_{k+1}=-\operatorname{rem}(p_{k-1},p_k),
+p_{k+1}=-\operatorname{rem}(p_{k-1},p_k).
 \end{equation}
-counts distinct real stationary roots by the difference in sign
-variations. In particular, for roots in $(0,\infty)$,
+The variation count of this exact polynomial sequence gives
+the number of distinct stationary roots. In particular, for roots in $(0,\infty)$,
 \begin{equation}
 \label{eq:sturm_count}
 n_{+}=V(0^+)-V(+\infty).
@@ -619,6 +645,54 @@ unimodal optimization run would discard.
 
 
 
+\subsection{Worked exact Sturm example}
+\label{sec:sturm_example}
+
+To illustrate the algebraic root count independently of the
+large-window performance study, consider the exact rational
+data
+\begin{equation}
+\label{eq:sturm_example_data}
+L=6,\quad d=2,\quad h=2,\qquad
+x=(4,0,-2,-1,3,1)^\top,\quad z=(0,1)^\top.
+\end{equation}
+The native linear continuation produces a rational forecast-MSE
+objective. Its derivative has a numerator polynomial of degree
+ten and exactly three distinct positive real roots according
+to the Sturm variation difference. The corresponding
+approximate coordinates are
+\begin{equation}
+\label{eq:sturm_example_roots}
+\begin{aligned}
+(\lambda_1,S_1)&\simeq(0.146706,\;0.380475),\\
+(\lambda_2,S_2)&\simeq(1.101543,\;0.718759),\\
+(\lambda_3,S_3)&\simeq(31.808860,\;0.976961).
+\end{aligned}
+\end{equation}
+The first and third points are local minima; the middle
+point is a local maximum. The corresponding future-block
+MSE values are approximately $0.594777$, $4.364744$,
+and $0.264095$. The exact limiting endpoint losses are
+\begin{equation}
+\label{eq:sturm_example_endpoints}
+F(0)=\frac{17}{2},\qquad
+F(1)=\frac{169}{441}.
+\end{equation}
+Consequently the smallest candidate value in this
+example is the interior minimum near $S_3=0.976961$,
+not either endpoint. The exact Sturm count certifies
+\emph{completeness of the positive stationary-root set}
+for this rational example. The decimal root locations,
+the reported smoothness coordinates, and the objective
+values are numerical approximations; they are not
+claimed to be rational isolating intervals themselves.
+This example illustrates algebraic certification and
+multimodality, but does not establish a computational
+advantage of symbolic Sturm isolation for realistic
+window lengths. The independent frozen adaptive-search
+benchmarks above remain the evidence on large-window
+efficiency.
+
 \subsection{Observed branch persistence and correspondence limits}
 \label{sec:tracking_results}
 
@@ -669,7 +743,7 @@ The numerical benefit of the normalized smoothness coordinate is not that it mak
 
 Compactification also creates a numerical issue: a large range of \(\lambda\) is compressed near \(S=1\). The early diagnostic runs showed that several derivative roots can occupy the same coarse upper-tail cell. Endpoint-aware refinement was introduced in response to that observed geometry, then frozen before the paper-scale benchmark. The subsequent sensitivity experiment independently reproduces the failure when endpoint refinement is removed. This is a useful example of a transformation that improves global search organization while still requiring explicit attention to its boundary geometry.
 
-The paper's scope is narrower than general smoothing-parameter selection. CV, GCV, information criteria, marginal likelihood, controlled smoothness, and simulation-calibrated HP parameters remain legitimate answers to their respective statistical objectives \cite{craven1979gcv,guerrero2008smoothness,cortes2017smoothness,biessy2026wh,franke2026hp}. Here the target is specifically rolling future-block forecast MSE. The contribution is therefore the numerical treatment of that criterion when multiple local minima are possible, together with the numerical correspondence problem that arises when those minima are followed across successive forecast origins. It is not a claim that forecast loss is universally preferable to the alternatives. The applied cases also show why retaining several detected minima can be informative: they form a finite set of distinct smoothing choices whose validation ranking may or may not persist out of sample. This candidate set should be interpreted as a selection-sensitivity diagnostic, not as a confidence set or probability distribution over smoothness.
+The paper's scope is narrower than general smoothing-parameter selection. The $S$ coordinate is the statistical and numerical reporting domain; auxiliary rational polynomial calculations in $\lambda$ are a way to certify roots, not a replacement for bounded smoothness selection. CV, GCV, information criteria, marginal likelihood, controlled smoothness, and simulation-calibrated HP parameters remain legitimate answers to their respective statistical objectives \cite{craven1979gcv,guerrero2008smoothness,cortes2017smoothness,biessy2026wh,franke2026hp}. Here the target is specifically rolling future-block forecast MSE. The contribution is therefore the numerical treatment of that criterion when multiple local minima are possible, together with the numerical correspondence problem that arises when those minima are followed across successive forecast origins. It is not a claim that forecast loss is universally preferable to the alternatives. The applied cases also show why retaining several detected minima can be informative: they form a finite set of distinct smoothing choices whose validation ranking may or may not persist out of sample. This candidate set should be interpreted as a selection-sensitivity diagnostic, not as a confidence set or probability distribution over smoothness.
 
 Several limitations remain. The per-surface recovery experiments do not test
 temporal label correctness, and the current greedy correspondence algorithm
