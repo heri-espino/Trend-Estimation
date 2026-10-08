@@ -294,8 +294,11 @@ def run_branch_lab(
     n_origins = len(paired)
 
     for d in sorted(orders):
+        # Share the expensive original V1 objective/minimum recovery across
+        # rules, but NEVER share rules' branch states or transformed optima.
+        prepared_by_origin = {}
         # The raw ECM surface is retained for scientific comparison by d.
-        # Branch identities and minima, however, are SPECIFIC to (d, rule).
+        # Branch identities and minima are SPECIFIC to (d, rule).
         for rule_name in rules:
             rule = RULE_SPECS[rule_name]
             last_applied: dict[str, float] = {}
@@ -306,12 +309,15 @@ def run_branch_lab(
             for origin_no, split in enumerate(paired, 1):
                 a, b = int(split.validation.start), int(split.validation.stop)
                 c = b+horizon
-                prepared = td.prepare_rolling_pure_forecast_objective(
-                    y[:b], [split], order=d
-                )
-                raw_minima = _candidates(
-                    prepared, d, window, candidate_spacing, search_depth
-                )
+                if origin_no not in prepared_by_origin:
+                    prepared = td.prepare_rolling_pure_forecast_objective(
+                        y[:b], [split], order=d
+                    )
+                    raw_minima = _candidates(
+                        prepared, d, window, candidate_spacing, search_depth
+                    )
+                    prepared_by_origin[origin_no] = (prepared, raw_minima)
+                prepared, raw_minima = prepared_by_origin[origin_no]
                 if rule_name == rules[0]:
                     for s_value in grid:
                         s_value = float(s_value)
