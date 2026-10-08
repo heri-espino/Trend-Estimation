@@ -2,6 +2,10 @@
 
 **Updated 2026-10-08. This folder is the canonical living research record.** The current LaTeX manuscript is a dated working draft; it will be reconsidered **after** the algorithm and experiments are settled. Previous checkpoint outputs are preserved, not discarded.
 
+## Core contribution in one sentence
+
+We **integrate** established finite-difference PLS, spectral/EDF-based normalized smoothness \(S\in[0,1]\), native \(h\)-step trend continuation, and **fixed-window rolling-origin time-series cross-validation**, to **investigate selecting smoothness for a specified forecast horizon \(h\)** by pooled historical future-block MSE. We do **not** claim to invent these individual ingredients; the statistical, numerical and empirical value of their particular combination must be demonstrated. Full framing: [Research objective](research_objective.md#central-contribution-framing-an-integration-tailored-to-horizon-h).
+
 ## Read in this order
 
 1. [Research objective](research_objective.md) — central question, hypotheses, and information boundary.
