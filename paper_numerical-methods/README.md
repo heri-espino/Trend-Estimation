@@ -2,7 +2,7 @@
 
 **Status: ACTIVE.**
 
-**Working title:** *Numerical Solution and Tracking of Multimodal Forecast-Smoothness Minima*.
+**Working title:** *Numerical Recovery of Forecast-Smoothness Minima: Adaptive Search, Sturm Isolation, and Temporal Matching*.
 
 ## Objective
 
@@ -56,10 +56,12 @@ root-discovery algorithm.
 
 The numerical library now provides `sturm_forecast_smoothness` for
 forecast MSE on small rational-data windows (default limit: 8 observations).
-It constructs the exact rational stationary equation, uses a Sturm
-sequence to count/isolate all positive roots, and compares interior
-minima with exact endpoints. It returns the selected normalized
-smoothness `S`, not merely the penalty `lambda`.
+It constructs the exact rational stationary equation and uses a Sturm
+sequence to count/isolate all positive roots. It returns normalized
+smoothness `S`, both exact endpoint losses, and the rational root
+intervals alongside floating-point approximations. Root completeness
+is exact for the rationalized input problem; comparing approximate
+function values is not a formal proof of global-value ordering.
 
 Install the optional symbolic dependency and run:
 
