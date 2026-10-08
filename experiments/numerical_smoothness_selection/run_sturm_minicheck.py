@@ -14,6 +14,7 @@ except ImportError as exc:
     ) from exc
 
 from trend_estimation.forecasting.objectives import pure_forecast_loss_derivatives
+from trend_estimation.selection.sturm import sturm_forecast_smoothness
 
 
 def difference_matrix_exact(n_obs: int, order: int) -> sp.Matrix:
@@ -136,6 +137,30 @@ def main() -> None:
     assert np.allclose(numerical_roots, brent_roots, rtol=0.0, atol=1e-9)
     assert classifications == ["minimum", "maximum", "minimum"]
 
+    # Exercise the reusable exact solver, not only this independent derivation.
+    certified = sturm_forecast_smoothness(
+        np.asarray(y_past, dtype=int).ravel(),
+        np.asarray(y_future, dtype=int).ravel(),
+        order=order,
+        max_window=6,
+    )
+    assert certified.certified_positive_root_count == positive_root_count
+    assert len(certified.stationary_roots) == 3
+    assert [item.kind for item in certified.stationary_roots] == classifications
+    assert np.allclose(
+        [item.lambda_value for item in certified.stationary_roots],
+        numerical_roots,
+        rtol=0.0,
+        atol=1e-8,
+    )
+    assert all(0.0 < item.smoothness < 1.0 for item in certified.stationary_roots)
+    assert certified.best_smoothness in [0.0, 1.0] or any(
+        item.kind == "minimum"
+        and abs(item.smoothness - certified.best_smoothness) < 1e-10
+        for item in certified.stationary_roots
+    )
+
+
     # Verify that the exact symbolic construction is the same objective and
     # derivative implementation used by the production library.
     loss_fn = sp.lambdify(lam, loss, "numpy")
@@ -155,7 +180,7 @@ def main() -> None:
         assert np.isclose(actual.first, float(first_fn(lambda_value)), atol=1e-10)
         assert np.isclose(actual.second, float(second_fn(lambda_value)), atol=1e-9)
 
-    print("Sturm mini-check: PASS")
+    print("Sturm mini-check: PASS (including reusable exact solver)")
     print(f"n_fit={n_fit}, d={order}, h={horizon}")
     print(f"loss numerator degree: {sp.Poly(loss_num, lam).degree()}")
     print(f"loss denominator degree: {sp.Poly(loss_den, lam).degree()}")
@@ -164,7 +189,8 @@ def main() -> None:
     print(f"positive stationary roots: {positive_root_count}")
     for root, kind in zip(numerical_roots, classifications):
         print(f"  lambda={root:.12g} -> {kind}")
-    print("Brent roots match the Sturm-certified positive-root count.")
+    print("Brent roots match the exact positive-root count in this small case.")
+    print(f"Sturm-selected normalized S: {certified.best_smoothness:.12g}")
     print("Symbolic objective/derivatives match production code at 5 lambda values.")
 
 
