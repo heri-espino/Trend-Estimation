@@ -1,3 +1,7 @@
+> **2026-10-08 clarification:** “Using future data” means using the *later outcomes of older historical forecast origins*, which are already observed by the current origin. We cannot see (y_{T+1:T+h}) while choosing today's smoothness. This remains the central information boundary of the evolving method. Full derivations: [mathematical_foundations.md](mathematical_foundations.md).
+
+---
+
 # Validation semantics — what forecast-CV selects and what is refit
 
 **Canonical rule for every agent working on the smoothness-CV paper.**
@@ -136,7 +140,7 @@ This is the intended rolling pseudo-out-of-sample experiment.
 
 ## Code mapping
 
-The current implementation follows this rule.
+These code mappings describe the older implementation's intended information flow; verify exact function signatures after changing the solver. The chronology and mandatory final refit remain invariant.
 
 - `forecast_cv_curve(history, ...)` uses only `history = y[:origin]` and returns the validation-loss curve over candidate \(S\).
 - `grid_argmin(...)` converts that curve into the selected smoothness \(\widehat S_{T,h}\).

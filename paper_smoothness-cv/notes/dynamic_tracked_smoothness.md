@@ -1,3 +1,7 @@
+> **2026-10-08: OPTIONAL / HISTORICAL EXTENSION.** This documents previously investigated (V_j,psi,phi) branch rules, not the paper's central method. CP04–CP08 have been run; their results were mixed or unfavorable to the dynamic rules versus pooled forecast-CV. “The central experiment” or “next implement” instructions below are archived research intentions, not active tasks. Tracking minima is *not required* to define the horizon-matched pooled objective. See [research_objective.md](research_objective.md) and [next_experiments.md](next_experiments.md).
+
+---
+
 # Dynamic tracked smoothness — canonical formulation
 
 **Status: optional time-adaptive extension of the pooled forecast-CV method.**
@@ -190,15 +194,15 @@ used to choose a better current smoothness?*
 
 These must not be conflated.
 
-## 6. Ownership across the two active papers
+## 6. Remaining assumptions and limitations
 
-`paper_smoothness-cv/` owns the statistical/forecasting decision problem:
-branch definition as a forecasting object, branch selection `psi`, final
-smoothness rule `phi`, chronological validation, and out-of-sample forecasting
-evidence.
+This forecasting study stands alone. A historical loss minimum can be located
+only when its validation future has become **historical** by the live origin
+\(T\). No current unseen future observation may enter \(V_j,\psi,\phi\).
+Minimum tracking is not naturally unique when branches cross, appear,
+disappear, or have competing pairwise assignments. The branch maps are
+assumptions about persistence, not a statistical consequence of PLS.
 
-`paper_numerical-methods/` owns numerical recovery of all relevant local
-minima on each surface and reliable correspondence/tracking of minima across
-nearby surfaces. Brent/adaptive subdivision/Sturm belong there.
-
-Only these two papers are active.
+Completed CP04–CP08 experiments did not establish that a universal branch rule
+outperforms pooled forecast-CV. See the preserved checkpoint records and
+[research_log_2026-10.md](research_log_2026-10.md).

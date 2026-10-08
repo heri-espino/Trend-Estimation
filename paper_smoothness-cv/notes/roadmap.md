@@ -1,115 +1,60 @@
-# Roadmap — forecast-optimal smoothness CV with optional adaptation
+# Research roadmap — normalized forecast cross-validation
 
-**Intended target:** Communications in Statistics—Simulation and Computation.
+**Current: 2026-10-08. Intended journal: Communications in Statistics—Simulation and Computation.** The current manuscript is a working draft. We will write the definitive paper from completed notes **after** testing the new numerical method and choosing a new statistical experiment.
 
-## Phase 0 — Baseline criterion
+## Stage 1: question and mathematics — established
 
-- [x] Define normalized smoothness `S`.
-- [x] Define chronological future-block forecast loss.
-- [x] Implement pooled forecast-CV selector.
-- [x] Separate forecast optimality from recovery optimality.
-- [x] Freeze fit-select-refit information semantics.
+- [x] Define the training-window PLS smoother \(H_\lambda=(I+\lambda D_d^\top D_d)^{-1}\).
+- [x] Normalize the trace-based Guerrero smoothness index to \(S\in[0,1]\).
+- [x] Derive the spectral form, exact limiting polynomial projection and effective degrees of freedom.
+- [x] Define native \(h\)-step polynomial continuation \(G_{d,h}\), with degree \(d-1\) fixed by \(d\).
+- [x] Minimize pooled **historical** future-block forecast MSE using only windows completed by the current origin, then refit at the current origin.
+- [x] Derive the matrix-resolvent \(n\)th derivative, and the analytic forecast-loss gradient and curvature.
+- [x] Recognize possible multiple interior minima and both endpoint candidates.
+- [ ] Verify gradients, Hessians, spectral shortcuts, numerical conditioning, especially near \(S=1\).
 
-## Phase 1 — Pooled-selector evidence
+See [mathematical_foundations.md](mathematical_foundations.md).
 
-- [x] CP01 exploratory simulation.
-- [x] CP02 refined simulation design.
-- [x] Freeze CP03 pooled-selector paper-scale design.
-- [ ] Finish/push CP03 paper-scale results.
+## Stage 2: preserve existing research — complete as historical evidence
 
-CP03 is the primary, frozen horizon-matched forecast-CV experiment.
-Do not retune it based on optional extension results.
+- [x] CP01–CP02: initial simulations and design refinement.
+- [x] CP03: **ran** frozen 3,000 scenarios / 72,000 outer origin–horizon decisions, with figures and comparison results.
+- [x] CP04–CP08: **ran** exploratory dynamic branch/financial panel/roughness/trajectory studies.
+- [x] Archived favorable and unfavorable results without removing them.
 
-## Phase 2 — Dynamic tracked minima
+CP03 is **not automatically the definitive final experimental design**. Do not change its stored seeds, code, output, or frozen interpretations. Refer to [research_log_2026-10.md](research_log_2026-10.md).
 
-- [x] Define local-minimum sets `M_t`.
-- [x] Define epsilon one-to-one branch continuation.
-- [x] Define branch matrix `V_j = [S, Val1 loss, Val2 loss]`.
-- [x] Existing tracked-minima experiment implements branch histories and `last`.
-- [ ] Freeze branch-selection rule `psi`.
-- [ ] Implement final-smoothness rules `phi(V_j)` on identical branch histories.
-- [ ] Compare `last`, recent mean, recent median, Val2-weighted, and
-  recency+Val2-weighted rules.
-- [ ] Decide/freeze `K`, `epsilon`, `rho`, and numerical stabilizer `delta` using
-  development data only.
-- [x] Evaluate frozen `recency_hl3` once on the reserved CP04 confirmation blocks.
+## Stage 3: numerical revision — NEXT
 
-## Phase 2B — External financial validation
+- [ ] Create verified small examples with known minima, stationary inflections, flat regions and boundary winners.
+- [ ] Compare old adaptive \(S\) search + Brent with potential replacement solvers on the **same numerical objective and observations**.
+- [ ] Evaluate small exact-rational Sturm isolation separately from large-window floating-point algorithms; do not imply universal root certification.
+- [ ] Precompute eigendecomposition, projections, and analytic derivatives where it helps; compare numerical precision, memory and wall time.
+- [ ] Measure missed roots, selected \(S\), endpoint frequency, actual historical objective regret, and cost.
+- [ ] Select and freeze an implementation only after correctness tests and explicitly distinguishing root completeness from global value ranking.
 
-- [x] Freeze `recency_hl3` from CP04 development.
-- [x] Confirm it once on the four-series CP04 holdout.
-- [x] Freeze an objective 64-series external Yahoo panel excluding CP04 financial series.
-- [x] Implement CP05 runner, analyzer, figures, and conservative no-continuation fallback.
-- [x] Run CP05 smoke.
-- [x] Run CP05 full panel.
-- [x] Report overall, stock, ETF, and crypto results without retuning.
+**Gate:** A changed search method applied to exactly the same mathematical objective should not change its exact global minimizer. If results change, examine approximation error, ties, or changed protocol before making a statistical claim.
 
-## Phase 2C — Order-stability mechanism
+## Stage 4: new predictive experiment — PLANNED
 
-- [x] Diagnose CP05 failures by selected difference order.
-- [x] Freeze a post-hoc mechanism study on earlier historical blocks.
-- [x] Compare order sets `{1,2,3,4}`, `{1,2,3}`, `{1,2}`, and `{2}`.
-- [x] Run CP06 smoke.
-- [x] Run CP06 full mechanism study.
-- [x] Decide that the next prospective simulation must isolate smoothness dynamics from high-order continuation.
-## Phase 2D — Dynamic roughness simulation
+- [ ] Decide \(d,L,h\), chronology, trend/noise DGPs, number of seeds, and independent outer blocks *before* evaluating the new method.
+- [ ] Pair horizon-matched forecast-CV against one-step CV, ordinary CV, GCV, AICc, and clear simulation-only oracles on a comparable optimization footing.
+- [ ] Separate **trend reconstruction** from **future observations forecast** and possible latent future trend forecasting.
+- [ ] Report aggregate ratios with seed-dependent uncertainty, failures by mechanism, selected \(S\), endpoint rates, and sensitivity to continuation degree.
+- [ ] Preserve all new results and negative cases; never overwrite CP03/CP04–08 artifacts.
 
-- [x] Freeze CP07 with d=2, L=120, h=20.
-- [x] Run CP07 smoke.
-- [x] Run CP07 paper preset.
-- [x] Analyze CP07 paper results.
-- [x] Conclude that backward-looking recency averaging does not beat pooled CV even under changing roughness.
+## Stage 5: optional historical minima and branches
 
-## Phase 2E — Forecast the smoothness trajectory
+- [ ] If scientifically useful, characterize the location, shape, number, and movement of historical single-origin forecast-loss minima.
+- [ ] Tracking \(V_j,\psi,\phi\) is an additional hypothesis, not a requirement of the pooled criterion.
+- [ ] Handle birth/death/crossing ambiguity and compare with pooled forecast-CV using frozen outer tests.
+- [ ] Explicitly acknowledge CP04–CP08 mixed/negative evidence for recency and trajectory rules.
 
-- [x] Freeze CP08 rule-family demonstration on fresh seeds 100--199.
-- [x] Implement recent-linear, exponentially weighted linear, and increment extrapolation rules.
-- [x] Run CP08 smoke.
-- [x] Run CP08 paper demonstration.
-- [x] Summarize how the different \(\phi(V_j)\) rules behave; do not select a universal winner.
+## Stage 6: literature and final writing — LATER
 
-## Phase 2F — Representation figures and manuscript consolidation
+- [ ] Verify exactly whether direct multi-step forecast-MSE tuning for finite-difference PLS trends already exists.
+- [ ] Compare Guerrero, Cortés-Toto, Islas, Hart, Vilar-Fernández/Cao, Franke, Biessy in depth.
+- [ ] Once solver/protocol results settle, write the final independent CSSC manuscript from these notes, select figures from verified results, compile PDF and visually review.
+- [ ] Current working LaTeX and CSSC submission checklist do not supersede this research agenda.
 
-- [x] Generate CP08 explanatory figures from the frozen results.
-- [ ] Illustrate origin-specific minima, tracked branches, and branch matrix V_j.
-- [ ] Show several phi(V_j) maps acting on the same branch history.
-- [ ] Separate methodological flexibility from claims of forecasting superiority.
-- [x] Integrate frozen CP03--CP08 results into the manuscript.
-- [ ] Compile and visually inspect the updated Wiley manuscript PDF.
-
-## Phase 3 — Main dynamic simulation
-
-- [ ] Construct DGPs where forecast-optimal smoothness is stable, drifting,
-  switching, or intermittently multimodal.
-- [ ] Measure branch recovery/persistence separately from forecast performance.
-- [ ] Compare dynamic rules with pooled forecast-CV, CV, GCV, AICc, and
-  simple last-minimum selection.
-- [ ] Report forecast loss, selected `S`, branch support, switching frequency,
-  and regret to simulation-only forecast oracle.
-
-## Phase 4 — Public real-data panel
-
-- [ ] Freeze a heterogeneous public panel.
-- [ ] Use chronological Val1/refit/Val2/outer-test logic.
-- [ ] No manual per-series choice of branch rule.
-- [ ] Compare dynamic tracked rules with pooled forecast-CV and classical
-  selectors.
-
-## Phase 5 — Manuscript
-
-- [x] Existing manuscript contains the pooled criterion and PLS foundation.
-- [x] Reframe the abstract/introduction around the primary pooled forecast-CV criterion.
-- [x] Separate tracked branches into an optional extension in the manuscript.
-- [ ] Add only results actually observed.
-- [x] Distinguish existing PLS, index, and predictive CV precedents from
-  the specific horizon-matched forecast-MSE construction.
-
-## Canonical notes
-
-- `notes/dynamic_tracked_smoothness.md` — optional adaptation layer.
-- `notes/validation_semantics.md` — information/refit invariant.
-- `notes/research_objective.md` — formal research question.
-
-## Active papers
-
-This forecasting manuscript is maintained as an independent article.
+Start with [INDEX.md](INDEX.md), [research_objective.md](research_objective.md), [next_experiments.md](next_experiments.md).

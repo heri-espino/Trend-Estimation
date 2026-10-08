@@ -1,10 +1,6 @@
-> **2026-10-06 central-direction override:** CP01--CP03 below are retained as
-> the pooled forecast-CV baseline. The central next experiment is dynamic
-> tracked smoothness: construct branch matrices `V_j` and compare
-> `phi_last`, recent mean/median, Validation-2 weighting, and
-> recency+Validation-2 weighting on identical untouched tests. See
-> `notes/dynamic_tracked_smoothness.md` and
-> `checkpoints/CP04_DYNAMIC_BRANCH_RULES.md`.
+> **ARCHIVED DEVELOPMENT PLAN — 2026-10-08.** CP01–CP03 and CP04–CP08 have already run. The “awaiting execution”, “next checkpoint”, former Journal of Forecasting target, and former dynamic-priority text below are *historical*, not current instructions. Existing results are preserved; the final new experimental design will be chosen after numerical-method comparisons. See [roadmap.md](roadmap.md) and [research_log_2026-10.md](research_log_2026-10.md).
+
+---
 
 # Empirical roadmap — Journal of Forecasting paper
 

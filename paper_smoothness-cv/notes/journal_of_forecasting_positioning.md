@@ -1,3 +1,7 @@
+> **ARCHIVED VENUE NOTE — 2026-10-08.** This was written for the *former* Journal of Forecasting target and Wiley manuscript. It is not the present journal, research direction, execution state, or article template. The current working outlet is *Communications in Statistics—Simulation and Computation*. See [INDEX.md](INDEX.md) and [manuscript_outline.md](manuscript_outline.md).
+
+---
+
 # Journal of Forecasting positioning
 
 Date: 2026-10-05
