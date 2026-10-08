@@ -1,89 +1,97 @@
-\section{Evaluation protocol}
+\section{Evaluation design}
+\label{sec:evaluation}
 
-The empirical program now has two layers. Checkpoint 03 is a frozen paper-scale evaluation of the simpler pooled forecast-CV selector and remains a baseline. The central dynamic extension evaluates tracked local-minimum branches and alternative rules for converting branch history into the smoothness used at the current forecast origin.
+The experiments address three distinct questions. First, can historical
+forecast loss choose a useful smoothness level for a specified horizon?
+Second, how do tracked-minimum decisions behave when compared with a pooled
+forecast-loss optimum? Third, what changes when several functionals
+$\phi(V_j)$ act on the same historically identified branch? We do not
+predefine a universal winning functional; the third question concerns the
+expressiveness and limitations of the branch representation.
 
-\subsection{Layer 1: pooled forecast-CV baseline}
+\subsection{Chronological information and refitting}
 
-The frozen pooled baseline fixes
-\[
-d=2,\qquad L=60,\qquad h\in\{1,3,6,12\}.
-\]
-It compares horizon-matched pooled forecast-CV with one-step forecast-CV, ordinary CV, GCV, and AICc. BIC remains an exploratory diagnostic because its globally searched score was pinned to the left finite boundary in the refinement stage.
+For a forecast origin $T$, candidate smoothness values are computed from
+surfaces and branch histories observed before the untouched future block.
+A completed branch row contains the minimum located using Validation 1,
+then a Validation-2 score computed after the trend is refit through
+Validation 1. These scores are available for historical branch rows only.
+The current final-Validation-1 minimum has no realized Validation-2 score
+and is not assigned one when loss-weighting past observations.
 
-The pooled study uses controlled latent mechanisms, iid Gaussian, AR(1), and finite-variance Student-$t$ noise, fixed outer origins, and untouched future blocks. Its design was frozen before the paper-scale Checkpoint 03 run and is not retuned after observing those results.
+For every evaluated rule the final trend is re-estimated on the latest
+$L$ observations available at $T$. The temporary fits used to find minima
+or score the validation blocks never enter the operational forecast as
+historical fitted-trend averages. When forecast origins advance, the
+information set and the branch histories advance chronologically.
 
-\subsection{Layer 2: dynamic tracked-minimum evaluation}
+\subsection{Pooled forecast tuning}
 
-The central dynamic experiment operates on a chronological sequence of Validation-1 forecast-loss surfaces. At each origin $t$, all relevant local minima
-\[
-\mathcal M_t=\{S_{1,t},\ldots,S_{K_t,t}\}
-\]
-are recovered. Local minima are linked across adjacent origins by one-to-one matching under
-\[
-|S_{j,t}-S_{j,t-1}|\le\varepsilon.
-\]
-The resulting branch history is stored as
-\[
-V_j
-=
-\{(S_{j,t},\ell^{(1)}_{j,t},\ell^{(2)}_{j,t})\}_{t\in\mathcal T_j},
-\]
-where $\ell^{(1)}$ is Validation-1 forecast loss and $\ell^{(2)}$ is Validation-2 forecast loss after refitting through Validation 1.
+The pooled benchmark averages historical forecast errors across origins
+for fixed $(d,L,h)$ and minimizes the resulting objective in normalized
+smoothness. Checkpoint 03 fixes $d=2$, $L=60$, horizons $1,3,6,12$,
+five latent trend mechanisms, and iid Gaussian, AR(1), and Student-$t$
+disturbances. It compares horizon-matched forecast-CV with one-step
+forecast-CV, ordinary CV, GCV, and AICc, as well as non-feasible
+simulation-only latent oracles. The simulation reuses innovations across
+different trend mechanisms within a given seed; uncertainty calculations
+must therefore respect the seed as the resampling unit.
 
-The dynamic protocol separates branch selection from final smoothness selection. A branch rule
-\[
-\widehat j_T=\psi(V_1,\ldots,V_J)
-\]
-uses historical branch support and Validation-2 performance only. Conditional on the selected branch, a rule
-\[
-\widehat S_T=\phi(V_{\widehat j_T})
-\]
-produces the smoothness used for the current forecast.
+\subsection{Tracked-minimum evaluation}
 
-The first comparison set for $\phi$ contains:
-\begin{enumerate}
-\item the newest tracked local minimum;
-\item a recent arithmetic mean;
-\item a recent median;
-\item a Validation-2-loss-weighted mean;
-\item a recency-and-Validation-2 weighted mean.
-\end{enumerate}
-A direct forecast of the smoothness trajectory is reserved as a later extension unless its specification can be frozen without using outer-test information.
+The branch experiments recover local minima at historical rolling
+origins, connect nearby candidates with a one-to-one correspondence
+under a fixed continuation radius, and summarize each branch by
+persistence and the subsequent Validation-2 loss. The baseline
+historical selector $\psi$ prefers persistent, predictive branches.
+Different maps $\phi$ act on the selected branch while sharing the
+same numerical candidate recovery, branch identities, and outer
+test blocks.
 
-\subsection{Selection, refitting, and information boundaries}
+Checkpoint 04 used a four-series development and reserved-confirmation
+design. The recency-weighted rule with three-origin half-life was
+frozen before evaluating the 16 held-out confirmation blocks.
+Checkpoint 05 applied it without retuning to 64 other financial
+series, each with four outer blocks. Its broader results motivated
+Checkpoint 06, a \emph{post-hoc} analysis of native continuation
+stability using earlier blocks from the same series. The order
+restriction in that diagnostic is explanatory; it is not a new
+external confirmation.
 
-Validation selects hyperparameters or branch summaries; it does not select a historical trend fit to carry into the test. For every candidate branch rule, after $\widehat S_T$ is obtained, all temporary Validation-1 and Validation-2 fits are discarded. The trend is freshly estimated using the most recent full window available at the outer origin:
-\[
-x_T=y_{T-L+1:T},
-\qquad
-\widehat\tau_T
-=
-H_{\lambda(\widehat S_T)}x_T.
-\]
-The operational forecast is
-\[
-\widehat y_{T+1:T+h\mid T}
-=
-G_{d,h}\widehat\tau_T.
-\]
-The outer future block is revealed only for scoring. At a later outer origin, observations that have become available enter the historical information set and the complete branch-selection, smoothness-selection, refit, and forecast cycle is repeated.
+\subsection{Controlled dynamic roughness and the rule family}
 
-Thus the procedure may average historical forecast losses or historical smoothness values when a declared rule requires it, but it never averages historical trend fits.
+Checkpoint 07 fixes $d=2$ and studies 1,200 simulated scenarios with
+constant, gradually changing, or abruptly switching latent
+slope-innovation variance, using 100 seeds and two observation-noise
+scales. It provides a controlled comparison between the pooled
+selector, the newest local minimum, and recency averaging along a
+tracked branch.
 
-\subsection{Fair comparison of branch-to-smoothness rules}
+Checkpoint 08 uses a disjoint set of 100 seeds and the same family
+of roughness mechanisms. It fixes the underlying branch selection
+while evaluating several maps $\phi$, including linear trends fitted
+to recent smoothness values, exponentially weighted linear trends,
+and weighted increments. A raw extrapolated smoothness outside
+$[0,1]$ is projected onto that interval before the fresh final fit.
+The frequency of projection is reported alongside forecast-error
+ratios, since it is a distinctive behavior of extrapolative
+functionals.
 
-All $\phi$ rules must be evaluated on exactly the same recovered branch histories, the same branch selector $\psi$, and the same untouched outer test blocks. Hyperparameters such as the continuation radius $\varepsilon$, recent-history length $K$, recency factor $\rho$, and weighting stabilizer $\delta$ must be fixed from development data before final test scoring.
+\subsection{Metrics and interpretation}
 
-The dynamic experiment should report forecast MSFE and MAE, selected smoothness, branch support, branch switching or disappearance rates, and the distance between each feasible rule and a simulation-only latent forecast oracle where available. The pooled forecast-CV selector remains a direct baseline.
+The financial panels use \emph{level} RMSE; the controlled
+roughness simulations use \emph{log}-scale RMSE. For comparisons
+performed on a common outer test block, the summary is the
+geometric mean of the paired RMSE ratios. Ratios below one favor
+the numerator's rule, but these ratios must not be compared across
+incompatible series panels or scales as though they were one
+pooled experiment.
 
-\subsection{Role of the numerical-methods companion paper}
-
-The forecasting paper assumes that the relevant local minima on each surface and their cross-origin correspondences can be supplied reliably. Numerical discovery of those minima, endpoint handling, adaptive subdivision, derivative-root refinement, and the branch-correspondence problem belong to the companion numerical-methods paper. The forecasting paper evaluates what information in the resulting branch matrices is useful for selecting the current smoothness.
-
-\subsection{Public real-data evaluation}
-
-The final paper should complement simulation with a heterogeneous public panel under the same chronology. No series-specific branch rule may be chosen from its test performance. If macroeconomic histories are used, historical backtests require real-time vintages rather than revised current histories.
-
-\subsection{Freeze rules}
-
-The frozen Checkpoint 03 pooled design remains unchanged. The dynamic branch experiment receives its own freeze point: the branch matcher, $\psi$, candidate $\phi$ rules, $\varepsilon$, $K$, $\rho$, $\delta$, horizons, origins, and primary metrics must be recorded before the final dynamic paper-scale run. Unfavorable final results do not justify changing those choices.
+Uncertainty summaries from the four-series confirmation and
+64-series financial panels are descriptive, especially because
+asset returns share shocks and the confirmation sample has only
+four series. Results from different checkpoints cannot be treated
+as repeated independent confirmations of a single rule.
+The separate numerical-methods paper analyzes the accuracy of
+minimum recovery and matching; the present paper addresses how
+their recorded histories may be used as forecasting decisions.
