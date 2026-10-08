@@ -1,146 +1,130 @@
-\section{Related work and positioning}
+\section{Related work and contribution}
+\label{sec:related_work}
 
-\subsection{Finite-difference smoothing and the meaning of smoothness}
+\subsection{Penalized trends and established smoothing criteria}
 
-Whittaker's graduation method \cite{whittaker1923} and subsequent
-finite-difference penalized least-squares (PLS) formulations establish
-the estimator underlying this paper. Guerrero \cite{guerrero2007penalized}
-derives a statistical interpretation of PLS and a trace-based index of
-trend smoothness; Guerrero \cite{guerrero2008smoothness} uses that index
-to select a penalty corresponding to a smoothness percentage specified
-by the analyst. The basic smoother and the idea of measuring its
-effective smoothness are therefore established methods, not proposed
-here as new estimators.
+Whittaker's graduation method \citep{whittaker1923}
+and its PLS descendants provide the estimator
+considered here. \citet{guerrero2007penalized}
+gave a statistical formulation for trend PLS,
+while \citet{guerrero2008smoothness} formalized
+choosing a penalty from an analyst-specified
+smoothness percentage. The normalized index
+used below rescales this established trace-based
+quantity to include the attainable full-range
+limit one; it does not generate a new
+smoothing operator.
 
-Of particular relevance to the intended journal, Cort\'es-Toto et
-al.\ \cite{cortes2017smoothness} compare the smoothness attained by
-CV, GCV, AICc, and BIC in finite-difference PLS. They show that
-attained smoothness varies with sample length and trend specification.
-The present normalized index is a rescaling of the established
-trace-based quantity: it removes the unpenalized null-space degrees
-of freedom so that the maximum is one for a fixed $(d,L)$. Neither
-this monotone rescaling nor optimizing over it creates a different
-class of trend estimates.
+Of direct relevance to \emph{Communications in
+Statistics---Simulation and Computation},
+\citet{cortes2017smoothness} compared the
+smoothness achieved by PLS under CV, GCV,
+AICc, and BIC. Their simulation demonstrates
+sensitivity of attained smoothness to
+features of the underlying trend and sample
+length. \citet{bates1987gcvpack}, also in
+this journal, developed computational
+routines for GCV. These studies establish
+strong precedents for automatic regularization
+tuning, but neither specifies the
+$h$-step extrapolation MSE minimized
+by \cref{eq:intro_pooled_loss}.
 
-Serial dependence matters as well. Guerrero et
-al.\ \cite{guerrero2018autocorr} explicitly study AR(1) noise and
-its effect on controlled-smoothness trend estimation. Our baseline
-retains an identity-weight PLS estimator and treats dependent noise
-as a simulation mechanism, not as an explicit covariance model.
-The distinction limits any claim of robustness to serial dependence.
+\subsection{Controlled-smoothness forecasting precedents}
 
-The classical controlled-smoothness direction is
-\begin{equation}
-\label{eq:related_controlled_smoothness}
-\text{user chooses }S\longrightarrow\lambda(S).
-\end{equation}
-A forecast-oriented procedure instead uses
-\begin{equation}
-\label{eq:related_forecast_smoothness}
-\text{chronological forecast loss}\longrightarrow S^\star.
-\end{equation}
-Forecast-based selection is not new in general. The principal proposal here
-is a fully specified chronological $h$-step forecast-MSE criterion
-for normalized PLS smoothness, with a final refit on the most recent
-window. Temporal tracking of local minima is an optional adaptation
-mechanism, not a prerequisite of forecast-CV.
+Smoothing a series before forecasting is
+not novel in itself. \citet{islas2019remittances}
+used a controlled-smoothness trend inside
+a multi-state Markov-switching model for
+forecasting remittances to Mexico, and
+\citet{islas2025exchange} used a related
+framework for exchange-rate prediction.
+The former reports a prescribed smoothness
+percentage rather than direct selection of
+that percentage from the forecast errors
+of the simple finite-difference continuation.
+These studies establish forecasting use of
+controlled trends, while their downstream
+predictive models and smoothing rules
+are different from the criterion studied here.
 
-\subsection{Controlled trends used for forecasting}
+\subsection{Forecast-based cross-validation}
 
-Forecasting with a controlled-smoothness trend has clear prior
-applications. Guerrero and Galicia-V\'azquez
-\cite{guerrero2010financial} study trend estimation for financial
-series through a smoothing filter with an associated PLS
-interpretation. Islas-Camargo, Guerrero, and Silva
-\cite{islas2019remittances} forecast Mexican remittances with a
-Markov-switching model applied to a controlled-smoothness trend.
-Islas-Camargo and Zumaya-Galv\'an \cite{islas2025exchange}
-similarly study exchange-rate forecasts using a trend with
-controlled smoothness. These articles establish the substantive
-precedent for using this class of filters in forecasting, although
-their forecasting specifications differ from direct, pooled
-$h$-step MSE selection over normalized PLS smoothness.
+The distinction between recovering a signal
+and optimizing predictions is longstanding.
+\citet{hart1994tscv} developed time-series
+cross-validation for choosing the bandwidth
+of a kernel smoother from one-step-ahead
+predictions with dependent observations;
+boundary extrapolation is relevant in
+that construction. \citet{vilar2007nonparametric}
+compared nonparametric time-series forecasting
+methods and smoothing choices in this journal.
+\citet{tashman2000oos} discusses rolling
+forecast-origin evaluations, while
+\citet{bergmeir2012cv,bergmeir2018validity}
+study cross-validation and its validity
+for time-series prediction in appropriate
+settings. These are direct methodological
+antecedents; our focus is an $h$-step
+future-block loss for a finite-difference
+PLS trend continued by a fixed operator.
 
-Taylor \cite{taylor2004stes} provides a related but distinct example
-of forecast-error-based tuning in exponential smoothing, including
-time-varying smoothing weights. Zafar et al.\
-\cite{zafar2022filter} compare filtering methods by the subsequent
-short-horizon forecasts. In contrast, we keep the finite-difference
-PLS estimator fixed and study variation in the selection of its
-smoothness parameter.
+\subsection{Recovery, likelihood, and extrapolation targets}
 
-\subsection{Predictive validation and numerical smoothing selection}
+Recent PLS work illustrates why a smoothing
+parameter should be defined together with
+its loss target. \citet{franke2026hp}
+calibrate HP smoothing using simulated
+data with known growth trends and assess
+\emph{latent trend recovery}. By contrast,
+our deployable tuning rule uses only
+historical realized forecast errors.
+\citet{biessy2026whittaker} revisits
+Whittaker--Henderson smoothing and studies
+marginal-likelihood parameter selection
+and constrained extrapolation, among
+other questions. The endpoint problems
+highlighted by \citet{hamilton2018hp}
+remain relevant because a forecast
+made by polynomial continuation may be
+unstable even if smoothness was tuned
+for future error.
 
-The distinction between fitting a historical signal and selecting
-a tuning parameter for prediction is well established. Hart
-\cite{hart1994tscv} studies time-series cross-validation for kernel
-smoothing under dependent errors. In this journal, Vilar-Fern\'andez
-and Cao \cite{vilar2007nonparametric} compare nonparametric
-time-series forecasting methods and address smoothing-parameter
-selection for dependent observations. They select tuning
-parameters for nonparametric autoregressions rather than for
-finite-difference trend continuation, but share the predictive
-motivation.
+\subsection{Direct comparison of objectives}
 
-GCV is another important benchmark: the classical formulation
-of Craven and Wahba \cite{craven1979gcv} and the GCVPACK
-computational framework of Bates et al.\
-\cite{bates1987gcvpack}, also published in this journal, concern
-selection of regularization or smoothing parameters across
-linear smoothing problems. Their criteria are not equivalent
-to our chronologically refitted $h$-step forecast loss.
+\begin{table}[t]
+\centering
+\small
+\caption{Closest distinctions in how smoothness
+is selected and evaluated.}
+\label{tab:literature_positioning}
+\begin{tabular}{@{}p{0.27\linewidth}p{0.26\linewidth}p{0.37\linewidth}@{}}
+\toprule
+Reference & Selection & Target\\
+\midrule
+\citet{guerrero2008smoothness} & User specifies $S$ & Trend regularity\\
+\citet{cortes2017smoothness} & CV/GCV/AICc/BIC & Attained PLS smoothness\\
+\citet{islas2019remittances} & Controlled smoothing & Markov-switching forecast\\
+\citet{hart1994tscv} & Kernel bandwidth & One-step prediction\\
+\citet{franke2026hp} & HP penalty & Latent trend recovery\\
+This study & PLS $S\in[0,1]$ & Chronological $h$-step extrapolation MSE\\
+\bottomrule
+\end{tabular}
+\end{table}
 
-Tashman \cite{tashman2000oos} surveys forecast evaluation using
-held-out time blocks; Bergmeir and Ben\'itez \cite{bergmeir2012cv}
-examine validation choices for time-series predictors; Bergmeir et al.\
-\cite{bergmeir2018validity} identify conditions under which standard
-cross-validation can be valid for autoregressive prediction; and
-Stan\v{e}k \cite{stanek2023oos} studies estimation of out-of-sample
-loss. In the present setting, all parameter-selection information
-must precede an untouched test block. Its forecast horizon,
-estimation window, continuation rule, and update schedule are
-part of the statistical procedure.
-
-\subsection{Recent PLS developments and endpoint limitations}
-
-Recent work reinforces the need to specify what the smoothing
-parameter is optimized \emph{for}. Franke, Kukacka, and Sacht
-\cite{franke2026hp} select Hodrick--Prescott penalties in
-simulations designed to approximate latent growth trends;
-that is a different loss target from future prediction.
-Biessy \cite{biessy2026whittaker} revisits Whittaker--Henderson
-smoothing with marginal-likelihood parameter selection and
-constrained extrapolation. Kim et al.\ \cite{kim2009l1}
-replace the quadratic trend penalty with an $\ell_1$ penalty
-that encourages piecewise-linear fits, a different estimator
-from the quadratic PLS considered here.
-
-Hamilton \cite{hamilton2018hp} highlights endpoint and spurious
-dynamics problems of the Hodrick--Prescott filter. These concerns
-are germane because our forecasts extrapolate a trend fitted at
-the sample boundary. Optimizing the penalty for a future loss
-does not by itself remove extrapolation instability; the
-high-difference-order findings reported later in this paper
-make this limitation explicit.
-
-\subsection{Specific contribution and boundary}
-
-The PLS smoother, controlled-smoothness index, and predictive
-cross-validation all have clear antecedents. We therefore do not
-claim any of them as an independent invention. Our central
-methodological construction applies chronological forecast MSE
-at the \emph{intended horizon} directly to the smoothness
-parameter of a finite-difference PLS trend, with an explicit
-continuation operator and an operational final refit. Its
-performance is compared with one-step forecast tuning and
-classical criteria for the smoothing penalty.
-
-The objective can be multimodal, making stationary-point discovery,
-Brent refinement, and endpoint comparison relevant to practical
-implementation. These numerical requirements do not alter the
-statistical definition of the forecast-MSE criterion. In particular,
-searching a normalized $S$ grid covers the full interval between
-limiting smoothing regimes, without imposing an arbitrary finite
-upper limit on $\lambda$. Time-adaptive selection from historical
-minima is an additional, optional decision layer requiring
-assumptions about persistence and changing data dynamics.
+The particular methodological contribution
+is a self-contained combination of the
+normalized PLS smoothing coordinate,
+declared finite-difference continuation,
+horizon-matched chronological forecast
+loss, and operational refitting.
+The monotone $S$ transformation includes
+both limiting trend models and supports
+a compact numerical search, but it
+does not alone alter the estimator,
+remove multimodality, or prove better
+predictive performance. The frozen
+simulation evaluates the contribution
+against alternatives with different
+statistical targets.

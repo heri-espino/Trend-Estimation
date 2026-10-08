@@ -1,98 +1,99 @@
 \section{Introduction}
+\label{sec:introduction}
 
-The smoothness of an estimated trend is not automatically the
-smoothness that yields the best forecast. In finite-difference
-penalized least squares (PLS), the penalty $\lambda$ controls the
-trade-off between fidelity to observed data and regularity of a
-fitted historical path. If the purpose is extrapolation, its
-smoothness should instead be evaluated by predictive accuracy at
-the intended horizon $h$. A trend that recovers the latent signal
-well need not have a stable terminal extrapolation.
+A trend smoother that reconstructs historical observations well
+need not produce an accurate forecast. In finite-difference
+penalized least squares (PLS), the smoothing penalty trades
+fidelity to the past against regularity of the fitted path.
+Once the path is extrapolated, however, its terminal
+level and differences determine the forecast. Selecting
+the penalty to recover a historical trend and selecting
+it for future extrapolation are different problems.
 
-The PLS smoother and the smoothness index are established by the
-work of Guerrero \cite{guerrero2007penalized,guerrero2008smoothness},
-while Cort\'es-Toto et al.\ \cite{cortes2017smoothness} analyze the
-smoothness induced by conventional model-selection criteria.
-For a length-$L$ training window $x_t$, let
-$H_\lambda=(I+\lambda D_d^\top D_d)^{-1}$ be its smoothing matrix
-and let $S(\lambda)\in[0,1]$ denote a normalized trace-based
-smoothness index. Let $G_{d,h}$ extrapolate the fitted trend over
-$h$ future observations using its declared finite-difference
-continuation rule.
-
-The paper's principal proposal is to select smoothness by
-chronological, horizon-specific forecast cross-validation. For
-historical forecast origins $t_1,\ldots,t_M$, define
+This paper investigates a specific predictive criterion.
+For a historical window $x_t$, let $H(S)$ be the PLS
+smoothing matrix indexed by normalized smoothness
+$S\in[0,1]$, and let $G_{d,h}$ continue the fitted
+trend $h$ observations into the future. At the final
+forecast origin $T$, choose
 \begin{equation}
 \label{eq:intro_pooled_loss}
-F^{\mathrm{pool}}_{d,L,h}(S)
-=
-\frac1M\sum_{m=1}^M\frac1h
+F^{\mathrm{pool}}_{T,d,L,h}(S)
+=\frac{1}{Mh}\sum_{m=1}^M
 \left\|y_{t_m+1:t_m+h}
--G_{d,h}H_{\lambda(S)}x_{t_m}\right\|_2^2.
+-G_{d,h}H(S)x_{t_m}\right\|_2^2,
 \end{equation}
-Then select
+where each historical validation block has ended
+before the final origin. The smoothness decision is
 \begin{equation}
 \label{eq:intro_pooled_choice}
 \widehat S^{\mathrm{FCV}}_{T,d,L,h}
-\in\arg\min_{S\in[0,1]}
-F^{\mathrm{pool}}_{d,L,h}(S).
+\in\operatorname*{arg\,min}_{S\in[0,1]}
+F^{\mathrm{pool}}_{T,d,L,h}(S).
 \end{equation}
-Every validation block used in \cref{eq:intro_pooled_loss}
-has been observed by the outer origin $T$. The future test
-observations after $T$ never enter smoothness selection.
+The final trend is refitted using the newest $L$
+observations and extrapolated into an untouched
+future test block. Thus the validation objective
+is prospective: no future test observation is
+available when the operational trend is chosen.
 
-This is a complete procedure without a time-varying branch state.
-Its defining choices are the smoothing matrix $H_\lambda$, the
-normalized smoothness parameter, a fixed extrapolation rule, and
-historical mean squared \emph{forecast} error computed at the
-intended horizon. Once smoothness has been selected, all validation
-fits are discarded; the trend is refitted using the latest
-$L$ observations and extrapolated into the untouched test block.
-The paper does not introduce PLS, normalized smoothness, or
-predictive cross-validation in isolation. Forecast-based smoothing
-selection has precedents in Hart \cite{hart1994tscv} and
-Vilar-Fern\'andez and Cao \cite{vilar2007nonparametric};
-controlled-smoothness trends have been used in prediction by
-Islas-Camargo et al.\ \cite{islas2019remittances} and
-Islas-Camargo and Zumaya-Galv\'an \cite{islas2025exchange}.
-Our focus is their particular combination into a directly
-horizon-matched PLS trend-extrapolation objective and
-its comparison with established alternatives.
+Normalized smoothness is an important computational
+coordinate. It transforms the unbounded penalty
+range $\lambda\in[0,\infty]$ into $S\in[0,1]$
+without requiring an arbitrary upper cutoff.
+At $S=0$ the historical observations are unsmoothed;
+at $S=1$ the fit is projected onto the polynomial
+null space of the difference penalty. Intermediate
+values change the terminal differences of the fitted
+trend and consequently the polynomial forecast
+coefficients. For fixed difference order $d$, this
+does not select the polynomial degree, which
+remains at most $d-1$; it selects the smoothness
+of the trend that is to be continued.
 
-The bounded domain $S\in[0,1]$ is operational: validation searches
-normalized smoothness rather than scanning an arbitrarily truncated
-penalty interval $\lambda\in[0,\infty)$. The endpoints represent the
-observed-data fit ($S=0$) and the limiting least-squares polynomial
-trend of degree $d-1$ ($S=1$). Intermediate values produce different
-fitted terminal levels and differences, hence different extrapolations.
-The degree is determined by $d$; optimizing $S$ does not itself
-select the polynomial degree.
+The ingredients themselves are established.
+\citet{guerrero2007penalized,guerrero2008smoothness}
+developed PLS and the percentage-of-smoothness
+interpretation, while \citet{cortes2017smoothness}
+examined attained smoothness under conventional
+criteria in this journal. Controlled-smoothness
+trends were already used for remittance and
+exchange-rate forecasting
+\citep{islas2019remittances,islas2025exchange}.
+More directly, \citet{hart1994tscv} used
+one-step-ahead predictive error to tune kernel
+smoothing, and \citet{vilar2007nonparametric}
+studied nonparametric time-series forecasting.
+We therefore do not claim that predictive
+smoothness tuning in general, or the index
+itself, originated here. The statistical
+object examined is their concrete combination
+into horizon-matched \emph{future-block}
+selection of normalized PLS trend smoothness.
 
-The forecast-MSE surface may have multiple local minima. The
-numerical search must therefore consider competing interior
-candidates and both exact limiting endpoints. In the reported
-experiments, adaptive derivative bracketing and Brent refinement
-provide that numerical search without assuming a single minimum.
+A Monte Carlo study addresses whether matching
+the validation horizon to the operational
+forecast horizon changes smoothness and
+out-of-sample error; how that choice compares
+with ordinary CV, GCV, AICc, and
+simulation-only recovery oracles; and how
+the bounded optimization objective behaves
+when it contains several minima. The frozen
+study crosses five trend mechanisms, three
+noise families, two noise levels, and 100
+seeds, with six outer origins and four
+forecast horizons, yielding 72,000 decisions.
+These evaluations are repeated within seeds
+and are not 72,000 independent replications.
 
-An optional extension treats the desirable smoothness as a
-time-varying hyperparameter. If the analyst assumes that
-recent smoothing regimes carry information about the next
-forecast, historical local minima can be tracked into
-branch states $V_j$, with rules for choosing a branch and
-converting its history into the current smoothness.
-The resulting maps embody different assumptions about
-recency, persistence, and predictive relevance. They are
-not necessary for \cref{eq:intro_pooled_choice} and are
-not guaranteed to outperform it.
-
-The empirical analysis therefore distinguishes the main
-method from its extension. A frozen 3,000-scenario simulation
-evaluates horizon-matched pooled forecast-CV against one-step
-forecast tuning and classical criteria over 72,000
-outer-origin--horizon decisions. Further financial and
-changing-roughness experiments evaluate branch-based rules,
-whose predictive advantages are not uniform. The primary
-contribution is a forecast-targeted methodology for choosing
-PLS trend smoothness; temporal branch adaptation is a
-secondary, assumption-dependent use of the same objective.
+The main result is an aggregate improvement
+of horizon-matched tuning over one-step
+tuning at longer horizons for this design.
+Neither the mathematical reparameterization
+nor the experiment establishes uniform
+forecast dominance under all time-series
+models. Additional time-adaptive decisions
+based on historical local-minimum trajectories
+are examined only as exploratory extensions
+in the appendices; they do not define
+the pooled forecast-CV procedure.
