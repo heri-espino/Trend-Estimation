@@ -1,6 +1,6 @@
 # Checkpoint 08 — Forecast the tracked smoothness trajectory
 
-**Status: FROZEN DEMONSTRATION DESIGN BEFORE RUN.**
+**Status: COMPLETE — illustrative rule-family comparison (1,200 scenarios / 9,600 outer decisions).**
 
 CP07 showed that backward-looking recency averaging stabilizes the newest
 tracked minimum but does not beat pooled forecast-CV. CP08 tests the forward-
@@ -78,3 +78,41 @@ trend estimator or the numerical minimum-tracking layer.
 
 Accordingly, CP08 has no winner-selection step and no follow-up confirmation
 stage tied to a selected trajectory rule.
+
+## Observed CP08 demonstration
+
+Source run: `results/smoothness_cv/checkpoint_08/20261007T072243Z_paper_be492a8/`.
+
+The paper preset completed 1,200 scenarios and 9,600 outer forecast decisions.
+Each decision used the same tracked branch while applying alternative maps
+from historical branch information to the current smoothness.
+
+| Example functional | Geometric observed-log RMSE / pooled CV | Clip rate |
+| --- | ---: | ---: |
+| Recency mean, half-life 3 | 1.0409 | 0.0% |
+| Exponentially weighted linear, half-life 5 | 1.0627 | 10.8% |
+| Linear extrapolation, 10 values | 1.0790 | 18.4% |
+| Weighted-increment extrapolation, half-life 3 | 1.1103 | 22.3% |
+
+All seven extrapolative examples and the recency mean had overall geometric
+ratios above one against pooled forecast-CV. They do not support a
+forecast-superiority claim.
+
+The rules nevertheless produce different selected smoothness values and
+boundary-clipping frequencies while using the same tracked minimum branch.
+This demonstrates the flexibility of the representation, not its universal
+forecasting benefit.
+
+Generate three figures (PDF and PNG) using:
+
+~~~bash
+python experiments/smoothness_cv/make_checkpoint_08_figures.py
+~~~
+
+Figures show ratios by stationary/changing mechanism, clipping rates, and one
+fixed illustrative seed/roughness scenario comparing alternative smoothness
+choices from the same branch history. The illustrative scenario is fixed in
+the script rather than selected by performance.
+
+CP08 is closed. The next phase is visualization, manuscript synthesis, and
+precise limits of the forecasting claims—not more winner-selection rounds.
