@@ -234,6 +234,40 @@ interesting scenario without storing every F array in the giant DB.
    due to size. Commit lightweight manifests/reports/checkpoint
    summaries only deliberately; version large databases elsewhere.
 
+## Sharing research evidence through GitHub
+
+The work station's SQLite database may become many gigabytes. **Do not**
+blindly stage the whole campaign output folder. To make the results
+available to collaborators for analysis, push the lightweight
+\`manifest.json\` and \`reports/\` summary CSV/README outputs rather
+than the raw SQLite file. For example after complete aggregation:
+
+~~~bash
+git add results/smoothness_cv/campaign_extensive_v1/manifest.json
+git add results/smoothness_cv/campaign_extensive_v1/reports/
+git status --short
+git commit -m "results: frozen weighted-F large simulation summaries"
+git push
+~~~
+
+Before committing, check \`git status\` and file sizes: certain
+replicate-level compressed audit trails can themselves become large.
+If necessary, leave those two \`*.csv.gz\` trails outside Git and
+commit only:
+\`scenario_method_summary.csv\`,
+\`paired_scenario_comparisons.csv\`,
+\`effects_by_*.csv\`,
+\`worst_relative_rmse_cases.csv\`,
+\`best_relative_rmse_cases.csv\`,
+\`task_timing.csv\`, and \`README_RESULTS.md\`.
+Keep the full database available locally and recoverable from the
+frozen manifest/seeds/code. Git LFS or external institutional storage
+is more appropriate for unusually large raw artifacts.
+
+**Do not commit an incomplete or still-changing simulation summary
+as though it were a completed frozen run.** Partial reports are only
+exploratory.
+
 ## Module index
 
 - \`simulation_dgps.py\`: source paper and extended scenario generators.
