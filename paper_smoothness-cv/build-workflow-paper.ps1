@@ -1,4 +1,4 @@
-# Build the five-panel workflow tutorial and the Wiley manuscript.
+# Build the five-panel workflow tutorial and the standard article manuscript.
 # Run from anywhere with:
 #   powershell -ExecutionPolicy Bypass -File .\paper_smoothness-cv\build-workflow-paper.ps1
 param(
@@ -40,10 +40,10 @@ try {
 
     $figureTime = (Get-Item -LiteralPath $figure).LastWriteTimeUtc
 
-    Invoke-PythonStep -Label "Check Wiley manuscript" -Arguments @(
+    Invoke-PythonStep -Label "Check standard LaTeX manuscript" -Arguments @(
         "paper_smoothness-cv/build.py", "--check"
     )
-    Invoke-PythonStep -Label "Compile Wiley manuscript" -Arguments @(
+    Invoke-PythonStep -Label "Compile standard LaTeX manuscript" -Arguments @(
         "paper_smoothness-cv/build.py"
     )
 
