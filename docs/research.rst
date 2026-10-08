@@ -18,4 +18,4 @@ Canonical internal files
 * `notes/nested_validation.md` — nested evaluation.
 * `notes/roadmap.md` — active research roadmap.
 
-Paper directories use the convention `paper_<short-title>/`.
+Active manuscripts use `working_papers/Working Paper - <Title>/`; inactive studies go to `ideas/`.

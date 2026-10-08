@@ -12,9 +12,9 @@ Run from repository root:
     python experiments/smoothness_cv/make_workflow_tutorial_figure.py
 
 Output:
-    paper_smoothness-cv/manuscript/figures/fig_workflow_tutorial.pdf
-    paper_smoothness-cv/manuscript/figures/fig_workflow_tutorial.png
-    paper_smoothness-cv/manuscript/figures/fig_workflow_tutorial.json
+    working_papers/Working Paper - Dynamic Branch Selection/manuscript/figures/fig_workflow_tutorial.pdf
+    working_papers/Working Paper - Dynamic Branch Selection/manuscript/figures/fig_workflow_tutorial.png
+    working_papers/Working Paper - Dynamic Branch Selection/manuscript/figures/fig_workflow_tutorial.json
 
 The scenario and outer test are fixed by *indices*, not chosen for
 favorable performance. This is a pedagogical figure, not a new experiment.
@@ -46,7 +46,7 @@ from experiments.numerical_smoothness_selection import (
     run_two_stage_order_validation as tracked,
 )
 
-FIGURES_DIR = ROOT / "paper_smoothness-cv" / "manuscript" / "figures"
+FIGURES_DIR = ROOT / "working_papers" / "Working Paper - Dynamic Branch Selection" / "manuscript" / "figures"
 NAME = "fig_workflow_tutorial"
 KEY = "CP07_SIM"
 SEED = 100

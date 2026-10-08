@@ -23,7 +23,7 @@ internal roadmap. These are working scientific notes, not API docs.
 Papers and experiments
 ----------------------
 
-`paper_<short-title>/` contains manuscript-specific text.
+`working_papers/Working Paper - <Title>/` holds each active independent manuscript; `ideas/` holds inactive/archival work.
 
 `experiments/<short_title>/` contains reproducible experiment drivers that
 import `trend_estimation`. Reusable algorithms must stay in the library.
