@@ -136,13 +136,82 @@ def test_late_validation_losses_are_not_known_to_past_rules():
                 "s_minimo"
             ].to_numpy(float),
             history_val2_loss=group.sort_values("origin")[
-                "val2_rmse"
+                "val2_mse"
             ].to_numpy(float),
             current_s=float(row.s_minimo),
         )
         assert np.isclose(
             float(np.clip(raw_s, 0, 1)), row.s_aplicado,
         )
+
+
+def test_each_rule_has_own_v1_minima_and_independent_branch_history():
+    data = _sample()
+    result = _run(data, step=3, max_origins=6)
+    v = result.evaluations
+    b = result.branches
+    # A branch label is meaningful only together with its order AND its rule.
+    pd.testing.assert_frame_equal(
+        b[["d", "regla", "rama", "origin", "s_aplicado"]]
+        .sort_values(["d", "regla", "rama", "origin"])
+        .reset_index(drop=True),
+        v[["d", "regla", "rama", "origin", "s_aplicado"]]
+        .sort_values(["d", "regla", "rama", "origin"])
+        .reset_index(drop=True),
+    )
+    for row in b.itertuples():
+        assert row.regla in RULE_SPECS
+        assert np.isfinite(row.s_aplicado)
+        if row.regla == "last":
+            assert np.isclose(row.s_minimo, row.s_aplicado)
+    # Method-specific V1 objective equals E1(phi_r(history, s_input)).
+    # We test this directly using a fully completed, causally available history.
+    candidate = v.loc[
+        v["regla"].eq("mean_k3")
+        & v["n_historial_disponible"].gt(0)
+    ].iloc[0]
+    past = v.loc[
+        v["d"].eq(candidate["d"])
+        & v["rama"].eq(candidate["rama"])
+        & v["regla"].eq(candidate["regla"])
+        & v["origin"].lt(candidate["origin"])
+        & v["val2_end"].le(candidate["val1_end"])
+    ].sort_values("origin")
+    applied, _ = apply_rule(
+        RULE_SPECS["mean_k3"],
+        history_s=past["s_minimo"].to_numpy(float),
+        history_val2_loss=past["val2_mse"].to_numpy(float),
+        current_s=float(candidate["s_minimo"]),
+    )
+    assert np.isclose(float(np.clip(applied, 0, 1)), candidate["s_aplicado"])
+
+
+def test_loss_weighted_rule_identifies_flat_v1_objective():
+    from experiments.smoothness_cv.branch_rule_lab import _method_minima
+
+    data = _sample()
+    a, b = 26, 28
+    split = td.RollingOriginSplit(
+        train=slice(a-26, a), validation=slice(a, b)
+    )
+    prepared = td.prepare_rolling_pure_forecast_objective(
+        data[:b], [split], order=2
+    )
+    history = pd.DataFrame({
+        "origin": [1, 2], "val2_end": [15, 20],
+        "s_minimo": [0.25, 0.8],
+        "val2_mse": [1.0, 0.1],
+    })
+    candidates = _method_minima(
+        prepared, order=2, window=26,
+        rule=RULE_SPECS["val2_weighted"],
+        history=history, observed_at=b,
+        spacing=0.02, depth=2, last_input=0.4,
+    )
+    assert len(candidates) == 1
+    assert candidates[0]["objetivo_plano"]
+    assert candidates[0]["source"] == "objetivo_plano"
+    assert np.isclose(candidates[0]["s_minimo"], 0.4)
 
 
 def test_polynomial_last_baseline_is_always_included():
@@ -216,8 +285,8 @@ def test_branch_figures_and_v_matrices_render(app):
         df["d"].eq(d) & df["rama"].eq(first["rama"])
         & df["regla"].eq(first["regla"])
     ]
-    assert app._branch_figure(r, d).layout.yaxis.title.text
-    assert app._historical_loss_figure(r, d).data
+    assert app._branch_figure(r, d, r.selected_rule).layout.yaxis.title.text
+    assert app._historical_loss_figure(r, d, r.selected_rule).data
     assert app._branch_rank_figure(r).data
     assert app._v_figure(
         subset, d, str(first["rama"]), str(first["regla"])
