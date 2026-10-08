@@ -319,3 +319,19 @@ Run `paper_smoothness-cv/build-workflow-paper.ps1` via PowerShell after
 pulling. This is a fail-fast test/generate/preflight/compile workflow
 that refuses to report success if the compiled PDF is missing/stale.
 Then commit and push the updated figure and the main manuscript PDF.
+
+## Plain article LaTeX format for forecasting paper
+
+By user request, `paper_smoothness-cv/manuscript/main.tex` was migrated
+from Wiley `WileyNJDv5` two-column formatting to ordinary
+`\documentclass[11pt]{article}`, one column, default font and margins.
+`paper_smoothness-cv/build.py` now runs `pdflatex` + `bibtex` (optionally
+`latexmk`) without loading the vendor journal class. The tutorial figure
+in the evaluation protocol is a one-column float, and the existing PDF
+output location is preserved.
+
+After git pull run:
+`powershell -NoProfile -ExecutionPolicy Bypass -File .\paper_smoothness-cv\build-workflow-paper.ps1`
+then commit the updated manuscript PDF. New tests:
+`tests/test_smoothness_plain_article.py`.
+Do not change `paper_numerical-methods/` unless separately requested.
