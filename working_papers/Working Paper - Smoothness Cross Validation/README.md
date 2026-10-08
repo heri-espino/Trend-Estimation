@@ -4,6 +4,43 @@
 
 **Status:** active independent statistical-methodology working paper. **Intended journal:** *Communications in Statistics—Simulation and Computation*. The manuscript is an interim working draft, **not submission-ready**.
 
+## Current protocol: weighted historical F, then its global minimum
+
+**Prospective method (2026-10-08):** the original equal-weight
+pooled rolling-origin forecast-CV remains the primary baseline.
+We additionally examine **predeclared recency-weighted aggregates**
+of the same completed \(h\)-step forecast-loss functions:
+uniform recent window, linear recency, and exponential recency.
+
+For method \(m\), the latest fully completed weighted surface is
+
+\[
+F_M^{(m,d,L,h)}(S)
+=\frac{\sum_{q\in I_m(M)} w_{M,q}^{(m)}
+\ell_{t_q}^{(d,L,h)}(S)}
+{\sum_{q\in I_m(M)}w_{M,q}^{(m)}},\quad
+\widehat S_T^{(m)}\in\arg\min_{S\in[0,1]}F_M^{(m,d,L,h)}(S).
+\]
+
+**Paper 1 averages forecast-loss functions and then chooses their
+global minimum.** It does not track local minima across historical
+surfaces; it does not average their individual minimizing S values.
+The historical future blocks have already completed at selection
+time. After selection, refit on the newest window at \(T\) and
+forecast at the declared horizon \(h\).
+
+The dynamic Paper 2 uses the **same predeclared weighted surfaces**,
+but tracks their local minima instead of globally minimizing the
+latest one. That shared estimator/validation infrastructure does
+not make these two scientific questions the same.
+
+- [Shared prospective formulation](../WEIGHTED_SURFACE_PROTOCOL.md).
+- [Manual runnable comparison of both procedures](../../experiments/smoothness_cv/run_weighted_surface_study.py).
+
+The existing CP01–CP03 results refer to the *historical* uniform
+mean protocol; no recency-weighted experiment has been declared
+completed. The current LaTeX manuscript is a dated working draft.
+
 ## Research question
 
 For fixed difference order \(d\), fitting length \(L\), and operational horizon \(h\), select normalized PLS smoothness \(S\in[0,1]\) by minimizing historical *future-block* forecast MSE:
