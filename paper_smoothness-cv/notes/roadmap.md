@@ -112,4 +112,4 @@ Do not retune it based on optional extension results.
 
 ## Active papers
 
-Only `paper_smoothness-cv/` and `paper_numerical-methods/` are active.
+This forecasting manuscript is maintained as an independent article.
