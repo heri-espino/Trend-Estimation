@@ -718,9 +718,30 @@ and $0.264095$. The exact limiting endpoint losses are
 F(0)=\frac{17}{2},\qquad
 F(1)=\frac{169}{441}.
 \end{equation}
-Consequently the smallest candidate value in this
-example is the interior minimum near $S_3=0.976961$,
-not either endpoint. The exact Sturm count certifies
+The candidate comparison is summarized in
+Table~\ref{tab:sturm_example}. The lowest forecast MSE is
+attained near the interior minimum $S_3=0.976961$,
+not at a limiting endpoint.
+
+\begin{table}[t]
+\centering
+\caption{Worked six-observation forecast-MSE surface:
+all positive stationary roots and both limiting endpoints.
+The Sturm root count is exact; displayed interior
+coordinates and errors are numerical approximations.}
+\label{tab:sturm_example}
+\begin{tabular}{@{}rrrl@{}}
+\toprule
+$\lambda$ & $S$ & Forecast MSE & Candidate type\\
+\midrule
+$0$ & $0$ & $17/2$ & Boundary\\
+$0.146706$ & $0.380475$ & $0.594777$ & Local min.\\
+$1.101543$ & $0.718759$ & $4.364744$ & Local max.\\
+$31.808860$ & $0.976961$ & $\mathbf{0.264095}$ & Global min.\\
+$\infty$ & $1$ & $169/441$ & Boundary\\
+\bottomrule
+\end{tabular}
+\end{table} The exact Sturm count certifies
 \emph{completeness of the positive stationary-root set}
 for this rational example. The decimal root locations,
 the reported smoothness coordinates, and the objective
