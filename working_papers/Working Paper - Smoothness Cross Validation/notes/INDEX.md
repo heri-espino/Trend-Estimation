@@ -13,7 +13,6 @@
 7. [Literature](literature_positioning.md) — closest related research and open originality questions.
 8. [Manuscript outline](manuscript_outline.md) — proposed final CSSC article structure after the new results.
 9. [Roadmap](roadmap.md) — executable phases and decision gates.
-10. [Dynamic minima](dynamic_tracked_smoothness.md) — optional \(V_j,\psi,\phi\), not the central method.
 
 Additional implementation guide:
 

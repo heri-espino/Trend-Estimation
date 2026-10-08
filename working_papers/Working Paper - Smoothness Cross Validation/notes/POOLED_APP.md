@@ -1,6 +1,6 @@
 # Pooled Forecast-CV Streamlit Lab
 
-**New, separate app:** [../../apps/pooled_forecast_cv.py](../../apps/pooled_forecast_cv.py)
+**New, separate app:** [../../../apps/pooled_forecast_cv.py](../../../apps/pooled_forecast_cv.py)
 
 Existing \`apps/smoothness_lab.py\`, \`apps/smoothness_lab_advanced.py\`
 and the historical branch-tracking dashboard are **not modified**.

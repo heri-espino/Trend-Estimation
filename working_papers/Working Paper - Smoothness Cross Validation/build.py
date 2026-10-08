@@ -211,7 +211,7 @@ def report_latex_failure() -> None:
     print(f"\nFull log: {log_path}", file=sys.stderr)
     print(
         "To print this again without rebuilding: "
-        "python3 "working_papers/Working Paper - Smoothness Cross Validation/build.py" --diagnose",
+        'python3 "working_papers/Working Paper - Smoothness Cross Validation/build.py" --diagnose',
         file=sys.stderr,
     )
 

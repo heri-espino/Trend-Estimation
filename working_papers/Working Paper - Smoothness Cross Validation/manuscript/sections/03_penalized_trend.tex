@@ -77,11 +77,12 @@ Conversely, if $Qv=0$, then
 $0=v^\top Qv=\|D_dv\|_2^2$, which implies $D_dv=0$.
 The kernels are therefore equal, and rank--nullity also gives the
 stated rank of $Q$. Finally, for every nonzero $v$,
-\[
+\begin{equation}
+\label{eq:finite_penalty_spd}
 v^\top A_\lambda v
 =\|v\|_2^2+\lambda\|D_dv\|_2^2>0
 \qquad(0\le\lambda<\infty).
-\]
+\end{equation}
 Hence $A_\lambda$ is symmetric positive definite and invertible;
 its inverse $H_\lambda$ is likewise positive definite. The Hessian
 of the penalized objective is $2A_\lambda\succ0$; the objective is
