@@ -386,7 +386,7 @@ def main():
         st.plotly_chart(fig, use_container_width=True)
         st.write(
             f"Trace(H) = {np.trace(H):.4f} · "
-            f"normalized smoothness = {1-np.trace(H)/window:.4f} · "
+            f"normalized smoothness = {(window-np.trace(H))/(window-order):.4f} · "
             f"symmetric error = {np.max(np.abs(H-H.T)):.2e}"
         )
         _download_table(
