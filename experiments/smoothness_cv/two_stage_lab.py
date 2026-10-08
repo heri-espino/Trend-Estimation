@@ -31,12 +31,17 @@ class TwoStageResult:
     method: str
     trend: np.ndarray
     forecast: np.ndarray
+    evaluation_trend: np.ndarray
+    evaluation_forecast: np.ndarray
     train_start: int
     val1_start: int
     val1_end: int
     val2_end: int
     pretest_end: int
     test_end: int
+    forecast_start: int
+    forecast_end: int
+    future_horizon: int
     window: int
     horizon: int
 
@@ -48,6 +53,7 @@ def run_two_stage_lab(
     window: int = 60,
     horizon: int = 5,
     test_size: int = 5,
+    future_horizon: int = 5,
     candidate_spacing: float = 0.02,
     grid_points: int = 61,
     search_depth: int = 5,
@@ -58,7 +64,9 @@ def run_two_stage_lab(
       fit1=[a, b), val1=[b, c), val2=[c, e), test=[e, n).
     For each candidate from the val1 forecast-loss minima, refit on the last
     window observations ending at c and forecast val2. Minimize val2 MSE
-    over every (order, candidate). Refit on [e-window, e), then forecast test.
+    over every (order, candidate). Forecast the reserved test from e without
+    retuning. Then refit the same (order, S) on the entire available series to
+    forecast observations beyond the last observed datum.
     """
     y = np.asarray(observed, dtype=float)
     if y.ndim != 1 or len(y) == 0 or not np.all(np.isfinite(y)):
@@ -67,8 +75,8 @@ def run_two_stage_lab(
         raise ValueError("Seleccione órdenes enteros distintos.")
     if any(type(d) is not int or not 1 <= d <= 4 for d in orders):
         raise ValueError("Los órdenes admitidos son 1, 2, 3 y 4.")
-    if window <= max(orders) or horizon < 1 or test_size < 1:
-        raise ValueError("Se requiere L > d, h positivo y prueba no vacía.")
+    if window <= max(orders) or horizon < 1 or test_size < 1 or future_horizon < 1:
+        raise ValueError("Se requiere L > d, horizontes positivos y prueba no vacía.")
     if not 0 < candidate_spacing < 1 or grid_points < 5 or search_depth < 0:
         raise ValueError("Verifique la separación de mínimos y la búsqueda numérica.")
     if len(y) < window + 2 * horizon + test_size:
@@ -146,11 +154,18 @@ def run_two_stage_lab(
     winner = table.iloc[0]
     selected_s, selected_order = float(winner["smoothness"]), int(winner["d"])
 
-    # La prueba no interviene en ninguno de los pasos de selección anteriores.
-    final = td.PurePenalizedTrend(
+    # La prueba no interviene en los pasos anteriores de selección.
+    evaluation = td.PurePenalizedTrend(
         order=selected_order, smoothness=selected_s
     ).fit(y[pretest_end-window:pretest_end])
-    prediction = np.asarray(final.forecast(test_size), dtype=float)
+    backtest = np.asarray(evaluation.forecast(test_size), dtype=float)
+
+    # El pronóstico operativo comienza DESPUÉS del último dato real, no antes
+    # de la prueba reservada. Los hiperparámetros no vuelven a optimizarse.
+    final = td.PurePenalizedTrend(
+        order=selected_order, smoothness=selected_s
+    ).fit(y[-window:])
+    future = np.asarray(final.forecast(future_horizon), dtype=float)
     return TwoStageResult(
         candidates=table,
         surfaces=pd.DataFrame(surfaces),
@@ -162,9 +177,13 @@ def run_two_stage_lab(
         selected_val2_rmse=float(winner["val2_rmse"]),
         method=str(winner["method"]),
         trend=np.asarray(final.trend_, dtype=float).copy(),
-        forecast=prediction,
-        train_start=pretest_end-window,
+        forecast=future,
+        evaluation_trend=np.asarray(evaluation.trend_, dtype=float).copy(),
+        evaluation_forecast=backtest,
+        train_start=len(y)-window,
         val1_start=val1_start, val1_end=val1_end, val2_end=val2_end,
         pretest_end=pretest_end, test_end=len(y),
+        forecast_start=len(y), forecast_end=len(y)+future_horizon,
+        future_horizon=future_horizon,
         window=window, horizon=horizon,
     )
