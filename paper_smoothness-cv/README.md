@@ -191,33 +191,62 @@ manuscript, including the completed empirical section and illustrations.
 5. `notes/roadmap.md`
 6. `manuscript/main.tex`
 
-## Build: standard LaTeX
+## Build: separate Windows and macOS stages
 
-The manuscript now uses `\documentclass[11pt]{article}`, in **one column**
-with default LaTeX fonts and margins. There is no Wiley journal class,
-publisher-specific front matter, or dependency on `vendor/wiley_njd_v5`.
-The source is `manuscript/main.tex`; the bibliography uses standard BibTeX
-style `plain`.
+The manuscript uses standard `article` LaTeX, one column, and BibTeX `plain`.
+The Python preparation and the LaTeX build are **not** run on the same
+machine. The two stages exchange generated assets through GitHub.
 
-To build with a standard installation of **pdflatex** and **bibtex**:
+### 1. Windows PowerShell: Python, tests and figures only
 
-~~~powershell
-python paper_smoothness-cv/build.py --check
-python paper_smoothness-cv/build.py
-~~~
-
-Or from Windows PowerShell, regenerate the tutorial figure, check the
-layout, and compile the document with fail-fast errors:
+From the repository root:
 
 ~~~powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\paper_smoothness-cv\build-workflow-paper.ps1
+git pull
+powershell -NoProfile -ExecutionPolicy Bypass -File .\paper_smoothness-cv\prepare-paper.ps1
 ~~~
 
-The generated PDF keeps its existing path:
-`paper_smoothness-cv/EspinoMontelongo-2026-Forecast_Optimal_Smoothness.pdf`.
-The previously used Wiley template remains archived under `vendor/`,
-but it is not copied or loaded by the current build.
+This script installs the editable package, runs the chronology/manuscript
+tests, regenerates the tutorial figure (PDF/PNG/JSON), and executes
+`python paper_smoothness-cv/build.py --check` (source validation only).
+It **never** invokes `pdflatex`, `latexmk` or `bibtex`.
 
+Push the generated figures so the Mac can see them:
+
+~~~powershell
+git add paper_smoothness-cv/manuscript/figures/
+git diff --cached --quiet
+if ($LASTEXITCODE -ne 0) { git commit -m "Update forecasting figures for LaTeX" }
+git push
+~~~
+
+### 2. macOS Terminal: LaTeX compilation only
+
+After the Windows changes are pushed:
+
+~~~bash
+git pull
+bash paper_smoothness-cv/compile-paper.sh
+~~~
+
+This script checks that the committed source and figures exist, then
+compiles the document with `pdflatex` and BibTeX (`latexmk` optional).
+Python is used solely to run the existing LaTeX build helper. It does
+**not** rerun figures, simulations, or Python tests.
+
+Once the compiled manuscript has been inspected:
+
+~~~bash
+git add paper_smoothness-cv/EspinoMontelongo-2026-Forecast_Optimal_Smoothness.pdf
+if ! git diff --cached --quiet; then
+  git commit -m "Compile updated forecasting manuscript on macOS"
+fi
+git push
+~~~
+
+The compiled PDF keeps its existing repository path. The older
+`build-workflow-paper.ps1` remains as a compatibility alias for
+**Windows preparation only**, and does not compile LaTeX.
 
 ## Five-panel workflow tutorial
 
@@ -240,14 +269,9 @@ seed 100, observation-noise SD 0.01, outer decision 8. It is not selected
 using test performance. The script writes PDF, PNG, and machine-readable
 provenance directly to `manuscript/figures/`.
 
-From the repository root, in this order:
-
-~~~powershell
-python experiments/smoothness_cv/make_workflow_tutorial_figure.py
-python paper_smoothness-cv/build.py --check
-python paper_smoothness-cv/build.py
-~~~
-
+To regenerate this figure on Windows, run `prepare-paper.ps1` and push
+the generated figure files. The macOS-only `compile-paper.sh` will
+then include the saved PDF during LaTeX compilation.
 `build.py --check` intentionally reports a missing figure if the generator
 has not been run. `build.py` stages the manuscript source (including its
 `figures/` folder) and the separately frozen CP08 figures.
