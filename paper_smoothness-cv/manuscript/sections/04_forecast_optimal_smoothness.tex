@@ -28,6 +28,15 @@ Equivalently, using backward differences at the end of the fitted trend,
 k=1,\ldots,h.
 \end{equation}
 For $d=1$ the continuation is constant; for $d=2$ it is linear; and for $d=3$ it is quadratic.
+More generally, imposing zero future $d$th differences continues
+the fitted terminal path as a discrete polynomial of degree at most
+$d-1$. This yields a family of future polynomial extrapolations as
+$S$ changes, because smoothing changes the terminal finite
+differences that initialize the continuation. The degree itself
+is fixed by $d$; the forecast-CV criterion selects the smoothness
+and hence the polynomial coefficients of the continued trend,
+not a new polynomial degree. This distinguishes forecast-oriented
+trend selection from a post-hoc descriptive smoother.
 
 \subsection{Origin-specific forecast-loss surfaces}
 
