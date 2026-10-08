@@ -101,6 +101,29 @@ def test_both_streamlits_expose_identical_article_presets(path):
     assert set(ARTICLE_TRENDS.values()) == {"linear", "beta_mixture"}
 
 
+
+def test_article_n50_works_with_short_chronological_cv():
+    from experiments.smoothness_cv.branch_rule_lab import run_branch_lab
+    from experiments.smoothness_cv.live_lab import run_lab
+
+    frame = make_article_synthetic("linear", n=50, seed=32)
+    observed = frame["observed"].to_numpy()
+    direct = run_lab(
+        observed, order=2, window=25, horizon=3,
+        step=3, max_origins=3, test_size=3,
+        rule="last", grid_points=11, search_depth=2,
+    )
+    assert 0 <= direct.final_s <= 1
+    branches = run_branch_lab(
+        observed, orders=(2,), rules=("last",),
+        window=25, horizon=3, step=3, max_origins=3,
+        test_size=3, min_support=0.25,
+        grid_points=11, search_depth=2,
+    )
+    assert 0 <= branches.selected_s <= 1
+    assert len(branches.evaluation_forecast) == 3
+
+
 def test_reject_invalid_trend_and_noise_inputs():
     for kind, n in [("other", 200), ("linear", 29), ("linear", 3001)]:
         with pytest.raises(ValueError):
