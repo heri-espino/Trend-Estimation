@@ -64,9 +64,17 @@ expanded.
 
 - [x] Freeze CP08 rule-family demonstration on fresh seeds 100--199.
 - [x] Implement recent-linear, exponentially weighted linear, and increment extrapolation rules.
-- [ ] Run CP08 smoke.
-- [ ] Run CP08 paper demonstration.
-- [ ] Summarize how the different \(\phi(V_j)\) rules behave; do not select a universal winner.
+- [x] Run CP08 smoke.
+- [x] Run CP08 paper demonstration.
+- [x] Summarize how the different \(\phi(V_j)\) rules behave; do not select a universal winner.
+
+## Phase 2F — Representation figures and manuscript consolidation
+
+- [ ] Generate CP08 explanatory figures from the frozen results.
+- [ ] Illustrate origin-specific minima, tracked branches, and branch matrix V_j.
+- [ ] Show several phi(V_j) maps acting on the same branch history.
+- [ ] Separate methodological flexibility from claims of forecasting superiority.
+- [ ] Integrate frozen CP03--CP08 results into the manuscript.
 
 ## Phase 3 — Main dynamic simulation
 
