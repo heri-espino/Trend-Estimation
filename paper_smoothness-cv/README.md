@@ -290,3 +290,29 @@ then include the saved PDF during LaTeX compilation.
 `build.py --check` intentionally reports a missing figure if the generator
 has not been run. `build.py` stages the manuscript source (including its
 `figures/` folder) and the separately frozen CP08 figures.
+
+
+## Interactive companion (not a frozen checkpoint)
+
+A separate Streamlit app at `../apps/smoothness_lab.py` lets you explore the
+latest dynamic tracked-minima design, using reproducible synthetic functions,
+Yahoo Finance market series or a local CSV. It shows time-origin by smoothness
+Validation-1 MSE heatmaps, local minima, Validation-2 MSE paths, the branch
+matrices `V_j`, and `H_lambda` smoothing-matrix heatmaps. Plot choices
+include the underlying generating trend (when known), level/log/return
+representations, residuals, first differences and polynomial forecast
+continuations. You can compare dynamic `phi(V_j)`, pooled forecast-CV and
+manual smoothing, and export the inputs and resulting numerical matrices.
+
+Run from repository root:
+
+~~~bash
+python -m pip install -e ".[dashboard,finance]"
+streamlit run apps/smoothness_lab.py
+~~~
+
+The newest test block is excluded from selection and is revealed only on
+request. Unlike the paper's frozen settings, the app uses a configurable,
+lighter numerical-search depth and a grid-pooled benchmark for responsiveness.
+No CP03--CP08 evidence is recomputed or changed. See the repository README for
+the full validation contract.
