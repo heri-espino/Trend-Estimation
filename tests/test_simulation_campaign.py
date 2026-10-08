@@ -13,6 +13,7 @@ from experiments.smoothness_cv.simulation_dgps import (
 from experiments.smoothness_cv.simulation_evaluation import (
     _spectral_candidates, evaluate_replication, outer_origins,
 )
+from experiments.smoothness_cv.analyze_simulation_campaign import analyze
 from experiments.smoothness_cv.run_simulation_campaign import (
     main as campaign_main, config_from_args, arguments, digest, resolve_jobs,
 )
@@ -124,6 +125,20 @@ def test_campaign_sqlite_is_atomic_and_resumable(tmp_path):
     db.close()
     manifest=json.loads((tmp_path/"campaign"/"manifest.json").read_text())
     assert manifest["fingerprint"]==digest(manifest["configuration"])
+
+    # Analysis must work on *partial* checkpointed databases without
+    # treating correlated folds as independent Monte Carlo seeds.
+    report=analyze(tmp_path/"campaign",allow_partial=True)
+    assert report["replications_complete"]==2
+    reports=tmp_path/"campaign"/"reports"
+    for name in (
+        "scenario_method_summary.csv",
+        "paired_scenario_comparisons.csv",
+        "effects_by_shape.csv",
+        "oracles_diagnostic_only.csv",
+        "README_RESULTS.md",
+    ):
+        assert (reports/name).is_file()
 
 
 def test_cpu_worker_count_can_use_all_32_logical_cores():
