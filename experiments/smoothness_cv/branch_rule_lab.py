@@ -503,33 +503,49 @@ def run_branch_lab(
                 ).value),
             })
 
-    # Continue the historically selected branch to final validation-1.
-    order_history = branch_table[branch_table["d"].eq(chosen_d)]
-    last_positions = (order_history.sort_values("origin")
-                      .groupby("rama")["s_minimo"].last().to_dict())
-    final_for_order = [
-        c for c in final_minima if int(c["d"]) == chosen_d
-    ]
-    final_matches = _one_to_one(
-        last_positions, final_for_order, track_epsilon
-    )
-    if chosen_branch in final_matches:
-        final_candidate = final_for_order[final_matches[chosen_branch][0]]
-        current_s = float(final_candidate["smoothness"])
-        status = "Rama histórica continuada en validación 1 final."
-    else:
-        # Disclose noncontinuation rather than disguising an old S as a new
-        # observed local minimum. We can still apply the frozen rule based
-        # on the latest historically available branch minimum.
-        current_s = float(last_positions[chosen_branch])
-        status = (
-            "La rama seleccionada no continuó en la validación 1 final; "
-            "se utilizó su último mínimo histórico conocido."
-        )
+    # The frozen (d, rule, branch) must also define the final V1 minimum.
+    # Never match a branch from another rule or just from the same d.
     prior = v[
         v["d"].eq(chosen_d) & v["rama"].eq(chosen_branch)
         & v["regla"].eq(chosen_rule)
     ]
+    previous = prior.sort_values("origin").iloc[-1]
+    last_applied_s = float(previous["s_aplicado"])
+    last_input_s = float(previous["s_minimo"])
+    final_prepared = td.prepare_rolling_pure_forecast_objective(
+        y[:pretest_end], [final_split], order=chosen_d
+    )
+    final_options = _method_minima(
+        final_prepared, order=chosen_d, window=window,
+        rule=RULE_SPECS[chosen_rule], history=prior,
+        observed_at=pretest_end, spacing=candidate_spacing,
+        depth=search_depth, last_input=last_input_s,
+    )
+    possible = [
+        item for item in final_options
+        if abs(float(item["s_aplicado"])-last_applied_s) <= track_epsilon
+    ]
+    if possible:
+        current = min(
+            possible,
+            key=lambda item: (
+                abs(item["s_aplicado"]-last_applied_s),
+                item["val1_mse"],
+            ),
+        )
+        current_s = float(current["s_minimo"])
+        status = (
+            "Rama de (d, regla) continuada en validación 1 final."
+            if not current["objetivo_plano"] else
+            "La regla generó una función plana en V1 final; "
+            "se mantuvo la solución determinada por el historial."
+        )
+    else:
+        current_s = last_input_s
+        status = (
+            "No hubo mínimo de la regla compatible con la rama en V1 final; "
+            "se mantuvo su último valor de entrada histórico."
+        )
     applied_s, _, _, _ = _safe_rule(
         RULE_SPECS[chosen_rule], current_s=current_s, prior=prior,
         observed_at=pretest_end,
@@ -544,11 +560,19 @@ def run_branch_lab(
     ).fit(y[-window:])
     future = np.asarray(final.forecast(future_horizon), dtype=float)
     minima_df = pd.DataFrame(final_minima)
-    minima_df["rank"] = np.where(
-        minima_df["d"].eq(chosen_d)
-        & np.isclose(minima_df["smoothness"], current_s, atol=1e-10),
-        1, 2,
-    )
+    minima_df["rank"] = 2
+    # The selected applied S can differ from every raw F_d minimum:
+    # show it as a separate, correctly labelled point on the original curve.
+    minima_df = pd.concat([
+        minima_df,
+        pd.DataFrame([{
+            "d": chosen_d, "smoothness": applied_s, "rank": 1,
+            "val1_mse": float(final_prepared.evaluate(
+                td.smoothness_to_lambda(applied_s, window, chosen_d)
+            ).value),
+            "source": "regla_aplicada",
+        }]),
+    ], ignore_index=True)
     return BranchLabResult(
         branches=branch_table, evaluations=v, summary=agg.sort_values(
             ["ec_medio_val2", "d", "rama", "regla"],
