@@ -1,5 +1,17 @@
 # Chronological Smoothness-CV experiment infrastructure
 
+## Prospective 2026-10-08 high-throughput simulation campaign
+
+**New**: [CAMPAIGN_README.md](CAMPAIGN_README.md) documents 528
+factorial scenario cells, reproducible DGPs, up to 32 CPU workers,
+SQLite checkpoint/resume, memory-bounded reports and regeneration
+of true trend/noise/weighted-F curves. This explicitly implements
+the shared [two-paper simulation protocol](../../working_papers/SIMULATION_EVALUATION_PROTOCOL.md).
+It has **not** been executed and does **not** alter historical CP01–CP08
+results.
+
+
+
 This versioned namespace holds both pooled-future-block experiments (historical CP01–CP03, now documented under `working_papers/Working Paper - Smoothness Cross Validation/`) and dynamic minimum/branch experiments (historical CP04–CP08, documented under `working_papers/Working Paper - Dynamic Branch Selection/`). Scientific claims, notes and manuscripts are independent; the same shared code is not evidence of a common research question.
 
 Reusable estimator mathematics remains in src/trend_estimation/. This folder
