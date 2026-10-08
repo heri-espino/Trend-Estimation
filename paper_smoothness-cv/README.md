@@ -1,164 +1,105 @@
-# Dynamic forecast-optimal smoothness by chronological validation
+# Forecast-optimal smoothness by chronological cross-validation
 
 **Status: ACTIVE.**
 
-**Primary target journal:** *Journal of Forecasting*.
+**Intended journal:** *Communications in Statistics—Simulation and Computation*.
 
-**Working title:** *Dynamic Forecast-Optimal Smoothness for Penalized Trend Estimation*.
+**Working title:** *Forecast-Optimal Smoothness Selection by Chronological Cross-Validation*.
 
-## Central scientific question
+## Primary scientific question
 
-For a finite-difference penalized trend, how can local minima of chronological
-forecast-loss surfaces be represented as persistent temporal branches, and
-which distinct smoothness-decision functionals can be defined on the resulting
-branch histories? Whether a particular rule improves forecasts relative to
-pooled forecast-CV is an empirical question, not a property of the framework.
+How should the normalized smoothness of a finite-difference
+penalized-least-squares trend be selected when that trend will be
+extrapolated over a specified forecast horizon \`h\`?
 
-The paper now distinguishes two objects.
+The principal statistical construction minimizes **chronological,
+horizon-matched forecast MSE** for the normalized smoothness
+index. This is a complete method: it does **not** require tracking
+local minima through time.
 
-### Static pooled baseline
-
-For fixed `d,L,h`,
-
-\[
-F^{\mathrm{pool}}_{T,h}(S)
-=
-\frac1M\sum_{m=1}^{M}\ell_{m,h}(S),
-\]
-
-and
+### The smoother and smoothness coordinate
 
 \[
-\widehat S^{\mathrm{pool}}_{T,h}
-\in
-\arg\min_{S\in[0,1]}F^{\mathrm{pool}}_{T,h}(S).
+\widehat\tau_{\lambda,T}=H_\lambda x_T,\qquad
+H_\lambda=(I+\lambda D_d^\top D_d)^{-1},
 \]
-
-This asks which single smoothness has the lowest average historical forecast
-loss.
-
-### Dynamic tracked-minimum formulation
-
-At each chronological origin `t`, compute the local minima
 
 \[
-\mathcal M_t=\{S_{1,t},\ldots,S_{K_t,t}\}.
+S(\lambda)=1-\frac{1}{L-d}\sum_{\delta_j>0}
+\frac{1}{1+\lambda\delta_j}\in[0,1].
 \]
 
-Track minima across adjacent origins using a one-to-one continuation rule
+This is a monotone rescaling of a Guerrero-type smoothness
+index, not a new smoother.
+
+### Proposed forecast-CV selection
+
+For historical origins \`t_m\`, use the fitted trend and the
+declared finite-difference continuation operator \`G_{d,h}\`
+to forecast each subsequently observed validation block:
 
 \[
-|S_{j,t}-S_{j,t-1}|\le\varepsilon.
+F^{\mathrm{pool}}_{d,L,h}(S)
+=\frac1M\sum_{m=1}^{M}\frac1h
+\|y_{t_m+1:t_m+h}-G_{d,h}H_{\lambda(S)}x_{t_m}\|_2^2,
 \]
-
-Each persistent branch stores
 
 \[
-V_j=
-\begin{pmatrix}
-S_{j,t_1} & \ell^{(1)}_{j,t_1} & \ell^{(2)}_{j,t_1}\\
-\vdots & \vdots & \vdots
-\end{pmatrix},
+\widehat S^{\mathrm{FCV}}_{T,d,L,h}
+\in\arg\min_{S\in[0,1]}
+F^{\mathrm{pool}}_{d,L,h}(S).
 \]
 
-where `ell1` is Validation-1 forecast loss and `ell2` is the immediately
-following Validation-2 forecast loss after refitting through Validation 1.
+At the current outer forecast origin \`T\`, all historical
+validation outcomes used for tuning are already observed.
+After selection, discard all historical fitted trends, refit
+on the latest \`L\` observations, and extrapolate into the
+untouched future block.
 
-The forecasting decision is separated into
+Primary comparison: horizon-matched forecast-CV against
+one-step forecast-CV, ordinary CV, GCV, AICc, and
+simulation-only signal-recovery oracles. CP03 is the frozen
+paper-scale core evaluation.
 
-\[
-\widehat j_T=\psi(V_1,\ldots,V_J)
-\]
+## Separate numerical paper
 
-for branch selection and
+\`paper_numerical-methods/\` studies multimodal objective
+optimization: discovering all relevant interior minima,
+adaptive derivative bracketing, Brent root refinement,
+classification, and both endpoints. Rational/Sturm certified
+root isolation remains **exploratory**, not a completed
+guaranteed solver. The forecasting criterion is meaningful
+independently of the chosen optimizer.
 
-\[
-\widehat S_T=\phi(V_{\widehat j_T})
-\]
+## Optional time-adaptive extension
 
-for the current smoothness extracted from the selected branch.
+If the analyst assumes that recent favorable smoothing
+regimes inform future performance, individual local minima
+may be tracked across historical origins into branch
+histories \`V_j=[S, Validation-1 loss, Validation-2 loss]\`.
+Then use a historical branch selector \`psi\` and a
+decision map \`phi(V_j)\` to choose current smoothness.
+Possible \`phi\` mappings include newest, recent mean,
+median, recency weighting, validation-loss weighting,
+and extrapolation of the smoothness trajectory.
 
-Examples of `phi` include the newest minimum, recent mean/median,
-Validation-2 weighted smoothness, recency-plus-Validation-2 weighting,
-and extrapolation of the smoothness trajectory using recent linear trends
-or historical smoothness increments. These are demonstrations of a design
-family, not contestants for one universal winner.
+Different maps encode different assumptions. They are
+not part of the core forecast-CV definition, and the
+completed CP04–CP08 experiments do **not** establish
+a universally best map. See
+\`notes/dynamic_tracked_smoothness.md\` for this
+**optional** layer.
 
-Canonical formulation: `notes/dynamic_tracked_smoothness.md`.
+## Paper boundary
 
-## Core estimator
-
-\[
-\widehat\tau_\lambda=H_\lambda y,
-\qquad
-H_\lambda=(I+\lambda D_d^\top D_d)^{-1}.
-\]
-
-Normalized smoothness:
-
-\[
-S(\lambda)
-=
-1-\frac1{L-d}
-\sum_{\delta_j>0}\frac1{1+\lambda\delta_j}.
-\]
-
-At an outer origin `T`, once a final `S_hat_T` is chosen by either the pooled
-baseline or a tracked-branch rule, all temporary validation fits are discarded.
-The trend is refit on the newest `L` observations:
-
-\[
-\widehat\tau_T
-=
-H_{\lambda(\widehat S_T)}y_{T-L+1:T},
-\]
-
-then forecast with the native finite-difference continuation operator:
-
-\[
-\widehat y_{T+1:T+h\mid T}=G_{d,h}\widehat\tau_T.
-\]
-
-**We average validation losses or smoothness values only when a rule explicitly
-requires it. We never average historical fitted trends.**
-
-## Direct lineage
-
-The methodological lineage remains
-
-\[
-\text{Guerrero controlled smoothness}
-\longrightarrow
-\text{forecast-selected smoothness}
-\longrightarrow
-\text{dynamic tracked forecast smoothness}.
-\]
-
-Hart (1994) remains an important predictive-smoothing precedent, but it is not
-the same estimator or tracked-minimum problem.
-
-## Paper ownership
-
-This paper owns:
-
-- the forecasting interpretation of tracked smoothness branches;
-- the branch state matrix `V_j`;
-- branch selection `psi` using historical information;
-- the final smoothness rule `phi(V_j)`;
-- the pooled forecast-CV selector as a baseline;
-- chronological Validation-1 / refit / Validation-2 semantics;
-- untouched outer-test forecasting evaluation;
-- comparisons among last/mean/median/weighted/predicted smoothness rules.
-
-`paper_numerical-methods/` owns:
-
-- locating all relevant local minima of each `F_t(S)` surface;
-- adaptive subdivision, derivative diagnostics, Brent refinement, and exact
-  endpoint handling;
-- numerical branch correspondence/tracking across nearby surfaces;
-- possible certified root isolation using rational/Sturm structure.
-
-Do not merge those contributions.
+- This paper: horizon-matched forecast-MSE selection of PLS
+  smoothness, information-safe refitting, controlled comparison
+  with conventional selectors, and optional adaptation examples.
+- Numerical companion: discovery, Brent refinement, endpoint
+  comparison, correspondence of local minima, prospective Sturm
+  certification.
+- Neither paper claims invention of PLS, predictive cross-validation
+  in general, or the Guerrero smoothness index.
 
 ## Completed empirical evidence
 
