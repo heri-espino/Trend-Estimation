@@ -239,7 +239,7 @@ def main(argv: list[str] | None = None) -> int:
     jobs=resolve_jobs(args.jobs)
     print(
         f"CAMPAIGN preset={cfg['preset']} | scenarios={len(scenarios)} "
-        f"seeds/scenario={cfg['seeds']} independent replicates={total:,} "
+        f"seeds/scenario={cfg['seeds']} scenario-seed tasks={total:,} "
         f"| d={cfg['orders']} h={cfg['horizons']} outer={cfg['outer_count']} "
         f"grid={cfg['grid_points']} | jobs={jobs} "
         f"| upper-bound method-rows ~{approx:,}",flush=True,
