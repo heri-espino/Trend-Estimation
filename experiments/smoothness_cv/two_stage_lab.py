@@ -2,8 +2,10 @@
 
 Validación 1: recuperar todos los mínimos locales de ECM para cada orden d.
 Validación 2: refit tras validación 1 y seleccionar (d, S) por ECM.
-Pronóstico: refit en la última ventana anterior a la prueba, con (d, S)
-invariables. La prueba nunca se utiliza para seleccionar hiperparámetros.
+Evaluación: pronóstico retrospectivo de la prueba sin volver a seleccionar.
+Pronóstico operativo: refit de la última ventana de toda la serie observada,
+con el mismo (d, S), para pronosticar desde el último dato real.
+La prueba no interviene en la selección de hiperparámetros.
 
 Esta ruta es exploratoria y no altera los experimentos congelados.
 """
