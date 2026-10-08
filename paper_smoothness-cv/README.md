@@ -249,12 +249,17 @@ has not been run. `build.py` stages the manuscript source (including its
 
 ### Laboratorio principal: seguimiento de mínimos para todos los órdenes d
 
-La interfaz apps/smoothness_lab.py sigue el diseño experimental general:
-para cada origen cronológico y orden d obtiene la superficie ECM(S) de
-validación 1 y sus mínimos locales; identifica ramas por vecindad entre
-orígenes; aplica varias reglas al historial de S de cada rama; y registra
-una matriz V por combinación (d, rama, regla). Cada fila de V contiene
-S_minimo, S_aplicado, ECM_val1 y ECM_val2.
+La interfaz apps/smoothness_lab.py fija la combinación (d, regla)
+**antes** de validación 1. Cada regla compone la función de pérdida
+de validación 1 con su transformación histórica S_aplicado =
+phi_regla(V_historial, s). Se identifican mínimos de esa función
+**transformada por el método** y se siguen las ramas por cercanía de S_aplicado.
+Cada rama pertenece a su par (d, regla), nunca se comparte entre reglas.
+La superficie ECM(S;d) sin transformación sigue disponible para comparar
+órdenes y conservar el caso original. La matriz V por (d, regla, rama)
+almacena el argumento del mínimo, S_aplicado, ECM_val1 y ECM_val2.
+Los métodos independientes del argumento actual producen objetivos planos,
+que se etiquetan y no se presentan como mínimos únicos.
 
 La regla se define **antes de conocer validación 2** del origen actual.
 Al iniciar la evaluación de validación 2, no se selecciona otro S ni otro
