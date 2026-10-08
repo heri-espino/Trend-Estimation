@@ -1,8 +1,8 @@
 \section{Scope, interpretation, and implications}
 
-\subsection{What the dynamic smoothness object means}
+\subsection{What forecast-optimal smoothness means}
 
-The selected smoothness is not treated as a fixed property of a series. At a given origin, several local minima of the forecast-loss surface may coexist. Their temporal branches summarize recurring smoothing regimes discovered by the data.
+A smoothness value is not an immutable property of a series; it is selected relative to a forecast objective, horizon $h$, difference order $d$, estimation window $L$, and continuation rule. The same historical observations may warrant different smoothness for different forecasting tasks. This interpretation is already provided by the pooled criterion, without tracking any minima through time.
 
 For a final selected value $\widehat S_T$, the effective-degrees-of-freedom interpretation remains
 \begin{equation}
@@ -11,29 +11,29 @@ For a final selected value $\widehat S_T$, the effective-degrees-of-freedom inte
 =
 \frac{L-\operatorname{edf}_T}{L-d}.
 \end{equation}
-A value near zero corresponds to a flexible trend; a value near one corresponds to a trend close to the null-space polynomial. The dynamic contribution is that today's value can depend on the history of a persistent local-minimum branch rather than on one pooled optimum alone.
+A value near zero corresponds to a flexible trend; a value near one corresponds to a trend close to the null-space polynomial. If an additional persistence assumption is appropriate, today's smoothness may instead be informed by a history of favorable local minima; that is an extension of, rather than a substitute definition for, the pooled criterion.
 
-\subsection{Branches are data-driven, not fixed smoothness bins}
+\subsection{Optional branch histories and their assumptions}
 
-The continuation radius $\varepsilon$ does not define a preassigned category such as ``smoothness around 0.9.'' Branch locations arise from local minima of successive forecast-loss surfaces. The radius only determines whether two neighboring minima are close enough to be interpreted as the same branch.
+If an analyst chooses time-adaptive hyperparameters, the continuation radius $\varepsilon$ does not define a preassigned category such as ``smoothness around 0.9.'' Branch locations arise from local minima of successive forecast-loss surfaces. The radius only determines whether two neighboring minima are close enough to be interpreted as the same branch.
 
 Consequently, a branch can drift over time. Its identity reflects local continuity of the optimum, not membership in a fixed interval.
 
 \subsection{What may be averaged}
 
-The framework distinguishes three objects that should not be conflated. Historical forecast losses may be averaged to rank candidate smoothness values or branches. Historical smoothness values may be averaged when a declared branch functional such as a recent-mean rule is used. Historical fitted trends are never averaged in the proposed procedure.
+The pooled method averages historical $h$-step forecast losses across validation origins, thereby choosing a single smoothness for the current forecast. It does not average old fitted trend paths. Historical smoothness values may also be averaged in an optional time-adaptive rule, but this requires a separately declared mapping from historical minimum states.
 
 After the current smoothness is selected, the trend is always refit on the newest information available before the forecast.
 
 \subsection{Static and dynamic targets}
 
-The pooled selector asks which single value of $S$ performs best on average over historical forecast origins. The branch formulation asks how a time-indexed collection of local minima can be organized and converted into multiple admissible current values of $S$. Predictive improvement is a possible outcome of particular decisions, not a property guaranteed by the representation itself.
+The core selector asks which value of $S$ minimizes the pooled historical predictive MSE for the intended $h$-step forecast. This defines a complete forecasting method. The optional branch formulation asks how a time-indexed collection of local minima could be used to choose a different current value. Any gain from such a choice is contingent on series dynamics, modeling assumptions, and out-of-sample evidence.
 
 Neither target is automatically the smoothness that best reconstructs a latent historical trend. Forecasting and signal recovery remain distinct objectives.
 
 \subsection{Numerical boundary}
 
-The forecasting paper does not claim that a particular root-search or assignment algorithm is the substantive contribution. Recovery of multiple minima, exact endpoint handling, and temporal correspondence of minima belong to the companion numerical-methods paper.
+The forecasting paper specifies a forecast-MSE optimization problem independently of its numerical implementation. Recovery of multiple minima, Brent refinement, exact endpoint handling, and temporal correspondence of minima are addressed in the companion numerical-methods paper. Its Sturm-based certified root-isolation direction remains exploratory rather than an implemented guarantee.
 
 
 \subsection{Boundary behavior of smoothness forecasts}
@@ -54,9 +54,10 @@ universal superiority. The broad financial panel and controlled changing-
 roughness experiments did not reproduce an aggregate advantage over
 pooled forecast-CV. Their errors are evaluated on different scales, and
 the series within the financial panel are not independent.
-Accordingly, the paper claims a reusable representation for chronologically
-tracked forecast-loss minima and an illustrative family of decision maps;
-it does not claim that tracked branches inevitably improve forecasting.
+Accordingly, the primary claim concerns horizon-matched forecast-CV for
+selecting PLS smoothness, supported by its controlled simulation.
+The branch-history representation is an optional additional mechanism;
+it does not guarantee improvements over pooled forecast-CV.
 
 \subsection{Limitations}
 
