@@ -2,6 +2,15 @@
 
 **Status:** research planning, not an instruction to execute expensive runs or to replace existing frozen results.
 
+## New joint simulation protocol (2026-10-08)
+
+Canonical DGPs, faithful-source comparisons, forecasting/recovery/
+smoothness measures, ad-hoc S baselines, oracle discipline, seed/outer
+origin design, and independent Paper 1 versus Paper 2 questions are
+specified in
+[SIMULATION_EVALUATION_PROTOCOL.md](../../SIMULATION_EVALUATION_PROTOCOL.md).
+This document is a **prospective design**, not completed results.
+
 ## Priority A — exact problem and numerical correctness
 
 **Question:** can our current implementation recover the best value of the *same* historical horizon-matched CV surface on \(S\in[0,1]\)?
