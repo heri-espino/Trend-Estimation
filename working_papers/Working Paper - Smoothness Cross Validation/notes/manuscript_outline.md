@@ -12,6 +12,21 @@ The introduction and contributions section should make this synthesis clear *bef
 
 **The testable comparison** is against LOOCV/GCV/AICc/BIC, one-step forecast-CV, and (where simulations reveal it) latent-trend recovery criteria, all with truly unseen outer forecasts. Do not imply established superiority merely because the method combines more components.
 
+## Prospective revision note (not yet reflected in LaTeX)
+
+**Paper 1 now compares a family of predeclared temporal weights on the
+completed \(h\)-step forecast-loss curves**. Uniform all-origin mean is
+the original pooled baseline; last-K uniform, recency-linear and
+recency-exponential weighted objectives are explicit candidate
+extensions. The selector is **always the global argmin of the latest
+complete weighted aggregate**, never an average of individual
+minimizers or a tracked branch. Report \(h\), \(L\), \(d\), weighting
+window and temporal decay. The branch-based procedure is the
+*independent* Dynamic Branch Selection paper, based on the **same**
+weighted surfaces. See
+[shared prospective protocol](../../WEIGHTED_SURFACE_PROTOCOL.md).
+The current \`manuscript/main.tex\` is an old working draft.
+
 ## Intended narrative
 
 1. **Introduction — the counterfactual future problem.** The smoothness producing the best retrospective trend is not necessarily the one producing the best forecast. At \(T\), we cannot see future \(y_{T+1:T+h}\). We can score forecasts made at past origins after their futures have been observed. Define the horizon-matched problem.
