@@ -35,14 +35,12 @@ CV, GCV, AICc, and simulation oracles. CP03 is the
 core controlled experiment (3,000 scenarios and
 72,000 origin-horizon decisions).
 
-## Numerical-methods companion
+## Numerical search
 
-All-relevant-minimum discovery for the possibly multimodal
-forecast-loss surface is treated in
-`paper_numerical-methods/`. The implemented solver
-uses adaptive brackets, Brent refinement, and endpoint
-comparison. Sturm-based certified isolation remains a
-research prototype, **not completed implementation**.
+The forecast-MSE objective can contain several interior minima.
+The implementation uses an adaptive search over bounded S,
+Brent refinement of bracketed derivatives, and comparison with
+both limiting endpoints. This statistical manuscript stands alone.
 
 ## Optional time-adaptive formulation
 
@@ -106,10 +104,8 @@ study optional dynamic `phi(V_j)` rules on their own terms.
 smoothness selector, validation/refit protocol, comparative forecast
 evidence, and optional `V_j`, `psi`, and `phi` extensions.
 
-`paper_numerical-methods/` owns recovery of the multiple local minima and the
-numerical correspondence/tracking problem across surfaces.
-
-Only these two papers are active.
+The implementation and results are documented within this
+manuscript's own source and frozen experiment artifacts.
 
 ## Intended journal
 
@@ -266,28 +262,13 @@ All three figures are referenced by the new manuscript section
 The current manuscript abstract, introduction, protocol, discussion,
 and conclusion reflect the measured results, not hypothetical planned
 results. It explicitly rejects any blanket claim that dynamic branch rules
-outperform pooled forecast-CV. The central contribution is the representation
-of tracked forecast-loss minima as persistent histories and the multiple
-decision maps phi(V_j) defined on them.
+outperform pooled forecast-CV. The primary contribution is horizon-matched pooled forecast-CV over S;
+tracked histories and phi(V_j) are an optional adaptation layer.
 
 The next user action is to run `python paper_smoothness-cv/build.py --check`,
 then `python paper_smoothness-cv/build.py` with a local XeLaTeX/BibTeX toolchain.
 Review the resulting PDF for table/float layout before submission.
 
-## Companion numerical paper coordination
-
-`paper_numerical-methods/main.tex` now includes the numerical temporal
-correspondence formulation, the observed four-series tracked-minimum
-paths, and a deterministic counterexample to greedy matching.
-
-That paper retains numerical ownership of per-surface minimum recovery,
-pairwise matching, and branch-identity diagnostics. It does not select
-`psi` or `phi`, and it does not claim branch rules improve forecasts.
-
-A new controlled numerical tracking benchmark is implemented but not yet
-run. It is separate from completed CP03--CP08 forecast evaluations.
-
- 
 ## Workflow tutorial figure
 
 The forecasting paper now references `figures/fig_workflow_tutorial.pdf`
