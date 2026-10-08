@@ -325,3 +325,25 @@ Run generator first, then `python paper_smoothness-cv/build.py --check`,
 then `python paper_smoothness-cv/build.py`. Missing figure fails preflight
 with a specific error. The figure has not yet been rendered or reviewed on
 the user's local machine.
+
+
+## Workflow figure visual audit and fail-fast manuscript build
+
+The committed five-panel PNG was visually inspected. Its chronology,
+refits, surface, and branch plot are legible and the three example S
+decisions match JSON provenance. A minor issue in Panel A was fixed:
+shaded-region labels are moved down away from the observed series,
+with the legend shifted to the upper left.
+
+The latest user commit (88bf9065) added only the figure PDF/PNG/JSON;
+it did not change the compiled Wiley manuscript PDF, whose most recent
+commit was 81a2030. Therefore that commit alone does NOT verify a
+successful updated paper build.
+
+New Windows script:
+`paper_smoothness-cv/build-workflow-paper.ps1`.
+It tests chronology, regenerates the figure, runs build preflight,
+compiles Wiley LaTeX, checks the PDF timestamp/size, stops on any
+failure, and prints git status. User should run this after git pull,
+then commit the resulting figure and main PDF if successful. Visually
+inspect the complete compiled PDF before publication.
