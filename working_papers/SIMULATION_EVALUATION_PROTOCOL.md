@@ -382,22 +382,40 @@ weighted-F method? Does tracking help **over its paired global-argmin
 counterpart using the exact same \(F_r^{(m,d,L,h)}\)**, or merely
 create more selection variance and endpoint effects?
 
-## 8. What is currently implemented versus not
+## 8. Current execution status and large factorial implementation
 
-The new **manual pilot** implementation is
-\`experiments/smoothness_cv/weighted_surface_study.py\` with
-\`run_weighted_surface_study.py\`; it produces both choices and a
-**single** outer holdout plus approximate grid branches. Tests in
-\`tests/test_weighted_surface_study.py\` concern only that pilot.
-It does **not** implement the fully nested, replicated, three-study
-simulation protocol described here. Original experiment utility
-\`experiments/smoothness_cv/common.py\` already contains several
-latent trend mechanisms and iid/AR1/Student-t noise generators.
-Reuse those carefully, but **do not retrofit** a new DGP name or
-overwrite old checkpoint results.
+**2026-10-08 code prepared, NOT run:** the new high-throughput campaign
+now has the following concrete files in the research repository:
+- [DGPs](../experiments/smoothness_cv/simulation_dgps.py)
+- [Paired evaluation](../experiments/smoothness_cv/simulation_evaluation.py)
+- [32-worker resumable runner](../experiments/smoothness_cv/run_simulation_campaign.py)
+- [Memory-bounded report](../experiments/smoothness_cv/analyze_simulation_campaign.py)
+- [Single-case inspection](../experiments/smoothness_cv/inspect_simulation_case.py)
+- [Full operational instructions](../experiments/smoothness_cv/CAMPAIGN_README.md)
 
-**Next coding step:** add independent DGP fixtures, a scenario
-manifest, common-origin baseline selection, repeated untouched outer
-testing, oracle-only metrics, and seed-clustered reporting; validate
-chronological holdouts and the numerical minima detector. Make heavy
-runs **manual only**, retain inexpensive automatic tests.
+**528 predeclared scenario cells in extensive preset**: 16 original
+2^4 source-paper cells, 384 complexity/curvature cells, and 128
+regime-change/robustness cells. With **100 seeds per cell**, the
+main campaign contains **52,800 independent simulated series**,
+each evaluated at common outer origins and horizons, with multiple
+methods measured on the same realized observations. Seeds, not
+outer origins or candidate methods, are the replication units.
+The runner can use **32 logical CPU processes**, one BLAS thread
+per worker, with SQLite transactions and manifest-checked restart.
+The RTX Ada GPU is not currently required or used.
+
+The implemented design measures future observed MSE/MAE, latent
+future trend MSE, past latent recovery, EDF/normalized and source
+smoothness, classical CV/GCV/AICc/BIC, fixed S and privileged oracle
+diagnostics. It separately records method-specific branch structure.
+
+**Scientific gates that remain:** execute and debug smoke tests, pilot
+throughput and memory, evaluate minimum-detection convergence,
+freeze an independent confirmatory seed allocation, and run the
+full experiment. Present implementation must NOT be mistaken for
+completed evidence; external method/order choices from the same
+test still require new untouched confirmation. The current pilot
+does not yet implement a general nested selector over arbitrary
+\(m,d,L\), nor a certified all-root search. The new manuscript must
+await tested and independently confirmed results.
+
