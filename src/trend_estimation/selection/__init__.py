@@ -30,6 +30,7 @@ from .smoothness_numerical import (
     select_spaced_smoothness_minima,
     sweep_spaced_smoothness_minima,
 )
+from .sturm import SturmRoot, SturmSearchResult, sturm_forecast_smoothness
 from .recovery import (
     PreparedRollingPureRecoveryObjective,
     RecoveryLossDerivatives,
@@ -59,6 +60,9 @@ __all__ = [
     "minimize_over_log_lambda",
     "newton_stationary_log_lambda",
     "find_stationary_points_log_lambda",
+    "SturmRoot",
+    "SturmSearchResult",
+    "sturm_forecast_smoothness",
     "DEFAULT_SPACING_EPSILONS",
     "SmoothnessCandidateSet",
     "SmoothnessStationaryPoint",
