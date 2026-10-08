@@ -14,6 +14,7 @@ from pathlib import Path
 import shutil
 import subprocess
 import sys
+import re
 
 PAPER_DIR = Path(__file__).resolve().parent
 SOURCE_DIR = PAPER_DIR / "manuscript"
@@ -123,6 +124,52 @@ def run(command: list[str]) -> None:
     subprocess.run(command, cwd=STAGE_DIR, check=True)
 
 
+def first_latex_error_context(log_text: str, *, before: int = 5, after: int = 16) -> str:
+    """Return first fatal TeX error, not latexmk's final wrapper status."""
+    lines = log_text.splitlines()
+    triggers = (
+        re.compile(r"^!\s"),
+        re.compile(r"(?:^|[/\\])[^:\s]+\.tex:\d+:\s"),
+        re.compile(r"^(?:LaTeX|Package [\w.-]+)\s+Error:"),
+        re.compile(r"^Emergency stop\."),
+    )
+    for idx, line in enumerate(lines):
+        if any(pattern.search(line) for pattern in triggers):
+            start = max(0, idx - before)
+            stop = min(len(lines), idx + after + 1)
+            return "\n".join(
+                f"{line_no + 1:>5}: {lines[line_no]}"
+                for line_no in range(start, stop)
+            )
+    return ""
+
+
+def report_latex_failure() -> None:
+    log_path = STAGE_DIR / "main.log"
+    print("\n=== First LaTeX error ===", file=sys.stderr)
+    if not log_path.exists():
+        print(
+            f"No main.log found at {log_path}; inspect the command output above.",
+            file=sys.stderr,
+        )
+        return
+    log = log_path.read_text(encoding="utf-8", errors="replace")
+    excerpt = first_latex_error_context(log)
+    if not excerpt:
+        excerpt = "\n".join(log.splitlines()[-35:])
+        print(
+            "No standard TeX error marker found; last 35 log lines:",
+            file=sys.stderr,
+        )
+    print(excerpt, file=sys.stderr)
+    print(f"\nFull log: {log_path}", file=sys.stderr)
+    print(
+        "To print this again without rebuilding: "
+        "python3 paper_smoothness-cv/build.py --diagnose",
+        file=sys.stderr,
+    )
+
+
 def build() -> Path:
     validate_layout()
     prepare_stage()
@@ -163,6 +210,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true")
     parser.add_argument("--clean", action="store_true")
+    parser.add_argument("--diagnose", action="store_true")
     return parser.parse_args(argv)
 
 
@@ -172,11 +220,23 @@ def main(argv: list[str] | None = None) -> int:
         clean()
         if not args.check:
             return 0
+    if args.diagnose:
+        report_latex_failure()
+        return 0
     if args.check:
         validate_layout()
         print("Standard article LaTeX layout check passed")
         return 0
-    build()
+    try:
+        build()
+    except subprocess.CalledProcessError as exc:
+        report_latex_failure()
+        print(
+            f"\nLaTeX compilation failed (exit code {exc.returncode}). "
+            "Fix the first error above, then rerun the macOS build.",
+            file=sys.stderr,
+        )
+        return 1
     return 0
 
 
