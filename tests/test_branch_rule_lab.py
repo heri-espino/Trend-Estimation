@@ -53,6 +53,32 @@ def test_main_app_contains_branch_sections_and_spanish_labels():
         assert phrase in source
 
 
+
+
+def test_empty_v_history_is_valid_for_first_origin():
+    """An empty V must expose the same columns as completed V records."""
+    from experiments.smoothness_cv.branch_rule_lab import _safe_rule
+
+    empty_v = pd.DataFrame(columns=[
+        "origin", "val2_end", "s_minimo", "val2_mse"
+    ])
+    for name in ("last", "mean_k3", "val2_weighted"):
+        applied, raw, metadata, n = _safe_rule(
+            RULE_SPECS[name], current_s=0.9,
+            prior=empty_v, observed_at=10,
+        )
+        assert n == 0
+        assert np.isclose(applied, 0.9)
+        assert np.isclose(raw, 0.9)
+
+
+def test_v_matrix_has_consistent_schema_with_completed_errors():
+    result = _run(_sample())
+    frame = result.evaluations
+    assert {"val2_mse", "val2_rmse", "val1_mse"}.issubset(frame)
+    assert np.isfinite(frame["val2_mse"]).all()
+    assert np.isfinite(frame["val2_rmse"]).all()
+
 def test_tracks_methods_v_matrices_and_all_orders():
     result = _run(_sample())
     assert set(result.evaluations["d"]) == {1, 2}
