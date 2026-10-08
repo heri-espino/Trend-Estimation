@@ -140,9 +140,25 @@ def transform_observations(frame: pd.DataFrame, mode: str) -> pd.DataFrame:
     else:
         raise ValueError("Unknown transformation.")
     result["observed"] = transformed
-    # Truth in the transformed space requires applying the SAME transformation.
-    if "latent" in result:
-        result = result.drop(columns=["latent"])
+    # For synthetic data, transform the known latent signal consistently so
+    # estimated and true trends may be compared on the same scale.
+    if "latent" in frame:
+        latent = frame["latent"].to_numpy(dtype=float)
+        with np.errstate(divide="ignore", invalid="ignore"):
+            if mode == "Level":
+                latent_new = latent
+            elif mode == "Log level":
+                latent_new = np.log(latent)
+            elif mode == "Indexed to 100":
+                latent_new = 100.0 * latent / latent[0]
+            elif mode == "Simple return":
+                latent_new = latent[1:] / latent[:-1] - 1
+            else:
+                latent_new = np.diff(np.log(latent))
+        if np.all(np.isfinite(latent_new)):
+            result["latent"] = latent_new
+        else:
+            result = result.drop(columns=["latent"])
     if not np.all(np.isfinite(transformed)):
         raise ValueError("Transformed data are not finite.")
     return result.reset_index(drop=True)
