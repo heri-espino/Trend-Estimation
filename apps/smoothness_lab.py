@@ -500,6 +500,29 @@ REGLAS_ES = {
     "delta_hl3": "Extrapolación de incrementos (semivida 3)",
     "delta_hl5": "Extrapolación de incrementos (semivida 5)",
 }
+
+REGLAS_BREVE = {
+    "last": "Último mínimo",
+    "mean_k3": "Media 3",
+    "mean_k5": "Media 5",
+    "median_k3": "Mediana 3",
+    "median_k5": "Mediana 5",
+    "recency_hl3": "Recencia 3",
+    "recency_hl5": "Recencia 5",
+    "recency_hl10": "Recencia 10",
+    "val2_weighted": "ECM histórico",
+    "recency_val2_hl3": "Recencia + ECM 3",
+    "recency_val2_hl5": "Recencia + ECM 5",
+    "recency_val2_hl10": "Recencia + ECM 10",
+    "linear_k3": "Lineal 3",
+    "linear_k5": "Lineal 5",
+    "linear_k10": "Lineal 10",
+    "ew_linear_hl3": "Lineal ponderada",
+    "ew_linear_hl5": "Lineal ponderada 5",
+    "delta_hl3": "Incrementos 3",
+    "delta_hl5": "Incrementos 5",
+}
+
 ETIQUETAS_V = {
     "d": "Orden de diferencias, d",
     "rama": "Rama de mínimos locales",
@@ -1064,30 +1087,83 @@ def main() -> None:
             )
 
     with tab_val1:
-        st.subheader("Curvas del ECM de validación 1 para distintos órdenes d")
+        st.subheader("Curvas del ECM de validación 1 para distintos órdenes d y métodos")
         st.write(
-            "La línea es el ECM de la continuación polinómica sin ponderación. "
-            "Los rombos son sus mínimos; la estrella o línea naranja indica "
-            "la suavidad aplicada por la combinación (d, rama, regla) ganadora. "
-            "Para reglas distintas de 'Último mínimo', el mínimo de V1 se "
-            "calcula sobre la pérdida transformada por esa misma regla."
+            "Seleccione un orden y una regla fija de suavidad. Se representa "
+            "el **ECM de V1 después de aplicar esa regla**, para cada rama "
+            "que tiene historial. La abscisa es la suavidad candidata antes "
+            "de aplicar la regla; al pasar el cursor se muestra también "
+            "la suavidad efectiva utilizada."
             if modo == "ramas" else
-            "Los rombos identifican los mínimos candidatos; todos se comparan "
-            "posteriormente en validación 2."
+            "En el caso directo se muestra el ECM original y sus mínimos "
+            "locales para el orden seleccionado."
         )
-        for order in sorted(ordenes):
-            plot = _val1_figure(resultado, order)
-            if modo == "ramas" and order == resultado.selected_order:
-                plot.add_vline(
-                    x=resultado.selected_s, line_dash="dash",
-                    line_color="#D55E00", line_width=2,
+        col_orden, col_metodo = st.columns([1, 3])
+        d_graf = col_orden.segmented_control(
+            "Orden de diferencias, d",
+            options=sorted(ordenes),
+            default=(resultado.selected_order if modo == "ramas"
+                     else sorted(ordenes)[0]),
+            key="ecm_orden",
+        )
+        if modo == "ramas":
+            metodos_disponibles = list(
+                dict.fromkeys(resultado.evaluations["regla"].tolist())
+            )
+            r_graf = col_metodo.segmented_control(
+                "Método de selección de suavidad",
+                options=metodos_disponibles,
+                default=resultado.selected_rule,
+                format_func=lambda key: REGLAS_BREVE.get(key, key),
+                key="ecm_metodo",
+            )
+            st.caption(f"Regla elegida: {REGLAS_ES.get(r_graf, r_graf)}.")
+            curvas, minimos = inspect_method_val1_curves(
+                valores, resultado, order=int(d_graf), rule=r_graf,
+                grid_points=grid,
+            )
+            st.plotly_chart(
+                _val1_method_figure(
+                    curvas, minimos, order=int(d_graf), rule=r_graf,
+                    selected_branch=(resultado.selected_branch
+                                     if (int(d_graf) == resultado.selected_order
+                                         and r_graf == resultado.selected_rule)
+                                     else None),
+                    selected_input_s=(resultado.selected_input_s
+                                      if (int(d_graf) == resultado.selected_order
+                                          and r_graf == resultado.selected_rule)
+                                      else None),
+                ),
+                use_container_width=True,
+            )
+            if bool(minimos["objetivo_plano"].any()):
+                st.info(
+                    "En algunas ramas esta regla determina S exclusivamente "
+                    "a partir del historial: el ECM transformado es constante "
+                    "respecto de la suavidad candidata. Por eso no tiene "
+                    "un mínimo local único."
                 )
-            st.plotly_chart(plot, use_container_width=True)
-        st.caption(
-            "Se muestran las curvas de la validación 1 final, previa al bloque "
-            "de prueba. En modo histórico, también puede examinarse cada "
-            "origen por separado en la sección de ramas."
-        )
+            st.caption(
+                "Estas son las curvas de la validación 1 final anterior al "
+                "test reservado. Los rombos marcan los mínimos del objetivo "
+                "propio de cada regla, no necesariamente los de la función "
+                "polinómica sin ponderación."
+            )
+        else:
+            col_metodo.segmented_control(
+                "Método de selección de suavidad",
+                options=["last"], default="last",
+                format_func=lambda key: REGLAS_BREVE.get(key, key),
+                key="ecm_metodo_directo",
+            )
+            st.plotly_chart(
+                _val1_figure(resultado, int(d_graf)),
+                use_container_width=True,
+            )
+            st.caption(
+                "La selección directa es el caso sin agregación histórica "
+                "de mínimos ni ramas por método."
+            )
 
     with tab_ramas:
         if modo == "ramas":
