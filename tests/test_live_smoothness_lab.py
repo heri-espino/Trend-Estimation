@@ -54,6 +54,16 @@ def test_transform_return_alignment():
     assert np.allclose(result["observed"], 0.1)
 
 
+def test_synthetic_latent_truth_is_available_in_matching_units():
+    sample = make_synthetic("2 + 0.01*t", 60, 0.1)
+    levels = transform_observations(sample, "Level")
+    logs = transform_observations(sample, "Log level")
+    returns = transform_observations(sample, "Log return")
+    assert np.allclose(levels["latent"], sample["latent"])
+    assert np.allclose(logs["latent"], np.log(sample["latent"]))
+    assert np.allclose(returns["latent"], np.diff(np.log(sample["latent"])))
+
+
 def test_smoothing_matrix_is_symmetric_and_has_correct_normalized_s():
     s = 0.72
     H = smoothing_matrix(28, 2, s)
