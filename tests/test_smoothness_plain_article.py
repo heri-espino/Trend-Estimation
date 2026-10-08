@@ -1,4 +1,4 @@
-"""Guard the forecasting paper's plain LaTeX build against template regressions."""
+"""Pooled forecasting article is self-contained and does not build dynamic appendices."""
 from __future__ import annotations
 
 from pathlib import Path
@@ -6,41 +6,30 @@ import runpy
 
 
 ROOT = Path(__file__).resolve().parents[1]
-PAPER = ROOT / "paper_smoothness-cv"
+PAPER = ROOT / "working_papers" / "Working Paper - Smoothness Cross Validation"
 MAIN = PAPER / "manuscript" / "main.tex"
-EVALUATION = PAPER / "manuscript" / "sections" / "09_exploratory_evaluation.tex"
 BUILD = PAPER / "build.py"
 
 
-def test_plain_article_has_no_wiley_front_matter():
-    main = MAIN.read_text(encoding="utf-8")
-    assert r"\documentclass[11pt]{article}" in main
-    assert r"\bibliographystyle{plainnat}" in main
-    assert r"\usepackage[round,authoryear]{natbib}" in main
-    for command in (
-        r"\journal{", r"\articletype{", r"\bmsection",
-        r"\authormark", r"\titlemark", r"\abstract[",
-        "WileyNJDv5", r"\keywords{",
-    ):
-        assert command not in main
-    assert r"\begin{abstract}" in main
-    assert r"\end{abstract}" in main
+def test_article_has_no_wiley_front_matter_or_dynamic_appendices():
+    source = MAIN.read_text(encoding="utf-8")
+    assert r"\documentclass[11pt]{article}" in source
+    assert r"\bibliographystyle{plainnat}" in source
+    assert r"\usepackage[round,authoryear]{natbib}" in source
+    assert r"\input{sections/03_penalized_trend}" in source
+    assert r"\input{sections/05_properties}" in source
+    assert "WileyNJDv5" not in source
+    assert r"\input{sections/05_dynamic_extension}" not in source
+    assert r"\input{sections/09_exploratory_evaluation}" not in source
+    assert r"\appendix" not in source
 
 
-def test_workflow_figure_uses_single_column_float():
-    tex = EVALUATION.read_text(encoding="utf-8")
-    assert r"\begin{figure}[p]" in tex
-    assert r"\end{figure}" in tex
-    assert r"\includegraphics[" in tex
-    assert "{figures/fig_workflow_tutorial.pdf}" in tex
-    assert r"\begin{figure*}" not in tex
-
-
-def test_plain_builder_uses_standard_tools_and_preserves_frozen_figures():
+def test_plain_builder_keeps_cp03_evidence_and_has_valid_section_labels():
     source = BUILD.read_text(encoding="utf-8")
     assert 'shutil.which("pdflatex")' in source
     assert 'shutil.which("bibtex")' in source
     assert 'shutil.copytree(SOURCE_DIR, STAGE_DIR)' in source
-    assert "wiley_njd_v5" not in source
+    assert "fig_sim05_objective_curves.pdf" in source
+    assert "fig_cp08_" not in source
     namespace = runpy.run_path(str(BUILD), run_name="test_builder")
     namespace["validate_layout"]()
