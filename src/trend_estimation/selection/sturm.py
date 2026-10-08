@@ -24,6 +24,7 @@ class SturmRoot:
     forecast_mse: float
     kind: str
     multiplicity: int
+    rational_interval: tuple[str, str] | None = None
 
 
 @dataclass(frozen=True)
@@ -36,6 +37,7 @@ class SturmSearchResult:
     best_lambda: float
     best_mse: float
     sturm_variations: tuple[int, int]
+    constant_loss: bool = False
 
 
 def _exact_scalar(value, sp):
@@ -93,6 +95,8 @@ def sturm_forecast_smoothness(
     zeros of its derivative numerator, and map isolated roots to S.
     Even-multiplicity stationary roots are included. Exact lambda=0
     and lambda=infinity limits are included in the global comparison.
+    Root interval strings retain the exact rational enclosure; float
+    endpoint coordinates are conveniences, not certified bounds.
     """
     try:
         import sympy as sp
@@ -144,7 +148,7 @@ def sturm_forecast_smoothness(
         if not np.isclose(loss0, lossinf, rtol=1e-12, atol=1e-12):
             raise ArithmeticError("Zero derivative with nonconstant endpoints.")
         return SturmSearchResult((), 0, -1, (loss0, lossinf),
-                                 0.0, 0.0, loss0, (0, 0))
+                                 0.0, 0.0, loss0, (0, 0), constant_loss=True)
 
     # The rational derivative denominator cannot vanish for lambda>=0,
     # because I + lambda D.T D is positive definite there.
@@ -158,6 +162,11 @@ def sturm_forecast_smoothness(
 
     intervals = sp.intervals(poly, eps=sp.Rational(1, 10**precision_digits))
     positive = [(a, b, mult) for (a, b), mult in intervals if b > 0]
+    if any(a < 0 < b for a, b, _ in positive):
+        raise ArithmeticError(
+            "An isolating interval straddles the lambda=0 boundary; "
+            "increase precision_digits to separate the root."
+        )
     if len(positive) != count:
         raise ArithmeticError(
             "Sturm variations disagree with the isolated positive roots."
@@ -190,6 +199,7 @@ def sturm_forecast_smoothness(
                 forecast_mse=mse,
                 kind=kind,
                 multiplicity=int(mult),
+                rational_interval=(str(a), str(b)),
             )
         )
 
