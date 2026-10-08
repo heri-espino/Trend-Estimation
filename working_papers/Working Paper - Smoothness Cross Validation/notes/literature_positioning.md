@@ -8,6 +8,30 @@
 - **Cortés-Toto, Guerrero and Reyes (2017), CSSC:** PLS smoothness achieved with CV, GCV, AICc, and BIC. Direct same-family comparator, although not the identical declared multi-step trend-continuation MSE.
 - **Guerrero et al. (2018):** effects of autocorrelated noise on smoothness and PLS; a simulation with AR(1) errors is not itself a dependence-aware fitted covariance model.
 
+## Spectral smoothness: central technical representation, not a first-discovery claim
+
+The pure finite-difference PLS smoother has \(Q=D_d^\top D_d\) real symmetric PSD, \(Q=U\operatorname{diag}(\delta_1,\ldots,\delta_L)U^\top\), and
+\[
+H_\lambda=(I+\lambda Q)^{-1}
+=U\operatorname{diag}\bigl((1+\lambda\delta_j)^{-1}\bigr)U^\top,
+\qquad
+\operatorname{edf}(\lambda)
+=\operatorname{tr}(H_\lambda)
+=\sum_{j=1}^L(1+\lambda\delta_j)^{-1}.
+\]
+For \(1\le d<L\), the \(d\) null eigenvalues imply the normalized identity
+\[
+S(\lambda)
+=\frac{L-\sum_{j=1}^L(1+\lambda\delta_j)^{-1}}{L-d}
+=\frac{L-\operatorname{edf}(\lambda)}{L-d}.
+\]
+
+**Evidence that this is not intrinsically novel:** Cortés-Toto, Guerrero and Reyes (2017, discussion directly following their equation (9), p. 1495) explicitly state that their smoothness limit follows by expressing the trace in terms of the **eigenvalues** of \(K_d^\top K_d\), citing Eilers and Marx (1996). Earlier smoothing literature already writes effective degrees of freedom as spectral sums. Guerrero (2007) also precedes us in introducing the trace-based smoothness index. Our full-range normalization of this index is a straightforward reparameterization. We must **not** claim to be first to express PLS smoothness spectrally, first to compute EDF with eigenvalues, or first to choose smoothing based on EDF.
+
+**Why the spectral representation matters to this particular paper:** a shared eigendecomposition can be reused for many candidate \(S\) values and forecast origins; the spectral weights supply exact limits at \(S=0,1\), analytic derivatives, and a computationally structured expression for pooled forecast-MSE. The research contribution, **if borne out**, must be defended in the specific horizon-matched forecast-selection criterion, its analysis and computation, and rigorously untouched out-of-sample comparisons with classical smoothness selectors. The spectral formula is an **enabling mathematical tool**, not a standalone priority claim.
+
+**Suggested manuscript wording:** “We exploit the spectral representation of the established finite-difference PLS smoother to evaluate normalized smoothness, its derivatives, and a pooled horizon-specific forecast-validation objective.” Attribute the underlying smoothness index to Guerrero and cite Cortés-Toto et al. for the eigenvalue connection.
+
 ## Using controlled trends in forecasts already occurred
 
 - **Islas, Guerrero and Silva (2019):** a controlled-smoothness trend used for remittance forecasts with a Markov-switching model. Their chosen smoothness percentage differs from our explicit pooled future-block error criterion, but the use of such a trend for forecasting is plainly not novel.
