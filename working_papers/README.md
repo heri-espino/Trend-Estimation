@@ -1,5 +1,12 @@
 # Working papers
 
+**Source-method replication separately:** the
+[full-N Cortés-Toto 2^4 runner](../experiments/smoothness_cv/run_cortes_toto_replication.py)
+reproduces the original *in-sample smoothness selection target* on
+entire N=50/200 series. This is distinct from using the same 16 DGP
+cells as **forecasting** stress cases in the extensive simulation
+campaign.
+
 ## Shared experimental evaluation
 
 Both papers now have a single proposed [simulation and evaluation
