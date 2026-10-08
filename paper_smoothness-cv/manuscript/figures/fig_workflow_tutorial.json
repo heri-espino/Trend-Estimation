@@ -1,0 +1,46 @@
+{
+  "figure": "fig_workflow_tutorial",
+  "role": "pedagogical fixed-case example, not rule selection",
+  "source": "CP07 synthetic DGP; CP04/CP06/CP07 frozen evaluation helpers",
+  "seed": 100,
+  "mechanism": "switch_to_rough",
+  "noise_sd": 0.01,
+  "outer_number": 8,
+  "horizon": 20,
+  "order": 2,
+  "window": 120,
+  "track_epsilon": 0.1,
+  "candidate_spacing": 0.02,
+  "outer_test_used_for_selection": false,
+  "historical_val1_val2_example_s": 0.9599744897261219,
+  "selected_branch_id": "d2_b3",
+  "current_val1_smoothness": 1.0,
+  "rules_selected_s": {
+    "pooled_cv_same_config": 0.8761791762401491,
+    "last": 1.0,
+    "recency_hl3": 0.9711305566397099
+  },
+  "regions_half_open_index": {
+    "train": [
+      520,
+      640
+    ],
+    "val1": [
+      640,
+      660
+    ],
+    "val2": [
+      660,
+      680
+    ],
+    "current": [
+      680,
+      700
+    ],
+    "test": [
+      700,
+      720
+    ]
+  },
+  "explanation": "Historical Val1 and Val2 are paired; the current/final Val1 is later and updates the chosen branch before the untouched test. Panel D displays only final Val1 loss, never test loss."
+}
