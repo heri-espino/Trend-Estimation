@@ -159,7 +159,7 @@ def main(argv=None) -> int:
     tasks=[(s,seed,args.grid_points)
            for s in scenarios for seed in range(args.seed_start,args.seed_start+args.seeds)]
     jobs=resolve_jobs(args.jobs)
-    print(f"Source 2^4 replication: cells={len(scenarios)}, independent "
+    print(f"Source 2^4 replication: cells={len(scenarios)}, scenario-seed "
           f"series={len(tasks):,}, grid={args.grid_points}, jobs={jobs}",flush=True)
     if args.dry_run:
         return 0
