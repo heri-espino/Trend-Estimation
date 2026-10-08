@@ -340,10 +340,11 @@ def main() -> None:
         "pronóstico desde el último origen disponible."
     )
     st.markdown(
-        "**Validación 1:** detectar todos los mínimos locales de suavidad para "
+        "**Validación 1:** detectar los mínimos locales de suavidad para "
         "cada orden. **Validación 2:** seleccionar el par (orden, suavidad) "
-        "con el menor error predictivo. **Pronóstico final:** reajustar el "
-        "mismo modelo utilizando las últimas observaciones anteriores a la prueba."
+        "con menor error predictivo. **Prueba:** evaluar sin reoptimizar. "
+        "**Pronóstico futuro:** reajustar el mismo modelo con todas las "
+        "observaciones disponibles y extrapolar desde el último dato real."
     )
 
     with st.sidebar:
@@ -448,6 +449,9 @@ def main() -> None:
         test_size = st.slider(
             "Observaciones reservadas para la prueba", 1, 20, 5
         )
+        h_futuro = st.slider(
+            "Horizonte del pronóstico posterior al último dato", 1, 30, 5
+        )
         spacing = st.slider(
             "Separación mínima entre mínimos locales de S",
             0.01, 0.10, 0.02, 0.01,
@@ -480,7 +484,8 @@ def main() -> None:
         try:
             resultado = analyze(
                 tuple(valores), orders=tuple(sorted(ordenes)), window=L,
-                horizon=h, test_size=test_size, candidate_spacing=spacing,
+                horizon=h, test_size=test_size,
+                future_horizon=h_futuro, candidate_spacing=spacing,
                 grid_points=grid, search_depth=depth,
             )
         except (ValueError, ArithmeticError, RuntimeError) as exc:
@@ -511,14 +516,13 @@ def main() -> None:
         st.subheader("Bloques utilizados para estimar y seleccionar")
         st.plotly_chart(_timeline(resultado), use_container_width=True)
         st.write(
-            "**Ajuste inicial:** últimas L observaciones antes de validación 1. "
-            "**Validación 1:** para cada d se construye una curva ECM(S) y se "
-            "recuperan todos sus mínimos locales. **Nuevo ajuste:** se utilizan "
-            "las últimas L observaciones hasta el final de validación 1. "
-            "**Validación 2:** se evalúan los candidatos sobre el bloque siguiente. "
-            "**Ajuste final:** con d* y S* ya elegidos, se utilizan las últimas "
-            "L observaciones anteriores a la prueba. La prueba nunca se utiliza "
-            "para elegir d ni S."
+            "**Validación 1:** para cada d se recuperan los mínimos locales de ECM(S). "
+            "**Validación 2:** tras reajustar con los datos hasta validación 1, "
+            "se elige el par (d*, S*) de menor ECM. "
+            "**Prueba retrospectiva:** mide desempeño antes de usar el bloque reservado. "
+            "**Pronóstico operativo:** sin cambiar d* ni S*, se reajusta con las últimas "
+            "L observaciones de toda la serie y se pronostica más allá del último "
+            "dato real. La prueba no participa en la selección de hiperparámetros."
         )
         st.latex(
             r"(d^*,S^*)=\underset{d,\;S\in\mathcal M_d}"
@@ -583,32 +587,46 @@ def main() -> None:
             ), use_container_width=True,
         )
         st.caption(
-            "Se conservan el **orden d*** y la **suavidad S*** seleccionados. "
-            "El modelo se vuelve a estimar con la última ventana de L "
-            "observaciones anteriores a la prueba. Los puntos discontinuos "
-            "constituyen el pronóstico desde el último origen conocido."
+            "Se conservan **d*** y **S*** seleccionados en validación 2. "
+            "El modelo se reajusta con las últimas L observaciones realmente "
+            "disponibles, incluida la prueba retrospectiva ya evaluada. "
+            "Los puntos discontinuos a la derecha son el pronóstico futuro "
+            "desde el último dato real. Las fechas futuras son aproximadas "
+            "si no se dispone de un calendario explícito."
         )
         if revelar:
             test = valores[resultado.pretest_end:resultado.test_end]
-            mse = float(np.mean((test - resultado.forecast)**2))
+            mse = float(np.mean((test - resultado.evaluation_forecast)**2))
             st.metric("ECM en prueba no utilizada para selección", f"{mse:.6g}")
             st.caption(
-                "La prueba es exclusivamente una evaluación posterior. "
-                "Su valor no modifica d*, S* ni las predicciones."
+                "Los valores de prueba no modifican d* ni S*, tampoco el "
+                "pronóstico retrospectivo. Sin embargo, una vez evaluados "
+                "se incluyen en el reajuste para pronosticar el futuro."
             )
         pronosticos = pd.DataFrame({
+            "Número futuro de observación": np.arange(
+                resultado.forecast_start+1, resultado.forecast_end+1
+            ),
+            "Pronóstico futuro": resultado.forecast,
+        })
+        st.download_button(
+            "Descargar pronóstico futuro (CSV)",
+            pronosticos.to_csv(index=False).encode("utf-8-sig"),
+            file_name="pronostico_futuro.csv", mime="text/csv",
+        )
+        backtest = pd.DataFrame({
             "Número de observación": np.arange(
                 resultado.pretest_end+1, resultado.test_end+1
             ),
-            "Pronóstico": resultado.forecast,
-            "Observación de prueba": valores[
+            "Pronóstico retrospectivo": resultado.evaluation_forecast,
+            "Valor observado": valores[
                 resultado.pretest_end:resultado.test_end
             ],
         })
         st.download_button(
-            "Descargar pronósticos y prueba (CSV)",
-            pronosticos.to_csv(index=False).encode("utf-8-sig"),
-            file_name="pronostico_fuera_de_muestra.csv", mime="text/csv",
+            "Descargar evaluación retrospectiva (CSV)",
+            backtest.to_csv(index=False).encode("utf-8-sig"),
+            file_name="evaluacion_prueba.csv", mime="text/csv",
         )
 
     with tab_h:
