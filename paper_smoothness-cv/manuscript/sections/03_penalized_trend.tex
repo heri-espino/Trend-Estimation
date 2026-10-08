@@ -95,6 +95,18 @@ S(\lambda)
 \frac{1}{1+\lambda\delta_j}.
 \end{equation}
 
+For comparison, the original Guerrero-type index is
+$S^{\mathrm{G}}_d(\lambda)=1-\operatorname{tr}(H_\lambda)/L$.
+Our full-range normalization is simply
+\begin{equation}
+\label{eq:smoothness_index_rescaling}
+S(\lambda)=\frac{L}{L-d}S^{\mathrm{G}}_d(\lambda),
+\qquad d\ge1.
+\end{equation}
+Thus the rescaling preserves the penalty ordering and every fitted trend;
+it should not be interpreted as a new smoothing estimator
+\cite{guerrero2007penalized,cortes2017smoothness}.
+
 The normalization excludes the $d$ directions that cannot be penalized, so
 \begin{equation}
 \label{eq:smoothness_endpoints}
