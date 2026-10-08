@@ -95,3 +95,46 @@ as repeated independent confirmations of a single rule.
 The separate numerical-methods paper analyzes the accuracy of
 minimum recovery and matching; the present paper addresses how
 their recorded histories may be used as forecasting decisions.
+
+
+\subsection{Illustrated chronology}
+
+Figure~\ref{fig:workflow_tutorial} follows one fixed synthetic example
+through the complete information flow. A historical Validation-1 block
+identifies local minima, and the following Validation-2 block scores their
+forecasts after refitting through Validation 1. These observations contribute
+to tracked branch histories. A later, \emph{current} Validation-1 block
+continues the existing branches but has no Validation-2 score from the
+untouched outer test. Only then do the pooled and branch-based rules
+produce their selected smoothness values. The operational trend is
+refitted on the latest available window, and the future test outcomes
+are revealed solely for the final forecast illustration and evaluation.
+The same three decisions are displayed throughout the figure; their
+example-specific accuracy is not used to select a preferred
+$\phi(V_j)$.
+
+\begin{figure*}[p]
+\centering
+\includegraphics[
+    width=\textwidth,
+    height=0.81\textheight,
+    keepaspectratio
+]{figures/fig_workflow_tutorial.pdf}
+\caption{A chronological tutorial of forecast-smoothness selection,
+using the pre-specified synthetic seed 100 with a switch to roughness
+($d=2$, $L=120$, $h=20$).
+(A) A historical train/Validation-1/Validation-2 sequence followed by
+a separate current Validation-1 block and the untouched test; the
+historical Validation-2 forecast is refitted after Validation 1.
+(B) New trend fits on the latest $L$ observations for pooled forecast-CV,
+the newest tracked minimum, and a recency-weighted branch mean.
+(C) Their multi-step test forecasts, shown with realized observations
+only after selection.
+(D) The \emph{current Validation-1} forecast-loss curve, its recovered
+local minima, and the three smoothness choices. This is not a test-loss
+curve; pooled and aggregated choices need not be minima of this surface.
+(E) Historical local-minimum branches, the current continued minimum,
+and final decisions $\phi(V_j)$. The illustration is pedagogical and
+was not selected for favorable outer-test performance.}
+\label{fig:workflow_tutorial}
+\end{figure*}
