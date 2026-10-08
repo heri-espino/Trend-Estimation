@@ -1,131 +1,169 @@
 \section{Forecast-optimal smoothness by chronological cross-validation}
 \label{sec:forecast_cv}
 
-\subsection{Continuation of the fitted trend}
+\subsection{From a fitted trend to a prospective forecast}
 
-A trend estimate does not become a forecast until a continuation rule is specified. In the baseline model, the fitted finite-difference structure is continued by imposing zero future $d$th differences. This yields a fixed linear operator
+The parameter of interest is the normalized smoothness $S$, not the
+unbounded penalty $\lambda$. Define the continuous family of
+smoothing matrices, including their limiting endpoint, by
+\begin{equation}
+\label{eq:sindexed_smoothing_matrix}
+H(S)=
+\begin{cases}
+\bigl(I+\lambda(S)D_d^\top D_d\bigr)^{-1},&0\le S<1,\\
+P_{\ker(D_d)},&S=1,
+\end{cases}
+\end{equation}
+where $P_{\ker(D_d)}$ is the orthogonal projection onto the
+null space of the finite-difference operator. Computing
+$H(S)$ may require inverting the monotone map $S(\lambda)$,
+but the domain on which cross-validation operates is the
+\emph{full bounded interval} $[0,1]$.
+
+A fitted trend is not automatically a forecast. We specify
+a continuation rule that imposes zero future $d$th
+differences, producing the fixed linear operator
 \begin{equation}
 \label{eq:continuation_operator_space}
-G_{d,h}\in\mathbb{R}^{h\times L}
+G_{d,h}\in\mathbb{R}^{h\times L}.
 \end{equation}
-such that
+The corresponding prospective forecast from origin $t$ is
 \begin{equation}
 \label{eq:forecast_operator}
-\widehat z_T(\lambda)
-=
-G_{d,h}H_\lambda x_T.
+\widehat z_t(S)=G_{d,h}H(S)x_t.
 \end{equation}
-
-Equivalently, using backward differences at the end of the fitted trend,
+In terms of the final backward differences of the
+historically fitted trend,
 \begin{equation}
 \label{eq:continuation}
-\widehat\tau_{T+k\mid T}
-=
-\sum_{j=0}^{d-1}
-\binom{k+j-1}{j}
-\nabla^j\widehat\tau_T,
-\qquad
-k=1,\ldots,h.
+\widehat\tau_{t+k\mid t}(S)
+=\sum_{j=0}^{d-1}\binom{k+j-1}{j}
+\nabla^j\bigl[H(S)x_t\bigr]_{L},
+\qquad k=1,\ldots,h.
 \end{equation}
-For $d=1$ the continuation is constant; for $d=2$ it is linear; and for $d=3$ it is quadratic.
-More generally, imposing zero future $d$th differences continues
-the fitted terminal path as a discrete polynomial of degree at most
-$d-1$. This yields a family of future polynomial extrapolations as
-$S$ changes, because smoothing changes the terminal finite
-differences that initialize the continuation. The degree itself
-is fixed by $d$; the forecast-CV criterion selects the smoothness
-and hence the polynomial coefficients of the continued trend,
-not a new polynomial degree. This distinguishes forecast-oriented
-trend selection from a post-hoc descriptive smoother.
+For $d=1$, $d=2$, and $d=3$, these continuations are constant,
+linear, and quadratic in the forecast step $k$, respectively.
+More generally, fixing $d$ fixes the maximum degree $d-1$,
+while changing $S$ changes the smoothed endpoint values and
+differences, hence the coefficients of the forecast polynomial.
+The method selects among \emph{future extrapolations}, not
+merely among different post-hoc representations of the past.
+Selecting $d$ itself is a separate model-selection decision;
+it is held fixed within the baseline CV comparison.
 
-\subsection{Origin-specific forecast-loss surfaces}
+\subsection{The forecast-MSE surface in the smoothness coordinate}
 
-Let
+For an \emph{historical} forecast origin $t$, let
 \begin{equation}
 \label{eq:future_observation_block}
-z_T=(y_{T+1},\ldots,y_{T+h})^\top
+z_t=(y_{t+1},\ldots,y_{t+h})^\top
 \end{equation}
-be the realized future block at origin $T$. For candidate $\lambda$,
-\begin{equation}
-\label{eq:origin_loss}
-f_T(\lambda)
-=
-\frac{1}{h}
-\left\|
-z_T-G_{d,h}H_\lambda x_T
-\right\|_2^2.
-\end{equation}
-Expanding the loss clarifies how $H_\lambda$ enters the forecast-MSE surface:
-\begin{equation}
-\label{eq:origin_loss_quadratic}
-h f_T(\lambda)
-= z_T^\top z_T
-- 2z_T^\top G_{d,h}H_\lambda x_T
-+ x_T^\top H_\lambda G_{d,h}^\top G_{d,h}H_\lambda x_T.
-\end{equation}
-In particular, this is a predictive loss, not the in-sample residual
-norm $\|x_T-H_\lambda x_T\|_2^2$. Because $S(\lambda)$ is
-one-to-one, we write the same surface in normalized smoothness as
+be the subsequent realized validation block. The loss assigned
+to a candidate smoothness $S\in[0,1]$ is
 \begin{equation}
 \label{eq:origin_loss_smoothness}
-F_T(S)=f_T(\lambda(S)),
-\qquad
-S\in[0,1].
+F_t(S)
+=\frac1h\left\|z_t-G_{d,h}H(S)x_t\right\|_2^2.
 \end{equation}
-
-At a chronological sequence of historical forecast origins $T_1,\ldots,T_M$, each surface can have one or several local minima. Denote the local-minimum set at origin $T_m$ by
+Expanding this expression makes the dependence on the
+smoothness-indexed smoothing matrix explicit:
 \begin{equation}
-\label{eq:local_minimum_set}
-\mathcal M_m
-=
-\{S_{1,m},\ldots,S_{K_m,m}\}.
+\label{eq:origin_loss_quadratic}
+\begin{aligned}
+h F_t(S)
+={}&z_t^\top z_t
+-2z_t^\top G_{d,h}H(S)x_t\\
+&+x_t^\top H(S)G_{d,h}^\top
+G_{d,h}H(S)x_t.
+\end{aligned}
 \end{equation}
+The matrix $H(S)$ is symmetric. Unlike ordinary fitting
+criteria, \cref{eq:origin_loss_smoothness} scores observations
+\emph{after} the training endpoint; the in-sample residual
+$\|x_t-H(S)x_t\|^2$ does not appear in the criterion.
 
-This sequence of local-minimum sets is the central dynamic object of the paper.
+For derivative calculations it is sometimes convenient to
+use the algebraically equivalent auxiliary function
+\begin{equation}
+\label{eq:origin_loss}
+f_t(\lambda)=F_t(S(\lambda)).
+\end{equation}
+This equality is a coordinate change, not a second
+optimization problem or a requirement to search a truncated
+range of $\lambda$.
 
-\subsection{Horizon-matched pooled forecast cross-validation}
+\subsection{Chronological, horizon-matched forecast cross-validation}
 
-At outer forecast origin $T$, let $T_1,\ldots,T_M$ denote historical validation origins satisfying $T_m+h\le T$; their fitting windows use only observations through $T_m$. The proposed pooled criterion averages their forecast losses for fixed $(d,L,h)$:
+At final forecast origin $T$, select historical origins
+$t_1,\ldots,t_M$ whose training windows are available and
+whose validation blocks are already observed:
+\begin{equation}
+\label{eq:chronological_origin_restriction}
+t_m+h\le T,\qquad m=1,\ldots,M.
+\end{equation}
+For fixed $(d,L,h)$, the proposed CV surface is
 \begin{equation}
 \label{eq:F_S}
-F^{\mathrm{pool}}_{d,L,h}(S)
-=
-\frac{1}{M}
-\sum_{m=1}^{M}F_{T_m}(S).
+F^{\mathrm{pool}}_{T,d,L,h}(S)
+=\frac1M\sum_{m=1}^M F_{t_m}(S),
+\qquad S\in[0,1].
 \end{equation}
-Its minimizer is
+It produces the forecast-optimal smoothness estimate
 \begin{equation}
 \label{eq:Sstar}
 \widehat S^{\mathrm{FCV}}_{T,d,L,h}
-\in
-\arg\min_{S\in[0,1]}
-F^{\mathrm{pool}}_{d,L,h}(S).
+\in\operatorname*{arg\,min}_{S\in[0,1]}
+F^{\mathrm{pool}}_{T,d,L,h}(S).
 \end{equation}
+The selection space includes both exact limiting models,
+$S=0$ and $S=1$, not just interior grid values.
+When the objective has several minima, the global
+minimizer is determined by the lowest historical predictive
+MSE including the endpoints; a deterministic smallest-$S$
+tie convention is used if several minima have the same
+recorded objective value.
 
-This is the primary forecast-optimal smoothness selector. It chooses the same smoothness across the current historical validation origins but can choose a different value for each horizon $h$. It requires neither minimum tracking nor the optional branch state.
+Both the forecasting horizon and the continuation operator
+are essential parts of the criterion. Minimizing one-step
+forecast error and deploying the resulting smoothness for
+a longer horizon is a different procedure. The index makes
+this comparison interpretable on $[0,1]$, while its
+one-to-one transformation from $\lambda$ preserves the
+fitted-trend family and any exact minimizing set.
 
-\subsection{Mandatory final refit and untouched evaluation}
+\subsection{Final refit and untouched future forecast}
 
-Neither the pooled selector nor any optional adaptive rule retains an old fitted trend. Once the current smoothness $\widehat S_T$ has been selected, all intermediate validation fits are discarded and the trend is refit using the most recent information available at the outer origin:
+At outer origin $T$, all validation-stage trends are
+discarded. Using the smoothness chosen from historical
+blocks, the current trend is refitted on the newest
+$L$ observations:
 \begin{equation}
 \label{eq:final_refit}
 \widehat\tau_T
-=
-H_{\lambda(\widehat S_T)}
+=H\bigl(\widehat S^{\mathrm{FCV}}_{T,d,L,h}\bigr)
 y_{T-L+1:T}.
 \end{equation}
-The operational forecast is then
+The operational forecast is
 \begin{equation}
 \label{eq:final_operational_forecast}
 \widehat y_{T+1:T+h\mid T}
-=
-G_{d,h}\widehat\tau_T.
+=G_{d,h}\widehat\tau_T.
 \end{equation}
+No observation after $T$ enters either the CV decision
+or the final fit. Historical forecast losses, not the
+historical fitted trend paths, are averaged.
 
-The pooled method averages historical validation losses, not historical trend estimates. Optional adaptive rules may also average historical smoothness values, but must use the same final-refit procedure.
+\subsection{Relationship to established cross-validation}
 
-\subsection{Relationship to conventional cross-validation}
-
-Unlike ordinary leave-one-out CV and GCV, the proposed loss directly measures chronological extrapolation over the declared horizon. \Cref{sec:optional_dynamic} separately explores time-adaptive use of individual local minima.
-
-Hart's TSCV \cite{hart1994tscv} remains an important predictive-smoothing precedent. The proposed application differs in its finite-difference PLS estimator, normalized smoothness parameterization, multi-step continuation, and forecast-MSE loss surface. Temporal branch tracking is optional, not required for forecast-CV.
+Ordinary leave-one-out CV and GCV primarily measure
+interpolation or fitted-signal error for a smoother.
+The present criterion uses chronological, genuinely
+future-block MSE from a declared polynomial continuation.
+This does not invent the general principle of predictive
+cross-validation: Hart's time-series CV
+\cite{hart1994tscv} is an important precedent.
+The specific object investigated here is direct
+$h$-step forecast-MSE selection for the
+finite-difference PLS trend over normalized $S\in[0,1]$.
+Time-adaptive decisions using historical minima, considered
+later, are optional and not part of this definition.
