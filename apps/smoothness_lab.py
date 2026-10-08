@@ -403,6 +403,7 @@ def _branch_timeline(result) -> go.Figure:
     """Represent an actual completed historical pair and the final test origin."""
     history = result.branches.loc[
         result.branches["d"].eq(result.selected_order)
+        & result.branches["regla"].eq(result.selected_rule)
     ].sort_values("origin")
     last = history.iloc[-1]
     a, b, c = (
@@ -959,7 +960,6 @@ def main() -> None:
                 "de ese mismo par (d, regla), no se comparten entre métodos. "
                 "Los círculos del mapa señalan S aplicada sobre el ECM original "
                 "como referencia, no mínimos de la curva original."
-            )
             )
         else:
             st.info(
