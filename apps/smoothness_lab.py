@@ -23,7 +23,9 @@ from experiments.smoothness_cv.live_lab import (
     transform_observations,
 )
 from experiments.smoothness_cv.two_stage_lab import run_two_stage_lab
-from experiments.smoothness_cv.branch_rule_lab import run_branch_lab, RULE_SPECS
+from experiments.smoothness_cv.branch_rule_lab import (
+    run_branch_lab, RULE_SPECS, inspect_method_val1_curves,
+)
 
 
 TRANSFORMACIONES = {
@@ -218,6 +220,72 @@ def _val1_figure(result, order: int) -> go.Figure:
     return fig
 
 
+
+def _val1_method_figure(
+    curves: pd.DataFrame,
+    minima: pd.DataFrame,
+    *,
+    order: int,
+    rule: str,
+    selected_branch: str | None = None,
+    selected_input_s: float | None = None,
+) -> go.Figure:
+    """Plot E1(phi_r(V_j, s)) for each method-specific tracked branch."""
+    fig = go.Figure()
+    branches = curves["rama"].drop_duplicates().tolist()
+    colors = ["#0072B2", "#D55E00", "#009E73", "#8A57A1",
+              "#B88700", "#555555", "#CC79A7", "#56B4E9"]
+    for i, branch in enumerate(branches):
+        group = curves.loc[curves["rama"].eq(branch)].sort_values("s_candidato")
+        focus = (branch == selected_branch)
+        color = colors[i % len(colors)]
+        fig.add_scatter(
+            x=group["s_candidato"], y=group["val1_mse"],
+            mode="lines", name=f"Rama {branch}: ECM del método",
+            line={"color": color, "width": 3 if focus else 1.8},
+            opacity=1 if focus else 0.68,
+            customdata=group[["s_aplicado"]].to_numpy(),
+            hovertemplate=(
+                "S candidata = %{x:.4f}<br>S aplicada = %{customdata[0]:.4f}"
+                "<br>ECM de V1 = %{y:.6g}<extra></extra>"
+            ),
+        )
+        local = minima.loc[minima["rama"].eq(branch)]
+        stable = local.loc[~local["objetivo_plano"]]
+        if not stable.empty:
+            fig.add_scatter(
+                x=stable["s_candidato"], y=stable["val1_mse"],
+                mode="markers", name=f"Rama {branch}: mínimos de V1",
+                marker={"color": color, "symbol": "diamond", "size": 9},
+                customdata=stable[["s_aplicado"]].to_numpy(),
+                hovertemplate=(
+                    "S candidata = %{x:.4f}<br>S aplicada = %{customdata[0]:.4f}"
+                    "<br>ECM de V1 = %{y:.6g}<extra></extra>"
+                ),
+            )
+    if selected_branch in branches and selected_input_s is not None:
+        points = curves.loc[curves["rama"].eq(selected_branch)]
+        if not points.empty:
+            xi = points["s_candidato"].to_numpy(float)
+            yi = points["val1_mse"].to_numpy(float)
+            fig.add_scatter(
+                x=[selected_input_s],
+                y=[float(np.interp(selected_input_s, xi, yi))],
+                mode="markers", name="S candidata utilizada en la prueba",
+                marker={"symbol": "star", "color": "#222222", "size": 18},
+            )
+    _style(
+        fig,
+        f"ECM de V1 por método — orden d = {order} · "
+        f"{REGLAS_ES.get(rule, rule)}",
+        "Suavidad candidata, s (antes de aplicar la regla)",
+        "ECM de validación 1 (unidades al cuadrado)",
+        height=490,
+    )
+    fig.update_xaxes(range=[0, 1])
+    return fig
+
+
 def _val2_figure(result) -> go.Figure:
     fig = go.Figure()
     table = result.candidates
@@ -323,6 +391,71 @@ def _forecast_figure(frame: pd.DataFrame, result, unidad: str, *,
         fig, "Tendencia reajustada y pronóstico posterior al último dato real",
         label_x, unidad, height=540,
     )
+
+
+
+def _test_forecast_figure(
+    frame: pd.DataFrame, result, unidad: str, *, truth: bool = False
+) -> go.Figure:
+    """The test prediction is fixed at the pretest origin, before observing test y.
+
+    Only evaluation_trend/evaluation_forecast are used for the orange trend.
+    The final full-data trend is intentionally excluded from this backtest plot.
+    """
+    x, x_title = _axis(frame)
+    y = frame["observed"].to_numpy(dtype=float)
+    cutoff, end = int(result.pretest_end), int(result.test_end)
+    L = int(result.window)
+    left = max(0, cutoff-min(L, 45))
+    historical_x = x[left:cutoff]
+    historical_trend = np.asarray(result.evaluation_trend, dtype=float)[
+        left-(cutoff-L):
+    ]
+    forecast = np.asarray(result.evaluation_forecast, dtype=float)
+    if len(forecast) != end-cutoff:
+        raise ValueError("Pronóstico de prueba y periodo reservado desalineados.")
+    fig = go.Figure()
+    fig.add_scatter(
+        x=historical_x, y=y[left:cutoff],
+        name="Observaciones conocidas antes de la prueba",
+        mode="lines+markers", marker={"size": 4},
+        line={"color": "#777777", "width": 1.7},
+    )
+    fig.add_scatter(
+        x=historical_x, y=historical_trend,
+        name="Tendencia estimada antes del test",
+        mode="lines", line={"color": "#D55E00", "width": 2.6},
+    )
+    fig.add_scatter(
+        x=[x[cutoff-1]]+list(x[cutoff:end]),
+        y=[float(historical_trend[-1])]+list(forecast),
+        name="Tendencia pronosticada sin observar el test",
+        mode="lines+markers", marker={"size": 7},
+        line={"color": "#D55E00", "width": 3, "dash": "dash"},
+    )
+    fig.add_scatter(
+        x=x[cutoff:end], y=y[cutoff:end],
+        name="Serie real del test reservado",
+        mode="lines+markers", marker={"size": 9},
+        line={"color": "#202020", "width": 2.5},
+    )
+    if truth and "latent" in frame:
+        latent = frame["latent"].to_numpy(float)
+        fig.add_scatter(
+            x=x[cutoff:end], y=latent[cutoff:end],
+            name="Tendencia verdadera sintética en test",
+            mode="lines", line={"color": "#8A57A1", "dash": "dot"},
+        )
+    _style(
+        fig, "Pronóstico de tendencia frente a la serie real — prueba reservada",
+        x_title, unidad, height=515,
+    )
+    fig.add_shape(
+        type="line", x0=x[cutoff-1], x1=x[cutoff-1],
+        yref="paper", y0=0, y1=1,
+        line={"color": "#999999", "dash": "dot", "width": 1.5},
+    )
+    return fig
 
 
 def _matrix_figure(H: np.ndarray) -> go.Figure:
