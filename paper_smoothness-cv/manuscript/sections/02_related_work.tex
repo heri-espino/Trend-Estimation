@@ -39,9 +39,11 @@ A forecast-oriented procedure instead uses
 \label{eq:related_forecast_smoothness}
 \text{chronological forecast loss}\longrightarrow S^\star.
 \end{equation}
-The second principle is not itself new; the contribution investigated
-here concerns the \emph{temporal organization of multiple local
-optima} and decisions constructed from their histories.
+Forecast-based selection is not new in general. The principal proposal here
+is a fully specified chronological $h$-step forecast-MSE criterion
+for normalized PLS smoothness, with a final refit on the most recent
+window. Temporal tracking of local minima is an optional adaptation
+mechanism, not a prerequisite of forecast-CV.
 
 \subsection{Controlled trends used for forecasting}
 
@@ -56,8 +58,8 @@ Islas-Camargo and Zumaya-Galv\'an \cite{islas2025exchange}
 similarly study exchange-rate forecasts using a trend with
 controlled smoothness. These articles establish the substantive
 precedent for using this class of filters in forecasting, although
-they do not define our branch-history representation and
-branch-to-smoothness decision maps.
+their forecasting specifications differ from direct, pooled
+$h$-step MSE selection over normalized PLS smoothness.
 
 Taylor \cite{taylor2004stes} provides a related but distinct example
 of forecast-error-based tuning in exponential smoothing, including
@@ -123,15 +125,21 @@ make this limitation explicit.
 
 \subsection{Specific contribution and boundary}
 
-Existing research already provides controlled-smoothness
-estimation, automatic parameter selection, time-series
-forecast validation, and predictive use of smoothed trends.
-The narrower object developed here is a chronological
-\emph{branch state} obtained by linking multiple local minima
-of successive forecast-loss surfaces, recording subsequent
-validation losses, and separating branch selection from
-the map that produces the current smoothness. The empirical
-claim is correspondingly modest: this representation admits
-a family of explicit rules, but the reported evidence does
-not establish that a branch-based rule systematically
-outperforms pooled forecast-CV.
+The PLS smoother, controlled-smoothness index, and predictive
+cross-validation all have clear antecedents. We therefore do not
+claim any of them as an independent invention. Our central
+methodological construction applies chronological forecast MSE
+at the \emph{intended horizon} directly to the smoothness
+parameter of a finite-difference PLS trend, with an explicit
+continuation operator and an operational final refit. Its
+performance is compared with one-step forecast tuning and
+classical criteria for the smoothing penalty.
+
+The objective can be multimodal. The companion numerical-methods
+paper addresses stationary-point discovery, Brent refinement,
+and endpoint comparison; Sturm-based certification remains
+exploratory. The forecasting paper additionally illustrates
+time-adaptive selection from tracked histories of local minima.
+This optional extension requires assumptions about how
+past preferred smoothing regimes inform future choices;
+it is not the defining contribution of the pooled criterion.
