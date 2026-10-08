@@ -769,67 +769,229 @@ def main() -> None:
 
     with tab_diseno:
         st.subheader("Bloques utilizados para estimar y seleccionar")
+        if modo == "ramas":
+            st.write(
+                f"Se analizan {resultado.branches['origin'].nunique()} "
+                "orígenes históricos por orden, cada uno con validación 1 y "
+                "validación 2 consecutivas. Las reglas reciben únicamente "
+                "mínimos de validación 1 y errores de validación 2 ya observados. "
+                "Las decisiones de cada origen se toman sin ver su propia validación 2."
+            )
+            st.write(
+                "**Ajuste de la tendencia:** para pronosticar validación 2 se "
+                "emplean los datos conocidos hasta su origen y el **mismo S** "
+                "que fijó la regla; no hay una segunda búsqueda de suavidad. "
+                "La extrapolación polinómica original sigue disponible con "
+                "la regla 'Último mínimo'."
+            )
+            st.latex(
+                r"V_{d,j,r}=\left\{("
+                r"S^{\min}_{d,j,t},\;S^{(r)}_{d,j,t},\;"
+                r"E_{1,d,j,r,t},\;E_{2,d,j,r,t})\right\}_t"
+            )
+            st.latex(
+                r"(d^*,j^*,r^*)=\underset{d,j,r}{\operatorname{arg\,min}}"
+                r"\ \frac{1}{|\mathcal T_{d,j,r}|}"
+                r"\sum_{t\in\mathcal T_{d,j,r}}E_{2,d,j,r,t}"
+            )
+            st.caption(
+                "Solo se consideran ramas que cumplen el soporte histórico mínimo. "
+                "Los errores históricos pueden corresponder a bloques solapados; "
+                "la prueba final se mantiene al margen de la selección."
+            )
+        else:
+            st.write(
+                "Caso particular: una sola validación 1 genera los mínimos "
+                "locales y una sola validación 2 compara todos los pares (d,S). "
+                "No se utilizan trayectorias históricas."
+            )
+            st.latex(
+                r"(d^*,S^*)=\underset{d,\;S\in\mathcal M_d}"
+                r"{\operatorname{arg\,min}}\;\operatorname{ECM}_2(d,S)"
+            )
         st.plotly_chart(_timeline(resultado), use_container_width=True)
-        st.write(
-            "**Validación 1:** para cada d se recuperan los mínimos locales de ECM(S). "
-            "**Validación 2:** tras reajustar con los datos hasta validación 1, "
-            "se elige el par (d*, S*) de menor ECM. "
-            "**Prueba retrospectiva:** mide desempeño antes de usar el bloque reservado. "
-            "**Pronóstico operativo:** sin cambiar d* ni S*, se reajusta con las últimas "
-            "L observaciones de toda la serie y se pronostica más allá del último "
-            "dato real. La prueba no participa en la selección de hiperparámetros."
-        )
-        st.latex(
-            r"(d^*,S^*)=\underset{d,\;S\in\mathcal M_d}"
-            r"{\operatorname{arg\,min}}\;\operatorname{ECM}_2(d,S)"
-        )
+        if modo == "ramas":
+            st.caption(
+                "La franja de validación 1 indicada al final es la superficie "
+                "más reciente usada para continuar la rama ganadora hacia la prueba; "
+                "los orígenes históricos anteriores aparecen en las otras pestañas."
+            )
 
     with tab_val1:
-        st.subheader("Superficies de pérdida predictiva y mínimos locales")
+        st.subheader("Curvas del ECM de validación 1 para distintos órdenes d")
         st.write(
-            "Para cada orden de diferencias d, los rombos indican los mínimos "
-            "locales de la función de error de pronóstico en validación 1. "
-            "Cada mínimo se conserva como candidato para validación 2, "
-            "incluso cuando no es el mínimo global."
+            "Los rombos señalan mínimos locales de la curva de error de pronóstico "
+            "en función de S. El valor de suavidad aplicado por una regla histórica "
+            "puede quedar entre dos mínimos."
+            if modo == "ramas" else
+            "Los rombos identifican los mínimos candidatos; todos se comparan "
+            "posteriormente en validación 2."
         )
         for order in sorted(ordenes):
-            st.plotly_chart(_val1_figure(resultado, order),
-                            use_container_width=True)
+            plot = _val1_figure(resultado, order)
+            if modo == "ramas" and order == resultado.selected_order:
+                plot.add_vline(
+                    x=resultado.selected_s, line_dash="dash",
+                    line_color="#D55E00", line_width=2,
+                )
+            st.plotly_chart(plot, use_container_width=True)
         st.caption(
-            "El algoritmo recupera mínimos con derivadas; las líneas son "
-            "una visualización muestreada de la función de error. "
-            "Los extremos S = 0 y S = 1 se consideran cuando son candidatos."
+            "Se muestran las curvas de la validación 1 final, previa al bloque "
+            "de prueba. En modo histórico, también puede examinarse cada "
+            "origen por separado en la sección de ramas."
         )
 
+    with tab_ramas:
+        if modo == "ramas":
+            st.subheader("Evolución cronológica de los mínimos locales")
+            d_ramas = st.selectbox(
+                "Orden d para el seguimiento de mínimos",
+                sorted(ordenes), key="orden_ramas",
+            )
+            st.plotly_chart(
+                _branch_figure(resultado, d_ramas), use_container_width=True
+            )
+            st.plotly_chart(
+                _historical_loss_figure(resultado, d_ramas),
+                use_container_width=True,
+            )
+            st.dataframe(
+                _v_table(resultado.branches.loc[
+                    resultado.branches["d"].eq(d_ramas)
+                ]),
+                use_container_width=True, hide_index=True,
+            )
+            st.caption(
+                "La identificación de ramas utiliza la cercanía entre "
+                "mínimos locales en periodos consecutivos. Puede haber "
+                "nacimientos de ramas y orígenes sin coincidencia."
+            )
+        else:
+            st.info(
+                "El seguimiento de ramas se utiliza en el procedimiento "
+                "general. Selecciónelo en la barra lateral."
+            )
+
+    with tab_v:
+        if modo == "ramas":
+            st.subheader("Matriz V por orden, rama y regla de selección")
+            st.write(
+                "Cada fila registra el mínimo S observado en validación 1, "
+                "el S que la regla decidió aplicar y los errores de ese **mismo "
+                "valor** tanto en validación 1 como en validación 2. "
+                "Las reglas ponderadas por ECM solo acceden a validaciones "
+                "2 que ya habían concluido al iniciar el pronóstico."
+            )
+            c1, c2, c3 = st.columns(3)
+            d_v = c1.selectbox(
+                "Orden d", sorted(ordenes), key="orden_v",
+            )
+            ramas_disponibles = sorted(
+                resultado.evaluations.loc[
+                    resultado.evaluations["d"].eq(d_v), "rama"
+                ].unique()
+            )
+            b_v = c2.selectbox(
+                "Rama de mínimos locales", ramas_disponibles,
+                key=f"rama_v_{d_v}",
+            )
+            r_v = c3.selectbox(
+                "Regla de suavidad", reglas,
+                format_func=lambda k: REGLAS_ES[k],
+                key="regla_v",
+            )
+            subset = resultado.evaluations.loc[
+                resultado.evaluations["d"].eq(d_v)
+                & resultado.evaluations["rama"].eq(b_v)
+                & resultado.evaluations["regla"].eq(r_v)
+            ]
+            st.plotly_chart(
+                _v_figure(subset, d_v, b_v, r_v), use_container_width=True
+            )
+            st.plotly_chart(
+                _v_losses(subset, d_v, b_v, r_v), use_container_width=True
+            )
+            st.dataframe(
+                _v_table(subset), use_container_width=True, hide_index=True,
+            )
+            st.download_button(
+                "Descargar esta matriz V (CSV)",
+                _v_table(subset).to_csv(index=False).encode("utf-8-sig"),
+                file_name=f"V_d{d_v}_{b_v}_{r_v}.csv",
+                mime="text/csv",
+            )
+            st.download_button(
+                "Descargar todas las matrices V (CSV)",
+                _v_table(resultado.evaluations).to_csv(
+                    index=False
+                ).encode("utf-8-sig"),
+                file_name="matrices_V_completas.csv", mime="text/csv",
+            )
+        else:
+            st.info(
+                "Las matrices V históricas se utilizan en el procedimiento "
+                "general. Selecciónelo en la barra lateral."
+            )
+
     with tab_val2:
-        st.subheader("Selección por el menor ECM de la segunda validación")
-        st.plotly_chart(_val2_figure(resultado), use_container_width=True)
-        st.write(
-            "Cada punto corresponde a un par (d, S) recuperado en validación 1. "
-            "Antes de pronosticar validación 2 se **reajusta la tendencia** "
-            "incorporando las observaciones de validación 1. "
-            "La estrella negra identifica el menor ECM de validación 2."
-        )
-        st.markdown("**Matriz de comparación de candidatos**")
-        st.dataframe(_table(resultado.candidates),
-                     use_container_width=True, hide_index=True)
-        st.caption(
-            "ECM: error cuadrático medio. RECM: raíz del error cuadrático medio. "
-            "Todos los candidatos se evalúan en el mismo bloque temporal. "
-            "Actualmente solo se compara el método de mínimos cuadrados "
-            "penalizados; la comparación de otros estimadores es una posible extensión."
-        )
-        st.download_button(
-            "Descargar la matriz de candidatos (CSV)",
-            _table(resultado.candidates).to_csv(index=False).encode("utf-8-sig"),
-            file_name="candidatos_validacion_2.csv", mime="text/csv",
-        )
+        if modo == "ramas":
+            st.subheader(
+                "Comparación de ramas y reglas por ECM acumulado de validación 2"
+            )
+            st.plotly_chart(
+                _branch_rank_figure(resultado), use_container_width=True
+            )
+            st.write(
+                "Se selecciona el **orden, la rama y la regla** cuyo ECM medio "
+                "en validación 2 es menor entre los candidatos con suficiente "
+                "soporte. Los errores de validación 2 **no** modifican el S "
+                "decidido para ese origen; quedan registrados en V y pueden "
+                "utilizarse en orígenes posteriores cuando ya son conocidos."
+            )
+            st.markdown("**Resumen de comparaciones históricas**")
+            st.dataframe(
+                _v_table(resultado.summary),
+                use_container_width=True, hide_index=True,
+            )
+            st.download_button(
+                "Descargar resultados de todas las reglas (CSV)",
+                _v_table(resultado.summary).to_csv(
+                    index=False
+                ).encode("utf-8-sig"),
+                file_name="comparacion_historica_reglas.csv", mime="text/csv",
+            )
+            st.caption(
+                "RECM agregado = raíz de la media de errores cuadráticos "
+                "históricos. La diferencia en cobertura entre ramas está "
+                "visible mediante el soporte. El test no participa."
+            )
+        else:
+            st.subheader("Selección directa por ECM de la segunda validación")
+            st.plotly_chart(
+                _val2_figure(resultado), use_container_width=True
+            )
+            st.write(
+                "Cada punto corresponde a un mínimo local de validación 1. "
+                "El orden y la suavidad se mantienen fijos para pronosticar "
+                "la validación 2; la estrella identifica el menor ECM."
+            )
+            st.dataframe(
+                _table(resultado.candidates),
+                use_container_width=True, hide_index=True,
+            )
+            st.download_button(
+                "Descargar candidatos directos (CSV)",
+                _table(resultado.candidates).to_csv(
+                    index=False
+                ).encode("utf-8-sig"),
+                file_name="candidatos_validacion_2.csv", mime="text/csv",
+            )
 
     with tab_final:
         st.subheader("Pronóstico utilizando el orden y la suavidad seleccionados")
         left, right = st.columns(2)
         revelar = left.checkbox(
-            "Mostrar las observaciones reservadas para prueba", False
+            "Mostrar evaluación retrospectiva y los valores de prueba", True
         )
         latente = right.checkbox(
             "Mostrar la función verdadera de la simulación",
@@ -841,6 +1003,15 @@ def main() -> None:
                 reveal=revelar, truth=latente,
             ), use_container_width=True,
         )
+        if modo == "ramas":
+            st.write(
+                f"Se mantiene el orden **d = {resultado.selected_order}**, "
+                f"la rama **{resultado.selected_branch}** y la regla "
+                f"**{REGLAS_ES[resultado.selected_rule]}**. Para pronosticar "
+                "la prueba se aplica S sin reoptimizar. "
+                "El pronóstico futuro se ajusta después a todos los datos "
+                "disponibles, conservando la misma S y el mismo método."
+            )
         st.caption(
             "Se conservan **d*** y **S*** seleccionados en validación 2. "
             "El modelo se reajusta con las últimas L observaciones realmente "
@@ -853,6 +1024,15 @@ def main() -> None:
             test = valores[resultado.pretest_end:resultado.test_end]
             mse = float(np.mean((test - resultado.evaluation_forecast)**2))
             st.metric("ECM en prueba no utilizada para selección", f"{mse:.6g}")
+            prueba = pd.DataFrame({
+                "Observación": np.arange(
+                    resultado.pretest_end+1, resultado.test_end+1
+                ),
+                "Valor real de la serie": test,
+                "Pronóstico retrospectivo": resultado.evaluation_forecast,
+                "Error de pronóstico": test-resultado.evaluation_forecast,
+            })
+            st.dataframe(prueba, use_container_width=True, hide_index=True)
             st.caption(
                 "Los valores de prueba no modifican d* ni S*, tampoco el "
                 "pronóstico retrospectivo. Sin embargo, una vez evaluados "
@@ -909,13 +1089,27 @@ def main() -> None:
             r"S=\frac{L-\operatorname{tr}(H_\lambda)}{L-d}"
         )
 
-    with st.expander("Análisis avanzado: persistencia histórica de ramas"):
+    with st.expander("Definiciones y alcance de las reglas históricas"):
         st.write(
-            "El seguimiento de mínimos a través de muchos orígenes y las "
-            "reglas dinámicas φ(Vⱼ) son una **extensión opcional**, no intervienen "
-            "en el procedimiento de dos validaciones presentado arriba. "
-            "La implementación anterior se conserva en "
-            "apps/smoothness_lab_advanced.py."
+            "**Rama:** secuencia de mínimos locales asociados por vecindad "
+            "en suavidad. **Regla:** transforma el mínimo actual de validación 1 "
+            "y su historia disponible en un único S aplicado. "
+            "**Matriz V:** historial de S mínimo, S aplicado y errores de "
+            "ambas validaciones por (d, rama, regla). "
+            "**Último mínimo:** continuidad polinómica original sin promedio. "
+            "**Soporte:** proporción de orígenes históricos evaluados."
+        )
+        st.write(
+            "La regla está fijada al principio del experimento; se aplica "
+            "de la misma manera en ambas validaciones. La tendencia puede "
+            "reestimarse al cambiar el origen y disponer de nuevos datos, "
+            "pero no se vuelve a optimizar S en validación 2. "
+            "El test real permanece fuera de la elección de d, rama y regla."
+        )
+        st.caption(
+            "La variante histórica previa del laboratorio se conserva en "
+            "apps/smoothness_lab_advanced.py. El caso de selección directa "
+            "permanece disponible en la barra lateral."
         )
 
 
