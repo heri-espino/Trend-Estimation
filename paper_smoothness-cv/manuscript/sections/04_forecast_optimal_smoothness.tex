@@ -189,6 +189,38 @@ w_{j,t}
 0<\rho\le1.
 \]
 
+A distinct class of maps treats the branch smoothness values as a series to be extrapolated. For a branch with values $S_{j,t_1},\ldots,S_{j,t_m}$, fit the auxiliary trend
+\[
+(\widehat a,\widehat b)
+\in
+\arg\min_{a,b}
+\sum_{u=1}^{m}
+\omega_u\bigl(S_{j,t_u}-a-bu\bigr)^2.
+\]
+The resulting branch-based smoothness decision is
+\[
+\phi_{\mathrm{trend}}(V_j)
+=
+\Pi_{[0,1]}\bigl(\widehat a+\widehat b(m+1)\bigr),
+\]
+where $\Pi_{[0,1]}$ truncates to the admissible normalized-smoothness interval. Uniform weights, recent-window weights, or exponentially increasing recency weights lead to different examples. Alternatively, one can extrapolate the branch increments:
+\[
+\phi_{\Delta,\rho}(V_j)
+=
+\Pi_{[0,1]}
+\left[
+S_{j,t_m}
++
+\frac{
+\sum_{r=0}^{m-2}
+\rho^r\bigl(S_{j,t_{m-r}}-S_{j,t_{m-r-1}}\bigr)
+}{
+\sum_{r=0}^{m-2}\rho^r
+}
+\right].
+\]
+These auxiliary models forecast the next \emph{smoothness value}, not the underlying observations or an old fitted trend. The final observation forecast still follows the fresh-refit procedure below.
+
 The examples above are not intended to define a tournament for one universally best smoothness rule. Their role is to show that the tracked branch state $V_j$ supports a family of admissible decision maps
 \[
 \phi:V_j\mapsto \widehat S_T.
