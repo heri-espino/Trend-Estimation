@@ -42,6 +42,27 @@ A synthesis is a potentially worthwhile applied/statistical-methodology contribu
 
 **One-sentence paper framing:** “We investigate horizon-matched rolling-origin cross-validation for forecast-directed selection of spectrally parameterized, normalized penalized least-squares trend smoothness.”
 
+## Weighting extension: same Paper 1, no tracking
+
+In addition to the original equal-weight pooled \(F(S)\), we now
+prospectively compare fixed schemes \(m\) for weighting completed
+historical **forecast-loss curves**. At each historical update \(r\),
+\[
+F_r^{(m,d,L,h)}(S)=
+\frac{\sum_{q\in I_m(r)}w_{r,q}^{(m)}
+\ell_{t_q}^{(d,L,h)}(S)}
+{\sum_{q\in I_m(r)}w_{r,q}^{(m)}}.
+\]
+**Paper 1 chooses the global minimizer of the last complete surface**
+\(F_M^{(m,d,L,h)}\). An \(h\)-step forecast loss remains horizon matched.
+No local-minimum branch tracking occurs and we never average fold-wise
+argmin values. Equal weights over all available folds recover the
+original objective below; the derivation below remains its special
+case. Recent equal/linear/exponential weighting must be tested as
+extensions, not described as past completed CP01–CP03 evidence.
+
+See [shared prospective protocol](../../WEIGHTED_SURFACE_PROTOCOL.md).
+
 ## Mathematical definition
 
 For fixed difference order \(d\), estimation length \(L\), and horizon \(h\), define
