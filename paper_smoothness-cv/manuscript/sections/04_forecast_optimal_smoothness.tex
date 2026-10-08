@@ -1,4 +1,5 @@
-\section{Forecast-optimal smoothness}
+\section{Forecast-optimal smoothness by chronological cross-validation}
+\label{sec:forecast_cv}
 
 \subsection{Continuation of the fitted trend}
 
@@ -45,7 +46,17 @@ f_T(\lambda)
 z_T-G_{d,h}H_\lambda x_T
 \right\|_2^2.
 \end{equation}
-Because $S(\lambda)$ is one-to-one, we write the same surface in normalized smoothness as
+Expanding the loss clarifies how $H_\lambda$ enters the forecast-MSE surface:
+\begin{equation}
+\label{eq:origin_loss_quadratic}
+h f_T(\lambda)
+= z_T^\top z_T
+- 2z_T^\top G_{d,h}H_\lambda x_T
++ x_T^\top H_\lambda G_{d,h}^\top G_{d,h}H_\lambda x_T.
+\end{equation}
+In particular, this is a predictive loss, not the in-sample residual
+norm $\|x_T-H_\lambda x_T\|_2^2$. Because $S(\lambda)$ is
+one-to-one, we write the same surface in normalized smoothness as
 \begin{equation}
 \label{eq:origin_loss_smoothness}
 F_T(S)=f_T(\lambda(S)),
@@ -63,9 +74,9 @@ At a chronological sequence of historical forecast origins $T_1,\ldots,T_M$, eac
 
 This sequence of local-minimum sets is the central dynamic object of the paper.
 
-\subsection{Pooled forecast-CV as a baseline}
+\subsection{Horizon-matched pooled forecast cross-validation}
 
-A natural static baseline averages forecast losses across historical origins:
+The proposed pooled criterion averages forecast losses across historical origins for fixed $(d,L,h)$:
 \begin{equation}
 \label{eq:F_S}
 F^{\mathrm{pool}}_{d,L,h}(S)
@@ -82,168 +93,11 @@ Its minimizer is
 F^{\mathrm{pool}}_{d,L,h}(S).
 \end{equation}
 
-This selector asks which single smoothness value has the lowest average historical forecast loss. It remains an important benchmark, but it discards the temporal organization of the local minima themselves.
+This is the primary forecast-optimal smoothness selector. It chooses the same smoothness across the current historical validation origins but can choose a different value for each horizon $h$. It requires neither minimum tracking nor the optional branch state.
 
-\subsection{Tracking local minima through time}
+\subsection{Mandatory final refit and untouched evaluation}
 
-To retain that organization, we connect nearby local minima across adjacent forecast origins. A current minimum $S_{j,m}$ may continue a previous branch when
-\begin{equation}
-\label{eq:epsilon_tracking}
-|S_{j,m}-S_{j,m-1}|
-\le
-\varepsilon,
-\end{equation}
-subject to one-to-one matching at each origin.
-
-The radius $\varepsilon$ does not define a fixed exogenous region such as ``smoothness near 0.9.'' Instead, branch locations are determined by the data through the recovered local minima; $\varepsilon$ only controls whether minima on neighboring surfaces are close enough to be treated as the same temporal branch.
-
-For a tracked branch $j$, let $\ell^{(1)}_{j,m}$ denote its Validation-1 forecast loss at the origin where the local minimum is identified. The trend is then refit through Validation 1 using the same $(d,L,S_{j,m})$, and the immediately following block is scored to obtain $\ell^{(2)}_{j,m}$, the Validation-2 forecast loss.
-
-We collect the branch history as
-\begin{equation}
-\label{eq:branch_matrix}
-V_j
-=
-\begin{pmatrix}
-S_{j,t_1} & \ell^{(1)}_{j,t_1} & \ell^{(2)}_{j,t_1}\\
-S_{j,t_2} & \ell^{(1)}_{j,t_2} & \ell^{(2)}_{j,t_2}\\
-\vdots & \vdots & \vdots
-\end{pmatrix}.
-\end{equation}
-
-\subsection{Branch selection and current smoothness}
-
-The forecasting decision is separated into two steps. First, a historical branch-selection rule
-\begin{equation}
-\label{eq:branch_selector}
-\widehat j_T
-=
-\psi(V_1,\ldots,V_J)
-\end{equation}
-chooses among persistent branches using information available before the outer test. A simple baseline prefers branches with maximal support and then minimizes mean historical Validation-2 loss.
-
-Second, a branch-to-smoothness rule
-\begin{equation}
-\label{eq:phi_rule}
-\widehat S_T
-=
-\phi(V_{\widehat j_T})
-\end{equation}
-converts the selected branch history into the smoothness used at the current forecast origin.
-
-The simplest rule is the newest tracked minimum,
-\begin{equation}
-\label{eq:rule_latest}
-\phi_{\mathrm{last}}(V_j)=S_{j,T}.
-\end{equation}
-Alternative stabilizing rules use the recent mean or median,
-\begin{equation}
-\label{eq:rule_recent_mean}
-\phi_{\mathrm{mean},K}(V_j)
-=
-\frac1K
-\sum_{r=0}^{K-1}
-S_{j,T-r},
-\end{equation}
-or
-\begin{equation}
-\label{eq:rule_recent_median}
-\phi_{\mathrm{med},K}(V_j)
-=
-\operatorname{median}
-\{S_{j,T-K+1},\ldots,S_{j,T}\}.
-\end{equation}
-
-An alternative weighted mean uses recency alone. Let $r=0$ denote the newest tracked smoothness value, with older values indexed by increasing $r$. Then
-\begin{equation}
-\label{eq:rule_recency}
-\phi_{\mathrm{recency}}(V_j)
-=
-\frac{
-\sum_{r=0}^{R}\rho^r S_{j,T-r}
-}{
-\sum_{r=0}^{R}\rho^r
-},
-\qquad
-0<\rho<1.
-\end{equation}
-The newest value receives weight one and older values are exponentially discounted. For interpretability we parameterize $\rho$ by a half-life $H$,
-\begin{equation}
-\label{eq:recency_half_life}
-\rho=2^{-1/H},
-\end{equation}
-so the weight assigned to a value $H$ tracked origins old is one half of the newest weight.
-
-A loss-weighted rule gives more influence to historically predictive values:
-\begin{equation}
-\label{eq:rule_validation2}
-\phi_{\mathrm{V2}}(V_j)
-=
-\frac{
-\sum_t w_{j,t}S_{j,t}
-}{
-\sum_t w_{j,t}
-},
-\qquad
-w_{j,t}
-=
-\frac{1}{\ell^{(2)}_{j,t}+\delta},
-\end{equation}
-with $\delta>0$ used only for numerical stabilization. Recency may be incorporated through
-\begin{equation}
-\label{eq:recency_validation2_weights}
-w_{j,t}
-=
-\frac{\rho^{T-t}}{\ell^{(2)}_{j,t}+\delta},
-\qquad
-0<\rho\le1.
-\end{equation}
-
-A distinct class of maps treats the branch smoothness values as a series to be extrapolated. For a branch with values $S_{j,t_1},\ldots,S_{j,t_m}$, fit the auxiliary trend
-\begin{equation}
-\label{eq:branch_linear_fit}
-(\widehat a,\widehat b)
-\in
-\arg\min_{a,b}
-\sum_{u=1}^{m}
-\omega_u\bigl(S_{j,t_u}-a-bu\bigr)^2.
-\end{equation}
-The resulting branch-based smoothness decision is
-\begin{equation}
-\label{eq:rule_linear_trend}
-\phi_{\mathrm{trend}}(V_j)
-=
-\Pi_{[0,1]}\bigl(\widehat a+\widehat b(m+1)\bigr),
-\end{equation}
-where $\Pi_{[0,1]}$ truncates to the admissible normalized-smoothness interval. Uniform weights, recent-window weights, or exponentially increasing recency weights lead to different examples. Alternatively, one can extrapolate the branch increments:
-\begin{equation}
-\label{eq:rule_increment_extrapolation}
-\phi_{\Delta,\rho}(V_j)
-=
-\Pi_{[0,1]}
-\left[
-S_{j,t_m}
-+
-\frac{
-\sum_{r=0}^{m-2}
-\rho^r\bigl(S_{j,t_{m-r}}-S_{j,t_{m-r-1}}\bigr)
-}{
-\sum_{r=0}^{m-2}\rho^r
-}
-\right].
-\end{equation}
-These auxiliary models forecast the next \emph{smoothness value}, not the underlying observations or an old fitted trend. The final observation forecast still follows the fresh-refit procedure below.
-
-The examples above are not intended to define a tournament for one universally best smoothness rule. Their role is to show that the tracked branch state $V_j$ supports a family of admissible decision maps
-\begin{equation}
-\label{eq:branch_decision_map}
-\phi:V_j\mapsto \widehat S_T.
-\end{equation}
-Different applications may emphasize persistence, recency, historical forecast performance, robustness, or forward extrapolation of the smoothness trajectory. Empirical comparisons describe the behavior of these choices under controlled conditions; they do not make one functional part of the definition of the framework.
-
-\subsection{Mandatory final refit}
-
-Neither the pooled selector nor the dynamic branch rules retain an old fitted trend. Once the current smoothness $\widehat S_T$ has been selected, all intermediate validation fits are discarded and the trend is refit using the most recent information available at the outer origin:
+Neither the pooled selector nor any optional adaptive rule retains an old fitted trend. Once the current smoothness $\widehat S_T$ has been selected, all intermediate validation fits are discarded and the trend is refit using the most recent information available at the outer origin:
 \begin{equation}
 \label{eq:final_refit}
 \widehat\tau_T
@@ -259,10 +113,10 @@ The operational forecast is then
 G_{d,h}\widehat\tau_T.
 \end{equation}
 
-Thus the proposed dynamic method can average historical losses or smoothness values when a declared decision rule requires it, but it never averages historical fitted trends.
+The pooled method averages historical validation losses, not historical trend estimates. Optional adaptive rules may also average historical smoothness values, but must use the same final-refit procedure.
 
 \subsection{Relationship to conventional cross-validation}
 
-The construction remains distinct from ordinary leave-one-out CV and GCV. The relevant losses are chronological extrapolation losses, and the dynamic extension additionally studies persistence of local minima across successive forecast-loss surfaces.
+Unlike ordinary leave-one-out CV and GCV, the proposed loss directly measures chronological extrapolation over the declared horizon. \Cref{sec:optional_dynamic} separately explores time-adaptive use of individual local minima.
 
-Hart's TSCV \cite{hart1994tscv} remains an important predictive-smoothing precedent. The present problem differs in estimator, normalized smoothness coordinate, multi-step continuation, multimodal objective geometry, and the explicit temporal tracking of local smoothness minima.
+Hart's TSCV \cite{hart1994tscv} remains an important predictive-smoothing precedent. The proposed application differs in its finite-difference PLS estimator, normalized smoothness parameterization, multi-step continuation, and forecast-MSE loss surface. Temporal branch tracking is optional, not required for forecast-CV.
