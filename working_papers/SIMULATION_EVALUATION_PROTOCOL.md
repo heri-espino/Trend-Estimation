@@ -38,6 +38,24 @@ Our normalized index is
 to article tables. Never interpret a difference due solely to normalization
 as a scientific discrepancy.
 
+### Operational separation of faithful reference and forecast extension
+
+A **dedicated implemented full-sample factorial runner**
+[\`run_cortes_toto_replication.py\`](../experiments/smoothness_cv/run_cortes_toto_replication.py)
+scores CV/GCV/AICc/BIC on the **complete source-paper N-point data**,
+\(d=2,\mu=0\), and computes raw \(S_G\) and normalized S. It is
+separate from the main extensive forecast campaign, whose historical
+training windows have length \(L\ne N\).
+Run separately:
+
+~~~bash
+python -m experiments.smoothness_cv.run_cortes_toto_replication --seeds 100 --jobs 32 --grid-points 501
+~~~
+
+The source had one factorial simulation study with two trend shapes
+rather than two full prospective forecasting studies. Our added
+forecast and latent-recovery outcomes are explicitly new extensions.
+
 ### What "reproduce" means
 
 - **Replication track (faithful):** same two signals, original 2^4
