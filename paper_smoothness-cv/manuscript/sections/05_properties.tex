@@ -72,6 +72,45 @@ At $S=0$, $H_\lambda=I$ and the historical trend reproduces the observations. At
 
 For $d=2$, the endpoints are therefore the unsmoothed historical path and its least-squares linear projection. Endpoint comparison is part of the scientific selection problem, not merely a numerical detail.
 
+\subsection{The future polynomial family}
+
+The estimator produces a polynomial continuation only after the
+future-difference rule has been specified. This matters for
+interpreting forecast-CV as a prospective trend-selection method.
+
+\begin{proposition}[Forecast polynomial indexed by smoothness]
+\label{prop:continuation_polynomial}
+Fix $1\le d<L$ and $h\ge1$. For every $S\in[0,1]$, the
+continuation $k\mapsto\widehat\tau_{T+k\mid T}(S)$ is the
+restriction to positive integer steps of a polynomial in
+$k$ of degree at most $d-1$. The coefficients depend on
+$S$ through the terminal backward differences of $H(S)x_T$.
+\end{proposition}
+
+\begin{proof}
+For a fitted sequence $u=H(S)x_T$, imposing zero future
+$d$th differences gives the discrete Newton continuation
+\begin{equation}
+\label{eq:newton_forecast_polynomial}
+\widehat\tau_{T+k\mid T}(S)
+=\sum_{j=0}^{d-1}\binom{k+j-1}{j}
+(\nabla^j u)_L.
+\end{equation}
+Each binomial coefficient is a polynomial in $k$ of
+degree $j$. The sum therefore has degree at most
+$d-1$. Since $u=H(S)x_T$, its terminal differences
+and consequently its coefficients vary with $S$.
+The limiting case $S=1$ is well defined by the
+orthogonal projection in \cref{prop:endpoints}.
+\end{proof}
+
+This proposition does not imply that the degree $d-1$
+is chosen by forecast-CV: the baseline fixes $d$ and
+selects among the corresponding extrapolations by
+their historical future-block error. Changing $d$
+would require an explicitly specified joint or
+nested model-selection experiment.
+
 \subsection{Existence and possible nonuniqueness}
 
 For finite $S<1$, $H_{\lambda(S)}$ is continuous. The limiting matrix at $S=1$ exists by \cref{eq:H_spectral}. Thus the forecast loss has a continuous extension to the compact domain $[0,1]$ and at least one global minimizer exists.
