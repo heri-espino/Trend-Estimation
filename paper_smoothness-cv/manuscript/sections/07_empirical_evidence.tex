@@ -1,0 +1,185 @@
+\section{Empirical evidence and examples}
+\label{sec:empirical}
+
+The empirical program separates predictive tuning of the penalized trend from
+the more general question of what can be done with a tracked history of
+forecast-loss minima. All reported results below are taken from the frozen
+checkpoint outputs in the accompanying repository. Their evaluation designs
+and loss scales differ, so we do not pool their performance ratios into a
+single estimate of forecasting accuracy.
+
+\subsection{Selecting smoothness for the forecast horizon}
+
+The pooled-selector simulation (Checkpoint 03) comprises 3,000 synthetic
+scenarios, formed from five latent trends, three noise mechanisms, two noise
+scales, and 100 random seeds. Each scenario has six chronological forecast
+origins evaluated at horizons $h\in\{1,3,6,12\}$, giving 72,000
+outer-origin--horizon evaluations. The estimator fixes $d=2$ and $L=60$.
+
+Table~\ref{tab:cp03} reports the geometric root-mean-square forecast error
+(RMSFE) ratio of horizon-matched pooled forecast-CV to two feasible selectors.
+At $h=1$, horizon-matched and one-step forecast-CV coincide by construction.
+At longer horizons the matched selector performs better in aggregate,
+particularly under serially correlated disturbances. These results
+substantiate the distinction between selecting smoothness for historical
+trend recovery and selecting it for extrapolation; they do not yet involve
+temporal branch tracking.
+
+\begin{table}[t]
+\centering
+\caption{Frozen pooled-selector simulation (Checkpoint 03). Geometric RMSFE
+ratios below one favor horizon-matched forecast-CV.}
+\label{tab:cp03}
+\begin{tabular}{@{}rcc@{}}
+\toprule
+$h$ & vs.\ one-step forecast-CV & vs.\ GCV \\
+\midrule
+1  & 1.000 & 0.912 \\
+3  & 0.947 & 0.816 \\
+6  & 0.861 & 0.688 \\
+12 & 0.762 & 0.554 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Evidence on the tracked-minimum decision}
+
+Checkpoint 04 evaluated branch-based smoothness selection on a small
+heterogeneous panel (GDPC1, SPY, AAPL, and BTC-USD), with the recency-weighted
+rule $\phi_{\mathrm{recency}}$ fixed from development data before the last four
+non-overlapping test blocks per series were opened. Over the resulting 16
+confirmation decisions, its geometric level-RMSE ratio was 0.692 relative to
+pooled forecast-CV and 0.814 relative to the newest tracked minimum. It beat
+pooled CV in 13 of 16 blocks. These are results for this particular frozen
+four-series test, not a universal advantage of recency weighting.
+
+The much broader external Checkpoint 05 panel comprised 64 previously
+unused financial series (20 exchange-traded funds, 36 individual stocks, and
+eight cryptocurrencies) and four test blocks per series. In these 256
+decisions, the same frozen recency rule had a geometric \emph{level}-RMSE
+ratio of 1.642 to pooled forecast-CV, with a descriptive series-cluster
+bootstrap interval of $[1.168,\,2.703]$. Against using the newest tracked
+minimum, however, its geometric ratio was 0.525. Thus smoothing the branch
+trajectory substantially stabilized the newest-minimum decision in this
+panel, while the pooled selector remained superior overall. The financial
+series are dependent through common market shocks; the cluster interval is
+a descriptive sensitivity calculation rather than an independent-series
+sampling guarantee.
+
+\subsection{The role of continuation order}
+
+A post-hoc diagnostic of Checkpoint 05 associated extreme forecast errors
+with higher-order polynomial continuation, especially the cubic
+continuation induced by $d=4$. Checkpoint 06 examined that mechanism on
+earlier historical blocks that did not overlap the external test blocks.
+It compared successively restricted allowable difference orders,
+holding the remaining branch-based protocol fixed.
+
+The geometric level-RMSE ratios of recency weighting to pooled CV were
+1.353 for $d\in\{1,2,3,4\}$, 1.200 for $\{1,2,3\}$, 1.073 for
+$\{1,2\}$, and 1.045 for $d=2$ alone. Over the same order sets, the
+recency/newest-minimum ratios moved from 0.691 to 0.994. The
+large apparent stabilization benefit is therefore concentrated where
+native higher-order continuation amplifies relatively small changes in
+selected smoothness. Since the order restriction was motivated by
+Checkpoint 05 outcomes, this diagnostic is explanatory, not a separately
+confirmed revised forecasting method.
+
+\subsection{Controlled changes in latent roughness}
+
+Checkpoint 07 fixed $d=2$, $L=120$, and $h=20$ to separate changes in
+smoothness from high-order continuation instability. It generated 1,200
+scenarios with stationary, gradually varying, and abruptly changing
+latent slope-innovation scales, and evaluated 9,600 chronological outer
+forecast decisions.
+
+The frozen recency rule yielded geometric \emph{log}-RMSE ratios to pooled
+forecast-CV of 1.028 under changing roughness and 1.056 under stationary
+roughness (1.037 across all mechanisms). Its ratio to the newest tracked
+minimum was 0.945 overall. Hence, even under deliberately changing latent
+roughness, recency averaging did not establish a general gain relative to
+pooled forecast-CV. The simulation instead isolates a more modest, recurrent
+property: it can damp variation in the newest-minimum rule.
+
+\subsection{A family of smoothness decisions from the same branch}
+
+Checkpoint 08 uses a fresh set of 100 simulation seeds with the same
+controlled roughness mechanisms (1,200 scenarios, 9,600 outer decisions).
+For each decision, the selected branch history is held fixed while its
+final smoothness is computed by multiple functionals $\phi(V_j)$.
+Examples include recency averages, least-squares extrapolations fitted
+to the latest three, five, or ten branch values, exponentially weighted
+linear extrapolations, and extrapolations of historical branch increments.
+
+Table~\ref{tab:cp08} gives four illustrative functionals. They differ both
+in observed forecasting behavior and in how frequently a raw extrapolated
+smoothness lies outside the admissible interval $[0,1]$. Clipping is
+unnecessary for the recency mean, since a convex average of admissible
+smoothness values is itself admissible, but is needed for some forecast-based
+maps. All four examples, as well as the other extrapolative rules examined
+in this checkpoint, had aggregate geometric ratios above one relative to
+pooled forecast-CV. They are not ranked to identify a universal winner.
+
+\begin{table}[t]
+\centering
+\caption{Illustrative branch-to-smoothness functionals (Checkpoint 08).
+The ratio is geometric observed-log-RMSE relative to pooled
+forecast-CV; clipping refers to raw predictions outside $[0,1]$.}
+\label{tab:cp08}
+\begin{tabular}{@{}lcc@{}}
+\toprule
+Functional & RMSE ratio & Clipped (\%) \\
+\midrule
+Recency mean (HL 3) & 1.041 & 0.0 \\
+Weighted linear (HL 5) & 1.063 & 10.8 \\
+Linear extrapolation ($K=10$) & 1.079 & 18.4 \\
+Weighted increments (HL 3) & 1.110 & 22.3 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Figure~\ref{fig:cp08_paths} illustrates smoothness choices from a single
+fixed scenario, chosen by seed and mechanism rather than by performance.
+Figure~\ref{fig:cp08_clipping} summarizes the differing boundary behavior
+of the maps. Figure~\ref{fig:cp08_losses} displays their predictive behavior
+separately for stationary and changing latent roughness. The common branch
+representation supports these distinct decisions without redefining the
+penalized trend estimator or carrying forward any validation-stage fitted
+trend.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/fig_cp08_illustrative_smoothness_selections.pdf}
+\caption{Selected normalized smoothness across eight chronological outer
+decisions under one fixed simulated roughness-switch scenario
+(seed 100, noise standard deviation 0.01). The rules act on the
+same recovered branch histories; the example was not selected for
+favorable forecast performance.}
+\label{fig:cp08_paths}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/fig_cp08_rule_clipping.pdf}
+\caption{Fraction of Checkpoint 08 decisions whose raw smoothness functional
+requires truncation to $[0,1]$. Linear and increment extrapolations
+need not preserve the interval, whereas convex recency averages do.}
+\label{fig:cp08_clipping}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/fig_cp08_rule_family_losses.pdf}
+\caption{Geometric forecast-error ratios against pooled forecast-CV for
+branch-to-smoothness rules in stationary and changing roughness regimes.
+Values above one favor the pooled comparator. The plot describes the
+behavior of a family of rules, not a data-driven winning-rule selection.}
+\label{fig:cp08_losses}
+\end{figure}
+
+Together these experiments support the \emph{representational} contribution:
+tracking local minima yields a chronologically organized state on which
+multiple admissible smoothness-selection functionals can be defined and
+compared under the same information restrictions. They do not support
+a claim that arbitrary branch-based selection uniformly improves
+out-of-sample forecasts.
