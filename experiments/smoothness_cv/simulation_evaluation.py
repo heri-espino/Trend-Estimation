@@ -186,9 +186,19 @@ def evaluate_replication(
                 }
                 choices.update({f"fixed_{s:g}":s for s in FIXED})
                 condition=study.summary[study.summary.d==d]
+                tracking_details = {}
                 for entry in condition.itertuples():
                     choices[f"pooled_{entry.method}"]=float(entry.pooled_s)
-                    choices[f"tracked_{entry.method}"]=float(entry.tracked_s)
+                    name=f"tracked_{entry.method}"
+                    choices[name]=float(entry.tracked_s)
+                    sub=study.branches[
+                        (study.branches.d==d)&(study.branches.method==entry.method)
+                    ]
+                    tracking_details[name]={
+                        "branch_support":int(entry.tracked_support),
+                        "n_branches":int(sub.branch.nunique()),
+                        "n_local_minima":int(len(sub)),
+                    }
                 for selector,s in choices.items():
                     scores=_score(
                         data.observed,data.trend,data.seasonality,
@@ -203,6 +213,9 @@ def evaluate_replication(
                         "d":int(d),"L":int(scenario.window),"h":int(h),
                         "selector":selector,
                         "is_oracle":int(selector.startswith("oracle_")),
+                        **tracking_details.get(selector, {
+                            "branch_support":0,"n_branches":0,"n_local_minima":0,
+                        }),
                         **scores,
                     })
     return rows
