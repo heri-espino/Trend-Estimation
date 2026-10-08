@@ -79,7 +79,7 @@ def synthetic_function(expression: str, n: int) -> np.ndarray:
                 np.asarray(evaluate(ast.parse(expression, mode="eval").body), dtype=float),
                 (n,),
             ).copy()
-    except (SyntaxError, FloatingPointError, TypeError, OverflowError) as exc:
+    except (SyntaxError, FloatingPointError, ZeroDivisionError, TypeError, OverflowError) as exc:
         raise ValueError(f"Invalid or numerically unstable expression: {exc}") from exc
     if not np.all(np.isfinite(result)):
         raise ValueError("The function must be finite everywhere.")
