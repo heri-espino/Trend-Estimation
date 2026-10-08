@@ -1,115 +1,66 @@
-# Canonical research objective — dynamic smoothness-CV
+# Canonical research objective — forecast-optimal smoothness CV
 
-## Research question
+## Primary research question
 
-Can local minima of a chronological forecast-loss surface for penalized trend
-smoothness be tracked through time, and can their historical trajectories be
-used to choose the current smoothness more effectively than a single pooled
-forecast-CV optimum?
+Can we choose the normalized smoothness index of a finite-difference
+penalized trend to minimize actual historical forecast MSE at the
+intended horizon `h`, rather than the error of recovering a
+historical trend or fitting contemporaneous observations?
 
-## Estimator
+## Statistical construction
 
-For the most recent `L` observations at outer origin `T`,
-
-\[
-\widehat\tau_T(S)=H_{\lambda(S)}y_{T-L+1:T},
-\qquad
-H_\lambda=(I+\lambda D_d^\top D_d)^{-1}.
-\]
-
-## Normalized smoothness
+At each historical origin `t`, fit the training window
+`x_t` with the matrix
 
 \[
-S(\lambda)
-=
-1-\frac1{L-d}\sum_{\delta_j>0}\frac1{1+\lambda\delta_j},
-\qquad S\in[0,1].
+H_\lambda=(I+\lambda D_d^\top D_d)^{-1},
+\qquad \widehat\tau_t=H_\lambda x_t.
 \]
 
-## Static pooled baseline
+Let `S(lambda)` be the normalized, monotone trace-based
+smoothness coordinate; let `G_{d,h}` extrapolate the fitted
+trend for `h` observations.
 
-For historical forecast origins inside the information set available at `T`,
+The proposed chronological cross-validation criterion is
 
 \[
-F^{\mathrm{pool}}_{T,h}(S)
-=
-\frac1M\sum_{m=1}^{M}\ell_{m,h}(S),
+F^{\mathrm{pool}}_{d,L,h}(S)
+=\frac1M\sum_{m=1}^{M}\frac1h
+\|y_{t_m+1:t_m+h}-G_{d,h}H_{\lambda(S)}x_{t_m}\|_2^2.
 \]
 
-with baseline selector
+Choose
 
 \[
-\widehat S^{\mathrm{pool}}_{T,h}
-\in\arg\min_S F^{\mathrm{pool}}_{T,h}(S).
+\widehat S^{\mathrm{FCV}}_{T,d,L,h}
+\in\arg\min_{S\in[0,1]}F^{\mathrm{pool}}_{d,L,h}(S).
 \]
 
-## Dynamic local-minimum process
+All validation blocks must be realized by the outer forecast
+origin `T`. Then refit the trend on the latest available
+window. Never average historical fitted trends into the
+operational forecast.
 
-At each chronological origin `t`, define the local-minimum set
+## Contribution boundaries
 
-\[
-\mathcal M_t^{(d,L,h)}
-=
-\{S_{1,t},\ldots,S_{K_t,t}\}.
-\]
+1. **Forecasting paper:** definition and evaluation of this
+   horizon-matched CV selection procedure over normalized PLS
+   smoothness. CP03 is the central experimental evidence.
+2. **Numerical-methods paper:** locating multiple minima in
+   the forecast-MSE objective, derivative bracketing, Brent
+   refinement and endpoint comparisons. Exact rational/Sturm
+   isolation is still experimental; it is not a completed
+   certified root solver.
+3. **Optional forecasting extension:** represent historical
+   local minima by chronological branch states
+   `V_j=[S, Validation-1 loss, Validation-2 loss]`, and,
+   subject to assumptions about regime persistence, use
+   `psi` and `phi(V_j)` to produce a time-adaptive
+   smoothness choice. The different maps are alternative
+   modeling decisions, not a universal winning method.
 
-Track minima through time by one-to-one continuation inside
-
-\[
-|S_{j,t}-S_{j,t-1}|\le\varepsilon.
-\]
-
-A tracked branch stores
-
-\[
-V_j=
-\{(S_{j,t},\ell^{(1)}_{j,t},\ell^{(2)}_{j,t})\}_{t\in\mathcal T_j}.
-\]
-
-The final decision is
-
-\[
-\widehat j_T=\psi(V_1,\ldots,V_J),
-\qquad
-\widehat S_T=\phi(V_{\widehat j_T}).
-\]
-
-`psi` selects a persistent branch from historical Validation-2 performance and
-support. `phi` determines how the branch history is converted into today's
-smoothness.
-
-## Candidate final-smoothness rules
-
-The initial comparison set is:
-
-\[
-\phi_{\mathrm{last}},\
-\phi_{\mathrm{mean},K},\
-\phi_{\mathrm{median},K},\
-\phi_{\mathrm{V2}},\
-\phi_{\mathrm{recency+V2}}.
-\]
-
-A simple time-series forecast of `S_{j,t}` is a later extension.
-
-## Final refit
-
-Once `S_hat_T` is chosen, the trend is refit with all currently available data
-in the fixed final window:
-
-\[
-\widehat\tau_T
-=
-H_{\lambda(\widehat S_T)}y_{T-L+1:T},
-\qquad
-\widehat y_{T+1:T+h\mid T}=G_{d,h}\widehat\tau_T.
-\]
-
-## Intended contribution
-
-The paper studies the **forecasting value of temporal persistence in local
-smoothness optima**. It compares dynamic branch-based rules with the simpler
-pooled forecast-CV optimum and conventional smoothness selectors.
-
-Efficient recovery and numerical tracking of local minima belong to
-`paper_numerical-methods/`.
+Neither PLS itself, the original Guerrero index, nor the
+general idea of selecting a tuning parameter by future-block
+forecast error is independently claimed as new. The specific
+horizon-matched PLS selection criterion is the primary
+scientific object.
