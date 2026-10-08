@@ -11,6 +11,7 @@ Run from the repository root:
 from __future__ import annotations
 
 import argparse
+import json
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from itertools import product
@@ -226,6 +227,50 @@ def main() -> None:
     folder.mkdir(parents=True, exist_ok=True)
     frame.to_csv(folder / "paired_transitions.csv.gz", index=False, compression="gzip")
     summary.to_csv(folder / "summary.csv", index=False)
+    metadata = {
+        "study": "controlled_pairwise_minimum_correspondence",
+        "preset": args.preset,
+        "created_at_utc": datetime.now(timezone.utc).isoformat(),
+        "n_seeds": len(seeds),
+        "n_times": N_TIMES,
+        "mechanisms": REGIMES,
+        "track_epsilons": EPSILONS,
+        "methods": ("greedy", "global_pairwise"),
+        "conditioning": "previous identities reset to true labels at each step",
+        "not_evaluated": (
+            "per_surface_root_recovery",
+            "multi_time_identity_error_accumulation",
+            "automatic_birth_initialization",
+            "forecasting_accuracy",
+        ),
+        "n_cases": len(cases),
+        "n_rows": len(frame),
+    }
+    (folder / "run_metadata.json").write_text(
+        json.dumps(metadata, indent=2), encoding="utf-8"
+    )
+    report = [
+        "# Controlled numerical branch-correspondence benchmark",
+        "",
+        f"Preset: {args.preset}.",
+        "",
+        "Ground-truth labeled minima are supplied directly. This isolates",
+        "one-step assignment from recovery errors and cumulative label drift.",
+        "Greedy and exact max-cardinality/minimum-distance pairwise assignment",
+        "are compared. Crossing paths need not be identifiable from position.",
+        "",
+        "## Summary",
+        "",
+        "```",
+        summary.to_string(index=False),
+        "```",
+        "",
+        "Do not report these as accuracy of full multi-origin tracking.",
+        "",
+    ]
+    (folder / "checkpoint_report.md").write_text(
+        "\n".join(report), encoding="utf-8"
+    )
     (OUT / "LATEST.txt").write_text(folder.as_posix() + "\n", encoding="utf-8")
     print(f"{len(cases)} cases, {len(frame)} method-transition rows")
     print(summary.to_string(index=False))
