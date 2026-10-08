@@ -386,6 +386,61 @@ ETIQUETAS_V = {
 }
 
 
+
+def _branch_timeline(result) -> go.Figure:
+    """Represent an actual completed historical pair and the final test origin."""
+    history = result.branches.loc[
+        result.branches["d"].eq(result.selected_order)
+    ].sort_values("origin")
+    last = history.iloc[-1]
+    a, b, c = (
+        int(last["val1_start"]),
+        int(last["val1_end"]), int(last["val2_end"]),
+    )
+    e, n, f = (
+        result.pretest_end, result.test_end, result.forecast_end,
+    )
+    spans = [
+        (4, a-result.window, a, "Ajuste histórico", "#737373"),
+        (4, a, b, "Validación 1 histórica", COLORES_D[1]),
+        (3, b-result.window, b, "Ajuste en origen de Val. 2", "#737373"),
+        (3, b, c, "Validación 2 histórica", COLORES_D[3]),
+        (2, e-result.horizon-result.window, e-result.horizon,
+         "Ajuste previo a la Val. 1 final", "#737373"),
+        (2, e-result.horizon, e, "Validación 1 final", COLORES_D[1]),
+        (1, e-result.window, e, "Ajuste previo a la prueba", "#737373"),
+        (1, e, n, "Prueba histórica real", COLORES_D[2]),
+        (1, n, f, "Pronóstico futuro", COLORES_D[3]),
+    ]
+    fig = go.Figure()
+    for row, left, right, label, color in spans:
+        fig.add_trace(go.Bar(
+            x=[right-left], y=[row], base=[left], orientation="h",
+            name=label, width=0.42, marker={"color": color},
+            customdata=[[left+1, right]],
+            hovertemplate=(
+                label + "<br>Observaciones %{customdata[0]} a "
+                "%{customdata[1]}<extra></extra>"
+            ),
+        ))
+    _style(
+        fig, "Esquema cronológico: validaciones históricas y prueba reservada",
+        "Número de observación",
+        "Etapa del procedimiento", height=415,
+    )
+    fig.update_layout(barmode="overlay", hovermode="closest")
+    fig.update_yaxes(
+        tickmode="array", tickvals=[1, 2, 3, 4],
+        ticktext=["Prueba y pronóstico futuro",
+                  "Última validación 1",
+                  "Última validación 2 histórica",
+                  "Última validación 1 histórica"],
+        range=[0.5, 4.5], showgrid=False,
+    )
+    fig.update_xaxes(range=[0, f+1])
+    return fig
+
+
 def _branch_figure(result, order: int) -> go.Figure:
     data = result.branches.loc[result.branches["d"].eq(order)]
     fig = go.Figure()
@@ -809,7 +864,11 @@ def main() -> None:
                 r"(d^*,S^*)=\underset{d,\;S\in\mathcal M_d}"
                 r"{\operatorname{arg\,min}}\;\operatorname{ECM}_2(d,S)"
             )
-        st.plotly_chart(_timeline(resultado), use_container_width=True)
+        st.plotly_chart(
+            _branch_timeline(resultado) if modo == "ramas"
+            else _timeline(resultado),
+            use_container_width=True,
+        )
         if modo == "ramas":
             st.caption(
                 "La franja de validación 1 indicada al final es la superficie "
