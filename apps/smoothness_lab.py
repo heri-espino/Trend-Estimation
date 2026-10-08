@@ -611,10 +611,11 @@ def main() -> None:
         "ramas persistentes · reglas de agregación de suavidad."
     )
     st.markdown(
-        "**Validación 1:** recuperar los mínimos locales para cada orden d. "
-        "**Ramas:** relacionar mínimos entre orígenes. **Reglas V:** obtener "
-        "S a partir de los mínimos presentes y anteriores. "
-        "**Validación 2:** medir el error de ese mismo S sin volver a elegirlo. "
+        "**Fijar el modelo:** para cada orden d y regla r se define un "
+        "procedimiento que no cambia entre validaciones. "
+        "**Validación 1:** buscar los mínimos del ECM transformado por r. "
+        "**Ramas:** seguir esos mínimos dentro de la misma pareja (d,r). "
+        "**Validación 2:** evaluar exactamente la misma S, sin reoptimizarla. "
         "**Selección:** menor ECM medio histórico de validación 2. "
         "**Prueba:** comparar contra valores que realmente ocurrieron."
     )
@@ -849,10 +850,11 @@ def main() -> None:
         if modo == "ramas":
             st.write(
                 f"Se analizan {resultado.branches['origin'].nunique()} "
-                "orígenes históricos por orden, cada uno con validación 1 y "
-                "validación 2 consecutivas. Las reglas reciben únicamente "
-                "mínimos de validación 1 y errores de validación 2 ya observados. "
-                "Las decisiones de cada origen se toman sin ver su propia validación 2."
+                "orígenes históricos por cada pareja (d, regla). "
+                "En V1 se buscan mínimos de ECM₁(φᵣ(V histórica, s)); "
+                "el seguimiento se hace sobre la suavidad efectiva y nunca "
+                "se comparten ramas entre reglas. Cada decisión usa solo "
+                "validaciones 2 que ya habían concluido."
             )
             st.write(
                 "**Ajuste de la tendencia:** para pronosticar validación 2 se "
