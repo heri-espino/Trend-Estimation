@@ -101,7 +101,12 @@ def grid_local_minima(grid: np.ndarray, losses: np.ndarray) -> list[tuple[float,
     for i, val in enumerate(losses):
         left = losses[i - 1] if i else np.inf
         right = losses[i + 1] if i + 1 < len(losses) else np.inf
-        if val <= left and val <= right and (val < left or val < right):
+        is_valley = (
+            val < right if i == 0 else
+            val < left if i + 1 == len(losses) else
+            val <= left and val <= right and (val < left or val < right)
+        )
+        if is_valley:
             if selected and i > 0 and np.isclose(
                 selected[-1][1], val, atol=1e-12, rtol=1e-12
             ) and np.isclose(selected[-1][0], grid[i - 1]):
