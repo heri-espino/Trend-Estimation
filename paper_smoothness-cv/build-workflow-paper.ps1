@@ -26,7 +26,8 @@ Push-Location $repoRoot
 try {
     if (-not $SkipTests) {
         Invoke-PythonStep -Label "Workflow chronology tests" -Arguments @(
-            "-m", "pytest", "-q", "tests/test_smoothness_workflow_tutorial.py"
+            "-m", "pytest", "-q", "tests/test_smoothness_workflow_tutorial.py",
+            "tests/test_smoothness_plain_article.py"
         )
     }
 
