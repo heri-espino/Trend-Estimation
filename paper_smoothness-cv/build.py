@@ -31,6 +31,10 @@ FIGURE_NAMES = (
     "fig_cp08_rule_clipping.pdf",
     "fig_cp08_rule_family_losses.pdf",
 )
+WORKFLOW_FIGURE = SOURCE_DIR / "figures" / "fig_workflow_tutorial.pdf"
+WORKFLOW_GENERATOR = (
+    "python experiments/smoothness_cv/make_workflow_tutorial_figure.py"
+)
 VENDOR_DIR = PAPER_DIR / "vendor" / "wiley_njd_v5"
 BUILD_DIR = PAPER_DIR / "build"
 STAGE_DIR = BUILD_DIR / "stage"
@@ -81,6 +85,12 @@ def validate_layout() -> None:
     if missing_sections:
         raise SystemExit(
             "Missing manuscript sections:\n- " + "\n- ".join(missing_sections)
+        )
+
+    if not WORKFLOW_FIGURE.is_file():
+        raise SystemExit(
+            f"Missing workflow tutorial figure: {WORKFLOW_FIGURE}. "
+            f"From the repository root, run: {WORKFLOW_GENERATOR}"
         )
 
     missing_figures = [
