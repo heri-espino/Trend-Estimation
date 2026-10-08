@@ -36,7 +36,8 @@ try {
         Invoke-PythonStep -Label "Run manuscript and chronology tests" -Arguments @(
             "-m", "pytest", "-q",
             "tests/test_smoothness_workflow_tutorial.py",
-            "tests/test_smoothness_plain_article.py"
+            "tests/test_smoothness_plain_article.py",
+            "tests/test_paper_platform_workflows.py"
         )
     }
 
