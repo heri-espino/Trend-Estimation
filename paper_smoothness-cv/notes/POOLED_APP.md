@@ -124,3 +124,15 @@ python -m pytest tests/test_pooled_forecast_cv_lab.py -q
 The tests check pooling, fold spacing, spectral consistency with the
 existing forecast objective, untouched-holdout invariance, native
 polynomial continuation, exports, and input validation.
+
+
+## UI smoke validation
+
+CI also compiles the Streamlit source and attempts an offline
+Streamlit AppTest render using the default synthetic example:
+
+~~~bash
+python -m pytest tests/test_pooled_forecast_cv_app.py -q
+~~~
+
+This test does **not** require Yahoo Finance access.
