@@ -200,7 +200,9 @@ def _val1_figure(result, order: int) -> go.Figure:
     if not selected.empty:
         fig.add_scatter(
             x=selected["smoothness"], y=selected["val1_mse"],
-            mode="markers", name="Candidato seleccionado en validación 2",
+            mode="markers",
+            name=("Mínimo de la rama elegida" if hasattr(result, "selected_rule")
+                  else "Candidato seleccionado en validación 2"),
             marker={"symbol": "star", "size": 17, "color": COLORES_D[2],
                     "line": {"color": "white", "width": 1}},
         )
