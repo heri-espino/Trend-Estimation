@@ -6,6 +6,23 @@
 
 We **integrate** established finite-difference PLS, spectral/EDF-based normalized smoothness \(S\in[0,1]\), native \(h\)-step trend continuation, and **fixed-window rolling-origin time-series cross-validation**, to **investigate selecting smoothness for a specified forecast horizon \(h\)** by pooled historical future-block MSE. We do **not** claim to invent these individual ingredients; the statistical, numerical and empirical value of their particular combination must be demonstrated. Full framing: [Research objective](research_objective.md#central-contribution-framing-an-integration-tailored-to-horizon-h).
 
+## Prospective Paper 1 weighting extension
+
+The updated method is **global minimization of a temporally weighted
+aggregate of completed historical forecast-loss functions**, for a fixed
+\((m,d,L,h)\). Equal-weight all-origin pooling is the original baseline.
+Recent equal/linear/exponential weighting changes **the aggregate
+\(F_M^{(m,d,L,h)}(S)\)**, not the historical minimizing S values.
+Paper 1 does **not** track branches. The companion dynamic study uses
+the exact same weighted surfaces but follows their *local minima*
+instead of globally minimizing the latest one.
+
+**Shared cross-paper contract:**
+[WEIGHTED_SURFACE_PROTOCOL.md](../../WEIGHTED_SURFACE_PROTOCOL.md).
+**Manual pilot:**
+\`python -m experiments.smoothness_cv.run_weighted_surface_study --quick\`.
+The old CP01–CP03 results do not establish the recency methods' performance.
+
 ## Read in this order
 
 1. [Research objective](research_objective.md) — central question, hypotheses, and information boundary.
