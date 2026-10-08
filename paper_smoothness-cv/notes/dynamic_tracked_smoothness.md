@@ -1,10 +1,12 @@
 # Dynamic tracked smoothness — canonical formulation
 
-**Status: central research direction for `paper_smoothness-cv/`.**
+**Status: optional time-adaptive extension of the pooled forecast-CV method.**
 
-This note supersedes the interpretation that the paper's final method is only
-the global minimizer of one pooled forecast-CV surface. That pooled selector
-remains an important baseline.
+The forecasting paper's primary methodology is horizon-matched pooled
+forecast-CV over normalized PLS smoothness. This note documents a separate
+extension: tracking local minima and using their histories to choose a
+possibly time-varying smoothing hyperparameter. None of these branches or
+maps is required for the core pooled method.
 
 ## 1. Local forecast-loss surfaces through time
 
