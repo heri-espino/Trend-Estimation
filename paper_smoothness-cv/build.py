@@ -18,6 +18,21 @@ import re
 
 PAPER_DIR = Path(__file__).resolve().parent
 SOURCE_DIR = PAPER_DIR / "manuscript"
+CORE_FIGURE_SOURCE_DIR = (
+    PAPER_DIR.parent
+    / "results"
+    / "smoothness_cv"
+    / "checkpoint_03"
+    / "20261006T193636Z_paper_ab9a070"
+    / "paper_artifacts"
+    / "figures"
+)
+CORE_FIGURE_NAMES = (
+    "fig_sim05_objective_curves.pdf",
+    "fig_sim01_horizon_matching_by_noise.pdf",
+    "fig_sim04_smoothness_targets.pdf",
+)
+
 FIGURE_SOURCE_DIR = (
     PAPER_DIR.parent
     / "results"
@@ -97,6 +112,18 @@ def validate_layout() -> None:
         name for name in FIGURE_NAMES
         if not (FIGURE_SOURCE_DIR / name).is_file()
     ]
+    missing_core_figures = [
+        name for name in CORE_FIGURE_NAMES
+        if not (CORE_FIGURE_SOURCE_DIR / name).is_file()
+    ]
+    if missing_core_figures:
+        raise SystemExit(
+            "Missing frozen CP03 figures; restore the committed "
+            "checkpoint_03/20261006T193636Z_paper_ab9a070/paper_artifacts/figures "
+            "or regenerate the CP03 figure artifacts from the frozen run. Missing:\\n- "
+            + "\\n- ".join(missing_core_figures)
+        )
+
     if missing_figures:
         raise SystemExit(
             "Missing CP08 figures; run "
@@ -168,6 +195,8 @@ def prepare_stage() -> None:
     shutil.copytree(SOURCE_DIR, STAGE_DIR)
     staged_figures = STAGE_DIR / "figures"
     staged_figures.mkdir(parents=True, exist_ok=True)
+    for name in CORE_FIGURE_NAMES:
+        shutil.copy2(CORE_FIGURE_SOURCE_DIR / name, staged_figures / name)
     for name in FIGURE_NAMES:
         shutil.copy2(FIGURE_SOURCE_DIR / name, staged_figures / name)
 
