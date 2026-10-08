@@ -33,7 +33,7 @@ Neither target is automatically the smoothness that best reconstructs a latent h
 
 \subsection{Numerical boundary}
 
-The forecasting paper specifies a forecast-MSE optimization problem independently of its numerical implementation. Recovery of multiple minima, Brent refinement, exact endpoint handling, and temporal correspondence of minima are addressed in the companion numerical-methods paper. Its Sturm-based certified root-isolation direction remains exploratory rather than an implemented guarantee.
+The forecast-MSE optimization problem is defined independently of a particular numerical algorithm. Its practical computation involves detecting multiple local minima, refining stationary roots, and comparing the exact endpoints. None of these computational requirements changes the selection criterion or requires temporal branch histories.
 
 
 \subsection{Boundary behavior of smoothness forecasts}
