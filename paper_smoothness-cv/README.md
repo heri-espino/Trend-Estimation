@@ -292,9 +292,14 @@ las observaciones reales y el pronóstico reservado para calcular errores
 verdaderamente fuera de muestra. Posteriormente se reajusta el mismo
 modelo, con d y S fijos, para pronosticar desde la última observación real.
 
-Se mantienen las curvas ECM(S) por d, junto a los gráficos de ramas,
-las matrices V por d y regla, comparaciones de ECM en validación 2,
-la tendencia y el pronóstico, el test real y la matriz H_lambda.
+La interfaz permite seleccionar mediante botones el orden d y la regla r
+para inspeccionar sus propias curvas ECM de validación 1 (con historial
+específico por rama). Las matrices V cuentan con un control para superponer
+las demás ramas del mismo (d,r) con menor opacidad. Un gráfico del test
+reservado muestra la tendencia extrapolada desde el último ajuste anterior
+al test frente a sus valores reales: no se utilizan esos valores para
+seleccionar d, r, rama ni S. El ajuste final con todos los datos y su
+pronóstico posterior se muestran por separado. También se mantiene H_lambda.
 
 ### Caso particular: dos bloques sin seguimiento
 
