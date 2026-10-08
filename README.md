@@ -76,15 +76,20 @@ entre ellas según su error histórico en validación 2**.
 
 El procedimiento para cada origen cronológico es:
 
-1. Construir la función de pérdida predictiva de **validación 1** para cada
-   d y recuperar todos los mínimos locales candidatos de suavidad normalizada
-   S. Mantener como ramas las trayectorias de mínimos cercanos entre orígenes.
-2. Para cada (d, rama, regla) construir S_aplicado usando exclusivamente el
-   mínimo obtenido en la validación 1 actual y la información histórica
-   disponible de la misma rama. Las reglas incluyen: usar el último mínimo
-   (la **continuación polinómica original**, sin ponderación), medias y
-   medianas recientes, pesos por recencia, pesos por ECM histórico de
-   validación 2, combinaciones de pesos y extrapolaciones.
+1. **Fijar primero el orden d y la regla r**. La regla define la transformación
+   S_aplicado = phi_r(V_historial, s). La pérdida de validación 1 se busca sobre
+   la función **dependiente del método** ECM_1(phi_r(V_historial, s); d),
+   no sobre la misma curva para todos los métodos. La superficie original
+   ECM_1(S; d) también se representa, como referencia.
+2. Recuperar los mínimos de esta función transformada por (d, regla, rama) y
+   seguir sus trayectorias según la S **aplicada**. Las ramas pertenecen a un
+   (d, regla): nunca se reutilizan para otra regla. Cada nueva rama comienza
+   sin historial y el primer mínimo coincide con el de la función original.
+   Las reglas incluyen el último mínimo (continuación polinómica original),
+   medias, medianas, pesos por recencia, pesos por ECM histórico de validación
+   2 y extrapolaciones. Si la regla no depende de s actual, su función
+   transformada es plana: se registra como objetivo no identificable, no
+   como un mínimo local nuevo.
 3. Registrar en la matriz V específica de la combinación los valores del
    mínimo local, S_aplicado, ECM de validación 1 y ECM de validación 2.
    **En validación 2 no se vuelve a optimizar S**: al desplazarse el origen,
