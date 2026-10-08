@@ -335,3 +335,17 @@ After git pull run:
 then commit the updated manuscript PDF. New tests:
 `tests/test_smoothness_plain_article.py`.
 Do not change `paper_numerical-methods/` unless separately requested.
+
+## Two-machine forecasting paper workflow
+
+**This instruction supersedes earlier guidance to compile LaTeX in PowerShell.**
+
+User runs all Python work and figure generation on Windows PowerShell.
+After committing/pushing generated figures, user runs the actual
+pdflatex/BibTeX compilation only on macOS, then commits/pushes the
+updated manuscript PDF. Run Windows entrypoint
+`paper_smoothness-cv/prepare-paper.ps1` (no LaTeX). Run macOS entrypoint
+`bash paper_smoothness-cv/compile-paper.sh` (LaTeX only). The old
+`build-workflow-paper.ps1` name now aliases preparation only.
+Both workflows use repository-root-relative paths and fail on errors.
+Full commands are in `paper_smoothness-cv/README.md`.
