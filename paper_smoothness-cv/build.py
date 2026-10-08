@@ -120,8 +120,8 @@ def validate_layout() -> None:
         raise SystemExit(
             "Missing frozen CP03 figures; restore the committed "
             "checkpoint_03/20261006T193636Z_paper_ab9a070/paper_artifacts/figures "
-            "or regenerate the CP03 figure artifacts from the frozen run. Missing:\\n- "
-            + "\\n- ".join(missing_core_figures)
+            "or regenerate the CP03 figure artifacts from the frozen run. Missing:\n- "
+            + "\n- ".join(missing_core_figures)
         )
 
     if missing_figures:
