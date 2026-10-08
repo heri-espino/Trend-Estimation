@@ -287,3 +287,16 @@ decision maps phi(V_j) defined on them.
 The next user action is to run `python paper_smoothness-cv/build.py --check`,
 then `python paper_smoothness-cv/build.py` with a local XeLaTeX/BibTeX toolchain.
 Review the resulting PDF for table/float layout before submission.
+
+## Companion numerical paper coordination
+
+`paper_numerical-methods/main.tex` now includes the numerical temporal
+correspondence formulation, the observed four-series tracked-minimum
+paths, and a deterministic counterexample to greedy matching.
+
+That paper retains numerical ownership of per-surface minimum recovery,
+pairwise matching, and branch-identity diagnostics. It does not select
+`psi` or `phi`, and it does not claim branch rules improve forecasts.
+
+A new controlled numerical tracking benchmark is implemented but not yet
+run. It is separate from completed CP03--CP08 forecast evaluations.
