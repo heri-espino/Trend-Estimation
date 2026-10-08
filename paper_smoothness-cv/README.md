@@ -254,3 +254,28 @@ request. Unlike the paper's frozen settings, the app uses a configurable,
 lighter numerical-search depth and a grid-pooled benchmark for responsiveness.
 No CP03--CP08 evidence is recomputed or changed. See the repository README for
 the full validation contract.
+
+
+### Guía de la interfaz interactiva en español
+
+La aplicación se ejecuta desde la raíz del repositorio mediante
+`streamlit run apps/smoothness_lab.py`.
+
+Los cinco apartados de la interfaz distinguen explícitamente:
+
+- **Tendencia y pronóstico:** serie observada, tendencia estimada,
+  extrapolación y un esquema cronológico de ajuste, dos validaciones y prueba.
+- **Errores de validación 1:** superficie del error cuadrático medio
+  (ECM) para cada origen histórico y nivel normalizado de suavidad.
+  El color relativo es solo una transformación de presentación; al consultar
+  la matriz se muestra el ECM original.
+- **Ramas y validación 2:** trayectoria temporal de los mínimos locales,
+  ECM de validación 2 y matriz histórica `V_j=[S, ℓ₁, ℓ₂]`.
+- **Matriz de suavizamiento:** pesos `H_ij`, traza del suavizador,
+  grados de libertad efectivos y suavidad normalizada.
+- **Tablas y descargas:** valores sin redondeo gráfico, con títulos y
+  encabezados formales en español.
+
+Los parámetros numéricos, la notación `d, L, h, S, λ` y los nombres internos
+del motor permanecen invariantes. Las pruebas específicas de visualización se
+encuentran en `tests/test_smoothness_spanish_ui.py`.
