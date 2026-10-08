@@ -4,6 +4,10 @@
 \usepackage{booktabs,graphicx}
 \usepackage[hidelinks]{hyperref}
 
+% amsthm provides the proof environment but custom theorem-like
+% environments must be declared explicitly before \begin{document}.
+\newtheorem{proposition}{Proposition}[section]
+
 \begin{document}
 
 \title{Dynamic Forecast-Optimal Smoothness for Penalized Trend Estimation}
