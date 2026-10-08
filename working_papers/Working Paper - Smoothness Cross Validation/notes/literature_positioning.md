@@ -49,6 +49,10 @@ S(\lambda)
 - **Franke, Kukacka and Sacht (2026):** HP tuning from simulations with known latent trend, primarily recovery of that trend; not the same as historical future observation MSE.
 - **Biessy (2026):** Whittaker–Henderson parameter selection, marginal likelihood and extrapolation. Its precise assumptions and criterion need explicit comparison.
 
+## Explicit synthesis-first positioning
+
+We should present the research as a **synthesis designed for the forecasting decision at horizon \(h\)**: established PLS + spectral EDF/normalized smoothness + \(h\)-step continuation + fixed-window rolling-origin TSCV + pooled forecast-MSE selection and final refit. The unifying point is that **the choice of smoothness is evaluated against the future outcomes of historical origins at the *same declared horizon***. Neither the number of ingredients nor their individual mathematical familiarity is itself a contribution; relevance, any genuinely new analysis, prior-art comparison, and untouched test performance determine what can be claimed.
+
 ## Possible research gap — not yet proven as priority
 
 Investigate the joint statistical construction:
