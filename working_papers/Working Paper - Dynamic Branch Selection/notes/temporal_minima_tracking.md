@@ -7,6 +7,22 @@ recover local minimizing candidates
 \mathcal M_t=\{S_{1,t},\ldots,S_{K_t,t}\}\subseteq[0,1].
 \]
 
+## Current input to the correspondence problem
+
+**Prospective 2026-10-08 change:** the active Paper 2 now tracks
+local minima of the **rolling temporally weighted** surfaces
+\(F_r^{(m,d,L,h)}(S)\), one separate collection of branches for each
+predeclared weighting method and difference order. Every surface
+uses only completed past/present \(h\)-step losses. The correspondence
+problem and nonuniqueness caveats below still apply.
+
+The **Val1/Val2** \(V_j\) schema near the end of this historical
+note describes the **earlier CP04–CP08 design**, not the new
+weighted-\(F\) method. Current branch state is
+\(V_j=[(r,t_r,S^*_{j,r},F_r(S^*_{j,r}))]\) and only an untouched
+outer test is required. Full specification:
+[dynamic_tracked_smoothness.md](dynamic_tracked_smoothness.md).
+
 ## Correspondence model
 
 A previous candidate \(S_{j,t-1}\) may be linked to a current
