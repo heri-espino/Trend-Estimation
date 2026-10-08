@@ -268,3 +268,22 @@ of legitimate mappings phi(V_j), not a winning selector.
 
 Next: generate figures with make_checkpoint_08_figures.py and consolidate
 the manuscript. Do not continue a winner-selection sequence.
+
+## Manuscript integration checkpoint
+
+CP08 figures are committed in its frozen paper run under
+`results/smoothness_cv/checkpoint_08/20261007T072243Z_paper_be492a8/paper_artifacts/figures/`.
+All three figures are referenced by the new manuscript section
+`manuscript/sections/07_empirical_evidence.tex`, integrating CP03--CP08.
+`build.py` now stages the frozen figure PDFs from the committed results.
+
+The current manuscript abstract, introduction, protocol, discussion,
+and conclusion reflect the measured results, not hypothetical planned
+results. It explicitly rejects any blanket claim that dynamic branch rules
+outperform pooled forecast-CV. The central contribution is the representation
+of tracked forecast-loss minima as persistent histories and the multiple
+decision maps phi(V_j) defined on them.
+
+The next user action is to run `python paper_smoothness-cv/build.py --check`,
+then `python paper_smoothness-cv/build.py` with a local XeLaTeX/BibTeX toolchain.
+Review the resulting PDF for table/float layout before submission.
