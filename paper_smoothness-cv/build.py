@@ -85,6 +85,8 @@ def validate_layout() -> None:
             "Missing manuscript sections:\n- " + "\n- ".join(missing_sections)
         )
 
+    validate_math_references()
+
     if not WORKFLOW_FIGURE.is_file():
         raise SystemExit(
             f"Missing workflow tutorial figure: {WORKFLOW_FIGURE}. "
@@ -101,6 +103,54 @@ def validate_layout() -> None:
             "from the repository root, then retry. Missing:\n- "
             + "\n- ".join(missing_figures)
         )
+
+
+def validate_math_references() -> None:
+    """Keep displayed mathematics labeled and cross-references resolvable."""
+    tex_files = [MAIN_TEX, *sorted((SOURCE_DIR / "sections").glob("*.tex"))]
+    known_labels: set[str] = set()
+    referenced_labels: set[str] = set()
+    problems: list[str] = []
+
+    for path in tex_files:
+        source = path.read_text(encoding="utf-8")
+        relative = path.relative_to(PAPER_DIR)
+
+        if r"\[" in source or r"\]" in source or "$" in source:
+            problems.append(
+                f"{relative}: replace unnumbered display math with labeled equation environments"
+            )
+        if re.search(r"\\(?:eqref|autoref|ref)\{", source):
+            problems.append(f"{relative}: use cleveref's \cref or \Cref")
+
+        for match in re.finditer(
+            r"\\begin\{equation\}(.*?)\\end\{equation\}", source, re.DOTALL
+        ):
+            equation_labels = re.findall(r"\\label\{([^}]+)\}", match.group(1))
+            if len(equation_labels) != 1:
+                problems.append(
+                    f"{relative}: an equation environment must contain exactly one label"
+                )
+
+        for label in re.findall(r"\\label\{([^}]+)\}", source):
+            if label in known_labels:
+                problems.append(f"{relative}: duplicate LaTeX label {label}")
+            known_labels.add(label)
+
+        for group in re.findall(r"\\(?:cref|Cref)\{([^}]+)\}", source):
+            referenced_labels.update(
+                label.strip() for label in group.split(",") if label.strip()
+            )
+
+    for label in sorted(referenced_labels - known_labels):
+        problems.append(f"Unresolved cleveref label: {label}")
+
+    if r"\usepackage[noabbrev]{cleveref}" not in MAIN_TEX.read_text(encoding="utf-8"):
+        problems.append("main.tex must load cleveref after hyperref")
+
+    if problems:
+        raise SystemExit("Manuscript math-reference audit failed:\n- "
+                         + "\n- ".join(problems))
 
 
 def clean() -> None:

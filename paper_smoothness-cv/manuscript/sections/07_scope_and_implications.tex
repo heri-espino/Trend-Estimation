@@ -5,11 +5,12 @@
 The selected smoothness is not treated as a fixed property of a series. At a given origin, several local minima of the forecast-loss surface may coexist. Their temporal branches summarize recurring smoothing regimes discovered by the data.
 
 For a final selected value $\widehat S_T$, the effective-degrees-of-freedom interpretation remains
-\[
+\begin{equation}
+\label{eq:scope_smoothness_edf}
 \widehat S_T
 =
 \frac{L-\operatorname{edf}_T}{L-d}.
-\]
+\end{equation}
 A value near zero corresponds to a flexible trend; a value near one corresponds to a trend close to the null-space polynomial. The dynamic contribution is that today's value can depend on the history of a persistent local-minimum branch rather than on one pooled optimum alone.
 
 \subsection{Branches are data-driven, not fixed smoothness bins}

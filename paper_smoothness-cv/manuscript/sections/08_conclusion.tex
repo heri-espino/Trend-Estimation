@@ -10,11 +10,12 @@ discards their temporal structure.
 This paper formulates that structure through tracked branches. For each
 branch, a history of smoothness values and successive Validation-1 and
 Validation-2 forecast losses defines a state $V_j$. The decomposition
-\[
+\begin{equation}
+\label{eq:conclusion_branch_decisions}
 \widehat j_T=\psi(V_1,\ldots,V_J),
 \qquad
 \widehat S_T=\phi(V_{\widehat j_T})
-\]
+\end{equation}
 separates selecting a historically credible branch from deciding how its
 information should produce today's smoothness. The map $\phi$ need not
 be unique: the newest minimum, convex recency averages, predictive-loss

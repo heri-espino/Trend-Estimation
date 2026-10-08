@@ -16,7 +16,7 @@ scales, and 100 random seeds. Each scenario has six chronological forecast
 origins evaluated at horizons $h\in\{1,3,6,12\}$, giving 72,000
 outer-origin--horizon evaluations. The estimator fixes $d=2$ and $L=60$.
 
-Table~\ref{tab:cp03} reports the geometric root-mean-square forecast error
+\Cref{tab:cp03} reports the geometric root-mean-square forecast error
 (RMSFE) ratio of horizon-matched pooled forecast-CV to two feasible selectors.
 At $h=1$, horizon-matched and one-step forecast-CV coincide by construction.
 At longer horizons the matched selector performs better in aggregate,
@@ -111,7 +111,7 @@ Examples include recency averages, least-squares extrapolations fitted
 to the latest three, five, or ten branch values, exponentially weighted
 linear extrapolations, and extrapolations of historical branch increments.
 
-Table~\ref{tab:cp08} gives four illustrative functionals. They differ both
+\Cref{tab:cp08} gives four illustrative functionals. They differ both
 in observed forecasting behavior and in how frequently a raw extrapolated
 smoothness lies outside the admissible interval $[0,1]$. Clipping is
 unnecessary for the recency mean, since a convex average of admissible
@@ -138,10 +138,10 @@ Weighted increments (HL 3) & 1.110 & 22.3 \\
 \end{tabular}
 \end{table}
 
-Figure~\ref{fig:cp08_paths} illustrates smoothness choices from a single
+\Cref{fig:cp08_paths} illustrates smoothness choices from a single
 fixed scenario, chosen by seed and mechanism rather than by performance.
-Figure~\ref{fig:cp08_clipping} summarizes the differing boundary behavior
-of the maps. Figure~\ref{fig:cp08_losses} displays their predictive behavior
+\Cref{fig:cp08_clipping} summarizes the differing boundary behavior
+of the maps. \Cref{fig:cp08_losses} displays their predictive behavior
 separately for stationary and changing latent roughness. The common branch
 representation supports these distinct decisions without redefining the
 penalized trend estimator or carrying forward any validation-stage fitted
