@@ -1,93 +1,102 @@
-# Working Paper — Dynamic Branch Selection
+# Working Paper 2 — Dynamic Branch Selection
 
-**Status:** independent research working paper; exploratory results preserved,
-no unconditional forecast-performance advantage established.
+**Status:** independent, exploratory methodological working paper.
+**Prospective algorithm redesign:** 2026-10-08.
+**Working title:** *Dynamic Branch Tracking for Horizon-Matched Forecast-Loss Surfaces*.
 
-**Working title:** *Dynamic Branch Selection for Forecast-Optimal Trend Smoothness*.
+## Central question
 
-## Current method versus historical results
+For a fixed forecast horizon \(h\), does tracking persistent local
+minima of **temporally weighted historical forecast-loss functions**
+help select a useful PLS smoothing parameter, beyond choosing the
+global minimum of the latest aggregate (Paper 1)?
 
-**New prospective method (2026-10-08):** for every predeclared
-temporal loss-weighting scheme \(m\), difference order \(d\),
-window \(L\), and horizon \(h\), construct chronological
-**weighted forecast-loss surfaces** \(F_r^{(m,d,L,h)}(S)\).
-Detect and follow local minima across consecutive completed
-surfaces. An outer-origin selector chooses a branch using only
-historical weighted-\(F\) evidence; a separate branch-to-S rule
-(e.g., mean of last three local minima) determines the **actual**
-smoothed trend and \(h\)-step forecast. No separate internal Val2
-is required.
+## Current proposed method
 
-The prior two-stage, Val1/Val2, method-dependent
-**transformed-\(S\)** loss documented in older CP04–CP08 records
-is **historical**, not the current prospectively implemented protocol.
-Its original results remain preserved, and do not establish
-performance of this redesigned algorithm.
-
-- [Canonical protocol shared by Paper 1 and 2](../WEIGHTED_SURFACE_PROTOCOL.md).
-- [Current active branch specification](notes/dynamic_tracked_smoothness.md).
-- [Runnable manual comparison](../../experiments/smoothness_cv/run_weighted_surface_study.py).
-
-The existing \`manuscript/main.tex\` is a **dated working draft**
-and has not yet been rewritten around these new experiments.
-
-## Research question
-
-Do the histories of individual minima of chronological future-block forecast
-loss functions help predict a useful current smoothing parameter?
-For fixed difference order \(d\), window \(L\), horizon \(h\) and
-historical origin \(t\), study the local minima of \(F_t(S)\) for
-\(S\in[0,1]\), then follow them across completed validation origins.
-
-For each branch \(j\), record
+For each predeclared weighting method \(m\), difference order \(d\),
+fit window \(L\), and horizon \(h\), compute the raw historical
+forecast-loss curves
 
 \[
-V_j=[S_{j,t},\,\ell^{(1)}_{j,t},\,\ell^{(2)}_{j,t}]_t.
+\ell_t^{(d,L,h)}(S)
+=\frac1h\|y_{t+1:t+h}-G_{d,h}H_{d,L}(S)y_{t-L+1:t}\|^2.
 \]
 
-A historical branch selector \(\psi(V_1,\ldots,V_J)\) chooses a branch,
-and a decision map \(\phi(V_j)\) turns it into the smoothing
-index for the **latest refitted forecast**. Examples include last,
-recency-weighted and validation-loss-weighted means, and forecasts
-of the smoothness trajectory itself.
+For each completed historical update \(r\), weight the **functions**
+rather than the smoothing levels:
 
-## What is present
+\[
+F_r^{(m,d,L,h)}(S)
+=\frac{\sum_{q\in I_m(r)}w_{r,q}^{(m)}\ell_{t_q}(S)}
+{\sum_{q\in I_m(r)}w_{r,q}^{(m)}},
+\qquad q\le r,\quad t_r+h\le T.
+\]
 
-- Self-contained working manuscript: [manuscript/main.tex](manuscript/main.tex);
-  formulation, branch rules, completed evaluation, limitations, bibliography
-  and committed figures are local to this directory.
-- Research notes: [notes/README.md](notes/README.md);
-  original branch definitions and tracked-minimum continuation notes.
-- Frozen chronological experiments: CP04, CP05, CP06, CP07 and CP08 in
-  [checkpoints/](checkpoints/). A *separately labeled, unrun*
-  numerical correspondence benchmark is also preserved.
-- Historical figure and example code are kept under this working paper;
-  reusable implementations and raw experiment artifacts stay in
-  repository-wide \`src/\`, \`experiments/\`, and \`results/\`.
+**Paper 2 then detects and tracks all admissible local minima of
+each \(F_r\), for each method and order independently.**
+One-to-one matches within a declared radius continue a branch;
+unmatched minima start or end branches. A predeclared selector
+\(\psi\) chooses an active branch from its **completed historical**
+losses and support. A separate rule \(\phi\), initially the average
+of the **last three minimizing S values** of that branch, yields
+the current operational \(\widehat S_T\).
 
-## Results / honesty
+There is **no required second inner Val2**. The mean-of-three
+decision is applied **after branch tracking**, not inside the
+loss objective. The selected S is used to refit the final
+length-\(L\) PLS trend and issue a truly unseen \(h\)-step forecast.
+An **untouched outer test** remains mandatory to evaluate performance.
 
-CP04 small confirmation favored recency weighting, but CP05
-64-series evaluation and CP07/CP08 simulation designs did not
-demonstrate universal improvement over simple pooled forecast-CV.
-The numerical correspondence benchmark is **not** a completed
-experiment; a persistent branch is not mathematically unique
-when minima cross, appear or disappear.
+## Difference from Paper 1
 
-This study stands on its own. The key contribution sought is
-a defensible, information-safe dynamic smoothing decision based
-on temporal minima, **not a claim that a larger validation matrix
-automatically improves forecasts**.
+- Paper 1: take the **global minimum of the latest complete**
+  weighted \(F_M^{(m,d,L,h)}\).
+- Paper 2: track **all detected local minima across the sequence**
+  \(\{F_r^{(m,d,L,h)}\}\), select a branch, then map it to S.
 
-## Build
+The raw forecast losses, weighting schemes, spectral smoother, window
+and horizon definitions can be **identical**. The statistical decisions
+are different.
 
-From the repository root, with a standard \`latexmk\`/BibTeX
-installation:
+## Current implementation
+
+- [Shared mathematical protocol](../WEIGHTED_SURFACE_PROTOCOL.md).
+- [Current branch-tracking method](notes/dynamic_tracked_smoothness.md).
+- [Prospective research objective](notes/research_objective.md).
+- [Numerical matching issues](notes/temporal_minima_tracking.md).
+- [Runnable shared implementation](../../experiments/smoothness_cv/weighted_surface_study.py).
+
+Manual pilot, from the repository root:
+
+~~~bash
+python -m experiments.smoothness_cv.run_weighted_surface_study --quick
+~~~
+
+This produces candidate decisions and a single independent outer
+holdout for comparison, **not publication-ready statistical results**.
+The grid-detected minima are not numerically certified. Before
+publication, use verified root-search strategies and a repeated
+untouched rolling-outer test protocol.
+
+## Historical research and provenance
+
+The existing [manuscript](manuscript/main.tex), frozen
+[CP04–CP08 checkpoints](checkpoints/), old
+[Val1/Val2 two-stage notes](notes/tracked_minimum_smoothness_selection_legacy.tex),
+and [recorded evidence](notes/results_and_boundaries.md) remain
+available. They describe earlier and partially **different**
+algorithms. Their mixed results include cases where branch tracking
+was worse than pooled CV; **none should be presented as evidence
+for the new weighted-\(F\) approach without rerunning it**.
+
+Paper/PDF builds and substantial experiments remain manual.
+
+## Build the dated draft
 
 ~~~bash
 python "working_papers/Working Paper - Dynamic Branch Selection/build.py" --check
 python "working_papers/Working Paper - Dynamic Branch Selection/build.py"
 ~~~
 
-The PDF is generated to \`build/main.pdf\`. Builds are **manual only**.
-The current source remains a working draft; it is not submission-ready.
+Building this draft does not imply that its methodology or
+experiments have been updated to the newly defined protocol.
