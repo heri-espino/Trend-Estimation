@@ -1,3 +1,9 @@
+> **RESEARCH STATUS UPDATE — 2026-10-08 (current; original checkpoint record preserved below).** The primary current statistical question is selection of normalized PLS smoothness (S\in[0,1]) by **chronological, horizon-matched future-block forecast MSE**, with an explicit polynomial continuation and mandatory final refit. The eigenstructure of the smoother, analytic derivatives, and reliable recovery of competing minima are central mathematical/numerical topics. The source of truth is [../notes/INDEX.md](../notes/INDEX.md), [../notes/mathematical_foundations.md](../notes/mathematical_foundations.md), and [../notes/research_log_2026-10.md](../notes/research_log_2026-10.md).
+>
+> **Archival status:** This checkpoint was **executed in the old program**, regardless of any stale “awaiting execution” line below. CP03's frozen 3,000 scenarios and 72,000 outer decisions remain reproducible historical evidence, but are **not necessarily the final revised paper simulations**. The numerical solver may be revised; compare old/new solvers on *identical objectives* before designing/re-running a new statistical evaluation. **Do not rewrite frozen observations or retune old tests.**
+
+---
+
 > **2026-10-07 scientific framing:** CP03 is the frozen principal test
 > of horizon-matched forecast-CV, the forecasting paper's central method.
 > The CP04--CP08 branch experiments are optional extensions, not requirements

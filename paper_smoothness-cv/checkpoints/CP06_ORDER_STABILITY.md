@@ -1,3 +1,9 @@
+> **RESEARCH STATUS UPDATE — 2026-10-08 (current; original checkpoint record preserved below).** The primary current statistical question is selection of normalized PLS smoothness (S\in[0,1]) by **chronological, horizon-matched future-block forecast MSE**, with an explicit polynomial continuation and mandatory final refit. The eigenstructure of the smoother, analytic derivatives, and reliable recovery of competing minima are central mathematical/numerical topics. The source of truth is [../notes/INDEX.md](../notes/INDEX.md), [../notes/mathematical_foundations.md](../notes/mathematical_foundations.md), and [../notes/research_log_2026-10.md](../notes/research_log_2026-10.md).
+>
+> **Archival status:** CP06 **has been completed** and is now an **optional/exploratory historical study** of tracked minimum branches, continuation-order stability, or maps (\phi(V_j)). The main pooled forecast-CV method does not require these branches. Preserve the mixed/negative comparisons with pooled CV and the original post-hoc/confirmation boundaries. Any “central method” or “next checkpoint” text below is historical, not the current program.
+
+---
+
 # Checkpoint 06 — Order-stability mechanism study
 
 **Status: COMPLETE — mechanism identified; no post-hoc winner claimed.**
