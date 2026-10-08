@@ -1,15 +1,21 @@
 """Exploratory multi-order, branch-and-rule CV with causal V matrices.
 
 Each historical origin:
-  1. Recover Validation-1 local minima independently for every order d.
-  2. Match minima to persistent branches; initialize a bounded set of branches.
-  3. For every (d, branch, rule), construct the applied S using current Val1
-     minimum and only already-completed historical V rows of that *same rule*.
-  4. Evaluate precisely this applied S on Val1 and then on Val2, without
-     reselecting S. Val2 uses a fresh trend estimate at the Val2 forecast origin
-     with the already-fixed d and S (not a new hyperparameter optimization).
-  5. Select a branch and a rule on historical, pooled Val2 squared errors;
-     map the final pretest Val1 minimum through that same rule, then test.
+  1. Fix an order d and a rule r BEFORE both validations.
+  2. For each history-specific branch, find minima of the rule-transformed
+     Validation-1 loss E1(phi_r(V_history, s)), and match those minima to
+     the PREVIOUS APPLIED smoothness of that very (d, r) branch.
+  3. Use the very same (d, r, applied S) to evaluate Validation 1 and
+     Validation 2. A new trend fit is allowed at the new forecast origin;
+     choosing a new S or r is NOT allowed between V1 and V2.
+  4. Keep one V matrix per (d, rule, branch). Only completed prior V2 losses
+     can enter the rule and its method-specific V1 objective.
+  5. Select (d, rule, branch) by historical V2 MSE and evaluate the held-out
+     test without retuning. The 'last' polynomial baseline is unchanged.
+
+For rules independent of the current S, E1(phi_r(...)) is flat: its
+minimum is unidentifiable. We represent one history-driven solution and
+label it explicitly instead of claiming a newly discovered local minimum.
 
 Original unweighted polynomial continuation is rule='last'.
 This module never modifies frozen checkpoints or selects on the test targets.
@@ -20,6 +26,7 @@ from dataclasses import dataclass
 
 import numpy as np
 import pandas as pd
+from scipy.optimize import minimize_scalar
 
 import trend_estimation as td
 from experiments.smoothness_cv.dynamic_branch_rules import (
@@ -101,6 +108,124 @@ def _safe_rule(rule, *, current_s: float, prior: pd.DataFrame, observed_at: int)
     return float(np.clip(raw, 0, 1)), float(raw), meta, len(history)
 
 
+
+def _method_minima(
+    prepared, *,
+    order: int,
+    window: int,
+    rule,
+    history: pd.DataFrame,
+    observed_at: int,
+    spacing: float,
+    depth: int,
+    last_input: float | None = None,
+) -> list[dict]:
+    """Find minima of E1(phi_r(V_past, input_s)), not E1(input_s).
+
+    The derivative-based pure method is retained without approximation for
+    'last' and any history-free start. General transformations are evaluated
+    on a grid with bounded local refinement. Each candidate retains its
+    input S and the transformed (applied) S used in both validations.
+    """
+    known = history.loc[
+        history["val2_end"].le(observed_at)
+    ].sort_values("origin")
+    if rule.family == "last" or known.empty:
+        roots = _candidates(prepared, order, window, spacing, depth)
+        return [
+            {
+                "s_minimo": float(p["smoothness"]),
+                "s_aplicado": float(p["smoothness"]),
+                "val1_mse": float(p["val1_mse"]),
+                "source": str(p["source"]),
+                "objetivo_plano": False,
+            }
+            for p in roots
+        ]
+
+    cache = {}
+    s_hist = known["s_minimo"].to_numpy(float)
+    errors = known["val2_rmse"].to_numpy(float)
+
+    def evaluate(input_s):
+        key = round(float(np.clip(input_s, 0, 1)), 12)
+        if key not in cache:
+            output, _ = apply_rule(
+                rule, history_s=s_hist,
+                history_val2_loss=errors, current_s=key,
+            )
+            used = float(np.clip(output, 0, 1))
+            value = float(prepared.evaluate(
+                td.smoothness_to_lambda(used, window, order)
+            ).value)
+            cache[key] = (value, used)
+        return cache[key]
+
+    # 31 points give a visual/numerical search scaffold, and Brent bounded
+    # refinement locates strict minima. The pure-last solver remains exact.
+    x = np.linspace(0.0, 1.0, 31)
+    loss = np.asarray([evaluate(z)[0] for z in x])
+    finite = loss[np.isfinite(loss)]
+    tol = 1e-10 * max(1.0, float(np.max(np.abs(finite)))) if finite.size else 1e-10
+    if not finite.size:
+        return []
+    if np.max(finite) - np.min(finite) <= tol:
+        chosen = float(last_input) if last_input is not None else 0.5
+        val, applied = evaluate(chosen)
+        return [{
+            "s_minimo": chosen, "s_aplicado": applied,
+            "val1_mse": val, "source": "objetivo_plano",
+            "objetivo_plano": True,
+        }]
+
+    points = []
+    for i, val in enumerate(loss):
+        if not np.isfinite(val):
+            continue
+        if i == 0:
+            local = val < loss[i+1]-tol
+        elif i == len(loss)-1:
+            local = val < loss[i-1]-tol
+        else:
+            local = (
+                val <= loss[i-1]+tol and val <= loss[i+1]+tol
+                and (val < loss[i-1]-tol or val < loss[i+1]-tol)
+            )
+        if not local:
+            continue
+        candidate = float(x[i])
+        if 0 < i < len(x)-1:
+            opt = minimize_scalar(
+                lambda z: evaluate(z)[0],
+                bounds=(float(x[i-1]), float(x[i+1])),
+                method="bounded", options={"xatol": 1e-7},
+            )
+            if opt.success and np.isfinite(opt.fun) and opt.fun <= val+tol:
+                candidate = float(opt.x)
+        score, applied = evaluate(candidate)
+        points.append({
+            "s_minimo": candidate, "s_aplicado": applied,
+            "val1_mse": score, "source": "minimo_metodo",
+            "objetivo_plano": False,
+        })
+    if not points:
+        ix = int(np.nanargmin(loss))
+        score, applied = evaluate(x[ix])
+        points.append({
+            "s_minimo": float(x[ix]), "s_aplicado": applied,
+            "val1_mse": score, "source": "mejor_punto_de_malla",
+            "objetivo_plano": False,
+        })
+    filtered = []
+    for point in sorted(points, key=lambda v: v["val1_mse"]):
+        if all(
+            abs(point["s_aplicado"]-other["s_aplicado"]) >= spacing
+            for other in filtered
+        ):
+            filtered.append(point)
+    return sorted(filtered, key=lambda v: v["s_aplicado"])
+
+
 def run_branch_lab(
     observed, *,
     orders: tuple[int, ...] = (1, 2, 3, 4),
@@ -169,95 +294,151 @@ def run_branch_lab(
     n_origins = len(paired)
 
     for d in sorted(orders):
-        # Branch identities stay local to each order: b1 at d=1 != b1 at d=2.
-        last_s: dict[str, float] = {}
-        birth_origin: dict[str, int] = {}
-        next_id = 1
-        for origin_no, split in enumerate(paired, 1):
-            a = int(split.validation.start)
-            b = int(split.validation.stop)
-            c = b+horizon
-            prepared = td.prepare_rolling_pure_forecast_objective(
-                y[:b], [split], order=d
-            )
-            found = _candidates(
-                prepared, d, window, candidate_spacing, search_depth
-            )
-            for s in grid:
-                surface_rows.append({
-                    "d": d, "origin": origin_no, "val1_start": a,
-                    "val1_end": b, "val2_end": c,
-                    "smoothness": float(s),
-                    "val1_mse": float(prepared.evaluate(
-                        td.smoothness_to_lambda(float(s), window, d)
-                    ).value),
-                })
+        # The raw ECM surface is retained for scientific comparison by d.
+        # Branch identities and minima, however, are SPECIFIC to (d, rule).
+        for rule_name in rules:
+            rule = RULE_SPECS[rule_name]
+            last_applied: dict[str, float] = {}
+            last_input: dict[str, float] = {}
+            birth_origin: dict[str, int] = {}
+            next_id = 1
 
-            matches = _one_to_one(last_s, found, track_epsilon)
-            used_idx = {index for index, _ in matches.values()}
-            # New local minima can initiate new branches, up to max_branches
-            # per order. Prefer lower Val1 loss when capacity is limited.
-            unmatched = sorted(
-                (i for i in range(len(found)) if i not in used_idx),
-                key=lambda i: (found[i]["val1_mse"], found[i]["smoothness"]),
-            )
-            for idx in unmatched:
-                if len(last_s) >= max_branches:
-                    break
-                branch = f"b{next_id}"
-                next_id += 1
-                last_s[branch] = float(found[idx]["smoothness"])
-                birth_origin[branch] = origin_no
-                matches[branch] = (idx, 0.0)
-
-            for branch, (index, movement) in matches.items():
-                cand = found[index]
-                local_s = float(cand["smoothness"])
-                last_s[branch] = local_s
-                branch_rows.append({
-                    "d": d, "rama": branch, "origin": origin_no,
-                    "val1_start": a, "val1_end": b, "val2_end": c,
-                    "s_minimo": local_s, "lambda_minimo": float(cand["lambda"]),
-                    "ecm_minimo_val1": float(cand["val1_mse"]),
-                    "movimiento_s": float(movement),
-                    "nacimiento": birth_origin[branch],
-                })
-
-                for rule_name in rules:
+            for origin_no, split in enumerate(paired, 1):
+                a, b = int(split.validation.start), int(split.validation.stop)
+                c = b+horizon
+                prepared = td.prepare_rolling_pure_forecast_objective(
+                    y[:b], [split], order=d
+                )
+                raw_minima = _candidates(
+                    prepared, d, window, candidate_spacing, search_depth
+                )
+                if rule_name == rules[0]:
+                    for s_value in grid:
+                        s_value = float(s_value)
+                        surface_rows.append({
+                            "d": d, "origin": origin_no, "val1_start": a,
+                            "val1_end": b, "val2_end": c,
+                            "smoothness": s_value,
+                            "val1_mse": float(prepared.evaluate(
+                                td.smoothness_to_lambda(s_value, window, d)
+                            ).value),
+                        })
+                used_s: list[float] = []
+                matches: list[tuple[str, dict, float, pd.DataFrame]] = []
+                # The method-specific transformed objective is built from
+                # the particular branch's completed history only.
+                for branch, previous_s in last_applied.items():
                     prior = pd.DataFrame([
-                        rec for rec in evaluations
-                        if rec["d"] == d and rec["rama"] == branch
-                        and rec["regla"] == rule_name
+                        record for record in evaluations
+                        if record["d"] == d and record["regla"] == rule_name
+                        and record["rama"] == branch
                     ])
-                    if prior.empty:
-                        prior = pd.DataFrame(columns=[
-                            "val2_end", "origin", "s_minimo", "val2_rmse"
-                        ])
-                    used_s, raw_s, meta, used_n = _safe_rule(
-                        RULE_SPECS[rule_name],
-                        current_s=local_s, prior=prior, observed_at=b,
+                    options = _method_minima(
+                        prepared, order=d, window=window, rule=rule,
+                        history=prior, observed_at=b,
+                        spacing=candidate_spacing, depth=search_depth,
+                        last_input=last_input[branch],
                     )
-                    # The SAME rule-produced S is scored in both validations.
-                    # Val1 loss uses the already-constructed origin forecast
-                    # objective. Val2 refits at b but does NOT retune d or S.
-                    lam = td.smoothness_to_lambda(used_s, window, d)
+                    possible = [
+                        p for p in options
+                        if abs(p["s_aplicado"]-previous_s) <= track_epsilon
+                        and all(abs(p["s_aplicado"]-u) >= candidate_spacing
+                                for u in used_s)
+                    ]
+                    if not possible:
+                        continue
+                    cand = min(
+                        possible,
+                        key=lambda p: (
+                            abs(p["s_aplicado"]-previous_s),
+                            p["val1_mse"],
+                        ),
+                    )
+                    distance = abs(cand["s_aplicado"]-previous_s)
+                    used_s.append(cand["s_aplicado"])
+                    matches.append((branch, cand, distance, prior))
+                # Unmatched current raw minima start NEW method-specific
+                # branches (with empty history, phi_r(empty, s) = s).
+                # Thus 'last' recovers the original polynomial benchmark.
+                for point in sorted(
+                    raw_minima,
+                    key=lambda p: (p["val1_mse"], p["smoothness"]),
+                ):
+                    if len(last_applied) >= max_branches:
+                        break
+                    candidate_s = float(point["smoothness"])
+                    if any(abs(candidate_s-s0) < candidate_spacing
+                           for s0 in used_s):
+                        continue
+                    branch = f"b{next_id}"
+                    next_id += 1
+                    birth_origin[branch] = origin_no
+                    last_applied[branch] = candidate_s
+                    last_input[branch] = candidate_s
+                    new = {
+                        "s_minimo": candidate_s,
+                        "s_aplicado": candidate_s,
+                        "val1_mse": float(point["val1_mse"]),
+                        "source": str(point["source"]),
+                        "objetivo_plano": False,
+                    }
+                    used_s.append(candidate_s)
+                    matches.append((
+                        branch, new, 0.0,
+                        pd.DataFrame(columns=[
+                            "origin", "val2_end", "s_minimo", "val2_rmse"
+                        ]),
+                    ))
+
+                for branch, cand, distance, prior in matches:
+                    input_s = float(cand["s_minimo"])
+                    applied_s, raw_s, meta, used_n = _safe_rule(
+                        rule, current_s=input_s,
+                        prior=prior, observed_at=b,
+                    )
+                    if not np.isclose(applied_s, cand["s_aplicado"],
+                                      atol=1e-8):
+                        raise AssertionError(
+                            "La regla ha cambiado la S fijada en validación 1."
+                        )
+                    last_applied[branch] = applied_s
+                    last_input[branch] = input_s
+                    lam = td.smoothness_to_lambda(applied_s, window, d)
                     val1_loss = float(prepared.evaluate(lam).value)
                     val2_loss = _score(
-                        y[:c], origin=b, window=window, horizon=horizon,
-                        d=d, s=used_s,
+                        y[:c], origin=b, window=window,
+                        horizon=horizon, d=d, s=applied_s,
                     )
+                    branch_rows.append({
+                        "d": d, "regla": rule_name, "rama": branch,
+                        "origin": origin_no, "val1_start": a,
+                        "val1_end": b, "val2_end": c,
+                        "s_minimo": input_s, "s_aplicado": applied_s,
+                        "lambda_minimo": float(td.smoothness_to_lambda(
+                            input_s, window, d
+                        )),
+                        "ecm_minimo_val1": val1_loss,
+                        "movimiento_s": float(distance),
+                        "nacimiento": birth_origin[branch],
+                        "origen_minimo": cand["source"],
+                        "objetivo_plano": bool(cand["objetivo_plano"]),
+                    })
                     evaluations.append({
                         "d": d, "rama": branch, "regla": rule_name,
-                        "origin": origin_no, "val1_start": a, "val1_end": b,
-                        "val2_end": c, "s_minimo": local_s,
-                        "s_aplicado": used_s, "s_sin_recortar": raw_s,
+                        "origin": origin_no, "val1_start": a,
+                        "val1_end": b, "val2_end": c,
+                        "s_minimo": input_s, "s_aplicado": applied_s,
+                        "s_sin_recortar": raw_s,
                         "val1_mse": val1_loss, "val2_mse": val2_loss,
                         "val2_rmse": float(np.sqrt(val2_loss)),
                         "n_historial_disponible": used_n,
-                        "n_historial_utilizado": meta.get("n_history_used", used_n),
+                        "n_historial_utilizado": meta.get(
+                            "n_history_used", used_n
+                        ),
                         "usa_s_actual": meta.get("includes_current_s"),
                         "fallback": meta.get("fallback_to_last", False),
-                        "acotado": abs(used_s - raw_s) > 1e-12,
+                        "acotado": abs(applied_s-raw_s) > 1e-12,
+                        "objetivo_plano": bool(cand["objetivo_plano"]),
                     })
 
     branch_table = pd.DataFrame(branch_rows)
