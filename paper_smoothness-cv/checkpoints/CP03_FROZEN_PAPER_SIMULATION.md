@@ -1,8 +1,7 @@
-> **2026-10-06 role update:** CP03 remains frozen and valid, but it is now
-> interpreted as the **pooled forecast-CV baseline**. It is not the final central
-> dynamic method. After CP03, move to
-> `CP04_DYNAMIC_BRANCH_RULES.md`, which compares decision rules on tracked
-> local-minimum branches. Do not retune CP03.
+> **2026-10-07 scientific framing:** CP03 is the frozen principal test
+> of horizon-matched forecast-CV, the forecasting paper's central method.
+> The CP04--CP08 branch experiments are optional extensions, not requirements
+> for the pooled criterion. Do not retune CP03.
 
 # Checkpoint 03 — Frozen paper-scale simulation
 
