@@ -135,6 +135,7 @@ def run_branch_lab(
         raise ValueError("Seleccione al menos una regla distinta.")
     if any(rule not in RULE_SPECS for rule in rules):
         raise ValueError("Se desconoce alguna regla de agregación.")
+    rules = ("last",) + tuple(r for r in rules if r != "last")
     if not all(isinstance(v, int) and v >= 1 for v in
                (horizon, step, max_origins, max_branches, test_size,
                 future_horizon, grid_points)):
