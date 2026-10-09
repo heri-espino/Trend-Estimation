@@ -1,5 +1,44 @@
 # Large simulation campaign — Paper 1 and Paper 2
 
+## PRIORITY: 8-hour common experiment for Papers 1, 2 and 3 (2026-10-09)
+
+The formal **time-bounded, shared** three-paper design is now
+[JOINT_FORMAL_8H_PROTOCOL.md](../../working_papers/JOINT_FORMAL_8H_PROTOCOL.md).
+It is more interpretable than arbitrarily truncating the 1,248-cell
+\`mega\` stress grid: 144 predeclared cells with balanced
+source/polynomial/regime/rare-shape coverage, three noise levels for
+the same B latent trends, outer h-step forecast evaluation,
+true past/future latent trend errors, classical PLS
+CV/GCV/AICc/BIC and naive/drift/seasonal-naive/OLS baselines,
+and **Paper 3 Brent/adaptive root diagnostics on a predeclared
+subset of exactly the same F** with tiny exact Sturm once.
+
+The runner supports a **soft eight-hour wall-clock budget** with
+atomic SQLite checkpoints and \`--seed-wave\` round-robin study
+scheduling. If incomplete, label results **exploratory**;
+neither 8 hours nor a mega scenario count grants formal
+confirmatory status. Do not repeat CPU/GPU kernel comparisons
+during the formal study (\`--gpu-verify 0\` by default).
+
+Test, run and analyze with **these** commands:
+
+~~~powershell
+python -m pytest tests/test_joint_formal_eight_hour.py tests/test_cuda_simulation.py tests/test_simulation_campaign.py tests/test_weighted_surface_study.py -q
+python -m experiments.smoothness_cv.run_simulation_campaign --backend cuda --preset formal8h --seeds 1000 --seed-wave 8 --gpu-batch-size 8 --orders 2,3 --horizons 1,3,6,12 --outer-count 4 --max-folds 32 --grid-points 161 --numerical-every 8 --numerical-dense-grid 401 --numerical-adaptive-depth 6 --with-baselines --sturm-once --time-budget-hours 8 --run-dir results/smoothness_cv/joint_formal_8h_v1
+python -m experiments.smoothness_cv.analyze_joint_campaign --run-dir results/smoothness_cv/joint_formal_8h_v1 --allow-partial
+python -m experiments.smoothness_cv.make_formal_figures --run-dir results/smoothness_cv/joint_formal_8h_v1
+~~~
+
+These are **instructions, not assertions that the suite has already
+passed or been run** on the user's workstation. Exact Sturm needs
+SymPy in the Conda environment. A failure should be fixed before
+the eight-hour run. The wall-clock stop happens **after** the
+active batch and can exceed the nominal budget slightly.
+The full bibliography/methodology and publication caveats are in
+the linked protocol.
+
+
+
 **Status: implemented prospective campaign, not executed in the repository.**
 This is the **new** source-inspired + large synthetic study. It does not
 overwrite CP01–CP08, does not claim a winning method, and does not
