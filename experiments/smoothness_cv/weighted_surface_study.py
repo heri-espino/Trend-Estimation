@@ -270,6 +270,7 @@ def run_weighted_surface_study(
     branch_decision_k: int = 3,
     branch_score_k: int = 3,
     holdout: bool = True,
+    precomputed_grid_losses: dict[int, np.ndarray] | None = None,
 ) -> WeightedSurfaceStudy:
     """Compare Paper 1 pooled and Paper 2 tracking on identical historical folds.
 
@@ -304,8 +305,24 @@ def run_weighted_surface_study(
     surface_map: dict[tuple[str, int], np.ndarray] = {}
 
     for d in orders:
-        prepared = prepare_rolling_pure_forecast_objective(y[:T], splits, order=d)
-        base_losses = all_grid_fold_losses(prepared, grid, window, d)
+        # The CUDA campaign prepares precisely these completed-origin losses
+        # outside this function. All statistical operations after this point
+        # (F weights, global minimization, branches and outer refit) are shared
+        # by CPU and CUDA backends.
+        if precomputed_grid_losses is not None:
+            if d not in precomputed_grid_losses:
+                raise ValueError(f"Missing precomputed fold losses for order d={d}.")
+            base_losses = np.asarray(precomputed_grid_losses[d], dtype=float)
+            if base_losses.shape != (len(origins), len(grid)):
+                raise ValueError("Precomputed losses must match completed origins and S grid.")
+            if not np.all(np.isfinite(base_losses)) or np.any(base_losses < 0):
+                raise ValueError("Precomputed forecast losses must be finite and nonnegative.")
+            prepared = None if not refine_pooled else prepare_rolling_pure_forecast_objective(
+                y[:T], splits, order=d
+            )
+        else:
+            prepared = prepare_rolling_pure_forecast_objective(y[:T], splits, order=d)
+            base_losses = all_grid_fold_losses(prepared, grid, window, d)
         for method in methods:
             surfaces = weighted_surface_history(base_losses, method)
             surface_map[(method.name, d)] = surfaces
@@ -313,6 +330,8 @@ def run_weighted_surface_study(
             latest = surfaces[-1]
 
             def pooled_exact(s):
+                if prepared is None:
+                    raise RuntimeError("Exact pooled refinement needs a prepared objective.")
                 values = fold_loss_at_lambda(
                     prepared, smoothness_to_lambda(float(s), window, d)
                 )
