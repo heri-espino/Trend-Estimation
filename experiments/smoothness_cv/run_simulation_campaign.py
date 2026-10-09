@@ -116,6 +116,8 @@ def arguments(argv: list[str] | None = None) -> argparse.Namespace:
     p.add_argument("--numerical-dense-grid",type=int,default=501,
                    help="Dense numerical reference points for sampled Paper 3 diagnostics.")
     p.add_argument("--numerical-adaptive-depth",type=int,default=6)
+    p.add_argument("--with-baselines",action="store_true",
+                   help="Record standard naive/drift/seasonal-naive/OLS outer forecasts (no S).")
     p.add_argument("--sturm-once",action="store_true",
                    help="Run exact tiny rational Sturm benchmark ONCE and record stdout.")
     p.add_argument("--max-tasks",type=int,default=None,
@@ -173,6 +175,7 @@ def config_from_args(args) -> dict:
         "numerical_dense_grid":int(args.numerical_dense_grid) if args.numerical_every else None,
         "numerical_adaptive_depth":int(args.numerical_adaptive_depth) if args.numerical_every else None,
         "sturm_once":bool(args.sturm_once),
+        "with_baselines":bool(args.with_baselines),
         "scenario_keys":[s.key for s in grid_scenarios(args.preset)],
         "git_revision":git_revision(),
     }
@@ -338,6 +341,8 @@ def main(argv: list[str] | None = None) -> int:
     run_dir=args.run_dir or Path("results/smoothness_cv")/f"campaign_{args.preset}_{args.backend}"
     _checked_manifest(run_dir,cfg)
     db=connect_db(run_dir/"outcomes.sqlite")
+    if args.with_baselines:
+        from .standard_forecast_baselines import evaluate_standard_baselines, write_baselines
     if args.numerical_every:
         from .joint_numerical_diagnostics import numerical_case, write_numerical
         db.execute(
@@ -443,6 +448,14 @@ def main(argv: list[str] | None = None) -> int:
                             })+"\n")
                     for seed,seconds,rows in output:
                         key=task_key(scenario,seed)
+                        if args.with_baselines:
+                            standard_rows=evaluate_standard_baselines(
+                                scenario,seed,
+                                horizons=tuple(cfg["horizons"]),
+                                outer_count=int(cfg["outer_count"]),
+                            )
+                            with db:
+                                write_baselines(db,standard_rows)
                         if args.numerical_every and (
                             (int(seed)-int(cfg["seed_start"])+1)
                             %int(args.numerical_every)==0
@@ -596,6 +609,12 @@ def main(argv: list[str] | None = None) -> int:
             if args.numerical_every else 0
         ),
         "sturm_reference":bool((run_dir/"sturm_exact_reference.txt").exists()),
+        "standard_baseline_rows":(
+            int(db.execute("SELECT COUNT(*) FROM forecast_baselines").fetchone()[0])
+            if args.with_baselines and db.execute(
+                "SELECT 1 FROM sqlite_master WHERE name='forecast_baselines'"
+            ).fetchone() else 0
+        ),
         "timestamp_utc":utc_now(),
         "note":"Incomplete waves are exploratory and MUST NOT be called confirmatory.",
     }
