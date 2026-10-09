@@ -24,6 +24,11 @@
 \newcommand{\norm}[1]{\left\lVert#1\right\rVert}\newcommand{\inner}[2]{\left\langle#1,#2\right\rangle}
 \newcommand{\dt}{\mathrm d}\newcommand{\Q}{Q_d}
 \newcommand{\pregunta}[1]{\subsection{Pregunta: #1}}
+\newcommand{\checkpoint}[3]{%
+  \par\medskip\noindent\textbf{\color{blue!45!black}Checkpoint #1. #2}\par
+  \noindent\emph{Intenta justificarlo antes de leer la comprobación.}\par
+  \noindent\textbf{Comprobación razonada. }#3\par\bigskip
+}
 \setlist[itemize]{topsep=3pt,itemsep=2pt}
 \title{\vspace{-1.7cm}\textbf{De Guerrero al suavizamiento óptimo para pronosticar}\\[5pt]
 \large Notas de estudio con derivaciones paso a paso}
@@ -32,36 +37,10 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-Estas notas reconstruyen, en orden conceptual e histórico, el suavizamiento por mínimos cuadrados penalizados: el modelo general de Guerrero (2007), nuestra especialización con diferencias de media cero y covarianza observacional identidad, las propiedades de la matriz de penalización, sus autovalores nulos, la matriz de suavizamiento y los grados de libertad efectivos. Después se deriva la continuación polinómica y un criterio de \emph{validación cruzada temporal con orígenes móviles}, que evalúa errores genuinamente futuros a un horizonte fijo $h$. Las fórmulas de sensibilidad, primeras y segundas derivadas, condiciones de mínimo, límites y procedimiento numérico se prueban sin suponer convexidad del error de pronóstico. Cada sección plantea una pregunta y construye su respuesta.
+Estas notas se desarrollan como una clase acumulativa: cada pregunta se responde con las herramientas construidas en la etapa previa, se comprueba mediante un checkpoint y motiva la siguiente. El recorrido pasa por el suavizamiento por mínimos cuadrados penalizados: el modelo general de Guerrero (2007), nuestra especialización con diferencias de media cero y covarianza observacional identidad, las propiedades de la matriz de penalización, sus autovalores nulos, la matriz de suavizamiento y los grados de libertad efectivos. Después se deriva la continuación polinómica y un criterio de \emph{validación cruzada temporal con orígenes móviles}, que evalúa errores genuinamente futuros a un horizonte fijo $h$. La clase continúa hacia los problemas de los otros dos working papers: recuperación numérica de raíces y mínimos (Brent, reducción racional y Sturm para casos exactos restringidos), y seguimiento cronológico de ramas de mínimos con condiciones locales de persistencia. No se presupone convexidad del error de pronóstico ni superioridad empírica de ninguno de los selectores. Cada sección plantea una pregunta y construye su respuesta.
 \end{abstract}
+\noindent\textit{Orden de la clase: Guerrero $\to$ CV para pronósticos $\to$ matriz $H$ y teorema espectral $\to$ función $f(\lambda)$ y superficie $F(S)$ $\to$ derivadas $\to$ Brent/Sturm $\to$ ramas temporales. Cada checkpoint comprueba una deducción antes de introducir la siguiente.}
 \tableofcontents\clearpage
-
-\section{Mapa del problema, notación y antecedentes}
-\pregunta{¿Qué queremos estimar y qué queremos optimizar?}
-Para cada origen de pronóstico $T$ observamos $y_1,\ldots,y_T$. Una \emph{tendencia} $\tau_t$ representa el componente persistente de la serie. La estimación de $\tau$ y la elección de la suavidad \emph{no son el mismo problema}: primero se obtiene una familia de estimadores indexada por $\lambda$, y después se decide cuál usar mediante un objetivo declarado.
-
-\begin{center}\small
-\begin{tabularx}{\textwidth}{@{}lX@{}}\toprule
-Símbolo & Significado \\ \midrule
-$T$ & Último tiempo observable cuando se toma una decisión.\\
-$L>d\geq1$ & Longitud de la ventana de ajuste y orden entero de diferencia.\\
-$h\geq1$ & Horizonte de pronóstico, declarado antes de la selección.\\
-$x_t=y_{t-L+1:t}\in\R^L$ & Ventana disponible al origen histórico $t$.\\
-$z_t=y_{t+1:t+h}\in\R^h$ & Bloque futuro de validación, que sólo se utiliza después de $t+h$.\\
-$D_d\in\R^{(L-d)\times L}$ & Matriz de diferencias consecutivas de orden $d$.\\
-$Q_d=D_d^\top D_d$ & Matriz simétrica de penalización; no es una matriz de covarianzas.\\
-$\lambda\geq0$ & Intensidad de penalización; $\lambda=\infty$ designa un límite.\\
-$H_\lambda=(I_L+\lambda Q_d)^{-1}$ & Matriz de suavizamiento para $\lambda$ finito.\\
-$S\in[0,1]$ & Índice \emph{escalar} de suavidad normalizada; $S\neq H_\lambda$.\\
-$G_{d,h}\in\R^{h\times L}$ & Operador de continuación polinómica de grado $d-1$.\\
-$F_T(S)$ & Pérdida promedio histórica, calculada sin observar el futuro $T+1:T+h$.\\
-\bottomrule\end{tabularx}
-\end{center}
-
-\pregunta{¿De dónde proviene el planteamiento?}
-El principio de penalizar diferencias discretas aparece en el suavizamiento actuarial de Whittaker (1923) y Henderson (1924). Posteriormente se utiliza en filtrado y tendencias, entre ellas la formulación de Hodrick--Prescott para diferencias segundas. Guerrero (2007) presenta una interpretación estadística con media de las diferencias no necesariamente cero, matriz de covarianza observacional $V$ y un índice de suavidad. Cortés--Toto, Guerrero y Reyes (2017) comparan criterios de elección de $\lambda$ (CV, GCV e información) y estudian la suavidad resultante.
-
-\textbf{Decisión del proyecto actual.} Trabajamos con la forma pura de penalización cuadrática $\mu=0$, $V=I_L$, y evaluamos \emph{pronósticos} de horizonte $h$ mediante orígenes ordenados temporalmente. La descomposición espectral, los grados de libertad y las derivadas matriciales son hechos clásicos; su uso no demuestra por sí solo novedad metodológica.
 
 \section{Guerrero: de un modelo estadístico a un estimador}
 \pregunta{¿Qué supone originalmente Guerrero sobre las observaciones y la tendencia?}
@@ -161,7 +140,58 @@ Fijamos \emph{dos} restricciones separadas: (i) $\mu=0$, o diferencias de tenden
 \end{equation}
 Si $d=1$ penalizamos cambios en el nivel; si $d=2$, cambios de la pendiente; si $d=3$, cambios de la curvatura discreta. La decisión $\mu=0$ no es una propiedad demostrada de toda serie, sino una especificación que define qué tipo de continuación utilizaremos.
 
-\section{Operadores de diferencias: estructura, núcleo y rango}
+\checkpoint{00}{¿Qué cambia al imponer $V=I$ y $\mu=0$?}{Al derivar $\|y-u\|^2+\lambda\|D_du\|^2$ resulta $(I+\lambda D_d^\top D_d)u=y$. El supuesto $\mu=0$ centra las diferencias, pero no exige $\EE(\tau)=0$; $V=I$ no prueba independencia del ruido sin supuestos adicionales.}
+
+\section{Motivación: queremos pronosticar y validar a horizonte $h$}
+\pregunta{¿Qué queremos estimar y qué queremos optimizar?}
+Para cada origen de pronóstico $T$ observamos $y_1,\ldots,y_T$. Una \emph{tendencia} $\tau_t$ representa el componente persistente de la serie. La estimación de $\tau$ y la elección de la suavidad \emph{no son el mismo problema}: primero se obtiene una familia de estimadores indexada por $\lambda$, y después se decide cuál usar mediante un objetivo declarado.
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}lX@{}}\toprule
+Símbolo & Significado \\ \midrule
+$T$ & Último tiempo observable cuando se toma una decisión.\\
+$L>d\geq1$ & Longitud de la ventana de ajuste y orden entero de diferencia.\\
+$h\geq1$ & Horizonte de pronóstico, declarado antes de la selección.\\
+$x_t=y_{t-L+1:t}\in\R^L$ & Ventana disponible al origen histórico $t$.\\
+$z_t=y_{t+1:t+h}\in\R^h$ & Bloque futuro de validación, que sólo se utiliza después de $t+h$.\\
+$D_d\in\R^{(L-d)\times L}$ & Matriz de diferencias consecutivas de orden $d$.\\
+$Q_d=D_d^\top D_d$ & Matriz simétrica de penalización; no es una matriz de covarianzas.\\
+$\lambda\geq0$ & Intensidad de penalización; $\lambda=\infty$ designa un límite.\\
+$H_\lambda=(I_L+\lambda Q_d)^{-1}$ & Matriz de suavizamiento para $\lambda$ finito.\\
+$S\in[0,1]$ & Índice \emph{escalar} de suavidad normalizada; $S\neq H_\lambda$.\\
+$G_{d,h}\in\R^{h\times L}$ & Operador de continuación polinómica de grado $d-1$.\\
+$F_T(S)$ & Pérdida promedio histórica, calculada sin observar el futuro $T+1:T+h$.\\
+\bottomrule\end{tabularx}
+\end{center}
+
+\pregunta{¿Cuál es la pregunta final que obliga a construir toda la teoría?}
+No se comienza eligiendo una cantidad arbitraria de suavidad. Queremos una función de pérdida
+\emph{futura}, $F_T(S)$, y una decisión $\widehat S_T\in\argmin_{S\in[0,1]}F_T(S)$.
+Para definirla correctamente todavía desconocemos varios objetos que construiremos en orden:
+\[
+\begin{gathered}
+\underbrace{\widehat\tau_\lambda}_{\text{Guerrero}}
+\longrightarrow\underbrace{Q_d,\ H_\lambda}_{\text{penalización y matriz de suavizamiento}}
+\longrightarrow\underbrace{S(\lambda)}_{\text{escala de suavidad}}\\[4pt]
+\underbrace{G_{d,h}H_\lambda x_t}_{\text{pronóstico a horizonte }h}
+\longrightarrow\underbrace{f_T(\lambda)\longleftrightarrow F_T(S)}_{\text{criterio CV equivalente}}\\[4pt]
+\underbrace{F_T'(S),\ F_T''(S)}_{\text{optimización numérica}}
+\longrightarrow\underbrace{\{S^*_{j,r}\}}_{\text{ramas temporales}}.
+\end{gathered}
+\]
+Esta flecha significa \emph{dependencia lógica de las definiciones}, no que las técnicas hayan
+aparecido históricamente en ese mismo orden. Denotaremos con $f_T$ la pérdida escrita en
+$\lambda$ y con $F_T$ \emph{la misma pérdida} escrita en $S$; no debe confundirse la
+biyección entre coordenadas con una presunta inyectividad de la pérdida misma.
+
+\pregunta{¿Qué aportó históricamente cada familia de métodos?}
+El principio de penalizar diferencias discretas aparece en el suavizamiento actuarial de Whittaker (1923) y Henderson (1924). Posteriormente se utiliza en filtrado y tendencias, entre ellas la formulación de Hodrick--Prescott para diferencias segundas. Guerrero (2007) presenta una interpretación estadística con media de las diferencias no necesariamente cero, matriz de covarianza observacional $V$ y un índice de suavidad. Cortés--Toto, Guerrero y Reyes (2017) comparan criterios de elección de $\lambda$ (CV, GCV e información) y estudian la suavidad resultante.
+
+\textbf{Decisión del proyecto actual.} Trabajamos con la forma pura de penalización cuadrática $\mu=0$, $V=I_L$, y evaluamos \emph{pronósticos} de horizonte $h$ mediante orígenes ordenados temporalmente. La descomposición espectral, los grados de libertad y las derivadas matriciales son hechos clásicos; su uso no demuestra por sí solo novedad metodológica.
+
+\checkpoint{01}{¿Qué se elige realmente?}{El ajuste $\widehat\tau_\lambda$ se construye para cada penalización; la elección $\widehat S_T$ debe depender de pérdidas futuras completadas, no de la bondad de ajuste en toda la muestra. $h$ se declara antes de evaluar.}
+
+\section{De $H_\lambda$ a $D_d$ y $Q_d$: geometría de la penalización}
 \pregunta{¿Cómo escribimos las diferencias como una matriz?}
 Sea $\nabla u_t=u_t-u_{t-1}$. Para $d\geq1$ definimos $\nabla^d$ recursivamente. Por el binomio de Newton,
 \begin{equation}\label{eq:diff-bin}
@@ -202,7 +232,60 @@ Por tanto $Q_d$ es simétrica y semidefinida positiva.
 $d=1$: $D_1u=0\iff u_t=c$ (constante). $d=2$: $D_2u=0\iff u_t=a+bt$ (recta). $d=3$: $D_3u=0\iff u_t=a+bt+ct^2$ (cuadrática). $d=4$: polinomio cúbico. No significa que el \emph{dato} observado tenga esa forma: únicamente describe qué componentes no penalizamos.
 \end{observacion}
 
-\section{La matriz de suavizamiento y su geometría espectral}
+\section{Teorema espectral: por qué $Q_d$ admite $U\Lambda U^\top$}
+\pregunta{¿Por qué estamos autorizados a utilizar una descomposición espectral?}
+La descomposición espectral no es una regla que se pueda aplicar a cualquier matriz real
+sin más. De la construcción anterior sabemos exactamente que
+\[
+Q_d^\top=(D_d^\top D_d)^\top=D_d^\top D_d=Q_d,
+\qquad v^\top Q_dv=\|D_dv\|^2\ge0.
+\]
+\emph{La simetría real} da autovalores reales y una base ortonormal de eigenvectores;
+\emph{la semidefinitud} añade que dichos autovalores son no negativos.
+
+\begin{lema}[Justificación elemental del teorema espectral real]\label{lem:espectral}
+Toda matriz real simétrica $A\in\R^{L\times L}$ posee una base ortonormal
+de eigenvectores reales $u_1,\ldots,u_L$ y admite la representación
+$A=U\operatorname{diag}(\alpha_1,\ldots,\alpha_L)U^\top$, con $U^\top U=I_L$.
+\end{lema}
+\begin{proof}
+\textbf{Paso 1 (existencia de un primer vector).} La función de Rayleigh
+$R(v)=v^\top Av$, restringida a la esfera $\|v\|=1$, es continua; la esfera
+es compacta, de modo que alcanza un máximo en $u_1$. Con multiplicadores
+de Lagrange para la restricción $v^\top v=1$, la estacionariedad da
+$2Au_1-2\alpha_1u_1=0$, es decir, $Au_1=\alpha_1u_1$.
+
+\textbf{Paso 2 (ortogonalidad).} Si $Au=\alpha u$ y $Av=\beta v$, entonces
+$u^\top Av=\beta u^\top v$, pero por simetría también
+$u^\top Av=(Au)^\top v=\alpha u^\top v$.
+Por lo tanto $(\alpha-\beta)u^\top v=0$: eigenvectores con valores distintos
+son ortogonales. Si se repite un eigenvalor, podemos ortonormalizar una base
+de su autoespacio.
+
+\textbf{Paso 3 (construcción de toda la base).} El subespacio perpendicular
+a $u_1$ es invariante por $A$: si $u_1^\top w=0$,
+$u_1^\top Aw=(Au_1)^\top w=\alpha_1u_1^\top w=0$.
+La restricción de $A$ a ese subespacio también es simétrica. Repetimos
+el paso 1 en dimensión $L-1$ y continuamos por inducción hasta obtener
+$L$ eigenvectores ortonormales. Al agruparlos en $U$, de $AU=U\Lambda$
+y $UU^\top=I_L$ concluimos $A=U\Lambda U^\top$.
+\end{proof}
+
+\pregunta{¿Cómo sabemos que los eigenvalores de $Q_d$ no son negativos?}
+Para un eigenvector unitario $u_j$ de $Q_d$, $Q_du_j=\delta_ju_j$,
+\[
+\delta_j=u_j^\top Q_du_j=u_j^\top D_d^\top D_du_j=\|D_du_j\|^2\ge0.
+\]
+El mismo cálculo muestra $\delta_j=0\iff D_du_j=0$; por la proposición
+\ref{prop:null} hay exactamente $d$ vectores ortogonales en el autoespacio cero.
+\textbf{Atención:} $Q_d$ no es una matriz de covarianza: la propiedad espectral
+se deduce de su forma $D_d^\top D_d$. Un suavizador construido con $V\neq I$
+no tiene por qué ser simétrico, por lo que su diagonalización ortogonal no se
+puede copiar sin justificarla de nuevo.
+
+\checkpoint{02}{¿Dónde intervienen exactamente la simetría y el rango?}{La simetría real permite $Q_d=U\Lambda U^\top$ con $U^\top U=I$; $\|D_du\|^2\ge0$ da $\delta_j\ge0$; rango--nulidad da $d$ eigenvalores cero. Sin simetría no está garantizada una base ortonormal de eigenvectores reales.}
+
+\section{Diagonalizar $Q_d$ para entender $H_\lambda$}
 \pregunta{¿Por qué el estimador es único para todo $\lambda$ finito?}
 De \eqref{eq:PLS} se tiene $A_\lambda=I_L+\lambda Q_d$. Para cualquier $a\neq0$,
 \[
@@ -221,6 +304,39 @@ Definiendo $a=U^\top y$, obtenemos
 \widehat\tau_\lambda=\sum_{j=1}^L\frac{a_j}{1+\lambda\delta_j}u_j.
 \end{equation}
 El cociente $g_j(\lambda)=1/(1+\lambda\delta_j)$ es el \emph{factor de contracción} espectral. Vale $1$ sobre los $d$ modos polinómicos no penalizados y está entre $0$ y $1$ para los otros modos cuando $\lambda>0$.
+
+\pregunta{¿Podemos diagonalizar un ejemplo completo sin invocar una ``caja negra''?}
+Tomemos $L=4$ y $d=2$. Entonces
+\[
+D_2=\begin{pmatrix}1&-2&1&0\\0&1&-2&1\end{pmatrix},\qquad
+Q_2=\begin{pmatrix}1&-2&1&0\\-2&5&-4&1\\1&-4&5&-2\\0&1&-2&1\end{pmatrix}.
+\]
+La matriz $D_2D_2^\top=\begin{pmatrix}6&-4\\-4&6\end{pmatrix}$
+tiene eigenvalores $2$ y $10$: su determinante característico es
+$(6-\delta)^2-16=(\delta-2)(\delta-10)$.
+Los eigenvalores estrictamente positivos de $D_2D_2^\top$ y $D_2^\top D_2$
+coinciden, porque si $D_2D_2^\top w=\delta w$ con $\delta>0$,
+$D_2^\top w\neq0$ y
+$Q_2(D_2^\top w)=D_2^\top(D_2D_2^\top w)=\delta(D_2^\top w)$.
+Como el núcleo tiene dimensión dos, la lista completa es $0,0,2,10$.
+Podemos exhibir incluso cuatro eigenvectores unitarios ortogonales:
+\[
+\begin{aligned}
+u_1&=\tfrac12(1,1,1,1)^\top,&
+ u_2&=\tfrac1{\sqrt{20}}(-3,-1,1,3)^\top,\\
+ u_3&=\tfrac12(1,-1,-1,1)^\top,&
+ u_4&=\tfrac1{\sqrt{20}}(1,-3,3,-1)^\top.
+\end{aligned}
+\]
+Comprobando $Q_2u_j=\delta_ju_j$ y $u_i^\top u_j=0$ para $i\ne j$,
+obtenemos una diagonalización explícita. Por consiguiente
+\[
+H_\lambda=U\operatorname{diag}\left(1,1,
+\frac1{1+2\lambda},\frac1{1+10\lambda}\right)U^\top.
+\]
+Es decir, los dos primeros componentes no se contraen; los otros dos
+se reducen de manera distinta. \emph{Esta} es la razón algebraica
+para preferir el cálculo espectral cuando analizamos varios $\lambda$.
 
 \pregunta{¿Cuáles son los dos extremos exactos del suavizamiento?}
 Si $\lambda=0$, $H_0=I_L$ y $\widehat\tau_0=y$. Para $\lambda\to\infty$, los $L-d$ factores asociados a $\delta_j>0$ tienden a cero y los $d$ restantes continúan siendo uno. Si $U_0\in\R^{L\times d}$ reúne una base ortonormal del núcleo,
@@ -251,7 +367,9 @@ $(\lambda_2-\lambda_1)(\norm{D_du_2}^2-\norm{D_du_1}^2)\leq0$.
 Como $\lambda_2>\lambda_1$, se obtiene la primera desigualdad. Sustituyéndola en la primera desigualdad de optimalidad se obtiene la segunda.
 \end{proof}
 
-\section{Grados de libertad: de proyecciones a suavizadores}
+\checkpoint{03}{¿Qué conserva el filtro en el ejemplo $L=4,d=2$?}{Con $\lambda=1$, las ganancias espectrales son $1,1,1/3,1/11$. La dirección constante y la dirección lineal permanecen intactas; $H_\infty$ es la proyección sobre ellas. La expresión se verifica multiplicando $Q_2u_j=\delta_ju_j$.}
+
+\section{Grados de libertad efectivos como traza de $H_\lambda$}
 \pregunta{¿Cuántos parámetros efectivos usa una tendencia suavizada?}
 En regresión ordinaria de mínimos cuadrados con matriz de proyección $P$, $\tr(P)=\rank(P)$ cuenta parámetros ajustados. Sin embargo, para $0<\lambda<\infty$, $H_\lambda$ no es en general idempotente. La generalización canónica para un \emph{suavizador lineal} es
 \begin{equation}\label{eq:edf}\boxed{\operatorname{edf}(\lambda)=\tr(H_\lambda)=
@@ -294,7 +412,9 @@ No siempre. La cantidad $L-\operatorname{edf}$ es la dimensión complementaria \
 \end{align}
 El factor $L-2\tr(H)+\tr(H^2)$ sólo coincide con $L-\tr(H)$ si $H^2=H$, como en una proyección ordinaria. Confundir estas cantidades produce estimadores de varianza y criterios de validación incorrectos.
 
-\section{De Guerrero a un índice escalar de suavidad}
+\checkpoint{04}{¿Por qué $\operatorname{edf}$ puede ser fraccionario?}{Para $L=4,d=2,\lambda=1$, $\operatorname{edf}=2+1/3+1/11=80/33$, que no es entero. La traza mide sensibilidad agregada de la tendencia respecto de los datos; sólo para proyecciones idempotentes coincide necesariamente con un rango entero.}
+
+\section{Escala de suavidad: el índice de Guerrero y la normalización $S$}
 \pregunta{¿Cómo se conecta el índice de Guerrero con la precisión de Theil?}
 La matriz de precisión asociada al error del estimador lineal, para $V=I_L$, es
 \[
@@ -339,6 +459,8 @@ Para $S_0=0$, elegimos $\lambda=0$; para $S_0=1$ calculamos $P_0$ exactamente. P
 \]
 La solución interior es única por la proposición anterior. La inversión numérica conviene hacerla sobre $\log\lambda$ cuando los rangos de penalización abarcan muchos órdenes de magnitud.
 
+\checkpoint{05}{¿Es realmente uno a uno el paso $\lambda\leftrightarrow S$?}{Con $L>d$, la derivada $S'(\lambda)$ es estrictamente positiva para cualquier $\lambda$ finita, mientras que $S(0)=0$ y $S(\infty)=1$. Para $L=4,d=2,\lambda=1$, $S=(4-80/33)/2=26/33$. Ninguna otra $\lambda$ produce ese mismo $S$.}
+
 \section{¿Cómo extrapolamos la tendencia, en lugar de sólo suavizar el pasado?}
 \pregunta{¿De dónde sale un pronóstico de horizonte $h$?}
 La matriz $H_\lambda$ tiene dimensiones $L\times L$: \emph{no pronostica por sí sola} los valores $L+1,\ldots,L+h$. El proyecto utiliza una continuación $G_{d,h}$ que exige \emph{diferencias futuras de orden $d$ iguales a cero}, manteniendo las últimas $d$ condiciones de borde del ajuste.
@@ -372,7 +494,9 @@ r_t(\lambda)=z_t-G_{d,h}H_\lambda x_t.
 \end{equation}
 El operador $G_{d,h}$ es constante en $\lambda$ \emph{en este modelo puro}; si se estimara también una deriva dependiente de $\lambda$, la derivación debería incorporar ese término.
 
-\section{De reconstrucción a validación cruzada temporal a horizonte $h$}
+\checkpoint{06}{¿Por qué un suavizador no es todavía un pronosticador?}{Porque $H_\lambda$ transforma $\R^L$ en $\R^L$. Para obtener valores en $\R^h$ debemos aplicar $G_{d,h}\in\R^{h\times L}$. Con $d=2$, los siguientes valores son $u_L+k(u_L-u_{L-1})$ para $k=1,\ldots,h$.}
+
+\section{Construcción de $f_T(\lambda)$: CV cronológica de pronóstico}
 \pregunta{¿Qué error optimizan los enfoques clásicos y cuál queremos minimizar?}
 No debemos confundir tres objetivos:\begin{align}
 \text{ajuste interno: }& \norm{y-H_\lambda y}^2,\\
@@ -394,10 +518,10 @@ La condición $t+h\leq T$ garantiza que el bloque que se evalúa esté completo 
 \pregunta{¿Promediamos suavidades óptimas individuales o funciones enteras de pérdida?}
 Sea $\mathcal O_T=\{t_1,\ldots,t_M\}$ el conjunto de orígenes históricos admisibles. La versión base con pesos uniformes construye
 \begin{equation}\label{eq:uniform}
-F_T(\lambda)=\frac1M\sum_{q=1}^M\ell_{t_q}(\lambda),\qquad
-\widehat\lambda_T\in\argmin_{\lambda\in[0,\infty]}F_T(\lambda).
+f_T(\lambda)=\frac1M\sum_{q=1}^M\ell_{t_q}(\lambda),\qquad
+\widehat\lambda_T\in\argmin_{\lambda\in[0,\infty]}f_T(\lambda).
 \end{equation}
-Equivalentemente, con horizonte fijo $h$, $F_T=(Mh)^{-1}\sum_q\norm{r_{t_q}}^2$. \textbf{Primero sumamos las funciones, luego buscamos el mínimo global.} En general,
+Equivalentemente, con horizonte fijo $h$, $f_T=(Mh)^{-1}\sum_q\norm{r_{t_q}}^2$. \textbf{Primero sumamos las funciones, luego buscamos el mínimo global.} En general,
 \[
 \argmin_\lambda\frac1M\sum_q\ell_{t_q}(\lambda)
 \quad\neq\quad\frac1M\sum_q\argmin_\lambda\ell_{t_q}(\lambda).
@@ -420,7 +544,49 @@ Tras seleccionar $\widehat S_T$, se convierte a $\widehat\lambda_T$ (o se utiliz
 \begin{equation}\label{eq:live}\boxed{\widehat y_{T+1:T+h\mid T}=G_{d,h}H(\widehat S_T)x_T.}\end{equation}
 Los valores verdaderos $y_{T+1:T+h}$ jamás pueden haber influido en la elección de $\widehat S_T$. Para evaluar científicamente el método hace falta un conjunto externo de orígenes o una validación anidada no reutilizada para escoger la variante ganadora.
 
-\section{Derivadas matriciales: primera, segunda y enésima}
+\checkpoint{07}{¿Podemos incluir una pérdida histórica sin mirar al futuro?}{En el origen operativo $T$, cada contribución requiere $t+h\leq T$. Si $t=T-2$ y $h=3$, $t+h=T+1>T$; esa pérdida no está completa y debe excluirse. Se agregan funciones de pérdida antes de minimizarlas.}
+
+\section{Construcción de $F_T(S)$: la misma función con otra coordenada}
+\pregunta{¿Qué es lo que realmente queremos demostrar que es uno a uno?}
+La correspondencia uno a uno es \emph{entre las coordenadas de suavidad}
+$\lambda\in[0,\infty]$ y $S\in[0,1]$, cuando $(L,d)$ están fijos.
+No existe razón para afirmar que $f_T$ o $F_T$ sean funciones inyectivas:
+una pérdida puede tomar el mismo valor en puntos diferentes.
+Definamos cuidadosamente, para unos mismos orígenes y pesos,
+\[
+ f_T(\lambda):=\frac{\sum_{q=1}^M w_{T,q}\ell_{t_q}(\lambda)}{\sum_{q=1}^M w_{T,q}},
+ \qquad F_T(S):=f_T(\lambda(S)),\qquad S\in[0,1].
+\]
+Por la proposición \ref{prop:Smono}, el cambio de coordenadas es biyectivo,
+y $F_T(S(\lambda))=f_T(\lambda)$ \emph{para todos los puntos, incluso los
+extremos}. La función $F_T$ no es una nueva pérdida ni agrega datos;
+simplemente permite medir la misma decisión sobre la escala interpretable $S$.
+
+\pregunta{¿Puede la pérdida ser constante aunque la correspondencia sea biyectiva?}
+Sí. Si todas las ventanas históricas $x_t$ pertenecen a $\ker D_d$,
+entonces $H_\lambda x_t=x_t$ para todo $\lambda$. Por consiguiente,
+$G_{d,h}H_\lambda x_t=G_{d,h}x_t$ y la pérdida es constante en $\lambda$.
+Este contraejemplo prueba que la biyección de parámetros \emph{no implica}
+una correspondencia uno a uno entre los valores de pérdida ni unicidad
+del minimizador.
+
+\pregunta{¿Cambiar de $\lambda$ a $S$ modifica el pronóstico que minimiza la pérdida?}
+\begin{proposicion}[Equivalencia de mínimos bajo reparametrización]
+Para $d,L,h$ fijos, $S$ es una biyección entre $[0,\infty]$ y $[0,1]$. Por ello,
+\[
+\argmin_{S\in[0,1]}F_T(S)
+=S\!\left(\argmin_{\lambda\in[0,\infty]}f_T(\lambda)\right),
+\]
+entendiendo el miembro derecho como la imagen de un conjunto de minimizadores.
+\end{proposicion}
+\begin{proof}
+Si $S_\star$ minimiza $F_T$, para cualquier $\lambda$ existe $S=S(\lambda)$ y se tiene
+$f_T(\lambda(S_\star))=F_T(S_\star)\leq F_T(S)=f_T(\lambda)$. La implicación recíproca se obtiene invirtiendo la correspondencia. Además, al representar ambas penalizaciones el mismo $H$ (incluidos los límites), producen idénticos ajustes y pronósticos.
+\end{proof}
+
+\checkpoint{08}{¿Qué coincide y qué puede no ser único?}{Coinciden exactamente las predicciones, los valores $f_T(\lambda)=F_T(S(\lambda))$ y los conjuntos de mínimos bajo el cambio de coordenadas. Pero $f_T$ no tiene por qué ser inyectiva y los dos objetivos pueden tener múltiples minimizadores.}
+
+\section{Derivadas de $H_\lambda$: primera, segunda y enésima}
 \pregunta{¿Cómo se deriva una matriz inversa que depende de $\lambda$?}
 Definimos $A(\lambda)=I_L+\lambda Q_d$ y $H(\lambda)=A(\lambda)^{-1}$. La identidad $A(\lambda)H(\lambda)=I_L$ implica, por la regla del producto,
 \[
@@ -466,7 +632,9 @@ La sensibilidad de la tendencia sale inmediatamente de que $x_t$ es fijo al deri
 \end{equation}
 Estas identidades son hechos estándar del cálculo matricial, no por sí mismas un resultado novedoso.
 
-\section{Derivadas completas del MSE de pronóstico}
+\checkpoint{09}{¿Podemos reconstruir $H''$ a partir de $H'$?}{De $H'=-HQH$ y la regla del producto sale $H''=-(H'QH+HQH')=2HQHQH$. Por inducción, $H^{(n)}=(-1)^nn!H(QH)^n$. Para diferenciar, $Q$ es constante y los productos mantienen su orden.}
+
+\section{Derivar $f_T(\lambda)$: MSE futuro, paso a paso}
 \pregunta{¿Cómo varía el pronóstico cuando cambia $\lambda$?}
 Para aligerar notación escribimos $G=G_{d,h}$, $Q=Q_d$, $x=x_t$, $z=z_t$ y $H=H_\lambda$. Definimos
 \[
@@ -511,49 +679,39 @@ De modo que
 \pregunta{¿Cómo se derivan las superficies promediadas y ponderadas?}
 Para pesos no negativos \emph{independientes de $\lambda$} y denominador $W_T=\sum_qw_{T,q}>0$:
 \begin{equation}\label{eq:weighted-deriv}
-F_T'(\lambda)=\frac1{W_T}\sum_qw_{T,q}\ell_{t_q}'(\lambda),\qquad
-F_T''(\lambda)=\frac1{W_T}\sum_qw_{T,q}\ell_{t_q}''(\lambda).
+f_T'(\lambda)=\frac1{W_T}\sum_qw_{T,q}\ell_{t_q}'(\lambda),\qquad
+f_T''(\lambda)=\frac1{W_T}\sum_qw_{T,q}\ell_{t_q}''(\lambda).
 \end{equation}
 Esto es diferenciación de una suma finita. Si los pesos dependiesen de $\lambda$, sería indispensable derivar también pesos y denominador, pero \emph{no} es nuestra especificación vigente.
 
-\section{Derivar con respecto a la suavidad $S$, no sólo con respecto a $\lambda$}
+\checkpoint{10}{¿Qué hace imposible garantizar convexidad con la fórmula de $\ell''$?}{El término $\|GHQHx\|^2$ es no negativo, pero $-2r^\top GHQHQHx$ carece de signo fijo. Además, $f_T'$ y $f_T''$ son promedios de derivadas sólo cuando los pesos históricos no dependen del parámetro.}
+
+\section{Derivar $F_T(S)$ por la regla de la cadena}
 \pregunta{¿Qué relación exacta hay entre las dos parametrizaciones?}
-Como $S=S(\lambda)$ es invertible en el interior, sea $\lambda=\lambda(S)$ y $\widetilde F_T(S)=F_T(\lambda(S))$. Por la regla de la función inversa,
+Como $S=S(\lambda)$ es invertible en el interior, usamos la definición ya demostrada $F_T(S)=f_T(\lambda(S))$. Por la regla de la función inversa,
 \[
 \frac{\dt\lambda}{\dt S}=\frac1{S'(\lambda)}.
 \]
 Usando la regla de la cadena:
 \begin{equation}\label{eq:dFdS}
-\boxed{\frac{\dt\widetilde F_T}{\dt S}=
-\frac{F_T'(\lambda)}{S'(\lambda)}.}
+\boxed{\frac{\dt F_T}{\dt S}=
+\frac{f_T'(\lambda)}{S'(\lambda)}.}
 \end{equation}
-Para la segunda derivada, derivamos el cociente $F'/S'$ respecto a $\lambda$ y multiplicamos por $\dt\lambda/\dt S$:
+Para la segunda derivada, derivamos el cociente $f'/S'$ respecto a $\lambda$ y multiplicamos por $\dt\lambda/\dt S$:
 \begin{equation}\label{eq:d2FdS2}
-\boxed{\frac{\dt^2\widetilde F_T}{\dt S^2}
-=\frac{F_T''(\lambda)S'(\lambda)-F_T'(\lambda)S''(\lambda)}{[S'(\lambda)]^3}.}
+\boxed{\frac{\dt^2 F_T}{\dt S^2}
+=\frac{f_T''(\lambda)S'(\lambda)-f_T'(\lambda)S''(\lambda)}{[S'(\lambda)]^3}.}
 \end{equation}
 Aquí
 \begin{equation}\label{eq:Ssecond}
 S''(\lambda)=-\frac2{L-d}\sum_{j=d+1}^L
 \frac{\delta_j^2}{(1+\lambda\delta_j)^3}<0.
 \end{equation}
-En un punto estacionario interior con $F_T'(\lambda_\star)=0$, el signo de la curvatura $\dt^2\widetilde F/\dt S^2$ coincide con el de $F_T''(\lambda_\star)$, porque $S'(\lambda_\star)>0$.
+En un punto estacionario interior con $f_T'(\lambda_\star)=0$, el signo de la curvatura $\dt^2F_T/\dt S^2$ coincide con el de $f_T''(\lambda_\star)$, porque $S'(\lambda_\star)>0$.
 
-\pregunta{¿Cambiar de $\lambda$ a $S$ modifica el pronóstico que minimiza la pérdida?}
-\begin{proposicion}[Equivalencia de mínimos bajo reparametrización]
-Para $d,L,h$ fijos, $S$ es una biyección entre $[0,\infty]$ y $[0,1]$. Por ello,
-\[
-\argmin_{S\in[0,1]}\widetilde F_T(S)
-=S\!\left(\argmin_{\lambda\in[0,\infty]}F_T(\lambda)\right),
-\]
-entendiendo el miembro derecho como la imagen de un conjunto de minimizadores.
-\end{proposicion}
-\begin{proof}
-Si $S_\star$ minimiza $\widetilde F_T$, para cualquier $\lambda$ existe $S=S(\lambda)$ y se tiene
-$F_T(\lambda(S_\star))=\widetilde F_T(S_\star)\leq\widetilde F_T(S)=F_T(\lambda)$. La implicación recíproca se obtiene invirtiendo la correspondencia. Además, al representar ambas penalizaciones el mismo $H$ (incluidos los límites), producen idénticos ajustes y pronósticos.
-\end{proof}
+\checkpoint{11}{¿Qué sucede con los puntos estacionarios bajo el cambio de coordenadas?}{En el interior, $F_T'(S)=f_T'(\lambda)/S'(\lambda)$ y $S'(\lambda)>0$, así que las raíces coinciden. En una raíz, $F_T''(S)=f_T''(\lambda)/[S'(\lambda)]^2$, con el mismo signo. Los extremos se evalúan por separado.}
 
-\section{Existencia, mínimos locales y búsqueda numérica}
+\section{Del CV a los métodos numéricos: existencia y candidatos}
 \pregunta{¿Existe al menos una suavidad óptima de validación?}
 \begin{proposicion}[Existencia sin unicidad]\label{prop:exist}
 Para cualquier conjunto finito de orígenes históricos completos, pesos no negativos con suma positiva, $(d,L,h)$ fijos y datos finitos, $F_T(S)$ alcanza por lo menos un mínimo global en $[0,1]$.
@@ -576,21 +734,274 @@ una suma racional cuyos productos cruzados no tienen signo fijo. La multimodalid
 Un procedimiento robusto dentro de un dominio de búsqueda predeclarado puede: (i) evaluar ambos extremos exactamente; (ii) explorar una malla adaptable en $S$; (iii) identificar cambios de signo en $F'$; (iv) refinar raíces con un método encajonado como Brent; (v) comparar $F$ en raíces, extremos y candidatos detectados. Esto \emph{no} certifica haber encontrado todas las raíces: una raíz tangencial no cambia de signo y pueden existir oscilaciones entre puntos de malla. Sólo procedimientos de aislamiento con hipótesis y garantías explícitas, por ejemplo algebraicos en casos pequeños, pueden proporcionar una certificación matemática del conjunto completo.
 
 \pregunta{¿Cuándo tendría sentido usar el logaritmo de $\lambda$?}
-Para $\theta=\log\lambda$ y $g(\theta)=F(e^\theta)$,
+Para $\theta=\log\lambda$ y $g(\theta)=f_T(e^\theta)$,
 \begin{equation}\label{eq:logderiv}
-\boxed{g'(\theta)=\lambda F'(\lambda),\qquad
- g''(\theta)=\lambda F'(\lambda)+\lambda^2F''(\lambda).}
+\boxed{g'(\theta)=\lambda f_T'(\lambda),\qquad
+ g''(\theta)=\lambda f_T'(\lambda)+\lambda^2f_T''(\lambda).}
 \end{equation}
 Para $\lambda>0$ las raíces de $g'$ son las de $F'$. Esta parametrización puede ayudar a explorar escalas de penalización; no representa exactamente los extremos $\lambda=0$ ni $\infty$, de modo que éstos se evalúan por separado.
 
-\section{Algoritmo reproducible y comprobaciones}
-\pregunta{¿Cuál es el orden correcto de operaciones para un pronóstico real?}
+\checkpoint{12}{¿Por qué una raíz de $F_T'$ no basta?}{Una raíz interior puede ser un máximo local, un mínimo local o un punto estacionario degenerado. Además, el mínimo global puede estar en $S=0$ o $S=1$. La continuidad asegura existencia, no unicidad ni capacidad de una malla finita para certificar todos los candidatos.}
+
+
+\section{El siguiente problema: ¿podemos recuperar todos los mínimos de $F$?}
+\pregunta{¿Qué pregunta abre el working paper de métodos numéricos?}
+Hasta aquí hemos \emph{definido} $F$ y demostrado cómo calcular sus derivadas.
+Sin embargo, $\widehat S_T\in\argmin F_T$ describe una respuesta matemática,
+no un algoritmo que recupere todos los candidatos. Una superficie puede tener
+más de un mínimo local, una raíz de la derivada sin cambio de signo y mínimos
+en los extremos. El \emph{Working Paper -- Numerical Methods} fija una sola
+superficie $F_T^{(m,d,L,h)}$ y estudia qué se puede recuperar, con qué costo
+y bajo qué garantías. No sigue mínimos a través del tiempo: eso vendrá después.
+
+\pregunta{¿En qué se diferencian Brent para raíces y Brent para minimización?}
+Hay dos tareas numéricas distintas que a veces se denominan simplemente
+``Brent''. El algoritmo de \emph{Brent--Dekker para raíces} combina
+bisección, secante e interpolación cuadrática inversa en un intervalo
+$[a,b]$ que verifica $F_T'(a)F_T'(b)<0$. Si $F_T'$ es continua, el
+teorema del valor intermedio prueba que existe al menos una raíz en ese
+intervalo; el algoritmo converge a \emph{una} raíz con condiciones de
+precisión apropiadas. El \emph{método de Brent para minimización escalar}
+combina pasos parabólicos y sección áurea bajo un régimen local de
+búsqueda; por sí solo no certifica que haya encontrado todos los mínimos.
+
+Para buscar puntos estacionarios con el primer método:
+\[
+S_a<S_b,\quad F_T'(S_a)F_T'(S_b)<0
+\;\Longrightarrow\;\exists S_\circ\in(S_a,S_b):F_T'(S_\circ)=0.
+\]
+Pero un cero doble de $F_T'$ puede tocar el eje y no cambiar de signo;
+ninguna malla finita con refinamiento de cambios de signo garantiza
+detectar tales ceros. Una raíz estacionaria tampoco tiene que ser mínima.
+
+\pregunta{¿Por qué aparece un polinomio cuando escribimos $f_T$ en la base espectral?}
+Sea $r$ el número de \emph{autovalores positivos distintos} de $Q_d$,
+que llamamos $\rho_1,\ldots,\rho_r$ (puede ser menor que $L-d$ por
+multiplicidades). Sean $P_j$ los proyectores ortogonales sobre sus
+autoespacios y $P_0$ la proyección sobre $\ker Q_d$. Entonces
+\[
+H_\lambda=P_0+\sum_{j=1}^r\frac{P_j}{1+\lambda\rho_j}.
+\]
+Definimos el polinomio común de denominador
+\[
+B(\lambda)=\prod_{j=1}^r(1+\lambda\rho_j),\qquad
+B_j(\lambda)=\frac{B(\lambda)}{1+\lambda\rho_j}
+=\prod_{k\ne j}(1+\lambda\rho_k).
+\]
+Para cada origen histórico $t_q$, sean $c_q=z_{t_q}-G_{d,h}P_0x_{t_q}$
+y $v_{qj}=G_{d,h}P_jx_{t_q}$. De la representación espectral,
+\[
+r_q(\lambda)=c_q-\sum_{j=1}^r\frac{v_{qj}}{1+\lambda\rho_j}
+=\frac{R_q(\lambda)}{B(\lambda)},\qquad
+R_q(\lambda)=c_qB(\lambda)-\sum_{j=1}^rv_{qj}B_j(\lambda).
+\]
+\begin{proposicion}[Racionalidad de la pérdida de pronóstico]\label{prop:rational}
+Para $d,L,h$, orígenes completos y pesos no negativos fijos, con
+$W=\sum_qw_q>0$, la pérdida tiene la forma
+\begin{equation}\label{eq:rational-pool}
+\boxed{f_T(\lambda)=\frac{N(\lambda)}{hW\,B(\lambda)^2},\qquad
+N(\lambda)=\sum_qw_q\|R_q(\lambda)\|_2^2.}
+\end{equation}
+Sus puntos estacionarios interiores, excepto el caso $f_T'\equiv0$,
+son ceros reales no negativos del polinomio
+\begin{equation}\label{eq:rootpoly}
+\boxed{A(\lambda)=N'(\lambda)B(\lambda)-2N(\lambda)B'(\lambda).}
+\end{equation}
+\end{proposicion}
+\begin{proof}
+El producto $B$ elimina los denominadores de cada residual $r_q$.
+Elevando su norma al cuadrado y ponderando, el denominador común es
+$hWB^2$, lo que demuestra \eqref{eq:rational-pool}. La regla del
+cociente da
+\[
+f_T'(\lambda)=\frac{N'B^2-2NBB'}{hWB^4}
+=\frac{N'B-2NB'}{hWB^3}.
+\]
+Para $\lambda\ge0$, cada factor $1+\lambda\rho_j$ es estrictamente
+positivo; así, $B(\lambda)>0$, y $f_T'(\lambda)=0$ si y sólo si
+$A(\lambda)=0$. Si $A$ es idénticamente cero, $f_T$ es constante y
+hay infinitos puntos estacionarios: ese caso debe diagnosticarse
+antes de usar cualquier procedimiento de aislamiento finito.
+\end{proof}
+
+\checkpoint{13}{¿Qué ganamos con esta reducción algebraica?}{La minimización de una función racional se convierte, en el interior, en la localización de raíces reales de un polinomio $A=N'B-2NB'$, siempre que $A$ no sea idénticamente cero. Por separado debemos comparar $S=0$ y $S=1$. La existencia de $A$ no implica que calcularlo en coma flotante sea estable.}
+
+\section{Aislamiento de raíces: el método de Sturm y sus límites}
+\pregunta{¿Cómo contar raíces \emph{antes} de aproximar sus posiciones?}
+Para un polinomio real $A$ no nulo, si tiene raíces múltiples,
+formamos primero su parte libre de cuadrados
+$P=A/\gcd(A,A')$ con aritmética polinómica exacta. Definimos la
+\emph{sucesión de Sturm}
+\begin{align*}
+P_0&=P,&P_1&=P',&P_{k+1}&=-\operatorname{rem}(P_{k-1},P_k),
+\end{align*}
+hasta llegar a una constante no nula. Para $x$ donde ningún polinomio
+de la sucesión se anule, $V(x)$ es el número de cambios de signo de
+$(P_0(x),P_1(x),\ldots)$, omitiendo ceros si los hubiera.
+El \emph{teorema de Sturm} establece que, en extremos sin raíces,
+\begin{equation}\label{eq:sturm}
+\boxed{\#\{\lambda\in(a,b):A(\lambda)=0\}_{\mathrm{distintas}}
+=V(a)-V(b).}
+\end{equation}
+\emph{Justificación de la idea:} cerca de una raíz simple de $P_0$,
+$P_1=P_0'$ obliga a que la primera pareja de signos pierda exactamente
+una variación al cruzarla de izquierda a derecha. En una raíz de
+un polinomio intermedio, la identidad
+$P_{k-1}=-P_{k+1}$ (evaluada donde $P_k=0$) hace que las dos
+variaciones vecinas se compensen. Fuera de raíces, los signos son
+localmente constantes. Sumando saltos se obtiene
+\eqref{eq:sturm}. Para una demostración formal completa del teorema
+general de Sturm se requiere desarrollar el algoritmo euclidiano
+de polinomios; aquí hemos probado la reducción estructural
+\eqref{eq:rootpoly} y explicado el fundamento del conteo.
+
+\pregunta{¿Por qué Sturm no es una solución universal para nuestra matriz $Q_d$?}
+En un problema \emph{finito y de coeficientes racionales exactos}
+podemos construir el polinomio de estacionariedad simbólicamente,
+aislar todas sus raíces reales no negativas y refinar intervalos.
+No obstante, una diagonalización numérica genera autovalores
+aproximados; redondearlos a racionales cambia el problema original.
+La expansión de productos y coeficientes puede sufrir cancelación
+catastrófica y crecer enormemente en grado y tamaño.
+Un certificado para datos \emph{racionalizados} no certifica
+necesariamente el problema original de datos flotantes.
+Para generalizar garantías habría que incorporar control riguroso
+de errores, aritmética de intervalos o hipótesis adicionales.
+
+\pregunta{¿Cuál es el algoritmo combinado sin atribuirle garantías que no tiene?}
+\begin{enumerate}[label=\arabic*.]
+\item Fijar el $F_T$ de un método, un horizonte, una ventana y un orden.
+\item Evaluar $S=0$ mediante $H_0=I_L$ y $S=1$ mediante $H_\infty=P_0$.
+\item Usar muestreo adaptativo de $F'_T(S)$; refinar cambios de signo
+      mediante Brent--Dekker, y estudiar raíces potencialmente tangentes.
+\item Cuando el caso exacto sea pequeño, construir $A$, aislar raíces
+      mediante Sturm y comparar con los candidatos numéricos.
+\item Clasificar cada estacionario (segunda derivada y, si es degenerado,
+      valores a ambos lados) y comparar \emph{todas las pérdidas de candidatos}.
+\end{enumerate}
+El algoritmo con malla es una heurística de recuperación, no una
+certificación general; Sturm certifica sólo sus entradas algebraicas
+bajo aritmética y condiciones de exactitud declaradas.
+
+\checkpoint{14}{¿Brent o Sturm garantiza siempre todos los mínimos?}{Brent para raíces necesita un intervalo de cambio de signo y encuentra una raíz por intervalo; la malla puede omitir raíces pares o cercanas. Sturm cuenta y aísla raíces de un polinomio exacto bajo hipótesis precisas, pero no certifica automáticamente el objetivo original con espectro numérico aproximado. Los extremos siguen siendo candidatos.}
+
+\section{Nueva pregunta: ¿qué sucede con los mínimos cuando llega información nueva?}
+\pregunta{¿Por qué ya no basta estudiar una superficie fija?}
+El \emph{Working Paper -- Dynamic Branch Selection} observa la secuencia
+cronológica $F_1,F_2,\ldots,F_M$ de superficies definidas sobre la misma
+escala $S\in[0,1]$, para un \emph{único} método $m$ y parámetros
+$d,L,h$ fijos. Al completar el bloque $t_r+h$, se construye
+\begin{equation}\label{eq:branchsurface}
+F_r^{(m,d,L,h)}(S)=
+\frac{\displaystyle\sum_{q\in I_m(r)}w_{r,q}^{(m)}\ell_{t_q}^{(d,L,h)}(S)}
+{\displaystyle\sum_{q\in I_m(r)}w_{r,q}^{(m)}},
+\qquad I_m(r)\subseteq\{1,\ldots,r\}.
+\end{equation}
+Todas las pérdidas empleadas al construir $F_r$ ya se completaron;
+ninguna pérdida con $q>r$ puede entrar. En general, cambiar pesos
+cambia también el relieve de $F_r$ y la existencia de ramas.
+
+\pregunta{¿Qué es un mínimo local y cómo se forma una rama?}
+Para cada actualización $r$, sea
+\[
+\mathcal M_r=\operatorname{LocalMin}_{S\in[0,1]}F_r(S),
+\]
+incluyendo mínimos admisibles en la frontera. Dada una tolerancia
+predeclarada $\varepsilon_{\mathrm{track}}>0$, enlazamos de forma
+\emph{uno a uno} mínimos entre \emph{superficies adyacentes}
+$F_{r-1}$ y $F_r$ cuya distancia en la escala de suavidad cumpla
+$|S_{j,r}-S_{k,r-1}|\le\varepsilon_{\mathrm{track}}$.
+Si varios emparejamientos compiten, usamos una regla de desempate
+predeclarada. Los mínimos no emparejados inician ramas nuevas o terminan
+ramas previas. No hay garantía de identidad única en cruces,
+colisiones o puntos estacionarios degenerados.
+La historia de una rama se registra como
+\[
+V_j=\{(r,t_r,S^*_{j,r},F_r(S^*_{j,r})):r\in\mathcal T_j\}.
+\]
+
+\pregunta{¿Podemos demostrar que un mínimo persiste bajo cambios pequeños?}
+\begin{proposicion}[Continuación local condicional de un mínimo]\label{prop:branchimplicit}
+Sea $\mathcal F(S,\theta)$ una interpolación suficientemente suave
+($C^2$ en $S$ y con derivadas mixtas continuas) alrededor de
+$(S_0,\theta_0)$, con
+$\mathcal F_S(S_0,\theta_0)=0$ y
+$\mathcal F_{SS}(S_0,\theta_0)>0$.
+Entonces existe localmente una única función diferenciable
+$S^*(\theta)$ de raíces cercanas y
+\begin{equation}\label{eq:implicitbranch}
+\boxed{\frac{\mathrm dS^*}{\mathrm d\theta}
+=-\frac{\mathcal F_{S\theta}(S^*(\theta),\theta)}
+{\mathcal F_{SS}(S^*(\theta),\theta)}.}
+\end{equation}
+Para $\theta$ suficientemente cercano, esos puntos permanecen mínimos
+locales estrictos interiores.
+\end{proposicion}
+\begin{proof}
+Sea $g(S,\theta)=\mathcal F_S(S,\theta)$.
+En $(S_0,\theta_0)$ se verifica $g=0$ y
+$g_S=\mathcal F_{SS}>0$, en particular $g_S\ne0$.
+Por el teorema de la función implícita, existe una única función
+local $S^*(\theta)$ con $g(S^*(\theta),\theta)=0$.
+Derivando con la regla de la cadena,
+$g_SS^{*\prime}(\theta)+g_\theta=0$,
+lo cual da \eqref{eq:implicitbranch}. Por continuidad, la curvatura
+permanece positiva en un entorno; por el criterio de la segunda derivada
+se conserva la condición de mínimo local estricto.
+\end{proof}
+\emph{Alcance:} este teorema se aplica a una interpolación continua
+construida para razonar sobre superficies cercanas, no convierte por
+sí solo la serie \emph{discreta} de actualizaciones históricas en
+trayectorias que siempre existan. Si $F''$ se aproxima a cero,
+la sensibilidad de la localización puede crecer mucho; en una
+bifurcación pueden nacer o desaparecer mínimos.
+
+\pregunta{¿Cómo se toma una decisión operativa a partir de ramas?}
+La regla $\psi$ escoge una rama activa utilizando \emph{únicamente}
+pérdidas históricas completadas. Una regla $\phi$ transforma la historia
+seleccionada en una sola suavidad operativa. El ejemplo piloto es
+\[
+\phi(V_j)=\frac1{\min(3,|\mathcal T_j|)}
+\sum_{r\in\operatorname{last}_{\min(3,|\mathcal T_j|)}(\mathcal T_j)}
+S^*_{j,r},\quad
+\widehat j_T=\psi(\{V_j\};\{F_r\}_{r\le M}),\quad
+\widehat S_T^{\mathrm{track}}=\phi(V_{\widehat j_T}).
+\]
+Primero ponderamos las \emph{funciones de pérdida}, detectamos sus
+mínimos, rastreamos ramas y \emph{después} promediamos los últimos tres
+valores de $S$ de la rama elegida. El promedio de $S$ \emph{no} se
+introduce dentro de $F_r$ ni sustituye sus mínimos. Tampoco se
+requiere una capa obligatoria de validación interna ``Val2'';
+los protocolos antiguos Val1/Val2 se conservan como evidencia histórica
+de \emph{otro} procedimiento.
+
+\pregunta{¿Cuál es la comparación científicamente correcta entre los dos enfoques?}
+Para el \emph{mismo} $m,d,L,h$, los mismos orígenes históricos, la misma
+$F_M$ y los mismos orígenes externos, comparar
+\[
+\widehat S_T^{\mathrm{pool}}\in\argmin_{S\in[0,1]}F_M(S)
+\qquad\text{frente a}\qquad
+\widehat S_T^{\mathrm{track}}=\phi(V_{\widehat j_T}).
+\]
+Ambas decisiones se reajustan sobre la ventana más reciente y
+pronostican $h$ pasos sin observar el futuro. La hipótesis de que
+seguir ramas mejora el pronóstico es una \emph{pregunta empírica},
+no consecuencia del teorema implícito. Si ninguna rama cumple los
+criterios de soporte, debe declararse una regla de respaldo antes
+de ver los resultados externos.
+
+\checkpoint{15}{¿Por qué el algoritmo de ramas no es ``Brent repetido''?}{La búsqueda numérica encuentra candidatos en una sola $F_r$; el seguimiento añade una relación temporal entre candidatos de superficies adyacentes, una regla para seleccionar rama y otra para elegir $S$ operativo. Una garantía de aislamiento de raíces no garantiza persistencia, identidad ni mayor precisión de pronóstico.}
+
+\section{Algoritmo integrado y comprobaciones finales}
+\pregunta{¿Cuál es la cadena completa de operaciones y qué decide cada paper?}
 \begin{enumerate}[label=\arabic*.]
 \item \textbf{Fijar el problema}: $L>d\geq1$, $h\geq1$, familia de pesos $m$ y cualquier otra elección de protocolo antes de examinar pérdidas externas.
 \item \textbf{Preparar la geometría}: construir $D_d$, $Q_d$, diagonalizar $Q_d$, verificar $d$ autovalores nulos, formar $P_0$ y definir $S\leftrightarrow\lambda$.
 \item \textbf{Construir los orígenes elegibles}: seleccionar sólo $t$ para los cuales $y_{t-L+1:t}$ y $y_{t+1:t+h}$ ya estaban observados en $T$.
 \item \textbf{Calcular cada superficie}: ajustar $H(S)x_t$, continuar con $G_{d,h}$ y obtener $\ell_t(S)$; nunca ajustar $H$ sobre el vector que incluya el bloque $z_t$.
-\item \textbf{Agregar antes de minimizar}: formar $F_T^{(m)}(S)$ con los pesos prescritos y buscar su \emph{mínimo global} sobre $[0,1]$, incluyendo los extremos exactos.
+\item \textbf{Primera decisión (CV)}: formar $F_T^{(m)}(S)$ con los pesos prescritos y elegir su \emph{mínimo global}, incluyendo los extremos exactos.
+\item \textbf{Análisis numérico}: para esa misma $F_T$, contrastar búsqueda por derivadas y Brent con certificados Sturm cuando sean aplicables; identificar límites y candidatos omitidos.
+\item \textbf{Decisión alternativa (ramas)}: construir la sucesión de $F_r$ con los mismos parámetros, enlazar los mínimos adyacentes y escoger $S$ por $\psi$ y $\phi$ después del seguimiento.
 \item \textbf{Refit operacional}: utilizar $\widehat S_T$ para estimar con $x_T=y_{T-L+1:T}$ y predecir $y_{T+1:T+h}$ mediante \eqref{eq:live}.
 \item \textbf{Evaluar aparte}: comparar contra el futuro no usado para selección. Las variantes de $(d,L,h,m)$ requieren comparación justa y selección interna si se ajustan entre sí.
 \end{enumerate}
@@ -605,14 +1016,16 @@ Para $\lambda>0$ las raíces de $g'$ son las de $F'$. Esta parametrización pued
 \item Mantener separados los resultados congelados de experimentos históricos y los protocolos/experimentos prospectivos de los working papers.
 \end{itemize}
 
-\section{Límites, interpretación cruzada y preguntas abiertas}
+\checkpoint{16}{¿Puedes describir el algoritmo sin información futura?}{En $T$ sólo usamos bloques completos ($t+h\leq T$). El Paper 1 promedia curvas y busca el argmín global; el Paper numérico verifica candidatos de una superficie fija; el Paper de ramas rastrea mínimos de superficies históricas y decide $S$ después. Todos reajustan con $x_T$ y mantienen intocado el futuro externo.}
+
+\section{Cierre de la clase: tres problemas científicos separados}
 \pregunta{¿Qué conecta este modelo con álgebra lineal, regularización y estadística?}
 \textbf{Álgebra lineal}: $Q_d$ mide energía de diferencias, su núcleo son polinomios y $H_\lambda$ contrae modos ortogonales. \textbf{Estadística}: $\tr H$ cuantifica complejidad efectiva; la especialización $V=I$ impone condiciones de segundo momento sobre el ruido de observación. \textbf{Problemas inversos}: la penalización de Tikhonov estabiliza un ajuste sacrificado por suavidad. \textbf{Pronóstico}: un ajuste que reconstruye bien el pasado no necesariamente minimiza error futuro; hay que evaluar la continuación y el horizonte que realmente importan.
 
 \pregunta{¿Qué está probado y qué sigue siendo una cuestión empírica?}
 \begin{itemize}
 \item \textbf{Probado aquí}: solución PLS única para $\lambda$ finita, estructura del núcleo y $d$ autovalores cero, fórmula espectral, extremos exactos, EDF, monotonía de $S$, derivadas y existencia de mínimo de validación.
-\item \textbf{No probado}: convexidad, unicidad de $S_T^*$, recuperación numérica exhaustiva de todos los mínimos, consistencia estadística del selector y superioridad general de ponderaciones recientes frente a pesos uniformes.
+\item \textbf{No probado}: convexidad, unicidad de $S_T^*$, recuperación numérica exhaustiva para entradas arbitrarias, persistencia global de ramas, consistencia estadística del selector y superioridad general de ponderaciones recientes o ramas frente al argmín global.
 \item \textbf{Verificable}: diferencias de pérdida de pronóstico a igual $(d,L,h)$ y mismos orígenes externos; sensibilidad frente a ruido correlacionado, cambios de régimen, memoria $L$, horizonte $h$ y elección de ponderación temporal.
 \end{itemize}
 
@@ -629,6 +1042,8 @@ S(\lambda)=\frac{L-\tr H_\lambda}{L-d},\quad
 \widehat y_{T+1:T+h\mid T}=G_{d,h}H(\widehat S_T)y_{T-L+1:T}.
 \end{gathered}}
 \end{equation}
+
+\checkpoint{17}{¿Qué quedó demostrado, y qué todavía debemos comprobar empíricamente?}{La estructura espectral y los autovalores cero, $H$, EDF, el mapa biyectivo $\lambda\leftrightarrow S$, las derivadas y la existencia de mínimo están justificadas. No quedó demostrada una mejora predictiva universal, convexidad de $F_T$ ni unicidad del mínimo: esas afirmaciones exigen experimentos, hipótesis o contraejemplos adicionales.}
 
 \section*{Fuentes y trazabilidad}\addcontentsline{toc}{section}{Fuentes y trazabilidad}
 Las notas manuscritas \emph{notes on trend estimation.pdf} (pp.~1--25; pp.~26--31 sin contenido matemático sustantivo legible) inspiraron la secuencia: PLS, diagonalización, diferencias y extrapolación, cálculo de $H'$ y $H''$, funciones $F$, $S$, búsqueda de mínimos y protocolo CV. Las demostraciones completas del núcleo de $Q_d$, EDF, distinción entre proyección y suavizador y separación temporal de las validaciones se desarrollaron y formalizaron aquí. Las fuentes primarias de la parametrización del proyecto son \texttt{working\_papers/THEORETICAL\_CONTRIBUTIONS.md}, \texttt{WEIGHTED\_SURFACE\_PROTOCOL.md}, el README del \textit{Working Paper -- Smoothness Cross Validation} y \texttt{notes/derivative.md} del repositorio \textit{Trend-Estimation} (consultados el 9 de octubre de 2026).
