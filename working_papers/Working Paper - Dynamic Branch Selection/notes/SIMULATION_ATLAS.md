@@ -36,6 +36,30 @@ durante experimentos formales. Ver
 [CAMPAIGN_README.md](../../../experiments/smoothness_cv/CAMPAIGN_README.md).
 **No resultados todavía del Estudio D.**
 
+## Experimento conjunto de ocho horas y comparación verdaderamente pareada
+
+El nuevo [protocolo de 144 celdas](../../JOINT_FORMAL_8H_PROTOCOL.md)
+compara tracking vs global mínimo pooled para exactamente
+los mismos \(F_r^{(m,d,L,h)}\), semillas,
+ventanas, extrapolador y orígenes externos.
+Incorpora un estudio de \(\tau\) conocida
+con tres \(\sigma\) y una figura predefinida
+de \(\tau,y,\widehat\tau\) y ambos
+pronósticos h-step. La evaluación de ramas
+recoge soporte, mínimos detectados, S/EDF
+y error observado/latente contra el mismo futuro.
+La parte Brent/adaptativa se realiza
+en una muestra de **las mismas F**,
+no en una prueba que reemplace el criterio
+ponderado por otro método.
+
+Si se agota el presupuesto temporal antes
+de completar las réplicas por celda,
+el informe mantiene estado exploratorio.
+Una futura prueba confirmatoria
+debe fijar reglas antes de usar
+nuevas semillas/test.
+
 ## 1. ¿Qué se simula, y cuál es el control justo?
 
 Igual que en Paper 1:
