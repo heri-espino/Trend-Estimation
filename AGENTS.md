@@ -12,6 +12,32 @@
 6. [experiments/smoothness_cv/CAMPAIGN_README.md](experiments/smoothness_cv/CAMPAIGN_README.md)
    — manual extensive simulations, checkpointing and float32 GPU benchmark.
 
+## Research-note-first writing contract (2026-10-09)
+
+Before editing \`manuscript/main.tex\` or claiming publication readiness,
+read [NOTES_TO_MANUSCRIPT.md](working_papers/NOTES_TO_MANUSCRIPT.md)
+and the three **Markdown note layers** within the relevant working
+paper's \`notes/\` folder:
+
+1. \`RESEARCH_NOTEBOOK.md\` — delimitation, theory motivation,
+   exact forecasting algorithm, mathematical question and eventual
+   journal-appropriate narrative.
+2. \`PROOF_LEDGER.md\` — status-separated known identities, proved
+   propositions, assumptions, counterexamples and genuinely open
+   results. Never equate algebraic derivation with proven novelty.
+3. \`SIMULATION_ATLAS.md\` — exact generator definitions and
+   train/validation/outer semantics, \`y=tau+season+noise\`, diagrams
+   of \`tau\` versus fitted and extrapolated trends at multiple noise
+   levels, hypotheses, tables and **figures not yet generated**.
+
+The first two papers share the 528-cell prospective simulation
+campaign but ask **different scientific questions**. The numerical
+paper has its own analytic known-root benchmarks and PLS F(S)
+stress tests: do not interpret a simulated latent tau as the
+ground-truth stationary roots of F. Historical results are
+maintained with original scope; the new extensive run remains
+prospective until verified.
+
 ## What research are we doing?
 
 Three **independent** active papers, with common PLS infrastructure:
