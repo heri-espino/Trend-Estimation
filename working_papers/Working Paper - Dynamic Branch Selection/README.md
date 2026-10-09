@@ -23,6 +23,23 @@ compare external observed forecast MSE, latent-trend error,
 smoothness, EDF, and branch stability. The new experiments
 **have not been run**.
 
+## Agent continuity and canonical app
+
+Read [AI_HANDOFF.md](AI_HANDOFF.md),
+[THEORETICAL_CONTRIBUTIONS.md](../THEORETICAL_CONTRIBUTIONS.md)
+and [apps/README.md](../../apps/README.md).
+**Canonical app:** \`streamlit run apps/dynamic_branch_cv.py\` now
+runs the **current method-weighted F branch procedure**, NOT the old
+\`apps/smoothness_lab.py\` Val1/Val2 engine.
+Weight historical forecast-loss **functions** BEFORE local minimum
+detection; any mean-of-three S values is a **post-tracking**
+branch decision. The same m,d,L,h and untouched outer origins
+must be used for the global-F and tracked comparison.
+
+The [CUDA implementation note](../COMPUTATIONAL_IMPLEMENTATION.md)
+is supporting matrix-computation evidence, not proof of branch
+persistence or improved prediction.
+
 ## Current proposed method
 
 For each predeclared weighting method \(m\), difference order \(d\),
