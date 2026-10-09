@@ -7,6 +7,19 @@ The objective is the reliable, efficient **recovery and ranking of
 stationary points and minima on a single forecast-loss surface**, not
 selection of temporal branches.
 
+## Canonical Markdown notes before the final manuscript
+
+Use [Research notebook](notes/RESEARCH_NOTEBOOK.md),
+[Proof ledger](notes/PROOF_LEDGER.md),
+[Simulation/figure atlas](notes/SIMULATION_ATLAS.md)
+and [shared editorial workflow](../NOTES_TO_MANUSCRIPT.md).
+Explain both test-function roots known by construction and
+forecast-loss surfaces generated from tau plus different noise:
+knowing **tau is not the same as knowing every root of F**.
+Document finite-instance Sturm proofs, endpoint handling, numerical
+counterexamples, and what recovery of trend/forecast paths would
+look like at multiple noise levels before writing the journal paper.
+
 ## Agent continuity and canonical app
 
 The current independent app is
