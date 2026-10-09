@@ -7,6 +7,29 @@ entire N=50/200 series. This is distinct from using the same 16 DGP
 cells as **forecasting** stress cases in the extensive simulation
 campaign.
 
+## Start here — theory and current interfaces (2026-10-09)
+
+**Research is theory-first.** Read
+[THEORETICAL_CONTRIBUTIONS.md](THEORETICAL_CONTRIBUTIONS.md)
+for **known results, our proposed integrations, proof obligations,
+conjectures, scientific limitations and the GPU's supporting role**.
+For implementation evidence and preliminary user-provided acceleration
+numbers, use
+[COMPUTATIONAL_IMPLEMENTATION.md](COMPUTATIONAL_IMPLEMENTATION.md).
+
+**One canonical independent Streamlit app per paper:**
+[Paper 1 pooled forecast-CV](../apps/pooled_forecast_cv.py),
+[Paper 2 weighted-F dynamic branches](../apps/dynamic_branch_cv.py),
+[Paper 3 numerical stationary points](../apps/numerical_methods.py).
+Read [apps/README.md](../apps/README.md) for actual controls, data
+provenance and historical/legacy traps.
+
+The earlier \`apps/smoothness_lab.py\` and
+\`apps/smoothness_lab_advanced.py\` implement a *different* Val1/Val2
+algorithm and must never be presented as the current Paper 2.
+New paper formulations and apps are not automatically synchronized
+with the older LaTeX drafts or frozen CP01–CP08 evidence.
+
 ## Shared experimental evaluation
 
 Both papers now have a single proposed [simulation and evaluation
