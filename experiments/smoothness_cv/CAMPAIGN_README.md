@@ -219,6 +219,46 @@ See the [float32 benchmark source](benchmark_cpu_gpu.py) and
 **The benchmarks must be run on the actual university workstation**;
 no speedup is asserted by committing the benchmark itself.
 
+## User-run RTX 4500 Ada float32 loss-kernel benchmark (2026-10-09)
+
+The user ran the default \`--kernel gemm\` loss-surface benchmark
+with 32 CPU workers and one CUDA GPU. The provided console output
+shows the following **preliminary timings**:
+
+| Series per batch | CPU32 | CUDA resident | CUDA + transfers | CPU32 / CUDA + transfers |
+| ---: | ---: | ---: | ---: | ---: |
+| 1 | 0.00043 s | 0.00008 s | 0.00021 s | 2.06× |
+| 32 | 0.02068 s | 0.00030 s | 0.00116 s | 17.83× |
+| 256 | 0.09485 s | 0.00065 s | 0.00208 s | 45.60× |
+| 1024 | 0.05157 s | 0.00295 s | 0.00524 s | 9.83× |
+
+**These are user-provided measurements, not independently reproduced
+by this repository-editing agent.** Performance must be interpreted
+as **the spectral PLS loss kernel**, NOT full end-to-end Monte Carlo
+acceleration. The CPU32 batch-size anomaly (1,024 faster than 256)
+warrants repeated runs and full timing distribution, plus fair
+scenario-per-worker CPU comparisons. Next validation must inspect
+\`results/smoothness_cv/gpu_benchmark/timings_float32.csv\` and
+\`hardware.json\`: dtype, CUDA build/device, loss error, and especially
+the number of **different selected grid smoothness values**.
+Saving that metadata is essential before presenting quantitative
+engineering results in an article.
+
+**Potential GPU/CPU parallel implementation (NOT implemented):**
+CPU producer processes prepare/generate series and grouped spectral
+inputs; a bounded batching queue feeds **one GPU inference process**
+that handles the B×M×K float32 contractions; CPU postprocessors
+handle global/local minima, branch matching, outer forecast scores
+and SQLite transaction writes. Launching 32 independent CUDA
+processes to contend for one GPU is not the proposed design.
+Benchmark complete tasks before replacing the current CPU campaign.
+
+**Scientific priority remains theoretical/statistical**:
+[theoretical charter](../../working_papers/THEORETICAL_CONTRIBUTIONS.md).
+For a manuscript-ready implementation paragraph and honest
+comparison boundaries, see
+[computational implementation note](../../working_papers/COMPUTATIONAL_IMPLEMENTATION.md).
+
 ## Hardware: 32 logical processors and RTX Ada GPU
 
 The runner defaults to up to 32 logical CPU processes and explicitly
