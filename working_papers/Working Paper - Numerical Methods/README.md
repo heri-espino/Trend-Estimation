@@ -7,6 +7,25 @@ The objective is the reliable, efficient **recovery and ranking of
 stationary points and minima on a single forecast-loss surface**, not
 selection of temporal branches.
 
+## Agent continuity and canonical app
+
+The current independent app is
+\`streamlit run apps/numerical_methods.py\`, with **one fixed
+horizon-h weighted F(S)**, analytic derivatives and exact boundary
+checks. Do not replace it with the old historical tracked-minima
+dashboard: that visualizes earlier Val1/Val2 experiments.
+Read [AI_HANDOFF.md](AI_HANDOFF.md) and
+[THEORETICAL_CONTRIBUTIONS.md](../THEORETICAL_CONTRIBUTIONS.md)
+for exact proof/novelty boundaries.
+
+The [computational implementation note](../COMPUTATIONAL_IMPLEMENTATION.md)
+records user-provided RTX 4500 Ada **float32 loss-kernel** performance
+only as optional supplementary implementation evidence. A faster
+matrix contraction is not automatically a new numerical solver theorem.
+The priority remains stationary-point recovery, endpoint handling,
+objective conditioning, analytic vs certified root isolation and
+explicit assumptions.
+
 ## The numerical problem
 
 Consider a PLS forecast-validation objective \(F(S)\) over normalized
