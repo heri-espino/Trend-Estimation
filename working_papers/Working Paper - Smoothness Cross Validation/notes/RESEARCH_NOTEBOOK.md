@@ -7,7 +7,23 @@ solo. Leer con [demostraciones](PROOF_LEDGER.md),
 [base matemática histórica](mathematical_foundations.md) y
 [protocolo transversal](../../WEIGHTED_SURFACE_PROTOCOL.md).
 
-## 0. Resumen intelectual en una pregunta
+## Nota editorial: campaña conjunta de ocho horas
+
+El panel
+[JOINT_FORMAL_8H_PROTOCOL.md](../../JOINT_FORMAL_8H_PROTOCOL.md)
+compara selectores PLS frente a pronósticos clásicos ingenuo,
+deriva, ingenuo estacional y OLS lineal, además de CV, GCV,
+AICc, BIC y S fijos. Para la misma \(\tau\) simulada
+presentaremos y ruidosa, recuperación pasada \(\widehat\tau\),
+pronóstico externo observado y pronóstico latente futuro
+bajo distintas amplitudes de ruido. El análisis numérico
+de Brent/raíz adaptativa sobre una muestra de las
+**mismas F** será una comprobación de implementación del
+Paper 1 y un objeto principal del Paper 3. Una corrida
+truncada por presupuesto temporal es un examen exploratorio,
+no el resultado factorial confirmatorio para la revista.
+
+
 
 **Pregunta:** si estimamos una tendencia por penalización de
 diferencias finitas, ¿cómo escoger su nivel de suavidad para
