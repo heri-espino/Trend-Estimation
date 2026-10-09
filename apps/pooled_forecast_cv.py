@@ -27,9 +27,11 @@ from experiments.smoothness_cv.article_simulations import (
 )
 from experiments.smoothness_cv.full_series import smooth_full_series
 from experiments.smoothness_cv.pooled_lab import (
-    analyze_pooled,
-    fit_window_forecast,
+    analyze_pooled, fit_window_forecast, fold_loss_at_lambda, select_from_grid,
 )
+from experiments.smoothness_cv.weighted_surface_study import LossWeighting, weighted_surface_history
+from trend_estimation.forecasting.objectives import prepare_rolling_pure_forecast_objective
+from trend_estimation.validation.rolling_origin import RollingOriginSplit
 from trend_estimation.core.pure import cached_pure_solver
 from trend_estimation.core.smoothness import smoothness_to_lambda
 
@@ -608,6 +610,96 @@ def main() -> None:
         st.plotly_chart(loss_heatmap(r, log_color), use_container_width=True)
         st.caption("White × markers show per-fold GRID minima only; they are not tracked branches. The dashed vertical line is the pooled selected S.")
         st.dataframe(r.minima_table(), hide_index=True, use_container_width=True)
+
+        st.subheader("Paper 1 extension: weighting COMPLETED forecast-loss functions")
+        st.caption(
+            "Prespecify a weighting rule m. We average the entire functions F_t(S), "
+            "then minimize their latest complete weighted mean. We do NOT average "
+            "fold-wise argmins or track minima across time. "
+            "The equal-weight all-origin criterion above remains the baseline."
+        )
+        weighting_name = st.selectbox(
+            "Historical F weighting m",
+            ["All completed origins (uniform)",
+             "Last K completed origins (uniform)",
+             "Last K completed origins (linear)",
+             "Last K completed origins (exponential)"],
+        )
+        K = st.slider("Last K completed folds", 2, max(2, len(r.origins)),
+                      min(8, max(2, len(r.origins))),
+                      key="pooled_weighted_k")
+        decay = st.slider("Decay per completed origin", 0.1, 1.0, 0.8, 0.05,
+                          key="pooled_weighted_decay")
+        name_map = {
+            "All completed origins (uniform)": ("uniform", None),
+            "Last K completed origins (uniform)": ("uniform", K),
+            "Last K completed origins (linear)": ("linear", K),
+            "Last K completed origins (exponential)": ("exponential", K),
+        }
+        scheme, lookback = name_map[weighting_name]
+        method = LossWeighting("interactive_method",scheme,lookback,decay)
+        weighted_history = weighted_surface_history(r.fold_losses,method)
+        weighted_curve = weighted_history[-1]
+        start, weights = method.weights(len(r.origins))
+        history_splits = [
+            RollingOriginSplit(
+                train=slice(int(t)-L,int(t)),
+                validation=slice(int(t),int(t)+h),
+            ) for t in r.origins
+        ]
+        historical_objective = prepare_rolling_pure_forecast_objective(
+            values[:r.selected_origin],history_splits,order=d
+        )
+        weighted_s, weighted_mse = select_from_grid(
+            r.grid,weighted_curve,
+            lambda s: float(
+                weights @ fold_loss_at_lambda(
+                    historical_objective,smoothness_to_lambda(float(s),L,d)
+                )[start:]
+            ),
+            refine=refine,
+        )
+        left, right = st.columns(2)
+        left.metric("Weighted F global minimizer S",f"{weighted_s:.5f}")
+        right.metric("Weighted historical MSE",f"{weighted_mse:.6g}")
+        plot = go.Figure()
+        plot.add_scatter(x=r.grid,y=r.pooled_losses,name="All-origin uniform pooled F")
+        plot.add_scatter(x=r.grid,y=weighted_curve,name=f"Weighted F: {weighting_name}")
+        plot.add_vline(x=weighted_s,line_dash="dash",line_color="#D55E00",
+                       annotation_text="Weighted argmin")
+        st.plotly_chart(style(plot,"Normalized smoothness S","h-step forecast MSE",420),
+                        use_container_width=True)
+        st.download_button(
+            "Download weighted F history CSV",
+            pd.DataFrame(weighted_history,columns=[
+                f"S={s:.6f}" for s in r.grid
+            ]).assign(origin=r.origins).to_csv(index=False),
+            file_name="paper1_weighted_F_history.csv",mime="text/csv",
+        )
+        trend_weighted, future_weighted = fit_window_forecast(
+            values[:r.selected_origin],origin=r.selected_origin,window=L,
+            order=d,horizon=h,smoothness=float(weighted_s),
+        )
+        weighted_forecast = pd.DataFrame({
+            "future_observation": np.arange(
+                r.selected_origin+1,r.selected_origin+h+1
+            ),"weighted_pooled_forecast": future_weighted,
+        })
+        if held_out:
+            weighted_forecast["outer_actual_display_only"]=values[
+                r.selected_origin:r.selected_origin+h
+            ]
+            st.caption(
+                "Outer MSE for this predeclared method: "
+                f"{np.mean((weighted_forecast.outer_actual_display_only - future_weighted)**2):.6g}. "
+                "Do not choose the winning weighting using this same outer test."
+            )
+        st.download_button(
+            "Download weighted-rule h-step forecast",
+            weighted_forecast.to_csv(index=False),
+            file_name="paper1_weighted_forecast.csv",mime="text/csv",
+        )
+
 
     with tab_folds:
         st.subheader("Exactly what the rolling cross-validation used")
