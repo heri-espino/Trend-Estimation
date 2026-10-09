@@ -228,6 +228,33 @@ def grid_scenarios(preset: str) -> tuple[Scenario,...]:
                      "slope_break_late","beta_mix"),("iid","ar1")))
         c = list(Scenario("C",shape,240,.5,"iid") for shape in C_SHAPES)
         return tuple(a+b+c)
+    if preset == "formal8h":
+        # Deliberately LIMITED balanced scientific panel, not the exploratory
+        # 1,248-cell exhaustive stress suite. Each study is represented,
+        # including the original complete source 2^4 control A.
+        # B: 8 tau shapes x 2 N x 2 sigma = 32 cells, iid.
+        # C: 8 changes x 2 N x 2 noise = 32 cells, fixed sigma.
+        # D: 12 unusual shapes x 2 N x 2 noise = 48 cells, fixed sigma.
+        # 16+32+32+48=128 interpretable cells with identical outer origins
+        # and independent seeds within each DGP cell.
+        a=tuple(Scenario("A",shape,n,sd,"iid",season)
+                for shape,n,sd,season in product(
+                    A_SHAPES,(50,200),(.5,2.),(False,True)))
+        b=tuple(Scenario("B",shape,n,sd,"iid")
+                for shape,n,sd in product(
+                    ("linear","quadratic_up","quadratic_turn","cubic_s",
+                     "quartic","sine_slow","slope_break_late","beta_mix"),
+                    (180,360),(.25,1.)))
+        cc=tuple(Scenario("C",shape,n,.5,noise)
+                 for shape,n,noise in product(
+                    C_SHAPES,(240,400),("iid","ar1")))
+        dd=tuple(Scenario("D",shape,n,.8,noise)
+                 for shape,n,noise in product(
+                    D_SHAPES,(300,600),("iid","contaminated")))
+        result=a+b+cc+dd
+        if len(result)!=128 or len({s.key for s in result})!=128:
+            raise AssertionError("Formal 8h design must have 128 distinct factorial cells.")
+        return result
     if preset == "stress":
         return tuple(
             Scenario("D",shape,n,sd,noise,season)
