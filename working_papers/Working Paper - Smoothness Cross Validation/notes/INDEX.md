@@ -2,6 +2,32 @@
 
 **Updated 2026-10-08. This folder is the canonical living research record.** The current LaTeX manuscript is a dated working draft; it will be reconsidered **after** the algorithm and experiments are settled. Previous checkpoint outputs are preserved, not discarded.
 
+## Empieza por estas notas Markdown (2026-10-09)
+
+**Antes de escribir el artículo LaTeX final, trabajamos en estas
+notas, que separan teoría, método, diseños y resultados verificados:**
+
+1. **[RESEARCH_NOTEBOOK.md](RESEARCH_NOTEBOOK.md)** —
+   delimitación y pregunta científica, historia Guerrero/PLS,
+   horizonte h, algoritmo rolling TSCV, ponderación de F,
+   interpretación y posible narrativa para revista.
+2. **[PROOF_LEDGER.md](PROOF_LEDGER.md)** —
+   lemas y demostraciones ordenadas, hechos clásicos, contraejemplos
+   y resultados abiertos: kernel de Q, EDF, monotonía de S,
+   extremos, existencia, derivadas y pérdida ponderada.
+3. **[SIMULATION_ATLAS.md](SIMULATION_ATLAS.md)** —
+   qué se genera \(y=\tau+\xi+\epsilon\), cómo se pronostica,
+   qué se conoce solo en simulación, **figuras de tau y
+   \(\hat\tau\) a distintos niveles de ruido**, métricas,
+   comparaciones pareadas y tablas que sostendrían el paper.
+
+Lectura transversal:
+[NOTES_TO_MANUSCRIPT.md](../../NOTES_TO_MANUSCRIPT.md).
+Los documentos antiguos de esta carpeta siguen siendo material de
+respaldo y trazabilidad, no equivalentes a resultados del nuevo
+weighted-F. El artículo final se escribirá DESPUÉS de verificar
+teoría y experimentos, no por volcado automático.
+
 ## Core contribution in one sentence
 
 We **integrate** established finite-difference PLS, spectral/EDF-based normalized smoothness \(S\in[0,1]\), native \(h\)-step trend continuation, and **fixed-window rolling-origin time-series cross-validation**, to **investigate selecting smoothness for a specified forecast horizon \(h\)** by pooled historical future-block MSE. We do **not** claim to invent these individual ingredients; the statistical, numerical and empirical value of their particular combination must be demonstrated. Full framing: [Research objective](research_objective.md#central-contribution-framing-an-integration-tailored-to-horizon-h).
