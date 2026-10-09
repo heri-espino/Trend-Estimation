@@ -86,8 +86,8 @@ def load_data(source: str) -> pd.DataFrame:
         sigma = st.sidebar.select_slider("Noise SD", options=[0.5, 2.0], value=0.5)
         seasonal = st.sidebar.checkbox("Quarterly seasonality", False)
         seed = st.sidebar.number_input("Seed", min_value=0, value=42, step=1)
-        return make_article_synthetic(trend, n=N, noise_sd=sigma,
-                                      seasonal=seasonal, seed=int(seed))
+        return make_article_synthetic(ARTICLE_TRENDS[trend], n=N, noise_sd=sigma,
+                                      seasonality=seasonal, seed=int(seed))
     if source == "CSV upload":
         file = st.sidebar.file_uploader("CSV containing numeric observations", type=["csv"])
         if file is None:
