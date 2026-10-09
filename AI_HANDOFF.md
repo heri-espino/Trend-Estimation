@@ -87,6 +87,25 @@ The common protocol:
 Experimental/metric protocol:
 [SIMULATION_EVALUATION_PROTOCOL.md](working_papers/SIMULATION_EVALUATION_PROTOCOL.md).
 
+### Formal CUDA production path — current implementation, not measured campaign
+
+\`experiments/smoothness_cv/cuda_simulation.py\` and
+\`run_simulation_campaign.py --backend cuda\` now batch the REAL
+chronological PLS forecast-loss matrices for many seeds in
+float32 CUDA. All paper methods share the same selection code.
+Default is **no per-batch CPU/GPU comparison** (\`--gpu-verify 0\`);
+a single smoke precision audit uses \`--gpu-verify 2\`.
+The old loss-kernel benchmark remains a historical engineering
+measurement, not a procedure used repeatedly during formal runs.
+
+New Study D has 720 rare-shape/noise/seasonal factorial
+cells, and \`--preset mega\` combines all 528 original
+cells with D = 1,248 cells (124,800 scenario–seed
+instances with 100 seeds). The new CUDA code and added stress
+protocol are not yet tested on the university GPU, nor are
+final results recorded; execute smoke/pilot first, and retain
+the independent latent-trend / outer-forecast evaluation contract.
+
 ## Current implementation and unfinished scientific work
 
 New implementation exists:
