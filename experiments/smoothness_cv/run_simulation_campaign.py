@@ -116,6 +116,8 @@ def arguments(argv: list[str] | None = None) -> argparse.Namespace:
     p.add_argument("--numerical-dense-grid",type=int,default=501,
                    help="Dense numerical reference points for sampled Paper 3 diagnostics.")
     p.add_argument("--numerical-adaptive-depth",type=int,default=6)
+    p.add_argument("--sturm-once",action="store_true",
+                   help="Run exact tiny rational Sturm benchmark ONCE and record stdout.")
     p.add_argument("--max-tasks",type=int,default=None,
                    help="Execute at most N *remaining* tasks, useful for staging/resume.")
     p.add_argument("--run-dir",type=Path,default=None)
@@ -170,6 +172,7 @@ def config_from_args(args) -> dict:
         "numerical_every":int(args.numerical_every),
         "numerical_dense_grid":int(args.numerical_dense_grid) if args.numerical_every else None,
         "numerical_adaptive_depth":int(args.numerical_adaptive_depth) if args.numerical_every else None,
+        "sturm_once":bool(args.sturm_once),
         "scenario_keys":[s.key for s in grid_scenarios(args.preset)],
         "git_revision":git_revision(),
     }
@@ -335,6 +338,35 @@ def main(argv: list[str] | None = None) -> int:
     run_dir=args.run_dir or Path("results/smoothness_cv")/f"campaign_{args.preset}_{args.backend}"
     _checked_manifest(run_dir,cfg)
     db=connect_db(run_dir/"outcomes.sqlite")
+    if args.numerical_every:
+        from .joint_numerical_diagnostics import numerical_case, write_numerical
+        db.execute(
+            "CREATE TABLE IF NOT EXISTS numerical_failures ("
+            "scenario TEXT NOT NULL,seed INTEGER NOT NULL,message TEXT NOT NULL,"
+            "PRIMARY KEY(scenario,seed))"
+        )
+        db.commit()
+    if args.sturm_once:
+        # Exact Sturm is appropriate only for an explicitly declared tiny
+        # rational test instance, never thousands of stochastic large F's.
+        reference_file=run_dir/"sturm_exact_reference.txt"
+        if not reference_file.exists():
+            result=subprocess.run(
+                [sys.executable,"-m",
+                 "experiments.numerical_smoothness_selection.run_sturm_minicheck"],
+                capture_output=True,text=True,timeout=240,
+            )
+            if result.returncode!=0:
+                db.close()
+                raise RuntimeError(
+                    "Exact Sturm one-time control failed; check SymPy and runner:\n"+
+                    (result.stdout or "")+"\n"+(result.stderr or "")
+                )
+            reference_file.write_text(
+                "One-time exact rational small-instance reference (not scalable root isolation).\n"+
+                result.stdout+"\n"+result.stderr,encoding="utf-8",
+            )
+            print(f"One-time exact Sturm reference saved: {reference_file}",flush=True)
     completed={row[0] for row in db.execute("SELECT task_key FROM completed")}
     remaining=[
         (s,seed,cfg) for s,seed in balanced_seed_wave_schedule(
@@ -411,6 +443,40 @@ def main(argv: list[str] | None = None) -> int:
                             })+"\n")
                     for seed,seconds,rows in output:
                         key=task_key(scenario,seed)
+                        if args.numerical_every and (
+                            (int(seed)-int(cfg["seed_start"])+1)
+                            %int(args.numerical_every)==0
+                        ):
+                            # The Paper 3 diagnostic is SCIENTIFIC, not a
+                            # CPU/GPU speed test: it searches roots of the
+                            # same historical weighted F using Brent and
+                            # analytic derivatives on sampled seeds.
+                            try:
+                                target_h=3 if 3 in cfg["horizons"] else min(cfg["horizons"])
+                                numeric_rows=[]
+                                for order in cfg["orders"]:
+                                    numeric_rows.extend(numerical_case(
+                                        scenario,seed,order=int(order),horizon=int(target_h),
+                                        horizons=tuple(cfg["horizons"]),
+                                        outer_count=int(cfg["outer_count"]),
+                                        max_folds=int(cfg["max_folds"]),
+                                        grid_points=int(cfg["grid_points"]),
+                                        dense_points=int(cfg["numerical_dense_grid"]),
+                                        adaptive_depth=int(cfg["numerical_adaptive_depth"]),
+                                    ))
+                                if numeric_rows:
+                                    with db:
+                                        write_numerical(db,numeric_rows)
+                            except Exception:
+                                detail=traceback.format_exc()
+                                with db:
+                                    db.execute(
+                                        "INSERT OR REPLACE INTO numerical_failures VALUES (?,?,?)",
+                                        (scenario.key,int(seed),detail),
+                                    )
+                                print(f"PAPER3 DIAGNOSTIC FAILED (primary forecast "
+                                      f"outcomes still saved): {key}\n{detail}",
+                                      file=sys.stderr,flush=True)
                         record(db,key,seconds,rows)
                         success+=1
                 except Exception:
@@ -519,6 +585,17 @@ def main(argv: list[str] | None = None) -> int:
         "elapsed_seconds":time.perf_counter()-started,
         "time_budget_hours":args.time_budget_hours,
         "numerical_every":cfg["numerical_every"],
+        "numerical_diagnostic_rows":(
+            int(db.execute("SELECT COUNT(*) FROM numerical_diagnostics").fetchone()[0])
+            if args.numerical_every and db.execute(
+                "SELECT 1 FROM sqlite_master WHERE name='numerical_diagnostics'"
+            ).fetchone() else 0
+        ),
+        "numerical_failures":(
+            int(db.execute("SELECT COUNT(*) FROM numerical_failures").fetchone()[0])
+            if args.numerical_every else 0
+        ),
+        "sturm_reference":bool((run_dir/"sturm_exact_reference.txt").exists()),
         "timestamp_utc":utc_now(),
         "note":"Incomplete waves are exploratory and MUST NOT be called confirmatory.",
     }
