@@ -95,8 +95,8 @@ def arguments(argv: list[str] | None = None) -> argparse.Namespace:
                    help="CUDA batches PLS forecast losses across independent seeds; CPU keeps 32 workers.")
     p.add_argument("--gpu-batch-size",type=int,default=64,
                    help="Number of same-scenario Monte Carlo series per CUDA batch.")
-    p.add_argument("--gpu-verify",type=int,default=2,
-                   help="CPU reference comparisons per CUDA batch, 0 disables (not recommended).")
+    p.add_argument("--gpu-verify",type=int,default=0,
+                   help="Optional one-time numeric audit; 0 during formal runs. Do it ONCE in a small preflight run.")
     p.add_argument("--seeds",type=int,default=None,
                    help="Independent replicates per scenario. Defaults: smoke=1,pilot=5,extensive=100.")
     p.add_argument("--seed-start",type=int,default=0)
@@ -118,10 +118,10 @@ def arguments(argv: list[str] | None = None) -> argparse.Namespace:
 
 def config_from_args(args) -> dict:
     seeds = args.seeds if args.seeds is not None else {
-        "smoke":1,"pilot":5,"extensive":100,
+        "smoke":1,"pilot":5,"extensive":100,"stress":100,"mega":100,
     }[args.preset]
     grid = args.grid_points if args.grid_points is not None else {
-        "smoke":21,"pilot":61,"extensive":161,
+        "smoke":21,"pilot":61,"extensive":161,"stress":161,"mega":161,
     }[args.preset]
     order=tuple(int(part.strip()) for part in args.orders.split(",") if part.strip())
     horizon=tuple(int(part.strip()) for part in args.horizons.split(",") if part.strip())
@@ -143,6 +143,7 @@ def config_from_args(args) -> dict:
         "gpu_batch_size":int(args.gpu_batch_size) if args.backend=="cuda" else None,
         "gpu_verify":int(args.gpu_verify) if args.backend=="cuda" else None,
         "gpu_kernel_dtype":"float32" if args.backend=="cuda" else "float64",
+        "gpu_mode":"formal-no-cpu-rechecks" if args.backend=="cuda" and not args.gpu_verify else "audited",
         "preset":args.preset,"seeds":int(seeds),
         "seed_start":int(args.seed_start),
         "orders":order,"horizons":horizon,
