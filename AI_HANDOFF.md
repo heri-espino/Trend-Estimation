@@ -18,7 +18,31 @@ Read the relevant paper's index/README before coding or drafting.
 None of the figures or new 528-cell results described as plans should
 be silently presented as already generated.
 
-## Research objective and status
+## Formal three-paper eight-hour research screen
+
+**New common scientific protocol:**
+[JOINT_FORMAL_8H_PROTOCOL.md](working_papers/JOINT_FORMAL_8H_PROTOCOL.md).
+The \`formal8h\` DGP preset contains **144 interpretable factorial
+cells** including the original 2^4 Cortés-Toto generating laws
+and three noise amplitudes for the same latent B trend.
+A \`--time-budget-hours 8\` soft stop preserves SQLite and
+round-robins scenario/seed waves; incomplete results are
+EXPLORATORY. Optional \`--with-baselines\` saves naive/drift/
+seasonal-naive/linear OLS forecasts on the same untouched
+outer origins. \`--numerical-every 8\` measures Brent
+multibracket and analytic adaptive root searches on a
+predeclared subsample of the very same weighted F surfaces,
+including the effect of chosen S on observed future and
+true latent past/future trend; \`--sturm-once\` executes a
+tiny exact rational fixture only once. No repeated CPU/GPU
+benchmark in the formal simulation.
+
+Run and report through
+[CAMPAIGN_README.md](experiments/smoothness_cv/CAMPAIGN_README.md).
+This new software has NOT been run on the university machine
+and no scientific superiority claims are established.
+
+
 
 Three independent active papers:
 
