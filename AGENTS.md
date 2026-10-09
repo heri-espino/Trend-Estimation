@@ -132,6 +132,28 @@ Do not import those legacy apps into the current dynamic app.
 Legacy analytical and manuscript material is retained for
 reproducibility; don't rewrite frozen evidence to look contemporary.
 
+### CUDA formal simulations (2026-10-09)
+
+\`run_simulation_campaign.py --backend cuda\` is a **new,
+one-GPU, batched loss-surface production backend**, not just a
+benchmark. It computes float32 completed-origin forecast losses,
+then uses the existing weighted-F minima/branch pipeline,
+CPU classical comparators, vectorized selected-S outer refits
+and SQLite storage. CPU eigendecomposition and S-to-lambda mapping
+are still float64 and run on CPU. The numerical goal is to keep
+the **same statistical estimator and same pretest chronology**.
+No silent CPU fallback and no 32 competing CUDA processes.
+
+**One-time** precision check: \`--preset smoke --backend cuda
+--gpu-verify 2\`, in a distinct \`--run-dir\`.
+**Formal run default**: \`--gpu-verify 0\` (no CPU/GPU
+reference comparisons during batches). Expand to
+\`--preset stress\` (720 new unusual cells) or \`--preset mega\`
+(original 528 plus 720 = 1,248 cells) only after smoke and pilot.
+See [CAMPAIGN_README.md](experiments/smoothness_cv/CAMPAIGN_README.md).
+These additions remain *prospective experiments*, not results or
+paper claims. GPU acceleration is secondary to theory.
+
 ## Experiments, computational workflow and limits
 
 The prospective campaign has 528 factorial DGP cells (16 source-inspired
