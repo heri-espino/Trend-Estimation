@@ -6,6 +6,36 @@ Ver [evaluación compartida](../../SIMULATION_EVALUATION_PROTOCOL.md),
 [generador](../../../experiments/smoothness_cv/simulation_dgps.py) y
 [protocolo de correspondencias numéricas](../../../experiments/numerical_smoothness_selection/run_tracking_correspondence_benchmark.py).
 
+## Extensión formal CUDA/Study D (2026-10-09)
+
+Se añadieron **720 celdas factoriales difíciles**,
+para un total \`mega\` de 1,248 (124,800 escenario–semilla
+a 100 semillas por celda). Incluir saltos cerca del futuro
+pronosticado, recuperaciones, pulsos y picos transitorios,
+oscilaciones no estacionarias, tendencia latente estocástica
+y contaminación rara por outliers. Son pruebas críticas
+de persistencia espuria: un mínimo que «continúa»
+algorítmicamente no necesariamente predice la tendencia
+tras un cambio abrupto.
+
+**Nuevo diseño de figura:** la misma \(\tau\) irregular bajo
+tres niveles \(\sigma\), observada y ruidosa, con
+un panel paralelo para geometría \(F_r(S)\),
+los mínimos detectados, los IDs de ramas y el
+pronóstico outer de \(\arg\min F_M\) vs tracking.
+La comparación usa exactamente el mismo
+\(m,d,L,h\) y test oculto; no atribuir diferencias
+de política de ponderación al tracking.
+
+El cálculo de matrices de pérdidas histórico puede
+hacerse en GPU float32; matching de ramas,
+decisión, classical baselines y evaluación externa
+siguen en CPU. **Solo una prueba inicial** de
+precisión contra CPU; ninguna comparación recurrente
+durante experimentos formales. Ver
+[CAMPAIGN_README.md](../../../experiments/smoothness_cv/CAMPAIGN_README.md).
+**No resultados todavía del Estudio D.**
+
 ## 1. ¿Qué se simula, y cuál es el control justo?
 
 Igual que en Paper 1:
