@@ -141,6 +141,16 @@ def test_campaign_sqlite_is_atomic_and_resumable(tmp_path):
         assert (reports/name).is_file()
 
 
+
+def test_analyzer_gives_actionable_error_without_simulation_results(tmp_path):
+    with pytest.raises(FileNotFoundError, match="pytest suite does not create"):
+        analyze(tmp_path/"not_started",allow_partial=True)
+    folder=tmp_path/"manifest_only"
+    folder.mkdir()
+    (folder/"manifest.json").write_text("{}",encoding="utf-8")
+    with pytest.raises(FileNotFoundError, match="outcomes.sqlite"):
+        analyze(folder,allow_partial=True)
+
 def test_source_paper_factorial_uses_full_N_not_rolling_window(tmp_path):
     from experiments.smoothness_cv.run_cortes_toto_replication import main
     folder=tmp_path/"source"
