@@ -12,7 +12,7 @@ import json
 import numpy as np
 
 from experiments.smoothness_cv.pooled_lab import cached_uniform_spectral_weights
-from experiments.smoothness_cv.simulation_dgps import Scenario, make_series
+from experiments.smoothness_cv.simulation_dgps import GeneratedSeries, Scenario, make_series
 from experiments.smoothness_cv.weighted_surface_study import (
     LossWeighting, run_weighted_surface_study,
 )
@@ -139,13 +139,15 @@ def evaluate_replication(
     max_folds: int = 32,
     grid_points: int = 81,
     methods: tuple[LossWeighting,...] = METHODS,
+    generated: GeneratedSeries | None = None,
+    precomputed_losses: dict[tuple[int,int,int], np.ndarray] | None = None,
 ) -> list[dict]:
     """All paired outcomes for a single independent simulation replication.
 
     Oracles are included as DIAGNOSTIC ONLY. They are inadmissible in
     comparisons of operational forecast selectors.
     """
-    data = make_series(scenario,seed)
+    data = make_series(scenario,seed) if generated is None else generated
     horizon_set = (1,3) if scenario.study == "A" and scenario.n_obs == 50 else horizons
     valid = tuple(h for h in horizons if h in horizon_set)
     if not valid:
@@ -172,6 +174,10 @@ def evaluate_replication(
                 max_folds=max_folds,grid_points=grid_points,
                 refine_pooled=False,holdout=True,
                 branch_min_support=3,branch_decision_k=3,branch_score_k=3,
+                precomputed_grid_losses=(
+                    {d: precomputed_losses[(int(T),int(h),int(d))] for d in orders}
+                    if precomputed_losses is not None else None
+                ),
             )
             for d in orders:
                 grid,fits,reference,recovery_curve=classical_by_d[d]
