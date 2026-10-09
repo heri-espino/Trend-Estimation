@@ -77,6 +77,83 @@ grid and new random draws, not literal replication of their
 particular R samples or significance levels. The new h-step forecast
 comparisons are **reported separately**.
 
+## Formal CUDA simulations: one-time validation, then GPU only (2026-10-09)
+
+**CURRENT EXECUTABLE:** \`run_simulation_campaign.py\` supports
+\`--backend cuda\`. This now executes **the actual completed-origin
+h-step PLS loss tensor** for multiple independent simulated series
+on one CUDA device in float32. It is NOT merely the old standalone
+speed benchmark. The spectral decomposition and S-to-lambda inverse
+still use CPU float64; classical CV/GCV/AICc/BIC, branch linking,
+scoring and SQLite remain CPU computations. Only the expensive
+batched loss calculation is implemented on the GPU. Therefore
+**no end-to-end speedup is claimed yet**.
+
+CUDA **does NOT repeatedly compare against CPU** during formal
+simulations. The default \`--gpu-verify 0\` disables those comparison
+calculations. Before running the formal study, perform **one**
+small precision preflight (different run directory):
+
+~~~powershell
+git pull --ff-only origin main
+python -m pytest tests/test_cuda_simulation.py tests/test_simulation_campaign.py tests/test_weighted_surface_study.py -q
+python -m experiments.smoothness_cv.run_simulation_campaign --backend cuda --preset smoke --gpu-verify 2 --gpu-batch-size 2 --run-dir results/smoothness_cv/cuda_precision_preflight_v1
+~~~
+
+Then run the **formal GPU-only** campaign, with *NO*
+\`--gpu-verify\` flag:
+
+~~~powershell
+python -m experiments.smoothness_cv.run_simulation_campaign --backend cuda --preset pilot --seeds 5 --gpu-batch-size 32 --run-dir results/smoothness_cv/campaign_pilot_cuda_v1
+python -m experiments.smoothness_cv.analyze_simulation_campaign --run-dir results/smoothness_cv/campaign_pilot_cuda_v1
+python -m experiments.smoothness_cv.run_simulation_campaign --backend cuda --preset mega --seeds 100 --orders 2 --grid-points 161 --gpu-batch-size 64 --run-dir results/smoothness_cv/campaign_mega_cuda_v1
+~~~
+
+These are separate **manual** foreground commands, not an automatic
+combined launch. Smoke/pilot should pass first. The formal runner
+has a **single CUDA context**; it does not launch 32 competing GPU
+processes. \`--jobs\` only applies to the CPU backend.
+
+**Additional DGP stress factor:** 720 new balanced scenario cells
+(Study D): 12 latent shapes (terminal/double jumps, jump/recovery,
+transient pulse, chirp, beating sinusoids, plateau, terminal spike,
+accelerating oscillations, double sigmoid, stochastic random-walk
+level and stochastic random-walk slope) × N {300,600} ×
+sigma {.25,.8,1.6} × 5 noise laws (iid, AR1, t5, heteroskedastic,
+and 4%-contaminated Gaussian outliers) × seasonal on/off.
+\`--preset stress\` runs ONLY these 720; \`--preset mega\` combines
+the original 528 A/B/C with all D scenarios = **1,248 cells**.
+At 100 seeds/cell, \`mega\` has **124,800 scenario–seed instances**,
+each assessed at shared horizons, outer origins and selectors.
+
+**Statistical scope:** study D has rare and stochastic latent
+processes but still fits the SAME PLS \(V=I,\mu=0\), so it tests
+robustness / misspecification, not a hidden change to the estimator.
+Only y is supplied to selectors; tau is withheld until external
+scoring. Results are resumable in \`outcomes.sqlite\` and have
+a method/code/backend-specific manifest. Preserve negative cases
+and evaluate uncertainty by independent seeds **within each DGP
+cell**.
+
+**Hardware caveats:** The RTX 4500 Ada kernel benchmark already
+showed substantial speedups. That measurement alone is not a
+formal-campaign wall-time estimate. The main statistical
+postprocessing (including classical selectors and branch linking)
+still happens on CPU. Evaluate full pilot throughput before
+assuming GPU acceleration of the whole scientific experiment.
+Do not mix CUDA and CPU rows in the same manifest/run-dir. Use a
+new run-dir if changing the scientific configuration or code revision.
+For CUDA out-of-memory errors, use a smaller \`--gpu-batch-size\`
+with a **new** run directory or preplan/restart carefully; current
+manifests fingerprint the batch size for strict reproducibility.
+
+**Progress:** \`--max-tasks 20\` processes up to 20 remaining
+scenario–seed instances. The same command resumes committed tasks
+if interrupted. \`--dry-run\` lists the planned factorial cells
+without initializing CUDA or writing outputs. The GPU path and
+stress design are committed, **not yet run/verified** on the
+university machine by the agent.
+
 ## Recommended workflow on the university workstation
 
 From the repository root, after \`git pull --ff-only\` and installation
