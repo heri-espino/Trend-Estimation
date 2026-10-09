@@ -17,6 +17,7 @@ from experiments.smoothness_cv.weighted_surface_study import (
     LossWeighting, run_weighted_surface_study,
 )
 from trend_estimation.core.pure import cached_pure_solver
+from trend_estimation.core.smoothness import smoothness_to_lambda
 from trend_estimation.forecasting.operators import finite_difference_forecast_operator
 
 
@@ -131,6 +132,69 @@ def _score(
     }
 
 
+
+def _score_many(
+    y: np.ndarray, tau: np.ndarray, seasonal: np.ndarray, *,
+    T: int, L: int, h: int, d: int, choices: dict[str, float],
+    grid_points: int,
+) -> dict[str, dict]:
+    """Score all selector forecasts with ONE batched spectral refit.
+
+    This postprocessing is shared by CPU and CUDA experiments. All
+    *decisions* are already fixed from observed pretest history; future
+    observations and latent tau only enter now, for external scoring.
+    """
+    if not choices:
+        return {}
+    names=list(choices)
+    ss=np.asarray([choices[name] for name in names],dtype=float)
+    if np.any(~np.isfinite(ss)) or np.any((ss<0)|(ss>1)):
+        raise ValueError("Selector smoothness must be in [0,1].")
+    solver=cached_pure_solver(L,d)
+    eigvals=solver.eigvals
+    U=solver.eigvecs
+    projection=U.T@y[T-L:T]
+    std_grid=np.linspace(0,1,grid_points)
+    grid_alpha=cached_uniform_spectral_weights(L,d,grid_points)
+    filters=np.empty((len(ss),L),dtype=float)
+    lambdas=[]
+    for i,s in enumerate(ss):
+        idx=int(np.argmin(np.abs(std_grid-s)))
+        if abs(std_grid[idx]-s)<1e-13:
+            filters[i]=grid_alpha[idx]
+        else:
+            lam=float(smoothness_to_lambda(float(s),L,d))
+            if np.isinf(lam):
+                filters[i]=0.
+                filters[i,:d]=1.
+            else:
+                filters[i]=1./(1.+lam*eigvals)
+        lambdas.append(float(smoothness_to_lambda(float(s),L,d)))
+    fitted=(filters*projection[None,:])@U.T
+    G=finite_difference_forecast_operator(L,d,h).trend_matrix
+    predictions=fitted@G.T
+    err_obs=y[T:T+h][None,:]-predictions
+    err_tau=tau[T:T+h][None,:]-predictions
+    err_cond=(tau[T:T+h]+seasonal[T:T+h])[None,:]-predictions
+    mse_recovery=np.mean((fitted-tau[T-L:T][None,:])**2,axis=1)
+    mse_fit=np.mean((fitted-y[T-L:T][None,:])**2,axis=1)
+    return {
+        name:{
+            "selected_s":float(ss[i]),
+            "selected_lambda":float(lambdas[i]),
+            "edf":float(L-(L-d)*ss[i]),
+            "raw_guerrero_s":float((L-d)*ss[i]/L),
+            "forecast_mse_obs":float(np.mean(err_obs[i]**2)),
+            "forecast_mae_obs":float(np.mean(np.abs(err_obs[i]))),
+            "forecast_mse_latent":float(np.mean(err_tau[i]**2)),
+            "forecast_mse_conditional":float(np.mean(err_cond[i]**2)),
+            "past_recovery_mse":float(mse_recovery[i]),
+            "fit_residual_mse":float(mse_fit[i]),
+            "lead_squared_errors":json.dumps([float(v) for v in err_obs[i]**2]),
+        } for i,name in enumerate(names)
+    }
+
+
 def evaluate_replication(
     scenario: Scenario, seed: int, *,
     orders: tuple[int,...] = (2,),
@@ -205,11 +269,13 @@ def evaluate_replication(
                         "n_branches":int(sub.branch.nunique()),
                         "n_local_minima":int(len(sub)),
                     }
+                score_by_selector=_score_many(
+                    data.observed,data.trend,data.seasonality,
+                    T=T,L=scenario.window,h=h,d=d,choices=choices,
+                    grid_points=grid_points,
+                )
                 for selector,s in choices.items():
-                    scores=_score(
-                        data.observed,data.trend,data.seasonality,
-                        T=T,L=scenario.window,h=h,d=d,s=float(s),
-                    )
+                    scores=score_by_selector[selector]
                     rows.append({
                         "study":scenario.study,"scenario":scenario.key,
                         "shape":scenario.shape,"n_obs":scenario.n_obs,
