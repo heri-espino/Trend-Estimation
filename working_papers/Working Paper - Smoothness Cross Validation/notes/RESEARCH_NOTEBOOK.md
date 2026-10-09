@@ -23,6 +23,8 @@ Paper 1 y un objeto principal del Paper 3. Una corrida
 truncada por presupuesto temporal es un examen exploratorio,
 no el resultado factorial confirmatorio para la revista.
 
+## 0. Resumen intelectual en una pregunta
+
 
 
 **Pregunta:** si estimamos una tendencia por penalización de
