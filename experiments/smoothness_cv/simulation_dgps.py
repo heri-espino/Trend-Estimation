@@ -27,6 +27,17 @@ C_SHAPES = (
 )
 
 
+# Study D stress-tests irregular latent dynamics, not arbitrary cherry-picked
+# individual runs. Full factorial: 12 shapes x 2 N x 3 sigma x 5 noise x
+# 2 seasonal = 720 scenarios. "mega" adds these to 528 A/B/C scenarios.
+D_SHAPES = (
+    "terminal_jump", "double_jump", "jump_recovery",
+    "transient_pulse", "chirp", "harmonic_beating",
+    "piecewise_plateau", "terminal_spike", "accelerating_oscillation",
+    "double_sigmoid", "stochastic_level", "stochastic_slope",
+)
+
+
 @dataclass(frozen=True)
 class Scenario:
     study: str
@@ -103,6 +114,29 @@ def _shape(shape: str, u: np.ndarray) -> np.ndarray:
         return 1+2*u + 5*np.maximum(0,u-.38)-5*np.maximum(0,u-.68)
     if shape == "two_regime_switches":
         return 1+2*u+7*np.maximum(0,u-.27)-11*np.maximum(0,u-.55)+8*np.maximum(0,u-.81)
+    if shape == "terminal_jump":
+        return 1+2*u+3.2*(u>=.88)
+    if shape == "double_jump":
+        return 1+2*u+3*(u>=.35)-4*(u>=.72)
+    if shape == "jump_recovery":
+        return 1+2*u-3*(u>=.65)+12*np.maximum(0,u-.65)
+    if shape == "transient_pulse":
+        return 1+2*u+2.5*np.exp(-((u-.72)/.065)**2)
+    if shape == "chirp":
+        return 1+2*u+.6*np.sin(2*np.pi*(u+5*u*u))
+    if shape == "harmonic_beating":
+        return 1+2*u+1.2*np.sin(12*np.pi*u)*np.cos(1.5*np.pi*u)
+    if shape == "piecewise_plateau":
+        return 1+2*np.minimum(u,.35)+4*np.maximum(0,u-.75)
+    if shape == "terminal_spike":
+        return 1+2*u+4*np.exp(-((u-.96)/.025)**2)
+    if shape == "accelerating_oscillation":
+        return 1+2*u+2*u*np.sin(6*np.pi*u)
+    if shape == "double_sigmoid":
+        return 1+1/(1+np.exp(-45*(u-.3)))+2/(1+np.exp(-55*(u-.78)))
+    if shape in {"stochastic_level","stochastic_slope"}:
+        # A dedicated RNG generates stochastic tau in make_series.
+        return np.zeros_like(u)
     raise ValueError(f"Unknown trend shape: {shape!r}")
 
 
@@ -121,7 +155,18 @@ def make_series(scenario: Scenario, seed: int) -> GeneratedSeries:
         else:
             raise ValueError("Experiment A accepts only its two source-paper trends.")
     else:
-        tau = _shape(scenario.shape, u)
+        if scenario.shape in {"stochastic_level","stochastic_slope"}:
+            trend_rng = np.random.default_rng(
+                np.random.SeedSequence([int(seed), n, 1913])
+            )
+            if scenario.shape=="stochastic_level":
+                increments = trend_rng.normal(0,.13,n)+.014
+                tau = np.cumsum(increments)
+            else:
+                slope = np.cumsum(trend_rng.normal(0,.012,n))
+                tau = np.cumsum(slope+.018)
+        else:
+            tau = _shape(scenario.shape, u)
         if scenario.shape != "flat":
             span = float(np.ptp(tau))
             if not span > 0:
@@ -145,6 +190,13 @@ def make_series(scenario: Scenario, seed: int) -> GeneratedSeries:
     elif scenario.noise == "heteroskedastic":
         std = sigma*(.45+1.1*u)
         eps = rng.normal(0,1,n)*std
+    elif scenario.noise == "contaminated":
+        # 4% contamination, rare shocks with 5x Gaussian SD. Normalized
+        # so unconditional noise variance still equals nominal sigma^2.
+        base_sd = sigma / np.sqrt(1.+.04*(25.-1.))
+        eps = rng.normal(0,base_sd,n)
+        mask = rng.random(n) < .04
+        eps[mask] = rng.normal(0,5*base_sd,int(np.sum(mask)))
     else:
         raise ValueError("Unsupported noise model.")
     if scenario.shape == "variance_change":
@@ -176,8 +228,19 @@ def grid_scenarios(preset: str) -> tuple[Scenario,...]:
                      "slope_break_late","beta_mix"),("iid","ar1")))
         c = list(Scenario("C",shape,240,.5,"iid") for shape in C_SHAPES)
         return tuple(a+b+c)
+    if preset == "stress":
+        return tuple(
+            Scenario("D",shape,n,sd,noise,season)
+            for shape,n,sd,noise,season in product(
+                D_SHAPES,(300,600),(.25,.8,1.6),
+                ("iid","ar1","student_t","heteroskedastic","contaminated"),
+                (False,True),
+            )
+        )
+    if preset == "mega":
+        return grid_scenarios("extensive")+grid_scenarios("stress")
     if preset != "extensive":
-        raise ValueError("preset must be smoke, pilot or extensive.")
+        raise ValueError("preset must be smoke, pilot, extensive, stress or mega.")
     a = [Scenario("A",shape,n,sd,"iid",season)
          for shape,n,sd,season in product(A_SHAPES,(50,200),(.5,2.),(False,True))]
     b = [Scenario("B",shape,n,sd,noise)
