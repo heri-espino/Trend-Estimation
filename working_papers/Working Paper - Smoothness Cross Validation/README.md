@@ -4,6 +4,18 @@
 
 **Status:** active independent statistical-methodology working paper. **Intended journal:** *Communications in Statistics—Simulation and Computation*. The manuscript is an interim working draft, **not submission-ready**.
 
+## Canonical Markdown research notes before the final journal manuscript
+
+Follow [Research notebook](notes/RESEARCH_NOTEBOOK.md) →
+[Mathematical proof ledger](notes/PROOF_LEDGER.md) →
+[Simulation and figures atlas](notes/SIMULATION_ATLAS.md)
+before rebuilding \`manuscript/main.tex\`. The [cross-paper
+editorial workflow](../NOTES_TO_MANUSCRIPT.md) separates classical
+PLS results, actual theorems, experimental hypotheses and
+yet-to-be-created figures. Show the **true simulated tau** beside
+noise-corrupted y, fitted trend and h-step extrapolation across
+noise levels and trend orders, rather than reporting only selected S.
+
 ## Simulation study and forecast/recovery targets
 
 The new [shared simulation and evaluation protocol](../SIMULATION_EVALUATION_PROTOCOL.md)
