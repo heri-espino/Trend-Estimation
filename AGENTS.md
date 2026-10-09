@@ -12,6 +12,32 @@
 6. [experiments/smoothness_cv/CAMPAIGN_README.md](experiments/smoothness_cv/CAMPAIGN_README.md)
    — manual extensive simulations, checkpointing and float32 GPU benchmark.
 
+### Current 8-hour shared experiment across all three papers
+
+Read [JOINT_FORMAL_8H_PROTOCOL.md](working_papers/JOINT_FORMAL_8H_PROTOCOL.md)
+BEFORE proposing a publication-ready experiment. The
+\`formal8h\` preset is **144** predeclared cells;
+\`--time-budget-hours 8\` stops at a completed batch
+(soft budget). The three papers share identical
+DGPs, losses, selected S, and untouched outer
+forecast origins. P1/P2 share the same weighted
+F; a predeclared subsample of those F surfaces
+is evaluated by Paper 3's grid, multibracket
+Brent and adaptive derivatives, with exact
+small-instance Sturm ONCE. Simple
+naive/drift/seasonal-naive/OLS forecasts
+are separate baselines, without fictional
+smoothness indices. Results contain
+past true-trend recovery and future
+latent/observed forecast error, plus
+predeclared equal-tau multi-noise PDFs.
+
+**The time-stop DOES NOT manufacture a
+completed balanced experiment.** Time-truncated
+result tables are exploratory; independent
+confirmatory seeds/tests are required
+before a journal claim.
+
 ## Research-note-first writing contract (2026-10-09)
 
 Before editing \`manuscript/main.tex\` or claiming publication readiness,
