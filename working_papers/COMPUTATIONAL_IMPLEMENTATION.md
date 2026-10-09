@@ -90,6 +90,40 @@ Reported median times for a **single loss kernel**:
    32 distinct CUDA workers will outperform one larger-batch GPU
    worker on a single physical device.
 
+## Newly implemented CUDA evaluation in the FORMAL Monte Carlo runner
+
+**2026-10-09 implementation (not yet executed/audited by this agent):**
+\`run_simulation_campaign.py --backend cuda\` now groups same-scenario
+seeds into bounded batches. \`cuda_simulation.py\` builds completed
+historical fit windows and h-step targets, prepares spectral
+coefficients/filters in float64 CPU, transfers the batch to one
+CUDA device and computes float32 PLS forecast-loss matrices
+\(B\times M\times K\) using one matrix multiplication.
+Those exact arrays enter the **unchanged** method-specific
+weighted-F pooled selection and branch tracking on CPU.
+Classical criteria and outer scoring remain CPU operations,
+with outer forecast refits vectorized across selected S values.
+
+**One-time audit ONLY:** run the small smoke with explicit
+\`--gpu-verify 2\`. The actual extensive/mega experiment
+defaults to \`--gpu-verify 0\`, thus NO repeated CPU-vs-GPU
+reference comparisons. A CPU fallback remains available with
+\`--backend cpu\`, and neither backend silently switches to the other.
+
+**New formal DGP suite:** 720 irregular/rare stress combinations
+(Study D) and \`mega\` preset of 1,248 full factorial cells,
+including original 528 A/B/C. See the current
+[CAMPAIGN_README.md](../experiments/smoothness_cv/CAMPAIGN_README.md)
+for precise protocol and executable commands.
+
+**Partial GPU integration, not fully CUDA:** DGP creation, PLS
+eigenanalysis, inverse S mapping, classical scoring, local-minimum
+tracking, outer refits/metrics and SQLite still run on CPU. The
+original fully GPU scheduling queue + postprocessing architecture
+below remains a **future optimization**, not implemented today.
+Do not equate current CUDA kernel speedup with entire campaign
+speedup without measuring the full formal pilot.
+
 ## Possible scalable architecture (NOT YET implemented)
 
 - CPU producer pool: independent DGP generation, numerical/spectral
