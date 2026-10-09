@@ -38,6 +38,36 @@ se realiza una vez; la campaña formal evita repetidas comparaciones
 CPU/GPU. Ver [manual](../../../experiments/smoothness_cv/CAMPAIGN_README.md).
 Aún no hay resultados del nuevo Study D ejecutados/verificados.
 
+## Corrida conjunta de ocho horas: protocolo más defendible
+
+[JOINT_FORMAL_8H_PROTOCOL.md](../../JOINT_FORMAL_8H_PROTOCOL.md)
+define un **panel predeclarado de 144 escenarios**, más
+interpretable que terminar un porcentaje arbitrario de las
+1,248 celdas de exploración. En B se conservan tres
+intensidades de ruido **con la misma forma y escala latente
+verdadera**; nuevas figuras PDF/PNG comparan \(\tau\), y,
+\(\widehat\tau\) pasada y pronóstico h-step, para pooled
+vs tracking usando la **misma ponderación F**.
+
+Además de CV/GCV/AICc/BIC y S fijo, el protocolo agrega
+comparadores de pronóstico ingenuo, deriva, ingenuo
+estacional y extrapolación OLS lineal. Como esos
+métodos no tienen S ni EDF, sus métricas van a una
+tabla separada. Se evalúan en los mismos orígenes
+externos, sin usar el test para ajustar parámetros.
+
+Los diagnósticos numéricos del Paper 3 se hacen
+sobre **esas mismas funciones F** en una
+submuestra predeclarada; el artículo 1 describe
+el método de refinamiento y las salvaguardas de
+mínimos de manera breve, reservando la evaluación
+numérica detallada para el Paper 3.
+
+La ventana de ocho horas es un límite **suave**:
+si la corrida termina con celdas incompletas,
+resultados explícitamente **exploratorios**,
+nunca una confirmación factorial balanceada.
+
 ## 1. ¿Qué simulamos y qué conoce el algoritmo?
 
 \[
