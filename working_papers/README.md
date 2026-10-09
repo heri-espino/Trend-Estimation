@@ -7,6 +7,23 @@ entire N=50/200 series. This is distinct from using the same 16 DGP
 cells as **forecasting** stress cases in the extensive simulation
 campaign.
 
+## Integrated three-paper simulation, literature controls and time limit
+
+See [JOINT_FORMAL_8H_PROTOCOL.md](JOINT_FORMAL_8H_PROTOCOL.md).
+The proposed **eight-hour soft wall-clock** manual GPU study
+uses **144 predeclared DGP cells**, matched unseen forecast origins,
+latent trend recovery/prediction, classical PLS selectors,
+simple standard forecast methods, Paper 1 global weighted-F,
+Paper 2 tracking on exactly the same F, and Paper 3
+grid/Brent/derivative search of a sampled subset of the same
+F functions with a one-time small exact Sturm case.
+
+Do NOT present a time-truncated incomplete factorial grid as
+balanced confirmatory evidence; that screen is for developing
+theory, discovering counterexamples, and planning independent
+confirmation. Include negative outcomes and same-latent
+three-noise-level forecast figures in the eventual papers.
+
 ## Primero notas Markdown; luego tres manuscritos finalizados
 
 La guía editorial común es
