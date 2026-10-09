@@ -40,6 +40,36 @@ def test_stress_and_mega_are_balanced_and_reproducible():
         assert np.ptp(a.trend)==pytest.approx(4.,abs=1e-10)
 
 
+def test_vectorized_external_scoring_matches_scalar_reference():
+    from experiments.smoothness_cv.simulation_evaluation import _score, _score_many
+    scenario=grid_scenarios("stress")[0]
+    generated=make_series(scenario,5)
+    T=220
+    chosen={"left":0.,"inner":.3425,"right":1.,"other":.9375}
+    scores=_score_many(
+        generated.observed,generated.trend,generated.seasonality,
+        T=T,L=scenario.window,h=6,d=2,
+        choices=chosen,grid_points=161,
+    )
+    for name,s in chosen.items():
+        ref=_score(generated.observed,generated.trend,generated.seasonality,
+                   T=T,L=scenario.window,h=6,d=2,s=s)
+        got=scores[name]
+        for field in (
+            "selected_s","edf","raw_guerrero_s",
+            "forecast_mse_obs","forecast_mae_obs",
+            "forecast_mse_latent","forecast_mse_conditional",
+            "past_recovery_mse","fit_residual_mse",
+        ):
+            assert got[field]==pytest.approx(ref[field],rel=1e-9,abs=1e-10)
+        assert got["selected_lambda"]==pytest.approx(ref["selected_lambda"])
+        assert np.allclose(
+            np.asarray(__import__("json").loads(got["lead_squared_errors"])),
+            np.asarray(__import__("json").loads(ref["lead_squared_errors"])),
+            rtol=1e-9,atol=1e-10,
+        )
+
+
 def test_cuda_formal_run_does_not_repeatedly_reference_cpu():
     args=arguments(["--backend","cuda","--preset","stress","--seeds","100"])
     assert args.gpu_verify==0
