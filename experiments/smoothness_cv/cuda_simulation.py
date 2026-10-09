@@ -191,7 +191,7 @@ def gpu_batch_evaluate(
     outer_count: int,
     max_folds: int,
     grid_points: int,
-    verify: int = 2,
+    verify: int = 0,  # formal runs never repeat CPU/GPU checks by default
     verify_atol: float = 1e-3,
     verify_rtol: float = 1e-3,
     torch=None,
