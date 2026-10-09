@@ -137,7 +137,21 @@ def analyze(run_dir: Path, *, allow_partial: bool=False) -> dict[str,int]:
     manifest_path=run_dir/"manifest.json"
     db_path=run_dir/"outcomes.sqlite"
     if not manifest_path.exists() or not db_path.exists():
-        raise FileNotFoundError("Expected both manifest.json and outcomes.sqlite.")
+        missing = [
+            str(path) for path in (manifest_path, db_path) if not path.is_file()
+        ]
+        raise FileNotFoundError(
+            "Cannot analyze this campaign: missing generated file(s): "
+            + ", ".join(missing) + ". "
+            "Passing the pytest suite does not create campaign results. "
+            "Run 'python -m experiments.smoothness_cv.run_simulation_campaign "
+            "--backend cuda --preset formal8h ... --run-dir "
+            + str(run_dir)
+            + "' first, or provide the actual directory containing "
+            "manifest.json and outcomes.sqlite. --allow-partial only "
+            "permits analyzing an INCOMPLETE campaign with saved results; "
+            "it cannot create missing files."
+        )
     manifest=json.loads(manifest_path.read_text(encoding="utf-8"))
     cfg=manifest["configuration"]
     expected=len(cfg["scenario_keys"])*cfg["seeds"]
