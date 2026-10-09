@@ -234,7 +234,6 @@ def gpu_batch_evaluate(
                 for index in range(len(seeds)):
                     cache[index][(int(T),int(h),int(d))] = matrix[index]
 
-    ready = time.perf_counter()
     results = []
     for i, seed in enumerate(seeds):
         rows = evaluate_replication(
@@ -245,5 +244,9 @@ def gpu_batch_evaluate(
         )
         if not rows:
             raise RuntimeError(f"GPU batch produced no output for seed={seed}.")
-        results.append((int(seed), (ready-started)/len(seeds), rows))
+        results.append((int(seed), 0., rows))
+    # Per-task timings must cover both the CUDA loss tensor *and* all
+    # CPU selector/branch/classical work, not misleading kernel-only time.
+    full_batch_seconds = (time.perf_counter()-started)/len(seeds)
+    results = [(seed, full_batch_seconds, rows) for seed, _, rows in results]
     return results, audits
