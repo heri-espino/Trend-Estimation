@@ -8,6 +8,36 @@ Referencias:
 [evaluación](../../../experiments/smoothness_cv/simulation_evaluation.py),
 [ejecución](../../../experiments/smoothness_cv/CAMPAIGN_README.md).
 
+## Ampliación formal (2026-10-09): nuevos DGP difíciles en CUDA
+
+El protocolo ahora añade **Estudio D** con **720 celdas factoriales**:
+12 formas de \(\tau\), N=300/600, tres intensidades de ruido,
+cinco distribuciones (incluyendo outliers poco frecuentes),
+y presencia/ausencia de estacionalidad. La batería \`mega\`
+contiene **1,248** celdas (528 originales + 720 nuevas);
+100 semillas por celda son 124,800 instancias, no observaciones
+globalmente independientes. Las nuevas series incluyen
+saltos de nivel, recuperación, pulsos, cambio de frecuencia,
+oscilaciones, tendencias estocásticas de nivel y pendiente.
+**No introducir estas realizaciones en una demostración de
+superioridad universal;** son pruebas adicionales para refutar
+hipótesis demasiado optimistas.
+
+**Las figuras deben separar** para estas formas irregulares:
+trayectoria latente \(\tau\) conocida, ruido/estacionalidad,
+datos observados y, serie PLS estimada, y su extrapolación
+h-step con test oculto durante selección. Mismo tipo de
+figura a ruido débil/moderado/fuerte. Analizar cuándo
+\(\hat\tau\) parece fiel visualmente pero el forecast falla
+por salto irreversible o cambio de pendiente.
+
+Se implementó \`--backend cuda\` para computar por lotes las
+pérdidas de validación, pero **la decisión PLS es idéntica**
+y otras etapas siguen CPU. Una auditoría inicial de precisión
+se realiza una vez; la campaña formal evita repetidas comparaciones
+CPU/GPU. Ver [manual](../../../experiments/smoothness_cv/CAMPAIGN_README.md).
+Aún no hay resultados del nuevo Study D ejecutados/verificados.
+
 ## 1. ¿Qué simulamos y qué conoce el algoritmo?
 
 \[
