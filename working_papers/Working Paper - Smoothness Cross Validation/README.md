@@ -15,6 +15,24 @@ S and CV/GCV/AICc/BIC baselines. Use equal outer origins for
 every method and keep oracle trend data out of feasible selectors.
 The new experiments **have not been run**.
 
+## Research emphasis / agent continuity
+
+Read [theory-first charter](../THEORETICAL_CONTRIBUTIONS.md),
+[this paper's AI handoff](AI_HANDOFF.md), and
+[GPU computational note](../COMPUTATIONAL_IMPLEMENTATION.md)
+before revising the manuscript. Paper 1's contribution must be
+assessed through the **horizon-matched integrated statistical
+decision, mathematical properties, literature audit and truly
+untouched forecast outcomes**. The user-supplied RTX 4500 Ada
+float32 benchmark may become a *short implementation paragraph*,
+not the core theoretical claim. The original spectral EDF and
+Guerrero normalization are known techniques.
+
+\`streamlit run apps/pooled_forecast_cv.py\` is the **canonical** app;
+it now displays the all-origin baseline and predeclared weighted
+aggregates of completed historical losses. It must **not** track
+local minima or select m/d based on its displayed outer test.
+
 ## Current protocol: weighted historical F, then its global minimum
 
 **Prospective method (2026-10-08):** the original equal-weight
