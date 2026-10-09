@@ -91,26 +91,42 @@ def build_real_inputs(
     ))
 
 
-def numpy_loss(inputs: tuple[np.ndarray, ...]) -> np.ndarray:
-    """Same einsum and h-step MSE as pooled_lab.all_grid_fold_losses."""
+def numpy_loss(inputs: tuple[np.ndarray, ...], *, kernel="einsum") -> np.ndarray:
+    """Exact PLS loss contraction: production einsum or equivalent GEMM.
+
+    GEMM reformulation stacks the K*h (filter, horizon) products,
+    then performs a single matrix multiply over the L spectral modes.
+    """
     spectral_history, filters, future, offset, target = inputs
-    predicted = np.einsum(
-        "bml,kl,hl->bmkh",
-        spectral_history, filters, future,
-        optimize=True,
-    ) + offset[:, :, None, :]
+    if kernel == "einsum":
+        predicted = np.einsum(
+            "bml,kl,hl->bmkh",
+            spectral_history, filters, future, optimize=True,
+        )
+    elif kernel == "gemm":
+        batch, origins, L = spectral_history.shape
+        K = filters.shape[0]
+        h = future.shape[0]
+        combined = (filters[:, None, :] * future[None, :, :]).reshape(K*h,L)
+        predicted = (
+            spectral_history.reshape(batch*origins,L) @ combined.T
+        ).reshape(batch,origins,K,h)
+    else:
+        raise ValueError("kernel must be einsum or gemm")
+    predicted = predicted + offset[:, :, None, :]
     return np.mean((target[:, :, None, :] - predicted) ** 2, axis=-1)
 
 
-def _cpu_worker(inputs: tuple[np.ndarray, ...]) -> np.ndarray:
-    return numpy_loss(inputs)
+def _cpu_worker(payload) -> np.ndarray:
+    inputs, kernel = payload
+    return numpy_loss(inputs,kernel=kernel)
 
 
-def pooled_numpy_loss(pool, inputs, jobs: int) -> np.ndarray:
+def pooled_numpy_loss(pool, inputs, jobs: int, *, kernel="einsum") -> np.ndarray:
     H, W, G, O, Y = inputs
     indices = [a for a in np.array_split(np.arange(len(H)), min(len(H), jobs))
                if a.size]
-    chunks = [(H[ix], W, G, O[ix], Y[ix]) for ix in indices]
+    chunks = [((H[ix], W, G, O[ix], Y[ix]),kernel) for ix in indices]
     return np.concatenate(list(pool.map(_cpu_worker, chunks)), axis=0)
 
 
@@ -145,14 +161,23 @@ def _cuda_available():
     return torch, None
 
 
-def _torch_loss(torch, arrays):
+def _torch_loss(torch, arrays, *, kernel):
     H, W, G, O, Y = arrays
-    # Identical float32 einsum contract to the NumPy/production kernel.
-    pred = torch.einsum("bml,kl,hl->bmkh", H, W, G) + O[:, :, None, :]
+    if kernel == "einsum":
+        pred = torch.einsum("bml,kl,hl->bmkh", H, W, G)
+    elif kernel == "gemm":
+        B, M, L = H.shape
+        K = W.shape[0]
+        h = G.shape[0]
+        combined = (W[:, None, :] * G[None, :, :]).reshape(K*h,L)
+        pred = (H.reshape(B*M,L) @ combined.T).reshape(B,M,K,h)
+    else:
+        raise ValueError("kernel must be einsum or gemm")
+    pred = pred + O[:, :, None, :]
     return ((Y[:, :, None, :] - pred)**2).mean(dim=-1)
 
 
-def cuda_results(torch, inputs, reference, *, repetitions: int, warmups: int):
+def cuda_results(torch, inputs, reference, *, kernel: str, repetitions: int, warmups: int):
     gpu = torch.device("cuda")
     resident = tuple(torch.as_tensor(a, dtype=torch.float32, device=gpu)
                      for a in inputs)
@@ -160,7 +185,7 @@ def cuda_results(torch, inputs, reference, *, repetitions: int, warmups: int):
     torch.cuda.reset_peak_memory_stats()
 
     resident_seconds, _ = median_time(
-        lambda: _torch_loss(torch, resident),
+        lambda: _torch_loss(torch, resident, kernel=kernel),
         repetitions=repetitions, warmups=warmups,
         synchronize=torch.cuda.synchronize,
     )
@@ -168,7 +193,7 @@ def cuda_results(torch, inputs, reference, *, repetitions: int, warmups: int):
     def with_transfers():
         copies = tuple(torch.as_tensor(a, dtype=torch.float32, device=gpu)
                        for a in inputs)
-        return _torch_loss(torch, copies).cpu().numpy()
+        return _torch_loss(torch, copies, kernel=kernel).cpu().numpy()
 
     end_to_end_seconds, result = median_time(
         with_transfers, repetitions=repetitions, warmups=warmups,
@@ -199,10 +224,12 @@ def run_benchmark(
     window=72, order=2, horizon=6, origins=32,
     grid_points=161, jobs=32, repetitions=5, warmups=2,
     seed=73, require_cuda=False, skip_cpu_pool=False,
-    tf32=False,
+    tf32=False, kernel="gemm",
 ) -> tuple[pd.DataFrame, dict]:
     if any(b < 1 for b in batch_sizes) or jobs < 1:
         raise ValueError("Batch sizes and jobs must be positive.")
+    if kernel not in {"einsum", "gemm"}:
+        raise ValueError("kernel must be einsum or gemm")
     if repetitions < 1 or warmups < 0:
         raise ValueError("Require repetitions >= 1 and warmups >= 0.")
     if os.name == "nt" and jobs > 61:
@@ -216,6 +243,7 @@ def run_benchmark(
         "reported_logical_cpus":os.cpu_count(),
         "cpu_jobs":jobs,
         "arithmetic_dtype":"float32",
+        "kernel_implementation":kernel,
         "spectral_preparation_dtype":"float64 then cast to float32",
         "cuda_available":problem is None,
         "cuda_status":problem or "available",
@@ -249,12 +277,12 @@ def run_benchmark(
             inputs=build_real_inputs(**args)
             prep_seconds=time.perf_counter()-prep_start
             cpu_seconds, reference=median_time(
-                lambda: numpy_loss(inputs),
+                lambda: numpy_loss(inputs,kernel=kernel),
                 repetitions=repetitions, warmups=warmups,
             )
             if pool is not None:
                 process_seconds, cpu_process_result = median_time(
-                    lambda: pooled_numpy_loss(pool, inputs, jobs),
+                    lambda: pooled_numpy_loss(pool, inputs, jobs, kernel=kernel),
                     repetitions=repetitions, warmups=warmups,
                 )
                 cpu_pool_abs_diff=float(np.max(np.abs(
@@ -268,6 +296,7 @@ def run_benchmark(
             result={
                 **args,
                 "float_dtype":"float32",
+                "kernel":kernel,
                 "prep_seconds":prep_seconds,
                 "cpu_1_seconds":cpu_seconds,
                 "cpu_pool_seconds":process_seconds,
@@ -281,7 +310,7 @@ def run_benchmark(
             }
             if torch is not None:
                 result.update(cuda_results(
-                    torch, inputs, reference,
+                    torch, inputs, reference, kernel=kernel,
                     repetitions=repetitions, warmups=warmups,
                 ))
             result["gpu_vs_cpu_1_full_speedup"]=(
@@ -326,6 +355,8 @@ def main(argv=None):
     p.add_argument("--skip-cpu-pool", action="store_true")
     p.add_argument("--tf32", action="store_true",
                    help="Allow faster CUDA TF32 matrix kernels (may reduce accuracy).")
+    p.add_argument("--kernel", choices=("einsum","gemm"), default="gemm",
+                   help="einsum reproduces existing code; gemm is matrix-multiply form.")
     p.add_argument("--output", type=Path,
                    default=Path("results/smoothness_cv/gpu_benchmark"))
     args=p.parse_args(argv)
@@ -339,6 +370,7 @@ def main(argv=None):
         repetitions=args.repeats, warmups=args.warmup,
         seed=args.seed, require_cuda=args.require_cuda,
         skip_cpu_pool=args.skip_cpu_pool, tf32=args.tf32,
+        kernel=args.kernel,
     )
     args.output.mkdir(parents=True, exist_ok=True)
     results.to_csv(args.output/"timings_float32.csv", index=False)
