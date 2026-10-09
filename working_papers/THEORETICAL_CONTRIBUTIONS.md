@@ -176,6 +176,22 @@ Reference protocols:
 Simulation implementation and frozen-result rules:
 [CAMPAIGN_README.md](../experiments/smoothness_cv/CAMPAIGN_README.md).
 
+### CUDA formal-campaign implementation update (2026-10-09)
+
+A new optional \`--backend cuda\` path now computes the **actual**
+chronologically completed h-step loss matrices for independent
+Monte Carlo series batched on one GPU; all pooled minima, branch
+matching, classical criteria and external metrics still use the
+shared CPU selector code. One initial audit can be run with
+\`--gpu-verify 2\`; **formal runs default to \`--gpu-verify 0\`**
+and do not repeat CPU/GPU comparisons for every experiment.
+An added Study D contains 720 balanced unusual DGP scenarios
+(jumps, pulses, chirps, stochastic latent trends, heavy/outlier
+noise, seasonality), giving a combined \`mega\` design of 1,248
+scenario cells. These are implemented experimental methods,
+NOT already-run evidence and NOT new theoretical results.
+See [CAMPAIGN_README.md](../experiments/smoothness_cv/CAMPAIGN_README.md).
+
 ## Performance and GPU — engineering evidence, not central theorem
 
 A user-run **float32 spectral PLS loss-kernel** benchmark on
