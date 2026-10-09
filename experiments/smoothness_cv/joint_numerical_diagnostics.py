@@ -68,6 +68,7 @@ def historical_weighted_objective(prepared, weights):
 def numerical_case(
     scenario: Scenario, seed: int, *,
     order: int = 2, horizon: int = 3,
+    horizons: tuple[int,...] = (1,3,6,12),
     outer_count: int = 4, max_folds: int = 32,
     grid_points: int = 161, dense_points: int = 501,
     methods: tuple[str,...] = ("uniform_all","recent_exp_8"),
@@ -77,7 +78,10 @@ def numerical_case(
     if dense_points<=grid_points or dense_points>5001:
         raise ValueError("Use a denser comparison grid (<=5001); not certification.")
     data=make_series(scenario,seed)
-    valid=(1,3) if scenario.study=="A" and scenario.n_obs==50 else (1,3,6,12)
+    valid=tuple(
+        h for h in horizons
+        if scenario.study!="A" or scenario.n_obs!=50 or h in (1,3)
+    )
     if horizon not in valid:
         return []
     T=outer_origins(scenario,valid,count=outer_count)[-1]
