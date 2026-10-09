@@ -84,6 +84,31 @@ their respective scientific problem.
 are **legacy** retained for historical research reproduction.
 See [apps/README.md](apps/README.md) for exact features and boundaries.
 
+## Three-paper, time-budgeted formal research screen (8 hours)
+
+**NEW 2026-10-09:** [Joint formal 8h protocol](working_papers/JOINT_FORMAL_8H_PROTOCOL.md)
+provides a scientifically predeclared 144-cell panel (including the
+16 Cortés-Toto source-inspired DGPs), 3 noise SDs for the same latent
+quadratic/cubic shapes, two continuation orders, four forecast horizons,
+four outer origins, standard CV/GCV/AICc/BIC/fixed-S selectors and
+naive/drift/seasonal-naive/OLS benchmarks. The *same simulated
+data and historical F* support P1 weighted pooled, P2 tracked branches
+and P3 multibracket Brent/adaptive numerical root diagnostics on
+predeclared seed subsamples. A separate small rational Sturm fixture
+runs ONCE.
+
+Run \`--preset formal8h --backend cuda --time-budget-hours 8\`
+with the complete documented arguments; it performs a **soft**
+wall-clock stop after an atomic batch, and
+\`--seed-wave 8\` alternates scenario types to reduce early-budget
+imbalance. With \`--seeds 1000\` there may be MANY unfinished
+scenario–seed tasks. Such truncated data are **exploratory, not
+a completed balanced confirmatory experiment**. Analyze with
+\`analyze_joint_campaign --allow-partial\` and generate
+predeclared true-vs-noisy-vs-trend-prediction figures with
+\`make_formal_figures\`. These features have been committed,
+but their execution on the university GPU is NOT yet verified.
+
 ## Formal CUDA campaigns (new)
 
 \`experiments/smoothness_cv/run_simulation_campaign.py --backend cuda\`
