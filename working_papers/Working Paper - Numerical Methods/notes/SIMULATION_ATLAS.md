@@ -6,6 +6,28 @@ nuevos sin ejecutarse.** Leer
 [applied_case_studies.md](applied_case_studies.md)
 y [sturm_minicheck.md](sturm_minicheck.md).
 
+## Extensión experimental para objetivos F con nuevas series irregulares
+
+El generador común de Papers 1 y 2 ahora incluye
+un Study D de 720 formas/combinaciones más difíciles
+(saltos, impulsos, chirps, outliers y dos clases de
+tendencia latente estocástica). Son candidatos para
+ampliar **después** el benchmark numérico de
+\(F'(S)=0\), en especial raíces muy cercanas,
+mínimos planos y cambios de curvatura.
+El actual \`--preset mega --backend cuda\` calcula
+*superficies de pérdida y decisiones de Papers 1/2*;
+NO está conectado a la búsqueda de raíces
+certificadas ni a la reproducción Sturm de Paper 3.
+Esa integración es una tarea futura, explícitamente
+separada de la presente campaña formal.
+
+Al analizar futuros casos D en este paper,
+mostrar \(\tau\) verdadero, y contaminado,
+\(\hat\tau\) para S de mínimos distintos,
+pronóstico h, funciones F y derivadas. Distinguir
+verdad de \(\tau\) y verdad de raíces de F.
+
 ## 1. Este paper necesita dos tipos distintos de simulación
 
 **(I) Funciones de prueba con mínimos
