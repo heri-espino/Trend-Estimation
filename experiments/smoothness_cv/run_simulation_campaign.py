@@ -90,7 +90,7 @@ def resolve_jobs(jobs: int) -> int:
 
 def arguments(argv: list[str] | None = None) -> argparse.Namespace:
     p=argparse.ArgumentParser(description="Resumable CPU Monte Carlo grid for two smoothness papers.")
-    p.add_argument("--preset",choices=("smoke","pilot","extensive","stress","mega"),default="smoke")
+    p.add_argument("--preset",choices=("smoke","pilot","extensive","stress","mega","formal8h"),default="smoke")
     p.add_argument("--backend",choices=("cpu","cuda"),default="cpu",
                    help="CUDA batches PLS forecast losses across independent seeds; CPU keeps 32 workers.")
     p.add_argument("--gpu-batch-size",type=int,default=64,
@@ -107,6 +107,15 @@ def arguments(argv: list[str] | None = None) -> argparse.Namespace:
     p.add_argument("--grid-points",type=int,default=None)
     p.add_argument("--jobs",type=int,default=0,
                    help="0=up to 32 logical cores; explicit --jobs 32 uses 32 processes.")
+    p.add_argument("--time-budget-hours",type=float,default=None,
+                   help="Soft wall-clock budget: finish current GPU/CPU task then stop; 8 for formal study.")
+    p.add_argument("--seed-wave",type=int,default=8,
+                   help="Round-robin blocks of seeds across studies/cells for balanced partial progress.")
+    p.add_argument("--numerical-every",type=int,default=0,
+                   help="Paper 3 on each K-th seed *per scenario*, 0 disabled; typical 32.")
+    p.add_argument("--numerical-dense-grid",type=int,default=501,
+                   help="Dense numerical reference points for sampled Paper 3 diagnostics.")
+    p.add_argument("--numerical-adaptive-depth",type=int,default=6)
     p.add_argument("--max-tasks",type=int,default=None,
                    help="Execute at most N *remaining* tasks, useful for staging/resume.")
     p.add_argument("--run-dir",type=Path,default=None)
@@ -118,10 +127,10 @@ def arguments(argv: list[str] | None = None) -> argparse.Namespace:
 
 def config_from_args(args) -> dict:
     seeds = args.seeds if args.seeds is not None else {
-        "smoke":1,"pilot":5,"extensive":100,"stress":100,"mega":100,
+        "smoke":1,"pilot":5,"extensive":100,"stress":100,"mega":100,"formal8h":1000,
     }[args.preset]
     grid = args.grid_points if args.grid_points is not None else {
-        "smoke":21,"pilot":61,"extensive":161,"stress":161,"mega":161,
+        "smoke":21,"pilot":61,"extensive":161,"stress":161,"mega":161,"formal8h":161,
     }[args.preset]
     order=tuple(int(part.strip()) for part in args.orders.split(",") if part.strip())
     horizon=tuple(int(part.strip()) for part in args.horizons.split(",") if part.strip())
@@ -135,6 +144,14 @@ def config_from_args(args) -> dict:
         raise ValueError("Need grid 11..501, at least 2 outer origins and inner folds.")
     if args.max_tasks is not None and args.max_tasks<1:
         raise ValueError("--max-tasks must be positive.")
+    if args.time_budget_hours is not None and not 0 < args.time_budget_hours <= 24*30:
+        raise ValueError("Time budget must be between 0 and 720 hours.")
+    if args.seed_wave<1 or args.numerical_every<0 or args.numerical_adaptive_depth<0:
+        raise ValueError("Invalid seed-wave or numerical sampling/depth.")
+    if not 11<=args.numerical_dense_grid<=5001:
+        raise ValueError("Numerical reference grid must be 11..5001.")
+    if args.numerical_every and args.numerical_dense_grid<=grid:
+        raise ValueError("Paper 3 dense reference grid must exceed selection S grid.")
     if args.gpu_batch_size<1 or args.gpu_verify<0:
         raise ValueError("--gpu-batch-size must be positive and --gpu-verify nonnegative.")
     return {
@@ -150,6 +167,9 @@ def config_from_args(args) -> dict:
         "outer_count":int(args.outer_count),
         "max_folds":int(args.max_folds),
         "grid_points":int(grid),
+        "numerical_every":int(args.numerical_every),
+        "numerical_dense_grid":int(args.numerical_dense_grid) if args.numerical_every else None,
+        "numerical_adaptive_depth":int(args.numerical_adaptive_depth) if args.numerical_every else None,
         "scenario_keys":[s.key for s in grid_scenarios(args.preset)],
         "git_revision":git_revision(),
     }
@@ -248,6 +268,36 @@ def _checked_manifest(run_dir: Path,config: dict):
         tmp.replace(path)
 
 
+def balanced_seed_wave_schedule(
+    scenarios: tuple[Scenario,...], first_seed: int, seed_count: int,
+    *, seed_wave: int, completed: set[str]
+) -> list[tuple[Scenario,int]]:
+    """Balanced sequential waves rather than burning hours on earliest A cell.
+
+    Each wave visits all four STUDIES round-robin, then the next seed
+    block begins. The last interrupted wave is explicitly incomplete;
+    no global CI is justified by a biased partial slice.
+    """
+    if seed_wave<=0 or seed_count<=0:
+        raise ValueError("Positive seed_wave and seed_count required.")
+    studies={kind:[s for s in scenarios if s.study==kind] for kind in ("A","B","C","D")}
+    result=[]
+    for begin in range(first_seed,first_seed+seed_count,seed_wave):
+        stop=min(begin+seed_wave,first_seed+seed_count)
+        # Interleave by study: do not use A, then all B, then all C, then D.
+        max_cells=max(len(v) for v in studies.values())
+        for i in range(max_cells):
+            for kind in ("A","B","C","D"):
+                cells=studies[kind]
+                if i>=len(cells):
+                    continue
+                scenario=cells[i]
+                for seed in range(begin,stop):
+                    if task_key(scenario,seed) not in completed:
+                        result.append((scenario,seed))
+    return result
+
+
 def main(argv: list[str] | None = None) -> int:
     args=arguments(argv)
     cfg=config_from_args(args)
@@ -265,7 +315,7 @@ def main(argv: list[str] | None = None) -> int:
         f"| upper-bound method-rows ~{approx:,}",flush=True,
     )
     if args.dry_run:
-        for study in ("A","B","C"):
+        for study in ("A","B","C","D"):
             cells=sum(s.study==study for s in scenarios)
             print(f"  Experiment {study}: {cells} factorial cells, {cells*cfg['seeds']:,} series.")
         return 0
@@ -287,10 +337,10 @@ def main(argv: list[str] | None = None) -> int:
     db=connect_db(run_dir/"outcomes.sqlite")
     completed={row[0] for row in db.execute("SELECT task_key FROM completed")}
     remaining=[
-        (s,seed,cfg)
-        for s in scenarios
-        for seed in range(cfg["seed_start"],cfg["seed_start"]+cfg["seeds"])
-        if task_key(s,seed) not in completed
+        (s,seed,cfg) for s,seed in balanced_seed_wave_schedule(
+            scenarios,cfg["seed_start"],cfg["seeds"],
+            seed_wave=args.seed_wave,completed=completed
+        )
     ]
     if args.max_tasks is not None:
         remaining=remaining[:args.max_tasks]
@@ -303,6 +353,22 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     started=time.perf_counter()
+    deadline=(started+args.time_budget_hours*3600
+              if args.time_budget_hours is not None else None)
+    max_batch_seconds=0.
+    budget_stopped=False
+    def budget_allows_next():
+        nonlocal budget_stopped
+        if deadline is None:
+            return True
+        # Soft deadline: admit a new batch only while a small time
+        # reserve remains; an unusually slow batch can overrun the
+        # eight-hour target. Results still commit atomically.
+        reserve=max(20.,1.5*max_batch_seconds)
+        if time.perf_counter()+reserve < deadline:
+            return True
+        budget_stopped=True
+        return False
     success=0
     failures=0
     update=max(1,len(remaining)//100)
@@ -313,6 +379,9 @@ def main(argv: list[str] | None = None) -> int:
         for _scenario_key, group in groupby(remaining,key=lambda x:x[0].key):
             pending_for_scenario=list(group)
             for index in range(0,len(pending_for_scenario),args.gpu_batch_size):
+                if not budget_allows_next():
+                    break
+                batch_start=time.perf_counter()
                 batch=pending_for_scenario[index:index+args.gpu_batch_size]
                 scenario=batch[0][0]
                 seeds=[task[1] for task in batch]
@@ -357,13 +426,19 @@ def main(argv: list[str] | None = None) -> int:
                     if not args.continue_on_error:
                         db.close()
                         raise
+                max_batch_seconds=max(max_batch_seconds,time.perf_counter()-batch_start)
                 count=success+failures
                 elapsed=(time.perf_counter()-started)/60
                 print(f"[{count:,}/{len(remaining):,}] CUDA batches "
                       f"ok={success:,} fail={failures:,} "
                       f"elapsed={elapsed:.1f} min",flush=True)
+            if budget_stopped:
+                break
     elif jobs==1:
         for task in remaining:
+            if not budget_allows_next():
+                break
+            batch_start=time.perf_counter()
             key=task_key(task[0],task[1])
             try:
                 k,seconds,rows=_worker(task)
@@ -378,11 +453,14 @@ def main(argv: list[str] | None = None) -> int:
                 if not args.continue_on_error:
                     db.close()
                     raise
+            max_batch_seconds=max(max_batch_seconds,time.perf_counter()-batch_start)
             if (success+failures)%update==0:
                 elapsed=(time.perf_counter()-started)/60
                 print(f"[{success+failures}/{len(remaining)}] complete={success}, "
                       f"failed={failures}, elapsed={elapsed:.1f} min",flush=True)
     else:
+        # The CPU worker pool can have in-flight jobs after a soft budget
+        # expires. Limit new submissions; completed in-flight jobs are kept.
         # Bounded queue: do not submit 50,000 futures at once or hold all
         # generated Monte Carlo outcomes in RAM. Windows-safe spawn.
         iterable=iter(remaining)
@@ -390,6 +468,8 @@ def main(argv: list[str] | None = None) -> int:
         with ProcessPoolExecutor(max_workers=jobs,mp_context=mp.get_context("spawn")) as pool:
             pending={}
             def submit_one() -> bool:
+                if not budget_allows_next():
+                    return False
                 try:
                     task=next(iterable)
                 except StopIteration:
@@ -429,7 +509,25 @@ def main(argv: list[str] | None = None) -> int:
                         elapsed=(time.perf_counter()-started)/60
                         print(f"[{count:,}/{len(remaining):,}] ok={success:,} "
                               f"fail={failures:,} elapsed={elapsed:.1f}min",flush=True)
-    print(f"Finished invocation: ok={success}, failures={failures}; "
+    count_final=int(db.execute("SELECT COUNT(*) FROM completed").fetchone()[0])
+    final_status={
+        "status":"budget_exhausted_partial" if budget_stopped else
+                 "complete" if count_final==total else "partial_invocation",
+        "backend":cfg["backend"],"preset":cfg["preset"],
+        "finished_task_count":count_final,"expected_task_count":total,
+        "remaining":total-count_final,
+        "elapsed_seconds":time.perf_counter()-started,
+        "time_budget_hours":args.time_budget_hours,
+        "numerical_every":cfg["numerical_every"],
+        "timestamp_utc":utc_now(),
+        "note":"Incomplete waves are exploratory and MUST NOT be called confirmatory.",
+    }
+    (run_dir/"run_status.json").write_text(
+        json.dumps(final_status,indent=2),encoding="utf-8"
+    )
+    print(f"Finished invocation: {final_status['status']} "
+          f"completed={count_final:,}/{total:,} "
+          f"elapsed={final_status['elapsed_seconds']/3600:.2f} h; "
           f"data={run_dir/'outcomes.sqlite'}",flush=True)
     db.close()
     return 0 if not failures else 1
