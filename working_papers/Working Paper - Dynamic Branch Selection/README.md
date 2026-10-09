@@ -4,6 +4,19 @@
 **Prospective algorithm redesign:** 2026-10-08.
 **Working title:** *Dynamic Branch Tracking for Horizon-Matched Forecast-Loss Surfaces*.
 
+## Canonical Markdown notes before the final manuscript
+
+Start with [Research notebook](notes/RESEARCH_NOTEBOOK.md),
+[Proof ledger](notes/PROOF_LEDGER.md) and
+[Simulation/figure atlas](notes/SIMULATION_ATLAS.md).
+The [editorial workflow](../NOTES_TO_MANUSCRIPT.md)
+requires a source-grounded story: under what assumptions can a
+minimum persist, what branch-matching errors remain, how is S
+chosen and refit at horizon h, and which simulated trend/forecast
+illustrations under different noise levels distinguish real benefits
+from failures. New experiments remain prospective, not already
+proven by CP04–CP08.
+
 ## Central question
 
 For a fixed forecast horizon \(h\), does tracking persistent local
