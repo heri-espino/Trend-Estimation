@@ -84,6 +84,25 @@ their respective scientific problem.
 are **legacy** retained for historical research reproduction.
 See [apps/README.md](apps/README.md) for exact features and boundaries.
 
+## Formal CUDA campaigns (new)
+
+\`experiments/smoothness_cv/run_simulation_campaign.py --backend cuda\`
+now computes *real* horizon-h rolling-origin forecast losses in
+float32 batched on one GPU and passes them to the same Paper 1/Paper 2
+pooled/branch selection and classical benchmarking pipeline.
+Eigenanalysis, classical criteria, branch matching and outer scoring
+remain on CPU. The formal default is **no repeated CPU-vs-GPU
+benchmark/comparison** (\`--gpu-verify 0\`); perform one initial
+precision smoke check with explicit \`--gpu-verify 2\`.
+
+A new \`stress\` DGP includes **720** balanced difficult cells (jumps,
+transient shocks, frequency changes, stochastic trends, contaminated
+noise, seasonal interactions). The \`mega\` preset includes all
+1,248 cells, or **124,800 scenario–seed runs at 100 seeds**.
+These are **new implemented experiments, not completed results**.
+See [formal CUDA commands](experiments/smoothness_cv/CAMPAIGN_README.md).
+The numerical paper's adaptive/exact root solvers are still CPU.
+
 ## Simulation campaign and benchmarks
 
 The [common simulation protocol](working_papers/SIMULATION_EVALUATION_PROTOCOL.md)
