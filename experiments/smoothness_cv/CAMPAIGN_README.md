@@ -168,6 +168,21 @@ python -m pytest tests/test_benchmark_cpu_gpu.py -q
 python -m experiments.smoothness_cv.benchmark_cpu_gpu --batch-sizes 1,32,256,1024 --jobs 32 --repeats 7 --warmup 3 --require-cuda
 ~~~
 
+The **default** \`--kernel gemm\` rewrites the same spectral
+three-factor contraction as a matrix multiplication so both NumPy and
+CUDA can use optimized GEMM. To also measure the **literal**
+\`einsum\` implementation currently used in
+\`all_grid_fold_losses\`, run a separate experiment:
+
+~~~powershell
+python -m experiments.smoothness_cv.benchmark_cpu_gpu --kernel einsum --batch-sizes 1,32,256,1024 --jobs 32 --repeats 7 --warmup 3 --require-cuda --output results/smoothness_cv/gpu_benchmark_einsum
+~~~
+
+Both routes use float32 for the measured arithmetic, and the tests
+compare their full \`F_t(S)\` arrays and selected grid minima for
+consistency. **GEMM is an algebraically equivalent contraction**, not
+a change to the model or validation criterion.
+
 Optional separate run that enables TF32 tensor-core precision
 (subject to a numerical accuracy check):
 
