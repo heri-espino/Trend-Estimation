@@ -23,6 +23,8 @@ from experiments.smoothness_cv.pooled_lab import (
 from experiments.smoothness_cv.simulation_dgps import Scenario, make_series
 from experiments.smoothness_cv.simulation_evaluation import METHODS, outer_origins
 from trend_estimation.core.smoothness import smoothness_to_lambda
+from trend_estimation.core.pure import cached_pure_solver
+from trend_estimation.forecasting.operators import finite_difference_forecast_operator
 from trend_estimation.forecasting.objectives import prepare_rolling_pure_forecast_objective
 from trend_estimation.selection.smoothness_numerical import find_stationary_points_smoothness
 from trend_estimation.validation.rolling_origin import RollingOriginSplit
@@ -157,6 +159,22 @@ def numerical_case(
         ]+[(0.,F(0.)),(1.,F(1.))]
         adaptive_best_s,adaptive_best_f=min(adaptive_candidates,key=lambda x:(x[1],x[0]))
         adaptive_s=time.perf_counter()-t0
+        # External forecast evaluation of NUMERICAL choices: numeric
+        # algorithm uses ONLY completed historical F, never outer targets.
+        solver=cached_pure_solver(L,order)
+        extrapolate=finite_difference_forecast_operator(L,order,horizon).trend_matrix
+        history=data.observed[T-L:T]
+        def external_metrics(s):
+            fitted=solver.fit_for_s(history,float(s)).trend
+            pred=extrapolate@fitted
+            return (
+                float(np.mean((pred-data.observed[T:T+horizon])**2)),
+                float(np.mean((pred-data.trend[T:T+horizon])**2)),
+                float(np.mean((fitted-data.trend[T-L:T])**2)),
+            )
+        grid_outer=external_metrics(grid_s)
+        brent_outer=external_metrics(brent_best_s)
+        adaptive_outer=external_metrics(adaptive_best_s)
         sampled_valleys=int(np.sum(
             ((grid_curve[1:-1]<=grid_curve[:-2])&
              (grid_curve[1:-1]<=grid_curve[2:])&
@@ -182,6 +200,15 @@ def numerical_case(
             "n_adaptive_minima":int(sum(p.kind_=="minimum" for p in adaptive.points_)),
             "adaptive_objective_evaluations":int(adaptive.n_evaluations_),
             "brent_regret_to_dense":float(brent_best_f-dense_best_f),
+            "grid_outer_observed_mse":grid_outer[0],
+            "brent_outer_observed_mse":brent_outer[0],
+            "adaptive_outer_observed_mse":adaptive_outer[0],
+            "grid_outer_latent_mse":grid_outer[1],
+            "brent_outer_latent_mse":brent_outer[1],
+            "adaptive_outer_latent_mse":adaptive_outer[1],
+            "grid_past_recovery_mse":grid_outer[2],
+            "brent_past_recovery_mse":brent_outer[2],
+            "adaptive_past_recovery_mse":adaptive_outer[2],
             "adaptive_regret_to_dense":float(adaptive_best_f-dense_best_f),
             "grid_regret_to_dense":float(grid_f-dense_best_f),
             "dense_seconds":float(dense_s),
