@@ -4,6 +4,20 @@
 [theoretical charter](working_papers/THEORETICAL_CONTRIBUTIONS.md)
 before interpreting any old code, manuscript or checkpoint.**
 
+## Notes before manuscript — mandatory handoff
+
+**New 2026-10-09:** publication writing proceeds **from complete
+Markdown research notes to LaTeX only after proof and evidence gates**.
+See [NOTES_TO_MANUSCRIPT.md](working_papers/NOTES_TO_MANUSCRIPT.md).
+Each active paper now has three canonical notes inside \`notes/\`:
+\`RESEARCH_NOTEBOOK.md\` (delimitation, algorithm, motivation),
+\`PROOF_LEDGER.md\` (proofs, assumptions, known vs open statements),
+and \`SIMULATION_ATLAS.md\` (DGPs, true tau vs noisy y and estimated
+trends, forecast steps, planned figures/tables).
+Read the relevant paper's index/README before coding or drafting.
+None of the figures or new 528-cell results described as plans should
+be silently presented as already generated.
+
 ## Research objective and status
 
 Three independent active papers:
