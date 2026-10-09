@@ -28,6 +28,38 @@ mostrar \(\tau\) verdadero, y contaminado,
 pronóstico h, funciones F y derivadas. Distinguir
 verdad de \(\tau\) y verdad de raíces de F.
 
+## Comparación numérica integrada en la simulación formal de ocho horas
+
+El [protocolo conjunto](../../JOINT_FORMAL_8H_PROTOCOL.md)
+toma una muestra predeclarada de las
+**mismas funciones F ponderadas históricas**
+sobre las que Papers 1 y 2 seleccionan
+suavidad. En cada muestra compara:
+grilla gruesa, refinamiento Brent acotado
+por **cada valle local detectado** (más extremos
+exactos) y búsqueda adaptativa de
+raíces con derivadas analíticas.
+La referencia de 401 puntos en S
+es **numérica, no exhaustividad matemática**.
+
+Cada candidato seleccionado produce
+un **pronóstico externo de y y \(\tau\)**
+y su error frente a \(\tau\) pasada,
+para relacionar fallo numérico con
+calidad de pronóstico/reconstrucción.
+Un único ejemplo racional pequeño se
+analiza con Sturm EXACTO, fuera
+de las grandes series Monte Carlo;
+no atribuimos a Sturm la
+certificación de cada F grande.
+
+El motor CUDA calcula pérdidas
+de validación por lotes, mientras
+Brent/derivadas/Sturm siguen en
+CPU. La comparación CUDA/CPU
+de velocidad NO se repite
+durante la prueba formal.
+
 ## 1. Este paper necesita dos tipos distintos de simulación
 
 **(I) Funciones de prueba con mínimos
