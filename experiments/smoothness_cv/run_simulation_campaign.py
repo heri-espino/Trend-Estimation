@@ -28,6 +28,7 @@ import argparse
 from concurrent.futures import FIRST_COMPLETED, ProcessPoolExecutor, wait
 from datetime import datetime, timezone
 import hashlib
+from itertools import groupby
 import json
 import multiprocessing as mp
 from pathlib import Path
@@ -89,7 +90,13 @@ def resolve_jobs(jobs: int) -> int:
 
 def arguments(argv: list[str] | None = None) -> argparse.Namespace:
     p=argparse.ArgumentParser(description="Resumable CPU Monte Carlo grid for two smoothness papers.")
-    p.add_argument("--preset",choices=("smoke","pilot","extensive"),default="smoke")
+    p.add_argument("--preset",choices=("smoke","pilot","extensive","stress","mega"),default="smoke")
+    p.add_argument("--backend",choices=("cpu","cuda"),default="cpu",
+                   help="CUDA batches PLS forecast losses across independent seeds; CPU keeps 32 workers.")
+    p.add_argument("--gpu-batch-size",type=int,default=64,
+                   help="Number of same-scenario Monte Carlo series per CUDA batch.")
+    p.add_argument("--gpu-verify",type=int,default=2,
+                   help="CPU reference comparisons per CUDA batch, 0 disables (not recommended).")
     p.add_argument("--seeds",type=int,default=None,
                    help="Independent replicates per scenario. Defaults: smoke=1,pilot=5,extensive=100.")
     p.add_argument("--seed-start",type=int,default=0)
@@ -128,8 +135,14 @@ def config_from_args(args) -> dict:
         raise ValueError("Need grid 11..501, at least 2 outer origins and inner folds.")
     if args.max_tasks is not None and args.max_tasks<1:
         raise ValueError("--max-tasks must be positive.")
+    if args.gpu_batch_size<1 or args.gpu_verify<0:
+        raise ValueError("--gpu-batch-size must be positive and --gpu-verify nonnegative.")
     return {
-        "protocol":"weighted_F_campaign_v1",
+        "protocol":"weighted_F_campaign_v2_cuda",
+        "backend":args.backend,
+        "gpu_batch_size":int(args.gpu_batch_size) if args.backend=="cuda" else None,
+        "gpu_verify":int(args.gpu_verify) if args.backend=="cuda" else None,
+        "gpu_kernel_dtype":"float32" if args.backend=="cuda" else "float64",
         "preset":args.preset,"seeds":int(seeds),
         "seed_start":int(args.seed_start),
         "orders":order,"horizons":horizon,
@@ -213,7 +226,12 @@ def _checked_manifest(run_dir: Path,config: dict):
         "fingerprint":digest(config),"configuration":config,
         "created_utc":utc_now(),
         "notes":"Pilot/large simulation; no summary implies verified superiority.",
-        "hardware":"CPU process-level parallelism; each worker 1 BLAS thread",
+        "hardware":(
+            "One CUDA context, batched float32 PLS losses with FP64 spectral setup; "
+            "CPU classical criteria, matching, refit and SQLite"
+            if config["backend"]=="cuda" else
+            "CPU process-level parallelism; each worker 1 BLAS thread"
+        ),
         "resume":"Only atomic completed replications are skipped",
     }
     if path.exists():
@@ -236,12 +254,13 @@ def main(argv: list[str] | None = None) -> int:
     total=len(scenarios)*cfg["seeds"]
     # A deliberately generous estimate; each study has different horizons.
     approx=total*cfg["outer_count"]*len(cfg["horizons"])*len(cfg["orders"])*21
-    jobs=resolve_jobs(args.jobs)
+    jobs=resolve_jobs(args.jobs) if args.backend=="cpu" else 1
     print(
         f"CAMPAIGN preset={cfg['preset']} | scenarios={len(scenarios)} "
         f"seeds/scenario={cfg['seeds']} scenario-seed tasks={total:,} "
         f"| d={cfg['orders']} h={cfg['horizons']} outer={cfg['outer_count']} "
-        f"grid={cfg['grid_points']} | jobs={jobs} "
+        f"grid={cfg['grid_points']} | backend={cfg['backend']} "
+        f"| workers={jobs} | cuda_batch={cfg['gpu_batch_size']} "
         f"| upper-bound method-rows ~{approx:,}",flush=True,
     )
     if args.dry_run:
@@ -250,7 +269,19 @@ def main(argv: list[str] | None = None) -> int:
             print(f"  Experiment {study}: {cells} factorial cells, {cells*cfg['seeds']:,} series.")
         return 0
 
-    run_dir=args.run_dir or Path("results/smoothness_cv")/f"campaign_{args.preset}"
+    # Never initialize CUDA inside spawned CPU workers or silently fall back
+    # to CPU. A CUDA-enabled torch install is required for --backend cuda.
+    cuda_torch = None
+    if args.backend=="cuda":
+        from .cuda_simulation import require_cuda
+        cuda_torch=require_cuda()
+        cfg["cuda_device"]=cuda_torch.cuda.get_device_name(0)
+        cfg["torch_version"]=str(cuda_torch.__version__)
+        cfg["cuda_runtime"]=str(cuda_torch.version.cuda)
+        print(f"CUDA active: {cfg['cuda_device']} | torch={cfg['torch_version']} "
+              f"| runtime={cfg['cuda_runtime']} | one GPU context; "
+              "--jobs applies to CPU backend only.",flush=True)
+    run_dir=args.run_dir or Path("results/smoothness_cv")/f"campaign_{args.preset}_{args.backend}"
     _checked_manifest(run_dir,cfg)
     db=connect_db(run_dir/"outcomes.sqlite")
     completed={row[0] for row in db.execute("SELECT task_key FROM completed")}
@@ -274,7 +305,61 @@ def main(argv: list[str] | None = None) -> int:
     success=0
     failures=0
     update=max(1,len(remaining)//100)
-    if jobs==1:
+    if args.backend=="cuda":
+        from .cuda_simulation import gpu_batch_evaluate
+        # A single CUDA context evaluates all series for a scenario in
+        # contiguous seed batches. No separate CUDA worker per CPU process.
+        for _scenario_key, group in groupby(remaining,key=lambda x:x[0].key):
+            pending_for_scenario=list(group)
+            for index in range(0,len(pending_for_scenario),args.gpu_batch_size):
+                batch=pending_for_scenario[index:index+args.gpu_batch_size]
+                scenario=batch[0][0]
+                seeds=[task[1] for task in batch]
+                try:
+                    output,audits=gpu_batch_evaluate(
+                        scenario,seeds,
+                        orders=tuple(cfg["orders"]),
+                        horizons=tuple(cfg["horizons"]),
+                        outer_count=cfg["outer_count"],
+                        max_folds=cfg["max_folds"],
+                        grid_points=cfg["grid_points"],
+                        verify=cfg["gpu_verify"],torch=cuda_torch,
+                    )
+                    # Log per-batch numerical checks. Never write outer test
+                    # information into the CUDA fold-loss inputs.
+                    with (run_dir/"gpu_audit.jsonl").open("a",encoding="utf-8") as f:
+                        f.write(json.dumps({
+                            "scenario":scenario.key,"seed_first":seeds[0],
+                            "seed_last":seeds[-1],"batch_size":len(seeds),
+                            "checks":sum(a.checks for a in audits),
+                            "max_absolute_error":max(a.maximum_absolute_error for a in audits),
+                            "max_relative_error":max(a.maximum_relative_error for a in audits),
+                            "different_grid_minima":sum(a.differing_minima for a in audits),
+                            "max_selected_regret":max(a.selected_regret for a in audits),
+                        })+"\n")
+                    for seed,seconds,rows in output:
+                        key=task_key(scenario,seed)
+                        record(db,key,seconds,rows)
+                        success+=1
+                except Exception:
+                    detail=traceback.format_exc()
+                    for seed in seeds:
+                        key=task_key(scenario,seed)
+                        with db:
+                            db.execute("INSERT OR REPLACE INTO failures VALUES (?,?,?)",
+                                       (key,detail,utc_now()))
+                        failures+=1
+                    print(f"FAILED CUDA batch {scenario.key} seeds={seeds[:2]}... "
+                          f"({len(seeds)} tasks)\n{detail}",file=sys.stderr,flush=True)
+                    if not args.continue_on_error:
+                        db.close()
+                        raise
+                count=success+failures
+                elapsed=(time.perf_counter()-started)/60
+                print(f"[{count:,}/{len(remaining):,}] CUDA batches "
+                      f"ok={success:,} fail={failures:,} "
+                      f"elapsed={elapsed:.1f} min",flush=True)
+    elif jobs==1:
         for task in remaining:
             key=task_key(task[0],task[1])
             try:
