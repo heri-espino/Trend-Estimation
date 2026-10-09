@@ -104,7 +104,10 @@ def _actual_fold_losses(
     # FP32 multiplication matches the dedicated CPU vs CUDA benchmark.
     histories = torch.as_tensor(spectral, dtype=torch.float32, device=device)
     target_tensor = torch.as_tensor(targets, dtype=torch.float32, device=device)
-    shrinkage = torch.as_tensor(filters, dtype=torch.float32, device=device)
+    # cached_uniform_spectral_weights is deliberately read-only and cached.
+    # Explicitly copy before handing data to PyTorch, which otherwise emits
+    # a non-writable NumPy -> tensor warning (and forbids in-place writes).
+    shrinkage = torch.as_tensor(filters.copy(), dtype=torch.float32, device=device)
     continuation = torch.as_tensor(G, dtype=torch.float32, device=device)
     K = grid_points
 
