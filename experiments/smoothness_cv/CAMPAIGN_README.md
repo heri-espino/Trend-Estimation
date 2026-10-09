@@ -142,6 +142,68 @@ interpretable and not be confounded by best-order selection.
 when ready to continue. \`--continue-on-error\` records failures
 and continues, but failed task keys remain incomplete for later retries.
 
+## CPU versus GPU — measured float32 benchmark (run before GPU migration)
+
+An optional **float32-only** benchmark now compares
+the *same spectral PLS forecast-loss calculation* across:
+
+1. A single NumPy CPU process with one BLAS thread.
+2. **32 NumPy worker processes**, including subprocess communication.
+3. PyTorch CUDA with tensors already resident in GPU memory.
+4. PyTorch CUDA **including** CPU-to-GPU transfer and final result download.
+
+**All measured matrix arithmetic is \`float32\`** on CPU and CUDA;
+the existing PLS eigendecomposition and \`S -> lambda\` mapping
+are prepared once in CPU double precision and then cast to float32
+to retain stable spectral and endpoint semantics. These preprocessing
+costs are reported separately as preparation time.
+CUDA synchronizations prevent asynchronous launch timings from being
+mistaken for actual execution times.
+
+From repo root, with a CUDA-enabled PyTorch installed in the same
+Python environment (see the official PyTorch install selector):
+
+~~~powershell
+python -m pytest tests/test_benchmark_cpu_gpu.py -q
+python -m experiments.smoothness_cv.benchmark_cpu_gpu --batch-sizes 1,32,256,1024 --jobs 32 --repeats 7 --warmup 3 --require-cuda
+~~~
+
+Optional separate run that enables TF32 tensor-core precision
+(subject to a numerical accuracy check):
+
+~~~powershell
+python -m experiments.smoothness_cv.benchmark_cpu_gpu --batch-sizes 1,32,256,1024 --jobs 32 --repeats 7 --warmup 3 --tf32 --require-cuda --output results/smoothness_cv/gpu_benchmark_tf32
+~~~
+
+**Artifacts:** \`results/smoothness_cv/gpu_benchmark/timings_float32.csv\`
+and \`hardware.json\`. Columns include the CPU1/CPU32 times,
+GPU-resident and transfer-inclusive times, CPU32-to-GPU speedup,
+maximum loss differences, and the count of series where
+the selected grid-minimum smoothness differs on CUDA.
+
+**Interpretation:**
+- For small batches, CPU may win due to kernel-launch and data-transfer
+  overhead. GPU may win only after **batching many independent series**.
+- Judge deployment using **GPU+transfers vs CPU worker pool**, rather than
+  comparing a resident GPU kernel against an unbatched CPU process.
+- CPU process-pool timing itself includes interprocess communication;
+  the actual scenario-per-worker campaign avoids some of that copying.
+  Hence this measures the *dominant loss kernel*, **not** total
+  campaign speed. End-to-end GPU integration and another head-to-head
+  run are required before changing the default experimental backend.
+- A GPU win is acceptable only if computed losses and **selected
+  smoothness levels** match the CPU within the predeclared numerical
+  tolerance. Near-tied minima are particularly sensitive.
+- CUDA not detected: tool reports \`unavailable\`; it does not claim
+  GPU timings. Check \`python -c "import torch; print(torch.cuda.is_available())"\`.
+- Do not launch the full expensive simulation campaign simultaneously
+  with the hardware benchmark; it would corrupt comparative timing.
+
+See the [float32 benchmark source](benchmark_cpu_gpu.py) and
+[correctness tests](../../tests/test_benchmark_cpu_gpu.py).
+**The benchmarks must be run on the actual university workstation**;
+no speedup is asserted by committing the benchmark itself.
+
 ## Hardware: 32 logical processors and RTX Ada GPU
 
 The runner defaults to up to 32 logical CPU processes and explicitly
