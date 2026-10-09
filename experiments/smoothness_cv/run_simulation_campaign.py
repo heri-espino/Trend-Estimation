@@ -326,18 +326,20 @@ def main(argv: list[str] | None = None) -> int:
                         grid_points=cfg["grid_points"],
                         verify=cfg["gpu_verify"],torch=cuda_torch,
                     )
-                    # Log per-batch numerical checks. Never write outer test
-                    # information into the CUDA fold-loss inputs.
-                    with (run_dir/"gpu_audit.jsonl").open("a",encoding="utf-8") as f:
-                        f.write(json.dumps({
-                            "scenario":scenario.key,"seed_first":seeds[0],
-                            "seed_last":seeds[-1],"batch_size":len(seeds),
-                            "checks":sum(a.checks for a in audits),
-                            "max_absolute_error":max(a.maximum_absolute_error for a in audits),
-                            "max_relative_error":max(a.maximum_relative_error for a in audits),
-                            "different_grid_minima":sum(a.differing_minima for a in audits),
-                            "max_selected_regret":max(a.selected_regret for a in audits),
-                        })+"\n")
+                    # Explicit precision checks are a ONE-TIME preflight,
+                    # not repeated during the formal campaign (default 0).
+                    # Write an audit log ONLY for runs that requested checks.
+                    if cfg["gpu_verify"] > 0:
+                        with (run_dir/"gpu_audit.jsonl").open("a",encoding="utf-8") as f:
+                            f.write(json.dumps({
+                                "scenario":scenario.key,"seed_first":seeds[0],
+                                "seed_last":seeds[-1],"batch_size":len(seeds),
+                                "checks":sum(a.checks for a in audits),
+                                "max_absolute_error":max(a.maximum_absolute_error for a in audits),
+                                "max_relative_error":max(a.maximum_relative_error for a in audits),
+                                "different_grid_minima":sum(a.differing_minima for a in audits),
+                                "max_selected_regret":max(a.selected_regret for a in audits),
+                            })+"\n")
                     for seed,seconds,rows in output:
                         key=task_key(scenario,seed)
                         record(db,key,seconds,rows)
