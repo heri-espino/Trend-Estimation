@@ -7,6 +7,25 @@ entire N=50/200 series. This is distinct from using the same 16 DGP
 cells as **forecasting** stress cases in the extensive simulation
 campaign.
 
+## Primero notas Markdown; luego tres manuscritos finalizados
+
+La guía editorial común es
+**[NOTES_TO_MANUSCRIPT.md](NOTES_TO_MANUSCRIPT.md)**.
+Para cada artículo hemos preparado tres notas con funciones distintas:
+
+| Paper | Pregunta/algoritmo | Demostraciones | Simulaciones, figuras y tablas |
+| --- | --- | --- | --- |
+| 1: Pooled Forecast-CV | [Cuaderno](Working%20Paper%20-%20Smoothness%20Cross%20Validation/notes/RESEARCH_NOTEBOOK.md) | [Teoremas](Working%20Paper%20-%20Smoothness%20Cross%20Validation/notes/PROOF_LEDGER.md) | [Atlas](Working%20Paper%20-%20Smoothness%20Cross%20Validation/notes/SIMULATION_ATLAS.md) |
+| 2: Dynamic Branch Selection | [Cuaderno](Working%20Paper%20-%20Dynamic%20Branch%20Selection/notes/RESEARCH_NOTEBOOK.md) | [Teoremas](Working%20Paper%20-%20Dynamic%20Branch%20Selection/notes/PROOF_LEDGER.md) | [Atlas](Working%20Paper%20-%20Dynamic%20Branch%20Selection/notes/SIMULATION_ATLAS.md) |
+| 3: Numerical Methods | [Cuaderno](Working%20Paper%20-%20Numerical%20Methods/notes/RESEARCH_NOTEBOOK.md) | [Teoremas](Working%20Paper%20-%20Numerical%20Methods/notes/PROOF_LEDGER.md) | [Atlas](Working%20Paper%20-%20Numerical%20Methods/notes/SIMULATION_ATLAS.md) |
+
+Los atlas separan la **serie observada** de la **tendencia latente
+simulada**, cómo se construye y extrapola \(\hat\tau\) para horizonte h,
+qué ocurriría bajo distintos niveles/modelos de ruido, qué mide
+MSFE frente a recuperación de tendencia y qué figuras/tablas deberán
+hacerse cuando se disponga de resultados. Los manuscritos LaTeX
+actuales son borradores, **no versiones listas para enviar**.
+
 ## Start here — theory and current interfaces (2026-10-09)
 
 **Research is theory-first.** Read
