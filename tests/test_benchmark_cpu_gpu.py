@@ -45,6 +45,21 @@ def test_float32_pls_kernel_matches_existing_actual_forecast_loss():
         assert np.allclose(got[b],expected,rtol=5e-5,atol=1e-5)
 
 
+def test_gemm_float32_matches_original_einsum_surface_and_argmin():
+    inputs = build_real_inputs(
+        batch=7,window=36,order=3,horizon=5,
+        origins=6,grid_points=31,seed=97,
+    )
+    via_einsum = numpy_loss(inputs,kernel="einsum")
+    via_matmul = numpy_loss(inputs,kernel="gemm")
+    assert via_einsum.dtype == via_matmul.dtype == np.float32
+    assert np.allclose(via_einsum,via_matmul,rtol=5e-5,atol=1e-5)
+    assert np.array_equal(
+        np.argmin(via_einsum.mean(axis=1),axis=1),
+        np.argmin(via_matmul.mean(axis=1),axis=1)
+    )
+
+
 def test_cpu_pool_splitting_does_not_change_losses():
     inputs = build_real_inputs(
         batch=5,window=20,order=2,horizon=2,
