@@ -11,6 +11,44 @@ noise realizations, and classical PLS competitors. Their **decisions** differ:
 Paper 1 globally minimizes the newest complete weighted surface; Paper 2
 tracks its historical local-minimum branches and selects a branch-specific S.
 
+## 2026-10-09 addition — formal CUDA execution and new stress Study D
+
+**Prospective study, not a result**. The same Paper 1 pooled and
+Paper 2 branch algorithms now accept float32 CUDA-computed
+**completed-origin forecast-loss matrices** through the formal runner.
+The default formal GPU run does **not** compare to CPU at each batch.
+Perform one small preflight with \`--gpu-verify 2\`, then
+\`--preset mega --backend cuda --gpu-verify 0\` (0 is default).
+
+**Study D** is a predeclared factorial stress/robustness extension:
+12 latent-trend mechanisms (jumps, jump-recovery, a transient pulse,
+frequency-changing oscillations/chirps, beating waves, plateau,
+terminal spike, accelerating oscillations, double sigmoid, stochastic
+level and stochastic slope), lengths N=300/600, noise scale
+sigma=.25/.8/1.6, iid/AR(1)/Student-t5/heteroskedastic/4% contaminated
+outlier noise, optional quarterly seasonality. This forms
+\(12\times2\times3\times5\times2=720\) additional scenario cells.
+The \`mega\` preset includes 528 A/B/C + 720 D = **1,248 cells**;
+100 replicates/cell are **124,800 scenario–seed instances**.
+
+The two stochastic trends are generated from an additional
+seeded RNG (separate from observation noise) so the simulated
+latent \(\tau_t\) remains available for *external* error measurement;
+only y enters the selectors. As before, fixed \(V=I\) in the PLS
+smoother is NOT an assertion that the actual DGP noise is iid.
+
+**Paper 1 question:** when does recency-weighted global minimization
+help/hurt near these irregular dynamics? **Paper 2 question:** does
+local-minimum branch persistence improve future h-step forecasts
+beyond the *same* weighted-F global argmin, or introduce spurious
+instability? Paper 3 numerical solvers remain a separate
+CPU/adaptive-root research workflow; the new CUDA production runner
+does NOT yet accelerate arbitrary certified root isolation or Sturm.
+
+Precise implementation, one-time precision audit, timing and commands:
+[CAMPAIGN_README.md](../experiments/smoothness_cv/CAMPAIGN_README.md).
+Do not claim the expanded study has already been run.
+
 ## 1. What the 2017 source actually did
 
 Cortés-Toto, Guerrero and Reyes (2017, *Communications in Statistics—
