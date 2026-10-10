@@ -21,13 +21,13 @@ The active paper is:
 
 The canonical formal object is now
 
-$
+$$
 \Theta^\star_{T,h}
 =
 (d^\star_{T,h},L^\star_{T,h},S^\star_{T,h})
 =
 G(h,X_T,\mathcal C).
-$
+$$
 
 ## Correct hierarchy
 

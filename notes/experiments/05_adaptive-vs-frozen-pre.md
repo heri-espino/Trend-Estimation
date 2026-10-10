@@ -4,20 +4,20 @@
 
 This is the first experiment that directly tests Level III of the active paper:
 
-$
+$$
 \text{does adapting }
 \Theta^\star_{T,h}=(d^\star_{T,h},L^\star_{T,h},S^\star_{T,h})
 \text{ improve untouched OOS forecasts?}
-$
+$$
 
 Explorations 01–04B established target dependence, persistence/horizon
 mechanisms, numerical robustness, within-series adaptation, and the role of
 inner-selector memory. Exploration 04B freezes the exploratory selector
 protocol at
 
-$
+$$
 M=20
-$
+$$
 
 inner rolling origins.
 
@@ -27,9 +27,9 @@ inner rolling origins.
 
 At every outer origin T, use only y[:T] and re-select
 
-$
+$$
 (d,L,\lambda)
-$
+$$
 
 by the chronological inner forecast objective with M=20.
 
@@ -40,9 +40,9 @@ future block.
 
 At the known simulation regime point T0, select
 
-$
+$$
 (d_0,L_0,\lambda_0)
-$
+$$
 
 once using only pre-change data y[:T0].
 
@@ -93,14 +93,14 @@ configuration is exactly matched at T0.
 
 For each transition, horizon, and period, compare adaptive and frozen-pre by
 
-$
+$$
 R_{A/F}
 =
 \sqrt{
 \frac{\sum e^2_{\rm adaptive}}
 {\sum e^2_{\rm frozen}}
 }.
-$
+$$
 
 Interpretation:
 
@@ -119,23 +119,23 @@ adaptation.
 For each transition, use its matched stationary control and calculate the
 adaptive MSE advantage
 
-$
+$$
 A_T
 =
 \operatorname{MSE}_{\rm frozen}
 -
 \operatorname{MSE}_{\rm adaptive}.
-$
+$$
 
 Then compare
 
-$
+$$
 \Delta A
 =
 A_{\rm transition}
 -
 A_{\rm matched\ stable\ control}.
-$
+$$
 
 Positive Delta A means the adaptive method gains more after the regime change
 than it gains merely from continuing to re-select in a stationary series.

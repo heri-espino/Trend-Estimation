@@ -6,13 +6,13 @@ This is a **numerical validity experiment**, not a new scientific mechanism.
 
 The canonical research object remains
 
-$
+$$
 \Theta^\star_{T,h}
 =
 (d^\star_{T,h},L^\star_{T,h},S^\star_{T,h})
 =
 G(h,X_T,\mathcal C).
-$
+$$
 
 Exploration 02 produced a strong persistence/horizon pattern, but a material
 fraction of the selected optima occurred at the finite search boundaries
@@ -34,15 +34,15 @@ Repeat **exactly the same Explore-02 DGP grid and seeds**:
 
 Change only the numerical search:
 
-$
+$$
 \log\lambda:\ [-10,16]\longrightarrow[-18,24],
-$
+$$
 
 and
 
-$
+$$
 n_{\rm grid}:\ 161\longrightarrow321.
-$
+$$
 
 This isolates numerical-domain sensitivity from changes in the scientific
 design.
@@ -85,7 +85,7 @@ it from the full row-level output.
 4. Are those persistent boundary choices compatible with genuine
    $\lambda\to0$ or $\lambda\to\infty$ limiting preferences?
 5. Does the ordering
-   $
+   $$
    S^\star_{\rm observed}
    <
    S^\star_{\rm AR}
@@ -93,7 +93,7 @@ it from the full row-level output.
    S^\star_{\rm latent}
    <
    S^\star_{\rm recovery}
-   $
+   $$
    survive in the positive-persistence/short-horizon regions where it was
    previously observed?
 6. Are the conclusions stable across selected $d$ and $L$?
@@ -113,20 +113,20 @@ discovery in the affected regimes.
 
 Exploration 04 should change a regime **inside a single series** and track
 
-$
+$$
 T\mapsto
 (d^\star_{T,h},L^\star_{T,h},S^\star_{T,h}).
-$
+$$
 
 The first transition should change persistence, e.g.
 
-$
+$$
 \phi_t=
 \begin{cases}
 0,&t<t_0,\\
 0.8,&t\ge t_0,
 \end{cases}
-$
+$$
 
 followed separately by changes in noise scale and latent-trend roughness. The
 main new estimand is adaptation delay and the next substantive question is

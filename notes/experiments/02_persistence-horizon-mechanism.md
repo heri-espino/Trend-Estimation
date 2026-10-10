@@ -7,13 +7,13 @@ This is a **Level-II mechanism study**, not the central research objective.
 The active paper studies forecast-optimal trend estimation as an adaptive
 forecasting method,
 
-$
+$$
 \Theta^\star_{T,h}
 =
 (d^\star_{T,h},L^\star_{T,h},S^\star_{T,h})
 =
 G(h,X_T,\mathcal C).
-$
+$$
 
 This experiment isolates one mechanism inside that object: how serial
 persistence and horizon affect the smoothness coordinate when residual
@@ -31,11 +31,11 @@ persistent.
 
 The proposed mechanism is:
 
-$
+$$
 y_t=\tau_t+\varepsilon_t,
 \qquad
 \varepsilon_t=\phi\varepsilon_{t-1}+u_t.
-$
+$$
 
 When $\phi$ is large, the residual component is not useless for forecasting
 the next observed value. A trend-only forecast may therefore retain some
@@ -47,24 +47,24 @@ This experiment tests that explanation directly.
 
 Hold fixed:
 
-$
+$$
 \sigma_{\rm slope}=0.01,
 \qquad
 \sigma_{\varepsilon}=0.5.
-$
+$$
 
 Explore:
 
-$
+$$
 \phi\in
 \{-0.8,-0.4,0,0.2,0.4,0.6,0.8,0.9,0.95\}
-$
+$$
 
 and
 
-$
+$$
 h\in\{1,2,3,6,12\}.
-$
+$$
 
 The exploration preset uses 30 seeds.
 
@@ -90,22 +90,22 @@ scored against the known latent trend.
 
 The true simulation $\phi$ is used to forecast the final fitted residual:
 
-$
+$$
 \widehat\varepsilon_{T+k|T}
 =
 \phi^k
 \left(y_T-\widehat\tau_T\right).
-$
+$$
 
 The full forecast is
 
-$
+$$
 \widehat y_{T+k|T}
 =
 \widehat\tau_{T+k|T}
 +
 \widehat\varepsilon_{T+k|T}.
-$
+$$
 
 Because $\phi$ is treated as known, this diagnostic remains affine in the
 fitted trend and retains analytic lambda derivatives.
@@ -122,27 +122,27 @@ known latent trend.
 If the low-smoothness effect at high positive persistence is partly caused by
 the trend-only model absorbing predictable residual dynamics, then
 
-$
+$$
 S^\star_{\rm observed}
 <
 S^\star_{\rm latent}
-$
+$$
 
 and
 
-$
+$$
 S^\star_{\rm observed}
 <
 S^\star_{\rm recovery}
-$
+$$
 
 should be strongest at short horizons and large positive $\phi$.
 
 After explicitly forecasting the persistent residual, we expect
 
-$
+$$
 S^\star_{\rm AR}
-$
+$$
 
 to move toward the latent/recovery optima.
 
