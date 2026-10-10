@@ -1,0 +1,12 @@
+filters:
+  and:
+    - 'file.inFolder("demostraciones")'
+    - 'tipo == "demostracion"'
+views:
+  - type: table
+    name: "Demostraciones"
+    order:
+      - file.name
+      - titulo
+      - resultado
+      - estado

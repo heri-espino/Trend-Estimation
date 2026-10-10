@@ -1,0 +1,13 @@
+filters:
+  and:
+    - 'file.inFolder("literatura")'
+    - 'tipo == "literatura"'
+views:
+  - type: table
+    name: "Literatura"
+    order:
+      - file.name
+      - titulo
+      - autores
+      - anio
+      - doi

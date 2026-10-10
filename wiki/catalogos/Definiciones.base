@@ -1,0 +1,11 @@
+filters:
+  and:
+    - 'file.inFolder("definiciones")'
+    - 'tipo == "definicion"'
+views:
+  - type: table
+    name: "Definiciones"
+    order:
+      - file.name
+      - titulo
+      - estado

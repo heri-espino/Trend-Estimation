@@ -54,3 +54,15 @@ notes/.obsidian/cache/
 notes/.obsidian/plugins/
 notes/.trash/
 notes/_adjuntos/.DS_Store
+
+# Standalone mathematical research wiki — shared core settings only
+wiki/.obsidian/workspace*.json
+wiki/.obsidian/hotkeys.json
+wiki/.obsidian/cache/
+wiki/.obsidian/plugins/
+wiki/.obsidian/snippets/
+wiki/.trash/
+wiki/_adjuntos/.DS_Store
+wiki/.obsidian/community-plugins.json
+wiki/.obsidian/core-plugins.json
+wiki/.obsidian/appearance.json
