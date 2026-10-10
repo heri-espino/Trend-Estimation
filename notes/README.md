@@ -78,3 +78,7 @@ When a result graduates into the public API, keep the note and update its librar
 ## Obsidian vault
 
 The folder `notes/` is also a standalone Obsidian vault. Open **this folder**, not the repository root, using **Open folder as vault**. Start at [Inicio.md](Inicio.md) and see [Guia del vault.md](Guia%20del%20vault.md) for Markdown mathematics, wikilinks, synchronization, and the separation between the vault and paper-local research records. The comprehensive derivation remains authoritative and compilable at [`notes_on_smoothnes/main.tex`](notes_on_smoothnes/main.tex); it is not replaced by condensed concept cards. Machine-specific Obsidian workspace state is gitignored.
+
+## Enciclopedia matemática independiente
+
+La nueva carpeta [`../wiki/`](../wiki/) es **otro vault independiente**: [[Inicio]] en `notes/` abre el cuaderno histórico, mientras que [`../wiki/Inicio.md`](../wiki/Inicio.md) abre la red matemática de definiciones, resultados y demostraciones. Los archivos originales de `notes/` y su fuente LaTeX se conservan sin trasladar ni duplicar. Las bitácoras científicas particulares siguen en `../working_papers/`.

@@ -1,0 +1,13 @@
+{
+  "showTags": false,
+  "showAttachments": false,
+  "hideUnresolved": true,
+  "showOrphans": false,
+  "collapseFilter": true,
+  "collapseColorGroups": true,
+  "textFadeMultiplier": 0.3,
+  "nodeSizeMultiplier": 1,
+  "linkDistance": 220,
+  "repelStrength": 10,
+  "linkStrength": 1.1
+}

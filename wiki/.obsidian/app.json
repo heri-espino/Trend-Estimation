@@ -1,0 +1,9 @@
+{
+  "alwaysUpdateLinks": true,
+  "showLineNumber": true,
+  "attachmentFolderPath": "_adjuntos",
+  "newFileLocation": "folder",
+  "newFileFolderPath": "borradores",
+  "useMarkdownLinks": false,
+  "readableLineLength": false
+}

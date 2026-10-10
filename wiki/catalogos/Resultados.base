@@ -1,0 +1,13 @@
+filters:
+  and:
+    - 'file.inFolder("resultados")'
+    - 'tipo == "resultado"'
+views:
+  - type: table
+    name: "Resultados"
+    order:
+      - file.name
+      - titulo
+      - estado
+      - prueba
+      - up

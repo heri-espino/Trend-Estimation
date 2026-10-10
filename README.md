@@ -204,3 +204,9 @@ workflows or draft theoretical propositions as published results.
 ## Obsidian research vault
 
 The existing [`notes/`](notes/) folder is also an Obsidian vault. In Obsidian choose **Open folder as vault** and select `Trend-Estimation/notes`. Start with [`notes/Inicio.md`](notes/Inicio.md) for connected mathematical notes, or [`notes/Guia del vault.md`](notes/Guia%20del%20vault.md) for setup. The formal derivations still live in [`notes/notes_on_smoothnes/main.tex`](notes/notes_on_smoothnes/main.tex) and compile independently; paper-specific evidence stays under [`working_papers/`](working_papers/).
+
+## Mathematical knowledge wiki (Obsidian)
+
+The new [`wiki/`](wiki/) folder is a **separate Obsidian vault** for the result-and-proof dependency graph: every established theorem has an atomic result note, an independent linked proof, explicit prerequisite pages, and traceable [`literature/`](literature/) references. Open `Trend-Estimation/wiki` as a vault and start from [`Inicio.md`](wiki/Inicio.md). The first version covers the mathematical foundation of the three papers; it does not replace their paper-specific records. [Setup and conventions](wiki/README.md) · [mathematical route](wiki/mapas/Mapa%20de%20resultados.md).
+
+`notes/` remains a separate, historical research notebook and LaTeX lesson. For integrity checks run `python tools/validate_wiki.py`; this also runs through the standard Pytest CI.
