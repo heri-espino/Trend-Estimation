@@ -5,13 +5,13 @@
 This is the first experiment that directly targets the adaptive forecasting
 object of the active paper:
 
-\[
+$
 \Theta^\star_{T,h}
 =
 (d^\star_{T,h},L^\star_{T,h},S^\star_{T,h})
 =
 G(h,X_T,\mathcal C).
-\]
+$
 
 Explorations 01–03 established target differences, a persistence/horizon
 mechanism, and numerical-domain robustness. Exploration 04 asks what happens
@@ -21,19 +21,19 @@ when the stochastic regime changes **inside one observed series**.
 
 Hold fixed:
 
-\[
+$
 \sigma_{\rm slope}=0.01,
 \qquad
 \sigma_\varepsilon=0.5,
-\]
+$
 
 with no level or slope jump.
 
 Use a known regime point
 
-\[
+$
 T_0=180
-\]
+$
 
 inside a length-300 series.
 
@@ -55,20 +55,20 @@ Monte Carlo baselines.
 
 Explore horizons
 
-\[
+$
 h\in\{1,3,6,12\}.
-\]
+$
 
 Use 30 seeds, candidate orders {1,2,3}, candidate windows {24,48,72},
 outer initial train 120, outer step 3, and inner step 3.
 
 After Exploration 03, the numerical search uses:
 
-\[
+$
 \log\lambda\in[-18,24],
 \qquad
 n_{\rm grid}=321.
-\]
+$
 
 At every outer origin, selection remains strictly causal.
 
@@ -91,10 +91,10 @@ selected window that comes from the post-change regime.
 
 The primary plot/table object is
 
-\[
+$
 T\mapsto
 (d^\star_{T,h},L^\star_{T,h},S^\star_{T,h}).
-\]
+$
 
 The row-level output additionally records:
 
@@ -114,7 +114,7 @@ target reference. For high_to_low, the roles reverse.
 
 At each relative origin k=T-T0, define aggregate smoothness progress:
 
-\[
+$
 P_S(k)
 =
 \frac{
@@ -122,7 +122,7 @@ P_S(k)
 }{
 \bar S_{\rm target}(k)-\bar S_{\rm start}(k)
 }.
-\]
+$
 
 Thus P_S near 0 means the transition still resembles the old regime, while
 P_S near 1 means it resembles the matched target-regime control.

@@ -27,10 +27,10 @@ Every note describing a mathematical result should include:
 - `key_results.md` — compact canonical result sheet.
 - `current_state.md` — chronological status: what we did, what the results mean, and what comes next.
 - `derivative.md` — forecast-loss derivatives for the pure penalized trend.
-- `numerical_selection.md` — stationary-point search in log-\(\lambda\).
+- `numerical_selection.md` — stationary-point search in log-$\lambda$.
 - `model_definitions.md` — exact estimator definitions and Guerrero-model audit.
 - `roadmap.md` — active-paper roadmap and rationale.
-- `window_and_smoothness.md` — why fixed \(\lambda\) is not fixed smoothness when sample length changes.
+- `window_and_smoothness.md` — why fixed $\lambda$ is not fixed smoothness when sample length changes.
 - `nested_validation.md` — leakage-free outer/inner rolling evaluation and no-change benchmark.
 
 When a result graduates into the public API, keep the note and update its library mapping rather than deleting the derivation.
@@ -74,3 +74,7 @@ When a result graduates into the public API, keep the note and update its librar
 - `checkpoints/2026-09-23_fixed-baseline-stress-results.md` — frozen-all-pre stabilizes the fixed comparator and becomes the primary nonadaptive baseline.
 - `checkpoints/2026-09-29_final-1000-seed-monte-carlo-results.md` — final paper-scale simulation results, Monte Carlo convergence, validity boundaries, and the 3,000-seed decision.
 - `checkpoints/2026-09-29_real-data-exploratory-results.md` — first observed-data screen, negative transfer result, selector-turnover diagnostic, and frequency-scale issue.
+
+## Obsidian vault
+
+The folder `notes/` is also a standalone Obsidian vault. Open **this folder**, not the repository root, using **Open folder as vault**. Start at [Inicio.md](Inicio.md) and see [Guia del vault.md](Guia%20del%20vault.md) for Markdown mathematics, wikilinks, synchronization, and the separation between the vault and paper-local research records. The comprehensive derivation remains authoritative and compilable at [`notes_on_smoothnes/main.tex`](notes_on_smoothnes/main.tex); it is not replaced by condensed concept cards. Machine-specific Obsidian workspace state is gitignored.

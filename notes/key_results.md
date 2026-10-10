@@ -6,25 +6,25 @@ This file is the short canonical list of mathematical results currently used by 
 
 Let
 
-\[
+$
 Q=D_d^\top D_d,
 \qquad
 S_\lambda=(I+\lambda Q)^{-1}.
-\]
+$
 
 Then
 
-\[
+$
 \boxed{
 \widehat t_\lambda=S_\lambda y
 }
-\]
+$
 
 solves
 
-\[
+$
 \min_t\;\|y-t\|_2^2+\lambda\|D_dt\|_2^2.
-\]
+$
 
 **Library mapping:** `core/pure.py`, `models/pure_penalized.py`.
 
@@ -32,25 +32,25 @@ solves
 
 ## 2. Smoother sensitivity
 
-\[
+$
 \boxed{
 S_\lambda'=-S_\lambda Q S_\lambda
 }
-\]
+$
 
-\[
+$
 \boxed{
 \widehat t_\lambda'=-S_\lambda Q\widehat t_\lambda
 }
-\]
+$
 
-\[
+$
 \boxed{
 \widehat t_\lambda''
 =
 2S_\lambda Q S_\lambda Q\widehat t_\lambda.
 }
-\]
+$
 
 **Library mapping:** `core/derivatives.py::pure_trend_derivatives`.
 
@@ -58,25 +58,25 @@ S_\lambda'=-S_\lambda Q S_\lambda
 
 ## 3. Forecast residual at origin T
 
-For horizon \(h\), let \(H\) denote the linear continuation operator used by the pure model:
+For horizon $h$, let $H$ denote the linear continuation operator used by the pure model:
 
-\[
+$
 r_T(\lambda)
 =
 y_{T+1:T+h}
 -
 H S_\lambda y_{\mathrm{past}}.
-\]
+$
 
 Then
 
-\[
+$
 \boxed{
 r_T'(\lambda)
 =
 H S_\lambda Q S_\lambda y_{\mathrm{past}}.
 }
-\]
+$
 
 **Library mapping:** `forecasting/extrapolation.py`, `forecasting/objectives.py`.
 
@@ -86,11 +86,11 @@ H S_\lambda Q S_\lambda y_{\mathrm{past}}.
 
 With
 
-\[
+$
 f_T(\lambda)=\frac{1}{h}r_T(\lambda)^\top r_T(\lambda),
-\]
+$
 
-\[
+$
 \boxed{
 f_T'(\lambda)
 =
@@ -98,11 +98,11 @@ f_T'(\lambda)
 r_T^\top
 H S_\lambda Q S_\lambda y_{\mathrm{past}}.
 }
-\]
+$
 
 Also,
 
-\[
+$
 \boxed{
 f_T''(\lambda)
 =
@@ -114,7 +114,7 @@ f_T''(\lambda)
 H S_\lambda Q S_\lambda Q S_\lambda y_{\mathrm{past}}
 \right].
 }
-\]
+$
 
 **Library mapping:** `core/derivatives.py::mse_from_prediction_derivatives`, `forecasting/objectives.py::pure_forecast_loss_derivatives`.
 
@@ -124,20 +124,20 @@ Detailed derivation: `notes/derivative.md`.
 
 ## 5. Rolling-origin aggregate objective
 
-For origins \(T_1,\ldots,T_M\),
+For origins $T_1,\ldots,T_M$,
 
-\[
+$
 \boxed{
 CV(\lambda)
 =
 \frac{\sum_j h_j f_{T_j}(\lambda)}
 {\sum_j h_j}.
 }
-\]
+$
 
 and
 
-\[
+$
 \boxed{
 CV'(\lambda)
 =
@@ -149,7 +149,7 @@ CV''(\lambda)
 \frac{\sum_j h_j f_{T_j}''(\lambda)}
 {\sum_j h_j}.
 }
-\]
+$
 
 **Library mapping:** `validation/rolling_origin.py`, `forecasting/objectives.py::rolling_pure_forecast_loss_derivatives`.
 
@@ -159,37 +159,37 @@ CV''(\lambda)
 
 Set
 
-\[
+$
 \theta=\log\lambda,
 \qquad
 g(\theta)=f(e^\theta).
-\]
+$
 
 Then
 
-\[
+$
 \boxed{
 g'(\theta)=\lambda f'(\lambda)
 }
-\]
+$
 
 and
 
-\[
+$
 \boxed{
 g''(\theta)
 =
 \lambda f'(\lambda)+\lambda^2f''(\lambda).
 }
-\]
+$
 
 Thus
 
-\[
+$
 g'(\theta)=0
 \iff
 f'(\lambda)=0.
-\]
+$
 
 **Library mapping:** `selection/numerical.py`.
 
@@ -200,17 +200,17 @@ f'(\lambda)=0.
 
 To distinguish the smoother matrix from the scalar smoothness coordinate, write
 
-\[
+$
 H_\lambda=(I+\lambda Q)^{-1},
 \qquad
 Q=D_d^\top D_d.
-\]
+$
 
-If the \(N-d\) positive eigenvalues of \(Q\) are
-\(\delta_1,\ldots,\delta_{N-d}>0\), then the normalized smoothness used in the
+If the $N-d$ positive eigenvalues of $Q$ are
+$\delta_1,\ldots,\delta_{N-d}>0$, then the normalized smoothness used in the
 active numerical paper is
 
-\[
+$
 \boxed{
 S(\lambda)
 =
@@ -219,19 +219,19 @@ S(\lambda)
 \sum_{j=1}^{N-d}
 \frac{1}{1+\lambda\delta_j}.
 }
-\]
+$
 
 It satisfies
 
-\[
+$
 S(0)=0,
 \qquad
 S(\infty)=1,
-\]
+$
 
 and
 
-\[
+$
 \boxed{
 S'(\lambda)
 =
@@ -240,30 +240,30 @@ S'(\lambda)
 \frac{\delta_j}{(1+\lambda\delta_j)^2}
 >0.
 }
-\]
+$
 
-Therefore \(S\) is a continuous strictly increasing reparameterization of
-\(\lambda\in[0,\infty]\) onto \(S\in[0,1]\). For
-\(F(S)=f(\lambda(S))\),
+Therefore $S$ is a continuous strictly increasing reparameterization of
+$\lambda\in[0,\infty]$ onto $S\in[0,1]$. For
+$F(S)=f(\lambda(S))$,
 
-\[
+$
 \boxed{
 \frac{dF}{dS}
 =
 \frac{f'(\lambda)}{S'(\lambda)},
 }
-\]
+$
 
 so interior stationary points are preserved exactly. At a stationary point,
 
-\[
+$
 \boxed{
 \frac{d^2F}{dS^2}
 =
 \frac{f''(\lambda)}
 {\left[S'(\lambda)\right]^2},
 }
-\]
+$
 
 so nondegenerate minima and maxima retain their classification under the
 change of variable.
@@ -277,7 +277,7 @@ Detailed note: notes/numerical_selection.md.
 
 On a bounded log-penalty domain:
 
-\[
+$
 \boxed{
 \text{coarse log-grid}
 \rightarrow
@@ -289,7 +289,7 @@ On a bounded log-penalty domain:
 \rightarrow
 \text{evaluate stationary points and boundaries}.
 }
-\]
+$
 
 **Library mapping:** `selection/numerical.py::find_stationary_points_log_lambda`.
 
@@ -302,28 +302,28 @@ Detailed note: `notes/numerical_selection.md`.
 
 ## 7A. Rational structure of fixed-configuration forecast loss
 
-For fixed \(d,L,h\), let \(\delta_1,\ldots,\delta_r>0\) be the distinct
-positive eigenvalues of \(Q=D_d^\top D_d\), where \(r\le L-d\), and define
+For fixed $d,L,h$, let $\delta_1,\ldots,\delta_r>0$ be the distinct
+positive eigenvalues of $Q=D_d^\top D_d$, where $r\le L-d$, and define
 
-\[
+$
 D(\lambda)=\prod_{j=1}^{r}(1+\lambda\delta_j).
-\]
+$
 
 Because every spectral attenuation factor is
-\((1+\lambda\delta_j)^{-1}\), the pooled chronological forecast MSE can be
+$(1+\lambda\delta_j)^{-1}$, the pooled chronological forecast MSE can be
 written as
 
-\[
+$
 \boxed{
 f(\lambda)=\frac{P(\lambda)}{D(\lambda)^2}
 }
-\]
+$
 
-for a polynomial \(P\) with degree at most \(2r\).
+for a polynomial $P$ with degree at most $2r$.
 
 Therefore
 
-\[
+$
 \boxed{
 f'(\lambda)
 =
@@ -331,17 +331,17 @@ f'(\lambda)
 \qquad
 R(\lambda)=P'(\lambda)D(\lambda)-2P(\lambda)D'(\lambda).
 }
-\]
+$
 
-On \(\lambda\ge0\), \(D(\lambda)>0\), so there are no poles or singularities.
-If \(R\not\equiv0\), all interior stationary points are roots of a finite-degree
+On $\lambda\ge0$, $D(\lambda)>0$, so there are no poles or singularities.
+If $R\not\equiv0$, all interior stationary points are roots of a finite-degree
 polynomial and hence are finite in number. A crude degree bound is
 
-\[
+$
 \deg R\le 3r-1\le3(L-d)-1.
-\]
+$
 
-The monotone mapping from \(\lambda\) to normalized smoothness \(S\) preserves
+The monotone mapping from $\lambda$ to normalized smoothness $S$ preserves
 the interior stationary-point set.
 
 **Interpretation:** the numerical objective is a structured rational function,
@@ -360,7 +360,7 @@ Detailed note: notes/numerical_selection.md.
 The active paper studies **forecast-optimal trend estimation as an adaptive
 forecasting method**. The primary object is the full configuration
 
-\[
+$
 \boxed{
 \Theta^\star_{T,h}
 =
@@ -372,7 +372,7 @@ S^\star_{T,h}
 =
 G(h,X_T,\mathcal C).
 }
-\]
+$
 
 Here (d) is difference order, (L) is finite-memory window length, (S) is
 normalized smoothness, (X_T) describes the local regime, and (mathcal C)
@@ -397,30 +397,30 @@ of this object. It must not be promoted to the definition of the project.
 
 For the literature-aligned feasible estimator,
 
-\[
+$
 \widehat m_y
 =
 \frac{1}{N-d}\mathbf1^\top D_dy,
-\]
+$
 
 and
 
-\[
+$
 \widehat\tau_{\lambda,d}
 =
 (I+\lambda D_d^\top D_d)^{-1}
 \left(
 y+\lambda\widehat m_yD_d^\top\mathbf1
 \right).
-\]
+$
 
 With the observed data fixed,
 
-\[
+$
 \boxed{
 \partial\widehat m_y/\partial\lambda=0.
 }
-\]
+$
 
 **Library mapping:** `core/solvers.py::GuerreroSpectralSolver`, `models/guerrero.py::GuerreroTrend`.
 
@@ -431,7 +431,7 @@ With the observed data fixed,
 
 The normalized smoothness index depends on sample size:
 
-\[
+$
 s_d(\lambda;N)
 =
 \frac{
@@ -439,19 +439,19 @@ s_d(\lambda;N)
 }{
 1-d/N
 }.
-\]
+$
 
 Therefore, generally,
 
-\[
+$
 \boxed{
 s_d(\lambda;N_1)\neq s_d(\lambda;N_2)
 }
-\]
+$
 
-for \(N_1\neq N_2\).
+for $N_1\neq N_2$.
 
-For the active object \(S^\star_{T,h,L}\), inner validation therefore uses fixed-width windows \(L\) when one common \(\lambda\) is optimized across origins.
+For the active object $S^\star_{T,h,L}$, inner validation therefore uses fixed-width windows $L$ when one common $\lambda$ is optimized across origins.
 
 **Library mapping:** `core/smoothness.py`, `validation/rolling_origin.py`, `selection/forecast_optimal.py::select_fixed_window_pure_smoothness`.
 
@@ -462,15 +462,15 @@ Detailed note: `notes/window_and_smoothness.md`.
 
 ## 11. Nested outer evaluation
 
-At outer origin \(T\), define
+At outer origin $T$, define
 
-\[
+$
 \mathcal I_T=\{y_1,\ldots,y_T\}.
-\]
+$
 
-All hyperparameter selection must be measurable with respect to \(\mathcal I_T\). The implemented information flow is
+All hyperparameter selection must be measurable with respect to $\mathcal I_T$. The implemented information flow is
 
-\[
+$
 \boxed{
 y_{1:T}
 \to
@@ -482,9 +482,9 @@ y_{1:T}
 \to
 \text{score}.
 }
-\]
+$
 
-Changing only the untouched future block while keeping \(y_{1:T}\) fixed must leave the selected \((d,L,\lambda)\) and forecast unchanged.
+Changing only the untouched future block while keeping $y_{1:T}$ fixed must leave the selected $(d,L,\lambda)$ and forecast unchanged.
 
 **Library mapping:** `validation/nested_forecast.py::nested_rolling_pure_forecast`.
 
@@ -494,38 +494,38 @@ Detailed note: `notes/nested_validation.md`.
 
 ## 12. Oracle recovery objective for simulations
 
-When the latent trend \(\tau\) is known in simulation, define
+When the latent trend $\tau$ is known in simulation, define
 
-\[
+$
 R(\lambda)
 =
 \frac1N
 \|\tau-S_\lambda y\|_2^2.
-\]
+$
 
 Let
 
-\[
+$
 \widehat t_\lambda=S_\lambda y,
 \qquad
 \widehat t_\lambda'=-S_\lambda Q S_\lambda y,
 \qquad
 \widehat t_\lambda''=2S_\lambda Q S_\lambda Q S_\lambda y.
-\]
+$
 
 Then the generic squared-error derivative identities give
 
-\[
+$
 R'(\lambda)
 =
 -\frac{2}{N}
 (\tau-\widehat t_\lambda)^\top
 \widehat t_\lambda',
-\]
+$
 
 and
 
-\[
+$
 R''(\lambda)
 =
 \frac{2}{N}
@@ -535,9 +535,9 @@ R''(\lambda)
 (\tau-\widehat t_\lambda)^\top
 \widehat t_\lambda''
 \right].
-\]
+$
 
-This defines the oracle quantity \(\lambda^\star_{\rm recovery}\), which can be compared with forecast-optimal \(\lambda^\star_{\rm forecast}\) only in simulations.
+This defines the oracle quantity $\lambda^\star_{\rm recovery}$, which can be compared with forecast-optimal $\lambda^\star_{\rm forecast}$ only in simulations.
 
 **Library mapping:** `selection/recovery.py`.
 
@@ -547,22 +547,22 @@ This defines the oracle quantity \(\lambda^\star_{\rm recovery}\), which can be 
 
 For a level series,
 
-\[
+$
 \widehat y^{(0)}_{T+k\mid T}=y_T,
 \qquad k=1,\ldots,h.
-\]
+$
 
 The nested evaluator reports
 
-\[
+$
 \boxed{
 RMSFE_{rel}
 =
 \frac{RMSFE_{method}}{RMSFE_{no-change}}.
 }
-\]
+$
 
-For price-level experiments, \(RMSFE_{rel}<1\) means lower pooled level RMSFE than the no-change forecast; it is not by itself evidence of trading profitability.
+For price-level experiments, $RMSFE_{rel}<1$ means lower pooled level RMSFE than the no-change forecast; it is not by itself evidence of trading profitability.
 
 **Library mapping:** `benchmarks/naive.py`, `validation/nested_forecast.py`.
 
@@ -576,11 +576,11 @@ changes. The primary fixed comparator is frozen-all-pre.
 
 The main empirical result is qualified rather than universal:
 
-\[
+$
 \boxed{
 \text{adaptation value}=q(\text{mechanism},\text{direction},h)
 }
-\]
+$
 
 Clear positive transition-specific cases include:
 

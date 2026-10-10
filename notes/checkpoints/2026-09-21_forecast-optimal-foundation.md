@@ -4,7 +4,7 @@
 > active objective is now stated in \`notes/research_objective.md\` as
 > forecast-optimal trend estimation as an adaptive forecasting method with
 > joint configuration
-> \(\Theta^\star_{T,h}=(d^\star,L^\star,S^\star)\). Results in this checkpoint
+> $\Theta^\star_{T,h}=(d^\star,L^\star,S^\star)$. Results in this checkpoint
 > are evidence for parts of that program, not a replacement definition of it.
 
 
@@ -33,35 +33,35 @@ The portfolio/decision-optimal branch of the research program is paused.
 
 For the pure smoother,
 
-\[
+$
 \widehat t_\lambda=(I+\lambda Q)^{-1}y,
 \qquad Q=D_d^\top D_d,
-\]
+$
 
 the first two lambda derivatives are implemented and checked by centered finite differences.
 
 For genuine chronological forecast loss,
 
-\[
+$
 r_T(\lambda)
 =
 y_{T+1:T+h}
 -
 H S_\lambda y_{\rm past},
-\]
+$
 
 we derived and implemented
 
-\[
+$
 f_T'(\lambda)
 =
 \frac{2}{h}
 r_T^\top H S_\lambda Q S_\lambda y_{\rm past},
-\]
+$
 
 and
 
-\[
+$
 f_T''(\lambda)
 =
 \frac{2}{h}
@@ -71,17 +71,17 @@ f_T''(\lambda)
 2r_T^\top
 H S_\lambda Q S_\lambda Q S_\lambda y_{\rm past}
 \right].
-\]
+$
 
-The explicit matrix/operator representation of \(H\) is now tested against the original recursive forecast implementation.
+The explicit matrix/operator representation of $H$ is now tested against the original recursive forecast implementation.
 
 ### Lambda optimization
 
 The robust active method is:
 
-\[
+$
 \theta=\log\lambda
-\]
+$
 
 followed by derivative scanning, sign-change bracketing, Brent root solving, stationary-point classification, and objective comparison across all detected minima plus boundaries.
 
@@ -91,9 +91,9 @@ Newton remains a local benchmark/refinement.
 
 The Guerrero (2007) source was checked directly. The canonical plug-in drift is
 
-\[
+$
 \widehat m_y=(N-d)^{-1}\mathbf1^\top D_dy,
-\]
+$
 
 not the old repository iteration based on fitted-trend differences.
 
@@ -101,13 +101,13 @@ The canonical model is now `GuerreroTrend`. The old behavior is retained explici
 
 ### Chronological selection
 
-A fixed raw lambda is not a fixed normalized smoothness level when fitted sample size changes. Therefore the active inner selector compares candidate fixed windows \(L\), with all inner fits for a candidate using exactly \(L\) observations.
+A fixed raw lambda is not a fixed normalized smoothness level when fitted sample size changes. Therefore the active inner selector compares candidate fixed windows $L$, with all inner fits for a candidate using exactly $L$ observations.
 
 A second correction was made: competing window lengths are evaluated on the **same inner forecast origins**, so their losses are directly comparable.
 
 The implemented nested procedure now has the information flow
 
-\[
+$
 y_{1:T}
 \to
 (d,L,\lambda)\text{ selection}
@@ -115,7 +115,7 @@ y_{1:T}
 \text{outer forecast}
 \to
 \text{future revealed only for scoring}.
-\]
+$
 
 A unit test changes the untouched future values while preserving the past and verifies that the selected hyperparameters and forecast do not change.
 
@@ -132,11 +132,11 @@ The library now has controlled generators that can vary separately:
 
 Because the latent trend is known in simulation, an oracle recovery-optimal lambda is also implemented. This lets us compare
 
-\[
+$
 S^\star_{\rm forecast}
 \quad\text{with}\quad
 S^\star_{\rm recovery}.
-\]
+$
 
 The first factorial simulation driver is:
 
@@ -163,7 +163,7 @@ The current test suite has been passing after the nested-validation/import-cycle
 
 The paper should not become a collection of exploratory outputs. The intended chain is:
 
-\[
+$
 \boxed{
 \text{derivation}
 \to
@@ -175,6 +175,6 @@ The paper should not become a collection of exploratory outputs. The intended ch
 \to
 \text{paper claim}.
 }
-\]
+$
 
 This checkpoint is the handoff point between infrastructure/mathematical validation and the first substantive simulation results.

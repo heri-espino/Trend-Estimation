@@ -39,3 +39,6 @@ El PDF se genera localmente y no se versiona; no se automatiza la compilación m
 ### Límites importantes
 
 Los tres proyectos comparten `H`, `S`, `G` y la familia de superficies de CV, pero son problemas independientes. El primer paper minimiza globalmente `F_M`. El numérico analiza raíces y extremos **en una superficie fija**. El dinámico empareja mínimos entre actualizaciones `F_r` y aplica una decisión posterior a cada rama. Un resultado de Sturm sobre un caso racionalizado no certifica automáticamente todos los mínimos del problema flotante original; una rama trazada no garantiza menor error de pronóstico. La comparación requiere un test temporal externo no utilizado en selección.
+## Lectura en Obsidian
+
+La carpeta `notes/` se puede abrir como vault. Empezar por [[Inicio]] y [[conceptos/01-Guerrero-y-PLS]] para navegar los conceptos y volver después a `main.tex` para las demostraciones integrales. No existe una conversión automática que sustituya a este fuente LaTeX.

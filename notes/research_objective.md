@@ -1,4 +1,4 @@
-> **Scope update (2026-10-05):** This file is the historical canonical objective for the broader adaptive \((d,L,S)\) paper, now parked at \`paper_forecast-optimal-smoothing/\`. It is **not** the global source of truth for the two active methodological papers. Start at root \`AI_HANDOFF.md\` and \`RESEARCH_MAP.md\`; use \`paper_smoothness-cv/notes/research_objective.md\` for the criterion paper and \`paper_numerical-methods/notes/research_objective.md\` for the numerical paper.
+> **Scope update (2026-10-05):** This file is the historical canonical objective for the broader adaptive $(d,L,S)$ paper, now parked at \`paper_forecast-optimal-smoothing/\`. It is **not** the global source of truth for the two active methodological papers. Start at root \`AI_HANDOFF.md\` and \`RESEARCH_MAP.md\`; use \`paper_smoothness-cv/notes/research_objective.md\` for the criterion paper and \`paper_numerical-methods/notes/research_objective.md\` for the numerical paper.
 
 # Canonical Research Objective
 
@@ -20,23 +20,23 @@ components or diagnostics inside the larger forecasting problem.
 
 ## Formal object
 
-At forecast origin \(T\) and horizon \(h\), define the forecasting-method
+At forecast origin $T$ and horizon $h$, define the forecasting-method
 configuration
 
-\[
+$
 \Theta_{T,h}=(d_{T,h},L_{T,h},S_{T,h}),
-\]
+$
 
 where
 
-- \(d\) is the finite-difference order;
-- \(L\) is the finite-memory estimation-window length;
-- \(S\) is normalized smoothness (with \(\lambda\) the numerical penalty
-  parameter that induces it for a given \(d,L\)).
+- $d$ is the finite-difference order;
+- $L$ is the finite-memory estimation-window length;
+- $S$ is normalized smoothness (with $\lambda$ the numerical penalty
+  parameter that induces it for a given $d,L$).
 
 The central empirical object is
 
-\[
+$
 \boxed{
 \Theta^\star_{T,h}
 =
@@ -48,14 +48,14 @@ S^\star_{T,h}
 =
 G(h,X_T,\mathcal C),
 }
-\]
+$
 
-where \(X_T\) contains observable local-state descriptors and \(\mathcal C\)
+where $X_T$ contains observable local-state descriptors and $\mathcal C$
 denotes the series class.
 
 Candidate local descriptors include
 
-\[
+$
 X_T=
 (
 \widehat\sigma_T,
@@ -65,7 +65,7 @@ X_T=
 \text{local roughness},
 \ldots
 ).
-\]
+$
 
 Do **not** reduce local regime to volatility alone or persistence alone unless
 the evidence eventually supports that simplification.
@@ -75,7 +75,7 @@ the evidence eventually supports that simplification.
 The scientific target must be defined before a smoothing parameter is called
 optimal. The active paper defines optimality by future forecast loss:
 
-\[
+$
 \Theta^\star_{T,h}
 =
 \arg\min_{\Theta}
@@ -87,18 +87,18 @@ Y_{T+1:T+h},
 \,\middle|\,
 \mathcal F_T
 \right],
-\]
+$
 
-with \(\mathcal F_T=\sigma(Y_1,\ldots,Y_T)\).
+with $\mathcal F_T=\sigma(Y_1,\ldots,Y_T)$.
 
 This is distinct from at least two classical targets:
 
-\[
+$
 \lambda^\star_{\rm recovery}
 =
 \arg\min_\lambda
 E\|\widehat\tau_\lambda-\tau\|^2,
-\]
+$
 
 and selectors such as GCV/AIC whose optimality is defined through their own
 risk or information criteria.
@@ -111,34 +111,34 @@ The paper therefore studies a **forecasting method**, not merely a smoother.
 The project can also be viewed as a structured, interpretable
 **ML-style model-selection algorithm for learning a forecasting trend**.
 
-The model-side configuration includes quantities such as \(d\), \(\mu\),
-smoothness \(S\) / penalty \(\lambda\), and estimator-memory length \(L\).
+The model-side configuration includes quantities such as $d$, $\mu$,
+smoothness $S$ / penalty $\lambda$, and estimator-memory length $L$.
 The temporal selection protocol also has consequential design parameters,
 including training-sample size, inner-validation / selector-memory length, and
 the size and placement of later untouched evaluation blocks.
 
 These quantities do not all play the same role:
 
-- \(d,\mu,S,\lambda,L\) describe or constrain the candidate trend model;
+- $d,\mu,S,\lambda,L$ describe or constrain the candidate trend model;
 - training and inner-validation sizes determine how much evidence is available
   to fit and select that model;
-- \(h\) is normally a task condition, not something optimized;
+- $h$ is normally a task condition, not something optimized;
 - the final outer validation/test size is an evaluation-design parameter and
   must be fixed before inspection rather than tuned to improve reported
   performance.
 
 Conceptually, one may write an expanded configuration
 
-\[
+$
 \Theta
 =
 \left(
 d,\mu,S,L_{\mathrm{fit}},M_{\mathrm{select}},
 n_{\mathrm{train}},n_{\mathrm{val1}},\ldots
 \right),
-\]
+$
 
-while retaining \((d,L,S)\) as the smaller canonical coordinate of the
+while retaining $(d,L,S)$ as the smaller canonical coordinate of the
 current adaptive paper when that narrower definition is required.
 
 This makes the scientific interpretation explicit: each series, horizon,
@@ -158,16 +158,16 @@ For the broader adaptive algorithm, use **strictly chronological cross-validatio
 over an assumption-informed candidate grid** as the default conceptual
 framework. The grid may include
 
-\[
+$
 (d,S,L,n_{\rm train},n_{\rm val1},n_{\rm val2},h)
-\]
+$
 
 or the appropriate subset for a particular experiment.
 
 These quantities are not arbitrary bookkeeping choices. They encode assumptions
 about trend geometry, regime duration, available estimation history, selector
 memory, required external evidence, and forecast horizon. In particular,
-\(n_{\rm train}\), \(n_{\rm val1}\), \(n_{\rm val2}\), and \(h\) can
+$n_{\rm train}$, $n_{\rm val1}$, $n_{\rm val2}$, and $h$ can
 materially change the selected method and the measured forecasting problem.
 
 Use an interpretable grid first because the candidate values should come from
@@ -175,9 +175,9 @@ the data frequency, plausible cycle/regime scales, the application horizon,
 and explicit modeling assumptions. Do not use an arbitrary grid merely to
 search for favorable results.
 
-Guardrail: \(n_{\rm val2}\) matters, but once it defines an untouched outer
+Guardrail: $n_{\rm val2}$ matters, but once it defines an untouched outer
 evaluation block it is not to be tuned after seeing that block. Likewise, treat
-\(h\) primarily as a task axis and re-select the forecasting configuration
+$h$ primarily as a task axis and re-select the forecasting configuration
 conditional on each relevant horizon rather than choosing the horizon by
 validation performance.
 
@@ -256,11 +256,11 @@ Detailed note:
 Establish that trend-recovery optimality and forecasting optimality need not
 coincide:
 
-\[
+$
 \Theta^\star_{\rm forecast}
 \neq
 \Theta^\star_{\rm recovery}.
-\]
+$
 
 The first controlled simulations already provide provisional evidence for this
 separation.
@@ -277,7 +277,7 @@ include:
 - endpoints;
 - structural breaks and regime changes.
 
-Mechanism studies explain parts of \(G\); none of them individually defines the
+Mechanism studies explain parts of $G$; none of them individually defines the
 paper.
 
 ### Level III — Adaptation value
@@ -285,17 +285,17 @@ paper.
 Test whether the forecast-optimal method changes systematically with local
 state and whether adapting to that state improves untouched future forecasts:
 
-\[
+$
 \Theta^\star_{T,h}=G(h,X_T,\mathcal C),
-\]
+$
 
 and
 
-\[
+$
 E[L_{\rm adaptive}]
 <
 E[L_{\rm fixed}]
-\]
+$
 
 where supported by the data.
 
@@ -310,7 +310,7 @@ dependence changes selected smoothness.
 
 Its provisional decomposition,
 
-\[
+$
 S^\star_{\rm observed}
 <
 S^\star_{\rm AR}
@@ -318,7 +318,7 @@ S^\star_{\rm AR}
 S^\star_{\rm latent}
 <
 S^\star_{\rm recovery},
-\]
+$
 
 in some high-positive-persistence regimes is evidence about one mechanism:
 when predictable residual dynamics are omitted, a trend-only forecast can
@@ -326,25 +326,25 @@ absorb part of them by changing its smoothness.
 
 This result must **not** be restated as the objective of the project.
 
-The AR-aware forecast uses oracle \(\phi\) and is a diagnostic, not the proposed
+The AR-aware forecast uses oracle $\phi$ and is a diagnostic, not the proposed
 real-data forecasting method.
 
 ## Why window length is a first-class parameter
 
 Finite memory is not just a validation convenience. In a heterogeneous or
-changing process, \(L\) trades estimation variance against contamination from
+changing process, $L$ trades estimation variance against contamination from
 older regimes:
 
-\[
+$
 L\uparrow
 \Rightarrow
 \begin{cases}
 \text{more data and usually lower estimation variance},\\
 \text{more exposure to observations from an obsolete regime}.
 \end{cases}
-\]
+$
 
-Thus \(L^\star_{T,h}\) is part of the adaptive forecasting object, alongside
+Thus $L^\star_{T,h}$ is part of the adaptive forecasting object, alongside
 difference order and smoothness.
 
 ## Experimental program
@@ -356,7 +356,7 @@ The intended progression is:
    endpoints.
 3. **Within-series regime transitions:** change persistence, roughness, noise
    scale, level/slope, or break structure inside one series and measure how
-   \(\Theta^\star_{T,h}\) adapts.
+   $\Theta^\star_{T,h}$ adapts.
 4. **Adaptation value:** compare adaptive selection with fixed configurations
    under untouched outer evaluation.
 5. **External evidence:** macroeconomic series, then indices/ETFs, equities,
@@ -366,7 +366,7 @@ The intended progression is:
 
 For within-series transitions, a useful estimand is adaptation delay:
 
-\[
+$
 D_{\rm adapt}
 =
 \inf\left\{
@@ -375,7 +375,7 @@ k:
 \approx
 \Theta^\star_{\rm post}
 \right\}.
-\]
+$
 
 ## Current evidence versus open claims
 
@@ -390,7 +390,7 @@ k:
 - persistence/horizon mechanism evidence robust to a much wider lambda-search
   domain;
 - within-series persistence transitions in which the joint
-  \((d^\star,L^\star,S^\star)\) configuration moves toward matched
+  $(d^\star,L^\star,S^\star)$ configuration moves toward matched
   target-regime controls;
 - evidence that selector memory and estimator memory are distinct: shortening
   inner-selector memory substantially reduces observed adaptation delay;
@@ -464,12 +464,12 @@ adaptively.
 ## Numerical-search status
 
 The original persistence study exposed many optima near the first
-log-\(\lambda\) boundaries. The required wider-domain sensitivity was
+log-$\lambda$ boundaries. The required wider-domain sensitivity was
 completed using
 
-\[
+$
 \log\lambda\in[-18,24]
-\]
+$
 
 with a denser discovery grid, and the qualitative persistence/horizon
 mechanism survived. The wide domain is now part of the active experimental
@@ -499,7 +499,7 @@ Before changing the scientific story:
 2. read \`notes/roadmap.md\` and \`notes/key_results.md\`;
 3. distinguish the central objective from the most recent experiment;
 4. treat persistence as one mechanism, not as the definition of regime;
-5. keep \((d,L,S)\) together when describing the adaptive forecasting method;
+5. keep $(d,L,S)$ together when describing the adaptive forecasting method;
 6. distinguish forecast optimality from trend-recovery optimality;
 7. distinguish a validation protocol from a scientific contribution;
 8. do not make novelty claims from only the currently extracted 24 papers;
