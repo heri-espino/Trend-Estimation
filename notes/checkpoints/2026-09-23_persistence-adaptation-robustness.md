@@ -36,11 +36,11 @@ long horizons, but the sign of the direct result does not.
 
 The matched-control excess
 
-\[
+$
 \Delta A
 =
 A_{transition}-A_{matched\ stable\ control}
-\]
+$
 
 also preserves the exact sign pattern from M=20:
 

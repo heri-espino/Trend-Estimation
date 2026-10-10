@@ -8,13 +8,13 @@ Status: **scientific design and resumable implementation frozen; final run next*
 
 Test the paper's central claim at paper scale:
 
-\[
+$
 \Theta^\star_{T,h}
 =
 (d^\star_{T,h},L^\star_{T,h},S^\star_{T,h})
 =
 G(h,X_T,\mathcal C),
-\]
+$
 
 and quantify when adaptive re-selection improves untouched out-of-sample
 forecast loss relative to strong fixed configurations.
@@ -134,11 +134,11 @@ Report:
 
 For each fixed comparator F, use pooled squared errors:
 
-\[
+$
 R_{A/F}
 =
 \sqrt{\frac{\sum e_A^2}{\sum e_F^2}}.
-\]
+$
 
 Never average blockwise relative RMSE.
 
@@ -146,11 +146,11 @@ Never average blockwise relative RMSE.
 
 For each paired transition/control:
 
-\[
+$
 A=MSE_F-MSE_A,
 \qquad
 \Delta A=A_{transition}-A_{matched\ stable\ control}.
-\]
+$
 
 Primary excess comparisons use frozen-all-pre. Frozen-local-M20 is secondary.
 

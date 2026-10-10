@@ -7,19 +7,19 @@ the local roughness of the latent trend itself.
 
 The adaptive object remains
 
-\[
+$
 \Theta^\star_{T,h}
 =
 (d^\star_{T,h},L^\star_{T,h},S^\star_{T,h}).
-\]
+$
 
 ## Isolation
 
 Change only the standard deviation of slope innovations:
 
-\[
+$
 \sigma_{\Delta slope}:0.005\leftrightarrow0.02.
-\]
+$
 
 Hold fixed:
 
@@ -74,19 +74,19 @@ Tracking outputs include:
 
 Forecast-value outputs include:
 
-\[
+$
 R_{A/F}
 =
 \sqrt{\frac{\sum e_A^2}{\sum e_F^2}}
-\]
+$
 
 and the matched-control excess
 
-\[
+$
 \Delta A
 =
 A_{transition}-A_{matched\ stable\ control}.
-\]
+$
 
 ## Expected mechanism, not an imposed rule
 

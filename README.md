@@ -200,3 +200,7 @@ workflows or draft theoretical propositions as published results.
   research protocols, literature positions and scientific notes.
 - \`data/\`, \`literature/\`, \`tests/\`, \`docs/\`, \`ideas/\`:
   data, references, regression checks, documentation and inactive ideas.
+
+## Obsidian research vault
+
+The existing [`notes/`](notes/) folder is also an Obsidian vault. In Obsidian choose **Open folder as vault** and select `Trend-Estimation/notes`. Start with [`notes/Inicio.md`](notes/Inicio.md) for connected mathematical notes, or [`notes/Guia del vault.md`](notes/Guia%20del%20vault.md) for setup. The formal derivations still live in [`notes/notes_on_smoothnes/main.tex`](notes/notes_on_smoothnes/main.tex) and compile independently; paper-specific evidence stays under [`working_papers/`](working_papers/).

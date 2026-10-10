@@ -20,17 +20,17 @@ It is useful to separate three kinds of quantities.
 
 These define the class of trends and continuations being considered:
 
-\[
+$
 d,\qquad \mu,\qquad \lambda\;\text{or}\;S.
-\]
+$
 
 Interpretation:
 
-- \(d\): finite-difference / continuation order; it determines which
+- $d$: finite-difference / continuation order; it determines which
   polynomial-like components lie in the penalty null space.
-- \(\mu\): reference drift of the \(d\)-th difference. The current pure
-  numerical model uses \(\mu=0\).
-- \(\lambda\) or normalized smoothness \(S\): strength of penalization
+- $\mu$: reference drift of the $d$-th difference. The current pure
+  numerical model uses $\mu=0$.
+- $\lambda$ or normalized smoothness $S$: strength of penalization
   around the assumed difference structure.
 
 These are analogous to model hyperparameters, but unlike many black-box ML
@@ -41,7 +41,7 @@ hyperparameters they have direct statistical interpretations.
 The learned forecasting rule also depends on how much data are supplied to the
 estimator and to the selector. Important quantities include
 
-\[
+$
 L_{\text{fit}},
 \qquad
 M_{\text{select}},
@@ -51,18 +51,18 @@ n_{\text{train}},
 n_{\text{val1}},
 \qquad
 n_{\text{val2}},
-\]
+$
 
 together with the placement and spacing of rolling forecast origins.
 
 Interpretation:
 
-- \(L_{\text{fit}}\): estimator memory; how much recent history is used to fit
+- $L_{\text{fit}}$: estimator memory; how much recent history is used to fit
   the trend at an origin.
-- \(M_{\text{select}}\) or \(n_{\text{val1}}\): selector memory; how much
+- $M_{\text{select}}$ or $n_{\text{val1}}$: selector memory; how much
   past forecast evidence is used to choose the configuration.
-- \(n_{\text{train}}\): amount of data available to estimate each candidate.
-- \(n_{\text{val2}}\): amount of untouched outer evidence used to compare
+- $n_{\text{train}}$: amount of data available to estimate each candidate.
+- $n_{\text{val2}}$: amount of untouched outer evidence used to compare
   already-selected procedures or assess stability/generalization.
 
 These quantities should be viewed as **protocol hyperparameters** or design
@@ -78,21 +78,21 @@ to optimize against its own outcomes.
 
 The forecast horizon
 
-\[
+$
 h
-\]
+$
 
 is usually not a hyperparameter to be optimized. It is part of the forecasting
 task: the user asks for a one-step, five-step, twenty-step, etc. forecast.
 
-The optimal configuration can nevertheless depend strongly on \(h\):
+The optimal configuration can nevertheless depend strongly on $h$:
 
-\[
+$
 \Theta^\star_{T,h}
 \neq
 \Theta^\star_{T,h'}
 \quad\text{for}\quad h\neq h'.
-\]
+$
 
 Thus the algorithm should be understood as learning a configuration
 **conditional on the horizon**, not as selecting the horizon itself.
@@ -101,16 +101,16 @@ Thus the algorithm should be understood as learning a configuration
 
 For conceptual purposes, the learned forecasting rule can be written as
 
-\[
+$
 \Theta^\star_{T,h}
 =
 \arg\min_{\Theta}
 \operatorname{Loss}_{\text{future}}(\Theta;h),
-\]
+$
 
 with an expanded configuration such as
 
-\[
+$
 \Theta
 =
 \left(
@@ -123,15 +123,15 @@ n_{\text{train}},
 n_{\text{val1}},
 \ldots
 \right).
-\]
+$
 
 The exact canonical coordinate used in a given paper can remain smaller
-(e.g. \((d,L,S)\)); this expanded expression is a conceptual description of
+(e.g. $(d,L,S)$); this expanded expression is a conceptual description of
 the complete learning system.
 
 The method therefore has two nested learning problems:
 
-1. **trend learning:** estimate \(\widehat\tau\) within a candidate
+1. **trend learning:** estimate $\widehat\tau$ within a candidate
    penalized-smoothing family;
 2. **configuration learning:** use chronological future-block loss to select
    the structural and memory choices that define the forecasting procedure.
@@ -143,7 +143,7 @@ algorithm than to a fixed classical filter.
 
 Each configuration choice expresses a different assumption about the data:
 
-\[
+$
 \begin{array}{rcl}
 d &:& \text{what shape/evolution is considered structurally smooth?}\\
 \mu &:& \text{what systematic drift is allowed in that difference?}\\
@@ -152,27 +152,27 @@ M_{\text{select}} &:& \text{how much past forecast evidence should guide selecti
 S,\lambda &:& \text{how much local movement is treated as signal versus noise?}\\
 h &:& \text{how far ahead must the resulting trend extrapolate?}
 \end{array}
-\]
+$
 
 Therefore no universal configuration should be expected across all series,
 frequencies, horizons, or regimes.
 
 ## Sample size matters mathematically, not only statistically
 
-The number of observations \(N\) affects more than estimator variance. The
+The number of observations $N$ affects more than estimator variance. The
 controlled-smoothness mapping itself depends on sample size because
 
-\[
+$
 S_d(\lambda;N)
 =
 1-
 \frac{\operatorname{tr}(H_\lambda)}{N}
-\]
+$
 
 (up to the normalized version used in the active numerical paper).
 
-Hence the same numerical \(\lambda\) does not represent the same attained
-smoothness when \(N\) changes. Window size and sample size therefore alter
+Hence the same numerical $\lambda$ does not represent the same attained
+smoothness when $N$ changes. Window size and sample size therefore alter
 both the information available to the estimator and the geometry of the
 smoother.
 
@@ -180,7 +180,7 @@ smoother.
 
 The chronology must remain nested:
 
-\[
+$
 \text{train}
 \rightarrow
 \text{val1 / inner selection}
@@ -188,10 +188,10 @@ The chronology must remain nested:
 \text{freeze configuration}
 \rightarrow
 \text{val2 or untouched outer test}.
-\]
+$
 
 The outer block is evidence about generalization. It must not be recycled to
-choose \(d\), \(L\), \(S\), selector memory, or any other configuration
+choose $d$, $L$, $S$, selector memory, or any other configuration
 after its outcomes are observed.
 
 This distinction is essential if we describe the method using ML language:
@@ -208,7 +208,7 @@ single fixed smoother.
 A natural implementation is chronological cross-validation over a deliberately
 chosen candidate grid. For example,
 
-\[
+$
 \mathcal G
 =
 \mathcal D
@@ -224,16 +224,16 @@ chosen candidate grid. For example,
 \mathcal N_{\rm val2}
 \times
 \mathcal H,
-\]
+$
 
 where the axes are not arbitrary numbers. Each grid is chosen from assumptions
 about the series, sampling frequency, plausible regime duration, expected trend
 geometry, and the forecasting task.
 
-For a candidate configuration \(\theta\in\mathcal G\), the chronological
+For a candidate configuration $\theta\in\mathcal G$, the chronological
 workflow is conceptually
 
-\[
+$
 \text{fit on train}
 \rightarrow
 \text{select / score on val1}
@@ -241,7 +241,7 @@ workflow is conceptually
 \text{freeze}
 \rightarrow
 \text{compare on val2},
-\]
+$
 
 with all blocks ordered in time.
 
@@ -250,31 +250,31 @@ highly interpretable. It lets the analyst encode scientifically plausible
 choices instead of pretending that every configuration is equally meaningful.
 For example:
 
-- candidate \(d\) values encode assumptions about trend geometry and native
+- candidate $d$ values encode assumptions about trend geometry and native
   continuation;
-- candidate \(L\) or \(n_{\rm train}\) values encode assumptions about how
+- candidate $L$ or $n_{\rm train}$ values encode assumptions about how
   long the current regime remains informative;
-- candidate \(n_{\rm val1}\) values encode how much recent forecasting
+- candidate $n_{\rm val1}$ values encode how much recent forecasting
   evidence should be required before changing the selected configuration;
-- candidate \(n_{\rm val2}\) values encode how much later evidence is used
+- candidate $n_{\rm val2}$ values encode how much later evidence is used
   to assess whether a frozen choice generalizes;
-- candidate \(h\) values represent the forecast horizons that matter for the
+- candidate $h$ values represent the forecast horizons that matter for the
   application;
-- candidate \(S\) or \(\lambda\) values encode the signal-versus-noise
+- candidate $S$ or $\lambda$ values encode the signal-versus-noise
   tradeoff.
 
-Thus \(n_{\rm train}\), \(n_{\rm val1}\), \(n_{\rm val2}\), and \(h\)
+Thus $n_{\rm train}$, $n_{\rm val1}$, $n_{\rm val2}$, and $h$
 **matter materially**. They are not random bookkeeping choices. They determine
 what information the learner sees, what evidence the selector uses, how
 generalization is measured, and what forecasting problem is being solved.
 
 At the same time, their roles differ:
 
-- \(n_{\rm train}\) and \(n_{\rm val1}\) may legitimately be compared as
+- $n_{\rm train}$ and $n_{\rm val1}$ may legitimately be compared as
   candidate protocol hyperparameters inside a nested chronological design;
-- \(h\) is best treated as an application-defined task axis, so the method may
+- $h$ is best treated as an application-defined task axis, so the method may
   be re-selected separately for each relevant horizon;
-- \(n_{\rm val2}\) is an outer-evaluation design choice. Its value matters
+- $n_{\rm val2}$ is an outer-evaluation design choice. Its value matters
   and should be justified, but once the outer block is designated it must not
   be repeatedly changed after inspecting its outcomes.
 
@@ -286,21 +286,21 @@ and tied to explicit assumptions about the data.
 
 A useful conceptual distinction is
 
-\[
+$
 \boxed{
 \text{candidate grid}
 =
 \text{scientific assumptions translated into testable configurations}
 }
-\]
+$
 
 rather than
 
-\[
+$
 \text{candidate grid}
 =
 \text{arbitrary combinations tried until one wins}.
-\]
+$
 
 This point should be stated explicitly when the project is described as an
 ML-style trend-learning algorithm.

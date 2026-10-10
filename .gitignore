@@ -46,3 +46,11 @@ experiments/forecast_optimal_smoothing/outputs/
 # Research results are intentionally not ignored by extension. If an artifact
 # becomes genuinely large, preserve it with Git LFS rather than hiding it from
 # version control.
+
+# Obsidian vault: shared configuration, personal workspaces ignored
+notes/.obsidian/workspace*.json
+notes/.obsidian/hotkeys.json
+notes/.obsidian/cache/
+notes/.obsidian/plugins/
+notes/.trash/
+notes/_adjuntos/.DS_Store

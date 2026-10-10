@@ -1,0 +1,9 @@
+{
+  "alwaysUpdateLinks": true,
+  "showLineNumber": true,
+  "readableLineLength": false,
+  "attachmentFolderPath": "_adjuntos",
+  "newFileLocation": "folder",
+  "newFileFolderPath": "conceptos",
+  "useMarkdownLinks": false
+}

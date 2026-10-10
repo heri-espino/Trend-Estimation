@@ -4,7 +4,7 @@
 > active objective is now stated in \`notes/research_objective.md\` as
 > forecast-optimal trend estimation as an adaptive forecasting method with
 > joint configuration
-> \(\Theta^\star_{T,h}=(d^\star,L^\star,S^\star)\). Results in this checkpoint
+> $\Theta^\star_{T,h}=(d^\star,L^\star,S^\star)$. Results in this checkpoint
 > are evidence for parts of that program, not a replacement definition of it.
 
 

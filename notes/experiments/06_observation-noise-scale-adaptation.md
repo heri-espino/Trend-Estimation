@@ -9,19 +9,19 @@ dependence and latent-trend roughness are held fixed.
 
 The adaptive object remains
 
-\[
+$
 \Theta^\star_{T,h}
 =
 (d^\star_{T,h},L^\star_{T,h},S^\star_{T,h}).
-\]
+$
 
 ## Isolation
 
 Change only
 
-\[
+$
 \sigma_\varepsilon:0.25\leftrightarrow0.75.
-\]
+$
 
 Hold fixed:
 
@@ -51,9 +51,9 @@ before T0.
 
 Use the exploratory selector-memory protocol
 
-\[
+$
 M=20
-\]
+$
 
 with:
 
@@ -100,21 +100,21 @@ Compare:
 
 The direct metric is
 
-\[
+$
 R_{A/F}
 =
 \sqrt{\frac{\sum e_A^2}{\sum e_F^2}}.
-\]
+$
 
 The regime-specific metric remains
 
-\[
+$
 \Delta A
 =
 A_{transition}-A_{matched\ stable\ control},
 \qquad
 A=MSE_{frozen}-MSE_{adaptive}.
-\]
+$
 
 ## Expected mechanism, not a required result
 

@@ -33,11 +33,11 @@ Commit containing the run: `86f5deb` (`ran04`).
 
 The experiment directly tracks
 
-\[
+$
 \Theta^\star_{T,h}
 =
 (d^\star_{T,h},L^\star_{T,h},S^\star_{T,h}).
-\]
+$
 
 Before the regime point, each transition path is identical to its matched
 start-regime control. After the change, both transition directions move toward

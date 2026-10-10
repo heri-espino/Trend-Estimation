@@ -21,13 +21,13 @@ The active paper is:
 
 The canonical formal object is now
 
-\[
+$
 \Theta^\star_{T,h}
 =
 (d^\star_{T,h},L^\star_{T,h},S^\star_{T,h})
 =
 G(h,X_T,\mathcal C).
-\]
+$
 
 ## Correct hierarchy
 
@@ -64,6 +64,6 @@ manuscript, and experiment notes.
 2. verify the qualitative persistence/horizon mechanism away from artificial
    boundaries;
 3. run within-series regime-transition experiments;
-4. estimate adaptation delay and joint movement in \((d,L,S)\);
+4. estimate adaptation delay and joint movement in $(d,L,S)$;
 5. test adaptive versus fixed OOS forecast skill;
 6. only then freeze the final large simulation design and move to real data.
