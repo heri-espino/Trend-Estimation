@@ -27,9 +27,9 @@ Commit containing the run: `bbf7a2f` (`ran`).
 
 Using pooled post-regime squared errors,
 
-$
+$$
 R_{A/F}=\sqrt{\frac{\sum e_A^2}{\sum e_F^2}}.
-$
+$$
 
 All eight transition/horizon comparisons have R_A/F < 1:
 
@@ -49,9 +49,9 @@ Approximate RMSE reductions are:
 This establishes the direct Level-III inequality for the studied persistence
 transitions:
 
-$
+$$
 E[L_{adaptive}] < E[L_{frozen-pre}]
-$
+$$
 
 at the aggregate Monte Carlo level.
 
@@ -66,15 +66,15 @@ specifically to regime adaptation.
 
 Define the per-block adaptive MSE advantage
 
-$
+$$
 A=MSE_{frozen}-MSE_{adaptive}
-$
+$$
 
 and the paired transition-specific excess
 
-$
+$$
 \Delta A=A_{transition}-A_{matched\ stable\ control}.
-$
+$$
 
 ## Transition-specific excess adaptation value
 

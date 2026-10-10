@@ -20,9 +20,9 @@ It is useful to separate three kinds of quantities.
 
 These define the class of trends and continuations being considered:
 
-$
+$$
 d,\qquad \mu,\qquad \lambda\;\text{or}\;S.
-$
+$$
 
 Interpretation:
 
@@ -41,7 +41,7 @@ hyperparameters they have direct statistical interpretations.
 The learned forecasting rule also depends on how much data are supplied to the
 estimator and to the selector. Important quantities include
 
-$
+$$
 L_{\text{fit}},
 \qquad
 M_{\text{select}},
@@ -51,7 +51,7 @@ n_{\text{train}},
 n_{\text{val1}},
 \qquad
 n_{\text{val2}},
-$
+$$
 
 together with the placement and spacing of rolling forecast origins.
 
@@ -78,21 +78,21 @@ to optimize against its own outcomes.
 
 The forecast horizon
 
-$
+$$
 h
-$
+$$
 
 is usually not a hyperparameter to be optimized. It is part of the forecasting
 task: the user asks for a one-step, five-step, twenty-step, etc. forecast.
 
 The optimal configuration can nevertheless depend strongly on $h$:
 
-$
+$$
 \Theta^\star_{T,h}
 \neq
 \Theta^\star_{T,h'}
 \quad\text{for}\quad h\neq h'.
-$
+$$
 
 Thus the algorithm should be understood as learning a configuration
 **conditional on the horizon**, not as selecting the horizon itself.
@@ -101,16 +101,16 @@ Thus the algorithm should be understood as learning a configuration
 
 For conceptual purposes, the learned forecasting rule can be written as
 
-$
+$$
 \Theta^\star_{T,h}
 =
 \arg\min_{\Theta}
 \operatorname{Loss}_{\text{future}}(\Theta;h),
-$
+$$
 
 with an expanded configuration such as
 
-$
+$$
 \Theta
 =
 \left(
@@ -123,7 +123,7 @@ n_{\text{train}},
 n_{\text{val1}},
 \ldots
 \right).
-$
+$$
 
 The exact canonical coordinate used in a given paper can remain smaller
 (e.g. $(d,L,S)$); this expanded expression is a conceptual description of
@@ -143,7 +143,7 @@ algorithm than to a fixed classical filter.
 
 Each configuration choice expresses a different assumption about the data:
 
-$
+$$
 \begin{array}{rcl}
 d &:& \text{what shape/evolution is considered structurally smooth?}\\
 \mu &:& \text{what systematic drift is allowed in that difference?}\\
@@ -152,7 +152,7 @@ M_{\text{select}} &:& \text{how much past forecast evidence should guide selecti
 S,\lambda &:& \text{how much local movement is treated as signal versus noise?}\\
 h &:& \text{how far ahead must the resulting trend extrapolate?}
 \end{array}
-$
+$$
 
 Therefore no universal configuration should be expected across all series,
 frequencies, horizons, or regimes.
@@ -162,12 +162,12 @@ frequencies, horizons, or regimes.
 The number of observations $N$ affects more than estimator variance. The
 controlled-smoothness mapping itself depends on sample size because
 
-$
+$$
 S_d(\lambda;N)
 =
 1-
 \frac{\operatorname{tr}(H_\lambda)}{N}
-$
+$$
 
 (up to the normalized version used in the active numerical paper).
 
@@ -180,7 +180,7 @@ smoother.
 
 The chronology must remain nested:
 
-$
+$$
 \text{train}
 \rightarrow
 \text{val1 / inner selection}
@@ -188,7 +188,7 @@ $
 \text{freeze configuration}
 \rightarrow
 \text{val2 or untouched outer test}.
-$
+$$
 
 The outer block is evidence about generalization. It must not be recycled to
 choose $d$, $L$, $S$, selector memory, or any other configuration
@@ -208,7 +208,7 @@ single fixed smoother.
 A natural implementation is chronological cross-validation over a deliberately
 chosen candidate grid. For example,
 
-$
+$$
 \mathcal G
 =
 \mathcal D
@@ -224,7 +224,7 @@ $
 \mathcal N_{\rm val2}
 \times
 \mathcal H,
-$
+$$
 
 where the axes are not arbitrary numbers. Each grid is chosen from assumptions
 about the series, sampling frequency, plausible regime duration, expected trend
@@ -233,7 +233,7 @@ geometry, and the forecasting task.
 For a candidate configuration $\theta\in\mathcal G$, the chronological
 workflow is conceptually
 
-$
+$$
 \text{fit on train}
 \rightarrow
 \text{select / score on val1}
@@ -241,7 +241,7 @@ $
 \text{freeze}
 \rightarrow
 \text{compare on val2},
-$
+$$
 
 with all blocks ordered in time.
 
@@ -286,21 +286,21 @@ and tied to explicit assumptions about the data.
 
 A useful conceptual distinction is
 
-$
+$$
 \boxed{
 \text{candidate grid}
 =
 \text{scientific assumptions translated into testable configurations}
 }
-$
+$$
 
 rather than
 
-$
+$$
 \text{candidate grid}
 =
 \text{arbitrary combinations tried until one wins}.
-$
+$$
 
 This point should be stated explicitly when the project is described as an
 ML-style trend-learning algorithm.

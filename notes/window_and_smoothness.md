@@ -10,21 +10,21 @@ The answer is: mathematically yes, but it no longer represents one common amount
 
 For a finite-difference smoother,
 
-$
+$$
 S_\lambda=(I+\lambda D_d^\top D_d)^{-1}.
-$
+$$
 
 The Guerrero-style smoothness index used by this project is based on the effective degrees of freedom,
 
-$
+$$
 \operatorname{tr}(S_\lambda),
-$
+$$
 
 and is normalized using the sample size $N$ and difference order $d$.
 
 The implemented normalized index is
 
-$
+$$
 s_d(\lambda;N)
 =
 \frac{
@@ -32,25 +32,25 @@ s_d(\lambda;N)
 }{
 1-d/N
 }.
-$
+$$
 
 Therefore, in general,
 
-$
+$$
 \boxed{
 s_d(\lambda;N_1)
 \neq
 s_d(\lambda;N_2)
 }
-$
+$$
 
 for the same $\lambda$ when $N_1\neq N_2$.
 
 The reason is not only the explicit normalization by $N$. The spectrum of
 
-$
+$$
 D_d^\top D_d
-$
+$$
 
 also changes with the fitted sample length.
 
@@ -58,13 +58,13 @@ also changes with the fitted sample length.
 
 Suppose a rolling-origin objective uses expanding fits:
 
-$
+$$
 1{:}T_1,
 \quad
 1{:}T_2,
 \quad
 \ldots
-$
+$$
 
 and optimizes one shared $\lambda$.
 
@@ -87,35 +87,35 @@ than because smoothness alone defines the paper.
 
 When the scientific object is
 
-$
+$$
 S^\star_{T,h,L},
-$
+$$
 
 we explicitly include estimation-window length $L$.
 
 For a candidate fixed window $L$, inner rolling-origin fits use
 
-$
+$$
 T_j-L+1{:}T_j.
-$
+$$
 
 Every inner fit therefore contains exactly $L$ observations. For fixed $d$,
 
-$
+$$
 N=L
-$
+$$
 
 is constant across those origins, so a common $\lambda$ corresponds to one common normalized smoothness value.
 
 This makes the interpretation clean:
 
-$
+$$
 \boxed{
 (d,L,\lambda)
 \longleftrightarrow
 (d,L,S_d(\lambda;L)).
 }
-$
+$$
 
 ## Selector implemented for this design
 
@@ -139,11 +139,11 @@ Outer performance must still be evaluated on a later untouched block.
 
 If we later want a common smoothness target under expanding windows, a different parameterization is preferable:
 
-$
+$$
 s
 \mapsto
 \lambda_j(s;N_j,d).
-$
+$$
 
 That is, hold the normalized smoothness $s$ fixed and convert it to a split-specific $\lambda_j$.
 
@@ -179,19 +179,19 @@ starting only after the largest candidate window is available. For every
 candidate $L$, the validation blocks are identical and only the training
 slice changes:
 
-$
+$$
 [T_j-L,\,T_j)
 \longrightarrow
 [T_j,\,T_j+h).
-$
+$$
 
 Hence candidate windows are compared on the same targets:
 
-$
+$$
 \boxed{
 \mathcal V_{L_1}=\mathcal V_{L_2}=\cdots
 }
-$
+$$
 
 for all admissible $L$.
 

@@ -17,7 +17,7 @@ The active paper studies:
 At forecast origin $T$ and horizon $h$, the full forecasting-method object
 is
 
-$
+$$
 \boxed{
 \Theta^\star_{T,h}
 =
@@ -25,7 +25,7 @@ $
 =
 G(h,X_T,\mathcal C).
 }
-$
+$$
 
 The three coordinates are:
 
@@ -144,9 +144,9 @@ final table/figure synthesis pending.
 
 Generate
 
-$
+$$
 y_t=\tau_t+\varepsilon_t
-$
+$$
 
 while controlling noise variance, trend roughness, AR dependence, structural breaks, regimes, sample size, and horizon.
 
@@ -264,9 +264,9 @@ six-stock panel as cross-sectional robustness.
 
 Minimum financial benchmark:
 
-$
+$$
 \widehat P_{T+h|T}^{RW}=P_T.
-$
+$$
 
 Do not interpret low level-price RMSE alone as evidence of exploitable predictability. Evaluate returns or trend changes separately when appropriate.
 
@@ -287,7 +287,7 @@ regime behavior may differ.
 
 Construct local descriptors
 
-$
+$$
 X_T=
 (
 \widehat\sigma_T,
@@ -297,25 +297,25 @@ X_T=
 \text{local roughness},
 \ldots
 )
-$
+$$
 
 and study
 
-$
+$$
 \Theta^\star_{T,h}
 =
 (d^\star_{T,h},L^\star_{T,h},S^\star_{T,h})
 =
 G(X_T,h,\mathcal C),
-$
+$$
 
 together with
 
-$
+$$
 \operatorname{Skill}_{T,h}
 =
 q(X_T,\Theta^\star_{T,h},h,\mathcal C).
-$
+$$
 
 Do not define regime as volatility alone or persistence alone unless evidence
 supports that simplification.

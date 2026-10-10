@@ -66,9 +66,9 @@ Therefore do **not** make a substantive timing claim from the noise-scale
 
 Pooled RMSE ratios
 
-$
+$$
 R_{A/F}=\sqrt{\frac{\sum e_A^2}{\sum e_F^2}}
-$
+$$
 
 are:
 
@@ -87,9 +87,9 @@ slightly worse at h=1 and only modestly better than frozen-pre at h=3,6,12.
 
 Matched-control excess
 
-$
+$$
 \Delta A=A_{transition}-A_{matched\ stable\ control}
-$
+$$
 
 is:
 

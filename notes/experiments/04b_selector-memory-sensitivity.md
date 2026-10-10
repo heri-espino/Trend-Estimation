@@ -4,9 +4,9 @@
 
 Exploration 04 established that the selected forecasting configuration
 
-$
+$$
 \Theta^\star_{T,h}=(d^\star_{T,h},L^\star_{T,h},S^\star_{T,h})
-$
+$$
 
 moves toward the new persistence regime after a within-series change.
 
@@ -52,10 +52,10 @@ Repeat the exact paired persistence-transition design from Exploration 04:
 
 Change only
 
-$
+$$
 M=\text{max inner origins}
 \in\{5,10,20,30\}.
-$
+$$
 
 With inner step 3, the nominal validation-origin spans are approximately:
 
@@ -86,9 +86,9 @@ analysis need not rely only on the nominal span.
 
 For low_to_high in Exploration 04, the 80% adaptation delays were
 
-$
+$$
 (84,84,96,99)
-$
+$$
 
 for h=(1,3,6,12).
 

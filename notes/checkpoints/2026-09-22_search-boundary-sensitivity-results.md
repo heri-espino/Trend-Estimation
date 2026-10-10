@@ -15,11 +15,11 @@ Commit containing the run: `2510be3` (`ran`).
 Exploration 03 repeated Exploration 02 with the same 30 seeds, DGP grid,
 orders, windows, horizons, and outer origins. Only the numerical search changed:
 
-$
+$$
 \log\lambda: [-10,16]\rightarrow[-18,24],
 \qquad
 n_{\rm grid}:161\rightarrow321.
-$
+$$
 
 The run contains 1,350 seed/phi/h configurations and 26,730 outer-origin rows.
 Elapsed time was about 2,487 s (41.5 min).
@@ -103,12 +103,12 @@ but the mechanism is not an artifact of the original [-10,16] search box.
 The project should now move to a within-series regime-transition experiment.
 The next object is the path
 
-$
+$$
 T\mapsto
 \Theta^\star_{T,h}
 =
 (d^\star_{T,h},L^\star_{T,h},S^\star_{T,h}),
-$
+$$
 
 with a known change point and paired stationary controls.
 

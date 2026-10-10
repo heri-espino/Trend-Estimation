@@ -24,12 +24,12 @@ The aggregate smoothness pattern reproduces the previously documented
 persistence/horizon mechanism. For example, averaging across seeds at
 phi=0.8, h=1:
 
-$
+$$
 S^\star_{\rm observed}\approx0.339,\quad
 S^\star_{\rm AR}\approx0.593,\quad
 S^\star_{\rm latent}\approx0.798,\quad
 S^\star_{\rm recovery}\approx0.940.
-$
+$$
 
 Across all persistence values, the observed/AR/latent forecasting optima move
 toward higher smoothness as horizon increases.
@@ -55,11 +55,11 @@ python experiments\forecast_optimal_smoothing\run_persistence_mechanism.py --pre
 
 This repeats the same Explore-02 grid/seeds while changing only:
 
-$
+$$
 \log\lambda\in[-18,24],
 \qquad
 n_{\rm grid}=321.
-$
+$$
 
 Row-level outputs now store all four selected lambda-star values and the
 summary records lower/upper-boundary fractions by objective.
@@ -70,11 +70,11 @@ If the qualitative mechanism survives and the boundary behavior is resolved or
 shown to be genuinely limiting, proceed immediately to the first within-series
 regime-transition experiment tracking the full adaptive configuration
 
-$
+$$
 \Theta^\star_{T,h}
 =
 (d^\star_{T,h},L^\star_{T,h},S^\star_{T,h}).
-$
+$$
 
 If the mechanism changes materially under the wider domain, diagnose objective
 geometry/root discovery before proceeding.

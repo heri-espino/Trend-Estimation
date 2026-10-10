@@ -19,11 +19,11 @@ At one forecast origin, let
 
 For the pure model,
 
-$
+$$
 \widehat t_\lambda=S_\lambda y,
 \qquad
 \widehat z_\lambda=H S_\lambda y.
-$
+$$
 
 The current pure continuation uses zero order-$d$ future difference. In code we do not need to construct the matrix $H$ explicitly; `forecast_trend(..., m_hat=0)` is linear, so it can be applied to a trend vector and to its derivative vectors.
 
@@ -31,27 +31,27 @@ The current pure continuation uses zero order-$d$ future difference. In code we 
 
 Let
 
-$
+$$
 A(\lambda)=I+\lambda Q.
-$
+$$
 
 For an invertible differentiable matrix,
 
-$
+$$
 \frac{dA^{-1}}{d\lambda}
 =
 -A^{-1}A'A^{-1}.
-$
+$$
 
 Since $A'(\lambda)=Q$,
 
-$
+$$
 \boxed{
 S_\lambda'
 =
 -S_\lambda Q S_\lambda.
 }
-$
+$$
 
 This is the first key identity.
 
@@ -59,73 +59,73 @@ This is the first key identity.
 
 Because $y$ does not depend on $\lambda$,
 
-$
+$$
 \widehat t_\lambda'
 =
 S_\lambda' y
 =
 -S_\lambda Q S_\lambda y.
-$
+$$
 
 Since $\widehat t_\lambda=S_\lambda y$,
 
-$
+$$
 \boxed{
 \widehat t_\lambda'
 =
 -S_\lambda Q\widehat t_\lambda.
 }
-$
+$$
 
 Differentiate once more:
 
-$
+$$
 \widehat t_\lambda''
 =
 -\left(S_\lambda'QS_\lambda
 +
 S_\lambda Q S_\lambda'\right)y.
-$
+$$
 
 Substituting $S_\lambda'=-S_\lambda Q S_\lambda$,
 
-$
+$$
 \boxed{
 \widehat t_\lambda''
 =
 2S_\lambda Q S_\lambda Q S_\lambda y.
 }
-$
+$$
 
 ## Step 3: forecast derivatives
 
 The forecast is
 
-$
+$$
 \widehat z_\lambda
 =
 H S_\lambda y.
-$
+$$
 
 Therefore
 
-$
+$$
 \widehat z_\lambda'
 =
 -H S_\lambda Q S_\lambda y,
-$
+$$
 
 and
 
-$
+$$
 \widehat z_\lambda''
 =
 2H S_\lambda Q S_\lambda Q S_\lambda y.
-$
+$$
 
 Define
 
-$
+$$
 a_\lambda
 =
 H S_\lambda Q S_\lambda y,
@@ -133,71 +133,71 @@ H S_\lambda Q S_\lambda y,
 b_\lambda
 =
 H S_\lambda Q S_\lambda Q S_\lambda y.
-$
+$$
 
 Then
 
-$
+$$
 \widehat z_\lambda'=-a_\lambda,
 \qquad
 \widehat z_\lambda''=2b_\lambda.
-$
+$$
 
 ## Step 4: residual derivative
 
 Define the genuinely future residual
 
-$
+$$
 r_T(\lambda)
 =
 z-\widehat z_\lambda
 =
 z-HS_\lambda y.
-$
+$$
 
 Then
 
-$
+$$
 r_T'
 =
 -\widehat z_\lambda'
 =
 a_\lambda.
-$
+$$
 
 Hence
 
-$
+$$
 \boxed{
 r_T'
 =
 H S_\lambda Q S_\lambda y.
 }
-$
+$$
 
 Differentiating again,
 
-$
+$$
 r_T''
 =
 -\widehat z_\lambda''
 =
 -2b_\lambda.
-$
+$$
 
 ## Step 5: first derivative of forecast MSE
 
 Let
 
-$
+$$
 f_T(\lambda)
 =
 \frac1h r_T^\top r_T.
-$
+$$
 
 Then
 
-$
+$$
 f_T'
 =
 \frac1h
@@ -206,11 +206,11 @@ f_T'
 \right]
 =
 \frac{2}{h}r_T^\top r_T'.
-$
+$$
 
 Using $r_T'=a_\lambda$,
 
-$
+$$
 \boxed{
 f_T'(\lambda)
 =
@@ -218,7 +218,7 @@ f_T'(\lambda)
 r_T^\top
 H S_\lambda Q S_\lambda y.
 }
-$
+$$
 
 This is the derivative whose roots determine interior stationary points of the single-origin forecast loss.
 
@@ -226,15 +226,15 @@ This is the derivative whose roots determine interior stationary points of the s
 
 Differentiate
 
-$
+$$
 f_T'
 =
 \frac{2}{h}r_T^\top r_T'.
-$
+$$
 
 Then
 
-$
+$$
 f_T''
 =
 \frac{2}{h}
@@ -243,11 +243,11 @@ f_T''
 +
 r_T^\top r_T''
 \right].
-$
+$$
 
 Since $r_T'=a_\lambda$ and $r_T''=-2b_\lambda$,
 
-$
+$$
 \boxed{
 f_T''(\lambda)
 =
@@ -259,13 +259,13 @@ f_T''(\lambda)
 H S_\lambda Q S_\lambda Q S_\lambda y
 \right].
 }
-$
+$$
 
 ## Step 7: several rolling origins
 
 For origins indexed by $j$, possibly with different horizons $h_j$, define the pooled validation objective
 
-$
+$$
 CV(\lambda)
 =
 \frac{
@@ -273,11 +273,11 @@ CV(\lambda)
 }{
 \sum_j h_j
 }.
-$
+$$
 
 Equivalently,
 
-$
+$$
 CV(\lambda)
 =
 \frac{
@@ -285,11 +285,11 @@ CV(\lambda)
 }{
 \sum_j h_j
 }.
-$
+$$
 
 Linearity of differentiation gives
 
-$
+$$
 \boxed{
 CV'(\lambda)
 =
@@ -299,11 +299,11 @@ CV'(\lambda)
 \sum_j h_j
 },
 }
-$
+$$
 
 and
 
-$
+$$
 \boxed{
 CV''(\lambda)
 =
@@ -313,7 +313,7 @@ CV''(\lambda)
 \sum_j h_j
 }.
 }
-$
+$$
 
 The global hyperparameter search should operate on this aggregate objective when one shared $\lambda$ is being selected across the rolling origins. We should not independently minimize each fold and then average the minimizers.
 
@@ -321,25 +321,25 @@ The global hyperparameter search should operate on this aggregate objective when
 
 Let
 
-$
+$$
 \theta=\log\lambda,
 \qquad
 g(\theta)=CV(e^\theta).
-$
+$$
 
 Then
 
-$
+$$
 \boxed{
 g'(\theta)
 =
 \lambda CV'(\lambda)
 }
-$
+$$
 
 and
 
-$
+$$
 \boxed{
 g''(\theta)
 =
@@ -347,7 +347,7 @@ g''(\theta)
 +
 \lambda^2CV''(\lambda).
 }
-$
+$$
 
 Because $\lambda>0$, the roots of $g'$ and $CV'$ correspond exactly.
 

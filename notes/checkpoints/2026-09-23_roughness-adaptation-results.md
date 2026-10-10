@@ -57,9 +57,9 @@ forecast-optimal full configuration.
 
 Pooled RMSE ratios
 
-$
+$$
 R_{A/F}=\sqrt{\frac{\sum e_A^2}{\sum e_F^2}}
-$
+$$
 
 are:
 
@@ -75,9 +75,9 @@ horizon. The rough-to-smooth transition shows only modest pooled gains.
 
 The mean matched-control excess
 
-$
+$$
 \Delta A=A_{transition}-A_{matched\ stable\ control}
-$
+$$
 
 is:
 

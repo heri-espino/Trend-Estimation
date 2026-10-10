@@ -14,27 +14,27 @@ A dense grid can reveal the global shape, but using the grid itself as the final
 
 Let
 
-$
+$$
 \theta=\log\lambda,
 \qquad
 \lambda=e^\theta,
 \qquad
 g(\theta)=CV(e^\theta).
-$
+$$
 
 Then
 
-$
+$$
 g'(\theta)=\lambda CV'(\lambda).
-$
+$$
 
 Because $\lambda>0$,
 
-$
+$$
 g'(\theta)=0
 \iff
 CV'(\lambda)=0.
-$
+$$
 
 Log space is natural because useful penalties commonly span many orders of magnitude and positivity is automatic.
 
@@ -42,9 +42,9 @@ Log space is natural because useful penalties commonly span many orders of magni
 
 Choose a bounded search interval
 
-$
+$$
 \theta\in[\theta_{\min},\theta_{\max}].
-$
+$$
 
 Then:
 
@@ -59,7 +59,7 @@ Then:
 
 Symbolically,
 
-$
+$$
 \boxed{
 \text{scan}
 \to
@@ -71,15 +71,15 @@ $
 \to
 \text{global comparison}.
 }
-$
+$$
 
 ## Classification
 
 At an interior stationary point,
 
-$
+$$
 CV'(\lambda^\star)=0.
-$
+$$
 
 A practical classification is:
 
@@ -89,19 +89,19 @@ A practical classification is:
 
 Equivalently, inspect the sign of the first derivative on both sides:
 
-$
+$$
 -\to+ \quad\Rightarrow\quad \text{minimum},
-$
+$$
 
-$
+$$
 +\to- \quad\Rightarrow\quad \text{maximum}.
-$
+$$
 
 ## Newton's method
 
 Newton in log space uses
 
-$
+$$
 \theta_{k+1}
 =
 \theta_k-
@@ -110,7 +110,7 @@ $
 \theta_k-
 \frac{CV'(\lambda)}
 {CV'(\lambda)+\lambda CV''(\lambda)}.
-$
+$$
 
 This is useful for refinement and as a computational benchmark. It is not sufficient as the only global search because the result depends on initialization when several stationary points exist.
 
@@ -121,15 +121,15 @@ This is useful for refinement and as a computational benchmark. It is not suffic
 To avoid confusing the normalized smoothness coordinate $S$ with the smoother
 matrix, write the pure PLS smoother as
 
-$
+$$
 H_\lambda=(I+\lambda Q)^{-1},
 \qquad
 Q=D_d^\top D_d.
-$
+$$
 
 For the standard order-$d$ difference matrix with $1\le d<N$,
 
-$
+$$
 Q
 =
 U\operatorname{diag}
@@ -137,30 +137,30 @@ U\operatorname{diag}
 \underbrace{0,\ldots,0}_{d},
 \delta_1,\ldots,\delta_{N-d}
 \right)U^\top,
-$
+$$
 
 where every positive eigenvalue satisfies $\delta_j>0$. Hence
 
-$
+$$
 \operatorname{tr}(H_\lambda)
 =
 d+
 \sum_{j=1}^{N-d}
 \frac{1}{1+\lambda\delta_j}.
-$
+$$
 
 The Guerrero-style index is
 
-$
+$$
 S_G(\lambda)
 =
 1-\frac{\operatorname{tr}(H_\lambda)}{N},
-$
+$$
 
 whose upper endpoint is $1-d/N$. The normalized coordinate used in the
 numerical paper rescales that attainable range to $[0,1]$:
 
-$
+$$
 \boxed{
 S(\lambda)
 =
@@ -171,19 +171,19 @@ S(\lambda)
 \sum_{j=1}^{N-d}
 \frac{1}{1+\lambda\delta_j}.
 }
-$
+$$
 
 The endpoints follow immediately:
 
-$
+$$
 S(0)=0,
 \qquad
 \lim_{\lambda\to\infty}S(\lambda)=1.
-$
+$$
 
 More importantly, differentiating gives
 
-$
+$$
 \boxed{
 S'(\lambda)
 =
@@ -195,19 +195,19 @@ S'(\lambda)
 \qquad
 (\lambda\ge0).
 }
-$
+$$
 
 Thus $S(\lambda)$ is continuous and strictly increasing on
 $[0,\infty)$. After adjoining the limiting endpoint $\lambda=\infty$, it
 gives a one-to-one monotone map
 
-$
+$$
 [0,\infty]\longleftrightarrow[0,1].
-$
+$$
 
 Its second derivative is
 
-$
+$$
 S''(\lambda)
 =
 -\frac{2}{N-d}
@@ -215,7 +215,7 @@ S''(\lambda)
 \frac{\delta_j^2}
 {(1+\lambda\delta_j)^3}
 <0,
-$
+$$
 
 so the map is also concave in $\lambda$: increases in a very large penalty
 produce progressively smaller changes in normalized smoothness.
@@ -225,30 +225,30 @@ produce progressively smaller changes in normalized smoothness.
 Let $f(\lambda)$ denote the fixed-$(d,L,h)$ forecast loss and define the
 same objective in normalized smoothness coordinates by
 
-$
+$$
 F(S)=f(\lambda(S)).
-$
+$$
 
 Because $S'(\lambda)>0$, the inverse $\lambda(S)$ exists in the interior.
 By the chain rule,
 
-$
+$$
 \boxed{
 \frac{dF}{dS}
 =
 \frac{f'(\lambda)}{S'(\lambda)}.
 }
-$
+$$
 
 Therefore
 
-$
+$$
 \boxed{
 \frac{dF}{dS}=0
 \iff
 f'(\lambda)=0.
 }
-$
+$$
 
 The change of variable does not create, remove, or reorder interior stationary
 points.
@@ -256,20 +256,20 @@ points.
 It also preserves the local classification of nondegenerate stationary points.
 At a point where $f'(\lambda^\star)=0$,
 
-$
+$$
 \frac{d^2F}{dS^2}
 =
 \frac{f''(\lambda^\star)}
 {\left[S'(\lambda^\star)\right]^2}.
-$
+$$
 
 Since the denominator is strictly positive,
 
-$
+$$
 \operatorname{sign}\!\left(\frac{d^2F}{dS^2}\right)
 =
 \operatorname{sign}\!\left(f''(\lambda^\star)\right).
-$
+$$
 
 Thus an interior minimum in $\lambda$ remains a minimum in $S$, and an
 interior maximum remains a maximum. This is why the numerical paper can search
@@ -286,59 +286,59 @@ finite-dimensional rational structure inherited from the PLS smoother.
 
 Let
 
-$
+$$
 Q=D_d^\top D_d
 =
 U\operatorname{diag}(\delta_1,\ldots,\delta_L)U^\top,
-$
+$$
 
 with $d$ zero eigenvalues and $r\le L-d$ distinct positive eigenvalues
 $\delta_j>0$. Then
 
-$
+$$
 S_\lambda=(I+\lambda Q)^{-1}
-$
+$$
 
 acts spectrally through factors
 
-$
+$$
 \alpha_j(\lambda)=\frac{1}{1+\lambda\delta_j}.
-$
+$$
 
 For any fixed forecast origin, the linear forecast
 $H S_\lambda y_{\rm past}$ is therefore a finite linear combination of a
 constant null-space component and terms of the form
 
-$
+$$
 \frac{c_j}{1+\lambda\delta_j}.
-$
+$$
 
 Using the common denominator
 
-$
+$$
 D(\lambda)=\prod_{j=1}^{r}(1+\lambda\delta_j),
-$
+$$
 
 each forecast component, residual component, and hence the origin-specific MSE
 can be written as a rational function. The pooled rolling-origin objective has
 the same denominator because $d$ and $L$ are fixed across origins:
 
-$
+$$
 \boxed{
 f(\lambda)
 =
 \frac{P(\lambda)}{D(\lambda)^2}
 }
-$
+$$
 
 for some polynomial $P$ with degree at most $2r$, before algebraic
 cancellations.
 
 Because $\lambda\ge0$ and every $\delta_j>0$,
 
-$
+$$
 1+\lambda\delta_j>0,
-$
+$$
 
 so the admissible domain contains no poles. Consequently the objective has:
 
@@ -351,7 +351,7 @@ so the admissible domain contains no poles. Consequently the objective has:
 
 Differentiating the rational representation gives
 
-$
+$$
 f'(\lambda)
 =
 \frac{
@@ -359,27 +359,27 @@ P'(\lambda)D(\lambda)-2P(\lambda)D'(\lambda)
 }{
 D(\lambda)^3
 }.
-$
+$$
 
 Hence the interior stationary points are precisely the nonnegative real roots
 of the polynomial numerator
 
-$
+$$
 \boxed{
 R(\lambda)
 =
 P'(\lambda)D(\lambda)-2P(\lambda)D'(\lambda),
 }
-$
+$$
 
 provided $R\not\equiv0$. Since
 $\deg(P)\le2r$ and $\deg(D)=r$, a crude algebraic bound is
 
-$
+$$
 \deg(R)\le 3r-1
 \le
 3(L-d)-1.
-$
+$$
 
 Thus the number of isolated interior stationary points is finite and
 algebraically bounded for each fixed configuration. This is a much stronger
@@ -388,11 +388,11 @@ description than merely saying that the objective is smooth.
 The normalized smoothness change of variable does not create additional
 interior stationary points. Since $S'(\lambda)>0$,
 
-$
+$$
 F'(S)=0
 \iff
 f'(\lambda)=0.
-$
+$$
 
 ### Consequence for the search algorithm
 

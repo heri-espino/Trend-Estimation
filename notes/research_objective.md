@@ -23,9 +23,9 @@ components or diagnostics inside the larger forecasting problem.
 At forecast origin $T$ and horizon $h$, define the forecasting-method
 configuration
 
-$
+$$
 \Theta_{T,h}=(d_{T,h},L_{T,h},S_{T,h}),
-$
+$$
 
 where
 
@@ -36,7 +36,7 @@ where
 
 The central empirical object is
 
-$
+$$
 \boxed{
 \Theta^\star_{T,h}
 =
@@ -48,14 +48,14 @@ S^\star_{T,h}
 =
 G(h,X_T,\mathcal C),
 }
-$
+$$
 
 where $X_T$ contains observable local-state descriptors and $\mathcal C$
 denotes the series class.
 
 Candidate local descriptors include
 
-$
+$$
 X_T=
 (
 \widehat\sigma_T,
@@ -65,7 +65,7 @@ X_T=
 \text{local roughness},
 \ldots
 ).
-$
+$$
 
 Do **not** reduce local regime to volatility alone or persistence alone unless
 the evidence eventually supports that simplification.
@@ -75,7 +75,7 @@ the evidence eventually supports that simplification.
 The scientific target must be defined before a smoothing parameter is called
 optimal. The active paper defines optimality by future forecast loss:
 
-$
+$$
 \Theta^\star_{T,h}
 =
 \arg\min_{\Theta}
@@ -87,18 +87,18 @@ Y_{T+1:T+h},
 \,\middle|\,
 \mathcal F_T
 \right],
-$
+$$
 
 with $\mathcal F_T=\sigma(Y_1,\ldots,Y_T)$.
 
 This is distinct from at least two classical targets:
 
-$
+$$
 \lambda^\star_{\rm recovery}
 =
 \arg\min_\lambda
 E\|\widehat\tau_\lambda-\tau\|^2,
-$
+$$
 
 and selectors such as GCV/AIC whose optimality is defined through their own
 risk or information criteria.
@@ -129,14 +129,14 @@ These quantities do not all play the same role:
 
 Conceptually, one may write an expanded configuration
 
-$
+$$
 \Theta
 =
 \left(
 d,\mu,S,L_{\mathrm{fit}},M_{\mathrm{select}},
 n_{\mathrm{train}},n_{\mathrm{val1}},\ldots
 \right),
-$
+$$
 
 while retaining $(d,L,S)$ as the smaller canonical coordinate of the
 current adaptive paper when that narrower definition is required.
@@ -158,9 +158,9 @@ For the broader adaptive algorithm, use **strictly chronological cross-validatio
 over an assumption-informed candidate grid** as the default conceptual
 framework. The grid may include
 
-$
+$$
 (d,S,L,n_{\rm train},n_{\rm val1},n_{\rm val2},h)
-$
+$$
 
 or the appropriate subset for a particular experiment.
 
@@ -256,11 +256,11 @@ Detailed note:
 Establish that trend-recovery optimality and forecasting optimality need not
 coincide:
 
-$
+$$
 \Theta^\star_{\rm forecast}
 \neq
 \Theta^\star_{\rm recovery}.
-$
+$$
 
 The first controlled simulations already provide provisional evidence for this
 separation.
@@ -285,17 +285,17 @@ paper.
 Test whether the forecast-optimal method changes systematically with local
 state and whether adapting to that state improves untouched future forecasts:
 
-$
+$$
 \Theta^\star_{T,h}=G(h,X_T,\mathcal C),
-$
+$$
 
 and
 
-$
+$$
 E[L_{\rm adaptive}]
 <
 E[L_{\rm fixed}]
-$
+$$
 
 where supported by the data.
 
@@ -310,7 +310,7 @@ dependence changes selected smoothness.
 
 Its provisional decomposition,
 
-$
+$$
 S^\star_{\rm observed}
 <
 S^\star_{\rm AR}
@@ -318,7 +318,7 @@ S^\star_{\rm AR}
 S^\star_{\rm latent}
 <
 S^\star_{\rm recovery},
-$
+$$
 
 in some high-positive-persistence regimes is evidence about one mechanism:
 when predictable residual dynamics are omitted, a trend-only forecast can
@@ -335,14 +335,14 @@ Finite memory is not just a validation convenience. In a heterogeneous or
 changing process, $L$ trades estimation variance against contamination from
 older regimes:
 
-$
+$$
 L\uparrow
 \Rightarrow
 \begin{cases}
 \text{more data and usually lower estimation variance},\\
 \text{more exposure to observations from an obsolete regime}.
 \end{cases}
-$
+$$
 
 Thus $L^\star_{T,h}$ is part of the adaptive forecasting object, alongside
 difference order and smoothness.
@@ -366,7 +366,7 @@ The intended progression is:
 
 For within-series transitions, a useful estimand is adaptation delay:
 
-$
+$$
 D_{\rm adapt}
 =
 \inf\left\{
@@ -375,7 +375,7 @@ k:
 \approx
 \Theta^\star_{\rm post}
 \right\}.
-$
+$$
 
 ## Current evidence versus open claims
 
@@ -467,9 +467,9 @@ The original persistence study exposed many optima near the first
 log-$\lambda$ boundaries. The required wider-domain sensitivity was
 completed using
 
-$
+$$
 \log\lambda\in[-18,24]
-$
+$$
 
 with a denser discovery grid, and the qualitative persistence/horizon
 mechanism survived. The wide domain is now part of the active experimental

@@ -13,13 +13,13 @@ program. They do not redefine the project around AR(1) persistence.
 
 The canonical object remains
 
-$
+$$
 \Theta^\star_{T,h}
 =
 (d^\star_{T,h},L^\star_{T,h},S^\star_{T,h})
 =
 G(h,X_T,\mathcal C).
-$
+$$
 
 The persistence experiment primarily diagnoses movement in $S^\star$ under a
 controlled DGP. Its oracle AR-aware forecast uses known simulation $\phi$ and

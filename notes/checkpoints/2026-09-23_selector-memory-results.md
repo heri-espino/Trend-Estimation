@@ -15,9 +15,9 @@ Commit containing the run: `6351f38` (`ran`).
 The study repeated the paired within-series persistence-transition experiment
 while changing only the number of retained inner rolling validation origins:
 
-$
+$$
 M\in\{5,10,20,30\}.
-$
+$$
 
 With inner step 3, these correspond to nominal validation spans of roughly
 12, 27, 57, and 87 observations.
@@ -90,9 +90,9 @@ across all horizons, while substantially reducing adaptation delay.
 
 For the next experiment, freeze
 
-$
+$$
 \boxed{M=20}
-$
+$$
 
 as the exploratory selector-memory protocol.
 
@@ -115,15 +115,15 @@ final design.
 The project should keep estimator memory and selector memory conceptually
 separate:
 
-$
+$$
 L=\text{observations used to fit the trend model},
-$
+$$
 
 whereas
 
-$
+$$
 M=\text{historical forecast-validation origins retained by the selector}.
-$
+$$
 
 M remains a validation-protocol parameter rather than a fourth coordinate of
 the canonical adaptive object.
