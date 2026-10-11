@@ -93,21 +93,41 @@ La matriz \(H\) NO es el índice escalar S.
 
 Los grados efectivos de libertad son
 \(\mathrm{edf}=\operatorname{tr}H_\lambda\).
-En la formulación precedente de Guerrero se presenta el
-índice \(S_G=1-\mathrm{edf}/L\). Para comparar el rango
-completo de la misma familia a L y d fijados, usamos
+Para $1\le d<L$, **Guerrero (2007)** define el índice original
+\(S_G=1-\mathrm{edf}/L\). Como \(Q_d=D_d^\top D_d\) tiene
+exactamente \(d\) autovalores nulos, \(H_\lambda\) conserva
+\(d\) autovalores uno incluso cuando \(\lambda\to\infty\):
 \[
-\boxed{S=\frac{L-\operatorname{tr}H_\lambda}{L-d}
-=\frac{L}{L-d}S_G,\quad 0\le S\le1.}
+d\le\operatorname{edf}(\lambda)\le L,
+\qquad
+\boxed{0\le S_G(\lambda;d,L)\le1-d/L.}
 \]
-\(S=0\Leftrightarrow\lambda=0\): ajuste que interpola x.
-\(S=1\Leftrightarrow\lambda\to+\infty\): proyección
-ortogonal exacta sobre \(\ker D_d\), con edf=d.
-En d=2 se obtiene tendencia lineal por mínimos cuadrados.
+Así, el porcentaje máximo **no es 100 %** para $d>0$ y $L$
+fijo. Por ejemplo, con $L=100$ y $d=2$, el índice de Guerrero
+tiende a $0.98$. Por claridad, usamos una modificación
+puramente **de escala** del índice original:
+\[
+\boxed{S=\frac{S_G}{1-d/L}
+=\frac{L-\operatorname{tr}H_\lambda}{L-d}
+\in[0,1].}
+\]
+De esta manera \(S=0\Leftrightarrow\lambda=0\): ajuste que
+interpola la ventana, y \(S=1\Leftrightarrow\lambda\to+\infty\):
+proyección ortogonal exacta sobre \(\ker D_d\), con edf=d.
+En $d=2$ queda una tendencia lineal de mínimos cuadrados.
+Guerrero trata $d=0$ por separado:
+\(S_{G,0}=\lambda/(1+\lambda)\), que ya tiende a $1$.
 No se trunca la escala lambda en algún techo arbitrario.
 
-Esta normalización es una reparametrización monotónica
-conveniente, **no evidencia por sí sola de un mejor pronóstico**.
+Esta normalización lineal estrictamente creciente conserva
+cada $H_\lambda$, las tendencias, los pronósticos y el conjunto
+de suavidades óptimas tras el cambio de coordenada. **No crea
+un nuevo estimador ni evidencia por sí sola mejor pronóstico**.
+
+**Checkpoint.** Si $L=50,d=2$, ¿por qué el índice de Guerrero
+tiene máximo $0.96$ aunque nuestra escala llega a $1$?
+Porque las dos direcciones polinomiales no son penalizadas;
+el reescalamiento divide precisamente entre $0.96$.
 
 ## 4. ¿Qué significa pronosticar con una tendencia?
 
