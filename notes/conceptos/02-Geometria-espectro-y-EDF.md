@@ -71,6 +71,26 @@ S_d(\lambda;L)=
 }
 $$
 
+## Checkpoint · ¿por qué Guerrero no alcanza 100 % si $d>0$?
+
+Para $1\le d<L$, el índice publicado por Guerrero (2007) en el caso $V=I_L$ es
+
+$
+S_G(\lambda;d,L)=1-\frac{\operatorname{tr}H_\lambda}{L}.
+$
+
+Como acabamos de demostrar que $d\le\operatorname{tr}H_\lambda\le L$, su **rango alcanzable** es $[0,1-d/L]$ (incluyendo $\lambda=\infty$ como extremo límite). Por ejemplo, $L=100,d=2$ produce $S_G(\infty)=0.98$; no es $1$ porque las dos direcciones lineales no se penalizan.
+
+Nuestra modificación es **sólo un reescalamiento lineal del rango**:
+
+$
+\boxed{S=\frac{S_G}{1-d/L}=\frac{L}{L-d}S_G.}
+$
+
+Así $S(0)=0$, $S(\infty)=1$, y para el mismo $d,L$ se preservan las tendencias, los pronósticos y la ubicación de los óptimos tras cambiar de coordenada. No se crea un estimador nuevo. En el caso separado $d=0$, Guerrero escribe $S_0(\lambda)=\lambda/(1+\lambda)$, que ya tiende a $1$.
+
+**Autoevaluación.** ¿Qué cambia al sustituir $S_G$ por $S$? Solamente la etiqueta del eje de suavidad y su dominio normalizado, no $Q_d$, $H_\lambda$ ni el mínimo global medido como pronóstico.
+
 Por tanto la coordenada $\lambda\in[0,\infty]$ corresponde biunívocamente a $S\in[0,1]$ para $L>d$. La **pérdida de pronóstico** no tiene por qué ser inyectiva ni convexa.
 
 Consultar [[key_results|resultados]], [[window_and_smoothness|dependencia de la ventana]] y la demostración extendida en [[notes_on_smoothnes/README|LaTeX]]. Siguiente: [[conceptos/03-Pronostico-y-CV-temporal|CV temporal]].
