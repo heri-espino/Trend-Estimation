@@ -209,14 +209,32 @@ Finally, the \(d\) unshrunk eigen-directions imply
 S_{\mathrm{raw}}=1-\frac{\operatorname{edf}}L\in[0,1-d/L].
 \]
 
-Rescaling to the **attainable** range produces
+For $1\le d<L$, this $S_{\mathrm{raw}}$ is exactly the
+trace index in Guerrero (2007), $S_G=1-\operatorname{tr}(H_\lambda)/L$.
+The **upper endpoint of Guerrero's attainable range is $1-d/L$,
+not $1$**, because the $d$ unpenalized directions keep eigenvalue
+one in $H_\lambda$. The upper endpoint is approached as
+$\lambda\to\infty$; for finite $\lambda$ it is not attained.
+For example, $L=100,d=2$ gives $S_G(\infty)=0.98$.
+
+Rescaling by this **attainable** maximum produces our unit-interval
+version of the same established index:
 
 \[
-\boxed{S=\frac{S_{\mathrm{raw}}}{1-d/L}
+\boxed{S=\frac{S_G}{1-d/L}
 =\frac{L-\operatorname{edf}}{L-d}\in[0,1].}
 \]
 
-This normalized index is an equivalent coordinate for a known smoother, **not a new estimator or a change to its exact optimal trend**. The matrix facts justify why the denominator is \(L-d\) and why both endpoints are mathematically admissible.
+Guerrero defines $d=0$ separately as
+$S_{G,0}=\lambda/(1+\lambda)$, which already has unit limiting
+range. The current forecast problem uses $1\le d<L$.
+
+This normalized index is an equivalent, strictly increasing
+coordinate for the same known smoother, **not a new estimator or
+a change to the optimal fitted trend/forecast** for fixed $(L,d)$.
+The matrix facts justify the denominator $L-d$ and why both endpoints
+are mathematically admissible. A reparameterization alone cannot
+improve out-of-sample accuracy or certify a unique global optimum.
 
 ## 3. Why optimize the index \(S\), not a truncated \(\lambda\) grid?
 
