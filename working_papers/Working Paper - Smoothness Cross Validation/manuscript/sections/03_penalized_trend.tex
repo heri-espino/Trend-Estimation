@@ -146,17 +146,41 @@ S(\lambda)
 \frac{1}{1+\lambda\delta_j}.
 \end{equation}
 
-For comparison, the original Guerrero-type index is
-$S^{\mathrm{G}}_d(\lambda)=1-\operatorname{tr}(H_\lambda)/L$.
-Our full-range normalization is simply
+Guerrero (2007) defines the trace-based index, for $d\ge1$,
+as $S^{\mathrm{G}}_d(\lambda;L)=1-\operatorname{tr}(H_\lambda)/L$.
+Because $Q$ has $d$ zero eigenvalues, the smoother has $d$ unit
+eigenvalues for every finite $\lambda$ and in the limiting
+projection. It follows that
+\begin{equation}
+\label{eq:guerrero_attainable_range}
+0\le S^{\mathrm{G}}_d(\lambda;L)\le1-\frac{d}{L}<1,
+\qquad 1\le d<L,
+\end{equation}
+where the upper endpoint is obtained only as $\lambda\to\infty$.
+For example, with $L=100$ and $d=2$, the limiting index is
+$S^{\mathrm{G}}_2(\infty;100)=0.98$, not $1$.
+We therefore \emph{rescale Guerrero's original index by its attainable
+maximum} so that the complete smoothing family has the unit interval
+as its parameter space:
 \begin{equation}
 \label{eq:smoothness_index_rescaling}
-S(\lambda)=\frac{L}{L-d}S^{\mathrm{G}}_d(\lambda),
-\qquad d\ge1.
+\boxed{
+S(\lambda)=
+\frac{S^{\mathrm{G}}_d(\lambda;L)}{1-d/L}
+=\frac{L}{L-d}S^{\mathrm{G}}_d(\lambda;L),
+\qquad 1\le d<L.}
 \end{equation}
-Thus the rescaling preserves the penalty ordering and every fitted trend;
-it should not be interpreted as a new smoothing estimator
-\cite{guerrero2007penalized,cortes2017smoothness}.
+Guerrero's separately stated $d=0$ case has
+$S^{\mathrm{G}}_0(\lambda;L)=\lambda/(1+\lambda)$,
+already ranging from zero to one in the extended limit. The present
+forecast model restricts attention to $1\le d<L$.
+
+This positive linear change of coordinate preserves penalty ordering,
+the entire matrix family $H_\lambda$, the fitted trends and all forecasts.
+Minimizing the same forecast loss in $S$ or in $\lambda$ is therefore
+equivalent after transforming its set of minimizers. Neither a new
+smoother nor an improvement in predictive accuracy follows from
+rescaling alone \cite{guerrero2007penalized,cortes2017smoothness}.
 
 The normalization excludes the $d$ directions that cannot be penalized, so
 \begin{equation}
