@@ -438,7 +438,12 @@ Esta derivación explica por qué el índice de suavidad contiene la misma traza
 La medida basada en traza de Guerrero se expresa como $S_G(\lambda)=1-\tr(H_\lambda)/L$. En nuestra parametrización normalizada definimos
 \begin{equation}\label{eq:S}\boxed{S(\lambda)=\frac{L-\operatorname{edf}(\lambda)}{L-d},
 \qquad S_G(\lambda)=\frac{L-d}{L}S(\lambda).}\end{equation}
-La diferencia es una \emph{reescalación} de un índice ya conocido, no la introducción de una nueva clase de suavizadores. En la fórmula publicada por Guerrero para $d\geq1$ figura $1-\tr H_\lambda/L$, cuyo límite matemático es $1-d/L$; aunque en su exposición textual se menciona convergencia a uno, esa afirmación no se sigue de la fórmula con $d>0$ y $L$ fijo. Nuestra normalización hace explícito el extremo uno. Observamos $S(0)=0$ y $S(\infty)=1$, mientras que el índice no reescalado alcanza $(L-d)/L$ en el límite.
+Esta definición \emph{no reemplaza el suavizador de Guerrero}: sólo reescala el rango alcanzable por su índice. En la fórmula publicada para $d\geq1$ figura $1-\tr(H_\lambda)/L$. Como los $d$ autovalores correspondientes al núcleo nunca se atenúan, tenemos $d\le\tr(H_\lambda)\le L$, de donde
+\[
+\boxed{0\le S_G(\lambda;d,L)\le1-\frac dL,\qquad
+S(\lambda)=\frac{S_G(\lambda;d,L)}{1-d/L}\in[0,1].}
+\]
+La cota superior de $S_G$ se alcanza sólo cuando $\lambda\to\infty$. Por ejemplo, si $L=100$ y $d=2$, Guerrero llega en el límite a $S_G=0.98$, mientras que la escala renormalizada llega a $S=1$. El caso separado $d=0$ del artículo original da $S_{G,0}=\lambda/(1+\lambda)$ y ya tiene límite uno. Para $1\le d<L$ no cambiamos $Q_d$, $H_\lambda$, la tendencia ni el pronóstico, solamente la coordenada usada para buscar suavidad. En la exposición textual original se menciona convergencia a uno; para $d>0$ y $L$ fijo, esta no se desprende de la fórmula no renormalizada.
 
 \begin{proposicion}[Biyectividad entre penalización finita y suavidad interior]\label{prop:Smono}
 Para un par fijo $(L,d)$, $S:[0,\infty]\longrightarrow[0,1]$ es continua y estrictamente creciente, considerando el extremo $\lambda=\infty$ mediante \eqref{eq:endpoint}. Así, cada $S\in(0,1)$ corresponde a un único $\lambda>0$.
