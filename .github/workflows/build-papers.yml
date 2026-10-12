@@ -12,6 +12,7 @@ on:
           - smoothness-cv
           - numerical
           - branches
+          - mean-difference
           - all
 
 jobs:
@@ -55,6 +56,21 @@ jobs:
         shell: bash
         run: |
           python "working_papers/Working Paper - Dynamic Branch Selection/build.py"
+
+      - name: Build Mean-Difference Forecasting (working scaffold)
+        if: ${{ inputs.target == 'mean-difference' || inputs.target == 'all' }}
+        shell: bash
+        run: |
+          python "working_papers/Working Paper - Trend Simulation and Mean-Difference Forecasting/build.py"
+
+      - name: Upload Mean-Difference Forecasting PDF
+        if: ${{ inputs.target == 'mean-difference' || inputs.target == 'all' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: mean-difference-working-skeleton-${{ steps.meta.outputs.short_sha }}
+          path: working_papers/Working Paper - Trend Simulation and Mean-Difference Forecasting/build/main.pdf
+          if-no-files-found: error
+          retention-days: 30
 
       - name: Upload Smoothness Cross Validation PDF
         if: ${{ inputs.target == 'smoothness-cv' || inputs.target == 'all' }}
