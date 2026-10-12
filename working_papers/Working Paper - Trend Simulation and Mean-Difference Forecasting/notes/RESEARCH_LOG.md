@@ -18,6 +18,9 @@ de $(S,\mu)$ con perfilado exacto de $\mu$.
 implementa representaciones afines exactas y
 los modos zero/guerrero/profile, con tests.
 Nueva carpeta de experimento separada.
+**App propia:** `apps/mean_difference_forecasting.py` ahora permite
+visualizar las tres políticas, la curva F(S), μ(S), ajuste y pronóstico.
+Aún debe pasar las pruebas en el entorno del usuario.
 
 **Literatura fuente consultada:** Guerrero (2007)
 en PDF proporcionado al proyecto (pp. 1225–1229,
