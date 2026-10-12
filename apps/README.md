@@ -1,6 +1,6 @@
 # Interactive research applications — exactly one canonical app per paper
 
-**2026-10-09.** This directory intentionally contains three **canonical**
+**2026-10-09.** This directory now contains four **canonical**
 Streamlit entrypoints, one for each independent active working paper.
 Two older dashboard scripts remain **legacy** for historical reproduction.
 All apps are exploratory interfaces over real \`src/\` and
@@ -10,6 +10,27 @@ Read [AGENTS.md](../AGENTS.md) and the
 [theory-first charter](../working_papers/THEORETICAL_CONTRIBUTIONS.md)
 before changing an app.
 
+## NEW fourth canonical research app — mean differences (2026-10-11)
+
+\`streamlit run apps/mean_difference_forecasting.py\`
+
+Independent front-end for the NEW lead
+[Trend Simulation and Mean-Difference Forecasting paper](../working_papers/Working%20Paper%20-%20Trend%20Simulation%20and%20Mean-Difference%20Forecasting/README.md).
+It calls \`forecasting/mean_difference_cv.py\`, never copies selection
+logic into Streamlit. Supports the same synthetic/CSV/Yahoo inputs;
+plots **true latent tau when synthetic**, observed y, past fitted
+trends, and h-step future forecasts. Side-by-side methods:
+μ=0 pure, per-window Guerrero plug-in observed mean(D x),
+and one common μ(S) profiled analytically from completed
+forecast-CV folds. Displays weighted F(S), μ_profile(S),
+penalty EDF vs Guerrero actual plug-in EDF, exportable
+results and a strictly reserved outer block.
+
+**This is exploratory, not a completed paper simulation or
+a fourth validation method already tested on GPU.**
+Only y[:T] enters selection; tau/test are display and
+post-selection evaluation only.
+
 ## Canonical apps
 
 | Paper | Run from repository root | Scientific object | Current features |
@@ -17,8 +38,9 @@ before changing an app.
 | 1 — Smoothness Cross Validation | \`streamlit run apps/pooled_forecast_cv.py\` | Historical raw forecast loss curves and their **weighted average F**; select **global minimum** | Original equal-weight pooled CV + weighted all/last-K uniform/linear/exponential, spectral H, S/EDF, historical fold heatmap, forecast and CSV/JSON exports |
 | 2 — Dynamic Branch Selection | \`streamlit run apps/dynamic_branch_cv.py\` | **Local minima** of method-specific weighted historical F, matched into chronological branches | Independent m, fixed d,L,h, radius/support/K controls, one-to-one branch matching, mean-last-K S **after** branch choice, forecast and branch/weighted-F matrix exports |
 | 3 — Numerical Methods | \`streamlit run apps/numerical_methods.py\` | Stationary points **of one fixed F(S)**, derivatives and exact endpoints | Adaptive derivative root brackets, F and first derivative plots, stationary candidate classifications, exact 0/1 checks, tabular exports, mathematical warnings |
+| 4 — Trend Simulation and Mean-Difference Forecasting | `streamlit run apps/mean_difference_forecasting.py` | Profile a nonzero d-th difference mean μ(S) for each S using completed forecast errors | Compare μ=0, Guerrero plug-in, and profiled μ(S); true/past/future trends, weighted CV curves, mean-profile plots, PDF-ready output CSV/JSON exports |
 
-All three support interactive synthetic input via a restricted numeric
+The earlier three support interactive synthetic input via a restricted numeric
 expression and additional source modes; Paper 1 provides synthetic,
 Yahoo Finance or CSV. Papers 2/3 also offer the original linear and
 Beta-mixture Cortés-Toto DGPs directly. Paper 1 includes those within
