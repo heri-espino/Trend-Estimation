@@ -170,6 +170,11 @@ def test_compact_analysis_no_raw_db_writes_and_true_paired_differences(tmp_path)
            and r["comparator"]=="naive"]
     assert len(naive)==1
     assert float(naive[0]["paired_observed_msfe_diff"])==pytest.approx(-1.9)
+    coverage=load_csv(report_dir/"coverage_by_scenario.csv")
+    assert len(coverage)==1
+    assert coverage[0]["scenario"]=="A__linear__N50"
+    assert coverage[0]["study"]=="A"
+    assert coverage[0]["completed_seeds"]=="2"
     numeric=load_csv(report_dir/"paper3_numerical_summary_compact.csv")
     assert len(numeric)==1
     assert float(numeric[0]["brent_regret_to_dense"])==pytest.approx(.03)
