@@ -271,8 +271,10 @@ def write_brief(root:Path):
         "## Limits",
         "",
         "- The experiment was stopped before its full seed allocation. "
-        "All 144 cells were represented, but approximately 696–704 "
-        "seeds per cell were finished; actual numbers are in coverage CSV.",
+        f"{inventory['scenario_cells_present']:,} DGP cells have "
+        f"{inventory['min_completed_seeds_per_present_cell']:,}–"
+        f"{inventory['max_completed_seeds_per_present_cell']:,} "
+        "finished seeds each; full cell-level detail is in coverage CSV.",
         "- All retained findings are exploratory. Testing many "
         "methods and declaring a winner after seeing this external "
         "panel would need a NEW independent confirmation study.",
