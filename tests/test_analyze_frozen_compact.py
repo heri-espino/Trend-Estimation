@@ -1,0 +1,184 @@
+"""Unit-test frozen postprocessing without invoking any DGP or simulation runner."""
+from __future__ import annotations
+
+import csv
+import hashlib
+import json
+import sqlite3
+
+import pytest
+
+from experiments.smoothness_cv.analyze_frozen_compact import (
+    Running, analyze, matched_comparators,
+)
+
+
+def fake_frozen_db(root):
+    root.mkdir()
+    config={
+        "preset":"formal8h","backend":"cuda","git_revision":"fixed-original-rev",
+        "scenario_keys":["A__linear__N50"],"seeds":5,
+    }
+    (root/"manifest.json").write_text(
+        json.dumps({"configuration":config,"fingerprint":"frozen"}),
+        encoding="utf-8",
+    )
+    db=root/"outcomes.sqlite"
+    conn=sqlite3.connect(str(db))
+    conn.executescript("""
+        CREATE TABLE completed(
+            task_key TEXT PRIMARY KEY,
+            n_rows INTEGER NOT NULL,
+            elapsed_sec REAL NOT NULL,
+            completed_utc TEXT NOT NULL
+        );
+        CREATE TABLE failures(
+            task_key TEXT PRIMARY KEY,message TEXT,occurred_utc TEXT
+        );
+        CREATE TABLE outcomes(
+            task_key TEXT,
+            scenario TEXT,study TEXT,shape TEXT,n_obs INTEGER,noise TEXT,
+            sigma REAL,seasonal INTEGER,seed INTEGER,origin INTEGER,
+            d INTEGER,h INTEGER,selector TEXT,is_oracle INTEGER,
+            forecast_mse_obs REAL,forecast_mse_latent REAL,
+            past_recovery_mse REAL,forecast_mse_conditional REAL,
+            forecast_mae_obs REAL,selected_s REAL,edf REAL,
+            branch_support INTEGER,n_local_minima INTEGER,
+            PRIMARY KEY(task_key,origin,d,h,selector)
+        ) WITHOUT ROWID;
+        CREATE TABLE forecast_baselines(
+            scenario TEXT,seed INTEGER,origin INTEGER,h INTEGER,
+            baseline TEXT,payload TEXT,
+            PRIMARY KEY(scenario,seed,origin,h,baseline)
+        );
+        CREATE TABLE numerical_diagnostics(
+            scenario TEXT,seed INTEGER,d INTEGER,h INTEGER,
+            method TEXT,payload TEXT,
+            PRIMARY KEY(scenario,seed,d,h,method)
+        );
+    """)
+    methods={
+        "pooled_uniform_all":(2.,0),
+        "classical_cv":(3.,0),
+        "classical_gcv":(2.3,0),
+        "classical_aicc":(2.6,0),
+        "classical_bic":(2.9,0),
+        "pooled_recent_exp_8":(2.5,0),
+        "tracked_recent_exp_8":(1.5,0),
+        "oracle_recovery":(.1,1),
+    }
+    for seed in (0,1):
+        key=f"A__linear__N50__seed{seed:06d}"
+        conn.execute(
+            "INSERT INTO completed VALUES(?,?,?,?)",
+            (key,2*len(methods),2.5,"2026-10-12T14:00Z")
+        )
+        for origin in (32,36):
+            for selector,(mse,oracle) in methods.items():
+                conn.execute(
+                    "INSERT INTO outcomes VALUES("+
+                    ",".join("?" for _ in range(23))+")",
+                    (
+                        key,"A__linear__N50","A","linear",50,
+                        "iid",.5,0,seed,origin,2,3,selector,oracle,
+                        mse+seed*.2,mse*.5,mse*.3,mse*.8,
+                        mse*.4,.6,18.,3,2,
+                    ),
+                )
+            for baseline in ("naive","drift","seasonal_naive","linear_ols"):
+                obs={"naive":4.,"drift":2.,"seasonal_naive":5.,
+                     "linear_ols":1.8}[baseline]
+                payload={
+                    "forecast_mse_obs":obs,
+                    "forecast_mse_latent":obs/2,
+                    "forecast_mae_obs":obs/3,
+                }
+                conn.execute(
+                    "INSERT INTO forecast_baselines VALUES(?,?,?,?,?,?)",
+                    ("A__linear__N50",seed,origin,3,baseline,json.dumps(payload)),
+                )
+        numeric={
+            "study":"A","shape":"linear","d":2,"h":3,
+            "method":"recent_exp_8",
+            "grid_regret_to_dense":.2,
+            "brent_regret_to_dense":.03,
+            "adaptive_regret_to_dense":.01,
+            "grid_s":.2,"brent_s":.31,
+            "adaptive_s":.29,"dense_s":.3,
+            "grid_outer_observed_mse":2.,
+        }
+        conn.execute(
+            "INSERT INTO numerical_diagnostics VALUES (?,?,?,?,?,?)",
+            ("A__linear__N50",seed,2,3,"recent_exp_8",json.dumps(numeric)),
+        )
+    conn.commit()
+    conn.close()
+    return db
+
+
+def load_csv(path):
+    with path.open(encoding="utf-8",newline="") as f:
+        return list(csv.DictReader(f))
+
+
+def test_running_seed_only_uncertainty():
+    s=Running()
+    s.add(1)
+    assert s.n==1
+    assert s.se!=s.se  # undefined for single independent replication
+    s.add(3)
+    assert s.n==2 and s.mean==2.
+    assert s.sd==pytest.approx(2**.5)
+
+
+def test_matching_respects_same_weighting_and_excludes_oracles():
+    assert matched_comparators("tracked_recent_exp_8")==("pooled_recent_exp_8",)
+    assert matched_comparators("classical_cv")==("pooled_uniform_all",)
+    assert matched_comparators("pooled_uniform_all")==()
+
+
+def test_compact_analysis_no_raw_db_writes_and_true_paired_differences(tmp_path):
+    run=tmp_path/"frozen"
+    database=fake_frozen_db(run)
+    before=hashlib.sha256(database.read_bytes()).hexdigest()
+    report_dir=tmp_path/"reports"
+    result=analyze(run,report_dir=report_dir,progress_every=500)
+    after=hashlib.sha256(database.read_bytes()).hexdigest()
+    assert before==after
+    assert result["completed_scenario_seed_tasks"]==2
+    assert result["method_rows_processed"]==32
+    assert result["numerical_diagnostic_rows"]==2
+    assert result["simulation_tasks_executed"]==0
+    first=load_csv(report_dir/"paper1_forecast_cv_vs_classical.csv")
+    cv=[r for r in first if r["selector"]=="classical_cv"]
+    assert len(cv)==1
+    assert float(cv[0]["paired_observed_msfe_diff"])==pytest.approx(1.)
+    assert cv[0]["n_independent_seeds"]=="2"
+    second=load_csv(report_dir/"paper2_tracking_vs_matched_pooled.csv")
+    assert len(second)==1
+    assert second[0]["comparator"]=="pooled_recent_exp_8"
+    assert float(second[0]["paired_observed_msfe_diff"])==pytest.approx(-1.)
+    assert float(second[0]["seed_win"])==pytest.approx(1.)
+    with (report_dir/"paper1_2_paired_scenario.csv").open(
+        encoding="utf-8",newline=""
+    ) as f:
+        selectors={r["selector"] for r in csv.DictReader(f)}
+    assert "oracle_recovery" not in selectors
+    baseline=load_csv(report_dir/"paired_vs_baselines_scenario.csv")
+    naive=[r for r in baseline
+           if r["selector"]=="pooled_uniform_all"
+           and r["comparator"]=="naive"]
+    assert len(naive)==1
+    assert float(naive[0]["paired_observed_msfe_diff"])==pytest.approx(-1.9)
+    numeric=load_csv(report_dir/"paper3_numerical_summary_compact.csv")
+    assert len(numeric)==1
+    assert float(numeric[0]["brent_regret_to_dense"])==pytest.approx(.03)
+    assert (report_dir/"README_RESULTS.md").is_file()
+
+
+def test_guard_requires_completed_snapshot_not_incomplete(tmp_path):
+    run=tmp_path/"no_database"
+    run.mkdir()
+    (run/"outcomes.sqlite.incomplete").write_bytes(b"temporary")
+    with pytest.raises(FileNotFoundError,match="finalize"):
+        analyze(run)
