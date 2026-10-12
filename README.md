@@ -16,7 +16,36 @@ before editing code or paper drafts.** These are the canonical current
 research protocols; older experiment snapshots may use *different*
 validation and branch-selection rules.
 
-## Three independent working papers
+## NEW lead research direction (2026-10-11): mean-difference trend forecasting
+
+The **new foreground study** is
+[Working Paper — Trend Simulation and Mean-Difference Forecasting](working_papers/Working%20Paper%20-%20Trend%20Simulation%20and%20Mean-Difference%20Forecasting/).
+Guerrero's original PLS permits a **nonzero mean of order-d
+trend differences**. Three predeclared rules now have shared
+chronological forecast-CV infrastructure: zero mean, Guerrero's
+observed-difference plug-in, and a **new research proposal**
+profiling a COMMON historical μ analytically for each S and
+then selecting S from h-step errors.
+
+- [Obsidian 06 — Guerrero, mean and endpoints](notes/conceptos/06-Media-de-diferencias-Guerrero.md)
+- [Obsidian 07 — profile optimization and derivatives](notes/conceptos/07-Perfilamiento-de-mu-en-CV.md)
+- [Obsidian 08 — new paper status](notes/conceptos/08-Nuevo-paper-tendencia-y-media.md)
+- [Paper-specific Markdown notebook](working_papers/Working%20Paper%20-%20Trend%20Simulation%20and%20Mean-Difference%20Forecasting/notes/INDEX.md)
+- [Library API](src/trend_estimation/forecasting/mean_difference_cv.py),
+  [first independent pilot](experiments/mean_difference_forecasting/README.md)
+
+**Old papers remain archived as ACTIVE HISTORICAL/parallel working
+drafts**, not deleted or silently renamed. Their earlier CUDA
+campaign uses μ=0 and remains scientifically separate. Only
+after source-comparison, proof and independent forecast results
+will we decide whether manuscripts should merge, remain separate
+or be shelved. The new paper **has no Streamlit app yet**;
+its initial front-end is a research library and CLI pilot,
+not a fourth claimed completed app.
+
+### Existing three paper lines, retained for comparison
+
+## Three earlier independent working papers
 
 | Paper | Working folder | Canonical Streamlit app | Primary scientific question |
 | --- | --- | --- | --- |
