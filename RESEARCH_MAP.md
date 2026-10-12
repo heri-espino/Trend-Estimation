@@ -1,10 +1,27 @@
 # Research map — active theory-first program
 
-**Updated 2026-10-09.** Exactly THREE independently publishable
-working papers are active, but use shared mathematical and numerical
-building blocks. For future agents, begin at [AGENTS.md](AGENTS.md),
+**Updated 2026-10-11.** One new lead working paper plus three earlier
+preserved independent draft/research lines use shared mathematical and
+numerical building blocks. For future agents, begin at [AGENTS.md](AGENTS.md),
 [AI_HANDOFF.md](AI_HANDOFF.md) and
 [THEORETICAL_CONTRIBUTIONS.md](working_papers/THEORETICAL_CONTRIBUTIONS.md).
+
+## NEW lead study: Trend Simulation and Mean-Difference Forecasting
+
+[Folder](working_papers/Working%20Paper%20-%20Trend%20Simulation%20and%20Mean-Difference%20Forecasting/)
+· [agent handoff](working_papers/Working%20Paper%20-%20Trend%20Simulation%20and%20Mean-Difference%20Forecasting/AI_HANDOFF.md)
+· [research notebook](working_papers/Working%20Paper%20-%20Trend%20Simulation%20and%20Mean-Difference%20Forecasting/notes/RESEARCH_NOTEBOOK.md).
+
+**Mathematical question:** compare pure μ=0 PLS, original Guerrero
+training-window mean(Dx) plug-in, and proposed analytically profiled
+one-mean forecast-CV \(F(S,\mu)=A-2C\mu+B\mu^2\).
+This is a distinct statistical decision, with new theory/EDF
+boundaries and simulation of true past vs future latent trends.
+New API and independent CPU pilot exist; novel results, CUDA for
+μ-profiling, and a fourth Streamlit app are NOT yet complete.
+Historical first-three papers remain intact.
+
+### Three earlier paper lines
 
 ## 1. Smoothness Cross Validation
 
