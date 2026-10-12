@@ -4,6 +4,38 @@
 [theoretical charter](working_papers/THEORETICAL_CONTRIBUTIONS.md)
 before interpreting any old code, manuscript or checkpoint.**
 
+## Analysis-only frozen results, postprocess then curated Git upload
+
+The university workstation has an original old \`formal8h\` SQLite
+with **100,848/144,000 completed scenario-seed tasks**,
+**65,877,504 model rows**, 50,424 numerical cases and
+6,274,048 baseline rows. All 144 predeclared scenarios
+are represented; 0 failures recorded. Original manifest
+uses Git SHA \`21bd563146e04eb545cae56b46393d93a9d98212\`.
+
+**User explicitly wants zero more Monte Carlo runs.**
+Use only \`experiments/smoothness_cv/finalize_frozen_study.py\`
+(which can also finalize an existing \`.sqlite.incomplete\`
+Windows backup). Its main engine
+\`analyze_frozen_compact.py\` reads the huge SQLite
+once in primary-key order and aggregates seed-level
+matched P1/P2 methods with honest inferential units.
+\`plot_frozen_compact.py\` creates four charts and
+\`REPORT_BRIEF.md\` from ACTUAL stored metrics, no
+series regeneration. New tests
+\`tests/test_analyze_frozen_compact.py\` and
+\`tests/test_recover_campaign.py\` should pass
+before running it.
+
+Curated small GitHub sharing:
+\`python -m experiments.smoothness_cv.publish_frozen_review
+--report-dir results/smoothness_cv/joint_formal_8h_v1_FROZEN/reports/frozen_compact --push\`.
+The publisher refuses large SQLite/raw data, unknown
+changes/staged items or >32MiB allowed files.
+Only after GitHub review of the actual compact reports
+may scientific conclusions be formulated. Current
+evidence remains time-truncated/exploratory.
+
 ## Historical CUDA data recovery — DO NOT RESTART
 
 A user's university workstation ran a long
