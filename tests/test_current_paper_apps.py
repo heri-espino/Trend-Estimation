@@ -1,4 +1,4 @@
-"""Contracts for three independent current paper apps, not legacy Val1/Val2."""
+"""Contracts for four separate paper apps, not legacy Val1/Val2."""
 from __future__ import annotations
 
 from pathlib import Path
@@ -14,6 +14,7 @@ APPS = ROOT / "apps"
     "pooled_forecast_cv.py",
     "dynamic_branch_cv.py",
     "numerical_methods.py",
+    "mean_difference_forecasting.py",
 ])
 def test_current_paper_apps_have_valid_syntax_and_unique_main(filename):
     path = APPS / filename
@@ -63,6 +64,15 @@ def test_one_app_per_active_paper_is_documented_for_new_agents():
             assert filename in text, (document,filename)
     legacy=(APPS/"smoothness_lab.py").read_text(encoding="utf-8")
     assert "val2" in legacy.lower()
+
+
+def test_new_mean_difference_app_calls_shared_api_and_preserves_holdout():
+    source=(APPS/"mean_difference_forecasting.py").read_text(encoding="utf-8")
+    assert "select_mean_difference_cv" in source
+    assert "from apps.dynamic_branch_cv import load_data" in source
+    assert 'tuple(y[:T])' in source
+    assert '"zero"' in source and '"guerrero"' in source and '"profile"' in source
+    assert "if holdout" in source
 
 
 def test_weighted_derivative_callback_matches_finite_difference():
