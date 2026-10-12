@@ -39,9 +39,10 @@ drafts**, not deleted or silently renamed. Their earlier CUDA
 campaign uses μ=0 and remains scientifically separate. Only
 after source-comparison, proof and independent forecast results
 will we decide whether manuscripts should merge, remain separate
-or be shelved. The new paper **has no Streamlit app yet**;
-its initial front-end is a research library and CLI pilot,
-not a fourth claimed completed app.
+or be shelved. The new paper now has its own **fourth** exploratory Streamlit app,
+[mean_difference_forecasting.py](apps/mean_difference_forecasting.py),
+alongside the library and standalone CLI pilot. App and new
+simulation protocol still require tests on the university environment.
 
 ### Existing three paper lines, retained for comparison
 
