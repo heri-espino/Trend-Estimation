@@ -13,6 +13,20 @@
 
 Estas fichas **resumen y conectan** resultados; no sustituyen la demostración completa. Para el recorrido detallado, consultar [[notes_on_smoothnes/README|Guía de la clase LaTeX]] y [main.tex en GitHub](https://github.com/heri-espino/Trend-Estimation/blob/main/notes/notes_on_smoothnes/main.tex).
 
+## Nuevo eje de investigación · 2026-10-11
+
+> [!important] Cuarto working paper: simulación de tendencias y media de diferencias
+> Guerrero (2007) **ya** estudia medias no nulas de diferencias y una estimación plug-in. Lo nuevo que investigaremos es elegir esa media por **errores de pronóstico históricos completados**, concentrándola analíticamente antes de seleccionar la suavidad S.
+
+6. [[conceptos/06-Media-de-diferencias-Guerrero|06 · De Guerrero a la media no nula]] — normal equations, corrección de bordes, particular binomial, EDF.
+7. [[conceptos/07-Perfilamiento-de-mu-en-CV|07 · Perfilado analítico y sus demostraciones]] — F(S,μ), la media óptima en cada S, Hessiana concentrada y modelos que NO se deben confundir.
+8. [[conceptos/08-Nuevo-paper-tendencia-y-media|08 · Nuevo paper y estado de investigación]] — notas del nuevo estudio y simulaciones futuras.
+
+**Paper nuevo y prioritario:** [Trend Simulation and Mean-Difference Forecasting](https://github.com/heri-espino/Trend-Estimation/tree/main/working_papers/Working%20Paper%20-%20Trend%20Simulation%20and%20Mean-Difference%20Forecasting).
+Sus notas de demostración y simulación viven fuera del vault, bajo \`working_papers/.../notes/\`, para conservar **una sola fuente de verdad**.
+
+Los tres antiguos papers quedan como antecedentes en paralelo; los datos de la campaña CUDA existente corresponden al caso μ=0 y **no** son resultados del nuevo modelo.
+
 ## Resultados y conceptos del repositorio
 
 - [[key_results|Identidades y resultados de referencia]]
@@ -32,7 +46,7 @@ Estas fichas **resumen y conectan** resultados; no sustituyen la demostración c
 - [[Guia del vault|Cómo editar y sincronizar este vault]]
 
 > [!important] Separación de fuentes
-> Las notas superiores incluyen material histórico. Los tres proyectos actualmente independientes están bajo [working_papers/](https://github.com/heri-espino/Trend-Estimation/tree/main/working_papers), **fuera del vault**: Pooled Forecast-CV, Dynamic Branch Selection y Numerical Methods. Sus propios cuadernos, demostraciones y resultados tienen prioridad para cada paper.
+> Las notas superiores incluyen material histórico. Los tres proyectos actualmente independientes están bajo [working_papers/](https://github.com/heri-espino/Trend-Estimation/tree/main/working_papers), **fuera del vault**: el nuevo Trend Simulation and Mean-Difference Forecasting, más los tres anteriores como antecedentes. Sus propios cuadernos, demostraciones y resultados tienen prioridad para cada paper.
 
 ## Fórmula de referencia
 
