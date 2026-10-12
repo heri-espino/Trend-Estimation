@@ -6,6 +6,52 @@ Apps, large simulations, CPU parallelism and the GPU are supporting
 implementation/evidence, **not independently novel theory**. Never rewrite
 legacy checkpoints as new-method evidence.
 
+## NEW lead research paper (2026-10-11): mean-difference trend forecasting
+
+The earlier Sections P1/P2/P3 describe the **three prior research
+lines**, all preserved for continuity. The NEW fourth working paper is
+[Trend Simulation and Mean-Difference Forecasting](Working%20Paper%20-%20Trend%20Simulation%20and%20Mean-Difference%20Forecasting/README.md),
+with its own
+[proof ledger](Working%20Paper%20-%20Trend%20Simulation%20and%20Mean-Difference%20Forecasting/notes/PROOF_LEDGER.md)
+and
+[simulation atlas](Working%20Paper%20-%20Trend%20Simulation%20and%20Mean-Difference%20Forecasting/notes/SIMULATION_ATLAS.md).
+Guerrero (2007) **already** introduced mean-centered d-th
+differences and the plug-in \(\widehat\mu_G=\mathrm{mean}(Dx)\);
+these are not new contributions. Our new **hypothesis** is to
+profile a COMMON μ analytically from h-step **completed** rolling
+forecast losses at fixed S and subsequently select S:
+\[
+\widehat\tau=H(S)x+\mu(I-H(S))p,\quad Dp=1,\quad
+\widehat z_t(S,\mu)=a_t(S)+\mu b(S),
+\]
+\[
+F(S,\mu)=A(S)-2C(S)\mu+B(S)\mu^2,\quad
+\widehat\mu(S)=C(S)/B(S),\quad
+\widetilde F(S)=A-C^2/B\quad (B>0).
+\]
+The Schur-complement interior-curvature expression
+\(\widetilde F_{SS}=F_{SS}-F_{S\mu}^2/F_{\mu\mu}\)
+is classical calculus, not a new general theorem. New work
+must characterize/validate this SPECIFIC forecasting
+objective, its identifiability and effects on minima.
+**Do NOT conflate** CV-profiling of μ with in-sample
+joint minimization of PLS penalty in (τ,μ), which changes
+the null space from d to d+1.
+
+**Actual fitting EDF of Guerrero plug-in** is
+\(\mathrm{tr}(H+b_\mathrm{fit}c^\top)=
+\mathrm{tr}H+c^\top b_\mathrm{fit}\).
+The prior scalar S remains a penalty coordinate; it is
+NOT automatically the EDF of the full CV-profile selector.
+
+**App:** \`apps/mean_difference_forecasting.py\`.
+**Source:** \`src/trend_estimation/forecasting/mean_difference_cv.py\`.
+**Pilot:** \`experiments/mean_difference_forecasting/run_pilot.py\`,
+separate from the ongoing previous CUDA \(\mu=0\) campaign.
+**Status:** derivation/code newly created, no independent test
+or publication-quality outcomes yet. Keep original P1/P2/P3
+manuscripts/results frozen rather than deleting them.
+
 ## Model and notation (common, not newly discovered)
 
 For observed \(y_{1:T}\), fit width \(L>d\ge1\), declared future
