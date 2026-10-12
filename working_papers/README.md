@@ -7,6 +7,33 @@ entire N=50/200 series. This is distinct from using the same 16 DGP
 cells as **forecasting** stress cases in the extensive simulation
 campaign.
 
+## NUEVO PAPER PRIORITARIO — tendencia y media de diferencias (2026-10-11)
+
+[Working Paper - Trend Simulation and Mean-Difference Forecasting](Working%20Paper%20-%20Trend%20Simulation%20and%20Mean-Difference%20Forecasting/README.md)
+es el cuarto proyecto, **por ahora el principal foco teórico**.
+
+La idea parte de **Guerrero (2007)**, quien ya estudió PLS con
+media no nula de diferencias y su estimador plug-in.
+La propuesta adicional es elegir una media común μ
+mediante forecast-CV completado, obteniendo
+\(\widehat\mu(S)\) por mínimos cuadrados ponderados
+para cada S, y después minimizar en S. Antes de
+reclamar un avance original faltan precedentes, pruebas
+no triviales, contraejemplos y resultados externos.
+
+**Notas principales del nuevo paper:**
+[Cuaderno](Working%20Paper%20-%20Trend%20Simulation%20and%20Mean-Difference%20Forecasting/notes/RESEARCH_NOTEBOOK.md) ·
+[Demostraciones](Working%20Paper%20-%20Trend%20Simulation%20and%20Mean-Difference%20Forecasting/notes/PROOF_LEDGER.md) ·
+[Simulaciones](Working%20Paper%20-%20Trend%20Simulation%20and%20Mean-Difference%20Forecasting/notes/SIMULATION_ATLAS.md).
+
+**Código nuevo:** \`src/trend_estimation/forecasting/mean_difference_cv.py\`,
+tests y piloto independiente \`experiments/mean_difference_forecasting/\`.
+
+**Conservamos los tres working papers y sus resultados**: no borrar
+evidencia ni sobrescribir la campaña CUDA original (μ=0)
+con el modelo nuevo. Solo reorganizar/archivar con decisión
+explícita después de analizar la novedad y la evidencia.
+
 ## Integrated three-paper simulation, literature controls and time limit
 
 See [JOINT_FORMAL_8H_PROTOCOL.md](JOINT_FORMAL_8H_PROTOCOL.md).
