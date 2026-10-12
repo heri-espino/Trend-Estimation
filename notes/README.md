@@ -19,6 +19,22 @@ Every note describing a mathematical result should include:
 7. **Status** — derived / implemented / tested / used in experiments.
 8. **Open issues** — what remains uncertain.
 
+## 2026-10-11: nuevo proyecto de media de diferencias
+
+Además de las notas históricas, el vault enlaza un **cuarto
+working paper prioritario**. Comenzar por
+\`conceptos/06-Media-de-diferencias-Guerrero.md\` (lectura directa de
+Guerrero, normal equations, proyección exacta, EDF plug-in),
+\`conceptos/07-Perfilamiento-de-mu-en-CV.md\`
+(mínimos cuadrados ponderados en μ, función concentrada y
+cambios de curvatura) y
+\`conceptos/08-Nuevo-paper-tendencia-y-media.md\`
+(estado/protocolo). El registro exhaustivo del nuevo artículo
+está en
+\`../working_papers/Working Paper - Trend Simulation and Mean-Difference Forecasting/notes/\`.
+No convertir automáticamente derivaciones en afirmaciones
+de originalidad o resultados empíricos completados.
+
 ## Current notes
 
 - `research_objective.md` — historical canonical objective for the parked adaptive
