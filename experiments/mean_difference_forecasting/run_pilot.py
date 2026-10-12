@@ -130,7 +130,9 @@ def replication_rows(scenario,seed:int, *, orders:tuple[int,...],
                         "method":mode,"s":chosen.selected_s,
                         "mu":chosen.selected_mu,"mu_true_history":mu_true,
                         "penalty_edf":chosen.forecast_fit.penalty_edf,
-                        "plugin_edf":chosen.forecast_fit.plugin_edf,
+                        "plugin_edf":(
+                            chosen.forecast_fit.plugin_edf if mode=="guerrero" else ""
+                        ),
                         "n_completed_folds":len(eligible),
                         "weighted_cv_mse":chosen.selected_loss,
                         "observed_future_mse":float(np.mean(error**2)),
