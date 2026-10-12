@@ -61,6 +61,29 @@ the four PDF/PNG illustrations; do NOT stage
 tables. Keep the large database local or use a
 separate explicit LFS/archive storage plan.
 
+### Upload ONLY compact scientific results to GitHub for independent review
+
+When the frozen analysis and its four figures have completed,
+the following command commits/pushes ONLY 16 **explicitly
+allowlisted** small result/report/figure files:
+
+~~~powershell
+python -m experiments.smoothness_cv.publish_frozen_review --report-dir results/smoothness_cv/joint_formal_8h_v1_FROZEN/reports/frozen_compact --push
+~~~
+
+Safeguards: refuses files >16 MiB or total >32 MiB, refuses
+other pre-staged changes, requires branch \`main\`,
+verifies an exploratory analysis provenance manifest,
+and **does not stage .sqlite, large replicate-means
+CSVs, user data or unrelated files**. This is a standard
+explicit Git operation, not an automatic CI result build.
+
+After the small summary is pushed, collaborators/agents
+can study the numerical results from GitHub without needing
+your school workstation's full 31 GiB raw SQLite. The
+source database is still necessary to audit origin-level
+calculations or run new post-hoc statistical checks.
+
 ## RECOVERY / FREEZE after shutdown — NEVER rerun just to report old results
 
 When \`run_simulation_campaign.py\` rejects a previously used
