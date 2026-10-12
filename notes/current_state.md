@@ -1,3 +1,14 @@
+> [!important] Actualización de investigación 2026-10-11
+> Abierto el cuarto working paper prioritario:
+> [Trend Simulation and Mean-Difference Forecasting](../working_papers/Working%20Paper%20-%20Trend%20Simulation%20and%20Mean-Difference%20Forecasting/README.md).
+> El modelo original de Guerrero permite media $\mu$ no nula
+> de diferencias; se implementó un nuevo perfilado analítico
+> de μ(S) sobre CV de pronóstico con test externo.
+> Notas detalladas: [[conceptos/06-Media-de-diferencias-Guerrero]]
+> y [[conceptos/07-Perfilamiento-de-mu-en-CV]].
+> Los tres anteriores y la campaña CUDA μ=0 siguen **preservados**.
+> Este archivo mantiene abajo su material HISTÓRICO sin reescritura.
+
 > **Historical archive (2026-10-08):** This note predates the current three-independent-working-paper structure and is not an active roadmap. See [working papers](../working_papers/README.md) and [research map](../RESEARCH_MAP.md). The original historical discussion below is retained without rewriting past decisions.
 
 > **Scope note (2026-10-05):** This file records the broader adaptive-paper program before the smoothness-CV / numerical-methods split. It is no longer the global source of truth. Start with AI_HANDOFF.md and RESEARCH_MAP.md. For current methodological work use working_papers/Working Paper - Smoothness Cross Validation/ and working_papers/Working Paper - Numerical Methods/.
