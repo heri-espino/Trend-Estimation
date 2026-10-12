@@ -51,6 +51,23 @@ evidencia; requiere auditoría completa de precedentes.
 - Notas del vault: [[06-Media-de-diferencias-Guerrero]] y
   [[07-Perfilamiento-de-mu-en-CV]] (archivos en \`notes/conceptos/\`).
 
+## App Streamlit independiente del nuevo paper
+
+\`\`\`powershell
+streamlit run apps/mean_difference_forecasting.py
+\`\`\`
+
+Permite generar señales sintéticas con ruido, cargar CSV/Yahoo,
+comparar **μ=0, μ plug-in de Guerrero y μ perfilada**,
+dibujar la tendencia estimada pasada y el pronóstico futuro,
+superponer la tendencia latente verdadera en datos sintéticos,
+inspeccionar las curvas de forecast-CV y μ(S),
+y exportar las decisiones, funciones y configuración.
+La app llama el selector matemático compartido; no implementa
+una segunda lógica independiente. Es exploratoria y aún requiere
+prueba real en tu entorno.
+
+
 ## Código fuente compartido
 
 - **Ya existente:** \`src/trend_estimation/core/solvers.py\`
