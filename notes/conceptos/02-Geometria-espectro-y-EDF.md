@@ -75,17 +75,17 @@ $$
 
 Para $1\le d<L$, el índice publicado por Guerrero (2007) en el caso $V=I_L$ es
 
-$
+$$
 S_G(\lambda;d,L)=1-\frac{\operatorname{tr}H_\lambda}{L}.
-$
+$$
 
 Como acabamos de demostrar que $d\le\operatorname{tr}H_\lambda\le L$, su **rango alcanzable** es $[0,1-d/L]$ (incluyendo $\lambda=\infty$ como extremo límite). Por ejemplo, $L=100,d=2$ produce $S_G(\infty)=0.98$; no es $1$ porque las dos direcciones lineales no se penalizan.
 
 Nuestra modificación es **sólo un reescalamiento lineal del rango**:
 
-$
+$$
 \boxed{S=\frac{S_G}{1-d/L}=\frac{L}{L-d}S_G.}
-$
+$$
 
 Así $S(0)=0$, $S(\infty)=1$, y para el mismo $d,L$ se preservan las tendencias, los pronósticos y la ubicación de los óptimos tras cambiar de coordenada. No se crea un estimador nuevo. En el caso separado $d=0$, Guerrero escribe $S_0(\lambda)=\lambda/(1+\lambda)$, que ya tiende a $1$.
 
