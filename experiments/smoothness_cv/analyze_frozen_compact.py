@@ -444,7 +444,8 @@ def analyze(run_dir:Path,*,report_dir:Path|None=None,progress_every:int=3000) ->
     (report_dir/"README_RESULTS.md").write_text(
         "# Frozen CUDA campaign — exploratory retrospective analysis\n\n"
         f"- **{completed_tasks:,} of {info['expected_scenario_seed_tasks']:,}** "
-        "scenario-seed tasks retained; all 144 DGP cells represented.\n"
+        "scenario-seed tasks retained; "
+        f"{inventory['completed_scenario_cells']:,} DGP cells represented.\n"
         f"- Processed **{method_rows:,} original saved model rows** with "
         "no new Monte Carlo runs.\n"
         f"- Numerics: **{n_numerical:,}** recorded diagnostic cases "
