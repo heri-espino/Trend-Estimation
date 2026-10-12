@@ -1,4 +1,4 @@
-"""Fast static checks for the three paper-specific Markdown research notebooks.
+"""Fast static checks for all four Markdown research notebooks.
 
 These contracts prevent another agent from silently replacing theory,
 simulation descriptions and careful status labelling with outdated
@@ -15,6 +15,7 @@ PAPERS={
     "Smoothness Cross Validation":"Paper 1",
     "Dynamic Branch Selection":"Paper 2",
     "Numerical Methods":"Paper 3",
+    "Trend Simulation and Mean-Difference Forecasting":"New lead",
 }
 REQUIRED_NOTES=(
     "RESEARCH_NOTEBOOK.md",
@@ -27,7 +28,9 @@ REQUIRED_NOTES=(
 def test_each_paper_has_research_narrative_proofs_and_simulation_atlas(paper):
     root=WORKING/f"Working Paper - {paper}"
     assert root.is_dir()
-    index=root/"notes"/("INDEX.md" if paper=="Smoothness Cross Validation" else "README.md")
+    index=root/"notes"/("INDEX.md" if paper in {
+        "Smoothness Cross Validation", "Trend Simulation and Mean-Difference Forecasting"
+    } else "README.md")
     entry=index.read_text(encoding="utf-8")
     for name in REQUIRED_NOTES:
         note=root/"notes"/name
@@ -45,7 +48,7 @@ def test_research_notes_do_not_erase_mathematical_vs_empirical_boundaries(paper)
     figures=(root/"SIMULATION_ATLAS.md").read_text(encoding="utf-8").lower()
     assert "h" in notebook and "s" in notebook
     assert "demostr" in proofs or "derivad" in proofs
-    assert "pendiente" in proofs or "hipótesis" in proofs
+    assert "pendiente" in proofs or "hipótesis" in proofs or "abierto" in proofs
     assert "ruido" in figures and ("tau" in figures or r"\tau" in figures)
     assert "pronóstico" in figures or "forecast" in figures
     assert "figura" in figures
