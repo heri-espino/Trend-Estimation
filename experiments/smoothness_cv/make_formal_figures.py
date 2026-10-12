@@ -11,6 +11,7 @@ re-fits only y[:T]. It does not select the "best-looking" scenario.
 from __future__ import annotations
 
 import argparse
+from contextlib import closing
 from pathlib import Path
 import sqlite3
 
@@ -31,11 +32,15 @@ D=2
 
 
 def selected_s(conn, scenario, seed, selector, h=H, d=D):
+    # The frozen 65M-row outcomes table has an indexed task_key, but
+    # NOT an index on (scenario,seed,selector). Use task_key so making
+    # four figures does not scan 65M rows repeatedly.
+    key=f"{scenario}__seed{int(seed):06d}"
     row=conn.execute(
         """SELECT origin,selected_s FROM outcomes
-            WHERE scenario=? AND seed=? AND selector=? AND h=? AND d=?
+            WHERE task_key=? AND selector=? AND h=? AND d=?
             ORDER BY origin DESC LIMIT 1""",
-        (scenario,int(seed),selector,int(h),int(d)),
+        (key,selector,int(h),int(d)),
     ).fetchone()
     return (int(row[0]),float(row[1])) if row else None
 
@@ -43,7 +48,8 @@ def selected_s(conn, scenario, seed, selector, h=H, d=D):
 def make_figures(run_dir:Path, *,seed:int=0, h:int=H, d:int=D):
     root=run_dir/"reports"/"figures"
     root.mkdir(parents=True,exist_ok=True)
-    conn=sqlite3.connect(str(run_dir/"outcomes.sqlite"))
+    from .recover_campaign import ro_connect
+    conn=ro_connect(run_dir/"outcomes.sqlite")
     lookup={s.key:s for s in grid_scenarios("formal8h")}
     shown=[]
     for shape in DECLARED_EXAMPLES:
