@@ -157,7 +157,19 @@ def main(argv=None):
     paired_count=_paired_against_naive(conn,folder)
     conn.close()
     status_path=args.run_dir/"run_status.json"
-    status=json.loads(status_path.read_text()) if status_path.exists() else {}
+    frozen_inventory=args.run_dir/"recovery_inventory.json"
+    if status_path.exists():
+        status=json.loads(status_path.read_text(encoding="utf-8"))
+    elif frozen_inventory.exists():
+        # An OS shutdown can preclude writing run_status.json while every
+        # already-COMMITTED SQLite replication survives. The recovery
+        # inventory explicitly records partial/exploratory provenance.
+        inventory=json.loads(frozen_inventory.read_text(encoding="utf-8"))
+        status={"status":inventory.get("scientific_status","unknown")}
+    else:
+        status={"status":"partial_exploratory" if (
+            main_stats["replications_complete"]<main_stats["replications_expected"]
+        ) else "complete_pending_audit"}
     report={
         **main_stats,**numeric,**baselines,
         "paired_vs_naive_replicate_rows":int(paired_count),
