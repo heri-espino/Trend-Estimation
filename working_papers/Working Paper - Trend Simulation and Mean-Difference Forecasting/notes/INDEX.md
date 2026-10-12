@@ -26,5 +26,10 @@
 El perfilado de mu según el MSE de pronóstico es propuesta de
 este proyecto, **no aparece como resultado verificado del autor**.
 
+**App actual:** \`streamlit run apps/mean_difference_forecasting.py\`,
+una interfaz separada con S, μ(S), comparación Guerrero,
+tendencia ajustada y pronóstico h-step, CSV/JSON exportables.
+
+**Estado:** notas/estructura/código de primera versión.
 **Estado:** notas/estructura/código de primera versión.
 No hay todavía MSFE comparativos obtenidos ni journal decidido.
