@@ -25,6 +25,20 @@ pilot. No new dataset/result has yet been tested/confirmed by
 this editing agent. Manuscript LaTeX is an empty scaffold,
 not a paper ready for journal submission.
 
+## Newly added fourth canonical Streamlit app
+
+\`streamlit run apps/mean_difference_forecasting.py\`
+now opens the new paper's exploratory interface, sharing
+the source-level CV-profile selector. It contrasts μ=0,
+per-window Guerrero μ and historical forecast-profiled μ(S),
+shows F(S) and true (synthetic) past/future trend diagnostics,
+and exports reproducible data. The interface is not a
+publication experiment; do not use synthetic latent tau
+or reserved external test to choose parameters.
+Fourth app unit checks live in
+\`tests/test_current_paper_apps.py\`.
+
+
 ## Notes before manuscript — mandatory handoff
 
 **New 2026-10-09:** publication writing proceeds **from complete
