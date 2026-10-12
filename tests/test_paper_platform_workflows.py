@@ -36,10 +36,10 @@ def test_macos_compile_script_resolves_repo_root_and_quotes_paths():
     assert "git push" not in sh
 
 
-def test_pdf_github_workflow_is_manual_and_three_targets():
+def test_pdf_github_workflow_is_manual_and_four_targets():
     yml = (ROOT / ".github/workflows/build-papers.yml").read_text(encoding="utf-8")
     assert "workflow_dispatch:" in yml
     assert "  push:" not in yml
-    for target in ("smoothness-cv", "numerical", "branches"):
+    for target in ("smoothness-cv", "numerical", "branches", "mean-difference"):
         assert f"          - {target}" in yml
     assert "paper_smoothness-cv/" not in yml
