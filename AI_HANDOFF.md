@@ -4,6 +4,31 @@
 [theoretical charter](working_papers/THEORETICAL_CONTRIBUTIONS.md)
 before interpreting any old code, manuscript or checkpoint.**
 
+## Scientific interpretation completed (2026-10-12)
+
+Read [JOINT_FORMAL_8H_RETROSPECTIVE_2026-10-12.md](working_papers/JOINT_FORMAL_8H_RETROSPECTIVE_2026-10-12.md)
+before proposing a paper merger or additional experiments.
+It derives a **carefully qualified** research priority from the
+published 100,848-task frozen report:
+- P1 horizon-matched forecast-CV broadly beats in-window
+  CV/GCV/BIC across predeclared simulated DGPs; AICc is
+  comparatively closer. Extreme BIC values require validation.
+- P2 tracked recent exponential minima are often better than
+  pooled under the **same** weighting. The decision rule also
+  averages last K S values, so the observed gain does NOT yet
+  establish that branch persistence itself beats simple temporal
+  smoothing of global minimizers. No ablation has been run.
+- P3 numerical (only h=3, 50,424 records) favours refinement/
+  adaptive search against a finite dense grid, not a proven global
+  optimum; outer forecast changes are small and algorithms known.
+- ALL old experiment results use \`mu=0\` and are not evidence
+  for the new mean-difference \`mu !=0\` working paper.
+
+The user explicitly requests **no more Monte Carlo runs**.
+Focus on interpretation, already saved tables and mathematical
+arguments. For auditing the original model, reference SHA
+\`21bd563146e04eb545cae56b46393d93a9d98212\`.
+
 ## Analysis-only frozen results, postprocess then curated Git upload
 
 The university workstation has an original old \`formal8h\` SQLite
