@@ -182,3 +182,24 @@ def test_guard_requires_completed_snapshot_not_incomplete(tmp_path):
     (run/"outcomes.sqlite.incomplete").write_bytes(b"temporary")
     with pytest.raises(FileNotFoundError,match="finalize"):
         analyze(run)
+
+
+def test_frozen_compact_publication_figures_and_brief(tmp_path):
+    pytest.importorskip("matplotlib")
+    pytest.importorskip("pandas")
+    from experiments.smoothness_cv.plot_frozen_compact import plot
+    run=tmp_path/"frozen"
+    fake_frozen_db(run)
+    reports=tmp_path/"figures-and-tables"
+    analyze(run,report_dir=reports,progress_every=999)
+    actual=plot(reports)
+    assert "paper1_classical_relative_rmse" in actual
+    assert "paper2_matched_tracking_relative_rmse" in actual
+    assert "paper3_numerical_regret" in actual
+    assert "coverage_independent_seeds" in actual
+    for name in actual:
+        assert (reports/(name+".pdf")).stat().st_size>0
+        assert (reports/(name+".png")).stat().st_size>0
+    brief=(reports/"REPORT_BRIEF.md").read_text(encoding="utf-8")
+    assert "Paper 1" in brief and "Paper 2" in brief and "Paper 3" in brief
+    assert "EXPLORATORY" in brief and "No new Monte Carlo" in brief
