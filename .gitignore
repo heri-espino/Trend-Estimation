@@ -43,6 +43,14 @@ paper_*/build/
 # Regenerable experiment outputs
 experiments/forecast_optimal_smoothing/outputs/
 
+# Large live/frozen Monte Carlo SQLite datasets are intentionally
+# NOT added to ordinary Git. Share manifests, small reports and inventory;
+# if full raw SQLite is needed remotely, use explicit Git LFS storage.
+# Exclusion of a file does not delete or alter its local bytes.
+results/smoothness_cv/**/outcomes.sqlite
+results/smoothness_cv/**/outcomes.sqlite-wal
+results/smoothness_cv/**/outcomes.sqlite-shm
+
 # Research results are intentionally not ignored by extension. If an artifact
 # becomes genuinely large, preserve it with Git LFS rather than hiding it from
 # version control.
