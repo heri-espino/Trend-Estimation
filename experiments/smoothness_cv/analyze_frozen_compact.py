@@ -422,6 +422,8 @@ def analyze(run_dir:Path,*,report_dir:Path|None=None,progress_every:int=3000) ->
         "completed_scenario_seed_tasks":completed_tasks,
         "expected_scenario_seed_tasks":inventory["expected_scenario_seed_tasks"],
         "scenario_cells_present":inventory["completed_scenario_cells"],
+        "min_completed_seeds_per_present_cell":inventory["min_completed_seeds_per_present_cell"],
+        "max_completed_seeds_per_present_cell":inventory["max_completed_seeds_per_present_cell"],
         "method_rows_processed":method_rows,
         "numerical_diagnostic_rows":n_numerical,
         "scenario_method_summary_rows":len(model_rows),
