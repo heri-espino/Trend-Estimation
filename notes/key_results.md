@@ -1,5 +1,71 @@
 # Key Results
 
+## 2026-10-11 — Guerrero con media no nula y perfilado forecast-CV (nuevo proyecto)
+
+Para $1\le d<L$, elegir el vector particular $p_j=\binom jd$,
+con $D_dp=\mathbf1$ y $H=(I+\lambda D_d^\top D_d)^{-1}$.
+Se deriva:
+
+$
+\boxed{
+\widehat\tau_{\lambda,\mu}
+=Hx+\mu(I-H)p.
+}
+$
+
+El operador de continuación **afín** da
+
+$
+\boxed{
+\widehat z_{t,h}(S,\mu)
+=a_t(S)+\mu b(S),\quad
+b(S)=G_{d,h}(I-H(S))p+g_{d,h}.
+}
+$
+
+Con pesos de forecast-CV sobre orígenes completados:
+
+$
+F(S,\mu)=A(S)-2C(S)\mu+B(S)\mu^2.
+$
+
+Si $B>0$, se deduce
+
+$
+\boxed{
+\widehat\mu(S)=\frac{C(S)}{B(S)},\qquad
+\widetilde F(S)=A(S)-\frac{C(S)^2}{B(S)}.
+}
+$
+
+Bajo regularidad interior, $F_\mu=0$ y $F_{\mu\mu}>0$:
+
+$
+\boxed{
+\widetilde F_{SS}=F_{SS}
+-\frac{F_{S\mu}^2}{F_{\mu\mu}}.
+}
+$
+
+**Atribución:** Guerrero (2007) ya planteó las diferencias
+con media $\mu$ y su plug-in observado; el perfilado
+según errores de pronóstico es nuestra **propuesta por
+comparar con antecedentes y datos**, no un hallazgo publicado.
+
+**Grados de libertad:** si $\widehat\mu_G=c^\top x$,
+el EDF del ajuste es $\operatorname{tr}(H)+c^\top(I-H)p$,
+NO automáticamente $\operatorname{tr}H$. Si μ se
+selecciona por forecast-CV, no se puede atribuir
+sin demostración un EDF al selector completo.
+
+**Fuente detallada:** [[conceptos/06-Media-de-diferencias-Guerrero]]
+y [[conceptos/07-Perfilamiento-de-mu-en-CV]].
+**Código nuevo:** \`forecasting/mean_difference_cv.py\`.
+**Estado:** identidades derivadas, software/test creado,
+resultado empírico aún pendiente. Conservar resultados previos.
+
+
+
 This file is the short canonical list of mathematical results currently used by the active research program. Detailed derivations live in separate notes.
 
 ## 1. Pure penalized trend
