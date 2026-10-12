@@ -16,6 +16,33 @@ before editing code or paper drafts.** These are the canonical current
 research protocols; older experiment snapshots may use *different*
 validation and branch-selection rules.
 
+## Historical 100,848-task CUDA campaign — preserved and ready for retrospective analysis
+
+The earlier \`mu=0\` joint three-paper \`formal8h\` simulation
+was interrupted after **100,848 committed scenario-seed
+replications** from 144 predeclared DGP cells
+(approximately 696–704 seeds per cell; 0 logged failures).
+The old 31.47-GiB SQLite and 65,877,504 model rows were
+recovered without repeating Monte Carlo work.
+Do **NOT** resume its runner or alter its original manifest.
+
+For lightweight numerical extraction from the user's
+frozen local backup, use
+\`python -m experiments.smoothness_cv.finalize_frozen_study
+--original results/smoothness_cv/joint_formal_8h_v1
+--frozen results/smoothness_cv/joint_formal_8h_v1_FROZEN\`.
+This performs **read-only streaming evaluation** and writes
+P1/P2 paired comparisons, P3 numerical summaries,
+external naive/drift/seasonal/OLS tables, four PDF/PNG
+figures, and an actual-numbers \`REPORT_BRIEF.md\`
+without executing CUDA, fitting new trends or generating DGPs.
+
+Detailed recovery and report instructions:
+[CAMPAIGN_README.md](experiments/smoothness_cv/CAMPAIGN_README.md).
+This is preliminary truncated-factorial evidence, **not** a
+completed confirmatory design and **not** an evaluation of
+the NEW nonzero-mean-difference fourth paper.
+
 ## NEW lead research direction (2026-10-11): mean-difference trend forecasting
 
 The **new foreground study** is
