@@ -203,3 +203,17 @@ def test_frozen_compact_publication_figures_and_brief(tmp_path):
     brief=(reports/"REPORT_BRIEF.md").read_text(encoding="utf-8")
     assert "Paper 1" in brief and "Paper 2" in brief and "Paper 3" in brief
     assert "EXPLORATORY" in brief and "No new Monte Carlo" in brief
+
+
+def test_single_entrypoint_analyzes_existing_frozen_data_without_running_simulations(tmp_path):
+    pytest.importorskip("matplotlib")
+    pytest.importorskip("pandas")
+    from experiments.smoothness_cv.finalize_frozen_study import finalize
+    original=tmp_path/"missing-original"
+    frozen=tmp_path/"frozen"
+    source=fake_frozen_db(frozen)
+    before=hashlib.sha256(source.read_bytes()).hexdigest()
+    status=finalize(original,frozen,analyze_only=True)
+    assert status["simulation_tasks_executed"]==0
+    assert hashlib.sha256(source.read_bytes()).hexdigest()==before
+    assert (frozen/"reports"/"frozen_compact"/"REPORT_BRIEF.md").exists()
