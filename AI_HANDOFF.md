@@ -4,6 +4,37 @@
 [theoretical charter](working_papers/THEORETICAL_CONTRIBUTIONS.md)
 before interpreting any old code, manuscript or checkpoint.**
 
+## Historical CUDA data recovery — DO NOT RESTART
+
+A user's university workstation ran a long
+\`--preset formal8h --backend cuda\` Monte Carlo campaign.
+After shutdown / Git changes, re-running the same command
+reported \`Existing manifest has a different design/code
+version\`. This occurs because the manifest fingerprint
+includes \`git_revision\`; it does **not** prove data
+are lost, and \`_checked_manifest\` stops before
+Monte Carlo iterations start.
+
+User expressly requests **NO MORE SIMULATIONS**: inspect
+and recover existing committed results ONLY.
+
+Original expected path:
+\`results/smoothness_cv/joint_formal_8h_v1/outcomes.sqlite\`
+and its \`manifest.json\`; historical total exact count
+must be measured, not inferred from progress logs.
+Use \`experiments/smoothness_cv/recover_campaign.py\`
+with \`--run-dir\` and a NEW outside \`--snapshot-dir\`.
+It opens the original WAL-backed SQLite in read-only
+mode, counts atomic \`completed\`, produces a
+SQLite-online-backup snapshot and copies unchanged
+manifest. On the snapshot, the joint analyzer's
+\`--allow-partial\` permits retrospective results
+without matching current git_revision. Do NOT edit
+the original manifest, run a new campaign or
+silently substitute a new directory for it.
+
+See [recovery guide](experiments/smoothness_cv/CAMPAIGN_README.md).
+
 ## Top-priority NEW working paper (2026-10-11)
 
 A fourth working paper has been created:
