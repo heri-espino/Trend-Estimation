@@ -1,4 +1,4 @@
-"""Structural regression tests for exactly three independent working papers."""
+"""Structural regression checks for one new lead and three preserved paper lines."""
 from __future__ import annotations
 
 from pathlib import Path
@@ -11,10 +11,11 @@ NAMES = {
     "Working Paper - Smoothness Cross Validation",
     "Working Paper - Numerical Methods",
     "Working Paper - Dynamic Branch Selection",
+    "Working Paper - Trend Simulation and Mean-Difference Forecasting",
 }
 
 
-def test_three_independent_directories_exist_and_legacy_roots_are_gone():
+def test_four_independent_paper_directories_and_legacy_roots_gone():
     actual = {p.name for p in WP.iterdir() if p.is_dir()}
     assert actual == NAMES
     assert (ROOT / "ideas" / "README.md").is_file()
@@ -27,7 +28,8 @@ def test_each_manuscript_is_standalone():
     pooled = (WP / "Working Paper - Smoothness Cross Validation" / "manuscript/main.tex")
     numeric = (WP / "Working Paper - Numerical Methods" / "main.tex")
     dynamic = (WP / "Working Paper - Dynamic Branch Selection" / "manuscript/main.tex")
-    for f in (pooled, numeric, dynamic):
+    new=(WP / "Working Paper - Trend Simulation and Mean-Difference Forecasting" / "manuscript/main.tex")
+    for f in (pooled, numeric, dynamic, new):
         assert f.is_file()
         source = f.read_text(encoding="utf-8")
         assert r"\begin{document}" in source and r"\end{document}" in source
@@ -41,6 +43,7 @@ def test_each_manuscript_is_standalone():
     assert "02_branch_rules" in dsrc
     assert "03_experiments" in dsrc
     assert r"\section{Temporal correspondence of local minima}" not in nsrc
+    assert "Guerrero" in new.read_text(encoding="utf-8") or "Trend" in new.read_text(encoding="utf-8")
 
 
 def test_historical_checkpoints_are_distinct_and_complete():
