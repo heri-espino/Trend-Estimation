@@ -409,8 +409,12 @@ def analyze(run_dir:Path,*,report_dir:Path|None=None,progress_every:int=3000) ->
         and r["comparator"]==
             "pooled_"+r["selector"][len("tracked_"):]
     ])
+    # recover_campaign.inspect() stores only {scenario, completed} for
+    # each cell; the study is encoded as the A/B/C/D prefix of scenario.
+    # Do NOT assume it contains a separate "study" field.
     coverage=[{
-        "study":x["study"],"scenario":x["scenario"],
+        "study":x["scenario"].split("__",1)[0],
+        "scenario":x["scenario"],
         "completed_seeds":x["completed"],
         "declared_seeds_per_cell":inventory["seeds_per_cell_declared"],
     } for x in inventory["scenario_completion"]]
