@@ -171,6 +171,61 @@ The forecast-optimal-smoothing paper should begin with model A because its deriv
 
 Model B is now a literature-aligned extension available for robustness comparisons. Model C is historical/reproducibility only. Model D remains a separate possible methodological extension.
 
+## E. Forecast-CV de media de diferencias (NEW — 2026-10-11)
+
+Para cada S en el caso de Guerrero con centro fijo μ,
+la identidad del término afín es
+\[
+\widehat\tau_{\lambda,\mu}
+=H_\lambda x+\mu(I-H_\lambda)p,\qquad
+p_j=\binom jd,\quad D_dp=\mathbf1.
+\]
+Se utiliza el operador de continuación afín:
+\[
+\widehat z_{t,h}(S,\mu)
+=G_{d,h}\widehat\tau_{t}(S,\mu)+\mu g_{d,h}
+=a_t(S)+\mu b(S).
+\]
+
+El **estimador de μ por errores h-step completados**,
+introducido como propuesta separada, no es equivalente
+a ninguna de las letras A–D anteriores:
+\[
+\widehat\mu(S)=
+\frac{\sum_q \widetilde w_q
+b(S)^\top(z_q-a_q(S))}
+{\|b(S)\|^2},\qquad \|b(S)\|^2>0,
+\]
+y luego \(\widehat S=\arg\min_S F(S,\widehat\mu(S))\).
+
+**Tres métodos del código nuevo:**
+\`zero\` (modelo A),
+\`guerrero\` (B, plug-in **por ventana**),
+\`profile\` (nueva política h-step con μ común entre folds).
+Modelo D (optimizar μ dentro de UNA penalización in-sample)
+cambia el núcleo a dimensión d+1 y no debe confundirse
+con \`profile\`.
+
+**Advertencia EDF:** cuando μ_G=c'x, el operador es
+H+b c' y sus EDF son tr(H)+c'b; la coordenada
+S basada en tr(H) no es ya automáticamente
+el EDF del procedimiento completo.
+
+**Fuente de derivaciones Obsidian:**
+\`conceptos/06-Media-de-diferencias-Guerrero.md\` y
+\`conceptos/07-Perfilamiento-de-mu-en-CV.md\`.
+
+**Mapping:**
+\`src/trend_estimation/forecasting/mean_difference_cv.py\`,
+\`experiments/mean_difference_forecasting/run_pilot.py\`,
+\`tests/test_mean_difference_forecast_cv.py\`.
+Paper nuevo:
+\`working_papers/Working Paper - Trend Simulation and Mean-Difference Forecasting/\`.
+
+**Estado:** planteamiento derivado e implementado en nueva ruta,
+experimentos/test de usuario pendientes; no equivale a
+un hallazgo de superioridad confirmado.
+
 ## Library mapping rule
 
 Any implementation change to these models must update this note and `notes/key_results.md`. Any manuscript statement calling a model "Guerrero" must cite the exact estimator definition being used.
