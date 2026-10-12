@@ -143,8 +143,10 @@ def replication_rows(scenario,seed:int, *, orders:tuple[int,...],
                         )),
                         "forecast_mae":float(np.mean(np.abs(error))),
                         "lead_squared_errors":json.dumps([float(v) for v in error**2]),
-                        "selected_mu_identified":bool(
-                            chosen.identified_mu_by_s[int(np.argmin(chosen.weighted_losses))]
+                        "selected_mu_identified":(
+                            bool(chosen.identified_mu_by_s[
+                                int(np.argmin(chosen.weighted_losses))
+                            ]) if mode=="profile" else ""
                         ),
                     })
                 # No artificial S or EDF for naive/drift/OLS.
