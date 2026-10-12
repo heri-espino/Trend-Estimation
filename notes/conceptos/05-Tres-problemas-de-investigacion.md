@@ -4,6 +4,10 @@ estado: mapa-conceptual
 ---
 # 05 · Tres preguntas científicas diferentes
 
+> [!important] Actualización 2026-10-11
+> Esta ficha documenta **las tres preguntas anteriores**, todavía útiles y conservadas. Se abrió un **cuarto working paper prioritario** sobre la media no nula de diferencias y perfilado de μ para pronóstico. Leer [[06-Media-de-diferencias-Guerrero]], [[07-Perfilamiento-de-mu-en-CV]] y [[08-Nuevo-paper-tendencia-y-media]]. El antiguo estudio CUDA de μ=0 no constituye evidencia sobre la nueva propuesta.
+
+
 Partiendo de la misma familia de suavizadores y de las pérdidas futuras completadas, el repositorio distingue **tres problemas de investigación independientes**.
 
 ## Paper 1: Smoothness Cross Validation
