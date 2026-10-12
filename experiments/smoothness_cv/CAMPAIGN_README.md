@@ -1,5 +1,73 @@
 # Large simulation campaign — Paper 1 and Paper 2
 
+## RECOVERY / FREEZE after shutdown — NEVER rerun just to report old results
+
+When \`run_simulation_campaign.py\` rejects a previously used
+\`--run-dir\` with "Existing manifest has a different
+design/code version", **do not overwrite the manifest**.
+The saved configuration includes \`git_revision\` and the
+fingerprint therefore changes after a Git update even if
+all explicit simulation CLI options stayed the same.
+This is an expected reproducibility guard, NOT evidence
+that the old SQLite data have disappeared.
+
+The old full/partial Monte Carlo database is
+\`<run-dir>/outcomes.sqlite\`. Each scenario–seed task
+is committed atomically alongside its \`completed\`
+record. During a shutdown, uncommitted in-flight work
+may be lost; committed tasks and associated rows survive
+normal SQLite crash recovery. A WAL file may contain
+committed transactions not yet checkpointed into the main
+\`.sqlite\`; NEVER copy only the file with the operating
+system while a WAL file is in play.
+
+**Zero additional Monte Carlo calls:**
+
+~~~powershell
+python -m pytest tests/test_recover_campaign.py -q
+python -m experiments.smoothness_cv.recover_campaign --run-dir results/smoothness_cv/joint_formal_8h_v1 --snapshot-dir results/smoothness_cv/joint_formal_8h_v1_FROZEN
+~~~
+
+This reads the original DB in **mode=ro**, prints true
+completed-task counts, study/scenario coverage, original
+Git revision, optional Paper 3/baseline rows, and then
+creates a SEPARATE consistent SQLite snapshot via
+\`sqlite3.Connection.backup\` (includes committed WAL).
+It copies the original manifest and status metadata
+unchanged, writes \`recovery_inventory.json\`, and
+verifies the count in the frozen snapshot. The process
+checks available disk space and does not overwrite an
+existing snapshot. For a large dataset the safe copy can
+take time. Use a \`--snapshot-dir\` on another disk when
+free space is insufficient. You can first omit the
+snapshot flag to **inspect only**, without any writes
+to the original folder.
+
+Afterwards, the frozen results can be analyzed without
+matching today's code version to the OLD manifest:
+
+~~~powershell
+python -m experiments.smoothness_cv.analyze_joint_campaign --run-dir results/smoothness_cv/joint_formal_8h_v1_FROZEN --allow-partial
+~~~
+
+This command is **statistical postprocessing only**, not
+more simulations; it may require substantial CPU, RAM and
+time for tens of millions of saved method rows. Analyze
+**the frozen snapshot** to avoid modifying the source.
+If only some seeds/cells finished, report their actual
+sample sizes; do not claim a complete 144-cell design.
+Results from the previous \`mu=0\` campaign remain
+independent of the new nonzero-mean project.
+
+**Git:** commit only small manifests, status files and
+compact analysis tables after checking sizes. Massive
+SQLite files are not suitable for ordinary Git commits.
+Use an explicit Git LFS/storage plan if preserving a full
+database remotely. Never \`git add -A\` blindly on a
+large Monte Carlo results directory.
+
+# Large simulation campaign — Paper 1 and Paper 2
+
 ## PRIORITY: 8-hour common experiment for Papers 1, 2 and 3 (2026-10-09)
 
 The formal **time-bounded, shared** three-paper design is now
