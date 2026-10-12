@@ -38,6 +38,48 @@ result tables are exploratory; independent
 confirmatory seeds/tests are required
 before a journal claim.
 
+## PRIORITY UPDATE (2026-10-11): fourth paper, nonzero difference mean
+
+**Read this before using the older "three papers" map.**
+New lead:
+[Trend Simulation and Mean-Difference Forecasting](working_papers/Working%20Paper%20-%20Trend%20Simulation%20and%20Mean-Difference%20Forecasting/README.md).
+The earlier three working papers remain preserved as independent
+historical/parallel research, **NOT deleted**. Do not modify the
+ongoing μ=0 CUDA 8-hour campaign or its results and pretend
+it already tested the new μ≠0 model.
+
+**Verified source Guerrero (2007)** introduced nonzero mean of
+d-th differences and a data plug-in μ. Source already implemented
+in \`core/solvers.py\`; \`forecasting/operators.py\` already handles
+affine continuation. The NEW research extension implemented in
+\`forecasting/mean_difference_cv.py\` analytically profiles one common
+μ(S) from completed historical h-step forecast losses. This is
+a **candidate research contribution, not verified publication
+novelty or general forecasting improvement**.
+
+Mandatory mathematical distinctions:
+1. fixed μ: \(H x+\mu(I-H)p\), \(D_dp=1\);
+2. Guerrero per-window plug-in μ from mean(D x);
+3. common μ(S) chosen by completed forecast-CV, then S;
+4. in-sample minimizing over BOTH τ,μ changes penalty matrix
+   to \(D^\top(I-11^\top/(L-d))D\), with **d+1 nullity**.
+Never conflate (3) with (4) or re-use pure-model EDF for
+the complete data-selected μ procedure.
+Source-grounded full derivations:
+[Obsidian 06](notes/conceptos/06-Media-de-diferencias-Guerrero.md)
+and [Obsidian 07](notes/conceptos/07-Perfilamiento-de-mu-en-CV.md).
+Paper notes:
+[proof ledger](working_papers/Working%20Paper%20-%20Trend%20Simulation%20and%20Mean-Difference%20Forecasting/notes/PROOF_LEDGER.md)
+and [simulation atlas](working_papers/Working%20Paper%20-%20Trend%20Simulation%20and%20Mean-Difference%20Forecasting/notes/SIMULATION_ATLAS.md).
+
+First new tests:
+\`pytest tests/test_mean_difference_forecast_cv.py tests/test_mean_difference_pilot.py -q\`.
+Pilot runner: \`python -m experiments.mean_difference_forecasting.run_pilot --dry-run\`.
+**Not tested by this agent on user workstation; CUDA for the new
+μ-extended problem is still NOT integrated.**
+The existing three Streamlit apps remain specific to older papers;
+new paper app is pending, not assumed.
+
 ## Research-note-first writing contract (2026-10-09)
 
 Before editing \`manuscript/main.tex\` or claiming publication readiness,
