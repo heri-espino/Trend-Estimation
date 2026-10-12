@@ -146,7 +146,7 @@ def replication_rows(scenario,seed:int, *, orders:tuple[int,...],
                         ),
                     })
                 # No artificial S or EDF for naive/drift/OLS.
-                baselines=benchmark_predictions(data.observed,T,L,h)
+                baselines=benchmark_predictions(data.observed[:T],T,L,h)
                 for name in ("naive","drift","seasonal_naive","linear_ols"):
                     prediction=baselines[name]
                     err=data.observed[T:T+h]-prediction
@@ -193,7 +193,7 @@ def main(argv=None):
         "modes":list(SELECTORS),
         "scenarios":[s.key for s in scenarios],
         "seeds":args.seeds,"seed_start":args.seed_start,
-        "orders":orders,"horizons":horizons,"outer_count":args.outer_count,
+        "orders":list(orders),"horizons":list(horizons),"outer_count":args.outer_count,
         "max_folds":args.max_folds,"grid_points":args.grid_points,
         "weights_kind":args.weights,"decay":args.decay,
         "n_obs":args.n_obs,"output":str(args.output),
