@@ -1,0 +1,23 @@
+{
+  "status": "PARTIAL — EXPLORATORY, nonconfirmatory",
+  "source_dir": "results/smoothness_cv/joint_formal_8h_v1_FROZEN",
+  "original_git_revision": "21bd563146e04eb545cae56b46393d93a9d98212",
+  "completed_scenario_seed_tasks": 100848,
+  "expected_scenario_seed_tasks": 144000,
+  "scenario_cells_present": 144,
+  "min_completed_seeds_per_present_cell": 696,
+  "max_completed_seeds_per_present_cell": 704,
+  "method_rows_processed": 65877504,
+  "numerical_diagnostic_rows": 50424,
+  "scenario_method_summary_rows": 23520,
+  "paired_method_summary_rows": 20160,
+  "baseline_summary_rows": 2240,
+  "paired_vs_simple_baseline_summary_rows": 85120,
+  "runtime_minutes": 12.44,
+  "simulation_tasks_executed": 0,
+  "raw_snapshot_modified": false,
+  "benchmark_comparison": "matched scenario/seed/outer origin/horizon",
+  "independent_inference_unit": "scenario-specific Monte Carlo seed",
+  "numerical_reference": "dense grid, NOT certification of all minima",
+  "statistical_limitation": "Time-truncated exploratory design; multiple testing and method selection on same holdout preclude confirmatory winner claims."
+}
