@@ -217,3 +217,28 @@ def test_single_entrypoint_analyzes_existing_frozen_data_without_running_simulat
     assert status["simulation_tasks_executed"]==0
     assert hashlib.sha256(source.read_bytes()).hexdigest()==before
     assert (frozen/"reports"/"frozen_compact"/"REPORT_BRIEF.md").exists()
+
+
+def test_curated_github_share_excludes_all_sqlite_and_raw_rows(tmp_path):
+    from experiments.smoothness_cv.publish_frozen_review import (
+        EXPECTED, GRAPH_STEMS, review_paths,
+    )
+    root=tmp_path/"repo"
+    report=root/"results"/"frozen"/"reports"/"frozen_compact"
+    report.mkdir(parents=True)
+    (report/"ANALYSIS_MANIFEST.json").write_text(json.dumps({
+        "simulation_tasks_executed":0,
+        "status":"PARTIAL — EXPLORATORY, nonconfirmatory",
+    }),encoding="utf-8")
+    for name in EXPECTED:
+        if name=="ANALYSIS_MANIFEST.json":
+            continue
+        (report/name).write_text("report",encoding="utf-8")
+    for stem in GRAPH_STEMS:
+        for extension in (".pdf",".png"):
+            (report/(stem+extension)).write_bytes(b"sample graphic")
+    (root/"outcomes.sqlite").write_bytes(b"do not stage")
+    selected=review_paths(report,root)
+    assert all(path.startswith("results/frozen/reports/") for path in selected)
+    assert all("sqlite" not in path.lower() for path in selected)
+    assert len(selected)==len(EXPECTED)+2*len(GRAPH_STEMS)
