@@ -21,6 +21,35 @@ committed transactions not yet checkpointed into the main
 \`.sqlite\`; NEVER copy only the file with the operating
 system while a WAL file is in play.
 
+### Windows WinError 32 recovery (2026-10-12)
+
+An earlier backup implementation used \`with sqlite3.connect(...)\`,
+which **does not close the underlying connection** on leaving
+its context. On Windows, renaming the finished
+\`outcomes.sqlite.incomplete\` therefore raised
+\`PermissionError: [WinError 32]\`. Source results remain
+intact, and the fully written ~31-GiB copy can also be saved.
+
+The recovery helper now uses \`contextlib.closing\` for both
+source and target DB. For a copy **already made by the old tool**
+which finished but failed its final rename, **let the old backup
+process EXIT first**. Then after \`git pull\`, run:
+
+~~~powershell
+python -m pytest tests/test_recover_campaign.py -q
+python -m experiments.smoothness_cv.recover_campaign --run-dir results/smoothness_cv/joint_formal_8h_v1 --snapshot-dir results/smoothness_cv/joint_formal_8h_v1_FROZEN --finalize-incomplete
+~~~
+
+The new \`--finalize-incomplete\` runs SQLite \`quick_check(1)\`,
+validates committed task counts, atomic row totals and optional
+table counts against the original read-only inventory, CLOSES all
+handles, renames the already-existing copy, and restores manifest
+metadata. No 31-GiB second copy; **zero new Monte Carlo**.
+If the pending file is truncated because a copy was aborted,
+verification fails without replacing/deleting it; retry in a
+**different new backup directory** after inspecting disk space.
+Never delete the original source SQLite/WAL.
+
 **Zero additional Monte Carlo calls:**
 
 ~~~powershell
