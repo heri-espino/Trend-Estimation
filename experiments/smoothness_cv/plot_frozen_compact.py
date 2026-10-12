@@ -152,7 +152,7 @@ def chart_coverage(root):
     if df.empty:return None
     counts=[df.loc[df.study==s,"completed_seeds"] for s in ("A","B","C","D")]
     fig,ax=plt.subplots(figsize=(8,4.6))
-    ax.boxplot(counts,tick_labels=["A","B","C","D"],showmeans=True)
+    ax.boxplot(counts,labels=["A","B","C","D"],showmeans=True)
     ax.set_xlabel("Predeclared DGP study")
     ax.set_ylabel("Completed independent seeds per scenario")
     ax.set_title("Partial factorial coverage (no imputation or new experiments)")
@@ -160,6 +160,136 @@ def chart_coverage(root):
     fig.tight_layout()
     save(fig,root,"coverage_independent_seeds")
     return "coverage_independent_seeds"
+
+
+def write_brief(root:Path):
+    """Short factual results digest; no selection from a held-out winner."""
+    import json
+    inventory=json.loads((root/"ANALYSIS_MANIFEST.json").read_text(encoding="utf-8"))
+    lines=[
+        "# Retrospective Monte Carlo results — three previous papers",
+        "",
+        "**EXPLORATORY, NOT CONFIRMATORY.** This report is generated from "
+        "the frozen, historically completed mu=0 CUDA experiment. "
+        "It is NOT a result for the new nonzero-mean-difference paper.",
+        "",
+        f"- **Completed scenario/seed tasks:** "
+        f"{inventory['completed_scenario_seed_tasks']:,} / "
+        f"{inventory['expected_scenario_seed_tasks']:,}.",
+        f"- **Originally stored method rows analyzed:** "
+        f"{inventory['method_rows_processed']:,}.",
+        f"- **Historical numerical cases:** "
+        f"{inventory['numerical_diagnostic_rows']:,}.",
+        "- **No new Monte Carlo or GPU tasks performed** during analysis.",
+        "",
+        "Every ratio below is sqrt(mean method MSE / mean comparator MSE) "
+        "**inside one predeclared DGP cell**. Values summarized across cells "
+        "are *medians* and proportions, not confidence intervals. "
+        "For scenario-specific paired MSFE confidence intervals, "
+        "consult the full compact CSVs.",
+        "",
+    ]
+    def make_table(filename, title, selectors):
+        df=pd.read_csv(root/filename)
+        lines.extend([
+            "## "+title,"",
+            "| d | h | Method | Matched comparator | DGP cells | "
+            "Median relative RMSE | Share of cells with ratio below 1 |",
+            "|---:|---:|---|---|---:|---:|---:|",
+        ])
+        nrows=0
+        for (d,h,selector,comparison),subset in df.groupby(
+            ["d","h","selector","comparator"],dropna=False,sort=True
+        ):
+            if selector not in selectors:
+                continue
+            ratios=subset["relative_rmse"].replace([np.inf,-np.inf],np.nan).dropna()
+            if ratios.empty:
+                continue
+            nrows+=1
+            lines.append(
+                f"| {d} | {h} | {selector} | {comparison} | "
+                f"{len(ratios)} | {ratios.median():.4f} | "
+                f"{(ratios<1).mean():.1%} |"
+            )
+        if not nrows:
+            lines.append("| — | — | No available comparison | — | 0 | — | — |")
+        lines.append("")
+    make_table(
+        "paper1_forecast_cv_vs_classical.csv",
+        "Paper 1 — Classical CV/GCV/AICc/BIC versus pooled uniform forecast-CV",
+        set(CLASSICAL),
+    )
+    make_table(
+        "paper2_tracking_vs_matched_pooled.csv",
+        "Paper 2 — Tracking versus pooled under the same temporal weighting",
+        {x for x,_ in TRACKING},
+    )
+    numerical=root/"paper3_numerical_summary_compact.csv"
+    if numerical.is_file():
+        df=pd.read_csv(numerical)
+        lines.extend([
+            "## Paper 3 — Numerical search on the same F(S) surfaces",
+            "",
+            "| h | Diagnostic groups | Median grid regret | "
+            "Median bounded-Brent regret | Median adaptive regret |",
+            "|---:|---:|---:|---:|---:|",
+        ])
+        for h,part in df.groupby("h",sort=True):
+            lines.append(
+                f"| {h} | {len(part)} | "
+                f"{part['grid_regret_to_dense'].median():.6g} | "
+                f"{part['brent_regret_to_dense'].median():.6g} | "
+                f"{part['adaptive_regret_to_dense'].median():.6g} |"
+            )
+        lines.append("")
+    baselines=root/"paired_vs_baselines_scenario.csv"
+    if baselines.is_file():
+        df=pd.read_csv(baselines)
+        # Exactly one predeclared reference for concise comparison; do not
+        # select whichever of many methods happened to look best on test.
+        part=df[(df["selector"]=="pooled_uniform_all")
+                & (df["comparator"]=="naive")]
+        lines.extend([
+            "## Reference comparison with naive",
+            "",
+            "| d | h | DGP cells | Median pooled/naive RMSE | "
+            "Share of cells with ratio below 1 |",
+            "|---:|---:|---:|---:|---:|",
+        ])
+        for (d,h),cell in part.groupby(["d","h"],sort=True):
+            ratios=cell["relative_rmse"].replace(
+                [np.inf,-np.inf],np.nan
+            ).dropna()
+            if ratios.empty:continue
+            lines.append(
+                f"| {d} | {h} | {len(ratios)} | "
+                f"{ratios.median():.4f} | {(ratios<1).mean():.1%} |"
+            )
+        lines.append("")
+    lines.extend([
+        "## Limits",
+        "",
+        "- The experiment was stopped before its full seed allocation. "
+        "All 144 cells were represented, but approximately 696–704 "
+        "seeds per cell were finished; actual numbers are in coverage CSV.",
+        "- All retained findings are exploratory. Testing many "
+        "methods and declaring a winner after seeing this external "
+        "panel would need a NEW independent confirmation study.",
+        "- Confidence intervals for **paired MSFE differences** are "
+        "computed across independently generated seeds **within each "
+        "cell**; medians and win-shares across heterogeneous DGP cells "
+        "are descriptive, not joint inferential confidence bands.",
+        "- Classical CV/GCV/AICc/BIC and P2 tracking do not model "
+        "the new nonzero mean of differences; claims about that "
+        "new estimator must await its independent pilot.",
+        "- Grid/Brent/adaptive minima are numerical comparisons; "
+        "the dense-grid reference is not a universal global proof.",
+        "",
+    ])
+    (root/"REPORT_BRIEF.md").write_text(
+        "\n".join(lines),encoding="utf-8"
+    )
 
 
 def plot(report_dir:Path):
@@ -181,6 +311,7 @@ def plot(report_dir:Path):
     ):
         chart=fun(root)
         if chart is not None:figures.append(chart)
+    write_brief(root)
     (root/"README_FIGURES.md").write_text(
         "# Frozen Monte Carlo retrospective figures\n\n"
         "Figures drawn **only from stored, aggregated simulation "
