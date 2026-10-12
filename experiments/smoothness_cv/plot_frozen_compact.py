@@ -149,10 +149,24 @@ def chart_numerical(root):
 
 def chart_coverage(root):
     df=pd.read_csv(root/"coverage_by_scenario.csv")
-    if df.empty:return None
-    counts=[df.loc[df.study==s,"completed_seeds"] for s in ("A","B","C","D")]
+    if df.empty:
+        return None
+    # Older Matplotlib accepts 'labels', newer versions prefer
+    # 'tick_labels'. Do not pass either: set ticks explicitly
+    # after drawing the boxes for maximum cross-version support.
+    # The small regression fixture has study A only, whereas the
+    # full frozen campaign has A, B, C and D. Omit empty groups.
+    studies=[s for s in ("A","B","C","D") if (df.study==s).any()]
+    if not studies:
+        return None
+    counts=[
+        df.loc[df.study==s,"completed_seeds"].to_numpy(dtype=float)
+        for s in studies
+    ]
     fig,ax=plt.subplots(figsize=(8,4.6))
-    ax.boxplot(counts,labels=["A","B","C","D"],showmeans=True)
+    ax.boxplot(counts,showmeans=True)
+    ax.set_xticks(np.arange(1,len(studies)+1))
+    ax.set_xticklabels(studies)
     ax.set_xlabel("Predeclared DGP study")
     ax.set_ylabel("Completed independent seeds per scenario")
     ax.set_title("Partial factorial coverage (no imputation or new experiments)")
