@@ -22,6 +22,18 @@ Cada paper tiene un centro distinto:
 | 2. Dynamic Branch | Historia temporal de mínimos locales de **esas mismas** F | Persistencia/continuación, asociación y utilidad predictiva de una rama | El antiguo algoritmo Val1/Val2 |
 | 3. Numerical Methods | Una F(S) fija y sus puntos estacionarios/extremos | Estructura algebraica y detección/aislamiento fiable de mínimos | Selección de ramas entre orígenes |
 
+## Actualización 2026-10-11: nuevo estudio principal
+
+El cuarto artículo,
+[Trend Simulation and Mean-Difference Forecasting](Working%20Paper%20-%20Trend%20Simulation%20and%20Mean-Difference%20Forecasting/README.md),
+es la **línea de investigación prioritaria**. Empezar por su
+[RESEARCH_NOTEBOOK](Working%20Paper%20-%20Trend%20Simulation%20and%20Mean-Difference%20Forecasting/notes/RESEARCH_NOTEBOOK.md),
+[PROOF_LEDGER](Working%20Paper%20-%20Trend%20Simulation%20and%20Mean-Difference%20Forecasting/notes/PROOF_LEDGER.md)
+y [SIMULATION_ATLAS](Working%20Paper%20-%20Trend%20Simulation%20and%20Mean-Difference%20Forecasting/notes/SIMULATION_ATLAS.md).
+Las tres líneas que aparecen abajo son anteriores y quedan
+conservadas, no destruidas. No confundir los resultados numéricos
+del modelo μ=0 con evidencia del nuevo perfilado de μ.
+
 ## Arquitectura de notas (cada working paper)
 
 - \`notes/RESEARCH_NOTEBOOK.md\` — hilo narrativo comprensible:
