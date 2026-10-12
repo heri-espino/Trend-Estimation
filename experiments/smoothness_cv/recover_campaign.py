@@ -117,7 +117,13 @@ def inspect(run_dir: Path) -> dict:
     }
     original_manifest_bytes = (run_dir / "manifest.json").read_bytes()
     return {
-        "source_dir": str(run_dir.resolve()),
+        # Keep paths portable and avoid publishing local Windows usernames
+        # if this small inventory is later committed to a public repository.
+        "source_dir": (
+            str(run_dir.resolve().relative_to(Path.cwd().resolve())).replace("\\", "/")
+            if run_dir.resolve().is_relative_to(Path.cwd().resolve())
+            else run_dir.name
+        ),
         "inspection_utc": datetime.now(timezone.utc).isoformat(),
         "original_manifest_sha256": hashlib.sha256(original_manifest_bytes).hexdigest(),
         "original_fingerprint": manifest.get("fingerprint"),
