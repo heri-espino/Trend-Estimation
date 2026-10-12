@@ -4,6 +4,27 @@
 [theoretical charter](working_papers/THEORETICAL_CONTRIBUTIONS.md)
 before interpreting any old code, manuscript or checkpoint.**
 
+## Top-priority NEW working paper (2026-10-11)
+
+A fourth working paper has been created:
+[Trend Simulation and Mean-Difference Forecasting](working_papers/Working%20Paper%20-%20Trend%20Simulation%20and%20Mean-Difference%20Forecasting/README.md).
+**It is currently the lead research hypothesis.** Its own
+[notes](working_papers/Working%20Paper%20-%20Trend%20Simulation%20and%20Mean-Difference%20Forecasting/notes/INDEX.md)
+track derivations, assumptions and simulation proposals.
+Obsidian [Guerrero derivation](notes/conceptos/06-Media-de-diferencias-Guerrero.md)
+and [forecast-CV profiling](notes/conceptos/07-Perfilamiento-de-mu-en-CV.md)
+are detailed step-by-step backgrounds.
+
+Prior three papers' code/results ARE NOT DELETED.
+The university's already-running μ=0 CUDA simulation
+does not evaluate the new extension. This new research line adds
+a separate \`src/trend_estimation/forecasting/mean_difference_cv.py\`
+API (zero / Guerrero plug-in / analytically profiled common μ),
+new tests and a separate \`experiments/mean_difference_forecasting/\`
+pilot. No new dataset/result has yet been tested/confirmed by
+this editing agent. Manuscript LaTeX is an empty scaffold,
+not a paper ready for journal submission.
+
 ## Notes before manuscript — mandatory handoff
 
 **New 2026-10-09:** publication writing proceeds **from complete
