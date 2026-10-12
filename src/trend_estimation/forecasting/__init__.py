@@ -10,6 +10,16 @@ from .objectives import (
     rolling_pure_forecast_loss_derivatives,
 )
 from .polynomial import PolynomialTrendForecaster
+from .mean_difference_cv import (
+    AffineMeanForecast,
+    MeanDifferenceCVSelection,
+    polynomial_difference_particular,
+    observed_mean_difference,
+    affine_mean_components,
+    fit_mean_difference_forecast,
+    profile_mean_difference,
+    select_mean_difference_cv,
+)
 
 __all__ = [
     "ForecastResult",
@@ -24,4 +34,12 @@ __all__ = [
     "pure_forecast_loss_derivatives",
     "rolling_pure_forecast_loss_derivatives",
     "PolynomialTrendForecaster",
+    "AffineMeanForecast",
+    "MeanDifferenceCVSelection",
+    "polynomial_difference_particular",
+    "observed_mean_difference",
+    "affine_mean_components",
+    "fit_mean_difference_forecast",
+    "profile_mean_difference",
+    "select_mean_difference_cv",
 ]
