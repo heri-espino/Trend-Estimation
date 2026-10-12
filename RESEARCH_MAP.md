@@ -18,7 +18,8 @@ one-mean forecast-CV \(F(S,\mu)=A-2C\mu+B\mu^2\).
 This is a distinct statistical decision, with new theory/EDF
 boundaries and simulation of true past vs future latent trends.
 New API and independent CPU pilot exist; novel results, CUDA for
-μ-profiling, and a fourth Streamlit app are NOT yet complete.
+μ-profiling, and the independent fourth Streamlit app are newly implemented
+but NOT validated as publication evidence.
 Historical first-three papers remain intact.
 
 ### Three earlier paper lines
