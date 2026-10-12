@@ -4,3 +4,7 @@ channels:
 dependencies:
   - python=3.11
   - pip
+  # All four manuscript apps use Streamlit and Plotly.
+  # Add through conda-forge; don't prune an existing CUDA environment.
+  - streamlit>=1.40
+  - plotly>=5.20
