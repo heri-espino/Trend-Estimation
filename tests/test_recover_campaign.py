@@ -5,6 +5,7 @@ import hashlib
 import json
 from pathlib import Path
 import sqlite3
+from contextlib import closing
 
 import pytest
 
@@ -101,6 +102,50 @@ def test_read_only_inventory_and_online_frozen_snapshot_with_live_wal(tmp_path):
         assert (original/"manifest.json").read_bytes()==old_manifest
         with pytest.raises(FileExistsError):
             freeze(original,dest,before)
+    finally:
+        writer.close()
+
+
+def test_existing_windows_unrenamed_snapshot_can_be_verified_without_copy(tmp_path):
+    source=tmp_path/"source"
+    writer=_sample_run(source)
+    try:
+        before=inspect(source)
+        destination=tmp_path/"frozen"
+        destination.mkdir()
+        pending=destination/"outcomes.sqlite.incomplete"
+        # Recreate a successful SQLite online backup that was not renamed,
+        # e.g. a Windows WinError 32 from an OPEN destination connection.
+        with closing(ro_connect(source/"outcomes.sqlite")) as conn:
+            with closing(sqlite3.connect(str(pending))) as dest:
+                conn.backup(dest)
+        assert pending.is_file()
+        assert not (destination/"outcomes.sqlite").exists()
+        assert freeze(source,destination,before,finalize_incomplete=True)==destination.resolve()
+        assert not pending.exists()
+        assert (destination/"outcomes.sqlite").exists()
+        with closing(ro_connect(destination/"outcomes.sqlite")) as db:
+            assert db.execute("SELECT COUNT(*) FROM completed").fetchone()[0]==2
+        with pytest.raises(FileExistsError,match="finalized snapshot"):
+            freeze(source,destination,before,finalize_incomplete=True)
+    finally:
+        writer.close()
+
+
+def test_truncated_prior_windows_snapshot_is_not_promoted(tmp_path):
+    source=tmp_path/"source"
+    writer=_sample_run(source)
+    try:
+        before=inspect(source)
+        destination=tmp_path/"frozen"
+        destination.mkdir()
+        pending=destination/"outcomes.sqlite.incomplete"
+        pending.write_bytes(b"not a sqlite database")
+        with pytest.raises((sqlite3.DatabaseError,RuntimeError)):
+            freeze(source,destination,before,finalize_incomplete=True)
+        assert pending.exists()
+        assert not (destination/"outcomes.sqlite").exists()
+        assert inspect(source)["completed_scenario_seed_tasks"]==2
     finally:
         writer.close()
 
