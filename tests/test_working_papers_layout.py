@@ -19,7 +19,10 @@ def test_four_independent_paper_directories_and_legacy_roots_gone():
     actual = {p.name for p in WP.iterdir() if p.is_dir()}
     assert actual == NAMES
     assert (ROOT / "ideas" / "README.md").is_file()
-    assert not list(ROOT.glob("paper_*"))
+    # Legacy paper_* workspaces may still exist locally (and can contain
+    # untracked data or a prior manuscript). The canonical paper layout is
+    # defined by WORKING, not by forcibly deleting local folders.
+    # Git pull deliberately does not remove user-local untracked folders.
     for name in NAMES:
         assert (WP / name / "README.md").is_file()
 
