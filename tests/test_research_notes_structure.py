@@ -6,6 +6,7 @@ Val1/Val2 notes or publication-ready claims that are not supported.
 """
 from pathlib import Path
 import re
+from urllib.parse import unquote
 
 import pytest
 
@@ -88,7 +89,9 @@ def test_every_new_markdown_relative_link_stays_inside_repository_and_resolves()
             path=url.split("#",1)[0]
             if not path:
                 continue
-            linked=(document.parent/path).resolve()
+            # Markdown links may encode spaces as %20. Decode URL-encoding
+            # before mapping a repository link to an on-disk Path.
+            linked=(document.parent/unquote(path)).resolve()
             assert linked.is_file(),f"Broken link in {document}: {url}"
 
 
