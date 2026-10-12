@@ -63,6 +63,8 @@ The new pilot is a standalone experiment and needs fresh seeds.
 - Historical Guerrero solver and affine G already existed.
 - New exact mean-loading and forecast-CV profile API committed.
 - New tests are committed but must pass on user's environment.
+- Dedicated `apps/mean_difference_forecasting.py` visualizes the three
+  modes without using future observed/latent data for selection.
 - Pilot code provides basic matched DGP/outer comparison; no formal
   study completed and no GPU integration claimed for this extension.
 - Theoretical identities are algebraically derived here but not
