@@ -78,7 +78,9 @@ Pilot runner: \`python -m experiments.mean_difference_forecasting.run_pilot --dr
 **Not tested by this agent on user workstation; CUDA for the new
 μ-extended problem is still NOT integrated.**
 The existing three Streamlit apps remain specific to older papers;
-new paper app is pending, not assumed.
+the NEW fourth `apps/mean_difference_forecasting.py` calls the
+shared nonzero-μ library for exploratory CV and trend visualization.
+It has not yet been smoke-tested on the university environment.
 
 ## Research-note-first writing contract (2026-10-09)
 
