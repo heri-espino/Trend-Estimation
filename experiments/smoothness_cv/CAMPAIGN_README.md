@@ -1,5 +1,66 @@
 # Large simulation campaign — Paper 1 and Paper 2
 
+## 2026-10-12 — FINAL frozen analysis (100,848 previously completed tasks)
+
+**No new Monte Carlo tasks, CUDA kernels, latent-series generation or
+fits are performed by these new reporting modules.** Analyze only
+the backed-up \`joint_formal_8h_v1_FROZEN\`, leaving original data
+untouched. No need to finish 144,000 tasks. Keep the partial/exploratory
+tag, equal DGP-cell coverage and actual per-cell independent seeds.
+
+One new entrypoint handles an old Windows \`.sqlite.incomplete\`
+snapshot (validate/rename **existing copy**, NOT another 31-GB
+backup), then streams the 65,877,504 ALREADY-SAVED method rows
+in SQLite primary-key order, ONE scenario/seed at a time.
+It produces genuinely paired comparisons (matched origin, seed,
+d, h) and statistical inference at independent seed level.
+
+~~~powershell
+python -m pytest tests/test_analyze_frozen_compact.py tests/test_recover_campaign.py -q
+python -m experiments.smoothness_cv.finalize_frozen_study --original results/smoothness_cv/joint_formal_8h_v1 --frozen results/smoothness_cv/joint_formal_8h_v1_FROZEN
+~~~
+
+This may require a long CPU/disk pass, but it is **postprocessing,
+not new simulation**. Prints progress every 3,000 tasks; peak
+memory is bounded by **one task's rows** plus compact running
+statistics by scenario/method. Comparison tables and figures
+are stored in
+
+\`results/smoothness_cv/joint_formal_8h_v1_FROZEN/reports/frozen_compact/\`
+
+The central human-readable retrospective summary is
+\`REPORT_BRIEF.md\`, written **using actual numbers** from
+the saved results. It contains median within-cell relative
+RMSE for classical CV/GCV/AICc/BIC vs pooled, tracking vs
+the POOLED selector using the SAME weights, grid/Brent/adaptive
+regret to a dense (NOT certified) numerical grid, and the
+predeclared pooled vs naive reference.
+
+Other products: compact scenario-level table of observed
+MSFE, future latent MSE and past trend reconstruction MSE;
+independent seed-level paired differences with nominal
+95% CIs; naive/drift/OLS/seasonal comparisons; seed
+coverage; publication-screen PDFs/PNGs; and JSON
+analysis provenance (no new Monte Carlo).
+
+**DO NOT** run \`run_simulation_campaign.py\`,
+\`run_pilot.py\` or anything containing \`make_series\`
+to produce these tables. The optional historical
+\`make_formal_figures.py\` can reconstruct the **same**
+previously evaluated seed for didactic trend/forecast
+illustrations, but is deliberately **NOT** invoked in
+the frozen-only analysis, so no generated series appear
+in these new retrospective reports.
+
+**Publishing to GitHub:** review only the small
+\`REPORT_BRIEF.md\`, \`README_RESULTS.md\`,
+\`ANALYSIS_MANIFEST.json\`, predeclared paper-1/paper-2
+comparison summaries, numerical summaries, coverage and
+the four PDF/PNG illustrations; do NOT stage
+\`outcomes.sqlite\` or the huge full replicate-level
+tables. Keep the large database local or use a
+separate explicit LFS/archive storage plan.
+
 ## RECOVERY / FREEZE after shutdown — NEVER rerun just to report old results
 
 When \`run_simulation_campaign.py\` rejects a previously used
