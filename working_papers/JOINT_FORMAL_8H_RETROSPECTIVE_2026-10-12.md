@@ -96,6 +96,29 @@ In particular, the **negative adaptive regret** indicates the dense reference ca
 - **Least compelling as independent forecasting contribution:** Paper 3; useful numerical/theoretical appendix to P1/P2 unless it develops substantive results about stationary roots, reliable coverage/certificates, computational complexity or branch stability.
 - **New lead nonzero-mean-difference study:** mathematically separate. These 100,848 historical \`mu=0\` Monte Carlo tasks do not evaluate Guerrero's plug-in or forecast-profiled mu; do NOT port the measured improvements to the fourth paper.
 
+## Audit implementation added (no new simulations)
+
+The follow-up [audit protocol](JOINT_FORMAL_8H_AUDIT_PROTOCOL.md)
+specifies how to use the already stored compact
+P1/P2 files and the historical 50,424 numerical diagnostic
+records. It checks seed-level paired MSFE differences,
+the original relative-RMSE formulas, two-sided Student
+tests with all-contrast Holm correction per paper,
+DGP heterogeneity, BIC-related S and EDF diagnostics,
+tracking branch support, and direct paired numerical
+comparisons.
+
+The executable is
+\`experiments/smoothness_cv/audit_frozen_evidence.py\`,
+with small-output publisher
+\`experiments/smoothness_cv/publish_frozen_audit.py\`.
+This code is committed, but no audit results are asserted
+until generated and verified on the workstation holding the
+archived SQLite snapshot. Existing historical results remain
+immutable. The audit cannot create the unrun control for
+simple moving-average of global S; that is a genuine
+limitation of the old experiment.
+
 ## Audits still needed before submission, WITHOUT inventing new data
 
 1. Inspect **paired scenario CIs, negative-result cells and extreme outliers** in the public full P1/P2 contrast CSVs; determine which shape/noise families account for the gains. This review is based on the published brief and numerical aggregated summary; it does NOT independently verify every one of the large multi-MB paired CSV rows.
