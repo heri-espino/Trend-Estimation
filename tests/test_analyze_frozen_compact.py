@@ -106,6 +106,16 @@ def fake_frozen_db(root):
             "grid_s":.2,"brent_s":.31,
             "adaptive_s":.29,"dense_s":.3,
             "grid_outer_observed_mse":2.,
+            "brent_outer_observed_mse":1.8,
+            "adaptive_outer_observed_mse":1.7,
+            "grid_past_recovery_mse":.9,
+            "brent_past_recovery_mse":.8,
+            "adaptive_past_recovery_mse":.7,
+            "brent_objective_evaluations":7,
+            "adaptive_objective_evaluations":50,
+            "brent_seconds":.002,
+            "adaptive_seconds":.01,
+            "dense_seconds":.06,
         }
         conn.execute(
             "INSERT INTO numerical_diagnostics VALUES (?,?,?,?,?,?)",
@@ -247,3 +257,63 @@ def test_curated_github_share_excludes_all_sqlite_and_raw_rows(tmp_path):
     assert all(path.startswith("results/frozen/reports/") for path in selected)
     assert all("sqlite" not in path.lower() for path in selected)
     assert len(selected)==len(EXPECTED)+2*len(GRAPH_STEMS)
+
+
+def test_frozen_scientific_audit_no_new_simulations_or_sqlite_changes(tmp_path):
+    from experiments.smoothness_cv.audit_frozen_evidence import audit
+    run=tmp_path/"frozen"
+    database=fake_frozen_db(run)
+    before=hashlib.sha256(database.read_bytes()).hexdigest()
+    reports=run/"reports"/"frozen_compact"
+    analyze(run,report_dir=reports,progress_every=999)
+    result=audit(reports,frozen_dir=run)
+    assert result["no_new_simulations"] is True
+    assert result["completed_tasks"]==2
+    assert result["scenario_cells"]==1
+    assert result["paper1_scenario_contrasts"]>0
+    assert result["paper2_scenario_contrasts"]==1
+    assert result["paper3"]["cases"]==2
+    assert result["paper3"]["horizons"]==[3]
+    assert result["paper3"]["fraction_adaptive_outer_msfe_below_grid"]==1.
+    folder=reports/"audit"
+    assert (folder/"AUDIT_OVERVIEW.md").exists()
+    assert (folder/"PAPER1_AUDIT.md").exists()
+    assert (folder/"PAPER2_AUDIT.md").exists()
+    assert (folder/"PAPER3_AUDIT.md").exists()
+    assert (folder/"smoothing_edf_diagnostics.csv").exists()
+    tests=load_csv(folder/"comparison_tests.csv")
+    assert not any(r["selector"]=="oracle_recovery" for r in tests)
+    tracked=[r for r in tests if r["selector"]=="tracked_recent_exp_8"]
+    assert len(tracked)==1
+    assert tracked[0]["comparator"]=="pooled_recent_exp_8"
+    assert float(tracked[0]["relative_rmse"])<1.
+    assert float(tracked[0]["paired_observed_msfe_diff"])==pytest.approx(-1.)
+    assert hashlib.sha256(database.read_bytes()).hexdigest()==before
+
+
+def test_audit_rejects_tampered_ratio_or_pairing(tmp_path):
+    from experiments.smoothness_cv.audit_frozen_evidence import audit
+    run=tmp_path/"frozen"
+    fake_frozen_db(run)
+    reports=tmp_path/"reports"
+    analyze(run,report_dir=reports,progress_every=999)
+    file=reports/"paper1_forecast_cv_vs_classical.csv"
+    lines=load_csv(file)
+    lines[0]["relative_rmse"]="1234567"
+    with file.open("w",encoding="utf-8",newline="") as dest:
+        writer=csv.DictWriter(dest,fieldnames=list(lines[0]))
+        writer.writeheader()
+        writer.writerows(lines)
+    with pytest.raises(ValueError,match="relative RMSE"):
+        audit(reports,frozen_dir=run)
+
+
+def test_audit_holm_adjust_monotonic_controls_family_error():
+    import numpy as np
+    from experiments.smoothness_cv.audit_frozen_evidence import holm_adjust
+    p=np.array([.01,.04,.002,np.nan])
+    adj=holm_adjust(p)
+    assert adj[2]==pytest.approx(.006)
+    assert adj[0]==pytest.approx(.02)
+    assert adj[1]==pytest.approx(.04)
+    assert np.isnan(adj[3])
