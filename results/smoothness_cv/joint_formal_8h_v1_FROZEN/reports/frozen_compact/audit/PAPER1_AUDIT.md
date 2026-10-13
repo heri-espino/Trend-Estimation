@@ -80,12 +80,12 @@ Ratios are sqrt(mean method MSE / mean comparator MSE) inside a DGP scenario. Si
 
 ## Heterogeneity and failures
 
-The median may hide large outliers. Inspect \`group_heterogeneity.csv\` and \`extreme_cases.csv\` for the negative cases, noise families, trend shapes and horizons; no scenario outcomes are removed.
+The median may hide large outliers. Inspect `group_heterogeneity.csv` and `extreme_cases.csv` for the negative cases, noise families, trend shapes and horizons; no scenario outcomes are removed.
 
 ## BIC anomaly: mechanistic audit, NOT an automatic bug verdict
 
 BIC in the original CUDA campaign revision chooses S using
-\`log(RSS/L) + EDF*log(L)/L\` on the LAST L observed values. It is a reconstruction information criterion, not a horizon-h out-of-sample forecast criterion. Very small in-sample residuals can coexist with unstable order-d polynomial continuation, especially d=3 and h=12.
+`log(RSS/L) + EDF*log(L)/L` on the LAST L observed values. It is a reconstruction information criterion, not a horizon-h out-of-sample forecast criterion. Very small in-sample residuals can coexist with unstable order-d polynomial continuation, especially d=3 and h=12.
 
 The published example d=3,h=12 has BIC/pooled median relative RMSE 83.9803. This statistic is a scenario median ratio, not a factor of 84 across every observation.
-Use the linked \`paper1_2_method_scenario.csv\` diagnostics (mean_selected_s, mean_edf, n_outer) and the original SHA 21bd563... before attributing the anomaly to overfitting, low S, boundary behavior or a specific implementation error.
+Use the local `paper1_2_method_scenario.csv` diagnostics (selected_s, edf, n_independent_seeds) and the original SHA 21bd563... before attributing the anomaly to overfitting, low S, boundary behavior or a specific implementation error.
