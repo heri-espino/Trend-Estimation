@@ -48,7 +48,7 @@ Ratios are sqrt(mean method MSE / mean comparator MSE) inside a DGP scenario. Si
 
 ## Heterogeneity and failures
 
-The median may hide large outliers. Inspect \`group_heterogeneity.csv\` and \`extreme_cases.csv\` for the negative cases, noise families, trend shapes and horizons; no scenario outcomes are removed.
+The median may hide large outliers. Inspect `group_heterogeneity.csv` and `extreme_cases.csv` for the negative cases, noise families, trend shapes and horizons; no scenario outcomes are removed.
 
 ## Mechanism warning: branch selection versus S averaging
 
