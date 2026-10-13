@@ -247,8 +247,8 @@ def _method_diagnostics(local_folder:Path, audit:Path)->str:
     df=pd.read_csv(path)
     needed_fields={
         "study","scenario","d","h","selector",
-        "mean_s","mean_edf","mean_branch_count",
-        "mean_branch_support","n_replicates",
+        "selected_s","edf","local_minima",
+        "branch_support","n_independent_seeds",
     }
     missing=needed_fields-set(df)
     if missing:
@@ -258,8 +258,8 @@ def _method_diagnostics(local_folder:Path, audit:Path)->str:
                "pooled_recent_exp_8","tracked_recent_exp_8")
     chosen=df[df.selector.isin(selectors)].copy()
     fields=[
-        "mean_s","mean_edf","mean_branch_count",
-        "mean_branch_support",
+        "selected_s","edf","local_minima",
+        "branch_support",
     ]
     summaries=[]
     for (d,h,selector),group in chosen.groupby(
@@ -273,7 +273,7 @@ def _method_diagnostics(local_folder:Path, audit:Path)->str:
             row[f"share_{field}_near_zero"]=(
                 (x<.01).mean() if len(x) else np.nan
             )
-            if field=="mean_s":
+            if field=="selected_s":
                 row["share_S_near_one"]=(
                     (x>.99).mean() if len(x) else np.nan
                 )
@@ -282,10 +282,11 @@ def _method_diagnostics(local_folder:Path, audit:Path)->str:
     out.to_csv(audit/"smoothing_edf_diagnostics.csv",index=False)
     return (
         "The local scenario/method table was found and "
-        f"{len(out)} summaries of S, EDF, branch count and support "
-        "were written to smoothing_edf_diagnostics.csv. "
-        "These are cell-level medians of already-averaged S; "
-        "they cannot measure single-origin boundary hit rates."
+        f"{len(out)} summaries of S, EDF, local-minimum count and "
+        "branch support were written to smoothing_edf_diagnostics.csv. "
+        "These are scenario-level medians of values already averaged "
+        "over seeds and origins; they cannot measure single-origin "
+        "boundary hit rates."
     )
 
 
