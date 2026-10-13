@@ -58,7 +58,7 @@ Predictive selection of trend smoothness is also established. Hart \cite{hart199
 
 Nor is the possibility of multiple minima unique to the present criterion. Biessy \cite{biessy2026wh} shows a Whittaker--Henderson example in which a GCV profile has two local minima while studying marginal-likelihood selection and numerical optimization. The numerical question studied here is how to find and compare relevant stationary points, local minima and exact endpoint candidates of potentially multimodal finite-difference PLS forecast-loss functions reliably and with fewer evaluations than a dense reference grid.
 
-The difficulty is numerical as well as statistical. The resulting forecast-validation objective is one-dimensional, but it need not have a single local minimum. A coarse grid may miss relevant minima, while a very dense grid is reliable only at a substantial evaluation cost. Searching directly in \(\lambda\in[0,\infty)\) also requires arbitrary finite bounds and devotes numerical resolution unevenly across smoothing regimes.
+The difficulty is numerical as well as statistical. The resulting forecast-validation objective is one-dimensional, but it need not have a single local minimum. A coarse grid may miss relevant minima, while a very dense grid is reliable only at a substantial evaluation cost. Searching directly in \(\lambda\in[0,\infty)\) also requires arbitrary finite bounds and devotes numerical resolution unevenly across smoothing regimes. In least-squares computation more broadly, Balam et al. \cite{balam2025overview} illustrate how normal equations, QR factorization, and SVD can behave differently on an ill-conditioned fitting problem. Their focus is the numerical solution of a fixed least-squares problem; ours is the subsequent optimization of a smoothing parameter.
 
 Our primary numerical object is the collection of stationary points and global candidates of a forecast-loss curve parameterized by $S\in[0,1]$. The bounded coordinate is a monotone rescaling of the controlled-smoothness index, so that $S=0$ and $S=1$ encode both exact limiting trends. We develop derivative-aware adaptive sampling and Brent refinement \cite{brent1971zero}, then give a distinct exact-algebra route: for small problems with rational input values, the stationary equation can be reduced to a polynomial and its positive roots counted and isolated by a Sturm sequence. The roots are mapped back to $S$ for interpretation. 
 
@@ -433,6 +433,8 @@ adaptive solver. Run it with
 after installing the optional \texttt{symbolic} dependencies.
 
 \section{Experimental design}
+
+Numerical methods are assessed here using both known analytic structures and reference computations, with accuracy reported separately from evaluation cost. This emphasis on problem-specific numerical benchmarks also appears in the hybrid discontinuous Galerkin study of Azofeifa and Moreles \cite{azofeifa2025hybrid}, who compare their elliptic-equation discretization with reference solutions and established solvers. Their PDE problem and numerical method are distinct from the smoothing-parameter search considered here.
 
 \subsection{Adversarial analytic objectives}
 
