@@ -4,6 +4,52 @@
 [theoretical charter](working_papers/THEORETICAL_CONTRIBUTIONS.md)
 before interpreting any old code, manuscript or checkpoint.**
 
+## Frozen P1/P2/P3 audit FINISHED and published (2026-10-12)
+
+Audit was run on original 100,848/144,000 recorded scenario/seed
+replications; all 144 DGP cells covered with 696–704 seeds.
+Published outputs under
+\`results/smoothness_cv/joint_formal_8h_v1_FROZEN/reports/frozen_compact/audit/\`.
+Audited P1 10,080 contrasts (442 Holm-favorable classical/fixed,
+7,791 Holm-favorable pooled; the rest not significant);
+P2 5,600 contrasts (1,800 Holm-favorable tracking,
+72 Holm-favorable matched pooled).
+These are scenario/method/order/horizon comparisons, NOT
+independent seed counts or confirmation on new outer data.
+P3 50,424 archived h=3 numeric cases: adaptive gets F below
+finite dense grid in 69.75%, but lower held-out MSE than
+coarse grid in just 35.51% of individual cases.
+
+CRITICAL new mechanism review:
+- P1 BIC selects S=0.00625 almost deterministically, first
+  positive point of the 161-point grid. \`log(RSS/L)\` diverges
+  to -inf as lambda approaches 0; BIC as implemented is
+  effectively an interpolating boundary criterion. Do NOT
+  claim defeat of this specific BIC is fair evidence of
+  defeating a properly designed BIC selection method.
+- P1 fixed S=1 beats pooled_uniform_all in **82.4%** of DGP
+  cells for d=3,h=12 (median RMSE ratio .9912).
+  Cannot claim universal superiority over simple baselines.
+- P2 recent_exp_8 tracking vs matching pooled for d=3,h=1:
+  median ratio .9353 overall, but AR1 subset (16 scenarios)
+  median 1.0065 and just 37.5% favourable. For d=2,h=1 AR1
+  ratio 1.0369, zero scenarios favorable. Some h=12 jump
+  scenarios have large losses.
+- Branch selection ALSO averages K recent branch S's;
+  absent global-minimum-S temporal-average ablation means
+  tracking mechanism not uniquely isolated.
+- Paper3 numerical improvement is not reliably forecast
+  improvement. Finite dense grid is NOT a global certificate.
+
+Full analysis and evidence links:
+[JOINT_FORMAL_8H_AUDIT_FINDINGS_2026-10-12.md](working_papers/JOINT_FORMAL_8H_AUDIT_FINDINGS_2026-10-12.md).
+Source file's invalid Python \`\\\`\` markdown-escape warnings and
+published Markdown formatting were corrected on GitHub post-run;
+no scientific figures/data were recalculated. 
+**User explicitly does not want any more simulation runs**. 
+Subsequent work should write/refine papers from actual retained
+evidence, not rerun formal8h.
+
 ## Frozen-campaign statistical audit — ready to execute (2026-10-12)
 
 The user explicitly requested starting the audit of the
