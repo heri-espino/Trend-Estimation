@@ -191,8 +191,8 @@ def summarize_paper(frame:pd.DataFrame,*,paper:str,report_dir:Path)->pd.DataFram
             f"{row.share_method_holm_significant:.1%} |"
         )
     lines+=["","## Heterogeneity and failures","","The median may hide large "
-        "outliers. Inspect \`group_heterogeneity.csv\` and "
-        "\`extreme_cases.csv\` for the negative cases, noise families, "
+        "outliers. Inspect `group_heterogeneity.csv` and "
+        "`extreme_cases.csv` for the negative cases, noise families, "
         "trend shapes and horizons; no scenario outcomes are removed."]
     if paper=="1":
         lines += [
@@ -200,7 +200,7 @@ def summarize_paper(frame:pd.DataFrame,*,paper:str,report_dir:Path)->pd.DataFram
             "## BIC anomaly: mechanistic audit, NOT an automatic bug verdict",
             "",
             "BIC in the original CUDA campaign revision chooses S using",
-            "\`log(RSS/L) + EDF*log(L)/L\` on the LAST L observed values. "
+            "`log(RSS/L) + EDF*log(L)/L` on the LAST L observed values. "
             "It is a reconstruction information criterion, not a "
             "horizon-h out-of-sample forecast criterion. Very small "
             "in-sample residuals can coexist with unstable order-d "
@@ -209,8 +209,8 @@ def summarize_paper(frame:pd.DataFrame,*,paper:str,report_dir:Path)->pd.DataFram
             "The published example d=3,h=12 has BIC/pooled median "
             "relative RMSE 83.9803. This statistic is a scenario "
             "median ratio, not a factor of 84 across every observation.",
-            "Use the linked \`paper1_2_method_scenario.csv\`"
-            " diagnostics (mean_selected_s, mean_edf, n_outer) and "
+            "Use the local `paper1_2_method_scenario.csv`"
+            " diagnostics (selected_s, edf, n_independent_seeds) and "
             "the original SHA 21bd563... before attributing the "
             "anomaly to overfitting, low S, boundary behavior or a "
             "specific implementation error.",
@@ -525,7 +525,7 @@ def audit(report_dir:Path,*,frozen_dir:Path|None=None)->dict:
     lines=[
         "# Frozen formal8h audit — three papers",
         "",
-        f"- Original Git revision: \`{original_rev}\`.",
+        f"- Original Git revision: `{original_rev}`.",
         f"- Completed independent scenario/seed tasks: "
         f"**{n_tasks:,}** / {manifest['expected_scenario_seed_tasks']:,}.",
         f"- Distinct DGP cells: **{n_scenarios:,}**; "
@@ -577,11 +577,11 @@ def audit(report_dir:Path,*,frozen_dir:Path|None=None)->dict:
         "",
         "## Details",
         "",
-        "Read \`PAPER1_AUDIT.md\`, \`PAPER2_AUDIT.md\` and "
-        "\`PAPER3_AUDIT.md\`, plus \`comparison_tests.csv\`, "
-        "\`group_heterogeneity.csv\`, \`extreme_cases.csv\`, "
-        "\`smoothing_edf_diagnostics.csv\` if available, "
-        "and \`numerical_paired_summary.csv\` if the local frozen "
+        "Read `PAPER1_AUDIT.md`, `PAPER2_AUDIT.md` and "
+        "`PAPER3_AUDIT.md`, plus `comparison_tests.csv`, "
+        "`group_heterogeneity.csv`, `extreme_cases.csv`, "
+        "`smoothing_edf_diagnostics.csv` if available, "
+        "and `numerical_paired_summary.csv` if the local frozen "
         "SQLite snapshot was supplied.",
     ]
     if numeric["cases"]:
