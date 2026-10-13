@@ -4,6 +4,40 @@
 [theoretical charter](working_papers/THEORETICAL_CONTRIBUTIONS.md)
 before interpreting any old code, manuscript or checkpoint.**
 
+## Frozen-campaign statistical audit — ready to execute (2026-10-12)
+
+The user explicitly requested starting the audit of the
+**already completed** 100,848 independent Monte Carlo replicates.
+Do not run or suggest rerunning the \`formal8h\` simulation campaign.
+
+New dedicated audit runner:
+\`python -m experiments.smoothness_cv.audit_frozen_evidence
+--report-dir results/smoothness_cv/joint_formal_8h_v1_FROZEN/reports/frozen_compact
+--frozen-dir results/smoothness_cv/joint_formal_8h_v1_FROZEN\`
+
+It reads the existing report CSVs and frozen SQLite **mode=ro**,
+checks manifest/coverage/ratio/pair identity, runs independent
+scenario-specific seed-level paired Student t diagnostics,
+adjusts via Holm across the *full* P1/P2 families,
+identifies tails and heterogeneity by shape/noise/study/
+horizon/sigma/seasonality; analyzes all existing P3 numerical
+JSON records WITHOUT recomputing F or forecasting.
+S/EDF and branch metrics are sourced from the local
+\`paper1_2_method_scenario.csv\`, not invented from
+public paired-only exports.
+
+Outputs under \`reports/frozen_compact/audit/\`.
+Upload small review through
+\`python -m experiments.smoothness_cv.publish_frozen_audit
+--audit-dir results/smoothness_cv/joint_formal_8h_v1_FROZEN/reports/frozen_compact/audit --push\`.
+
+Scientific protocol/limitations:
+[JOINT_FORMAL_8H_AUDIT_PROTOCOL.md](working_papers/JOINT_FORMAL_8H_AUDIT_PROTOCOL.md).
+Code committed but audit **NOT YET RUN** on the user's
+frozen 31.47-GiB local database at time of this entry.
+Do not claim numerical conclusions from audit outputs
+until they are actually generated and published.
+
 ## Scientific interpretation completed (2026-10-12)
 
 Read [JOINT_FORMAL_8H_RETROSPECTIVE_2026-10-12.md](working_papers/JOINT_FORMAL_8H_RETROSPECTIVE_2026-10-12.md)
