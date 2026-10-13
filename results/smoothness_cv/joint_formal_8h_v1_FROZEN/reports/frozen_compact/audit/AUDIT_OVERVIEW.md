@@ -1,6 +1,6 @@
 # Frozen formal8h audit — three papers
 
-- Original Git revision: \`21bd563146e04eb545cae56b46393d93a9d98212\`.
+- Original Git revision: `21bd563146e04eb545cae56b46393d93a9d98212`.
 - Completed independent scenario/seed tasks: **100,848** / 144,000.
 - Distinct DGP cells: **144**; min/max complete seeds per cell: 696/704.
 - No new generated observations, Monte Carlo, CUDA or refits.
@@ -43,4 +43,4 @@ The local scenario/method table was found and 48 summaries of S, EDF, local-mini
 
 ## Details
 
-Read \`PAPER1_AUDIT.md\`, \`PAPER2_AUDIT.md\` and \`PAPER3_AUDIT.md\`, plus \`comparison_tests.csv\`, \`group_heterogeneity.csv\`, \`extreme_cases.csv\`, \`smoothing_edf_diagnostics.csv\` if available, and \`numerical_paired_summary.csv\` if the local frozen SQLite snapshot was supplied.
+Read `PAPER1_AUDIT.md`, `PAPER2_AUDIT.md` and `PAPER3_AUDIT.md`, plus `comparison_tests.csv`, `group_heterogeneity.csv`, `extreme_cases.csv`, `smoothing_edf_diagnostics.csv` if available, and `numerical_paired_summary.csv` if the local frozen SQLite snapshot was supplied.
