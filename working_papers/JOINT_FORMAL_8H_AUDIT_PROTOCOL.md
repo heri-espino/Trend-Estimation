@@ -7,12 +7,12 @@
 La evidencia previa procede de una sola campaña histórica bajo el modelo de diferencias medias **\(\mu=0\)**. Se recuperaron 100,848 réplicas independientes de escenario/semilla (144/144 escenarios, 696–704 réplicas/escenario), frente a 144,000 planeadas, con 65,877,504 filas de resultados de selectores y 50,424 registros de optimización numérica. Revisión inicial: [informe retrospectivo](JOINT_FORMAL_8H_RETROSPECTIVE_2026-10-12.md). **La cuarta línea de investigación de \(\mu\ne0\) NO fue evaluada en esta campaña.**
 
 Documentos/CSV de entrada ya generados:
-- \`results/smoothness_cv/joint_formal_8h_v1_FROZEN/reports/frozen_compact/ANALYSIS_MANIFEST.json\`.
-- \`.../coverage_by_scenario.csv\`.
-- \`.../paper1_forecast_cv_vs_classical.csv\`.
-- \`.../paper2_tracking_vs_matched_pooled.csv\`.
-- \`.../paper1_2_method_scenario.csv\` (diagnósticos de suavidad/EDF guardados solo localmente).
-- \`.../outcomes.sqlite\`, con los diagnósticos numéricos históricos, solo en modo lectura.
+- `results/smoothness_cv/joint_formal_8h_v1_FROZEN/reports/frozen_compact/ANALYSIS_MANIFEST.json`.
+- `.../coverage_by_scenario.csv`.
+- `.../paper1_forecast_cv_vs_classical.csv`.
+- `.../paper2_tracking_vs_matched_pooled.csv`.
+- `.../paper1_2_method_scenario.csv` (diagnósticos de suavidad/EDF guardados solo localmente).
+- `.../outcomes.sqlite`, con los diagnósticos numéricos históricos, solo en modo lectura.
 
 ## 2. Objetivo de inferencia: unidades independientes
 
@@ -44,11 +44,11 @@ La mediana de \(r_{j,k}\) entre celdas **no equivale** a un RMSE de todas las ob
 
 ### P1 — Comparación de forecast-CV con criterios clásicos
 
-Emparejamiento histórico exacto: \`classical_cv/gcv/aicc/bic\` y \`fixed_*\` contra \`pooled_uniform_all\`, al mismo escenario, semilla, origen, \(d\) y \(h\).
+Emparejamiento histórico exacto: `classical_cv/gcv/aicc/bic` y `fixed_*` contra `pooled_uniform_all`, al mismo escenario, semilla, origen, \(d\) y \(h\).
 
 Las diferencias mayores se concentran en casos con orden \(d=3\), horizonte \(h=12\). En particular BIC/pooled presentó razón mediana 83.9803 en 136 escenarios. **No etiquetar esto como bug ni como ventaja universal** antes de contrastar el \(S\) promedio, EDF promedio, frecuencias de valores extremos y dependencia por familia de DGP.
 
-Verificación del código original en commit \`21bd563146e04eb545cae56b46393d93a9d98212\`: BIC se minimizó con la función discreta
+Verificación del código original en commit `21bd563146e04eb545cae56b46393d93a9d98212`: BIC se minimizó con la función discreta
 \[
 C_\mathrm{BIC}(S)=\log(\mathrm{RSS}(S)/L)+
 \mathrm{edf}(S)\frac{\log L}{L}.
@@ -57,7 +57,7 @@ Eso es una penalización basada en ajuste histórico; no se minimiza el error a 
 
 ### P2 — Seguimiento de ramas
 
-Se exige \`tracked_<ponderación>\` contra \`pooled_<la misma ponderación>\`. La hipótesis relevante es que persistencia de mínimos locales aporta una decisión más robusta que el mínimo global de la **misma** superficie \(F^{(m)}_T(S)\). La implementación actual \`select_tracked_branch\` selecciona una rama y promedia **los últimos \(K\) valores \(S\)** dentro de ella. Por tanto, sin control explícito de **media temporal de óptimos globales**, no puede atribuirse la mejora únicamente a la continuidad de ramas.
+Se exige `tracked_<ponderación>` contra `pooled_<la misma ponderación>`. La hipótesis relevante es que persistencia de mínimos locales aporta una decisión más robusta que el mínimo global de la **misma** superficie \(F^{(m)}_T(S)\). La implementación actual `select_tracked_branch` selecciona una rama y promedia **los últimos \(K\) valores \(S\)** dentro de ella. Por tanto, sin control explícito de **media temporal de óptimos globales**, no puede atribuirse la mejora únicamente a la continuidad de ramas.
 
 La auditoría puede analizar diferencias en \(S\), EDF, número de mínimos y soporte por escenario con los resúmenes existentes. Ninguna de esas asociaciones sustituye a la ablación causal ausente. No se realizarán nuevas simulaciones: este punto quedará marcado como limitación del artículo.
 
@@ -70,11 +70,11 @@ El óptimo de la cuadrícula densa es una **referencia finita, no una cota infer
 ## 4. Auditorías de integridad y reporte
 
 Antes de producir inferencias, se verifica:
-1. Conteo de réplicas en \`coverage_by_scenario.csv\` frente al manifiesto, sin duplicados, y congruencia grupo A/B/C/D.
+1. Conteo de réplicas en `coverage_by_scenario.csv` frente al manifiesto, sin duplicados, y congruencia grupo A/B/C/D.
 2. Si está disponible la copia SQLite congelada, identidad de commit original, total de réplicas y filas guardadas. La conexión es estrictamente **read only**.
 3. Los emparejamientos correctos para P1/P2 y duplicados; \(\mathrm{RMSE}_{rel}=\sqrt{\mathrm{MSFE}_A/\mathrm{MSFE}_B}\) con denominadores positivos.
 4. Número de unidades independientes para cada SE; contrastes bilaterales y Holm, por separado para P1 y P2.
-5. Tablas completas de heterogeneidad \`study\`, \`shape\`, \`noise\`, \`sigma\`, \`seasonal\`. Cinco mejores y cinco peores celdas por par/orden/horizonte, preservando ambos extremos, no solo las victorias.
+5. Tablas completas de heterogeneidad `study`, `shape`, `noise`, `sigma`, `seasonal`. Cinco mejores y cinco peores celdas por par/orden/horizonte, preservando ambos extremos, no solo las victorias.
 6. Concordancia de los casos numéricos archivados con los 50,424 registros de procedencia.
 7. Salidas Markdown y CSV compactas publicables, conservando los 31 GiB de datos originales fuera de Git común.
 
@@ -86,6 +86,6 @@ python -m experiments.smoothness_cv.audit_frozen_evidence --report-dir results/s
 python -m experiments.smoothness_cv.publish_frozen_audit --audit-dir results/smoothness_cv/joint_formal_8h_v1_FROZEN/reports/frozen_compact/audit --push
 ~~~
 
-El informe índice será \`.../frozen_compact/audit/AUDIT_OVERVIEW.md\`, con \`PAPER1_AUDIT.md\`, \`PAPER2_AUDIT.md\`, \`PAPER3_AUDIT.md\`, tablas de pruebas/heterogeneidad/extremos, diagnóstico \(S\)/EDF y diferencias numéricas pareadas.
+El informe índice será `.../frozen_compact/audit/AUDIT_OVERVIEW.md`, con `PAPER1_AUDIT.md`, `PAPER2_AUDIT.md`, `PAPER3_AUDIT.md`, tablas de pruebas/heterogeneidad/extremos, diagnóstico \(S\)/EDF y diferencias numéricas pareadas.
 
 La auditoría **no decide a priori** qué paper publicar ni qué regla declarar ganadora. Primero cuantifica la evidencia, los casos desfavorables y lo que todavía no puede establecerse con los datos archivados.
