@@ -16,7 +16,8 @@ from experiments.smoothness_cv.analyze_frozen_compact import (
 def fake_frozen_db(root):
     root.mkdir()
     config={
-        "preset":"formal8h","backend":"cuda","git_revision":"fixed-original-rev",
+        "preset":"formal8h","backend":"cuda",
+        "git_revision":"21bd563146e04eb545cae56b46393d93a9d98212",
         "scenario_keys":["A__linear__N50"],"seeds":5,
     }
     (root/"manifest.json").write_text(
