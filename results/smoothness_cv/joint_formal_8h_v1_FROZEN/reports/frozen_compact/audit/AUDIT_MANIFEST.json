@@ -1,0 +1,27 @@
+{
+  "source_original_git_revision": "21bd563146e04eb545cae56b46393d93a9d98212",
+  "status": "RETROSPECTIVE_EXPLORATORY_AUDIT",
+  "completed_tasks": 100848,
+  "scenario_cells": 144,
+  "paper1_scenario_contrasts": 10080,
+  "paper2_scenario_contrasts": 5600,
+  "paper1_holm_method_favorable": 442,
+  "paper1_holm_comparator_favorable": 7791,
+  "paper2_holm_method_favorable": 1800,
+  "paper2_holm_comparator_favorable": 72,
+  "paper3": {
+    "cases": 50424,
+    "groups": 120,
+    "horizons": [
+      3
+    ],
+    "weighting_methods": [
+      "recent_exp_8",
+      "uniform_all"
+    ],
+    "fraction_adaptive_F_below_dense_grid": 0.6974853244486753,
+    "fraction_adaptive_outer_msfe_below_grid": 0.3550690147548786
+  },
+  "no_new_simulations": true,
+  "notes": "Audit of historic mu=0 experiment; does not establish novelty or confirmatory winner"
+}
