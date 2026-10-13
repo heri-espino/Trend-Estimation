@@ -1,5 +1,41 @@
 # Large simulation campaign — Paper 1 and Paper 2
 
+## Statistical audit: P1/P2/P3 (NO new Monte Carlo)
+
+After the successful frozen compact reporting pass, perform a
+**second-level audit of existing results**. Predeclared contrast
+integrity and Holm-adjusted seed-level paired comparisons,
+extreme loss cases, DGP heterogeneity, S/EDF/branch properties,
+and per-case numerical diagnostic differences are checked by:
+
+~~~powershell
+python -m pytest tests/test_analyze_frozen_compact.py tests/test_recover_campaign.py -q
+python -m experiments.smoothness_cv.audit_frozen_evidence --report-dir results/smoothness_cv/joint_formal_8h_v1_FROZEN/reports/frozen_compact --frozen-dir results/smoothness_cv/joint_formal_8h_v1_FROZEN
+python -m experiments.smoothness_cv.publish_frozen_audit --audit-dir results/smoothness_cv/joint_formal_8h_v1_FROZEN/reports/frozen_compact/audit --push
+~~~
+
+The audit opens the archived SQLite \`mode=ro\`;
+does NOT run \`run_simulation_campaign\`,
+\`make_series\`, numerical objective optimization, any
+CUDA kernels, model fitting or new independent seeds.
+The full tests create their own tiny deterministic fixture
+under pytest temp dirs only.
+
+New research docs:
+[JOINT_FORMAL_8H_AUDIT_PROTOCOL.md](../../working_papers/JOINT_FORMAL_8H_AUDIT_PROTOCOL.md).
+Audit outputs are small Markdown and CSV files in
+\`results/smoothness_cv/joint_formal_8h_v1_FROZEN/reports/frozen_compact/audit/\`.
+The publisher allowlists only those curated files and
+refuses any staged unrelated changes, large files and
+unknown provenance.
+
+**Primary limitation:** even strong Holm-adjusted P2
+tracking-vs-pooled evidence cannot prove that branch
+identity is essential without an unrun moving-average
+global-S control. Do not silently reinterpret that as
+an established mechanism or rerun simulations to fill
+the gap without explicit user instruction.
+
 ## 2026-10-12 — FINAL frozen analysis (100,848 previously completed tasks)
 
 **No new Monte Carlo tasks, CUDA kernels, latent-series generation or
