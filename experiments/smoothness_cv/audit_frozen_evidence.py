@@ -460,7 +460,21 @@ def audit(report_dir:Path,*,frozen_dir:Path|None=None)->dict:
     one=_paper_tests(source1,"1")
     two=_paper_tests(source2,"2")
     comparisons=pd.concat([one,two],ignore_index=True)
-    comparisons.to_csv(audit_dir/"comparison_tests.csv",index=False)
+    # Export ONLY the actual inferential fields, not the entire already-
+    # published multi-megabyte source CSVs again. Compact enough for
+    # ordinary Git review and includes every predeclared paired contrast.
+    public_columns=[
+        "paper",*META,"selector","comparator","n_independent_seeds",
+        "paired_observed_msfe_diff","se_paired_observed_msfe_diff",
+        "method_msfe","comparator_msfe","relative_rmse",
+        "p_two_sided_t","holm_p_family",
+        "nominal_p_below_005","holm_p_below_005",
+        "smaller_method_msfe","directional_holm_method",
+        "directional_holm_comparator",
+    ]
+    comparisons[public_columns].to_csv(
+        audit_dir/"comparison_tests.csv",index=False
+    )
     g1=summarize_paper(one,paper="1",report_dir=audit_dir)
     g2=summarize_paper(two,paper="2",report_dir=audit_dir)
     heterogeneity=[]
