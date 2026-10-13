@@ -16,6 +16,29 @@ before editing code or paper drafts.** These are the canonical current
 research protocols; older experiment snapshots may use *different*
 validation and branch-selection rules.
 
+## Statistical audit of the saved 100,848-task experiment
+
+A dedicated **read-only** scientific audit is available for
+the original 3-paper \`mu=0\` CUDA results. Run
+\`python -m experiments.smoothness_cv.audit_frozen_evidence
+--report-dir results/smoothness_cv/joint_formal_8h_v1_FROZEN/reports/frozen_compact
+--frozen-dir results/smoothness_cv/joint_formal_8h_v1_FROZEN\`
+after restoring its archived SQLite and compact summaries.
+
+Audit checks cover:
+paired external MSFE, effective independent seed counts,
+nominal Student-t and familywise Holm multiple-testing
+corrections, shape/noise/seasonality heterogeneity,
+best/worst cases, original BIC S/EDF diagnostics,
+tracking branch-support properties, and recorded Paper 3
+numerical cases. **No more Monte Carlo, GPUs, future
+observations or refits.**
+
+See [audit protocol](working_papers/JOINT_FORMAL_8H_AUDIT_PROTOCOL.md).
+To share reports without the 31-GiB database:
+\`python -m experiments.smoothness_cv.publish_frozen_audit
+--audit-dir results/smoothness_cv/joint_formal_8h_v1_FROZEN/reports/frozen_compact/audit --push\`.
+
 ## Historical 100,848-task CUDA campaign — preserved and ready for retrospective analysis
 
 The earlier \`mu=0\` joint three-paper \`formal8h\` simulation
