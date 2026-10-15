@@ -69,6 +69,26 @@ Notes and checkpoint evidence are local to this directory.
 No branch tracking, chronological matching policy, or
 branch-based forecasting decision is necessary for this numerical problem.
 
+## Presentation figures (28 figures, read-only)
+
+For a step-by-step talk or an interpretation-rich supplementary gallery, see
+the [presentation folder](presentation/README.md) and its
+[figure-by-figure storyboard](presentation/STORYBOARD.md).
+The [builder](presentation/build_figures.py) produces **28 vector PDFs and
+preview PNGs** under presentation/figures/, organized as mathematical concepts,
+the search algorithm, frozen benchmarks and real-data case studies.
+
+From the repository root, run:
+
+~~~powershell
+python "working_papers/Working Paper - Numerical Methods/presentation/build_figures.py" --group all
+~~~
+
+The builder **does not rerun simulations or alter historical results**.
+Illustrative diagrams are explicitly distinguished from archived numerical
+evidence. Figures are optional presentation/supplement material and are not
+automatically inserted in the main manuscript.
+
 ## Reproduce
 
 ~~~bash
