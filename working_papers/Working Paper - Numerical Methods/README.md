@@ -84,7 +84,7 @@ From the repository root, run:
 python "working_papers/Working Paper - Numerical Methods/presentation/build_figures.py" --group all
 ~~~
 
-The builder **does not rerun simulations or alter historical results**.
+The complete [16:9 LaTeX Beamer presentation](presentation/slides.tex) uses every one of the 28 figures, with an interpretation and provenance note on each slide. Run [build_all.ps1](presentation/build_all.ps1) to generate the figure PDFs and compile the full presentation in one step. The builder **does not rerun simulations or alter historical results**.
 Illustrative diagrams are explicitly distinguished from archived numerical
 evidence. Figures are optional presentation/supplement material and are not
 automatically inserted in the main manuscript.
