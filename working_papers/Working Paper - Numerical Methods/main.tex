@@ -233,6 +233,18 @@ origins, so the average objective in \eqref{eq:rollingloss} need not be unimodal
 The existence of multiple minima is therefore a property to diagnose rather
 than an assumption imposed on every series.
 
+The spectral representation also makes repeated objective evaluations cheaper.
+For a fixed $(L,d,h)$, precompute $c_T=U^\top x_T$ for each rolling window
+and $B=G_{d,h}U$; then
+$\widehat z_T(\lambda)=B\bigl(\alpha(\lambda)\odot c_T\bigr)$,
+where $\odot$ denotes elementwise multiplication. Only the scalar
+attenuation weights change with $\lambda$, avoiding a new matrix inverse
+for each candidate smoothness. In the implementation, the eigensystem
+is cached in memory by $(L,d)$ and reused across origins and candidates;
+the adaptive search also caches previously evaluated objective values and
+derivatives at each sampled $S$. These savings are distinct from evaluating
+fewer candidates through adaptive search.
+
 \subsection{Analytic derivatives}
 
 The derivative of the smoothing matrix follows from differentiating a matrix inverse:
