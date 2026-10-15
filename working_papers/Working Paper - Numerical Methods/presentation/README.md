@@ -26,6 +26,37 @@ python "working_papers/Working Paper - Numerical Methods/presentation/build_figu
 
 Dependencies: the repository's usual Python environment, with numpy, pandas, matplotlib, scipy and trend_estimation importable. No GPU, yfinance/network download, new Monte Carlo, LaTeX or SymPy is needed for the figure suite. Activate your existing trend-estimation environment first, and run --group concepts as a short check.
 
+## Compile the full Beamer presentation
+
+The **LaTeX slide deck** is [slides.tex](slides.tex): a widescreen (16:9)
+research talk with **all 28 figure PDFs**, a clear scientific question and
+interpretation for each figure, four narrative acts, the precise PLS objective,
+and conclusion/limitations/reproducibility slides.
+
+**One command for both figures and presentation** (PowerShell from repository root,
+after activating the usual environment):
+
+~~~powershell
+& "working_papers/Working Paper - Numerical Methods/presentation/build_all.ps1"
+~~~
+
+Or do the two steps separately:
+
+~~~powershell
+python "working_papers/Working Paper - Numerical Methods/presentation/build_figures.py" --group all --format pdf
+cd "working_papers/Working Paper - Numerical Methods/presentation"
+.\build_slides.bat
+~~~
+
+The resulting deck is **Numerical_Methods_Presentation.pdf**, in this presentation folder.
+A working MiKTeX or TeX Live installation with latexmk is required.
+The Beamer source can also be compiled *before* generating figures: missing PDFs
+show explicitly labeled placeholders instead of causing a fatal LaTeX error.
+
+**Important:** The Beamer source is complete, but you still need to generate
+the 28 PDFs locally and run the final build. The figure rendering itself has
+not been executed as part of committing this source.
+
 ## Scientific provenance
 
 - Figures **01–06** are openly labeled pedagogical diagrams or generated toy observations. The fixed local random seeds serve illustration only, not empirical performance claims.
@@ -55,6 +86,9 @@ presentation/
   README.md
   STORYBOARD.md
   build_figures.py
+  build_all.ps1
+  build_slides.bat
+  slides.tex
   _style.py
   figures_concepts.py
   figures_algorithm.py
