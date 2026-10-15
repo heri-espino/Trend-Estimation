@@ -41,7 +41,7 @@
 }
 \setbeamertemplate{frametitle}{%
   \vskip.18cm\hskip.44cm\insertframetitle\par
-  \vspace{.11cm}\hskip.44cm{\color{lightborder}\rule{\dimexpr\paperwidth-1.75cm\relax}{.65pt}}\vspace{-.14cm}%
+  \vspace{.11cm}\hskip.44cm{\color{lightborder}\rule{\dimexpr\paperwidth-2.10cm\relax}{.65pt}}\vspace{-.14cm}%
 }
 \setlength{\parskip}{.4em}
 \newcommand{\Sm}{S}
@@ -53,7 +53,7 @@
   \vspace{-.14cm}
   \begin{center}
   \IfFileExists{figures/#1.pdf}{%
-    \includegraphics[width=.965\linewidth,height=.595\textheight,keepaspectratio]{figures/#1.pdf}%
+    \includegraphics[width=.965\linewidth,height=.545\textheight,keepaspectratio]{figures/#1.pdf}%
   }{%
     \fcolorbox{lightborder}{pale}{%
       \parbox[c][.51\textheight][c]{.89\linewidth}{%
@@ -64,7 +64,7 @@
     }%
   }
   \end{center}
-  \vspace{-.31cm}
+  \vspace{-.13cm}
   \begin{beamercolorbox}[wd=.97\linewidth,sep=.41em,rounded=true]{keybox}
     \footnotesize\textbf{\textcolor{accentblue}{Interpretation.}} #3
   \end{beamercolorbox}
