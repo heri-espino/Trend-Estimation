@@ -41,7 +41,7 @@
 }
 \setbeamertemplate{frametitle}{%
   \vskip.18cm\hskip.44cm\insertframetitle\par
-  \vspace{.11cm}\hskip.44cm{\color{lightborder}\rule{\dimexpr\paperwidth-.88cm\relax}{.65pt}}\vspace{-.14cm}%
+  \vspace{.11cm}\hskip.44cm{\color{lightborder}\rule{\dimexpr\paperwidth-1.75cm\relax}{.65pt}}\vspace{-.14cm}%
 }
 \setlength{\parskip}{.4em}
 \newcommand{\Sm}{S}
@@ -50,25 +50,25 @@
 \newcommand{\SourceLine}[1]{\par\vspace{.05em}{\scriptsize\color{slate}#1\par}}
 \newcommand{\FigureSlide}[4]{%
 \begin{frame}[t]{#2}
-  \vspace{-.18cm}
+  \vspace{-.14cm}
   \begin{center}
   \IfFileExists{figures/#1.pdf}{%
-    \includegraphics[width=.975\linewidth,height=.695\textheight,keepaspectratio]{figures/#1.pdf}%
+    \includegraphics[width=.965\linewidth,height=.595\textheight,keepaspectratio]{figures/#1.pdf}%
   }{%
-    \begin{beamercolorbox}[wd=.91\linewidth,sep=.7em,center,rounded=true]{missingfigure}
-      \vspace{1.45cm}
-      {\large\bfseries Figure not yet rendered}\par
-      \vspace{.45em}{\footnotesize\texttt{\detokenize{#1.pdf}}}\par
-      \vspace{.45em}{\footnotesize Run the figure builder first.}
-      \vspace{1.45cm}
-    \end{beamercolorbox}
+    \fcolorbox{lightborder}{pale}{%
+      \parbox[c][.51\textheight][c]{.89\linewidth}{%
+        \centering{\large\bfseries Figure not yet rendered}\par
+        \vspace{.35em}{\scriptsize\texttt{\detokenize{#1.pdf}}}\par
+        \vspace{.35em}{\scriptsize Generate all 28 PDFs with the figure builder.}%
+      }%
+    }%
   }
   \end{center}
-  \vspace{-.29cm}
-  \begin{beamercolorbox}[wd=\linewidth,sep=.52em,rounded=true]{keybox}
+  \vspace{-.31cm}
+  \begin{beamercolorbox}[wd=.97\linewidth,sep=.41em,rounded=true]{keybox}
     \footnotesize\textbf{\textcolor{accentblue}{Interpretation.}} #3
   \end{beamercolorbox}
-  \SourceLine{#4}
+  \par\vspace{.13cm}{\tiny\color{slate}#4\par}
 \end{frame}
 }
 \newcommand{\Act}[3]{%
