@@ -2,6 +2,7 @@
 
 **Antes del paper publicable: completar demostraciones, fuentes y Monte Carlo.**
 
+0. [PAPER_C_IDEA_AND_EXISTING_RESULTS.md](PAPER_C_IDEA_AND_EXISTING_RESULTS.md) — concise stand-alone paper concept, derived formulas and provenance of available evidence.
 1. [RESEARCH_NOTEBOOK.md](RESEARCH_NOTEBOOK.md) — pregunta, antecedentes,
    razonamiento, formulación, algoritmo, justificación y límites.
 2. [PROOF_LEDGER.md](PROOF_LEDGER.md) — lemas con hipótesis y prueba
@@ -30,6 +31,5 @@ este proyecto, **no aparece como resultado verificado del autor**.
 una interfaz separada con S, μ(S), comparación Guerrero,
 tendencia ajustada y pronóstico h-step, CSV/JSON exportables.
 
-**Estado:** notas/estructura/código de primera versión.
 **Estado:** notas/estructura/código de primera versión.
 No hay todavía MSFE comparativos obtenidos ni journal decidido.
