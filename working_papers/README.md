@@ -7,10 +7,10 @@ entire N=50/200 series. This is distinct from using the same 16 DGP
 cells as **forecasting** stress cases in the extensive simulation
 campaign.
 
-## NUEVO PAPER PRIORITARIO — tendencia y media de diferencias (2026-10-11)
+## Cuarto paper prospectivo — tendencia y media de diferencias (2026-10-15)
 
 [Working Paper - Trend Simulation and Mean-Difference Forecasting](Working%20Paper%20-%20Trend%20Simulation%20and%20Mean-Difference%20Forecasting/README.md)
-es el cuarto proyecto, **por ahora el principal foco teórico**.
+es el cuarto proyecto, conservado **como posible Paper C independiente**. Primero se finaliza el Paper 3 numérico para el objetivo de envío a SMCCA del **9 de noviembre de 2026**; después se retoma Paper 1 de forecast-CV, y el estudio de ramas dinámicas se pospone.
 
 La idea parte de **Guerrero (2007)**, quien ya estudió PLS con
 media no nula de diferencias y su estimador plug-in.
@@ -20,6 +20,9 @@ mediante forecast-CV completado, obteniendo
 para cada S, y después minimizar en S. Antes de
 reclamar un avance original faltan precedentes, pruebas
 no triviales, contraejemplos y resultados externos.
+
+**Idea y resultados disponibles, sin atribuir los datos de \(\mu=0\) a \(\mu\ne0\):**
+[Research brief — Paper C](Working%20Paper%20-%20Trend%20Simulation%20and%20Mean-Difference%20Forecasting/notes/PAPER_C_IDEA_AND_EXISTING_RESULTS.md).
 
 **Notas principales del nuevo paper:**
 [Cuaderno](Working%20Paper%20-%20Trend%20Simulation%20and%20Mean-Difference%20Forecasting/notes/RESEARCH_NOTEBOOK.md) ·
@@ -132,11 +135,12 @@ Historical checkpoints and the old two-stage branch lab are preserved,
 not rewritten or represented as new-method experiments. The existing
 manuscripts are working drafts, not synchronized submission versions.
 
-**Three active independent research manuscripts, in priority order:**
+**Existing three independent manuscripts (preserved), and the possible fourth:**
 
-1. [Working Paper - Smoothness Cross Validation](Working%20Paper%20-%20Smoothness%20Cross%20Validation/)
-2. [Working Paper - Dynamic Branch Selection](Working%20Paper%20-%20Dynamic%20Branch%20Selection/)
-3. [Working Paper - Numerical Methods](Working%20Paper%20-%20Numerical%20Methods/)
+1. **A — now:** [Working Paper - Numerical Methods](Working%20Paper%20-%20Numerical%20Methods/)
+2. **B — next:** [Working Paper - Smoothness Cross Validation](Working%20Paper%20-%20Smoothness%20Cross%20Validation/)
+3. **C — prospective fourth paper:** [Working Paper - Trend Simulation and Mean-Difference Forecasting](Working%20Paper%20-%20Trend%20Simulation%20and%20Mean-Difference%20Forecasting/)
+4. **D — deferred:** [Working Paper - Dynamic Branch Selection](Working%20Paper%20-%20Dynamic%20Branch%20Selection/)
 
 Each paper has its own thesis, manuscript, bibliography,
 experiments, research log and unresolved questions.
