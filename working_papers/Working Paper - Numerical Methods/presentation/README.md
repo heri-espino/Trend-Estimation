@@ -48,6 +48,17 @@ cd "working_papers/Working Paper - Numerical Methods/presentation"
 .\build_slides.bat
 ~~~
 
+**macOS / Linux (recommended):** From the repository root, first activate
+your `trend-estimation` environment, then run the native Bash script:
+
+~~~bash
+bash "working_papers/Working Paper - Numerical Methods/presentation/build_all.sh"
+~~~
+
+No PowerShell installation is required. Pull the latest repository commits before
+running it (`git pull --ff-only origin main`; if local changes block the pull,
+review them rather than resetting the repository).
+
 The resulting deck is **Numerical_Methods_Presentation.pdf**, in this presentation folder.
 A working MiKTeX or TeX Live installation with latexmk is required.
 The Beamer source can also be compiled *before* generating figures: missing PDFs
@@ -87,6 +98,7 @@ presentation/
   STORYBOARD.md
   build_figures.py
   build_all.ps1
+  build_all.sh
   build_slides.bat
   slides.tex
   _style.py
