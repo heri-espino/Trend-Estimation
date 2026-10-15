@@ -5,6 +5,15 @@ un registro riguroso en **Markdown/Obsidian** con demostraciones, casos límite,
 protocolos de simulación y resultados. El documento \`manuscript/main.tex\`
 es un **esqueleto, NO un artículo listo para enviar**.
 
+## Publication positioning (decision of 2026-10-15)
+
+The **nonzero-\(\mu\)** investigation is retained as an **independent possible fourth paper**, not merged into the existing \(\mu=0\) forecast-CV paper. The immediate publication priority is the existing **numerical-methods Paper 3** (user's SMCCA submission target: **9 November 2026**); then the existing forecast-optimal smoothness Paper 1. The **mean-difference paper is prospective Paper C**, and the dynamic branch-selection paper is deferred.
+
+**Concise research idea, exact identities already derived, and the limits of all existing experimental evidence:**
+[notes/PAPER_C_IDEA_AND_EXISTING_RESULTS.md](notes/PAPER_C_IDEA_AND_EXISTING_RESULTS.md).
+
+No completed external comparison of estimated nonzero \(\mu\) is claimed, and the frozen zero-mean Monte Carlo campaign is not reinterpreted as nonzero-\(\mu\) evidence.
+
 ## Pregunta central
 
 En la suavización de series temporales por mínimos cuadrados penalizados,
