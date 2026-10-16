@@ -42,20 +42,20 @@ def _sder(lam):
 
 def derivative_profiles():
     s,f,d1,d2=curve()
-    fig,axs=canvas(3,1,title="07  |  The objective, gradient, and curvature",height=9.4)
+    fig,axs=canvas(3,1,title="07  |  Función objetivo, derivada y curvatura",height=9.4)
     for ax,y,label,color in zip(axs,(f,d1,d2),("F(S)","dF/dS","d²F/dS²"),(BLUE,ORANGE,PURPLE)):
         ax.plot(s,y,color=color,lw=2.2)
         for j,root in enumerate(ROOT_S):
             ax.axvline(root,color=GREEN if j!=1 else GREY,alpha=.5,ls="--")
         if label!="F(S)": ax.axhline(0,color=BLACK,lw=.9,alpha=.5)
-        panel(ax,label,"Normalized smoothness S",label)
+        panel(ax,label,"Suavizamiento normalizado S",label)
         ax.set_xlim(0,1)
         # Symmetric clipping only when the endpoint transformation exaggerates curvature.
         if label=="d²F/dS²":
             lo,hi=np.percentile(y,[1,99])
             if lo<hi: ax.set_ylim(lo-abs(lo)*.15,hi+abs(hi)*.15)
     return finish(fig,"07_objective_derivative_curvature",
-                  "Exact six-observation rational example; curves numerically evaluated away from S=1.")
+                  "Ejemplo racional exacto de seis observaciones; curvas evaluadas numéricamente fuera de S=1.")
 
 
 def adaptive_steps():
@@ -72,14 +72,14 @@ def adaptive_steps():
     points=results.points_
     roots=[p.smoothness_ for p in points]
     panels=[
-        ("1. Coarse grid",initial),
-        ("2. Add endpoint skeleton",np.array(sorted(skeleton))),
-        ("3. Adaptive subdivision",all_samples),
-        ("4. Root brackets and samples",all_samples),
-        ("5. Brent-refined stationary points",np.array(roots)),
-        ("6. Compare interior and endpoints",np.array(roots+[0,1])),
+        ("1. Malla inicial",initial),
+        ("2. Refuerzo de extremos",np.array(sorted(skeleton))),
+        ("3. Subdivisión adaptativa",all_samples),
+        ("4. Intervalos y muestras",all_samples),
+        ("5. Raíces refinadas con Brent",np.array(roots)),
+        ("6. Comparar con los extremos",np.array(roots+[0,1])),
     ]
-    fig,axs=canvas(2,3,title="08  |  Step-by-step anatomy of the adaptive S-search",height=8.3)
+    fig,axs=canvas(2,3,title="08  |  Etapas de la búsqueda adaptativa en S",height=8.3)
     yrange=float(f.max()-f.min())
     for k,(ax,(name,samples)) in enumerate(zip(axs,panels)):
         ax.plot(s,f,color=BLUE,lw=2)
@@ -94,12 +94,12 @@ def adaptive_steps():
                 ax.scatter(pt.smoothness_,pt.objective_,s=60,color=GREEN if pt.kind_=="minimum" else PURPLE,edgecolor="white",zorder=6)
         if k==5:
             for x in (0,1):ax.axvline(x,color=BLACK,ls=":",lw=1.6)
-            ax.text(.02,float(f.max())-.08*yrange,"endpoints included",fontsize=9,color=GREY)
+            ax.text(.02,float(f.max())-.08*yrange,"extremos incluidos",fontsize=9,color=GREY)
         ax.set_xlim(-.01,1.01)
         panel(ax,name,"S","F(S)")
         if k!=5:ax.set_ylim(f.min()-.08*yrange,f.max()+.12*yrange)
     return finish(fig,"08_adaptive_search_steps",
-                  f"Toy PLS loss; sampled sets are reconstructed from actual final search output (n={results.n_evaluations_}); not a timestamped iteration log.")
+                  f"Pérdida PLS de ejemplo; las muestras se reconstruyen a partir del resultado final (n={results.n_evaluations_}); no es un registro cronológico.")
 
 
 def endpoint_failure():
@@ -117,68 +117,68 @@ def endpoint_failure():
     if len(normal)!=1:
         raise ValueError("Cannot match frozen primary specification to boundary failure.")
     ref=normal.iloc[0]
-    fig,axs=canvas(1,2,title="09  |  What endpoint refinement actually prevents")
+    fig,axs=canvas(1,2,title="09  |  Qué evita el refinamiento cerca de los extremos")
     ax=axs[0]
     positions=[float(selected["best_s"]),float(ref["best_s"]),float(ref["dense_best_s"])]
-    for y,(x,label,color) in enumerate(zip(positions,("No endpoint refinement","Frozen primary","Dense reference"),(ORANGE,BLUE,GREEN))):
+    for y,(x,label,color) in enumerate(zip(positions,("Sin refinamiento","Método fijado","Malla densa"),(ORANGE,BLUE,GREEN))):
         ax.scatter([x],[2-y],s=150,color=color,zorder=3)
         ax.text(x+.003,2-y,label,va="center",fontsize=11,color=color)
-    panel(ax,"Selected S for a historical failure case","Selected S","")
+    panel(ax,"Valor de S elegido en un caso problemático","S seleccionado","")
     ax.set(ylim=(-.6,2.6),yticks=[],xlim=(max(0,min(positions)-.05),min(1,max(positions)+.13)))
     ax2=axs[1]
     settings=frozen_csv("sensitivity","sensitivity_summary.csv")
     show=settings.loc[settings["parameter"].isin(("primary","endpoint_refinement_levels"))].copy()
     show=show.sort_values("mean_evaluations")
-    labels=["primary" if x=="primary" else f"levels={y}" for x,y in zip(show["parameter"],show["setting"])]
+    labels=["principal" if x=="primary" else f"niveles={y}" for x,y in zip(show["parameter"],show["setting"])]
     ax2.barh(labels,show["missed_minima"],color=[BLUE if x=="primary" else ORANGE for x in show["parameter"]])
-    panel(ax2,"Missed dense-reference minima across 216 cases","Number missed","")
+    panel(ax2,"Mínimos de referencia no detectados en 216 casos","Número no detectado","")
     ax2.invert_yaxis()
-    fig.text(.05,.06,f"Selected case: seed={selected['seed']}, {selected['scenario']}, "
+    fig.text(.05,.06,f"Caso seleccionado: semilla={selected['seed']}, {selected['scenario']}, "
              f"d={selected['order']}, L={selected['window']}, h={selected['horizon']}",fontsize=9,color=GREY)
     return finish(fig,"09_endpoint_refinement_ablation",
-                  "Values read directly from frozen sensitivity CSVs; this does not reconstruct an unrecorded search trace.")
+                  "Valores leídos directamente del análisis de sensibilidad; no reconstruyen un historial de búsqueda.")
 
 
 def sturm_landscape():
     s,f,g,_=curve(801)
-    fig,axs=canvas(1,2,title="10  |  Exact small-instance root count; approximate root locations")
+    fig,axs=canvas(1,2,title="10  |  Conteo exacto de raíces; posiciones aproximadas")
     axs[0].plot(s,f,color=BLUE,lw=2.4)
     for k,(x,kind) in enumerate(zip(ROOT_S,ROOT_KINDS)):
         y=callback(ROOT_LAMBDA[k])[0]
-        annotate_kind(axs[0],x,y,f"r{k+1}: {kind}",GREEN if kind=="minimum" else ORANGE)
+        annotate_kind(axs[0],x,y,f"r{k+1}: {'mínimo' if kind == 'minimum' else 'máximo'}",GREEN if kind=="minimum" else ORANGE)
     annotate_kind(axs[0],0,callback(0.)[0],"S=0",BLACK)
     annotate_kind(axs[0],1,169/441,"S=1",BLACK)
-    panel(axs[0],"F(S): minimum / maximum / minimum","S","Forecast MSE")
+    panel(axs[0],"F(S): mínimo / máximo / mínimo","S","ECM de pronóstico")
     axs[0].set_xlim(-.03,1.05)
     axs[1].plot(s,g,color=PURPLE,lw=2.1)
     axs[1].axhline(0,color=BLACK,lw=1.0)
     for k,x in enumerate(ROOT_S):
         axs[1].axvline(x,color=GREEN if k!=1 else ORANGE,ls="--",lw=1.5)
-    panel(axs[1],"F'(S): exactly three positive-lambda stationary roots","S","Gradient")
+    panel(axs[1],"F'(S): exactamente tres raíces estacionarias positivas","S","Derivada")
     axs[1].set_xlim(0,1)
     return finish(fig,"10_sturm_worked_example",
-                  "Exact Sturm count V(0+)-V(infinity)=5-2=3 (from the existing mini-check); plotted values are floating point.")
+                  "Conteo exacto de Sturm V(0+)-V(infinito)=5-2=3; las posiciones dibujadas son aproximaciones numéricas.")
 
 
 def lambda_view():
     s,f,_,_=curve(701)
     lam=np.array([smoothness_to_lambda(float(x),6,2) for x in s])
-    fig,axs=canvas(1,2,title="11  |  The same forecast-loss geometry in lambda and S")
+    fig,axs=canvas(1,2,title="11  |  Una misma geometría de pérdida en lambda y S")
     axs[0].semilogx(np.maximum(lam,1e-7),f,color=ORANGE,lw=2.4)
     for x in ROOT_LAMBDA:axs[0].axvline(x,color=GREY,ls=":")
-    panel(axs[0],"Raw penalty coordinate (log axis)","lambda","Forecast MSE")
+    panel(axs[0],"Penalización original (escala logarítmica)","lambda","ECM de pronóstico")
     axs[1].plot(s,f,color=BLUE,lw=2.4)
     for x in ROOT_S:axs[1].axvline(x,color=GREY,ls=":")
-    panel(axs[1],"Normalized smoothness coordinate","S","Forecast MSE")
+    panel(axs[1],"Coordenada normalizada de suavizamiento","S","ECM de pronóstico")
     axs[1].set_xlim(0,1)
     return finish(fig,"11_lambda_vs_s_landscape",
-                  "Both panels describe one exact-rational six-observation example; no optimizer comparison is implied.")
+                  "Ambos paneles corresponden a un mismo ejemplo racional de seis observaciones; no comparan optimizadores.")
 
 
 def adversarial_gallery():
     cases=adversarial_smoothness_cases()
     grid=np.linspace(0,1,801)
-    fig,axs=canvas(3,3,title="12  |  Known geometric challenges used by the adversarial suite",height=9.5)
+    fig,axs=canvas(3,3,title="12  |  Geometrías difíciles del banco adversarial",height=9.5)
     for ax,case in zip(axs,cases):
         vals=np.array([case.value(float(x)) for x in grid])
         ax.plot(grid,vals,color=BLUE,lw=2)
@@ -188,25 +188,25 @@ def adversarial_gallery():
             ax.scatter(minima,[case.value(x) for x in minima],color=GREEN,s=35,zorder=5)
         if boundary:
             ax.scatter(boundary,[case.value(x) for x in boundary],color=ORANGE,s=35,zorder=5)
-        panel(ax,case.name.replace("_"," "),"S","Analytic objective")
+        panel(ax,{"near_zero":"cerca de cero","near_one":"cerca de uno","close_pair":"mínimos próximos","close_upper_pair":"par en el extremo","flat_minimum":"mínimo plano","stationary_inflection":"inflexión estacionaria","five_minima":"cinco mínimos","boundary_zero":"extremo S=0","boundary_one":"extremo S=1"}.get(case.name,case.name.replace("_"," ")),"S","Objetivo analítico")
         ax.set_xlim(-.01,1.01)
     for ax in axs[len(cases):]:ax.axis("off")
     return finish(fig,"12_adversarial_gallery",
-                  "Analytic test functions from the existing adversarial benchmark module; not PLS forecast-loss surfaces.")
+                  "Funciones analíticas del banco adversarial; no son necesariamente superficies de pérdida PLS.")
 
 
 def sampling_density():
     res=find_stationary_points_smoothness(callback,n_obs=6,order=2)
     samples=np.asarray(res.sampled_smoothness_)
-    fig,axs=canvas(1,2,title="13  |  Where adaptive sampling spends evaluations")
+    fig,axs=canvas(1,2,title="13  |  Dónde concentra evaluaciones el muestreo adaptativo")
     axs[0].hist(samples,bins=50,range=(0,1),color=BLUE,alpha=.85)
-    panel(axs[0],"Returned evaluation locations","S","Evaluations per bin")
+    panel(axs[0],"Ubicaciones de evaluación","S","Evaluaciones por intervalo")
     for x in ROOT_S:axs[0].axvline(x,ls="--",color=ORANGE,alpha=.5)
     dist=np.diff(np.sort(samples))
     axs[1].semilogy((samples[1:]+samples[:-1])/2,np.maximum(dist,1e-15),".",color=PURPLE,ms=5)
-    panel(axs[1],"Spatial resolution of the final sample set","S","Neighboring S spacing (log)")
+    panel(axs[1],"Resolución espacial de las muestras finales","S","Separación entre valores de S (log)")
     return finish(fig,"13_adaptive_sampling_density",
-                  f"Actual final sample locations from a toy six-observation run; n={len(samples)}. Not a large-run efficiency result.")
+                  f"Muestras finales reales del ejemplo de seis observaciones; n={len(samples)}. No representa la eficiencia en muestras grandes.")
 
 
 FIGURES={
