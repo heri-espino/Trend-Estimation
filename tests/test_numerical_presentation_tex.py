@@ -7,6 +7,7 @@ from __future__ import annotations
 
 from pathlib import Path
 import re
+import ast
 
 PRESENTATION = (
     Path(__file__).resolve().parents[1]
@@ -58,3 +59,26 @@ def test_beamer_build_scripts_exist_for_mac_and_windows() -> None:
     assert (PRESENTATION / "build_all.sh").is_file()
     assert (PRESENTATION / "build_all.ps1").is_file()
     assert (PRESENTATION / "build_figures.py").is_file()
+
+
+def test_spanish_presentation_text_and_plotting_sources() -> None:
+    source = (PRESENTATION / "slides.tex").read_text(encoding="utf-8")
+    assert r"\usepackage[spanish,es-nodecimaldot]{babel}" in source
+    assert "Interpretación." in source
+    assert "Validación cruzada cronológica" in source
+    assert "¿Qué resultados hemos obtenido?" in source
+    assert "Figura pendiente de generar" in source
+    assert "Figure not yet rendered" not in source
+
+    for module_name in (
+        "figures_concepts.py",
+        "figures_algorithm.py",
+        "figures_benchmarks.py",
+        "figures_applied.py",
+    ):
+        src = (PRESENTATION / module_name).read_text(encoding="utf-8")
+        ast.parse(src, filename=module_name)
+        assert "fijado_csv" not in src, "Do not translate Python function names."
+        assert "pd.Tiempostamp" not in src, "Do not translate Pandas class names."
+        assert "  |  " in src, "Every figure title should have a numbered heading."
+        assert not any(ord(c) < 32 and c not in "\t\n\r" for c in src)
