@@ -59,6 +59,20 @@ No PowerShell installation is required. Pull the latest repository commits befor
 running it (`git pull --ff-only origin main`; if local changes block the pull,
 review them rather than resetting the repository).
 
+**Recompile the slides only (when all 28 figure PDFs already exist):**
+
+~~~bash
+cd "working_papers/Working Paper - Numerical Methods/presentation"
+latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build slides.tex
+cp build/slides.pdf Numerical_Methods_Presentation.pdf
+open Numerical_Methods_Presentation.pdf
+~~~
+
+This skips figure generation and does not touch the frozen benchmark outputs.
+On macOS, use this after a source-only fix to slides.tex. The repository also
+includes tests/test_numerical_presentation_tex.py, which guards against
+invisible LaTeX control characters and math-command corruption.
+
 The resulting deck is **Numerical_Methods_Presentation.pdf**, in this presentation folder.
 A working MiKTeX or TeX Live installation with latexmk is required.
 The Beamer source can also be compiled *before* generating figures: missing PDFs
