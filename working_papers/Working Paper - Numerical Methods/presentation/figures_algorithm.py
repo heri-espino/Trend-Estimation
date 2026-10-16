@@ -133,7 +133,7 @@ def endpoint_failure():
     ax2.barh(labels,show["missed_minima"],color=[BLUE if x=="primary" else ORANGE for x in show["parameter"]])
     panel(ax2,"Mínimos de referencia no detectados en 216 casos","Número no detectado","")
     ax2.invert_yaxis()
-    fig.text(.05,.06,f"Caso seleccionado: semilla={selected['seed']}, {selected['scenario']}, "
+    fig.text(.05,.06,f"Caso seleccionado: semilla={selected['seed']}, { {'baseline':'base','persistent':'persistente','rough':'irregular'}.get(selected['scenario'], selected['scenario']) }, "
              f"d={selected['order']}, L={selected['window']}, h={selected['horizon']}",fontsize=9,color=GREY)
     return finish(fig,"09_endpoint_refinement_ablation",
                   "Valores leídos directamente del análisis de sensibilidad; no reconstruyen un historial de búsqueda.")
