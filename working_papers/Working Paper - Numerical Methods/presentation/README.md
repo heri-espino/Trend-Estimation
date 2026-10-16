@@ -1,5 +1,32 @@
 # Numerical Methods — Figure Studio / Presentation
 
+## Presentación en español
+
+La presentación Beamer (\`slides.tex\`) y **los 28 gráficos** están preparados
+en español. Se conservan los identificadores de figuras y columnas del código
+para garantizar que los resultados y la compilación sigan siendo reproducibles.
+
+**En macOS**, ejecuta desde la raíz del repositorio:
+
+~~~bash
+git pull --ff-only origin main
+conda activate trend-estimation
+bash "working_papers/Working Paper - Numerical Methods/presentation/build_all.sh"
+~~~
+
+Esto es importante incluso si ya generaste los 28 PDF anteriormente: para
+traducir los **títulos, ejes, leyendas y notas dentro de las gráficas** es
+necesario volver a generarlas. No se vuelven a ejecutar los experimentos
+grandes; se leen los mismos archivos de resultados congelados.
+
+El resultado se guarda en
+\`presentation/Numerical_Methods_Presentation.pdf\`. Puedes abrirlo con:
+
+~~~bash
+open "working_papers/Working Paper - Numerical Methods/presentation/Numerical_Methods_Presentation.pdf"
+~~~
+
+
 This folder provides a reproducible, independent visual explanation of the numerical-methods paper, suitable for a research talk and eventual supplementary figures. It does **not** change the paper's frozen benchmark protocols or automatically insert all graphics into the manuscript.
 
 ## Generate all figures
