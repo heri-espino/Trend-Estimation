@@ -147,19 +147,19 @@ def time_split():
     if rows.empty:raise ValueError("Missing SPY historical fold schedule")
     fig,(ax,ax2)=canvas(2,1,title="28  |  División temporal entre desarrollo y prueba: control de filtraciones",height=8.3)
     for k,(_,r) in enumerate(rows.iterrows()):
-        t0=pd.Tiempostamp(r["train_start_date"])
-        t1=pd.Tiempostamp(r["train_end_date"])
-        v0=pd.Tiempostamp(r["validation_start_date"])
-        v1=pd.Tiempostamp(r["validation_end_date"])
+        t0=pd.Timestamp(r["train_start_date"])
+        t1=pd.Timestamp(r["train_end_date"])
+        v0=pd.Timestamp(r["validation_start_date"])
+        v1=pd.Timestamp(r["validation_end_date"])
         ax.plot([t0,t1],[k,k],color=BLUE,lw=8,solid_capstyle="butt")
         ax.plot([v0,v1],[k,k],color=ORANGE,lw=8,solid_capstyle="butt")
-    ax.axvline(pd.Tiempostamp(selected["development_end_date"]),color=BLACK,ls="--",lw=1.5)
+    ax.axvline(pd.Timestamp(selected["development_end_date"]),color=BLACK,ls="--",lw=1.5)
     ax.set_yticks(np.arange(len(rows)),[f"Pliegue {int(v)}" for v in rows["split_number"]])
     ax.tick_params(axis="x",rotation=18)
     panel(ax,"Pliegues históricos completos: azul entrenamiento, naranja validación","Tiempo","")
-    ax2.plot([pd.Tiempostamp(selected["development_start_date"]),pd.Tiempostamp(selected["development_end_date"])],
+    ax2.plot([pd.Timestamp(selected["development_start_date"]),pd.Timestamp(selected["development_end_date"])],
              [1,1],lw=16,solid_capstyle="butt",color=BLUE,label="Desarrollo")
-    ax2.plot([pd.Tiempostamp(selected["test_start_date"]),pd.Tiempostamp(selected["test_end_date"])],
+    ax2.plot([pd.Timestamp(selected["test_start_date"]),pd.Timestamp(selected["test_end_date"])],
              [1,1],lw=16,solid_capstyle="butt",color=GREEN,label="Prueba reservada")
     ax2.set(ylim=(.1,1.8),yticks=[])
     ax2.legend(loc="upper center",ncol=2)
