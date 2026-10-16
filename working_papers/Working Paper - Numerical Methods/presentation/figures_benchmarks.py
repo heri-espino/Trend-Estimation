@@ -5,11 +5,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from _style import BLUE, ORANGE, GREEN, PURPLE, GREY, BLACK, COLORS
-from _style import canvas, finish, panel, fijado_csv
+from _style import canvas, finish, panel, frozen_csv
 
 
 def _benchmark_frames():
-    return fijado_csv("synthetic","search_summary.csv"), fijado_csv("financial","search_summary.csv")
+    return frozen_csv("synthetic","search_summary.csv"), frozen_csv("financial","search_summary.csv")
 
 
 def selected_agreement():
@@ -26,7 +26,7 @@ def selected_agreement():
 
 def evaluation_cost():
     synthetic,financial=_benchmark_frames()
-    adv=fijado_csv("adversarial","method_summary.csv")
+    adv=frozen_csv("adversarial","method_summary.csv")
     datasets=[
         ("Adversarial",adv.loc[adv["method"].eq("adaptive_s"),"n_evaluations"].to_numpy(float),
          adv.loc[adv["method"].eq("dense"),"n_evaluations"].to_numpy(float)),
@@ -96,7 +96,7 @@ def cost_by_order_horizon():
 
 
 def sensitivity_tradeoff():
-    dat=fijado_csv("sensitivity","sensitivity_summary.csv")
+    dat=frozen_csv("sensitivity","sensitivity_summary.csv")
     fig,(ax,ax2)=canvas(1,2,title="18  |  Resultados del análisis de sensibilidad de un factor")
     primary=dat.loc[dat["is_primary"].astype(str).str.lower().eq("true")].iloc[0]
     for _,row in dat.iterrows():
@@ -143,7 +143,7 @@ def endpoint_frequencies():
 
 
 def adversarial_comparison():
-    df=fijado_csv("adversarial","stationary_detection.csv")
+    df=frozen_csv("adversarial","stationary_detection.csv")
     relevant=df.loc[~df["truth_kind"].eq("stationary_inflection")]
     labels=[("adaptive_s","Adaptativo en S"),("log_lambda","Búsqueda uniforme en log-lambda"),("dense","Referencia densa")]
     fig,(ax,ax2)=canvas(1,2,title="20  |  Recuperación de puntos conocidos en casos adversariales")
@@ -166,7 +166,7 @@ def adversarial_comparison():
 
 
 def spacing_epsilon():
-    df=fijado_csv("synthetic","candidate_sweep.csv")
+    df=frozen_csv("synthetic","candidate_sweep.csv")
     keys=["seed","scenario","order","window","horizon","epsilon"]
     # Each rank repeats counts for its surface and epsilon, so deduplicate before totals.
     one=df.drop_duplicates(subset=keys)
