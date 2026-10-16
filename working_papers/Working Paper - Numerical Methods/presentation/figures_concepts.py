@@ -109,7 +109,7 @@ def endpoint_trends():
     solver=cached_pure_solver(n,d)
     G=finite_difference_forecast_operator(n,d,h).trend_matrix
     fig,(ax,ax2)=canvas(1,2,title="05  |  Modelos de frontera y extrapolación polinómica")
-    ax.scatter(t, observed,s=13,alpha=.42,c=GREY,label="Observed")
+    ax.scatter(t, observed,s=13,alpha=.42,c=GREY,label="Observaciones")
     xf=np.arange(n,n+h)
     for s,c in ((0.,ORANGE),(.92,BLUE),(1.,GREEN)):
         fit=solver.fit_for_s(observed,s).trend
@@ -141,7 +141,7 @@ def fold_loss_geometry():
         vals.append(arr)
         ax.plot(grid,arr,color=COLORS[i],lw=1.7,label=f"Origen {i+1}")
     pooled=np.mean(vals,axis=0)
-    ax.plot(grid,pooled,lw=2.8,color=BLACK,label="Pooled")
+    ax.plot(grid,pooled,lw=2.8,color=BLACK,label="Combinado")
     ax.legend(fontsize=9)
     panel(ax,"Pérdidas correspondientes a distintos orígenes","S","ECM a h pasos")
     ax2.plot(grid,pooled,color=BLACK,lw=2.7)
