@@ -18,7 +18,7 @@ def selected_agreement():
     for ax,(name,df),c in zip(axs,(("Sintético",synth),("Financiero",financial)),(BLUE,ORANGE)):
         ax.scatter(df["dense_best_s"],df["adaptive_best_s"],color=c,s=8,alpha=.28)
         ax.plot([0,1],[0,1],color=BLACK,ls="--",lw=1.2)
-        panel(ax,f"{name} ({len(df):,} surfaces)","S* de referencia densa","S* adaptativo")
+        panel(ax,f"{name} ({len(df):,} superficies)","S* de referencia densa","S* adaptativo")
         ax.set(xlim=(-.03,1.03),ylim=(-.03,1.03),aspect="equal")
     return finish(fig,"14_selected_s_agreement",
                   "Objetivos sintéticos y financieros congelados; la malla densa no certifica todas las raíces.")
@@ -105,7 +105,7 @@ def sensitivity_tradeoff():
         color=GREEN if main else (ORANGE if bad else BLUE)
         ax.scatter(row["mean_evaluations"],row["missed_minima"],s=120 if main else 45,color=color,zorder=4)
         if main or bad:
-            ax.annotate("fijado" if main else f"{row['parameter']}={row['setting']}",
+            ax.annotate("fijado" if main else f"{'refinamiento de extremos' if row['parameter'] == 'endpoint_refinement_levels' else row['parameter']}={row['setting']}",
                         (row["mean_evaluations"],row["missed_minima"]),
                         xytext=(6,8),textcoords="offset points",fontsize=9)
     panel(ax,"Costo frente a mínimos de referencia no detectados","Evaluaciones adaptativas promedio","Mínimos no detectados (216 superficies)")
