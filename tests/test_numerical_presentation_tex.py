@@ -1,4 +1,4 @@
-"""Static guards for the numerical-methods Beamer source.
+r"""Static guards for the numerical-methods Beamer source.
 
 In particular, JS-generated LaTeX must never lose a backslash before
 \varepsilon (which previously introduced an invisible U+000B character).
