@@ -3,7 +3,7 @@
 % Compiles with placeholders if the figure PDFs have not yet been rendered.
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage[english]{babel}
+\usepackage[spanish,es-nodecimaldot]{babel}
 \usepackage{lmodern}
 \usepackage{amsmath,amssymb,booktabs,graphicx}
 \usepackage{xcolor}
@@ -32,7 +32,7 @@
 \setbeamertemplate{footline}{%
   \leavevmode\hbox{%
   \begin{beamercolorbox}[wd=.76\paperwidth,ht=2.9ex,dp=1.25ex,leftskip=.45cm]{footline}%
-  \tiny NUMERICAL METHODS \quad\textcolor{accentblue}{\textbullet}\quad
+  \tiny MÉTODOS NUMÉRICOS \quad\textcolor{accentblue}{\textbullet}\quad
   \insertsectionhead
   \end{beamercolorbox}%
   \begin{beamercolorbox}[wd=.24\paperwidth,ht=2.9ex,dp=1.25ex,rightskip=.45cm plus 1fil]{footline}%
@@ -57,16 +57,16 @@
   }{%
     \fcolorbox{lightborder}{pale}{%
       \parbox[c][.51\textheight][c]{.89\linewidth}{%
-        \centering{\large\bfseries Figure not yet rendered}\par
+        \centering{\large\bfseries Figura pendiente de generar}\par
         \vspace{.35em}{\scriptsize\texttt{\detokenize{#1.pdf}}}\par
-        \vspace{.35em}{\scriptsize Generate all 28 PDFs with the figure builder.}%
+        \vspace{.35em}{\scriptsize Genera los 28 PDF con el script de figuras.}%
       }%
     }%
   }
   \end{center}
   \vspace{-.16cm}
   \begin{beamercolorbox}[wd=.97\linewidth,sep=.32em,rounded=true]{keybox}
-    \footnotesize\textbf{\textcolor{accentblue}{Interpretation.}} #3
+    \footnotesize\textbf{\textcolor{accentblue}{Interpretación.}} #3
   \end{beamercolorbox}
   \par\vspace{.13cm}{\tiny\color{slate}#4\par}
 \end{frame}
@@ -83,57 +83,57 @@
   {\color{accentblue}\rule{3.0cm}{3pt}}
 \end{frame}
 }
-\title{Numerical Recovery of Multimodal\\Forecast-Smoothness Minima}
-\subtitle{Adaptive search, exact endpoints, and Sturm isolation}
+\title{Recuperación numérica de mínimos multimodales\\de suavizamiento óptimo para pronóstico}
+\subtitle{Búsqueda adaptativa, extremos exactos y aislamiento de Sturm}
 \author{Heriberto Espino Montelongo}
 \institute{Universidad de las Am\'ericas Puebla}
-\date{Research presentation \quad \textbar\quad October 2026}
+\date{Presentación de investigación \quad \textbar\quad octubre de 2026}
 \begin{document}
 
 \begin{frame}[plain]
   \vspace{.55cm}
-  {\color{accentblue}\small RESEARCH PRESENTATION \quad | \quad NUMERICAL OPTIMIZATION}\par
+  {\color{accentblue}\small PRESENTACIÓN DE INVESTIGACIÓN \quad | \quad OPTIMIZACIÓN NUMÉRICA}\par
   \vspace{.55cm}
-  {\Huge\bfseries Numerical Recovery of Multimodal\\Forecast-Smoothness Minima}\par
+  {\Huge\bfseries Recuperación numérica de mínimos multimodales\\de suavizamiento óptimo para pronóstico}\par
   \vspace{.36cm}
-  {\Large\color{slate}Adaptive search, exact endpoints, and Sturm isolation}\par
+  {\Large\color{slate}Búsqueda adaptativa, extremos exactos y aislamiento de Sturm}\par
   \vfill
   {\large Heriberto Espino Montelongo}\par
   Universidad de las Am\'ericas Puebla\par
-  {\color{slate}October 2026 \quad\textbullet\quad Based on Working Paper 3}
+  {\color{slate}octubre de 2026 \quad\textbullet\quad Basada en el documento de trabajo 3}
   \vspace{.35cm}
 \end{frame}
 
-\section{The numerical question}
-\begin{frame}{What problem does this paper solve?}
-\begin{block}{The computational task}
-For a fixed difference order $d$, rolling window $L$, and forecast horizon $h$,
-find and compare the relevant minima of a forecast-validation loss
-$F_{d,L,h}(S)$ over $S\in[0,1]$.
+\section{La pregunta numérica}
+\begin{frame}{¿Qué problema resuelve este trabajo?}
+\begin{block}{El problema computacional}
+Para un orden de diferencias $d$, ventana $L$ y horizonte $h$ fijos,
+buscamos y comparamos los mínimos pertinentes de la pérdida de validación
+de pronóstico $F_{d,L,h}(S)$ sobre $S\in[0,1]$.
 \end{block}
 \begin{columns}[T,totalwidth=\linewidth]
 \begin{column}{.49\linewidth}
-\textbf{Established ingredients}
+\textbf{Elementos ya conocidos}
 \begin{itemize}
-\item Finite-difference penalized least squares.
-\item Chronological forecast-validation loss.
-\item Scalar numerical search and root finding.
+\item Mínimos cuadrados penalizados con diferencias finitas.
+\item Pérdida cronológica de validación de pronósticos.
+\item Optimización escalar y búsqueda de raíces.
 \end{itemize}
 \end{column}
 \begin{column}{.49\linewidth}
-\textbf{Our numerical focus}
+\textbf{Nuestra contribución numérica}
 \begin{itemize}
-\item Multimodal loss geometry.
-\item Exact limiting endpoints.
-\item Adaptive stationary-point discovery.
-\item Finite rational root isolation.
+\item Geometría multimodal de la pérdida.
+\item Tratamiento exacto de los extremos.
+\item Detección adaptativa de puntos estacionarios.
+\item Aislamiento de raíces para objetivos racionales.
 \end{itemize}
 \end{column}
 \end{columns}
-\SourceLine{Not a new PLS smoother, not the first forecast-based CV criterion, and not a claim of predictive superiority.}
+\SourceLine{No proponemos un nuevo suavizador PLS ni la primera CV predictiva; tampoco afirmamos superioridad predictiva universal.}
 \end{frame}
 
-\begin{frame}{Model and objective: all numerical claims are conditional}
+\begin{frame}{Modelo y función objetivo: alcance de los resultados}
 \[
 \widehat{\tau}_{\lambda} =
 \underset{\tau}{\arg\min}\left\{\lVert y-\tau\rVert_2^2+
@@ -146,130 +146,130 @@ F_{d,L,h}(S)=\frac{1}{|\mathcal O|}
 \sum_{T\in\mathcal O}\frac{1}{h}
 \left\|z_T-G_{d,h}H_{\lambda(S)}x_T\right\|_2^2.
 \]
-\begin{block}{Scope}
-Identity weighting $V=I$, zero penalized mean difference $\mu=0$, regularly
-spaced observations, fixed $(d,L,h)$, and native zero-$d$-th-difference continuation.
+\begin{block}{Supuestos}
+Ponderación identidad $V=I$, media de diferencias penalizadas $\mu=0$,
+observaciones equidistantes, $(d,L,h)$ fijos y extrapolación natural de orden $d$.
 \end{block}
-\SourceLine{Each rolling-origin loss uses training data available at that origin; validation targets are observed future blocks.}
+\SourceLine{Cada origen utiliza solo los datos disponibles hasta ese instante; los bloques futuros realizados definen el error.}
 \end{frame}
 
-\section{What the optimizer sees}
-\Act{ACT I}{What the optimizer sees}{Smoothing, forecasting, compactification and the numerical target.}
-\FigureSlide{01_rolling_cv_definition}{Chronological cross-validation}{The loss averages completed $h$-step forecast blocks from historical origins. The numerical optimizer does not see future observations at prediction time.}{Illustrative schematic and fold-loss curves; not empirical benchmark evidence.}
+\section{La función objetivo}
+\Act{PARTE I}{La función objetivo}{Suavizamiento, pronóstico y transformación del dominio.}
+\FigureSlide{01_rolling_cv_definition}{Validación cruzada cronológica}{La pérdida promedia errores de pronóstico a $h$ pasos desde orígenes históricos ya completados. Cada origen utiliza únicamente observaciones anteriores.}{Esquema y curvas ilustrativos; no son resultados del experimento principal.}
 
-\FigureSlide{02_smoothing_family}{Changing smoothness changes the trend}{Smaller $S$ preserves local fluctuations; larger $S$ suppresses penalized differences. Smoothness alone does not guarantee the best future forecast.}{Fixed-seed pedagogical series, not the Monte Carlo benchmark.}
+\FigureSlide{02_smoothing_family}{Cómo cambia la tendencia con el suavizamiento}{Con $S$ pequeño se conservan más fluctuaciones; con $S$ grande se atenúan las diferencias penalizadas. Más suavizamiento no garantiza mejores pronósticos.}{Serie pedagógica con semilla fija; no es el experimento de Monte Carlo.}
 
-\FigureSlide{03_lambda_to_s}{From an unbounded penalty to a compact index}{The strictly increasing map $S(\lambda)$ takes $\lambda\in[0,\infty]$ to $S\in[0,1]$. The upper tail requires careful numerical resolution.}{Exact finite-difference spectrum for $L=63$, $d=2$.}
+\FigureSlide{03_lambda_to_s}{De una penalización ilimitada a un índice compacto}{La transformación creciente $S(\lambda)$ lleva $\lambda\in[0,\infty]$ a $S\in[0,1]$. Cerca del extremo superior se requiere especial resolución numérica.}{Espectro de diferencias finitas para $L=63$, $d=2$.}
 
-\FigureSlide{04_effective_degrees_of_freedom}{Degrees of freedom are an explicit function of S}{For the pure PLS smoother, $\mathrm{EDF}=\mathrm{tr}(H_\lambda)=L-(L-d)S$. The $d$ unpenalized directions survive as $S	o1$.}{Exact identity for the zero-mean, fixed-$\lambda$ smoothing operator.}
+\FigureSlide{04_effective_degrees_of_freedom}{Grados de libertad efectivos y suavizamiento}{Para el suavizador PLS, $\mathrm{EDF}=\mathrm{tr}(H_\lambda)=L-(L-d)S$. Las $d$ direcciones no penalizadas permanecen cuando $S\to1$.}{Identidad exacta con media de diferencias cero y $\lambda$ fijo.}
 
-\FigureSlide{05_exact_endpoints}{Both boundaries represent actual estimators}{At $S=0$, $H=I$; at $S=1$, the fit is the projection onto $\ker D_d$. The second endpoint is not replaced by an arbitrary large finite $\lambda$.}{Pedagogical series; native $d=2$ continuation.}
+\FigureSlide{05_exact_endpoints}{Los extremos representan estimadores distintos}{En $S=0$ tenemos $H=I$; en $S=1$ obtenemos la proyección sobre $\ker D_d$. Este último caso no se sustituye por una $\lambda$ finita muy grande.}{Serie ilustrativa y extrapolación natural con $d=2$.}
 
-\FigureSlide{06_loss_pooling}{Why pool several historical forecast losses?}{Different forecast origins favor different smoothing levels; their average is the objective whose stationary points we must explore.}{Three small constructed PLS examples; explanatory only.}
+\FigureSlide{06_loss_pooling}{Por qué combinar errores de distintos orígenes}{Cada origen histórico puede favorecer un grado de suavizamiento diferente. Optimizamos el promedio de pérdidas ya observadas.}{Tres ejemplos pequeños construidos con PLS; solo explicación.}
 
-\section{Geometry and algorithms}
-\Act{ACT II}{Geometry and algorithms}{Derivatives, boundary-aware search, and small exact root isolation.}
-\FigureSlide{07_objective_derivative_curvature}{The loss, its gradient, and its curvature}{We calculate $F'(S)$ to locate stationary points and use curvature to classify simple extrema. Flat or even-multiplicity roots need separate care.}{The previously documented exact-rational six-observation example.}
+\section{Geometría y algoritmos}
+\Act{PARTE II}{Geometría y algoritmos}{Derivadas, búsqueda adaptativa y aislamiento exacto en ejemplos pequeños.}
+\FigureSlide{07_objective_derivative_curvature}{Pérdida, primera derivada y curvatura}{Las raíces de $F'(S)$ señalan puntos estacionarios. La curvatura clasifica extremos simples, pero los puntos planos requieren más cuidado.}{Ejemplo racional de seis observaciones previamente documentado.}
 
-\FigureSlide{08_adaptive_search_steps}{The search algorithm, one operation at a time}{Coarse sampling is supplemented near boundaries; derivative diagnostics trigger subdivision; Brent refines detected sign-change roots; exact endpoints remain candidates.}{Schematic stages reconstructed from actual final toy-search samples; not a time-stamped execution trace.}
+\FigureSlide{08_adaptive_search_steps}{Algoritmo adaptativo paso a paso}{Primero se usa una malla gruesa; después se refuerzan los extremos, se subdividen intervalos y Brent refina raíces detectadas. Los extremos exactos siguen siendo candidatos.}{Etapas construidas con las muestras finales; no es un registro cronológico del algoritmo.}
 
-\FigureSlide{09_endpoint_refinement_ablation}{What goes wrong without endpoint refinement?}{In the frozen 216-surface sensitivity panel, disabling endpoint refinement missed five dense-reference minima and produced three positive-regret cases.}{Frozen sensitivity-study CSVs. Dense reference is finite resolution.}
+\FigureSlide{09_endpoint_refinement_ablation}{Qué falla sin refinar cerca de los extremos}{En 216 superficies, eliminar el refinamiento de frontera produjo cinco mínimos no detectados y tres casos con arrepentimiento positivo.}{Datos congelados de sensibilidad; la malla densa es una referencia aproximada.}
 
-\FigureSlide{10_sturm_worked_example}{Exact root count in a finite rational instance}{For $L=6$, $d=2$, $h=2$, the derivative numerator has exactly three positive roots: minimum, maximum, minimum. Reported locations are approximate.}{Exact Sturm variation count $5-2=3$ for this specific rational instance.}
+\FigureSlide{10_sturm_worked_example}{Conteo exacto de raíces en una instancia racional}{Para $L=6$, $d=2$, $h=2$, el numerador de la derivada tiene tres raíces positivas: mínimo, máximo y mínimo. Las posiciones dibujadas son aproximadas.}{Conteo exacto de Sturm $5-2=3$ para esta instancia pequeña.}
 
-\FigureSlide{11_lambda_vs_s_landscape}{Same stationary points, different coordinates}{Strictly increasing $S(\lambda)$ preserves interior stationarity and minimum/maximum type, but changes numerical spacing and boundary geometry.}{Same six-observation objective plotted in the two coordinates.}
+\FigureSlide{11_lambda_vs_s_landscape}{Un mismo objetivo, dos coordenadas}{La transformación monótona $S(\lambda)$ conserva los puntos estacionarios interiores y su clasificación, pero modifica la distancia numérica entre ellos.}{Mismo problema racional de seis observaciones en ambas coordenadas.}
 
-\FigureSlide{12_adversarial_gallery}{What makes a stationary-point search difficult?}{Analytic cases test close roots, near-endpoint minima, flat minima, boundary optima, and stationary inflections. These are deliberately constructed stress cases.}{Known analytic truth; these functions are not necessarily PLS losses.}
+\FigureSlide{12_adversarial_gallery}{Qué geometrías complican la búsqueda}{Los casos analíticos incluyen raíces cercanas, mínimos de frontera, mínimos planos e inflexiones estacionarias.}{Objetivos analíticos con soluciones conocidas; no necesariamente son pérdidas de PLS.}
 
-\FigureSlide{13_adaptive_sampling_density}{Where are evaluations concentrated?}{Adaptive sampling allocates resolution nonuniformly in $S$ as suggested by the derivative geometry; sample counts here describe the toy problem only.}{Final sample locations from the six-observation adaptive call.}
+\FigureSlide{13_adaptive_sampling_density}{Dónde concentra evaluaciones el algoritmo}{El método distribuye las evaluaciones de manera no uniforme, según la estructura de las derivadas. Esta visualización corresponde al ejemplo pequeño.}{Muestras finales de la búsqueda adaptativa con seis observaciones.}
 
-\section{Numerical evidence}
-\Act{ACT III}{Numerical evidence}{Accuracy against finite references, evaluation cost and controlled failure modes.}
-\FigureSlide{14_selected_s_agreement}{Agreement with dense-reference optimizers}{Across 1,920 synthetic and 384 financial surfaces, adaptive and dense-grid selected smoothness values closely agree.}{Frozen experiments; finite dense grid, not exact completeness certification.}
+\section{Evidencia numérica}
+\Act{PARTE III}{Evidencia numérica}{Concordancia con referencias, eficiencia y sensibilidad.}
+\FigureSlide{14_selected_s_agreement}{Concordancia con la referencia de malla densa}{En 1,920 superficies sintéticas y 384 financieras, los valores seleccionados de $S$ coinciden estrechamente con la referencia densa.}{Experimentos congelados; una malla finita no certifica todas las raíces.}
 
-\FigureSlide{15_evaluation_efficiency}{How many objective evaluations are saved?}{The adaptive method used 78.35 versus 5,001 mean evaluations on synthetic surfaces, and 91.89 versus 5,001 on financial surfaces.}{Frozen benchmark records. Adaptive evaluations also return derivatives; runtime is implementation-dependent.}
+\FigureSlide{15_evaluation_efficiency}{Cuántas evaluaciones se ahorran}{El método adaptativo necesitó 78.35 evaluaciones en promedio frente a 5,001 en superficies sintéticas, y 91.89 frente a 5,001 en financieras.}{Resultados congelados; cada evaluación adaptativa también devuelve derivadas.}
 
-\FigureSlide{16_selection_error_distributions}{How large are the selection discrepancies?}{The distributions of $|S^*_{\mathrm{adaptive}}-S^*_{\mathrm{dense}}|$ and positive objective regret complement agreement plots and aggregate success counts.}{Finite-grid reference; display-floor values are not mathematical zeros.}
+\FigureSlide{16_selection_error_distributions}{Magnitud de las discrepancias numéricas}{La distribución de $|S^*_{\mathrm{adaptive}}-S^*_{\mathrm{dense}}|$ y del arrepentimiento complementa los porcentajes de recuperación.}{La referencia es una malla finita; el umbral de visualización no es un cero matemático.}
 
-\FigureSlide{17_cost_by_order_horizon_window}{Does the computational burden vary by configuration?}{The descriptive cost heatmap reveals how evaluation counts vary with $d$, $L$ and $h$ across the frozen synthetic grid; it is not a complexity theorem.}{Frozen 1,920-surface synthetic experiment.}
+\FigureSlide{17_cost_by_order_horizon_window}{Cómo varía el costo con el orden y el horizonte}{El mapa de calor describe evaluaciones según el orden $d$, la ventana $L$ y el horizonte $h$. No constituye una cota de complejidad.}{Cuadrícula sintética congelada de 1,920 superficies.}
 
-\FigureSlide{18_sensitivity_tradeoff}{Which implementation choices matter most?}{Endpoint refinement is the clearest observed safeguard. Other tested one-factor changes trade evaluation counts against finite-panel recovery, without retuning the frozen method.}{Frozen one-factor sensitivity panel of 216 surfaces.}
+\FigureSlide{18_sensitivity_tradeoff}{Sensibilidad y costo computacional}{El refinamiento de extremos es la protección más clara. Otras variaciones cambian el costo sin justificar reajustar los parámetros previamente fijados.}{Análisis de un factor por vez sobre 216 superficies.}
 
-\FigureSlide{19_exact_endpoint_frequencies}{How often do boundaries win?}{In the synthetic benchmark, $S=0$ won in 312 cases and $S=1$ in 34; in the financial benchmark, the corresponding counts were 53 and 10.}{Frozen numerical objective selections, not held-out forecasting comparisons.}
+\FigureSlide{19_exact_endpoint_frequencies}{Con qué frecuencia ganan los extremos}{En el estudio sintético, $S=0$ se seleccionó 312 veces y $S=1$ 34. En el financiero, las cifras fueron 53 y 10.}{Selección de objetivos numéricos, no comparación predictiva externa.}
 
-\FigureSlide{20_adversarial_method_comparison}{Known-truth recovery across numerical search methods}{Adaptive $S$ recovered 240/240 relevant analytic minima and boundary optima; uniform log-$\lambda$ recovered 226/240. Stationary inflections are a distinct target.}{Frozen adversarial analytic benchmark with truth known by construction.}
+\FigureSlide{20_adversarial_method_comparison}{Recuperación frente a casos analíticos conocidos}{La búsqueda adaptativa en $S$ recuperó 240/240 óptimos pertinentes; la búsqueda uniforme en $\log\lambda$, 226/240. Las inflexiones estacionarias son otro problema.}{Banco adversarial con soluciones conocidas por construcción.}
 
-\FigureSlide{21_epsilon_candidate_spacing}{Why retain separated local-minimum candidates?}{Spacing $\varepsilon$ removes nearby secondary minima only after discovery and objective ranking; it preserves the best detected interior minimum by construction.}{Frozen synthetic candidate summaries; not a change to the optimizer.}
+\FigureSlide{21_epsilon_candidate_spacing}{Por qué separar candidatos cercanos}{La distancia $\varepsilon$ suprime mínimos secundarios próximos solo después de detectarlos y ordenarlos. Se conserva el mejor mínimo interior encontrado.}{Resumen congelado de candidatos; no altera la optimización.}
 
-\section{Applied interpretation}
-\Act{ACT IV}{Applied interpretation}{A candidate set can matter even when the optimizer is numerically accurate.}
-\FigureSlide{22_gdp_unimodal_contrast}{GDP: multimodality is not universal}{None of the 64 pre-specified GDP configurations yielded at least two $\varepsilon$-separated representative minima. The selected case illustrates the simpler geometry.}{Frozen development-selected GDP example; test is diagnostic only.}
+\section{Interpretación aplicada}
+\Act{PARTE IV}{Interpretación aplicada}{Qué significan los distintos mínimos para tendencias y pronósticos.}
+\FigureSlide{22_gdp_unimodal_contrast}{PIB: la multimodalidad no es universal}{Ninguna de las 64 configuraciones predefinidas de PIB tuvo dos mínimos representativos separados por $\varepsilon$. Este caso sirve de contraste.}{Caso de PIB elegido con desarrollo; la prueba es diagnóstica.}
 
-\FigureSlide{23_spy_rank_reversal}{SPY: validation and test rankings can reverse}{Development CV favored $S=0.95639$ over $S=0$, but the held-out block favored the second candidate. Test rankings do not change the originally selected model.}{Frozen SPY case; candidate fitting and ranking used development data only.}
+\FigureSlide{23_spy_rank_reversal}{SPY: la clasificación puede invertirse en prueba}{La validación favoreció $S=0.95639$ sobre $S=0$, mientras que el bloque reservado favoreció al segundo candidato. La prueba no intervino en la selección.}{Ejemplo congelado de SPY; decisiones tomadas solo con desarrollo.}
 
-\FigureSlide{24_aapl_separated_minima}{AAPL: separated minima need not be competitive}{The two selected candidates, $S\approx0.629$ and $S\approx0.997$, are far apart; the second has much larger validation and test loss.}{Frozen AAPL development/test example.}
+\FigureSlide{24_aapl_separated_minima}{AAPL: dos mínimos pueden ser poco competitivos}{Los candidatos $S\approx0.629$ y $S\approx0.997$ están muy separados; el segundo tiene errores mayores en validación y prueba.}{Ejemplo congelado de AAPL.}
 
-\FigureSlide{25_btc_three_minima}{Bitcoin: three distinct numerical regimes}{The selected BTC case has representatives at $S\approx0.845$, $0.029$, and $0.998$. Numerical multiplicity is not evidence that all candidates forecast well.}{Frozen BTC example; test ranks are retrospective.}
+\FigureSlide{25_btc_three_minima}{Bitcoin: tres regímenes numéricos}{En el caso elegido hay mínimos cerca de $S\approx0.845$, $0.029$ y $0.998$. La multiplicidad no implica que todos pronostiquen bien.}{Ejemplo congelado de BTC; los resultados de prueba son retrospectivos.}
 
-\FigureSlide{26_validation_test_rank_comparison}{Candidate separation does not equal predictive dominance}{The SPY example reverses rank; the second BTC candidate is about 14.7 times worse than the CV winner in held-out MSE. These are different phenomena.}{Frozen \texttt{candidate\_results.csv}; relative CV/test MSE on log prices.}
+\FigureSlide{26_validation_test_rank_comparison}{Separación de mínimos y precisión predictiva}{En SPY se invierte la clasificación; en BTC el segundo candidato tiene un error de prueba aproximadamente 14.7 veces mayor que el ganador de CV.}{Resultados congelados de candidatos; MSE de precios logarítmicos.}
 
-\FigureSlide{27_multimodality_by_asset}{How often does the selected configuration grid show multiple minima?}{With the specified $64$ configurations per series, multi-candidate counts are GDP 0, SPY 7, AAPL 10, BTC 9. This is not a market-wide prevalence estimate.}{Frozen applied development scans; $\varepsilon=0.10$ representatives.}
+\FigureSlide{27_multimodality_by_asset}{Frecuencia de varios mínimos en la cuadrícula estudiada}{De 64 configuraciones por serie, tienen varios candidatos: PIB 0, SPY 7, AAPL 10 y BTC 9. No representa una frecuencia general del mercado.}{Exploración de desarrollo congelada; separación $\varepsilon=0.10$.}
 
-\FigureSlide{28_actual_temporal_splits}{How was the final test block kept untouched?}{Historical train/validation origins lie before the reserved test region. Candidate and configuration decisions were completed without using external test observations.}{Frozen SPY split-protocol records; no new splitting or tuning.}
+\FigureSlide{28_actual_temporal_splits}{Cómo evitamos utilizar el bloque de prueba}{Los orígenes de entrenamiento y validación preceden al bloque reservado. La selección de configuración y candidatos se realizó sin consultar ese bloque.}{Fechas congeladas del protocolo aplicado a SPY.}
 
-\section{Conclusions}
-\begin{frame}{What have we established?}
+\section{Conclusiones}
+\begin{frame}{¿Qué resultados hemos obtenido?}
 \begin{enumerate}
 \setlength{\itemsep}{.45em}
-\item The forecast-validation objective for finite-difference PLS can be \textbf{multimodal}; both endpoints are meaningful models.
-\item A derivative-aware, boundary-aware adaptive search recovered the finite-reference minima in the tested synthetic and financial suites at \textbf{1.57--1.84\%} of dense-grid evaluation counts.
-\item A distinct \textbf{Sturm construction} counts every positive stationary root for a specified small rational instance; it is not a scalable completeness guarantee.
-\item Multiple candidate smoothness values can imply \textbf{different fitted trends and future paths}, but the validation winner need not remain the test winner.
+\item La función objetivo de validación de pronósticos puede ser \textbf{multimodal}; ambos extremos representan modelos bien definidos.
+\item La búsqueda adaptativa recuperó los mínimos de las referencias finitas probadas utilizando solo \textbf{1.57--1.84\%} de las evaluaciones de la malla densa.
+\item Una construcción basada en \textbf{Sturm} cuenta exactamente las raíces estacionarias positivas de una instancia racional pequeña; no certifica casos grandes.
+\item Diferentes mínimos pueden producir \textbf{tendencias y pronósticos distintos}; el ganador de validación no siempre gana en prueba.
 \end{enumerate}
-\SourceLine{All numerical results refer to the documented frozen configurations, data, and comparison protocols.}
+\SourceLine{Los resultados corresponden a configuraciones, datos y protocolos de comparación documentados.}
 \end{frame}
 
-\begin{frame}{Boundaries of the contribution}
+\begin{frame}{Límites de las conclusiones}
 \begin{columns}[T,totalwidth=\linewidth]
 \begin{column}{.49\linewidth}
-\begin{block}{Supported}
+\begin{block}{Resultados sustentados}
 \begin{itemize}
-\item Analytic derivatives for the fixed continuation model.
-\item Empirical dense-reference recovery on tested surfaces.
-\item Exact limiting endpoint treatment.
-\item Sturm certification of stationary-root counts in finite rational cases.
+\item Derivadas analíticas para el modelo de extrapolación fijado.
+\item Recuperación empírica frente a mallas densas en los casos probados.
+\item Evaluación exacta de los modelos de frontera.
+\item Conteo de raíces por Sturm en instancias racionales finitas.
 \end{itemize}
 \end{block}
 \end{column}
 \begin{column}{.49\linewidth}
-\begin{block}{Not established}
+\begin{block}{Resultados no demostrados}
 \begin{itemize}
-\item Universal recovery by finite adaptive sampling.
-\item Global certification of numeric objective values for large windows.
-\item Uniform improvement in external forecast accuracy.
-\item Financial predictability or trading value.
+\item Recuperación universal por muestreo adaptativo finito.
+\item Certificación global para ventanas de longitud arbitraria.
+\item Mejora uniforme de precisión predictiva externa.
+\item Predictibilidad financiera o utilidad para operar.
 \end{itemize}
 \end{block}
 \end{column}
 \end{columns}
-\SourceLine{Dense-grid agreement is a numerical benchmark, not a theorem of exhaustive root discovery.}
+\SourceLine{La concordancia con una malla densa no prueba la detección exhaustiva de raíces.}
 \end{frame}
 
-\begin{frame}{Reproducibility and sources}
-\textbf{Working paper:} \emph{Numerical Recovery of Multimodal Forecast-Smoothness Minima: Adaptive Search and Sturm Isolation}.
+\begin{frame}{Reproducibilidad y referencias}
+\textbf{Documento de trabajo:} \emph{Recuperación numérica de mínimos multimodales de suavizamiento óptimo para pronóstico: búsqueda adaptativa y aislamiento de Sturm}.
 
 \medskip
-\textbf{Code and experiments:}\\
+\textbf{Código y experimentos:}\\
 \url{https://github.com/heri-espino/Trend-Estimation}
 
 \medskip
-\textbf{Figure generation:}\\
-\texttt{presentation/build\_figures.py} reads frozen experiment directories and draws labeled pedagogical examples.\\
-\texttt{presentation/slides.tex} uses all 28 corresponding PDF outputs.
+\textbf{Generación de figuras:}\\
+\texttt{presentation/build\_figures.py} lee resultados congelados y genera ejemplos pedagógicos.\\
+\texttt{presentation/slides.tex} integra los 28 archivos PDF generados.
 
 \medskip
-\textbf{Key background:} Whittaker (1923); Guerrero (2007, 2008); Craven \& Wahba (1979); Hart (1994); Weinert (2007); Biessy (2026); Brent (1971). Sturm theory as in Basu et al. (2006).
+\textbf{Referencias principales:} Whittaker (1923); Guerrero (2007, 2008); Craven \& Wahba (1979); Hart (1994); Weinert (2007); Biessy (2026); Brent (1971). Teoría de Sturm según Basu et al. (2006).
 
-\SourceLine{The complete bibliography is maintained in the numerical paper's bibliografia.bib.}
+\SourceLine{La bibliografía completa se encuentra en bibliografia.bib del artículo numérico.}
 \end{frame}
 \end{document}
