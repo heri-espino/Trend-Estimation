@@ -1,5 +1,12 @@
 # Working papers
 
+## Fifth independent paper (2026-10-18): pooled observed-series LOOCV
+
+[Working Paper — Pooled LOOCV Numerical Optimization](Working%20Paper%20-%20Pooled%20LOOCV%20Numerical%20Optimization/README.md)
+studies classical **observed-series** penalized trend reconstruction, not forecasting. It pools mean LOOCV **curves** across comparable series, then compares Brent numerical searches with small exact-rational Sturm stationary-root isolation. It uses the 2017 Cortés-Toto–Guerrero–Reyes 2^4 design as source inspiration, and has independent [experiments](../experiments/pooled_loocv_smoothness/README.md), [mathematical proofs](Working%20Paper%20-%20Pooled%20LOOCV%20Numerical%20Optimization/notes/PROOF_LEDGER.md), and [LaTeX manuscript](Working%20Paper%20-%20Pooled%20LOOCV%20Numerical%20Optimization/manuscript/main.tex). All numerical evidence is prospective; nothing is merged into the older four scientific claims.
+
+**Note:** the sections below document the previously established four-paper research program; their dates and history are retained rather than rewriting that older provenance.
+
 **Source-method replication separately:** the
 [full-N Cortés-Toto 2^4 runner](../experiments/smoothness_cv/run_cortes_toto_replication.py)
 reproduces the original *in-sample smoothness selection target* on
