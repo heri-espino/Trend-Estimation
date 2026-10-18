@@ -1,0 +1,124 @@
+{
+  "protocol": "independent_pooled_observed_series_LOOCV_v1",
+  "status": "executed",
+  "preset": "pilot",
+  "created_utc": "2026-10-18T23:41:50.498893+00:00",
+  "factorial_scenarios": [
+    {
+      "trend": "linear",
+      "seasonality": false,
+      "sigma": 0.5,
+      "n": 50
+    },
+    {
+      "trend": "linear",
+      "seasonality": false,
+      "sigma": 0.5,
+      "n": 200
+    },
+    {
+      "trend": "linear",
+      "seasonality": false,
+      "sigma": 2.0,
+      "n": 50
+    },
+    {
+      "trend": "linear",
+      "seasonality": false,
+      "sigma": 2.0,
+      "n": 200
+    },
+    {
+      "trend": "linear",
+      "seasonality": true,
+      "sigma": 0.5,
+      "n": 50
+    },
+    {
+      "trend": "linear",
+      "seasonality": true,
+      "sigma": 0.5,
+      "n": 200
+    },
+    {
+      "trend": "linear",
+      "seasonality": true,
+      "sigma": 2.0,
+      "n": 50
+    },
+    {
+      "trend": "linear",
+      "seasonality": true,
+      "sigma": 2.0,
+      "n": 200
+    },
+    {
+      "trend": "nonlinear",
+      "seasonality": false,
+      "sigma": 0.5,
+      "n": 50
+    },
+    {
+      "trend": "nonlinear",
+      "seasonality": false,
+      "sigma": 0.5,
+      "n": 200
+    },
+    {
+      "trend": "nonlinear",
+      "seasonality": false,
+      "sigma": 2.0,
+      "n": 50
+    },
+    {
+      "trend": "nonlinear",
+      "seasonality": false,
+      "sigma": 2.0,
+      "n": 200
+    },
+    {
+      "trend": "nonlinear",
+      "seasonality": true,
+      "sigma": 0.5,
+      "n": 50
+    },
+    {
+      "trend": "nonlinear",
+      "seasonality": true,
+      "sigma": 0.5,
+      "n": 200
+    },
+    {
+      "trend": "nonlinear",
+      "seasonality": true,
+      "sigma": 2.0,
+      "n": 50
+    },
+    {
+      "trend": "nonlinear",
+      "seasonality": true,
+      "sigma": 2.0,
+      "n": 200
+    }
+  ],
+  "independent_seed_repeats_per_cell": 5,
+  "pool_sizes": [
+    1,
+    3
+  ],
+  "instance_count": 160,
+  "difference_order": 2,
+  "log_lambda_bounds": [
+    -20,
+    35
+  ],
+  "dense_grid_points": 401,
+  "derivative_scan_points": 101,
+  "seed_offset": 100000,
+  "git_commit": "4379ff9f3b17a7b7e5da19c11ae6afc981c973ed",
+  "python": "3.11.16",
+  "numpy": "2.4.6",
+  "scipy": "1.17.1",
+  "method_caveat": "dense grid not certified; sign-scan Brent not complete",
+  "rows_written": 480
+}
