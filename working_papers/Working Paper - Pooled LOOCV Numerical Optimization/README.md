@@ -55,7 +55,8 @@ For R=1 this reduces to traditional single-series LOOCV. Group only statisticall
 3. [Simulation atlas](notes/SIMULATION_ATLAS.md) — original 2017 factorial and experimental contrasts.
 4. [Literature and novelty audit](notes/LITERATURE_POSITIONING.md).
 5. [Decision log](notes/DECISIONS.md).
-6. [Agent handoff](AI_HANDOFF.md).
+6. [Completed first pilot audit](notes/PILOT_AUDIT_2026-10-18.md) — 160 observed pools, numerical caveats.
+7. [Agent handoff](AI_HANDOFF.md).
 
 ## Runnable independent pilot
 
@@ -72,7 +73,7 @@ For small rational input, separately:
 
     python -m experiments.pooled_loocv_smoothness.sturm_exact
 
-The smoke run is **not publication evidence**. The full factorial run, finance application, theorem/counterexample work, manuscript refinement, and independent verification have **not** been completed.
+The smoke and first 16-cell **pilot were executed and pushed** on 2026-10-18. See the [pilot audit](notes/PILOT_AUDIT_2026-10-18.md) for descriptive results and limitations. The confirmatory campaign, financial application, theorem/counterexample verification, and manuscript refinement remain prospective.
 
 ## Separation contract
 
