@@ -1,0 +1,114 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage[hidelinks]{hyperref}
+\usepackage{natbib}
+
+\title{Numerical Optimization of Penalized Trend Smoothness\\
+by Pooled Leave-One-Out Cross-Validation}
+\author{Heriberto Espino Montelongo\\[3pt]\small Working draft --- author affiliations and coauthors to confirm}
+\date{18 October 2026 --- research outline, not a submission draft}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Penalized least-squares trend smoothing requires a choice of its
+regularization parameter. Following the experimental setting of
+Cort\'es-Toto, Guerrero and Reyes (2017), we investigate the numerical
+optimization of leave-one-out cross-validation (LOOCV) loss for one
+or more comparable observed time series. We define a pooled criterion,
+derive its finite-parameter derivative and exact endpoint limits,
+and specify comparisons between bounded scalar minimization,
+multi-bracket Brent root refinement and restricted exact Sturm
+root isolation. A source-inspired factorial simulation and a
+retrospective financial illustration are planned. No accuracy or
+efficiency superiority result is asserted at this stage.
+\end{abstract}
+
+\section{Introduction and literature positioning}
+Trend smoothing by penalized least squares (PLS) is classical
+\citep{guerrero2007,cortes2017}. Classical LOOCV and GCV
+are already used for choosing smoothing parameters
+\citep{cortes2017,weinert2007}.
+A new numerical contribution requires a demonstrated improvement
+over existing global GCV optimization, including the prior-art
+investigation discussed in the research notebook.
+We address observed-series reconstruction, not prediction.
+
+\section{Pooled LOOCV and normalized smoothness}
+Let $y^{(r)}\in\mathbb R^N$ for $r=1,\dots,R$, with
+$N>d\geq1$, $D_d$ the forward difference matrix,
+$Q=D_d^\top D_d$, and
+\begin{equation}
+ H_\lambda=(I_N+\lambda Q)^{-1}, \qquad
+ \widehat\tau_\lambda^{(r)}=H_\lambda y^{(r)}.
+\end{equation}
+For $\lambda>0$, define the pooled LOOCV MSE
+\begin{equation}\label{eq:pooled}
+ F_R(\lambda)=\frac1{RN}\sum_{r=1}^{R}\sum_{i=1}^{N}
+ \left(\frac{y_i^{(r)}-(H_\lambda y^{(r)})_i}
+ {1-(H_\lambda)_{ii}}\right)^2.
+\end{equation}
+This averages errors \emph{before} minimizing;
+it is not the average of $R$ optimum regularization parameters.
+The normalized Guerrero-type coordinate is
+\begin{equation}
+ S(\lambda)=\frac{N-\operatorname{tr}H_\lambda}{N-d}
+ \in[0,1].
+\end{equation}
+For $R=1$, Eq.~\eqref{eq:pooled} is ordinary LOOCV.
+
+\section{Endpoint limits and analytical derivatives}
+Put $T_\lambda=Q(I+\lambda Q)^{-1}$. Since
+$I-H_\lambda=\lambda T_\lambda$, LOOCV residuals satisfy
+\begin{equation}
+ e_{ri}(\lambda)=\frac{(T_\lambda y^{(r)})_i}
+ {(T_\lambda)_{ii}} .
+\end{equation}
+The continuous extension at $\lambda=0$ is
+$e_{ri}(0)=(Qy^{(r)})_i/Q_{ii}$. At
+$\lambda=\infty$, write $P$ for the orthogonal projector onto
+$\ker Q$ and use
+$e_{ri}(\infty)=[(I-P)y^{(r)}]_i/(1-P_{ii})$.
+For finite $\lambda$, $T'_\lambda=-T_\lambda^2$ and hence
+\begin{equation}
+ F_R'(\lambda)=\frac{2}{RN}\sum_{r,i}e_{ri}(\lambda)
+ \frac{-(T_\lambda^2y^{(r)})_i(T_\lambda)_{ii}
+ +(T_\lambda y^{(r)})_i(T_\lambda^2)_{ii}}
+ {(T_\lambda)_{ii}^2}.
+\end{equation}
+These are standard linear-smoother calculus identities; proofs
+and numerical edge cases are recorded in notes/PROOF_LEDGER.md.
+
+\section{Numerical candidate recovery}
+We plan to compare (i) a finite dense log-$\lambda$ grid,
+(ii) one bounded Brent-style scalar search,
+(iii) multiple sign-change brackets of the derivative followed
+by Brent root refinement and evaluation of both endpoints,
+and (iv) exact Sturm isolation for small rational instances.
+Only method (iv), subject to exact-arithmetic restrictions and
+correct root classification, supplies exact positive-root counts.
+A derivative-sign scan alone cannot guarantee completeness.
+
+\section{Simulation design and financial illustration}
+Use the four-factor design of \citet{cortes2017}:
+linear or nonlinear Beta-mixture trend, seasonality present/absent,
+Gaussian noise standard deviation 0.5/2, and $N=50/200$.
+Pools with $R>1$ are an independently declared extension
+using a common latent trend and independent noisy replicates.
+Predeclare paired comparisons of candidate recovery, objective
+values, runtime, boundary selection and sensitivity to pooling.
+A financial case study may illustrate retrospective smoothing,
+without forecasting or investment-performance claims.
+
+\section{Discussion and limitations}
+\textbf{Results pending.} Neither numerical dominance nor a
+novel global-solver theorem is established. Related algorithms,
+correlated errors, scalar minimization budgets and
+computational exactness require further investigation.
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+\end{document}
