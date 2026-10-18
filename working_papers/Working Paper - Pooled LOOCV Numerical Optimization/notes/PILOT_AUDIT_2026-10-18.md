@@ -2,7 +2,7 @@
 
 **Date of underlying run:** 2026-10-18 (manifest UTC 23:41:50).  
 **Analysis recorded:** 2026-10-18.  
-**Source files:** [pilot manifest](../../../../results/pooled_loocv_smoothness/pilot/manifest.json) · [pilot per-method CSV](../../../../results/pooled_loocv_smoothness/pilot/solver_comparison.csv).  
+**Source files:** [pilot manifest](../../../results/pooled_loocv_smoothness/pilot/manifest.json) · [pilot per-method CSV](../../../results/pooled_loocv_smoothness/pilot/solver_comparison.csv).  
 **Reproducibility:** run from repo root:
 
     python -m experiments.pooled_loocv_smoothness.audit_pilot --csv results/pooled_loocv_smoothness/pilot/solver_comparison.csv --out results/pooled_loocv_smoothness/pilot/audit_summary.json
