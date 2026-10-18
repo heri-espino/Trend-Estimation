@@ -103,7 +103,7 @@ def test_sturm_counts_tiny_exact_stationary_polynomial():
     pytest.importorskip("sympy")
     from experiments.pooled_loocv_smoothness.sturm_exact import exact_sturm
 
-    result = exact_sturm([[0, 3, -1, 5, 1]], order=2)
+    result = exact_sturm([[4, -1, 0, 5, 3]], order=2)
     assert result["constant_objective"] is False
     assert result["polynomial_degree"] >= 0
-    assert result["positive_stationary_roots"] >= 0
+    assert result["positive_stationary_roots"] == 1
