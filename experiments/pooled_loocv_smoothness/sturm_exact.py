@@ -80,7 +80,7 @@ def main() -> None:
     parser.add_argument("--order", type=int, default=2)
     args = parser.parse_args()
     # Tiny rational illustrative instance; no theorem about all series.
-    result = exact_sturm([[0, 3, -1, 5, 1]], order=args.order)
+    result = exact_sturm([[4, -1, 0, 5, 3]], order=args.order)
     print(json.dumps(result, indent=2))
 
 
