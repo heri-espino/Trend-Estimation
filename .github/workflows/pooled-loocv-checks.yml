@@ -29,3 +29,9 @@ jobs:
         run: python -m pytest tests/test_pooled_loocv_smoothness.py -q
       - name: Confirm campaign preview without simulations
         run: python -m experiments.pooled_loocv_smoothness.run --preset pilot --dry-run
+      - name: Execute tiny smoke and validate exported artifacts
+        run: |
+          python -m experiments.pooled_loocv_smoothness.run --preset smoke --out-dir /tmp/pooled-loocv-smoke
+          test -s /tmp/pooled-loocv-smoke/solver_comparison.csv
+          test -s /tmp/pooled-loocv-smoke/manifest.json
+          test -s /tmp/pooled-loocv-smoke/example_signal_and_objective.png
