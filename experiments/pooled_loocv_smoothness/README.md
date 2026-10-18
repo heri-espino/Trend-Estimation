@@ -34,3 +34,16 @@ Solver comparisons use the **same observed pool**. Methods do not include foreca
 - R=1 is classical ordinary CV; R=3 adds cross-series pooling. Same latent signal within each pool; independent Gaussian errors conditional on it.
 - λ optimized numerically (in log λ) and transformed to normalized S∈[0,1]; both exact endpoints included.
 - No change to any existing forecast method or manuscript.
+
+
+## Optional retrospective financial series example
+
+Supply a local CSV containing a column of prices or an index level. The script **does not download data**, and never predicts future values:
+
+    python -m experiments.pooled_loocv_smoothness.finance_case --csv data/local_prices.csv --columns close --date-column date --transform log-level --out-dir results/pooled_loocv_smoothness/finance
+
+For comparable pooled **separate** financial series with different levels or currencies, standardize explicitly:
+
+    python -m experiments.pooled_loocv_smoothness.finance_case --csv data/local_prices.csv --columns index1 fx_rate --date-column date --transform log-level --standardize --out-dir results/pooled_loocv_smoothness/finance_pooled
+
+Available transformations are level, log-level and log-return. The latter changes the *target* to the return series. Rows with missing values in any chosen column are dropped before pooling. Consecutive observations are treated as equally spaced **trading observations**, not calendar days. Financial series can have autocorrelated errors, outliers, holidays and breaks; classical LOOCV is an exploratory reconstruction criterion, not proof of an appropriate trading or forecasting model. Output includes financial_case.json, financial_loss_curve.csv and financial_reconstruction.png; original CSV data are never copied into the results directory.
