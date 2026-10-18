@@ -47,3 +47,12 @@ For comparable pooled **separate** financial series with different levels or cur
     python -m experiments.pooled_loocv_smoothness.finance_case --csv data/local_prices.csv --columns index1 fx_rate --date-column date --transform log-level --standardize --out-dir results/pooled_loocv_smoothness/finance_pooled
 
 Available transformations are level, log-level and log-return. The latter changes the *target* to the return series. Rows with missing values in any chosen column are dropped before pooling. Consecutive observations are treated as equally spaced **trading observations**, not calendar days. Financial series can have autocorrelated errors, outliers, holidays and breaks; classical LOOCV is an exploratory reconstruction criterion, not proof of an appropriate trading or forecasting model. Output includes financial_case.json, financial_loss_curve.csv and financial_reconstruction.png; original CSV data are never copied into the results directory.
+
+
+## Audit the saved pilot
+
+Once `solver_comparison.csv` is present from an actual run or GitHub pull, compute a deterministic paired summary:
+
+    python -m experiments.pooled_loocv_smoothness.audit_pilot --csv results/pooled_loocv_smoothness/pilot/solver_comparison.csv --out results/pooled_loocv_smoothness/pilot/audit_summary.json
+
+Read the [2026-10-18 pilot audit](../../working_papers/Working%20Paper%20-%20Pooled%20LOOCV%20Numerical%20Optimization/notes/PILOT_AUDIT_2026-10-18.md) before selecting heavier experiments; its detected root counts are **not exact** and not an automatic count of distinct minima.
