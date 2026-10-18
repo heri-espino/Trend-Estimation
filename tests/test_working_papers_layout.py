@@ -1,4 +1,4 @@
-"""Structural regression checks for one new lead and three preserved paper lines."""
+"""Structural regression checks for five independent working-paper directories."""
 from __future__ import annotations
 
 from pathlib import Path
@@ -12,10 +12,11 @@ NAMES = {
     "Working Paper - Numerical Methods",
     "Working Paper - Dynamic Branch Selection",
     "Working Paper - Trend Simulation and Mean-Difference Forecasting",
+    "Working Paper - Pooled LOOCV Numerical Optimization",
 }
 
 
-def test_four_independent_paper_directories_and_legacy_roots_gone():
+def test_five_independent_paper_directories_and_legacy_roots_gone():
     actual = {p.name for p in WP.iterdir() if p.is_dir()}
     assert actual == NAMES
     assert (ROOT / "ideas" / "README.md").is_file()
@@ -32,7 +33,8 @@ def test_each_manuscript_is_standalone():
     numeric = (WP / "Working Paper - Numerical Methods" / "main.tex")
     dynamic = (WP / "Working Paper - Dynamic Branch Selection" / "manuscript/main.tex")
     new=(WP / "Working Paper - Trend Simulation and Mean-Difference Forecasting" / "manuscript/main.tex")
-    for f in (pooled, numeric, dynamic, new):
+    observed = (WP / "Working Paper - Pooled LOOCV Numerical Optimization" / "manuscript/main.tex")
+    for f in (pooled, numeric, dynamic, new, observed):
         assert f.is_file()
         source = f.read_text(encoding="utf-8")
         assert r"\begin{document}" in source and r"\end{document}" in source
