@@ -35,3 +35,9 @@ jobs:
           test -s /tmp/pooled-loocv-smoke/solver_comparison.csv
           test -s /tmp/pooled-loocv-smoke/manifest.json
           test -s /tmp/pooled-loocv-smoke/example_signal_and_objective.png
+      - name: Audit committed pilot when available
+        run: |
+          if [ -f results/pooled_loocv_smoothness/pilot/solver_comparison.csv ]; then
+            python -m experiments.pooled_loocv_smoothness.audit_pilot --out /tmp/pooled-loocv-pilot-audit.json > /tmp/pooled-loocv-pilot-audit-stdout.json
+            test -s /tmp/pooled-loocv-pilot-audit.json
+          fi
