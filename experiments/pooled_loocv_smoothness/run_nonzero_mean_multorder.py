@@ -45,6 +45,7 @@ from .variance_estimation import estimate_gaussian_differences
 from .run_nonzero_difference_mean import (
     METHODS, MU_FACTORS, MeanScenario, draw_pool, compare_pool,
 )
+from .mean_difference_methods import particular_polynomial
 
 SEED_BASE = 82100000  # independent of old nonzero-mu pilot and all other projects
 ORDERS = (1, 2, 3, 4)
@@ -57,6 +58,12 @@ ZERO_ML = "zero_mu_gaussian_difference_ml"
 ZERO_CV = "zero_mu_pooled_loocv"
 ORACLE = "known_mu_true_ratio_oracle"
 GLS = "estimated_mu_gaussian_gls_ml"
+PAIRS = (
+    ("zero_mu_gaussian_difference_ml", "estimated_mu_gaussian_gls_ml"),
+    ("zero_mu_pooled_loocv", "estimated_mu_fold_clean_pooled_loocv"),
+    ("estimated_mu_gaussian_gls_ml", "estimated_mu_fold_clean_pooled_loocv"),
+    ("pooled_guerrero_plugin_mu_plus_gaussian_ml", "estimated_mu_gaussian_gls_ml"),
+)
 CV_JOINT = "estimated_mu_fold_clean_pooled_loocv"
 PLUGIN = "pooled_guerrero_plugin_mu_plus_gaussian_ml"
 
@@ -205,6 +212,39 @@ def summarize(summary: dict, expected_replicates: int):
     return out
 
 
+def add_paired(pair_acc: dict, R: int, mu: float, result: list[dict]):
+    table={row["method"]:row["realized_true_trend_mse"] for row in result}
+    for first, second in PAIRS:
+        key=(R,mu,first,second)
+        score=table[first]-table[second]
+        slot=pair_acc.setdefault(key,{"n":0,"sum":0.,"sum2":0.,"wins_second":0})
+        slot["n"]+=1
+        slot["sum"]+=score
+        slot["sum2"]+=score*score
+        slot["wins_second"]+=int(score>0)
+
+
+def summarize_paired(pair_acc: dict, expected_replicates: int):
+    result=[]
+    for (R,mu,first,second), slot in sorted(pair_acc.items()):
+        n=slot["n"]
+        if n!=expected_replicates:
+            raise ValueError("paired difference count inconsistent")
+        average=slot["sum"]/n
+        var=max(0.,(slot["sum2"]-n*average*average)/(n-1)) if n>1 else None
+        result.append({
+            "R":R,"mu_factor":mu,"first_method":first,"second_method":second,
+            "independent_base_shock_draws":n,
+            "mean_paired_MSE_first_minus_second":average,
+            "sample_sd_paired_difference":None if var is None else float(np.sqrt(var)),
+            "standard_error_paired_difference":None if var is None else float(np.sqrt(var/n)),
+            "second_lower_MSE_count":slot["wins_second"],
+        })
+    if len(result)!=2*len(MU_FACTORS)*len(PAIRS):
+        raise ValueError("incomplete paired comparison cells")
+    return result
+
+
 def calculate_shard(shard: Shard, out: Path, *, dry_run=False,
                     overwrite=False):
     manifest={
@@ -244,6 +284,8 @@ def calculate_shard(shard: Shard, out: Path, *, dry_run=False,
     out.mkdir(parents=True,exist_ok=False)
     data_path=out/"method_comparison.csv.gz"
     summary_acc=_new_summary()
+    paired_acc={}
+    p=particular_polynomial(shard.n,shard.order)
     count=0
     fields=None
     # Only local shard data are held transiently; data is compressed as written.
@@ -260,14 +302,11 @@ def calculate_shard(shard: Shard, out: Path, *, dry_run=False,
                 for factor in MU_FACTORS:
                     sc=MeanScenario(shard.n,shard.sigma_eta,SIGMA_EPSILON,
                                     factor,d=shard.order)
-                    p_mu=(
-                        sc.mu * np.asarray([
-                            __import__("math").comb(i,shard.order)
-                            for i in range(shard.n)],dtype=float)
-                    )
+                    p_mu=sc.mu*p
                     observed=observed0+p_mu[None,:]
                     truth=truth0+p_mu[None,:]
                     result=fast_rows(sc,observed,truth,baseline)
+                    add_paired(paired_acc,R,factor,result)
                     for method in result:
                         row={
                             "replicate":replicate,"seed":seed,
@@ -297,7 +336,8 @@ def calculate_shard(shard: Shard, out: Path, *, dry_run=False,
     manifest["compressed_csv_bytes"]=data_path.stat().st_size
     (out/"summary.json").write_text(
         json.dumps({"status":"completed_shard",
-                    "by_R_mu_method":summarize(summary_acc,shard.count)},
+                    "by_R_mu_method":summarize(summary_acc,shard.count),
+                    "paired_R_mu_method_contrasts":summarize_paired(paired_acc,shard.count)},
                    indent=2)+"\n",encoding="utf-8")
     (out/"manifest.json").write_text(
         json.dumps(manifest,indent=2)+"\n",encoding="utf-8")
