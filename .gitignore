@@ -100,3 +100,6 @@ results/pooled_loocv_smoothness/guerrero/cortes_criteria_replay/preflight_*/
 # Raw compressed per-seed shards can be large: back them up outside the repo.
 results/pooled_loocv_smoothness/process_examples/**/rows_*.csv.gz
 results/pooled_loocv_smoothness/process_examples/**/rows_*.csv.gz.partial
+
+# Marp presentation exports are generated manually, not by CI/push.
+working_papers/Working Paper - Pooled LOOCV Numerical Optimization/presentation/build/
