@@ -104,3 +104,28 @@ git status
 The manual audit writes under `results/pooled_loocv_smoothness/guerrero/estimated_variances/pilot/audit/`: a structured summary JSON, R=3 scenario CSV, comparison figure, moment-failure figure and ML variance-component-error figure. Do not interpret the 120 nested pool evaluations as 120 independent seeds; the primary descriptive comparison uses 60 R=3 pools.
 
 Important empirical boundary: the constrained moments method reached innovation variance zero, and hence lambda=+infinity, in 16/60 R=3 and 19/60 R=1 pools. These are preserved failures, not silently regularized.
+
+
+## Next, independent misspecified-noise robustness experiment
+
+[Reproducibility ledger](../../working_papers/Working%20Paper%20-%20Pooled%20LOOCV%20Numerical%20Optimization/notes/RESULTS_LEDGER.md) lists each previous **executed and committed** campaign with its DGP, seeds, location and status. The [robustness protocol](../../working_papers/Working%20Paper%20-%20Pooled%20LOOCV%20Numerical%20Optimization/notes/ROBUSTNESS_PROTOCOL.md) specifies an **unexecuted full pilot** that holds the same PLS smoother fixed and tests:
+
+- correctly specified Gaussian errors;
+- Student-t(5) measurement noise (finite variance);
+- Student-t(5) stochastic-trend innovations;
+- stationary AR(1) measurement errors, phi=0.65;
+- measurement-noise variance changing across the time series.
+
+Each regime has N=50/200 and observation SD 0.5/2 with innovation SD 0.3, 5 seeds, nested pools R=1/3, for **200 pools and 1000 method rows**. Method pairs see identical observations. *Nominal ratio* is not called an oracle for AR1/heteroskedastic models.
+
+```powershell
+conda activate trend-estimation
+git switch paper/pooled-loocv-numerical-optimization
+git pull --ff-only
+python -m pytest tests/test_guerrero_robustness.py -q
+python -m experiments.pooled_loocv_smoothness.run_robustness --preset smoke
+python -m experiments.pooled_loocv_smoothness.run_robustness --preset pilot --dry-run
+python -m experiments.pooled_loocv_smoothness.run_robustness --preset pilot
+```
+
+**Save results for independent analysis:** `results/pooled_loocv_smoothness/guerrero/robustness/pilot/{manifest.json,method_comparison.csv,summary.json,robustness_true_trend_mse_R3.png}`. Inspect the exact pilot manifest and CSV before adding and pushing these specific lightweight files to the **same existing branch**. Do not launch the 100-seed confirmatory preset or auto-generate heavyweight artifacts on push. No PRs.
