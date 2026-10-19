@@ -56,7 +56,8 @@ For R=1 this reduces to traditional single-series LOOCV. Group only statisticall
 4. [Literature and novelty audit](notes/LITERATURE_POSITIONING.md).
 5. [Decision log](notes/DECISIONS.md).
 6. [Completed first pilot audit](notes/PILOT_AUDIT_2026-10-18.md) — 160 observed pools, numerical caveats.
-7. [Agent handoff](AI_HANDOFF.md).
+7. [Guerrero variance-ratio benchmark](notes/GUERRERO_VARIANCE_RATIO_PROTOCOL.md) — a separate stochastic-trend experiment comparing known noise ratio with true trend MSE.
+8. [Agent handoff](AI_HANDOFF.md).
 
 ## Runnable independent pilot
 
@@ -74,6 +75,12 @@ For small rational input, separately:
     python -m experiments.pooled_loocv_smoothness.sturm_exact
 
 The smoke and first 16-cell **pilot were executed and pushed** on 2026-10-18. See the [pilot audit](notes/PILOT_AUDIT_2026-10-18.md) for descriptive results and limitations. The confirmatory campaign, financial application, theorem/counterexample verification, and manuscript refinement remain prospective.
+
+## Independent Guerrero (2007) benchmark
+
+We separately simulate `D_2 tau = epsilon` and `y = tau + eta`, so the ratio `lambda_G = sigma_eta^2 / sigma_epsilon^2` is **known**. We compare it to Brent-selected pooled LOOCV and record both LOOCV MSE and true latent-trend MSE. The known ratio uses oracle simulation parameters and is not a variance estimator for market series.
+
+Run `python -m experiments.pooled_loocv_smoothness.guerrero_ratio --preset smoke`. The [benchmark protocol](notes/GUERRERO_VARIANCE_RATIO_PROTOCOL.md) defines a separate 12-scenario pilot (120 pools) that does not overwrite our completed 2017-inspired 16-cell pilot.
 
 ## Separation contract
 
