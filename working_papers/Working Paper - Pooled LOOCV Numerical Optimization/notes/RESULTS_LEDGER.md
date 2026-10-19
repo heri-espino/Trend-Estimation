@@ -11,6 +11,12 @@ Keep different DGPs and estimands separate, even when they share `PooledLOOCV`. 
 | **C. Guerrero DGP, both variances estimated** | Same 12 stochastic Gaussian cells: estimate the two variances from \(D_2y\) using (a) Gaussian differenced-covariance likelihood; (b) nonnegative quadratic moments. Compare with *true-ratio oracle* and LOOCV. True latent trend used only for final MSE evaluation. | **EXECUTED/COMMITTED** 12 cells × 5 seeds × nested R1/3 = **120 pools / 480 method rows** | `results/pooled_loocv_smoothness/guerrero/estimated_variances/pilot/`; [estimated-variance pilot audit](VARIANCE_ESTIMATION_PILOT_AUDIT_2026-10-18.md), code `variance_estimation.py` and `run_variance_estimation.py`. |
 | **D. Robustness: noise-model misspecification** | Five regimes: iid Gaussian, Student-t observation, Student-t trend innovation, Gaussian AR1 observation, Gaussian half-sample heteroskedastic observation; fixed \(\sigma_\varepsilon=0.3\), eta SD 0.5/2, N50/200. Identical fitted PLS smoother; compare Gaussian-difference ML, observed LOOCV Brent, multibracket, moments, and *nominal* ratio. | **EXECUTED/COMMITTED:** 20 DGP cells × 5 seeds × nested R1/3 = **200 pools / 1000 method rows**. Separate tiny CI smoke: 10 pools / 50 rows. **Independent confirmatory remains unrun.** | Verified committed outputs `results/pooled_loocv_smoothness/guerrero/robustness/pilot/`; [locked protocol](ROBUSTNESS_PROTOCOL.md), [measured pilot audit](ROBUSTNESS_PILOT_AUDIT_2026-10-18.md), runner `run_robustness.py`, independent re-audit `audit_robustness.py`. |
 
+### New experiment E: extreme tails, asymmetry, rare jumps and clustered volatility
+
+| Study | Simulation mechanism / scientific question | Experimental size and run status | Stored artifacts and authoritative note |
+|---|---|---|---|
+| **E. Tail shape & Cauchy stress** | Eight regimes: Gaussian iid control, Student-t3 observation shocks, Student-t3 trend innovations, centered Gamma right/left skew, rare Gaussian jump mixture, Student-t5 GARCH observation noise, Cauchy observation noise. All use identical PLS and feasible Gaussian ML / Brent selectors. For Cauchy the noise has **no variance or population MSE**, so report median finite-pool error and quantiles rather than an expected-MSE comparison. | **IMPLEMENTED, pilot NOT YET EXECUTED/COMMITTED**. Manual pilot: 32 scenario cells × 5 seeds × nested R1/3 = **320 pools, 960 method rows**. Tiny automated smoke: 16 pools, 48 method rows. | [full locked protocol](TAIL_NOISE_PROTOCOL.md), [ML and LOOCV derivations](GAUSSIAN_MLE_AND_LOOCV_EXPLAINED.md), generator `experiments/pooled_loocv_smoothness/run_tail_noise.py`, tests `tests/test_guerrero_tail_noise.py`. Expected pilot output `results/pooled_loocv_smoothness/guerrero/tail_stress/pilot/` |
+
 ### A/B/C design and seeds, not interchangeable
 
 - A manifest: `results/pooled_loocv_smoothness/pilot/manifest.json`, independent seed offset **100000**, difference order 2, log penalty domain [-20,35], R=1,3, 401-point grid and 101-point derivative scan. Simulation was originally run with NumPy 2.4.6, SciPy 1.17.1 and Python 3.11.16. Verified **160** pooled cases.
@@ -33,6 +39,13 @@ Keep different DGPs and estimands separate, even when they share `PooledLOOCV`. 
 - The nominal known-variance ratio is **not an oracle** for AR1 or heteroskedastic covariance regimes. Differenced Gaussian likelihood is an **extension**, *not an estimation technique claimed to have been introduced by Guerrero (2007)*.
 - No extrapolation or future horizon enters this independent observed-series paper. Correlated errors may violate ordinary LOOCV's statistical interpretation.
 - Store lightweight experiment results/notes in Git on branch `paper/pooled-loocv-numerical-optimization`. **Do not open PRs or merge**. Automatic CI may run only small validation smoke; full pilots, confirmatory campaigns, large figures, and document builds remain **manual-only**.
+
+### E controls and provenance
+
+- Tail-stress base seed is **47800000** (pilot), with `seed=base+10000*scenario_id+replicate`, and **48800000** for future independent confirmation; method rows remain paired within a pool. `R=1` nested within `R=3`.
+- For all non-Cauchy regimes, observation scale means population SD; Cauchy uses `gamma`, the *scale*, not a variance or standard deviation.
+- Only simulation code and tests are committed at this point; **no new pilot findings are asserted** until user-run result CSV and manifest are present. In particular, Gaussian ML has not yet been shown to win or lose under Cauchy, Gamma, mixture, or t(3).
+- The relevant market-return source is Rama Cont (2001), *Empirical properties of asset returns: stylized facts and statistical issues*, DOI 10.1080/713665670, supporting the motivation of tails, asymmetry and clustering, **not** validating these exact synthetic error models as stock return distributions.
 
 ### Remaining decisions
 
