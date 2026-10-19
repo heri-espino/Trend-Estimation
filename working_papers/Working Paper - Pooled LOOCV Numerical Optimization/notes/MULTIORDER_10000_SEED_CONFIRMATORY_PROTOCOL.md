@@ -100,10 +100,10 @@ python -m pytest tests/test_nonzero_mean_multorder.py -q
 # No simulation; only print design
 python -m experiments.pooled_loocv_smoothness.launch_nonzero_mean_multorder --d 4 --n 200 --sigma-eta 2 --seed-stop 2
 # Actually execute just 2 independent d4/N200/noise2 seeds; explicit opt-in
-python -m experiments.pooled_loocv_smoothness.launch_nonzero_mean_multorder --d 4 --n 200 --sigma-eta 2 --seed-stop 2 --workers 1 --execute
+python -m experiments.pooled_loocv_smoothness.launch_nonzero_mean_multorder --d 4 --n 200 --sigma-eta 2 --seed-stop 2 --workers 1 --root results/pooled_loocv_smoothness/guerrero/nonzero_mean_multorder/preflight_d4_N200 --execute
 ```
 
-This tests d4's most ill-conditioned and largest-scale cell. Inspect its manifest, compression digest, finite reconstructed loss, boundary λ and numeric invariance. Test at least one N50 and η=.5 cell before enabling larger jobs.
+This tests d4's most ill-conditioned and largest-scale cell in an **isolated preflight directory**. Do not run a short interval under the default `confirmatory/` root: the full campaign later creates larger [0,100) shards and would overlap [0,2). The launcher now checks for such overlap and refuses to mix intervals. Inspect its manifest, compression digest, finite reconstructed loss, boundary λ and numeric invariance. The completed preflight is **not counted** in the full 10k-per-cell confirmatory root. Test at least one N50 and η=.5 cell before enabling larger jobs.
 
 ### Full campaign only AFTER preflight, manually opt in
 
