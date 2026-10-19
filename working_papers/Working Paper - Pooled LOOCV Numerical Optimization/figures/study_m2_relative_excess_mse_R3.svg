@@ -1,0 +1,228 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1300" height="668" viewBox="0 0 1300 668" role="img" aria-labelledby="chartTitle chartDesc">
+<title id="chartTitle">Nine-process study M.2, R=3 relative latent trend MSE</title>
+<desc id="chartDesc">Percent excess mean simulated latent-trend MSE above each process row minimum, across 1000 seeds. Lower and lighter are better. This is not a statistical significance chart.</desc>
+<rect width="1300" height="668" fill="#ffffff"/>
+<text x="32" y="38" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#1e293b">Process-conditioned smoothing performance · R=3</text>
+<text x="32" y="65" font-family="Arial,sans-serif" font-size="16" fill="#475569">1,000 independent seeds · 11 feasible policies · cell = excess mean MSE over row's minimum (%)</text>
+<text x="32" y="89" font-family="Arial,sans-serif" font-size="13" fill="#475569">Light = closer to best within this process; dark = larger regret. Differences are NOT necessarily statistically significant.</text>
+<text x="326" y="128" fill="#334155" font-family="Arial,sans-serif" font-size="12" text-anchor="middle">CV 0</text>
+<text x="414" y="128" fill="#334155" font-family="Arial,sans-serif" font-size="12" text-anchor="middle">GCV 0</text>
+<text x="502" y="128" fill="#334155" font-family="Arial,sans-serif" font-size="12" text-anchor="middle">AICc 0</text>
+<text x="590" y="128" fill="#334155" font-family="Arial,sans-serif" font-size="12" text-anchor="middle">CV joint</text>
+<text x="678" y="128" fill="#334155" font-family="Arial,sans-serif" font-size="12" text-anchor="middle">GCV joint</text>
+<text x="766" y="128" fill="#334155" font-family="Arial,sans-serif" font-size="12" text-anchor="middle">AICc joint</text>
+<text x="854" y="128" fill="#334155" font-family="Arial,sans-serif" font-size="12" text-anchor="middle">GLS ML</text>
+<text x="942" y="128" fill="#334155" font-family="Arial,sans-serif" font-size="12" text-anchor="middle">plug-in ML</text>
+<text x="1030" y="128" fill="#334155" font-family="Arial,sans-serif" font-size="12" text-anchor="middle">zero ML</text>
+<text x="1118" y="128" fill="#334155" font-family="Arial,sans-serif" font-size="12" text-anchor="middle">fixed .5</text>
+<text x="1206" y="128" fill="#334155" font-family="Arial,sans-serif" font-size="12" text-anchor="middle">fixed .8</text>
+<text x="268" y="172.5" fill="#0f172a" font-family="Arial,sans-serif" font-size="14" text-anchor="end">Gaussian reference</text>
+<rect x="284" y="147" width="84" height="43" rx="5" fill="#eaf0f5"><title>gaussian_reference / cv_zero: mean MSE 0.09966484, excess 3.025%</title></rect>
+<text x="326" y="173.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">3.0%</text>
+<rect x="372" y="147" width="84" height="43" rx="5" fill="#eaf0f5"><title>gaussian_reference / gcv_zero: mean MSE 0.09964523, excess 3.005%</title></rect>
+<text x="414" y="173.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">3.0%</text>
+<rect x="460" y="147" width="84" height="43" rx="5" fill="#e8eef4"><title>gaussian_reference / aicc_zero: mean MSE 0.10017100, excess 3.548%</title></rect>
+<text x="502" y="173.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">3.5%</text>
+<rect x="548" y="147" width="84" height="43" rx="5" fill="#edf3f8"><title>gaussian_reference / cv_joint: mean MSE 0.09842563, excess 1.744%</title></rect>
+<text x="590" y="173.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">1.7%</text>
+<rect x="636" y="147" width="84" height="43" rx="5" fill="#edf3f8"><title>gaussian_reference / gcv_joint: mean MSE 0.09839421, excess 1.712%</title></rect>
+<text x="678" y="173.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">1.7%</text>
+<rect x="724" y="147" width="84" height="43" rx="5" fill="#ecf2f7"><title>gaussian_reference / aicc_joint: mean MSE 0.09889405, excess 2.228%</title></rect>
+<text x="766" y="173.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">2.2%</text>
+<rect x="812" y="147" width="84" height="43" rx="5" fill="#f2f7fb"><title>gaussian_reference / gls_mu_ml: mean MSE 0.09675483, excess 0.017%</title></rect>
+<text x="854" y="173.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">0.0%</text>
+<rect x="900" y="147" width="84" height="43" rx="5" fill="#f2f7fb"><title>gaussian_reference / plugin_mu_ml: mean MSE 0.09673830, excess 0.000%</title></rect>
+<text x="942" y="173.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#0f172a">0.0%</text>
+<rect x="988" y="147" width="84" height="43" rx="5" fill="#e9eff4"><title>gaussian_reference / zero_mu_ml: mean MSE 0.09999688, excess 3.368%</title></rect>
+<text x="1030" y="173.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">3.4%</text>
+<rect x="1076" y="147" width="84" height="43" rx="5" fill="#314f6f"><title>gaussian_reference / controlled_s0.5_joint: mean MSE 0.23935030, excess 147.420%</title></rect>
+<text x="1118" y="173.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#ffffff">147.4%</text>
+<rect x="1164" y="147" width="84" height="43" rx="5" fill="#c9d3dd"><title>gaussian_reference / controlled_s0.8_joint: mean MSE 0.11110764, excess 14.854%</title></rect>
+<text x="1206" y="173.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">14.9%</text>
+<text x="268" y="219.5" fill="#0f172a" font-family="Arial,sans-serif" font-size="14" text-anchor="end">Smooth cycle</text>
+<rect x="284" y="194" width="84" height="43" rx="5" fill="#f1f6fa"><title>smooth_cycle / cv_zero: mean MSE 0.12374371, excess 0.386%</title></rect>
+<text x="326" y="220.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">0.4%</text>
+<rect x="372" y="194" width="84" height="43" rx="5" fill="#f1f6fb"><title>smooth_cycle / gcv_zero: mean MSE 0.12352567, excess 0.209%</title></rect>
+<text x="414" y="220.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">0.2%</text>
+<rect x="460" y="194" width="84" height="43" rx="5" fill="#eef4f8"><title>smooth_cycle / aicc_zero: mean MSE 0.12504961, excess 1.445%</title></rect>
+<text x="502" y="220.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">1.4%</text>
+<rect x="548" y="194" width="84" height="43" rx="5" fill="#ecf2f7"><title>smooth_cycle / cv_joint: mean MSE 0.12574987, excess 2.013%</title></rect>
+<text x="590" y="220.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">2.0%</text>
+<rect x="636" y="194" width="84" height="43" rx="5" fill="#eef3f8"><title>smooth_cycle / gcv_joint: mean MSE 0.12525551, excess 1.612%</title></rect>
+<text x="678" y="220.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">1.6%</text>
+<rect x="724" y="194" width="84" height="43" rx="5" fill="#eaf0f5"><title>smooth_cycle / aicc_joint: mean MSE 0.12688200, excess 2.932%</title></rect>
+<text x="766" y="220.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">2.9%</text>
+<rect x="812" y="194" width="84" height="43" rx="5" fill="#dee6ed"><title>smooth_cycle / gls_mu_ml: mean MSE 0.13206815, excess 7.139%</title></rect>
+<text x="854" y="220.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">7.1%</text>
+<rect x="900" y="194" width="84" height="43" rx="5" fill="#dee6ed"><title>smooth_cycle / plugin_mu_ml: mean MSE 0.13216288, excess 7.216%</title></rect>
+<text x="942" y="220.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">7.2%</text>
+<rect x="988" y="194" width="84" height="43" rx="5" fill="#dde5ec"><title>smooth_cycle / zero_mu_ml: mean MSE 0.13258818, excess 7.561%</title></rect>
+<text x="1030" y="220.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">7.6%</text>
+<rect x="1076" y="194" width="84" height="43" rx="5" fill="#314f6f"><title>smooth_cycle / controlled_s0.5_joint: mean MSE 0.23942580, excess 94.231%</title></rect>
+<text x="1118" y="220.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#ffffff">94.2%</text>
+<rect x="1164" y="194" width="84" height="43" rx="5" fill="#f2f7fb"><title>smooth_cycle / controlled_s0.8_joint: mean MSE 0.12326836, excess 0.000%</title></rect>
+<text x="1206" y="220.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#0f172a">0.0%</text>
+<text x="268" y="266.5" fill="#0f172a" font-family="Arial,sans-serif" font-size="14" text-anchor="end">Slope break</text>
+<rect x="284" y="241" width="84" height="43" rx="5" fill="#ecf1f6"><title>slope_break / cv_zero: mean MSE 0.10891836, excess 2.346%</title></rect>
+<text x="326" y="267.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">2.3%</text>
+<rect x="372" y="241" width="84" height="43" rx="5" fill="#ebf1f6"><title>slope_break / gcv_zero: mean MSE 0.10900099, excess 2.424%</title></rect>
+<text x="414" y="267.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">2.4%</text>
+<rect x="460" y="241" width="84" height="43" rx="5" fill="#e9eff4"><title>slope_break / aicc_zero: mean MSE 0.10988625, excess 3.255%</title></rect>
+<text x="502" y="267.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">3.3%</text>
+<rect x="548" y="241" width="84" height="43" rx="5" fill="#edf3f8"><title>slope_break / cv_joint: mean MSE 0.10823310, excess 1.702%</title></rect>
+<text x="590" y="267.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">1.7%</text>
+<rect x="636" y="241" width="84" height="43" rx="5" fill="#edf3f7"><title>slope_break / gcv_joint: mean MSE 0.10830691, excess 1.771%</title></rect>
+<text x="678" y="267.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">1.8%</text>
+<rect x="724" y="241" width="84" height="43" rx="5" fill="#ebf1f6"><title>slope_break / aicc_joint: mean MSE 0.10920400, excess 2.614%</title></rect>
+<text x="766" y="267.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">2.6%</text>
+<rect x="812" y="241" width="84" height="43" rx="5" fill="#f2f7fb"><title>slope_break / gls_mu_ml: mean MSE 0.10644276, excess 0.020%</title></rect>
+<text x="854" y="267.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">0.0%</text>
+<rect x="900" y="241" width="84" height="43" rx="5" fill="#f2f7fb"><title>slope_break / plugin_mu_ml: mean MSE 0.10642171, excess 0.000%</title></rect>
+<text x="942" y="267.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#0f172a">0.0%</text>
+<rect x="988" y="241" width="84" height="43" rx="5" fill="#eaf0f5"><title>slope_break / zero_mu_ml: mean MSE 0.10952845, excess 2.919%</title></rect>
+<text x="1030" y="267.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">2.9%</text>
+<rect x="1076" y="241" width="84" height="43" rx="5" fill="#314f6f"><title>slope_break / controlled_s0.5_joint: mean MSE 0.23972626, excess 125.261%</title></rect>
+<text x="1118" y="267.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#ffffff">125.3%</text>
+<rect x="1164" y="241" width="84" height="43" rx="5" fill="#dce4eb"><title>slope_break / controlled_s0.8_joint: mean MSE 0.11489912, excess 7.966%</title></rect>
+<text x="1206" y="267.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">8.0%</text>
+<text x="268" y="313.5" fill="#0f172a" font-family="Arial,sans-serif" font-size="14" text-anchor="end">True level jump</text>
+<rect x="284" y="288" width="84" height="43" rx="5" fill="#e1e8ef"><title>level_jump / cv_zero: mean MSE 0.33597907, excess 6.083%</title></rect>
+<text x="326" y="314.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">6.1%</text>
+<rect x="372" y="288" width="84" height="43" rx="5" fill="#e3eaf0"><title>level_jump / gcv_zero: mean MSE 0.33395335, excess 5.443%</title></rect>
+<text x="414" y="314.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">5.4%</text>
+<rect x="460" y="288" width="84" height="43" rx="5" fill="#b2bfcc"><title>level_jump / aicc_zero: mean MSE 0.39058242, excess 23.323%</title></rect>
+<text x="502" y="314.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">23.3%</text>
+<rect x="548" y="288" width="84" height="43" rx="5" fill="#e1e8ef"><title>level_jump / cv_joint: mean MSE 0.33641080, excess 6.219%</title></rect>
+<text x="590" y="314.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">6.2%</text>
+<rect x="636" y="288" width="84" height="43" rx="5" fill="#e3eaf0"><title>level_jump / gcv_joint: mean MSE 0.33408767, excess 5.485%</title></rect>
+<text x="678" y="314.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">5.5%</text>
+<rect x="724" y="288" width="84" height="43" rx="5" fill="#b1bfcc"><title>level_jump / aicc_joint: mean MSE 0.39088135, excess 23.417%</title></rect>
+<text x="766" y="314.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">23.4%</text>
+<rect x="812" y="288" width="84" height="43" rx="5" fill="#9eadbe"><title>level_jump / gls_mu_ml: mean MSE 0.41371081, excess 30.626%</title></rect>
+<text x="854" y="314.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">30.6%</text>
+<rect x="900" y="288" width="84" height="43" rx="5" fill="#a0afbf"><title>level_jump / plugin_mu_ml: mean MSE 0.41122135, excess 29.840%</title></rect>
+<text x="942" y="314.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">29.8%</text>
+<rect x="988" y="288" width="84" height="43" rx="5" fill="#b0bdcb"><title>level_jump / zero_mu_ml: mean MSE 0.39267125, excess 23.983%</title></rect>
+<text x="1030" y="314.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">24.0%</text>
+<rect x="1076" y="288" width="84" height="43" rx="5" fill="#f2f7fb"><title>level_jump / controlled_s0.5_joint: mean MSE 0.31671482, excess 0.000%</title></rect>
+<text x="1118" y="314.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#0f172a">0.0%</text>
+<rect x="1164" y="288" width="84" height="43" rx="5" fill="#bdc9d5"><title>level_jump / controlled_s0.8_joint: mean MSE 0.37737162, excess 19.152%</title></rect>
+<text x="1206" y="314.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">19.2%</text>
+<text x="268" y="360.5" fill="#0f172a" font-family="Arial,sans-serif" font-size="14" text-anchor="end">Observation outliers</text>
+<rect x="284" y="335" width="84" height="43" rx="5" fill="#e8eef4"><title>observation_outliers / cv_zero: mean MSE 0.17573189, excess 3.611%</title></rect>
+<text x="326" y="361.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">3.6%</text>
+<rect x="372" y="335" width="84" height="43" rx="5" fill="#e8eef4"><title>observation_outliers / gcv_zero: mean MSE 0.17571802, excess 3.603%</title></rect>
+<text x="414" y="361.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">3.6%</text>
+<rect x="460" y="335" width="84" height="43" rx="5" fill="#e7eef3"><title>observation_outliers / aicc_zero: mean MSE 0.17607614, excess 3.814%</title></rect>
+<text x="502" y="361.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">3.8%</text>
+<rect x="548" y="335" width="84" height="43" rx="5" fill="#eef3f8"><title>observation_outliers / cv_joint: mean MSE 0.17223532, excess 1.550%</title></rect>
+<text x="590" y="361.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">1.5%</text>
+<rect x="636" y="335" width="84" height="43" rx="5" fill="#eef3f8"><title>observation_outliers / gcv_joint: mean MSE 0.17220968, excess 1.534%</title></rect>
+<text x="678" y="361.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">1.5%</text>
+<rect x="724" y="335" width="84" height="43" rx="5" fill="#edf3f8"><title>observation_outliers / aicc_joint: mean MSE 0.17240318, excess 1.649%</title></rect>
+<text x="766" y="361.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">1.6%</text>
+<rect x="812" y="335" width="84" height="43" rx="5" fill="#f1f6fa"><title>observation_outliers / gls_mu_ml: mean MSE 0.17027524, excess 0.394%</title></rect>
+<text x="854" y="361.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">0.4%</text>
+<rect x="900" y="335" width="84" height="43" rx="5" fill="#f2f7fb"><title>observation_outliers / plugin_mu_ml: mean MSE 0.16960720, excess 0.000%</title></rect>
+<text x="942" y="361.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#0f172a">0.0%</text>
+<rect x="988" y="335" width="84" height="43" rx="5" fill="#e5ecf1"><title>observation_outliers / zero_mu_ml: mean MSE 0.17767520, excess 4.757%</title></rect>
+<text x="1030" y="361.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">4.8%</text>
+<rect x="1076" y="335" width="84" height="43" rx="5" fill="#314f6f"><title>observation_outliers / controlled_s0.5_joint: mean MSE 0.52857546, excess 211.647%</title></rect>
+<text x="1118" y="361.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#ffffff">211.6%</text>
+<rect x="1164" y="335" width="84" height="43" rx="5" fill="#8ea0b3"><title>observation_outliers / controlled_s0.8_joint: mean MSE 0.23099586, excess 36.195%</title></rect>
+<text x="1206" y="361.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">36.2%</text>
+<text x="268" y="407.5" fill="#0f172a" font-family="Arial,sans-serif" font-size="14" text-anchor="end">AR(1) observation</text>
+<rect x="284" y="382" width="84" height="43" rx="5" fill="#c4cfda"><title>ar1_observation / cv_zero: mean MSE 0.57869874, excess 16.638%</title></rect>
+<text x="326" y="408.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">16.6%</text>
+<rect x="372" y="382" width="84" height="43" rx="5" fill="#c2ced8"><title>ar1_observation / gcv_zero: mean MSE 0.58186549, excess 17.277%</title></rect>
+<text x="414" y="408.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">17.3%</text>
+<rect x="460" y="382" width="84" height="43" rx="5" fill="#dfe7ed"><title>ar1_observation / aicc_zero: mean MSE 0.52993335, excess 6.810%</title></rect>
+<text x="502" y="408.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">6.8%</text>
+<rect x="548" y="382" width="84" height="43" rx="5" fill="#c4cfda"><title>ar1_observation / cv_joint: mean MSE 0.57849968, excess 16.598%</title></rect>
+<text x="590" y="408.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">16.6%</text>
+<rect x="636" y="382" width="84" height="43" rx="5" fill="#c2ced8"><title>ar1_observation / gcv_joint: mean MSE 0.58183366, excess 17.270%</title></rect>
+<text x="678" y="408.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">17.3%</text>
+<rect x="724" y="382" width="84" height="43" rx="5" fill="#dfe7ed"><title>ar1_observation / aicc_joint: mean MSE 0.52977890, excess 6.778%</title></rect>
+<text x="766" y="408.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">6.8%</text>
+<rect x="812" y="382" width="84" height="43" rx="5" fill="#d8e0e8"><title>ar1_observation / gls_mu_ml: mean MSE 0.54294797, excess 9.433%</title></rect>
+<text x="854" y="408.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">9.4%</text>
+<rect x="900" y="382" width="84" height="43" rx="5" fill="#d8e0e8"><title>ar1_observation / plugin_mu_ml: mean MSE 0.54303084, excess 9.449%</title></rect>
+<text x="942" y="408.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">9.4%</text>
+<rect x="988" y="382" width="84" height="43" rx="5" fill="#d5dee6"><title>ar1_observation / zero_mu_ml: mean MSE 0.54844003, excess 10.540%</title></rect>
+<text x="1030" y="408.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">10.5%</text>
+<rect x="1076" y="382" width="84" height="43" rx="5" fill="#c9d4de"><title>ar1_observation / controlled_s0.5_joint: mean MSE 0.56921417, excess 14.727%</title></rect>
+<text x="1118" y="408.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">14.7%</text>
+<rect x="1164" y="382" width="84" height="43" rx="5" fill="#f2f7fb"><title>ar1_observation / controlled_s0.8_joint: mean MSE 0.49614783, excess 0.000%</title></rect>
+<text x="1206" y="408.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#0f172a">0.0%</text>
+<text x="268" y="454.5" fill="#0f172a" font-family="Arial,sans-serif" font-size="14" text-anchor="end">Changing variance</text>
+<rect x="284" y="429" width="84" height="43" rx="5" fill="#e5ecf2"><title>variance_regime / cv_zero: mean MSE 0.10244149, excess 4.694%</title></rect>
+<text x="326" y="455.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">4.7%</text>
+<rect x="372" y="429" width="84" height="43" rx="5" fill="#e5ecf2"><title>variance_regime / gcv_zero: mean MSE 0.10247818, excess 4.732%</title></rect>
+<text x="414" y="455.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">4.7%</text>
+<rect x="460" y="429" width="84" height="43" rx="5" fill="#e8eef4"><title>variance_regime / aicc_zero: mean MSE 0.10147171, excess 3.703%</title></rect>
+<text x="502" y="455.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">3.7%</text>
+<rect x="548" y="429" width="84" height="43" rx="5" fill="#e8eff4"><title>variance_regime / cv_joint: mean MSE 0.10129295, excess 3.521%</title></rect>
+<text x="590" y="455.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">3.5%</text>
+<rect x="636" y="429" width="84" height="43" rx="5" fill="#e8eef4"><title>variance_regime / gcv_joint: mean MSE 0.10138444, excess 3.614%</title></rect>
+<text x="678" y="455.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">3.6%</text>
+<rect x="724" y="429" width="84" height="43" rx="5" fill="#ebf1f6"><title>variance_regime / aicc_joint: mean MSE 0.10026546, excess 2.471%</title></rect>
+<text x="766" y="455.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">2.5%</text>
+<rect x="812" y="429" width="84" height="43" rx="5" fill="#f2f7fb"><title>variance_regime / gls_mu_ml: mean MSE 0.09784812, excess 0.000%</title></rect>
+<text x="854" y="455.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#0f172a">0.0%</text>
+<rect x="900" y="429" width="84" height="43" rx="5" fill="#f2f7fb"><title>variance_regime / plugin_mu_ml: mean MSE 0.09787335, excess 0.026%</title></rect>
+<text x="942" y="455.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">0.0%</text>
+<rect x="988" y="429" width="84" height="43" rx="5" fill="#e8eff4"><title>variance_regime / zero_mu_ml: mean MSE 0.10126033, excess 3.487%</title></rect>
+<text x="1030" y="455.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">3.5%</text>
+<rect x="1076" y="429" width="84" height="43" rx="5" fill="#314f6f"><title>variance_regime / controlled_s0.5_joint: mean MSE 0.24290582, excess 148.248%</title></rect>
+<text x="1118" y="455.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#ffffff">148.2%</text>
+<rect x="1164" y="429" width="84" height="43" rx="5" fill="#c8d3dd"><title>variance_regime / controlled_s0.8_joint: mean MSE 0.11258347, excess 15.059%</title></rect>
+<text x="1206" y="455.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">15.1%</text>
+<text x="268" y="501.5" fill="#0f172a" font-family="Arial,sans-serif" font-size="14" text-anchor="end">Heterogeneous pool</text>
+<rect x="284" y="476" width="84" height="43" rx="5" fill="#e0e8ee"><title>heterogeneous_pool / cv_zero: mean MSE 0.14463344, excess 6.363%</title></rect>
+<text x="326" y="502.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">6.4%</text>
+<rect x="372" y="476" width="84" height="43" rx="5" fill="#e0e7ee"><title>heterogeneous_pool / gcv_zero: mean MSE 0.14505551, excess 6.673%</title></rect>
+<text x="414" y="502.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">6.7%</text>
+<rect x="460" y="476" width="84" height="43" rx="5" fill="#e7eef3"><title>heterogeneous_pool / aicc_zero: mean MSE 0.14127242, excess 3.891%</title></rect>
+<text x="502" y="502.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">3.9%</text>
+<rect x="548" y="476" width="84" height="43" rx="5" fill="#e4ebf1"><title>heterogeneous_pool / cv_joint: mean MSE 0.14265928, excess 4.911%</title></rect>
+<text x="590" y="502.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">4.9%</text>
+<rect x="636" y="476" width="84" height="43" rx="5" fill="#e4ebf1"><title>heterogeneous_pool / gcv_joint: mean MSE 0.14299596, excess 5.159%</title></rect>
+<text x="678" y="502.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">5.2%</text>
+<rect x="724" y="476" width="84" height="43" rx="5" fill="#ebf1f6"><title>heterogeneous_pool / aicc_joint: mean MSE 0.13924835, excess 2.403%</title></rect>
+<text x="766" y="502.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">2.4%</text>
+<rect x="812" y="476" width="84" height="43" rx="5" fill="#f2f7fb"><title>heterogeneous_pool / gls_mu_ml: mean MSE 0.13598083, excess 0.000%</title></rect>
+<text x="854" y="502.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#0f172a">0.0%</text>
+<rect x="900" y="476" width="84" height="43" rx="5" fill="#f2f7fb"><title>heterogeneous_pool / plugin_mu_ml: mean MSE 0.13619257, excess 0.156%</title></rect>
+<text x="942" y="502.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">0.2%</text>
+<rect x="988" y="476" width="84" height="43" rx="5" fill="#e7eef3"><title>heterogeneous_pool / zero_mu_ml: mean MSE 0.14116844, excess 3.815%</title></rect>
+<text x="1030" y="502.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">3.8%</text>
+<rect x="1076" y="476" width="84" height="43" rx="5" fill="#314f6f"><title>heterogeneous_pool / controlled_s0.5_joint: mean MSE 0.36829091, excess 170.840%</title></rect>
+<text x="1118" y="502.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#ffffff">170.8%</text>
+<rect x="1164" y="476" width="84" height="43" rx="5" fill="#b2bfcc"><title>heterogeneous_pool / controlled_s0.8_joint: mean MSE 0.16770698, excess 23.331%</title></rect>
+<text x="1206" y="502.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">23.3%</text>
+<text x="268" y="548.5" fill="#0f172a" font-family="Arial,sans-serif" font-size="14" text-anchor="end">Shared observation shock</text>
+<rect x="284" y="523" width="84" height="43" rx="5" fill="#dde5ec"><title>shared_observation_shock / cv_zero: mean MSE 0.10562864, excess 7.485%</title></rect>
+<text x="326" y="549.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">7.5%</text>
+<rect x="372" y="523" width="84" height="43" rx="5" fill="#dce3eb"><title>shared_observation_shock / gcv_zero: mean MSE 0.10628120, excess 8.149%</title></rect>
+<text x="414" y="549.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">8.1%</text>
+<rect x="460" y="523" width="84" height="43" rx="5" fill="#e6edf3"><title>shared_observation_shock / aicc_zero: mean MSE 0.10238852, excess 4.188%</title></rect>
+<text x="502" y="549.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">4.2%</text>
+<rect x="548" y="523" width="84" height="43" rx="5" fill="#e0e7ee"><title>shared_observation_shock / cv_joint: mean MSE 0.10464688, excess 6.486%</title></rect>
+<text x="590" y="549.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">6.5%</text>
+<rect x="636" y="523" width="84" height="43" rx="5" fill="#dfe6ed"><title>shared_observation_shock / gcv_joint: mean MSE 0.10512740, excess 6.975%</title></rect>
+<text x="678" y="549.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">7.0%</text>
+<rect x="724" y="523" width="84" height="43" rx="5" fill="#eaf0f5"><title>shared_observation_shock / aicc_joint: mean MSE 0.10103217, excess 2.808%</title></rect>
+<text x="766" y="549.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">2.8%</text>
+<rect x="812" y="523" width="84" height="43" rx="5" fill="#f2f7fb"><title>shared_observation_shock / gls_mu_ml: mean MSE 0.09827264, excess 0.000%</title></rect>
+<text x="854" y="549.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#0f172a">0.0%</text>
+<rect x="900" y="523" width="84" height="43" rx="5" fill="#f1f6fa"><title>shared_observation_shock / plugin_mu_ml: mean MSE 0.09859326, excess 0.326%</title></rect>
+<text x="942" y="549.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">0.3%</text>
+<rect x="988" y="523" width="84" height="43" rx="5" fill="#e8eff4"><title>shared_observation_shock / zero_mu_ml: mean MSE 0.10166435, excess 3.451%</title></rect>
+<text x="1030" y="549.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">3.5%</text>
+<rect x="1076" y="523" width="84" height="43" rx="5" fill="#314f6f"><title>shared_observation_shock / controlled_s0.5_joint: mean MSE 0.24079961, excess 145.032%</title></rect>
+<text x="1118" y="549.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#ffffff">145.0%</text>
+<rect x="1164" y="523" width="84" height="43" rx="5" fill="#cad4de"><title>shared_observation_shock / controlled_s0.8_joint: mean MSE 0.11251519, excess 14.493%</title></rect>
+<text x="1206" y="549.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#0f172a">14.5%</text>
+<text x="32" y="632" font-family="Arial,sans-serif" font-size="13" fill="#475569">Source: committed Study M.2 risk_by_process_method.csv · N=80, d=2 · R=3 · method-selected pooled trend MSE</text>
+<text x="32" y="653" font-family="Arial,sans-serif" font-size="12" fill="#475569">Never compare raw MSE levels across rows to infer ranking; each row normalized separately. No Holm p values encoded.</text>
+</svg>
