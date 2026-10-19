@@ -144,7 +144,7 @@ Generated audit CSV/JSON/figures are under `results/pooled_loocv_smoothness/guer
 
 The complete [tail stress-test protocol](../../working_papers/Working%20Paper%20-%20Pooled%20LOOCV%20Numerical%20Optimization/notes/TAIL_NOISE_PROTOCOL.md) and [stepwise Gaussian MLE / LOOCV explanation](../../working_papers/Working%20Paper%20-%20Pooled%20LOOCV%20Numerical%20Optimization/notes/GAUSSIAN_MLE_AND_LOOCV_EXPLAINED.md) provide precise mathematics and distribution parameters. The new independent runner does **not** touch saved Gaussian or prior robustness campaigns.
 
-It compares Gaussian difference-likelihood, single-start Brent LOOCV, and multibracket Brent LOOCV on 8 noise regimes: Gaussian control; t3 observation; t3 trend difference; centered right/left Gamma; rare Gaussian jumps; GARCH-t5 observation volatility; and Cauchy observation noise. Finite-variance regimes retain true-trend MSE evaluation. **Cauchy has infinite population MSE** and is evaluated using sample-error medians/quantiles, never assigned a Guerrero noise-variance ratio.
+It compares Gaussian difference-likelihood, single-start Brent LOOCV, and multibracket Brent LOOCV on **13 distribution settings**: the original eight (Gaussian, t3 observation/innovation, right/left centered Gamma, rare Gaussian jumps, GARCH-t5, Cauchy), plus five centered skew-normal levels **α=-6,-3,0,3,6**, each at matched d=1,2,3. Finite-variance regimes retain true-trend MSE evaluation. **Cauchy has infinite population MSE** and is evaluated using sample-error medians/quantiles, never assigned a Guerrero noise-variance ratio.
 
 ```powershell
 conda activate trend-estimation
@@ -156,4 +156,4 @@ python -m experiments.pooled_loocv_smoothness.run_tail_noise --preset pilot --dr
 python -m experiments.pooled_loocv_smoothness.run_tail_noise --preset pilot
 ```
 
-The full pilot is **320 nested pools × 3 methods = 960 rows**. Outputs to `results/pooled_loocv_smoothness/guerrero/tail_stress/pilot/{manifest.json,method_comparison.csv,summary.json}`. Commit and push those after inspecting them; the confirmatory preset is manual and intentionally unrun. No PRs or heavy Monte Carlo on push.
+The full pilot is **1,560 nested pools × 3 methods = 4,680 rows**. Outputs to `results/pooled_loocv_smoothness/guerrero/tail_stress/pilot/{manifest.json,method_comparison.csv,summary.json}`. Commit and push those after inspecting them; the confirmatory preset is manual and intentionally unrun. No PRs or heavy Monte Carlo on push.
