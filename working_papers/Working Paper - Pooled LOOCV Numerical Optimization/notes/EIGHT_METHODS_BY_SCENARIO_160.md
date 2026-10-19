@@ -10,7 +10,7 @@
 
 Los MSE 0.3533, 0.3558, 0.3571, 0.3577, 0.3593, 0.3632, 0.3717 y 0.4027 difundidos anteriormente correspondían al **piloto de 5 semillas solo para d=2, R=3, promediando sobre μ, N y ruido**. **NO** corresponden a estas 10,000-semillas/escenario. No reemplazar los datos anteriores ni mezclar cohortes.
 
-**Descarga como CSV ancho:** [`eight_methods_all_160_scenarios.csv`](../../../../results/pooled_loocv_smoothness/guerrero/nonzero_mean_multorder/audit_001/eight_methods_all_160_scenarios.csv). Cada fila incluye también el mejor de los cinco métodos factibles (solo a nivel descriptivo), el contraste de MSE GLS-ML menos LOOCV estimando μ y su **error estándar pareado por seed**. Estas columnas no prueban selección global ni recomiendan ajustar d según el MSE latente.
+**Descarga como CSV ancho:** [`eight_methods_all_160_scenarios.csv`](../../../results/pooled_loocv_smoothness/guerrero/nonzero_mean_multorder/audit_001/eight_methods_all_160_scenarios.csv). Cada fila incluye también el mejor de los cinco métodos factibles (solo a nivel descriptivo), el contraste de MSE GLS-ML menos LOOCV estimando μ y su **error estándar pareado por seed**. Estas columnas no prueban selección global ni recomiendan ajustar d según el MSE latente.
 
 ## R = 3: agrupación de tres series
 
