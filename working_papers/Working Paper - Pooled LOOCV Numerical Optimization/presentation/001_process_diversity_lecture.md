@@ -369,6 +369,28 @@ Then **profile $\mu$ using the same observed pool**.
 
 ---
 
+<!-- _class: small -->
+
+# Derive the pooled mean profile, step by step
+
+After minimizing over each trend, the profiled criterion has a quadratic dependence on $\mu$:
+
+$$
+\mathcal J_{\rm prof}(\mu)
+=\lambda\sum_{r=1}^{R}(y_r-\mu p)^\top T_\lambda(y_r-\mu p).
+$$
+
+Differentiate (holding $\lambda$ fixed):
+
+$$
+\frac{\partial\mathcal J_{\rm prof}}{\partial\mu}
+=-2\lambda\sum_r p^\top T_\lambda(y_r-\mu p)=0.
+$$
+
+Therefore $Rk_\lambda\widehat\mu=\sum_r b_\lambda^\top y_r$, yielding the next slide's formula.
+
+---
+
 # Profile the common difference mean
 
 Define
@@ -391,6 +413,30 @@ $$
 $$
 
 This is a function of $\lambda$, so choosing the smoothing parameter also changes the fitted mean.
+
+---
+
+<!-- _class: small -->
+
+# Where does the additional EDF come from?
+
+Since $I-H_\lambda=\lambda QH_\lambda=\lambda T_\lambda$,
+
+$$
+\widehat\tau_r
+=H_\lambda y_r+\lambda b_\lambda
+\frac{b_\lambda^\top\bar y}{k_\lambda}.
+$$
+
+Thus the derivative of the $r$-th fitted series with respect to the $s$-th observed series is
+
+$$
+\frac{\partial\widehat\tau_r}{\partial y_s}
+=\mathbf1_{\{r=s\}}H_\lambda
++\frac{\lambda}{Rk_\lambda}b_\lambda b_\lambda^\top.
+$$
+
+Taking the trace over the entire $RN\times RN$ smoother explains the extra low-rank degree of freedom on the next slide.
 
 ---
 
@@ -439,6 +485,36 @@ $$
 The familiar denominator corrects the in-sample residual for leverage.
 
 **Key issue:** if $\mu$ is estimated, it must also be reestimated **without the deleted observation**.
+
+---
+
+<!-- _class: small -->
+
+# Derive the fold-clean PRESS denominator
+
+The fitted joint smoother has diagonal blocks
+
+$$
+\mathcal H_{rr}
+=H_\lambda+\frac{\lambda}{Rk_\lambda}b_\lambda b_\lambda^\top.
+$$
+
+The leverage of observation $(r,i)$ is therefore
+
+$$
+\mathcal H_{(ri),(ri)}
+=(H_\lambda)_{ii}+\frac{\lambda b_{\lambda,i}^2}{Rk_\lambda}.
+$$
+
+Using the standard linear-smoother leave-one-out identity
+
+$$
+e_{ri}^{(-ri)}
+=\frac{y_{ri}-\widehat\tau_{ri}}
+{1-\mathcal H_{(ri),(ri)}}
+$$
+
+and $I-H_\lambda=\lambda T_\lambda$ yields the exact joint PRESS expression on the next slide.
 
 ---
 
