@@ -45,6 +45,7 @@ METHODS = (
     "zero_mu_pooled_loocv",
     "known_mu_estimated_variance_ml",
     "known_mu_pooled_loocv",
+    "pooled_guerrero_plugin_mu_plus_gaussian_ml",
     "estimated_mu_gaussian_gls_ml",
     "estimated_mu_fold_clean_pooled_loocv",
 )
@@ -130,6 +131,13 @@ def compare_pool(sc: MeanScenario,y: np.ndarray,truth: np.ndarray):
         y,base.d,fixed_mu=sc.mu,scan_points=61)
     fitted_mean_var=estimate_contrast_gaussian_mean(
         y,base.d,fixed_mu=None,scan_points=61)
+    # Guerrero (2007) uses an observed d-th difference mean plug-in
+    # per series/window. This explicitly POOLED analogue uses a common
+    # mean across R comparable series; the conditional variance ML step
+    # that follows is OUR extension, not Guerrero's published procedure.
+    pooled_plugin_mu=float(np.mean(y@base.d.T))
+    plugin_var=estimate_contrast_gaussian_mean(
+        y,base.d,fixed_mu=pooled_plugin_mu,scan_points=61)
     zero_brent=bounded_brent(zero_obj)
     oracle_mean_brent=bounded_brent(oracle_mu_obj)
     joint_brent=bounded_brent(joint_obj)
@@ -143,15 +151,18 @@ def compare_pool(sc: MeanScenario,y: np.ndarray,truth: np.ndarray):
          "oracle_known_mu",oracle_mean_var.variance),
         (METHODS[4],oracle_mean_brent.best.lam,sc.mu,
          "oracle_known_mu",None),
-        (METHODS[5],fitted_mean_var.variance.lambda_ratio,
+        (METHODS[5],plugin_var.variance.lambda_ratio,
+         pooled_plugin_mu,"guerrero_style_pooled_plugin_plus_our_ML",
+         plugin_var.variance),
+        (METHODS[6],fitted_mean_var.variance.lambda_ratio,
          fitted_mean_var.mu,"gls_full_data_estimated_mu",
          fitted_mean_var.variance),
-        (METHODS[6],joint_brent.best.lam,fitted_cv_mu,
+        (METHODS[7],joint_brent.best.lam,fitted_cv_mu,
          "fold_clean_joint_penalized_mu",None),
     )
     rows=[]
     for method,lam,mu_est,kind,var in entries:
-        if method==METHODS[6]:
+        if method==METHODS[7]:
             fitted=joint_obj.trend(lam)
             validation=joint_obj.score(lam)
             validation_kind="exact_fold_reestimated_mu_PRESS"
@@ -187,7 +198,7 @@ def compare_pool(sc: MeanScenario,y: np.ndarray,truth: np.ndarray):
                 float(var.sigma_epsilon2) if var is not None else
                 sc.sigma_epsilon**2 if method==METHODS[0] else float("nan")),
             "data_selected_mu_increases_effective_degrees_of_freedom":
-                method in (METHODS[5],METHODS[6]),
+                method in (METHODS[5],METHODS[6],METHODS[7]),
         })
     return rows
 
@@ -280,6 +291,7 @@ def execute(preset: str,out_dir: Path,dry_run: bool=False):
         "observed_noise":"independent iid centered Gaussian, V=I",
         "truth_used_in_parameter_tuning":False,
         "estimated_mu_selected_within_LOOCV_folds":True,
+        "guerrero_plugin_is_pooled_extension_not_original_per_series":True,
         "nominal_s_not_data_selected_mu_edf":True,
     }
     if dry_run:
