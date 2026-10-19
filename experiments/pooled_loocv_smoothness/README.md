@@ -198,7 +198,7 @@ python -m experiments.pooled_loocv_smoothness.run_nonzero_difference_mean --pres
 Pilot writes `results/pooled_loocv_smoothness/guerrero/nonzero_difference_mean/pilot/{manifest.json,summary.json,method_comparison.csv,example_latent_trend_errors.png,mean_shift_true_trend_mse_R3.png}`. N=50/200; sigma eta=.5/2; sigma epsilon=.3; mu/sigma epsilon=-1,-.25,0,.25,1; a Guerrero-style **pooled observed-difference mean plug-in hybrid** included; 5 shared-shock seeds; nested R1/3 => 200 pools, 1600 method rows. Check carefully before adding only these three result files; do not use `git add .`. Full independent confirmatory preset remains manual/unrun.
 
 
-## Four-order, 10,000-independent-seed per cell manual confirmation — NOT RUN
+## Four-order, 10,000-independent-seed per cell manual confirmation — COMPLETED
 
 Read both [measured original simulation methods and results](../../working_papers/Working%20Paper%20-%20Pooled%20LOOCV%20Numerical%20Optimization/notes/HOW_THE_SIMULATION_WORKS_AND_MEASURED_RESULTS.md) and [full immutable large-campaign protocol](../../working_papers/Working%20Paper%20-%20Pooled%20LOOCV%20Numerical%20Optimization/notes/MULTIORDER_10000_SEED_CONFIRMATORY_PROTOCOL.md). This new source code **does not alter** old 1,600-row d2 results.
 
@@ -221,3 +221,17 @@ python -m experiments.pooled_loocv_smoothness.aggregate_nonzero_mean_multorder -
 ```
 
 **Output hygiene:** 1600 immutable compressed shards, each `method_comparison.csv.gz` (8000 method rows), `manifest.json` (code SHA, seed interval, data hash), `summary.json` (per-method metrics *and paired within-seed differences*). The complete-run aggregate gives small per-(d,N,eta,R,mu) method CSV and pair-difference CSV and a single completeness manifest. Don't commit all huge raw results to Git; back them up outside disposable VMs and commit the compact proof-of-run/audit only. Do not merge to main or open a PR. Separate non-Gaussian extension only after Gaussian confirmations.
+
+
+### Completed Gaussian four-order checkpoint, 2026-10-19
+
+The 16-stratum 10,000-independent-base-seed Gaussian campaign was run on the user's workstation and aggregated with `--require-complete --verify-digests`. The 1,600 gzip shards and underlying 12.8M method rows remain local. **COMMITTED compact files**: `results/pooled_loocv_smoothness/guerrero/nonzero_mean_multorder/audit_001/{campaign_manifest.json,by_d_N_eta_R_mu_method.csv,paired_MSE_contrasts_by_d_N_eta_R_mu.csv}` with source code SHA `070b363b7d8a8156f320c833539fa068b684fc7b`. See [measured statistical audit](../../working_papers/Working%20Paper%20-%20Pooled%20LOOCV%20Numerical%20Optimization/notes/MULTIORDER_10000_SEED_CONFIRMATORY_RESULTS_2026-10-19.md) for the exact 16 R3 comparisons and nontrivial R1 exceptions.
+
+To validate **without rerunning any Monte Carlo**:
+
+```powershell
+python -m pytest tests/test_multorder_confirmatory_aggregate.py -q
+python -m experiments.pooled_loocv_smoothness.audit_multorder_confirmatory
+```
+
+The non-Gaussian × nonzero-mean follow-up has NOT been executed. Keep all original raw compressed shards backed up outside the university VM before deletion; only compact aggregate statistics and SHA provenance are in the repository.
