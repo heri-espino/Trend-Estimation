@@ -138,8 +138,8 @@ def test_nested_and_mu_factor_common_random_numbers():
     np.testing.assert_array_equal(y1[0],y3[0])
     np.testing.assert_array_equal(tau1[0],tau3[0])
     p=particular_polynomial(50,2)
-    np.testing.assert_allclose(tauz-tau3,(z.mu-x.mu)*p[None,:],atol=1e-6)
-    np.testing.assert_allclose(yz-y3,(z.mu-x.mu)*p[None,:],atol=1e-6)
+    np.testing.assert_allclose(tauz-tau3,np.broadcast_to((z.mu-x.mu)*p[None,:],tau3.shape),atol=1e-6)
+    np.testing.assert_allclose(yz-y3,np.broadcast_to((z.mu-x.mu)*p[None,:],y3.shape),atol=1e-6)
 
 
 def test_method_rows_use_no_truth_in_selection_and_preserve_all_roles():
