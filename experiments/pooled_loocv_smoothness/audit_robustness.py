@@ -75,8 +75,8 @@ def load_paired(input_csv: Path) -> list[dict]:
             "ml_selected_lambda": score(mle, "selected_lambda"),
             "cv_selected_lambda": score(cv, "selected_lambda"),
             "moments_selected_lambda": score(mom, "selected_lambda"),
-            "ml_infinite_lambda": np.isinf(score(mle, "selected_lambda")),
-            "moments_infinite_lambda": np.isinf(score(mom, "selected_lambda")),
+            "ml_infinite_lambda": bool(np.isinf(score(mle, "selected_lambda"))),
+            "moments_infinite_lambda": bool(np.isinf(score(mom, "selected_lambda"))),
             "numerically_detected_stationary_candidates": int(
                 float(cv["stationary_candidates_multibracket"])),
         }
