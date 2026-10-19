@@ -156,4 +156,4 @@ python -m experiments.pooled_loocv_smoothness.run_tail_noise --preset pilot --dr
 python -m experiments.pooled_loocv_smoothness.run_tail_noise --preset pilot
 ```
 
-The full pilot is **1,560 nested pools × 3 methods = 4,680 rows**. Outputs to `results/pooled_loocv_smoothness/guerrero/tail_stress/pilot/{manifest.json,method_comparison.csv,summary.json}`. Commit and push those after inspecting them; the confirmatory preset is manual and intentionally unrun. No PRs or heavy Monte Carlo on push.
+The full pilot is **1,560 nested pools × 3 methods = 4,680 rows**. Outputs to `results/pooled_loocv_smoothness/guerrero/tail_stress/pilot/{manifest.json,method_comparison.csv,summary.json}`. The pilot files have now been committed; see [measured audit](../../working_papers/Working%20Paper%20-%20Pooled%20LOOCV%20Numerical%20Optimization/notes/TAIL_NOISE_PILOT_AUDIT_2026-10-18.md). Run `python -m experiments.pooled_loocv_smoothness.audit_tail_noise` to independently recheck all saved data, or append `--figures` to create three manual order-stratified figures. The confirmatory preset is manual and intentionally unrun. No PRs or heavy Monte Carlo on push.
