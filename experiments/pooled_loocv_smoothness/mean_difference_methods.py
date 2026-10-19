@@ -37,7 +37,7 @@ from math import comb
 import numpy as np
 from scipy.optimize import minimize_scalar
 
-from .objective import PooledLOOCV, difference_matrix
+from .objective import PooledLOOCV, difference_matrix, cached_difference_contrast_basis
 from .variance_estimation import VarianceEstimate
 
 
@@ -146,7 +146,9 @@ def estimate_contrast_gaussian_mean(
 
     z = y @ d.T
     aa = d @ d.T
-    eigvals, basis = np.linalg.eigh(aa)
+    eigvals, basis = (cached_difference_contrast_basis(y.shape[1], y.shape[1]-d.shape[0])
+                      if np.array_equal(d, difference_matrix(y.shape[1], y.shape[1]-d.shape[0]))
+                      else np.linalg.eigh(aa))
     if np.any(eigvals <= 0):
         raise ArithmeticError("D D.T must be positive definite")
     z_eig = z @ basis
