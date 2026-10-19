@@ -83,3 +83,10 @@ data/market_calibration/
 # outside temporary machines. Aggregate CSV/manifest folders remain trackable.
 results/pooled_loocv_smoothness/guerrero/nonzero_mean_multorder/confirmatory/d*/
 results/pooled_loocv_smoothness/guerrero/nonzero_mean_multorder/preflight_*/
+
+# Non-Gaussian mu-shift campaign: 384k pilot / 153.6M confirmatory method rows
+# Only commit small audit_* aggregate CSVs and source-provenance JSON; save
+# raw gzip shards outside Git and back up before retiring university machines.
+results/pooled_loocv_smoothness/guerrero/nonzero_mu_nongaussian/pilot/
+results/pooled_loocv_smoothness/guerrero/nonzero_mu_nongaussian/confirmatory/
+results/pooled_loocv_smoothness/guerrero/nonzero_mu_nongaussian/preflight_*/
