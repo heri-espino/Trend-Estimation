@@ -20,6 +20,21 @@ L_{j,c,R,m}=\frac{1}{RN}\sum_{r=1}^{R}\sum_{t=1}^{N}
 
 **The independent Monte Carlo unit is the entire seed, not nine scenarios × two pool sizes × eleven methods.** The nine cases reuse common shocks within each seed; R1 is *literally* the first R3 series. For pairwise method inference, first calculate per-seed differences then their 95% Student-t intervals; p values are globally Holm-adjusted across **all 990 A/B comparisons**. Intervals remain pointwise, not familywise simultaneous. No true latent values are used in any feasible selector; simulated tau is for *ex-post* evaluation only.
 
+## Visual summary: relative MSE excess, not significance
+
+These two vector plots are generated **directly from the committed 198-row aggregate CSV**. Each process row is normalized to the lowest empirical mean MSE for that *same* process and R:
+
+\[
+\mathrm{Excess}_{c,R,m}=100\left(\frac{\widehat{\mathcal R}_{c,R,m}}
+{\min_k\widehat{\mathcal R}_{c,R,k}}-1\right)\%.
+\]
+
+**0%** means a *sample* mean-risk minimum; this does **not** establish statistical superiority. Larger/darker excess highlights practical loss deterioration; raw MSE magnitudes and denominator differ across process rows. Inspect the Holm-adjusted paired comparisons in the next section rather than inferring significance from colors.
+
+![R3 process-by-method excess mean MSE heatmap](../figures/study_m2_relative_excess_mse_R3.svg)
+
+![R1 process-by-method excess mean MSE heatmap](../figures/study_m2_relative_excess_mse_R1.svg)
+
 ## 1. Which policy has lowest mean reconstruction error?
 
 The following are **mean MSE risk estimates conditional on these exact DGPs**, with the second-lowest method in parentheses. ML denotes the feasible Gaussian differenced-covariance likelihood; plug-in denotes a pooled observed-difference mean followed by *our* Gaussian variance ML, not Guerrero's published full estimator.
