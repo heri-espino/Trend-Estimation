@@ -67,6 +67,41 @@ In all 16 cells, both \(\Delta_{\mu,\mathrm{ML}}\) and \(\Delta_{\mu,\mathrm{CV}
 
 **Statistical limits:** these are Monte Carlo standard-error intervals for the expected realized loss difference under the **specified Gaussian data generator**; they do not establish effects in markets, financial crises or other DGPs. Intervals are marginal and unadjusted for multiple comparisons; effect sizes and cell robustness matter more than isolated significance labels.
 
+
+## 3a. Effect size matters: weaker nonzero means do **not** always dominate selector choice
+
+The preceding all-16 result is **specifically for a substantial** \(|\mu|/\sigma_\varepsilon=1\). The saved paired contrast CSV also permits a less dramatic sensitivity test. Across the **16 independent R3 (d,N,noise) groups**, the following counts refer to group **mean** latent reconstruction MSE, *not* 10,000 individual trials per group:
+
+| Standardized true mean \(\mu/\sigma_\varepsilon\) | R3 cells where wrongly forcing zero raises Gaussian ML mean MSE | R3 cells where this rise exceeds \(\lvert\mathrm{MSE}_{\mathrm{GLS\,ML}}-\mathrm{MSE}_{\mathrm{fitted\,CV}}\rvert\) | R3 cells where wrongly forcing zero raises pooled CV MSE |
+|---:|---:|---:|---:|
+| -1 | 16/16 | 16/16 | 16/16 |
+| -0.25 | 15/16 | **5/16** | 16/16 |
+| 0 | 0/16 | 0/16 | 0/16 |
+| +0.25 | 15/16 | **5/16** | 16/16 |
+| +1 | 16/16 | 16/16 | 16/16 |
+
+Thus **do not claim mean specification is more important than smoothing method for every nonzero mean**. Under small relative mean shifts (±0.25), the incorrect-zero model often has only a small extra MSE cost, which exceeds the ML-vs-CV gap in just 5/16 R3 cells. At true μ=0 the constraint is actually correct and decreases expected estimated-mean variance cost. This pattern is a key effect-size qualification.
+
+The same within-scenario observation holds much less reliably for **R1**: at ±0.25, wrongly fixing zero raises Gaussian ML mean MSE in just 8/16 cells and exceeds the estimated-mean ML-versus-CV difference in **0/16**. At μ=+1, incorrectly zero-mean ML has higher R1 MSE in 13/16, and a larger MSE penalty than ML/CV choice in 11/16. This reinforces that pooled estimation and adequate mean-shift size are **essential conditions** of the strongest headline.
+
+## 3b. All eight estimators retained
+
+The full commit includes the three *mean/parameter oracles* plus five feasible/possibly misspecified methods, not just the four highlighted for the paper. Equal-weighted average R3 realized MSE across four (N,noise SD) groups under \(\mu/\sigma_\varepsilon=+1\):
+
+| Estimator (true μ / true variance unavailable except oracle rows) | d1 | d2 | d3 | d4 |
+|---|---:|---:|---:|---:|
+| True μ and true variance ratio (oracle) | 0.199272 | 0.341395 | 0.436852 | 0.504091 |
+| True μ and estimated Gaussian variances (mean oracle) | 0.212142 | 0.345552 | 0.439253 | 0.505950 |
+| True μ and pooled observed CV (mean oracle) | 0.215028 | 0.352637 | 0.448844 | 0.519989 |
+| Incorrect forced-zero Gaussian ML | 0.369897 | 0.440161 | 0.508880 | 0.561674 |
+| Incorrect forced-zero pooled CV | 0.266070 | 0.382401 | 0.475245 | 0.546639 |
+| Pooled observed-difference μ plug-in + **our** variance ML | 0.214198 | 0.346310 | 0.442250 | 0.513928 |
+| Fitted common μ, Gaussian GLS profile ML | 0.217522 | 0.347805 | 0.439738 | 0.506292 |
+| Fitted common μ, fold-clean pooled observed LOOCV | 0.216354 | 0.352994 | 0.449096 | 0.520423 |
+
+The pooled Guerrero-style plug-in hybrid is a meaningful feasible baseline and **sometimes beats Gaussian GLS mean profile ML** (for example the descriptive d1/d2 averages above), while GLS is better for d3/d4 averages. Therefore, don't say GLS uniformly beats this plug-in; compare methods within cells and report the proper target. Oracles are **not** feasible data-only selection algorithms.
+
+
 ## 4. The result differs for single-series R1
 
 The **same completed source data** includes R1 nested in R3. Do not infer R1 results from R3 averages: pooling itself influences variance-component estimation and mean estimation. For R1 and \(\mu/\sigma_\varepsilon=+1\):
