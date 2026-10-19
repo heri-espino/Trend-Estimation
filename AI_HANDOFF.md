@@ -1,5 +1,8 @@
 # AI handoff — current Trend-Estimation research workspace
 
+> **Branch-specific newer handoff (2026-10-19):** The independent `paper/pooled-loocv-numerical-optimization` paper now has a [consolidated evidence/status checkpoint](working_papers/Working%20Paper%20-%20Pooled%20LOOCV%20Numerical%20Optimization/notes/CURRENT_RESEARCH_STATE_AND_AGENT_CONTINUITY_2026-10-19.md). The Gaussian 160k-base-draw Study H, non-Gaussian 25-seed Study J pilot and **26-method Cortés-Toto Study K.1 replay have already been run and committed**. K.1 reuses J seeds and is exploratory, not independent confirmation. The next proposed task is a [same-CV-score numerical solver study](working_papers/Working%20Paper%20-%20Pooled%20LOOCV%20Numerical%20Optimization/notes/STUDY_L_SAME_OBJECTIVE_NUMERICAL_COMPARISON_DESIGN_2026-10-19.md), not rerunning K.1. These dated results supersede older, historical prospective notes below. Direct work on that existing branch, no PR/merge/force-push.
+
+
 **Updated 2026-10-09. Read [AGENTS.md](AGENTS.md) FIRST and
 [theoretical charter](working_papers/THEORETICAL_CONTRIBUTIONS.md)
 before interpreting any old code, manuscript or checkpoint.**
