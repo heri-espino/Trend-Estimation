@@ -36,3 +36,8 @@
 
 ## D010 — 2026-10-18 — Git workflow explicitly requested by user
 **Decision:** **No PRs** for this project. Commit directly to the existing `paper/pooled-loocv-numerical-optimization` branch and push there. Do not merge or force-push. All substantial Monte Carlo campaigns are manual-only; automatic CI runs only lightweight tests and tiny smoke checks.
+
+## D011 — 2026-10-18 — Completed five-regime robustness pilot and research boundary
+**Observation after results, not a predeclared assumption:** the locked five-regime pilot was executed; its per-method CSV and manifest were committed. For R=3, Gaussian difference-likelihood true-trend MSE averaged **0.542908** versus **0.620746** for observed pooled LOOCV (76/100 paired wins), with roughly **91% of their aggregate equal-regime-mean absolute MSE gap due to AR(1)**. The iid Gaussian group was approximately tied on mean MSE; R=1 with Student-t trend innovations reversed the mean ordering. Single-start and multibracket reached equivalent LOOCV objectives at tolerance 1e-7 in all R=3 pools. See [ROBUSTNESS_PILOT_AUDIT_2026-10-18.md](ROBUSTNESS_PILOT_AUDIT_2026-10-18.md).
+
+**Scientific decision:** do not use the pooled five-regime mean to claim broad Gaussian MLE superiority. AR(1) dependence leakage from ordinary observation-level LOOCV, and misspecification of both covariance models, require an explicit covariance-aware/dependence-aware comparator before confirmatory runs.
