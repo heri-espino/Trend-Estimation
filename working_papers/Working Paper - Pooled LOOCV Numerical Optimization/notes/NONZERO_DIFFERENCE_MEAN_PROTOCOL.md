@@ -112,7 +112,7 @@ Our implementation computes this ratio spectrally and evaluates the \(\lambda=0\
 
 **Critical differentiation:** the pooled joint fitted \(\widehat\mu_\lambda\) is not Guerrero's simple observed-difference plug-in except in a special limit, and not the completed-origin \(h\)-step forecast-CV profiler from the fourth working paper. Dedicated regression tests compare this PRESS formula numerically to **explicit deletion and refitting of every trend and the common \(\mu\)**.
 
-## 5. Seven comparisons, only five feasible in practice
+## 5. Seven comparisons, four feasible in practice
 
 | Name in result CSV | \(\mu\) used | \(\lambda\) selection | Status |
 |---|---|---|---|
