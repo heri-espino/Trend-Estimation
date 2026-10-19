@@ -259,3 +259,19 @@ python -m experiments.pooled_loocv_smoothness.aggregate_nonzero_mu_nongaussian -
 ```
 
 The manual pilot has 192 finite-variance base cells ×25 fresh seeds = **4,800 independent R3 base shock draws / 384,000 per-method records**. The later **10,000 entirely new independent seeds per each cell** means **1.92M base draws / 153.6M method records**, needing much more storage and manual CPU time; **not automatically executed or claimed complete**. `--execute` is mandatory for simulations, `--workers` controls process count; resume verifies exact source SHA, disjoint seed intervals and gzip SHA256. Raw `pilot/`, `confirmatory/`, isolated `preflight_*/` folders are excluded from Git; commit only SHA-verified `audit_*/` CSV/JSON aggregates after local execution, preserving raw shards externally.
+
+
+## Study K: 2017 Cortés-Toto criteria versus pooled fitted-mean CV and covariance ML
+
+Read the [source-verified criterion/mean/numerical-factor research protocol](../../working_papers/Working%20Paper%20-%20Pooled%20LOOCV%20Numerical%20Optimization/notes/CORTES_TOTO_CRITERIA_AND_NUMERICAL_COMPARISON_PROTOCOL_2026-10-19.md). Four 2017 paper's primary comparison criteria: `cv`, `gcv`, `aicc`, `bic` (with an explicitly limited positive λ domain for logRSS BIC), plus separately **predeclared** `controlled_S0.5/S0.8` (Guerrero). The source authors' original factor study was d2, μ0: we extend to common μ jointly fitted across R1/3 and d1–4. The new `PenalizedCriteria` properly counts μ's extra effective degrees of freedom when fitting the shared μ from y; the original normalized smoothness S is only a penalty coordinate. Method evaluation must separate **criterion vs mean nuisance fit vs numerical solver**, and actual held-out observed-data CV from latent true reconstruction MSE, which is for post-hoc synthetic evaluation only.
+
+```powershell
+git switch paper/pooled-loocv-numerical-optimization
+git pull --ff-only
+python -m pytest tests/test_cortes_optimality_criteria.py -q
+# One *existing* Study J pilot RNG draw, no big new simulation:
+python -m experiments.pooled_loocv_smoothness.run_cortes_criteria_case --regime gaussian_iid --d 2 --n 50 --sigma-eta 0.5 --R 3 --replicate 0 --mu-factor 1 --solver multibracket
+python -m experiments.pooled_loocv_smoothness.run_cortes_criteria_case --regime student_t3_observation --d 4 --n 200 --sigma-eta 2 --R 3 --replicate 0 --mu-factor 1 --solver bounded
+```
+
+No full 192×25-case criterion comparison or 10k replication was run or added to CI. Avoid all-data estimated μ frozen inside purported deletion-clean CV (data leakage); true μ externally fixed is an infeasible oracle. Numerical Brent minima are not global certificates. Distinguish empirical smoothing percentage from latent realized trend MSE and the 2017 original study's attained-smoothness response.
