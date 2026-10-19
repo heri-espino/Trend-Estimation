@@ -57,6 +57,8 @@ jobs:
           test -s /tmp/estimated-variances-smoke/summary.json
           test -s /tmp/estimated-variances-smoke/true_mse_by_noise_level.png
           test -s /tmp/estimated-variances-smoke/common_noise_scale_invariance.csv
+      - name: Preview robustness design without running its pilot
+        run: python -m experiments.pooled_loocv_smoothness.run_robustness --preset pilot --dry-run > /tmp/robustness-plan.json
       - name: Verify misspecified-noise robustness smoke
         run: |
           python -m experiments.pooled_loocv_smoothness.run_robustness --preset smoke --out-dir /tmp/guerrero-robustness-smoke
