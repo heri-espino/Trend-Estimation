@@ -6,7 +6,7 @@
 
 - [Executed manifest](../../../results/pooled_loocv_smoothness/guerrero/nonzero_difference_mean/pilot/manifest.json), [complete method-level CSV](../../../results/pooled_loocv_smoothness/guerrero/nonzero_difference_mean/pilot/method_comparison.csv), and [original summary](../../../results/pooled_loocv_smoothness/guerrero/nonzero_difference_mean/pilot/summary.json).
 - [Actual generated example reconstruction-error figure](../../../results/pooled_loocv_smoothness/guerrero/nonzero_difference_mean/pilot/example_latent_trend_errors.png) and [actual mean-MSE-by-mu figure](../../../results/pooled_loocv_smoothness/guerrero/nonzero_difference_mean/pilot/mean_shift_true_trend_mse_R3.png). Both figures are already in Git, not merely prospective.
-- Original run source SHA **90521235df9dab729451fcceb2e5a001554e3e9a**, manifest written **2026-10-19T08:09:40.286063Z**, Python 3.11.16, NumPy 2.4.6, SciPy 1.17.1. Base seed **69000000**; seed \`base+N_index*10000+eta_index*1000+replicate\`.
+- Original run source SHA **90521235df9dab729451fcceb2e5a001554e3e9a**, manifest written **2026-10-19T08:09:40.286063Z**, Python 3.11.16, NumPy 2.4.6, SciPy 1.17.1. Base seed **69000000**; seed `base+N_index*10000+eta_index*1000+replicate`.
 - Full factorial: \(d=2\) fixed by analyst, \(N=50,200\), \(\sigma_\eta=0.5,2\), \(\sigma_\varepsilon=0.3\), \(\mu/\sigma_\varepsilon=-1,-0.25,0,0.25,1\), five seeds. **20 scenarios, 200 complete pool evaluations (R1 and R3), 8 methods per pool = 1,600 CSV rows**; 100 R3 treatment pools. No missing method per pool and no nonfinite recorded realized trend MSE.
 - **Actual independent random-shock unit: 20 R3 draws, not 100.** Each (N, noise SD, seed) generates one set of three stochastic trends and errors reused under all five deterministic μ-shifts. R1 reuses the first series of corresponding R3. Statistical inference must respect this reuse; there are only five independently seeded draws for each N × noise SD.
 
@@ -83,10 +83,10 @@ This is **algebraic invariance by construction, not five statistically independe
 
 ## 4. Honest model comparison: observed CV versus post-selection truth
 
-The reported source \`reported_press_kind\` identifies a crucial distinction:
+The reported source `reported_press_kind` identifies a crucial distinction:
 - Zero-μ ordinary LOOCV and **oracle externally fixed μ** have their appropriate fixed-mean PRESS.
 - **Joint estimated-μ LOOCV** uses a derived exact within-fold refitting PRESS formula; tests independently confirmed agreement with explicit leave-one-observation-deleted re-fitting of μ and trends.
-- For **full-data-estimated GLS μ and pooled Guerrero-style plug-in μ**, the stored PRESS score freezes an estimate that already used all observations. It is explicitly \`frozen_full_data_estimated_mu_PRESS_diagnostic_NOT_CV\`. **Do NOT compare this diagnostic to genuine leave-one-out values or claim it is held-out validation.**
+- For **full-data-estimated GLS μ and pooled Guerrero-style plug-in μ**, the stored PRESS score freezes an estimate that already used all observations. It is explicitly `frozen_full_data_estimated_mu_PRESS_diagnostic_NOT_CV`. **Do NOT compare this diagnostic to genuine leave-one-out values or claim it is held-out validation.**
 
 Only compare **latent reconstruction MSE** across these eight methods when evaluating their realized accuracy. No selected λ or μ was tuned against simulated latent τ. The true \(\sigma_\eta,\sigma_\varepsilon,\mu\) supplied to oracle benchmarks are privileged simulation information, not deployable procedures.
 
