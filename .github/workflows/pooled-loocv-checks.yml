@@ -23,6 +23,7 @@ on:
       - "tests/test_cortes_criteria_confirmed_aggregate.py"
       - "tests/test_pooled_process_examples.py"
       - "tests/test_pooled_process_monte_carlo.py"
+      - "working_papers/Working Paper - Pooled LOOCV Numerical Optimization/presentation/**"
       - ".github/workflows/pooled-loocv-checks.yml"
   pull_request:
     paths:
@@ -38,6 +39,7 @@ on:
       - "tests/test_empirical_market_noise.py"
       - "tests/test_pooled_process_examples.py"
       - "tests/test_pooled_process_monte_carlo.py"
+      - "working_papers/Working Paper - Pooled LOOCV Numerical Optimization/presentation/**"
       - ".github/workflows/pooled-loocv-checks.yml"
   workflow_dispatch:
 
@@ -59,6 +61,8 @@ jobs:
         run: |
           python -m experiments.pooled_loocv_smoothness.audit_process_monte_carlo_compact --out-dir /tmp/process-study-m2-audit
           test -s /tmp/process-study-m2-audit/audit_summary.json
+      - name: Validate Marp lecture deck assets without rendering
+        run: python "working_papers/Working Paper - Pooled LOOCV Numerical Optimization/presentation/check_deck.py"
       - name: Confirm campaign preview without simulations
         run: python -m experiments.pooled_loocv_smoothness.run --preset pilot --dry-run
       - name: Execute tiny smoke and validate exported artifacts
