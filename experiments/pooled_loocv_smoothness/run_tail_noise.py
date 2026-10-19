@@ -335,6 +335,8 @@ def summarize(rows: list[dict]):
         "total_nested_pools": len(pools),
         "primary_R3_pools": sum(p[METHODS[0]]["R"] == 3 for p in pools.values()),
         "by_regime_R3": results,
+        "by_regime_R3_warning":
+            "These descriptive regime values aggregate different d; use by_difference_order_R3 for primary comparisons.",
         "by_difference_order_R3": by_d,
         "Cauchy_warning": (
             "Cauchy scale is not a standard deviation: no finite "
@@ -351,7 +353,8 @@ def execute(preset: str, out: Path, dry_run: bool = False):
     scenarios, repeats, sizes, scan = design(preset)
     base = SEED_BASE if preset != "confirmatory" else SEED_BASE + 1000000
     manifest = {
-        "protocol": "guerrero_tail_and_skew_stress_v1",
+        "protocol": "guerrero_tail_and_skew_stress_v2",
+        "design_revision": "before first research pilot: matched d=1,2,3 and five skew-normal alphas",
         "preset": preset,
         "status": "planned" if dry_run else "executed",
         "created_utc": datetime.now(timezone.utc).isoformat(),
