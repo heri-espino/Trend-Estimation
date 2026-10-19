@@ -1,0 +1,327 @@
+{
+  "status": "exploratory_only_not_confirmatory",
+  "primary_R3_pools": 100,
+  "total_nested_pools": 200,
+  "total_method_rows": 1600,
+  "by_mu_factor_R3": [
+    {
+      "mu_over_sigma_epsilon": -1.0,
+      "primary_R3_pools": 20,
+      "methods": [
+        {
+          "name": "known_mu_true_ratio_oracle",
+          "mean_realized_trend_mse": 0.3533284426553779,
+          "median_realized_trend_mse": 0.20631799781726,
+          "mean_abs_mu_error": 0.0,
+          "selected_infinite_lambda_count": 0
+        },
+        {
+          "name": "zero_mu_gaussian_difference_ml",
+          "mean_realized_trend_mse": 0.46144952925588256,
+          "median_realized_trend_mse": 0.31426457055395973,
+          "mean_abs_mu_error": 0.29999999999999993,
+          "selected_infinite_lambda_count": 0
+        },
+        {
+          "name": "zero_mu_pooled_loocv",
+          "mean_realized_trend_mse": 0.3836614366820136,
+          "median_realized_trend_mse": 0.2289563177873633,
+          "mean_abs_mu_error": 0.29999999999999993,
+          "selected_infinite_lambda_count": 0
+        },
+        {
+          "name": "known_mu_estimated_variance_ml",
+          "mean_realized_trend_mse": 0.3570954922566631,
+          "median_realized_trend_mse": 0.20511797312725855,
+          "mean_abs_mu_error": 0.0,
+          "selected_infinite_lambda_count": 0
+        },
+        {
+          "name": "known_mu_pooled_loocv",
+          "mean_realized_trend_mse": 0.3557799814527315,
+          "median_realized_trend_mse": 0.20356796210821923,
+          "mean_abs_mu_error": 0.0,
+          "selected_infinite_lambda_count": 0
+        },
+        {
+          "name": "pooled_guerrero_plugin_mu_plus_gaussian_ml",
+          "mean_realized_trend_mse": 0.3631688244350157,
+          "median_realized_trend_mse": 0.20959655290771456,
+          "mean_abs_mu_error": 0.023000172113555383,
+          "selected_infinite_lambda_count": 0
+        },
+        {
+          "name": "estimated_mu_gaussian_gls_ml",
+          "mean_realized_trend_mse": 0.35930726085687886,
+          "median_realized_trend_mse": 0.2095982918381824,
+          "mean_abs_mu_error": 0.016418848376598426,
+          "selected_infinite_lambda_count": 0
+        },
+        {
+          "name": "estimated_mu_fold_clean_pooled_loocv",
+          "mean_realized_trend_mse": 0.3577125328672351,
+          "median_realized_trend_mse": 0.2099592010819662,
+          "mean_abs_mu_error": 0.016438314204066606,
+          "selected_infinite_lambda_count": 0
+        }
+      ]
+    },
+    {
+      "mu_over_sigma_epsilon": -0.25,
+      "primary_R3_pools": 20,
+      "methods": [
+        {
+          "name": "known_mu_true_ratio_oracle",
+          "mean_realized_trend_mse": 0.35332844265538005,
+          "median_realized_trend_mse": 0.20631799781726035,
+          "mean_abs_mu_error": 0.0,
+          "selected_infinite_lambda_count": 0
+        },
+        {
+          "name": "zero_mu_gaussian_difference_ml",
+          "mean_realized_trend_mse": 0.3634560564253866,
+          "median_realized_trend_mse": 0.2165900304814284,
+          "mean_abs_mu_error": 0.07499999999999998,
+          "selected_infinite_lambda_count": 0
+        },
+        {
+          "name": "zero_mu_pooled_loocv",
+          "mean_realized_trend_mse": 0.3554670509295319,
+          "median_realized_trend_mse": 0.20025905203583133,
+          "mean_abs_mu_error": 0.07499999999999998,
+          "selected_infinite_lambda_count": 0
+        },
+        {
+          "name": "known_mu_estimated_variance_ml",
+          "mean_realized_trend_mse": 0.35709549225628723,
+          "median_realized_trend_mse": 0.20511797312223246,
+          "mean_abs_mu_error": 0.0,
+          "selected_infinite_lambda_count": 0
+        },
+        {
+          "name": "known_mu_pooled_loocv",
+          "mean_realized_trend_mse": 0.35577998119773924,
+          "median_realized_trend_mse": 0.20356796195249,
+          "mean_abs_mu_error": 0.0,
+          "selected_infinite_lambda_count": 0
+        },
+        {
+          "name": "pooled_guerrero_plugin_mu_plus_gaussian_ml",
+          "mean_realized_trend_mse": 0.36316882443462306,
+          "median_realized_trend_mse": 0.20959655290799273,
+          "mean_abs_mu_error": 0.0230001721135569,
+          "selected_infinite_lambda_count": 0
+        },
+        {
+          "name": "estimated_mu_gaussian_gls_ml",
+          "mean_realized_trend_mse": 0.35930726085737524,
+          "median_realized_trend_mse": 0.2095982918381562,
+          "mean_abs_mu_error": 0.016418848376568984,
+          "selected_infinite_lambda_count": 0
+        },
+        {
+          "name": "estimated_mu_fold_clean_pooled_loocv",
+          "mean_realized_trend_mse": 0.3577125324367209,
+          "median_realized_trend_mse": 0.20995920070061697,
+          "mean_abs_mu_error": 0.016438314179236642,
+          "selected_infinite_lambda_count": 0
+        }
+      ]
+    },
+    {
+      "mu_over_sigma_epsilon": 0.0,
+      "primary_R3_pools": 20,
+      "methods": [
+        {
+          "name": "known_mu_true_ratio_oracle",
+          "mean_realized_trend_mse": 0.35332844265537916,
+          "median_realized_trend_mse": 0.20631799781726012,
+          "mean_abs_mu_error": 0.0,
+          "selected_infinite_lambda_count": 0
+        },
+        {
+          "name": "zero_mu_gaussian_difference_ml",
+          "mean_realized_trend_mse": 0.3570954922557514,
+          "median_realized_trend_mse": 0.20511797311716348,
+          "mean_abs_mu_error": 0.0,
+          "selected_infinite_lambda_count": 0
+        },
+        {
+          "name": "zero_mu_pooled_loocv",
+          "mean_realized_trend_mse": 0.3557799810853254,
+          "median_realized_trend_mse": 0.20356796256953935,
+          "mean_abs_mu_error": 0.0,
+          "selected_infinite_lambda_count": 0
+        },
+        {
+          "name": "known_mu_estimated_variance_ml",
+          "mean_realized_trend_mse": 0.3570954922557514,
+          "median_realized_trend_mse": 0.20511797311716348,
+          "mean_abs_mu_error": 0.0,
+          "selected_infinite_lambda_count": 0
+        },
+        {
+          "name": "known_mu_pooled_loocv",
+          "mean_realized_trend_mse": 0.3557799810853254,
+          "median_realized_trend_mse": 0.20356796256953935,
+          "mean_abs_mu_error": 0.0,
+          "selected_infinite_lambda_count": 0
+        },
+        {
+          "name": "pooled_guerrero_plugin_mu_plus_gaussian_ml",
+          "mean_realized_trend_mse": 0.3631688244346226,
+          "median_realized_trend_mse": 0.20959655290733906,
+          "mean_abs_mu_error": 0.023000172113556254,
+          "selected_infinite_lambda_count": 0
+        },
+        {
+          "name": "estimated_mu_gaussian_gls_ml",
+          "mean_realized_trend_mse": 0.35930726085739406,
+          "median_realized_trend_mse": 0.20959829183826728,
+          "mean_abs_mu_error": 0.016418848376521904,
+          "selected_infinite_lambda_count": 0
+        },
+        {
+          "name": "estimated_mu_fold_clean_pooled_loocv",
+          "mean_realized_trend_mse": 0.35771253256677293,
+          "median_realized_trend_mse": 0.20995920053511719,
+          "mean_abs_mu_error": 0.016438314194801615,
+          "selected_infinite_lambda_count": 0
+        }
+      ]
+    },
+    {
+      "mu_over_sigma_epsilon": 0.25,
+      "primary_R3_pools": 20,
+      "methods": [
+        {
+          "name": "known_mu_true_ratio_oracle",
+          "mean_realized_trend_mse": 0.35332844265537905,
+          "median_realized_trend_mse": 0.20631799781725985,
+          "mean_abs_mu_error": 0.0,
+          "selected_infinite_lambda_count": 0
+        },
+        {
+          "name": "zero_mu_gaussian_difference_ml",
+          "mean_realized_trend_mse": 0.3685349027771603,
+          "median_realized_trend_mse": 0.22355879424544492,
+          "mean_abs_mu_error": 0.07499999999999998,
+          "selected_infinite_lambda_count": 0
+        },
+        {
+          "name": "zero_mu_pooled_loocv",
+          "mean_realized_trend_mse": 0.3626275939021843,
+          "median_realized_trend_mse": 0.22200249275122952,
+          "mean_abs_mu_error": 0.07499999999999998,
+          "selected_infinite_lambda_count": 0
+        },
+        {
+          "name": "known_mu_estimated_variance_ml",
+          "mean_realized_trend_mse": 0.3570954922566004,
+          "median_realized_trend_mse": 0.20511797311721366,
+          "mean_abs_mu_error": 0.0,
+          "selected_infinite_lambda_count": 0
+        },
+        {
+          "name": "known_mu_pooled_loocv",
+          "mean_realized_trend_mse": 0.3557799811838326,
+          "median_realized_trend_mse": 0.20356796222957518,
+          "mean_abs_mu_error": 0.0,
+          "selected_infinite_lambda_count": 0
+        },
+        {
+          "name": "pooled_guerrero_plugin_mu_plus_gaussian_ml",
+          "mean_realized_trend_mse": 0.3631688244345859,
+          "median_realized_trend_mse": 0.20959655290771445,
+          "mean_abs_mu_error": 0.02300017211355662,
+          "selected_infinite_lambda_count": 0
+        },
+        {
+          "name": "estimated_mu_gaussian_gls_ml",
+          "mean_realized_trend_mse": 0.3593072608572305,
+          "median_realized_trend_mse": 0.20959829183815118,
+          "mean_abs_mu_error": 0.016418848376516946,
+          "selected_infinite_lambda_count": 0
+        },
+        {
+          "name": "estimated_mu_fold_clean_pooled_loocv",
+          "mean_realized_trend_mse": 0.35771253295678085,
+          "median_realized_trend_mse": 0.20995920094159168,
+          "mean_abs_mu_error": 0.016438314199199104,
+          "selected_infinite_lambda_count": 0
+        }
+      ]
+    },
+    {
+      "mu_over_sigma_epsilon": 1.0,
+      "primary_R3_pools": 20,
+      "methods": [
+        {
+          "name": "known_mu_true_ratio_oracle",
+          "mean_realized_trend_mse": 0.3533284426553801,
+          "median_realized_trend_mse": 0.20631799781726115,
+          "mean_abs_mu_error": 0.0,
+          "selected_infinite_lambda_count": 0
+        },
+        {
+          "name": "zero_mu_gaussian_difference_ml",
+          "mean_realized_trend_mse": 0.4628980295291485,
+          "median_realized_trend_mse": 0.3236274841239354,
+          "mean_abs_mu_error": 0.29999999999999993,
+          "selected_infinite_lambda_count": 0
+        },
+        {
+          "name": "zero_mu_pooled_loocv",
+          "mean_realized_trend_mse": 0.4007645081151006,
+          "median_realized_trend_mse": 0.2972701878531083,
+          "mean_abs_mu_error": 0.29999999999999993,
+          "selected_infinite_lambda_count": 0
+        },
+        {
+          "name": "known_mu_estimated_variance_ml",
+          "mean_realized_trend_mse": 0.35709549225668846,
+          "median_realized_trend_mse": 0.20511797312222985,
+          "mean_abs_mu_error": 0.0,
+          "selected_infinite_lambda_count": 0
+        },
+        {
+          "name": "known_mu_pooled_loocv",
+          "mean_realized_trend_mse": 0.3557799809251921,
+          "median_realized_trend_mse": 0.2035679623252199,
+          "mean_abs_mu_error": 0.0,
+          "selected_infinite_lambda_count": 0
+        },
+        {
+          "name": "pooled_guerrero_plugin_mu_plus_gaussian_ml",
+          "mean_realized_trend_mse": 0.36316882443451587,
+          "median_realized_trend_mse": 0.2095965529073855,
+          "mean_abs_mu_error": 0.02300017211355633,
+          "selected_infinite_lambda_count": 0
+        },
+        {
+          "name": "estimated_mu_gaussian_gls_ml",
+          "mean_realized_trend_mse": 0.35930726085734577,
+          "median_realized_trend_mse": 0.20959829183824508,
+          "mean_abs_mu_error": 0.016418848376551422,
+          "selected_infinite_lambda_count": 0
+        },
+        {
+          "name": "estimated_mu_fold_clean_pooled_loocv",
+          "mean_realized_trend_mse": 0.3577125334481531,
+          "median_realized_trend_mse": 0.20995920090488535,
+          "mean_abs_mu_error": 0.016438314165492966,
+          "selected_infinite_lambda_count": 0
+        }
+      ]
+    }
+  ],
+  "guardrails": [
+    "The source Guerrero already studied nonzero mu and an observed-difference plug-in.",
+    "Gaussian contrast joint mu/a/b estimation is a proposed implementation, not Guerrero's published MLE algorithm.",
+    "The fold-clean pooled CV profiles one common mu jointly in the training penalty, not a historical h-step mean.",
+    "For full-data GLS estimated mu, frozen-mu PRESS is diagnostic only and must not be compared as leak-free CV.",
+    "Finite five-seed per-cell pilot cannot demonstrate distribution-independent superiority.",
+    "S_nominal is a penalty-coordinate only; its degrees-of-freedom meaning changes if mu is estimated.",
+    "Both R=1 and R=3 and the mu-factor grid share random innovations at the same N/eta/replicate."
+  ]
+}

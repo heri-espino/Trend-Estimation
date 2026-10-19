@@ -1,0 +1,250 @@
+{
+  "protocol": "nonzero_difference_mean_gaussian_ML_pooled_LOOCV_v1",
+  "status": "executed",
+  "created_utc": "2026-10-19T08:09:40.286063+00:00",
+  "git_sha": "90521235df9dab729451fcceb2e5a001554e3e9a",
+  "python": "3.11.16",
+  "numpy": "2.4.6",
+  "scipy": "1.17.1",
+  "order_d_fixed": 2,
+  "seed_base": 69000000,
+  "rng": "numpy.random.default_rng",
+  "seed_formula": "base+N_index*10000+sigma_eta_index*1000+replicate",
+  "shared_noise_across_mu_factor": true,
+  "R1_nested_in_R3": true,
+  "R_values": [
+    1,
+    3
+  ],
+  "scenario_count": 20,
+  "replicates_per_scenario": 5,
+  "sigma_epsilon_fixed": 0.3,
+  "mean_factors": [
+    -1.0,
+    -0.25,
+    0.0,
+    0.25,
+    1.0
+  ],
+  "scenarios": [
+    {
+      "scenario_id": 0,
+      "n": 50,
+      "d": 2,
+      "sigma_eta": 0.5,
+      "sigma_epsilon": 0.3,
+      "mu_factor": -1.0,
+      "true_mu": -0.3,
+      "true_lambda": 2.777777777777778
+    },
+    {
+      "scenario_id": 1,
+      "n": 50,
+      "d": 2,
+      "sigma_eta": 0.5,
+      "sigma_epsilon": 0.3,
+      "mu_factor": -0.25,
+      "true_mu": -0.075,
+      "true_lambda": 2.777777777777778
+    },
+    {
+      "scenario_id": 2,
+      "n": 50,
+      "d": 2,
+      "sigma_eta": 0.5,
+      "sigma_epsilon": 0.3,
+      "mu_factor": 0.0,
+      "true_mu": 0.0,
+      "true_lambda": 2.777777777777778
+    },
+    {
+      "scenario_id": 3,
+      "n": 50,
+      "d": 2,
+      "sigma_eta": 0.5,
+      "sigma_epsilon": 0.3,
+      "mu_factor": 0.25,
+      "true_mu": 0.075,
+      "true_lambda": 2.777777777777778
+    },
+    {
+      "scenario_id": 4,
+      "n": 50,
+      "d": 2,
+      "sigma_eta": 0.5,
+      "sigma_epsilon": 0.3,
+      "mu_factor": 1.0,
+      "true_mu": 0.3,
+      "true_lambda": 2.777777777777778
+    },
+    {
+      "scenario_id": 5,
+      "n": 50,
+      "d": 2,
+      "sigma_eta": 2.0,
+      "sigma_epsilon": 0.3,
+      "mu_factor": -1.0,
+      "true_mu": -0.3,
+      "true_lambda": 44.44444444444445
+    },
+    {
+      "scenario_id": 6,
+      "n": 50,
+      "d": 2,
+      "sigma_eta": 2.0,
+      "sigma_epsilon": 0.3,
+      "mu_factor": -0.25,
+      "true_mu": -0.075,
+      "true_lambda": 44.44444444444445
+    },
+    {
+      "scenario_id": 7,
+      "n": 50,
+      "d": 2,
+      "sigma_eta": 2.0,
+      "sigma_epsilon": 0.3,
+      "mu_factor": 0.0,
+      "true_mu": 0.0,
+      "true_lambda": 44.44444444444445
+    },
+    {
+      "scenario_id": 8,
+      "n": 50,
+      "d": 2,
+      "sigma_eta": 2.0,
+      "sigma_epsilon": 0.3,
+      "mu_factor": 0.25,
+      "true_mu": 0.075,
+      "true_lambda": 44.44444444444445
+    },
+    {
+      "scenario_id": 9,
+      "n": 50,
+      "d": 2,
+      "sigma_eta": 2.0,
+      "sigma_epsilon": 0.3,
+      "mu_factor": 1.0,
+      "true_mu": 0.3,
+      "true_lambda": 44.44444444444445
+    },
+    {
+      "scenario_id": 10,
+      "n": 200,
+      "d": 2,
+      "sigma_eta": 0.5,
+      "sigma_epsilon": 0.3,
+      "mu_factor": -1.0,
+      "true_mu": -0.3,
+      "true_lambda": 2.777777777777778
+    },
+    {
+      "scenario_id": 11,
+      "n": 200,
+      "d": 2,
+      "sigma_eta": 0.5,
+      "sigma_epsilon": 0.3,
+      "mu_factor": -0.25,
+      "true_mu": -0.075,
+      "true_lambda": 2.777777777777778
+    },
+    {
+      "scenario_id": 12,
+      "n": 200,
+      "d": 2,
+      "sigma_eta": 0.5,
+      "sigma_epsilon": 0.3,
+      "mu_factor": 0.0,
+      "true_mu": 0.0,
+      "true_lambda": 2.777777777777778
+    },
+    {
+      "scenario_id": 13,
+      "n": 200,
+      "d": 2,
+      "sigma_eta": 0.5,
+      "sigma_epsilon": 0.3,
+      "mu_factor": 0.25,
+      "true_mu": 0.075,
+      "true_lambda": 2.777777777777778
+    },
+    {
+      "scenario_id": 14,
+      "n": 200,
+      "d": 2,
+      "sigma_eta": 0.5,
+      "sigma_epsilon": 0.3,
+      "mu_factor": 1.0,
+      "true_mu": 0.3,
+      "true_lambda": 2.777777777777778
+    },
+    {
+      "scenario_id": 15,
+      "n": 200,
+      "d": 2,
+      "sigma_eta": 2.0,
+      "sigma_epsilon": 0.3,
+      "mu_factor": -1.0,
+      "true_mu": -0.3,
+      "true_lambda": 44.44444444444445
+    },
+    {
+      "scenario_id": 16,
+      "n": 200,
+      "d": 2,
+      "sigma_eta": 2.0,
+      "sigma_epsilon": 0.3,
+      "mu_factor": -0.25,
+      "true_mu": -0.075,
+      "true_lambda": 44.44444444444445
+    },
+    {
+      "scenario_id": 17,
+      "n": 200,
+      "d": 2,
+      "sigma_eta": 2.0,
+      "sigma_epsilon": 0.3,
+      "mu_factor": 0.0,
+      "true_mu": 0.0,
+      "true_lambda": 44.44444444444445
+    },
+    {
+      "scenario_id": 18,
+      "n": 200,
+      "d": 2,
+      "sigma_eta": 2.0,
+      "sigma_epsilon": 0.3,
+      "mu_factor": 0.25,
+      "true_mu": 0.075,
+      "true_lambda": 44.44444444444445
+    },
+    {
+      "scenario_id": 19,
+      "n": 200,
+      "d": 2,
+      "sigma_eta": 2.0,
+      "sigma_epsilon": 0.3,
+      "mu_factor": 1.0,
+      "true_mu": 0.3,
+      "true_lambda": 44.44444444444445
+    }
+  ],
+  "methods": [
+    "known_mu_true_ratio_oracle",
+    "zero_mu_gaussian_difference_ml",
+    "zero_mu_pooled_loocv",
+    "known_mu_estimated_variance_ml",
+    "known_mu_pooled_loocv",
+    "pooled_guerrero_plugin_mu_plus_gaussian_ml",
+    "estimated_mu_gaussian_gls_ml",
+    "estimated_mu_fold_clean_pooled_loocv"
+  ],
+  "expected_nested_pools": 200,
+  "expected_method_rows": 1600,
+  "trend_generator": "D2 tau = mu + centered iid Gaussian innovation; fixed initial intercept 0, slope .02",
+  "observed_noise": "independent iid centered Gaussian, V=I",
+  "truth_used_in_parameter_tuning": false,
+  "estimated_mu_selected_within_LOOCV_folds": true,
+  "guerrero_plugin_is_pooled_extension_not_original_per_series": true,
+  "nominal_s_not_data_selected_mu_edf": true,
+  "actual_method_rows": 1600
+}
