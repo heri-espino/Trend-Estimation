@@ -1,6 +1,6 @@
 # Working Paper — Numerical Optimization of Pooled LOOCV Smoothness
 
-**Status:** independent working paper, initiated 2026-10-18; theory and experiments in preparation.  
+**Status:** independent working paper, initiated 2026-10-18; Gaussian 160k-draw fixed-order/mean-difference reconstruction confirmation completed 2026-10-19; non-Gaussian joint-mean extension remains prospective.  
 **Prospective venue:** SMCCA (journal scope and submission requirements must be verified before submission).  
 **Working title:** *Numerical Optimization of Penalized Trend Smoothness by Pooled Leave-One-Out Cross-Validation*.
 
@@ -8,7 +8,7 @@
 
 Can numerical stationary-point searches, including multibracket Brent root refinement and *restricted exact* Sturm isolation, reliably locate the global minimum of a pooled leave-one-out cross-validation (LOOCV) loss for classical penalized least-squares (PLS) trends?
 
-The statistical basis is **Cortés-Toto, Guerrero and Reyes (2017)**, especially their PLS/CV experiment. We study **observed-series reconstruction only**. NO forecasting horizons, forecast-origin splits, out-of-sample forecast claims, dynamic tracking of branches, or joint mean-difference estimation.
+The statistical basis is **Cortés-Toto, Guerrero and Reyes (2017)**, especially their PLS/CV experiment. We study **observed-series reconstruction only**. NO forecasting horizons, forecast-origin splits, out-of-sample forecast claims, or dynamic tracking of branches. A **distinct, completed sensitivity experiment** additionally compares fixed/estimated nonzero trend-difference means within pooled retrospective observed-series reconstruction; it is not the separate horizon-h forecast-mean project.
 
 ## Independent scope
 
@@ -71,7 +71,8 @@ For R=1 this reduces to traditional single-series LOOCV. Group only statisticall
 19. [Executed nonzero-mean pilot audit](notes/NONZERO_DIFFERENCE_MEAN_PILOT_AUDIT_2026-10-19.md) — 1,600 saved method rows, paired observed mean-shift effects, eight baselines and two committed figures.
 20. [Exact simulation and measured results](notes/HOW_THE_SIMULATION_WORKS_AND_MEASURED_RESULTS.md) — actual latent trend recursion, eight estimators, independent-shock grouping and original pilot statistics.
 21. [10,000-seed multorder confirmatory protocol](notes/MULTIORDER_10000_SEED_CONFIRMATORY_PROTOCOL.md) — d=1,2,3,4; shard control; code SHA, paired Monte Carlo inference and numerical preflights.
-22. [Agent handoff](AI_HANDOFF.md).
+22. [Completed Gaussian 160k-draw confirmatory audit](notes/MULTIORDER_10000_SEED_CONFIRMATORY_RESULTS_2026-10-19.md) — per-(d,N,noise) paired MSE, 95% Monte Carlo intervals and single-series exceptions.
+23. [Agent handoff](AI_HANDOFF.md).
 
 ## Runnable independent pilot
 
@@ -132,9 +133,9 @@ Pilot: 20 cells, five seeds per N×noise group, nested R1/3, **200 treatment poo
 
 ## Next registered multorder confirmation — NOT YET EXECUTED
 
-The user requested documenting the exact process and actual measured `d=2` five-seed results, then expanding **without rewriting old results** to fitted/generating orders `d=1,2,3,4`, with **10,000 independent Monte Carlo seeds per (d,N,observation SD)**. This is 16 independent base cells, **160,000 underlying independent R3 shock draws**, five **paired** mu shifts and nested R1/R3, or **1.6 million treatment-pool evaluations / 12.8 million method rows**. These numbers represent a planned manual run, not completed results. Details: [canonical methodology/results note](notes/HOW_THE_SIMULATION_WORKS_AND_MEASURED_RESULTS.md) and [frozen confirmatory protocol](notes/MULTIORDER_10000_SEED_CONFIRMATORY_PROTOCOL.md).
+The user requested documenting the exact process and actual measured `d=2` five-seed results, then expanding **without rewriting old results** to fitted/generating orders `d=1,2,3,4`, with **10,000 independent Monte Carlo seeds per (d,N,observation SD)**. This is 16 independent base cells, **160,000 underlying independent R3 shock draws**, five **paired** mu shifts and nested R1/R3, or **1.6 million treatment-pool evaluations / 12.8 million method rows**. These numbers now describe a **completed manual Gaussian run**, source SHA `070b363b7d8a8156f320c833539fa068b684fc7b`; original per-seed gzip files are local and the compact verified aggregates are committed. Details: [canonical methodology/results note](notes/HOW_THE_SIMULATION_WORKS_AND_MEASURED_RESULTS.md) and [frozen confirmatory protocol](notes/MULTIORDER_10000_SEED_CONFIRMATORY_PROTOCOL.md).
 
-The new sharded `run_nonzero_mean_multorder.py` records deterministic seed intervals, original source SHA and compressed CSV SHA256, avoids overlarge in-memory results and exploits exact affine-shift equivariance. `launch_nonzero_mean_multorder.py` is **plan-only by default**; only `--execute` starts local jobs, with `--workers` and safe resume. `aggregate_nonzero_mean_multorder.py` rejects overlapping seed intervals, mixed source commits and false completeness; it keeps the **paired true-MSE differences per seed** and outputs compact per-(d,N,eta,mu,R) statistics for legitimate uncertainty assessment. Earlier d2 1,600-row pilot results remain untouched; no PR/merge/main. Non-Gaussian mu-shift extension is **separately prospective**, after Gaussian numerical validation.
+The new sharded `run_nonzero_mean_multorder.py` records deterministic seed intervals, original source SHA and compressed CSV SHA256, avoids overlarge in-memory results and exploits exact affine-shift equivariance. `launch_nonzero_mean_multorder.py` is **plan-only by default**; only `--execute` starts local jobs, with `--workers` and safe resume. `aggregate_nonzero_mean_multorder.py` rejects overlapping seed intervals, mixed source commits and false completeness; it keeps the **paired true-MSE differences per seed** and outputs compact per-(d,N,eta,mu,R) statistics for legitimate uncertainty assessment. Earlier d2 1,600-row pilot results remain untouched; no PR/merge/main. Measured [16-cell confirmatory audit](notes/MULTIORDER_10000_SEED_CONFIRMATORY_RESULTS_2026-10-19.md) distinguishes both R3 dominance pattern and R1 counterexamples. Non-Gaussian mu-shift extension is **separately prospective**, after Gaussian numerical validation.
 
 ## Separation contract
 
