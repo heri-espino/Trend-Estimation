@@ -74,7 +74,8 @@ For R=1 this reduces to traditional single-series LOOCV. Group only statisticall
 22. [Completed Gaussian 160k-draw confirmatory audit](notes/MULTIORDER_10000_SEED_CONFIRMATORY_RESULTS_2026-10-19.md) — per-(d,N,noise) paired MSE, 95% Monte Carlo intervals and single-series exceptions.
 23. [Full eight-method breakdown for all 160 confirmed scenarios](notes/EIGHT_METHODS_BY_SCENARIO_160.md) — no averaging across N, noise, order, mu or pool size; [wide downloadable CSV](../../results/pooled_loocv_smoothness/guerrero/nonzero_mean_multorder/audit_001/eight_methods_all_160_scenarios.csv).
 24. [New non-Gaussian + nonzero-mean Monte Carlo protocol](notes/NONGAUSSIAN_NONZERO_MU_PROTOCOL_2026-10-19.md) — 12 noise distributions, 4 difference orders, mean shifts and moment-aware interpretation; pilot unrun.
-25. [Agent handoff](AI_HANDOFF.md).
+25. [Cortés-Toto criteria versus Gaussian MLE, with a common estimated μ and numerical search](notes/CORTES_TOTO_CRITERIA_AND_NUMERICAL_COMPARISON_PROTOCOL_2026-10-19.md) — original CV/GCV/AICc/BIC, pooled joint EDF, controlled smoothness, source-aware search caveats; large comparison **not run**.
+26. [Agent handoff](AI_HANDOFF.md).
 
 ## Runnable independent pilot
 
@@ -144,6 +145,15 @@ The new sharded `run_nonzero_mean_multorder.py` records deterministic seed inter
 The independently verified 160k Gaussian base-shock campaign motivates a **separate finite-variance distributional stress study**: 12 regimes including Gaussian control, t3 observation/innovations, centered Gamma ±, rare Gaussian jumps, GARCH-t5 and five skew-normal shapes. Keep analyst-fixed d=1,2,3,4, N=50/200, observation population SD=.5/2, common `mu/sigma_epsilon` shifts [-1,-.25,0,.25,1], nested R1/3 and the eight existing fitting procedures. `gaussian_difference` MLE is **quasi-ML** outside normality. Exact statistical and reproducibility rules: [locked experiment J protocol](notes/NONGAUSSIAN_NONZERO_MU_PROTOCOL_2026-10-19.md).
 
 **Status:** 25-seed ×192-cell pilot = **4,800 new independent base R3 shock draws and 384,000 method rows**, **NOT YET RUN**. New 10k/cell confirmation (1.92M base draws / 153.6M rows) is **future**, not silently launched. Run `python -m experiments.pooled_loocv_smoothness.launch_nonzero_mu_nongaussian --phase pilot --workers 32` to preview; append `--execute` for an explicitly authorized manual run on the user's own PC. `aggregate_nonzero_mu_nongaussian` checks SHA256 and all 192 strata. Cauchy is **intentionally separated** because population variance and squared risk are undefined. Student t3 has finite variance but infinite fourth moment, so mean-loss normal error bars need caution. Original Gaussian and historical tail pilots are unchanged.
+
+## Study K — Cortés-Toto criterion family × mean model × numerical solver
+
+The user requested a wider method comparison anchored in **Cortés-Toto, Guerrero and Reyes (2017)**, rather than only GLS-Gaussian (quasi-)MLE and joint fold-clean pooled LOOCV. Their actual four simulated selectors were **ordinary CV, GCV, AICc and BIC**, with (d=2,mu=0); their article also describes Guerrero's controlled smoothness and mentions AIC but excludes it from its final comparative experiment because of unreliable numerical behavior. Our [source-verified Study K protocol](notes/CORTES_TOTO_CRITERIA_AND_NUMERICAL_COMPARISON_PROTOCOL_2026-10-19.md) separates:
+- **Statistical criteria:** CV/GCV/AICc/BIC; Gaussian difference-covariance ML/quasi-ML; and **predeclared** controlled-smoothness targets (not optimized criteria).
+- **Mean treatment:** zero forced, known true μ (infeasible oracle), or common μ fitted jointly *inside PLS* and refitted on leave-one-observation-out folds. A pooled observed-difference plug-in plus our conditional ML remains a distinct old baseline, never naïvely frozen within supposed CV.
+- **Numerical methods:** bounded versus multiple-bracket Brent and exact applicable endpoints with diagnostic scores/calls. These are solver choices for identical objectives, **not extra statistical criteria**; no global guarantee.
+
+The new `cortes_optimality_criteria.py` implements the published criterion expressions, stable spectral endpoints, and our **new generalization** to R-series pooled joint-μ EDF (R\operatorname{tr}H_\lambda+\lambda\|b\|^2/k). Exact pooled CV remains the established tested class. **WARNING:** straightforward log(RSS) BIC diverges to −∞ as λ↓0 under interpolation; BIC is deliberately limited to explicitly reported finite positive λ bounds and cannot claim an unrestricted optimum. AICc is excluded where degrees-of-freedom denominator is nonpositive. `run_cortes_criteria_case.py` exactly replays **one** prior Study J non-Gaussian Gaussian/shock seed, reporting 18 selector choices plus original eight baselines (simulation latent MSE only for post-hoc evaluation). `tests/test_cortes_optimality_criteria.py` mathematically checks exact GCV/AICc/BIC EDF via the full RN×RN linear smoother. **No large K experiment executed;** reproduce one diagnostic first, then freeze a paired replay plan.
 
 ## Separation contract
 
