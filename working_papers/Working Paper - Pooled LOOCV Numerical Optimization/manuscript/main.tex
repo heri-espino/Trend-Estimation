@@ -396,7 +396,7 @@ A finite scan is not a certification of a unique global minimum,
 but this campaign offers no demonstrated objective advantage
 from the more elaborate candidate-recovery procedure.
 
-\subsection{Prospective sensitivity to nonzero mean trend differences}
+\subsection{Sensitivity to nonzero mean trend differences}
 
 The preceding stochastic-trend experiments set the population
 mean of the penalized trend differences equal to zero.
@@ -471,30 +471,94 @@ estimating $\mu$; the original normalized smoothness
 index remains a monotone penalty coordinate but is
 not the full data-selected-mean smoother's EDF.
 
-The distinct, unrun simulation protocol fixes
+The completed simulation fixes
 $\sigma_\varepsilon=0.3$, considers
 $\mu/\sigma_\varepsilon\in\{-1,-0.25,0,0.25,1\}$,
 $N\in\{50,200\}$, $\sigma_\eta\in\{0.5,2\}$,
-and five common-random-number replicates per cell
-with nested $R\in\{1,3\}$. Across the five $\mu$ values
-at each $(N,\sigma_\eta,\mathrm{seed})$, the same centered
-innovations and observation errors are reused; the 100
-$R=3$ treatment evaluations thus correspond to only 20
-distinct underlying random-shock pool draws. Eight parameter-selection
-comparators (including a pooled Guerrero-style observed-difference
-plug-in combined with our fitted Gaussian covariance likelihood)
-distinguish imposed zero mean, externally
-known mean, estimated mean, and a true-mu/true-variance
-oracle. The exploratory pilot design consists of
-200 nested pools and 1,600 method rows; these are
-\emph{planned}, not empirical results. The runner additionally
-produces a preselected reconstruction-error example and a
-log-scale descriptive plot of mean reconstruction MSE versus
-true standardized $\mu$, to inspect only after the manual run. The same latent
-trend is known only in simulation, for post-selection
-reconstruction MSE. The completed historical $h$-step
-forecast-mean paper is separate and must not be
-conflated with this observed-series LOOCV sensitivity study.
+and five common-random-number replicate seeds per
+$(N,\sigma_\eta)$ with nested $R\in\{1,3\}$.
+Each of the five $\mu$ levels reuses the SAME
+realized Gaussian trend innovations and observation noises.
+The study contains 200 pooled evaluations and 1,600
+method rows, including 100 $R=3$ treatment pools but
+only \emph{20 distinct underlying R=3 shock draws}.
+All eight methods have complete finite realized latent
+reconstruction-MSE records.
+
+\begin{table}[ht]
+\centering
+\caption{Realized latent-trend MSE, $R=3$, by true
+standardized second-difference mean. Each of the
+five $\mu$ levels reuses the same 20 stochastic pool
+draws; no independence across table rows is implied.
+$\mu$ fitted by pooled LOOCV is re-estimated within
+each observation deletion, not frozen from all data.
+Lower is better.}
+\label{tab:mu-nonzero-results}
+\begin{tabular}{rrrrr}
+\toprule
+$\mu/\sigma_\varepsilon$ &
+ML $\mu=0$ & CV $\mu=0$ &
+GLS-ML fitted $\mu$ & CV fitted $\mu$\\
+\midrule
+$-1$    & 0.461450 & 0.383661 & 0.359307 & \textbf{0.357713}\\
+$-0.25$ & 0.363456 & \textbf{0.355467} & 0.359307 & 0.357713\\
+$0$     & 0.357095 & \textbf{0.355780} & 0.359307 & 0.357713\\
+$0.25$  & 0.368535 & 0.362628 & 0.359307 & \textbf{0.357713}\\
+$1$     & 0.462898 & 0.400765 & 0.359307 & \textbf{0.357713}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+At $|\mu|/\sigma_\varepsilon=1$, incorrectly imposed
+zero-mean Gaussian difference ML attained average MSE
+$0.462174$ versus $0.359307$ when $\mu$ was estimated
+jointly by GLS, about $28.6\%$ greater error relative to
+the latter. Corresponding fixed-zero pooled CV was
+$0.392213$ versus $0.357713$ for fold-clean estimated-mean
+CV, about $9.6\%$ greater. However, at $\mu=0$,
+estimating an unnecessary parameter gives a small
+finite-sample cost: zero-mean ML/CV attained
+$0.357095/0.355780$ versus
+$0.359307/0.357713$ with estimated mean.
+
+These nearly constant fitted-mean MSE values across
+$\mu$ are \emph{mathematically expected}: for
+$y_\mu=y_0+\mu p$, a shift-equivariant procedure obeys
+$\widehat\tau(y_\mu)=\widehat\tau(y_0)+\mu p$
+when the mean is free and the same random shocks are
+reused. The pilot CSV showed deviations below
+$10^{-8}$ across these treatments for such methods.
+This is an algebraic invariance and numerical consistency
+check, \emph{not} five independent replicated findings.
+
+The known-mean-and-variance-ratio oracle averaged
+$0.353328$ true-trend MSE across treatment pools.
+The pooled observed-difference mean plug-in (in the
+style of Guerrero) combined with our Gaussian variance
+fit averaged $0.363169$; our estimated-mean Gaussian GLS
+fit averaged $0.359307$ and fitted-mean fold-clean
+CV averaged $0.357713$. Their mean absolute error
+estimating $\mu$ was respectively $0.023000$,
+$0.016419$, and $0.016438$.
+The latter two procedures exhibit only a small
+descriptive reconstruction difference and no
+independent confirmatory uncertainty analysis.
+
+The stored Gaussian GLS and pooled plug-in \emph{full-data}
+$\mu$ PRESS losses hold a data-estimated mean fixed,
+and are flagged as diagnostics, \emph{not genuine
+held-out LOOCV}. Only the joint fitted-mean CV
+criterion in Eq.~\eqref{eq:nonzero-mu-fold-clean-press}
+accounts for re-estimating $\mu$ in each deletion.
+This experiment studies Gaussian errors and mean
+misspecification, not nonnormal robustness or actual
+stock-market forecast accuracy. Complete paired
+simulation evidence, generated figures, and the exact
+source SHA are recorded in
+\texttt{notes/NONZERO\_DIFFERENCE\_MEAN\_PILOT\_AUDIT\_2026-10-19.md}.
+The completed historical $h$-step forecast-mean paper is
+separate.
 
 \section{Discussion and limitations}
 \textbf{Confirmatory results pending.} The exploratory pilots have been recorded, but neither numerical dominance nor a
