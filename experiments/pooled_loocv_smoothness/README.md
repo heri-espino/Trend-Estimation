@@ -84,3 +84,23 @@ python -m experiments.pooled_loocv_smoothness.audit_guerrero_pilot
 ```
 
 It reads the saved per-method CSV and writes `paired_pool_contrasts.csv`, `scenario_by_R_summary.csv`, `audit_summary.json`, and two figures into `results/pooled_loocv_smoothness/guerrero/pilot/audit/`. It keeps R=1 and R=3 separately because their first series is shared and reports 12 scenarios with only five independent seeds each. The charts show per-scenario true trend reconstruction MSE and paired changes in the two fundamentally different loss functions. No multiple-minimum claim is inferred from a stationary-root count.
+
+
+## Completed feasible variance-estimation pilot (2026-10-18)
+
+The distinct 12-cell **estimated** noise-variance pilot was executed and committed. See the [detailed audit](../../working_papers/Working%20Paper%20-%20Pooled%20LOOCV%20Numerical%20Optimization/notes/VARIANCE_ESTIMATION_PILOT_AUDIT_2026-10-18.md). In particular, distinguish four methods: Guerrero's known-variance ratio (oracle), our Gaussian ML estimator on differenced observations, our NNLS quadratic-moment estimator, and bounded-Brent observed LOOCV.
+
+A lightweight test checks the complete uploaded CSV, while the three figure outputs are intentionally **manual-only**:
+
+```powershell
+conda activate trend-estimation
+git switch paper/pooled-loocv-numerical-optimization
+git pull --ff-only
+python -m pytest tests/test_estimated_variance_audit.py -q
+python -m experiments.pooled_loocv_smoothness.audit_variance_estimation
+git status
+```
+
+The manual audit writes under `results/pooled_loocv_smoothness/guerrero/estimated_variances/pilot/audit/`: a structured summary JSON, R=3 scenario CSV, comparison figure, moment-failure figure and ML variance-component-error figure. Do not interpret the 120 nested pool evaluations as 120 independent seeds; the primary descriptive comparison uses 60 R=3 pools.
+
+Important empirical boundary: the constrained moments method reached innovation variance zero, and hence lambda=+infinity, in 16/60 R=3 and 19/60 R=1 pools. These are preserved failures, not silently regularized.
