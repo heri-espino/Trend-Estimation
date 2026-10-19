@@ -108,7 +108,7 @@ Important empirical boundary: the constrained moments method reached innovation 
 
 ## Next, independent misspecified-noise robustness experiment
 
-[Reproducibility ledger](../../working_papers/Working%20Paper%20-%20Pooled%20LOOCV%20Numerical%20Optimization/notes/RESULTS_LEDGER.md) lists each previous **executed and committed** campaign with its DGP, seeds, location and status. The [robustness protocol](../../working_papers/Working%20Paper%20-%20Pooled%20LOOCV%20Numerical%20Optimization/notes/ROBUSTNESS_PROTOCOL.md) specifies an **unexecuted full pilot** that holds the same PLS smoother fixed and tests:
+[Reproducibility ledger](../../working_papers/Working%20Paper%20-%20Pooled%20LOOCV%20Numerical%20Optimization/notes/RESULTS_LEDGER.md) lists each previous **executed and committed** campaign with its DGP, seeds, location and status. The [robustness protocol](../../working_papers/Working%20Paper%20-%20Pooled%20LOOCV%20Numerical%20Optimization/notes/ROBUSTNESS_PROTOCOL.md) specifies an **completed and committed exploratory full pilot** that holds the same PLS smoother fixed and tests:
 
 - correctly specified Gaussian errors;
 - Student-t(5) measurement noise (finite variance);
@@ -128,4 +128,13 @@ python -m experiments.pooled_loocv_smoothness.run_robustness --preset pilot --dr
 python -m experiments.pooled_loocv_smoothness.run_robustness --preset pilot
 ```
 
-**Save results for independent analysis:** `results/pooled_loocv_smoothness/guerrero/robustness/pilot/{manifest.json,method_comparison.csv,summary.json,robustness_true_trend_mse_R3.png}`. Inspect the exact pilot manifest and CSV before adding and pushing these specific lightweight files to the **same existing branch**. Do not launch the 100-seed confirmatory preset or auto-generate heavyweight artifacts on push. No PRs.
+**Save results for independent analysis:** `results/pooled_loocv_smoothness/guerrero/robustness/pilot/{manifest.json,method_comparison.csv,summary.json,robustness_true_trend_mse_R3.png}`. Inspect the exact pilot manifest and CSV before adding and pushing these specific lightweight files to the **same existing branch**. The pilot results were uploaded and analyzed: see [ROBUSTNESS_PILOT_AUDIT_2026-10-18.md](../../working_papers/Working%20Paper%20-%20Pooled%20LOOCV%20Numerical%20Optimization/notes/ROBUSTNESS_PILOT_AUDIT_2026-10-18.md). For independent reproducibility **without re-running any simulations**:
+
+```powershell
+python -m pytest tests/test_guerrero_robustness_audit.py -q
+python -m experiments.pooled_loocv_smoothness.audit_robustness
+# Optional manual generation of the two analysis figures
+python -m experiments.pooled_loocv_smoothness.audit_robustness --figures
+```
+
+Generated audit CSV/JSON/figures are under `results/pooled_loocv_smoothness/guerrero/robustness/pilot/audit/`, and can be committed separately after inspection. Do not launch the 100-seed confirmatory preset or auto-generate heavyweight figures on push. No PRs.
