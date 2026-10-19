@@ -239,7 +239,9 @@ def resample_noise(z: np.ndarray, n: int, mode: str,
 
 def draw_pool(cal: MarketCalibration, *, n: int, R: int, d: int,
               sigma_eta: float, sigma_epsilon: float, seed: int,
-              mode: str):
+              mode: str, trend_kind: str="stochastic"):
+    if trend_kind not in ("stochastic","constant_mean"):
+        raise ValueError("unknown trend kind")
     if n <= d + 2 or d not in (1, 2, 3) or R < 1:
         raise ValueError("Require d=1,2,3 and n>=d+3, R>=1")
     # Two independently seeded streams: every noise mode uses the same
@@ -251,8 +253,11 @@ def draw_pool(cal: MarketCalibration, *, n: int, R: int, d: int,
     z = cal.standardized_empirical_shocks
     truth, observed = [], []
     for _ in range(R):
-        eps = sigma_epsilon * trend_rng.standard_normal(n-d)
-        tau = integrate_differences(eps, d)
+        if trend_kind == "constant_mean":
+            tau = np.full(n, cal.mean, dtype=float)
+        else:
+            eps = sigma_epsilon * trend_rng.standard_normal(n-d)
+            tau = integrate_differences(eps, d)
         eta = sigma_eta * resample_noise(z, n, mode, noise_rng)
         truth.append(tau)
         observed.append(tau + eta)
