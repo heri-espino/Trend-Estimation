@@ -152,3 +152,43 @@ def test_aggregation_disallows_duplicate_seed_intervals(tmp_path):
     shutil.copytree(output,target)
     with pytest.raises(ValueError,match="OVERLAPPING"):
         collect(root)
+
+
+
+def test_full_d4_n200_large_curvature_has_finite_method_scores():
+    """Catch ill-conditioned true d4 polynomial shifts, not only spectra."""
+    from experiments.pooled_loocv_smoothness.mean_difference_methods import (
+        particular_polynomial
+    )
+    from experiments.pooled_loocv_smoothness.run_nonzero_mean_multorder import (
+        fast_rows
+    )
+    sc0=MeanScenario(200,2.,.3,0.,d=4)
+    y,tau=draw_pool(sc0,3,seed=86000019)
+    baseline={r["method"]:r for r in compare_pool(sc0,y,tau)}
+    sc=MeanScenario(200,2.,.3,1.,d=4)
+    p=particular_polynomial(200,4)
+    shifted=fast_rows(sc,y+sc.mu*p[None,:],tau+sc.mu*p[None,:],baseline)
+    assert {r["method"] for r in shifted}==set(METHODS)
+    assert all(np.isfinite(r["realized_true_trend_mse"]) for r in shifted)
+    assert all(np.isfinite(r["reported_press_score"]) for r in shifted)
+    assert max(abs(r["true_mu"]-sc.mu) for r in shifted) < 1e-10
+
+
+def test_manual_launcher_plans_160k_seeds_and_resume(tmp_path):
+    from experiments.pooled_loocv_smoothness.launch_nonzero_mean_multorder import (
+        plan, execute as launch
+    )
+    jobs=plan()
+    assert len(jobs)==1600
+    assert sum(x.count for x in jobs)==160000
+    assert sum(x.groups for x in jobs)==1600000
+    assert sum(x.rows for x in jobs)==12800000
+    single=plan((1,),(50,),(0.5,),seed_start=0,seed_stop=1)
+    assert len(single)==1
+    root=tmp_path/"campaign"
+    first=launch(single,root,workers=1)
+    assert first["new_completed"]==1
+    again=launch(single,root,workers=1)
+    assert again["verified_existing"]==1
+    assert first["verified_existing"]==0
