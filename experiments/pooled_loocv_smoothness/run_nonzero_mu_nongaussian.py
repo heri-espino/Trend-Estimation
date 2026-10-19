@@ -106,7 +106,8 @@ class NoiseShard:
 def seed_for(shard: NoiseShard, rep: int) -> int:
     if not shard.start<=rep<shard.start+shard.count:
         raise ValueError("replicate outside shard")
-    return (NEW_SEED_BASE + FINITE_REGIMES.index(shard.regime)*10_000_000
+    phase_offset=(1_000_000_000 if shard.phase == "confirmatory" else 0)
+    return (NEW_SEED_BASE + phase_offset + FINITE_REGIMES.index(shard.regime)*10_000_000
             + shard.d*1_000_000
             + LENGTHS.index(shard.n)*200_000
             + ETA_SDS.index(shard.sigma_eta)*100_000 + rep)
@@ -207,8 +208,8 @@ def calculate_shard(shard:NoiseShard,output:Path,*,dry_run=False):
         "statistical_unit":"(regime,d,N,eta,replicate) R3 shock draw",
         "true_variance_ratio_is_known_linear_covariance_benchmark_NOT_density_oracle":True,
         "truth_used_for_feasible_parameter_selection":False,
-        "seed_base":NEW_SEED_BASE,
-        "seed_formula":"126000000 + regime_index*10000000 + d*1000000 + N_index*200000 + eta_index*100000 + replicate",
+        "seed_base":NEW_SEED_BASE + (1_000_000_000 if shard.phase=="confirmatory" else 0),
+        "seed_formula":"126000000 + 1000000000*(phase==confirmatory) + regime_index*10000000 + d*1000000 + N_index*200000 + eta_index*100000 + replicate",
         "seed_start_inclusive":shard.start,
         "seed_stop_exclusive":shard.start+shard.count,
         "expected_independent_base_draws":shard.base_draws,
