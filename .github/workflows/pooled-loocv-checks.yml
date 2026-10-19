@@ -22,6 +22,7 @@ on:
       - "tests/test_cortes_criteria_paired_pilot.py"
       - "tests/test_cortes_criteria_confirmed_aggregate.py"
       - "tests/test_pooled_process_examples.py"
+      - "tests/test_pooled_process_monte_carlo.py"
       - ".github/workflows/pooled-loocv-checks.yml"
   pull_request:
     paths:
@@ -36,6 +37,7 @@ on:
       - "tests/test_guerrero_tail_pilot_audit.py"
       - "tests/test_empirical_market_noise.py"
       - "tests/test_pooled_process_examples.py"
+      - "tests/test_pooled_process_monte_carlo.py"
       - ".github/workflows/pooled-loocv-checks.yml"
   workflow_dispatch:
 
@@ -52,7 +54,7 @@ jobs:
       - name: Install lightweight test dependencies
         run: python -m pip install -e ".[dev,symbolic]"
       - name: Run isolated mathematical and numerical tests
-        run: python -m pytest tests/test_pooled_loocv_smoothness.py tests/test_guerrero_ratio_pooled_loocv.py tests/test_guerrero_variance_estimation.py tests/test_estimated_variance_audit.py tests/test_guerrero_robustness.py tests/test_guerrero_robustness_audit.py tests/test_guerrero_tail_noise.py tests/test_guerrero_tail_pilot_audit.py tests/test_empirical_market_noise.py tests/test_nonzero_difference_mean_reconstruction.py tests/test_nonzero_mean_multorder.py tests/test_multorder_confirmatory_aggregate.py tests/test_nonzero_mu_nongaussian.py tests/test_nonzero_mu_nongaussian_aggregate.py tests/test_cortes_optimality_criteria.py tests/test_cortes_criteria_paired_pilot.py tests/test_cortes_criteria_confirmed_aggregate.py tests/test_pooled_process_examples.py -q
+        run: python -m pytest tests/test_pooled_loocv_smoothness.py tests/test_guerrero_ratio_pooled_loocv.py tests/test_guerrero_variance_estimation.py tests/test_estimated_variance_audit.py tests/test_guerrero_robustness.py tests/test_guerrero_robustness_audit.py tests/test_guerrero_tail_noise.py tests/test_guerrero_tail_pilot_audit.py tests/test_empirical_market_noise.py tests/test_nonzero_difference_mean_reconstruction.py tests/test_nonzero_mean_multorder.py tests/test_multorder_confirmatory_aggregate.py tests/test_nonzero_mu_nongaussian.py tests/test_nonzero_mu_nongaussian_aggregate.py tests/test_cortes_optimality_criteria.py tests/test_cortes_criteria_paired_pilot.py tests/test_cortes_criteria_confirmed_aggregate.py tests/test_pooled_process_examples.py tests/test_pooled_process_monte_carlo.py -q
       - name: Confirm campaign preview without simulations
         run: python -m experiments.pooled_loocv_smoothness.run --preset pilot --dry-run
       - name: Execute tiny smoke and validate exported artifacts
