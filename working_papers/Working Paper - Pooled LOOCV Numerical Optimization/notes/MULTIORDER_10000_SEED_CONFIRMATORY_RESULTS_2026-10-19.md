@@ -2,6 +2,10 @@
 
 **Status: completed and uploaded on 2026-10-19, then independently audited from the exact GitHub aggregates.** This is the completed Gaussian matched-order, retrospective *latent stochastic trend reconstruction* confirmation. It is **not** real financial data, not horizon-h forecasting and not the still-unrun non-Gaussian extension. The previously completed five-seed d=2 pilot remains a **separate** simulation cohort.
 
+## Breakdown completo: 160 escenarios × ocho métodos
+
+El desglose **sin promediar entre escenarios** está disponible en [EIGHT_METHODS_BY_SCENARIO_160.md](EIGHT_METHODS_BY_SCENARIO_160.md), con las **160 filas** correspondientes a `d=1,2,3,4` × `N=50,200` × `σ_η=0.5,2` × `R=1,3` × `μ/σ_ε=-1,-0.25,0,+0.25,+1`. También hay un [CSV ancho reproducible](../../../results/pooled_loocv_smoothness/guerrero/nonzero_mean_multorder/audit_001/eight_methods_all_160_scenarios.csv), con los ocho MSE, mejor método factible en esa simulación, diferencia pareada ML−CV y error estándar por seed. Estas 160 filas NO equivalen a 1.6M muestras independientes; cada fila promedia 10k realizaciones en su escenario, con mismas semillas entre μ y R anidados. **El viejo cuadro con MSE 0.3533–0.4027 era del piloto de cinco semillas d=2, no de la confirmación actual.**
+
 ## 1. Source traceability and completeness
 
 - [Exact submitted campaign manifest](../../../results/pooled_loocv_smoothness/guerrero/nonzero_mean_multorder/audit_001/campaign_manifest.json) — `status=complete_10000_independent_draws_per_cell`, source executable commit **070b363b7d8a8156f320c833539fa068b684fc7b**, 16 fully covered cells, 1,600 unique compressed source shard references, each with SHA256 and disjoint seed intervals. The **user's local aggregator** confirmed the original gzip SHA256s when producing the compact GitHub upload; source shards themselves are not committed.
