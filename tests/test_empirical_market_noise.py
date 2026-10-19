@@ -72,12 +72,13 @@ def test_nested_pool_and_same_latent_truth_across_modes_and_noise_scales(d):
 def test_csv_price_to_return_transform_and_loader(tmp_path):
     n=120
     idx=pd.date_range("2020-01-01",periods=n,freq="D")
-    prices=100*np.exp(np.cumsum(np.full(n,.001)))
+    increments=.001+.0003*np.sin(np.arange(n)/6)
+    prices=100*np.exp(np.cumsum(increments))
     filename=tmp_path/"prices.csv"
     pd.DataFrame({"Date":idx,"Adj Close":prices}).to_csv(filename,index=False)
     cal=_load_csv(filename,"prices_csv")
     assert len(cal.log_returns)==n-1
-    assert np.allclose(cal.log_returns,.001)
+    np.testing.assert_allclose(cal.log_returns,increments[1:])
     assert cal.dates[0]=="2020-01-02"
 
     returns_file=tmp_path/"log_returns.csv"
