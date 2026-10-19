@@ -12,6 +12,7 @@ targets or extrapolation are used.
 from __future__ import annotations
 
 from math import comb
+from functools import lru_cache
 
 import numpy as np
 
@@ -27,6 +28,37 @@ def difference_matrix(n: int, order: int) -> np.ndarray:
         for j in range(order + 1):
             d[i, i + j] = (-1) ** (order - j) * comb(order, j)
     return d
+
+
+@lru_cache(maxsize=24)
+def cached_difference_contrast_basis(n: int, order: int):
+    """Cache the eigenbasis of D D.T; use SVD for near-singular order four."""
+    d = difference_matrix(n, order)
+    if order >= 4:
+        u, singular, _ = np.linalg.svd(d, full_matrices=False)
+        return singular * singular, u
+    return np.linalg.eigh(d @ d.T)
+
+
+@lru_cache(maxsize=24)
+def _cached_penalty_spectrum(n: int, order: int):
+    """Shared, read-only-by-convention spectrum for the same N and order.
+
+    Reusing the basis avoids millions of repeated decompositions in
+    large manual Monte Carlo campaigns. For order four, square singular
+    values of D rather than diagonalizing the ill-conditioned D.T@D.
+    """
+    d = difference_matrix(n, order)
+    if order >= 4:
+        _, singular, vh = np.linalg.svd(d, full_matrices=True)
+        return singular * singular, vh[:n-order].T, vh[n-order:].T
+    q = d.T @ d
+    eigval, eigvec = np.linalg.eigh(q)
+    tol = 100 * np.finfo(float).eps * n * max(1., float(np.max(eigval)))
+    positive = eigval > tol
+    if int(np.count_nonzero(positive)) != n-order:
+        raise ArithmeticError("positive spectrum rank check failed")
+    return eigval[positive], eigvec[:, positive], eigvec[:, ~positive]
 
 
 class PooledLOOCV:
@@ -53,14 +85,8 @@ class PooledLOOCV:
         self.order = order
         self.d = difference_matrix(self.n, order)
         self.q = self.d.T @ self.d
-        eigval, eigvec = np.linalg.eigh(self.q)
-        tol = 100 * np.finfo(float).eps * self.n * max(1., float(np.max(eigval)))
-        positive = eigval > tol
-        if int(np.count_nonzero(positive)) != self.n - order:
-            raise ArithmeticError("positive spectrum rank check failed")
-        self.eigenvalues = eigval[positive]
-        self.u_positive = eigvec[:, positive]
-        self.u_null = eigvec[:, ~positive]
+        self.eigenvalues, self.u_positive, self.u_null = (
+            _cached_penalty_spectrum(self.n, order))
         self.uty = self.u_positive.T @ self.y.T
         self.u2 = self.u_positive ** 2
         self.calls_score = 0
