@@ -1,6 +1,6 @@
 # Simulation atlas — observed-series LOOCV only
 
-**Status (2026-10-18):** the original factorial pilot **has been executed and committed**, along with two independent Guerrero-model pilots. The new misspecified-noise robustness study is **implemented but its full pilot has not yet been executed**. Run-by-run status and code/seed provenance: [RESULTS_LEDGER.md](RESULTS_LEDGER.md); new regime definitions: [ROBUSTNESS_PROTOCOL.md](ROBUSTNESS_PROTOCOL.md).
+**Status (2026-10-18):** the original factorial pilot **has been executed and committed**, along with two independent Guerrero-model pilots. The new misspecified-noise robustness study **has now been executed and committed** (200 nested pools, 1,000 per-method rows). See [ROBUSTNESS_PILOT_AUDIT_2026-10-18.md](ROBUSTNESS_PILOT_AUDIT_2026-10-18.md) for actual findings. Run-by-run status and code/seed provenance: [RESULTS_LEDGER.md](RESULTS_LEDGER.md); new regime definitions: [ROBUSTNESS_PROTOCOL.md](ROBUSTNESS_PROTOCOL.md).
 
 ## Source-inspired 2^4 factorial: Cortés-Toto, Guerrero & Reyes (2017)
 
