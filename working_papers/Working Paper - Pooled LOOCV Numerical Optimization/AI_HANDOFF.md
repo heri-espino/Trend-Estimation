@@ -11,6 +11,14 @@
 7. experiments/pooled_loocv_smoothness/README.md and code.
 8. Existing repository AGENTS.md and AI_HANDOFF.md for shared operational rules.
 
+## Read this research checkpoint first
+
+1. `notes/RESULTS_LEDGER.md` — executed versus planned datasets, precise simulation DGPs, commits, seeds, outputs.
+2. `notes/ROBUSTNESS_PROTOCOL.md` — five regimes and preregistered robustness study; only small smoke in automated CI.
+3. `notes/VARIANCE_ESTIMATION_PILOT_AUDIT_2026-10-18.md` — measured Gaussian-ML/LOOCV and unstable moment results.
+4. `experiments/pooled_loocv_smoothness/run_robustness.py` and dedicated tests.
+5. **Direct branch-only Git changes.** User prohibits PRs: do not open new PRs or merge anything. Keep all substantial simulation campaigns manual and independent from frozen work.
+
 ## Non-negotiable identity
 
 **This is NOT the existing forecast-oriented Numerical Methods paper.** It deliberately changes the scientific object to classical *observed-series LOOCV for PLS trend reconstruction*. No future-block loss, no h, no rolling forecast validation, no branches or regime forecasting.
@@ -30,6 +38,6 @@ Primary output: full pooled loss curve; roots/local minima and endpoints; verifi
 
 ## Stage and next work
 
-Current stage: research plan and minimal reproducible computational scaffold. Investigate objective landscapes and ascertain if there is a *nontrivial numerical contribution* beyond published global CV methods; results may refute that thesis. Determine publication guidelines directly before final formatting.
+Current stage: **three executed, committed exploratory pilots** and an additional **implemented misspecified-noise robustness experiment** with dedicated tests; the robustness pilot remains **not executed**. Authoritative run-by-run status and seeds: [notes/RESULTS_LEDGER.md](notes/RESULTS_LEDGER.md). The five-regime robustness protocol is [notes/ROBUSTNESS_PROTOCOL.md](notes/ROBUSTNESS_PROTOCOL.md). Investigate objective landscapes and ascertain if there is a *nontrivial numerical contribution* beyond published global CV methods; results may refute that thesis. Determine publication guidelines directly before final formatting.
 
 Do not claim a theorem or experimental superiority before the required tests and evidence are recorded. Commit reproducible CSV/PNG/manifest for intentionally launched runs; note hardware, seed, git SHA, tolerances, and method configurations. Keep heavy results outside ordinary Git.
