@@ -17,6 +17,7 @@ on:
       - "tests/test_nonzero_mean_multorder.py"
       - "tests/test_multorder_confirmatory_aggregate.py"
       - "tests/test_nonzero_mu_nongaussian.py"
+      - "tests/test_nonzero_mu_nongaussian_aggregate.py"
       - ".github/workflows/pooled-loocv-checks.yml"
   pull_request:
     paths:
@@ -46,7 +47,7 @@ jobs:
       - name: Install lightweight test dependencies
         run: python -m pip install -e ".[dev,symbolic]"
       - name: Run isolated mathematical and numerical tests
-        run: python -m pytest tests/test_pooled_loocv_smoothness.py tests/test_guerrero_ratio_pooled_loocv.py tests/test_guerrero_variance_estimation.py tests/test_estimated_variance_audit.py tests/test_guerrero_robustness.py tests/test_guerrero_robustness_audit.py tests/test_guerrero_tail_noise.py tests/test_guerrero_tail_pilot_audit.py tests/test_empirical_market_noise.py tests/test_nonzero_difference_mean_reconstruction.py tests/test_nonzero_mean_multorder.py tests/test_multorder_confirmatory_aggregate.py tests/test_nonzero_mu_nongaussian.py -q
+        run: python -m pytest tests/test_pooled_loocv_smoothness.py tests/test_guerrero_ratio_pooled_loocv.py tests/test_guerrero_variance_estimation.py tests/test_estimated_variance_audit.py tests/test_guerrero_robustness.py tests/test_guerrero_robustness_audit.py tests/test_guerrero_tail_noise.py tests/test_guerrero_tail_pilot_audit.py tests/test_empirical_market_noise.py tests/test_nonzero_difference_mean_reconstruction.py tests/test_nonzero_mean_multorder.py tests/test_multorder_confirmatory_aggregate.py tests/test_nonzero_mu_nongaussian.py tests/test_nonzero_mu_nongaussian_aggregate.py -q
       - name: Confirm campaign preview without simulations
         run: python -m experiments.pooled_loocv_smoothness.run --preset pilot --dry-run
       - name: Execute tiny smoke and validate exported artifacts
@@ -111,6 +112,11 @@ jobs:
           python -m experiments.pooled_loocv_smoothness.launch_nonzero_mu_nongaussian --phase confirmatory --regime gaussian_iid --d 4 --n 200 --sigma-eta 2 --seed-stop 2 > /tmp/nongaussian-mu-confirmation-preflight.json
           test -s /tmp/nongaussian-mu-pilot-plan.json
           test -s /tmp/nongaussian-mu-confirmation-preflight.json
+      - name: Audit committed non-Gaussian 4,800-shock pilot (NO simulation)
+        run: |
+          python -m experiments.pooled_loocv_smoothness.audit_nonzero_mu_nongaussian_pilot --out-dir /tmp/nongaussian-mu-independent-audit > /tmp/nongaussian-mu-audit-report.json
+          test -s /tmp/nongaussian-mu-independent-audit/audit_summary.json
+          test -s /tmp/nongaussian-mu-independent-audit/R1_R3_mu_plus1_all_8_methods.csv
       - name: Verify misspecified-noise robustness smoke
         run: |
           python -m experiments.pooled_loocv_smoothness.run_robustness --preset smoke --out-dir /tmp/guerrero-robustness-smoke
