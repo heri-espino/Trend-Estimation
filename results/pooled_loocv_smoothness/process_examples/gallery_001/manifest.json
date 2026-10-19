@@ -1,0 +1,56 @@
+{
+  "status": "ILLUSTRATIONS_ONLY_NO_MONTE_CARLO_INFERENCE",
+  "created_utc": "2026-10-19T12:05:15.761784+00:00",
+  "source_git_sha": "892d44aea555fcd22de0209bed91865af73252c3",
+  "python": "3.11.16",
+  "numpy": "2.4.6",
+  "scipy": "1.17.1",
+  "seed": 20261019,
+  "n": 80,
+  "d": 2,
+  "series_generated": 3,
+  "nested_pool_sizes": [
+    1,
+    3
+  ],
+  "sigma_epsilon_reference": 0.12,
+  "sigma_eta_reference": 0.8,
+  "mu_reference": 0.04,
+  "same_base_innovations_across_cases": true,
+  "methods": [
+    "cv_zero",
+    "gcv_zero",
+    "aicc_zero",
+    "cv_joint",
+    "gcv_joint",
+    "aicc_joint",
+    "gls_mu_ml",
+    "plugin_mu_ml",
+    "zero_mu_ml",
+    "controlled_s0.5_joint",
+    "controlled_s0.8_joint"
+  ],
+  "cases": [
+    "gaussian_reference",
+    "smooth_cycle",
+    "slope_break",
+    "level_jump",
+    "observation_outliers",
+    "ar1_observation",
+    "variance_regime",
+    "heterogeneous_pool",
+    "shared_observation_shock"
+  ],
+  "score_grid_points": 31,
+  "solver": "score_multibracket",
+  "number_of_rows": 198,
+  "warnings": [
+    "One fixed realization per mechanism: no winner-frequency or significance claim.",
+    "Latent true tau is ONLY available for retrospective ex-post metrics.",
+    "All statistical criteria have different score scales; never compare raw CV, GCV, AICc scores directly.",
+    "All changes to noise dynamics, mean dynamics and pooling affect fitted-model validity.",
+    "Known sigma parameters apply only to Gaussian reference and are NOT treated as true oracles elsewhere.",
+    "R1 is nested in R3 and shares the first observation series.",
+    "Actual financial data contain no observed true latent tau."
+  ]
+}

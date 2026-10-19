@@ -1,0 +1,69 @@
+{
+  "status": "COMPLETE",
+  "design": {
+    "seed_start_inclusive": 1,
+    "seed_stop_exclusive": 1001,
+    "base_seed": 20261019,
+    "count": 1000,
+    "chunk_size": 25,
+    "n": 80,
+    "d": 2,
+    "scan_points": 31,
+    "cases": [
+      "gaussian_reference",
+      "smooth_cycle",
+      "slope_break",
+      "level_jump",
+      "observation_outliers",
+      "ar1_observation",
+      "variance_regime",
+      "heterogeneous_pool",
+      "shared_observation_shock"
+    ],
+    "pool_sizes": [
+      1,
+      3
+    ],
+    "methods": [
+      "cv_zero",
+      "gcv_zero",
+      "aicc_zero",
+      "cv_joint",
+      "gcv_joint",
+      "aicc_joint",
+      "gls_mu_ml",
+      "plugin_mu_ml",
+      "zero_mu_ml",
+      "controlled_s0.5_joint",
+      "controlled_s0.8_joint"
+    ]
+  },
+  "expected_rows": 198000,
+  "expected_chunks": 40,
+  "raw_shards_local_backup_required": true,
+  "full_replications_independent": 1000,
+  "scenario_and_nested_R_comparisons_paired_within_seed": true,
+  "created_utc": "2026-10-19T13:17:37.886488+00:00",
+  "source_commit_at_start": "fda4e69d64d47675e5bd126bf7332aa22a3d68fc",
+  "python": "3.11.16",
+  "numpy": "2.4.6",
+  "scipy": "1.17.1",
+  "interpretation": [
+    "Independent units are RNG seed draws, not method rows.",
+    "All nine mechanisms and nested R use paired common random numbers.",
+    "First series held fixed for pooling contrasts: R3 - R1 MSE.",
+    "Multiple pairwise tests have a global Holm adjustment; intervals remain pointwise.",
+    "The gallery may have informed mechanism/method selection: exploratory not independent confirmation.",
+    "Synthetic realized latent truth appears ONLY in ex-post evaluation.",
+    "This is retrospective reconstruction, NOT time-series h-step forecasting.",
+    "Do not compare method raw CV/GCV/AICc/ML score values across criteria.",
+    "Raw compressed replicates are user-local; commit compact audit summaries and manifest."
+  ],
+  "finished_chunks": 40,
+  "last_completed_utc": "2026-10-19T13:20:19.252705+00:00",
+  "completed_utc": "2026-10-19T13:20:20.759028+00:00",
+  "actual_method_rows": 198000,
+  "summary_rows": 198,
+  "pairwise_rows": 990,
+  "pooling_rows": 99
+}
