@@ -560,10 +560,10 @@ source SHA are recorded in
 The completed historical $h$-step forecast-mean paper is
 separate.
 
-\subsection{Prespecified independent-seed confirmation across four orders}
+\subsection{Independent-seed Gaussian confirmation across four orders}
 
-A subsequent, \emph{not yet executed}, confirmatory
-Monte Carlo design extends the Gaussian mean-difference
+A completed, independently seeded Gaussian
+Monte Carlo confirmation extends the Gaussian mean-difference
 experiment to four separately analyst-selected orders
 $d\in\{1,2,3,4\}$. For each $d$ the correctly matched
 generating and fitted trend model is
@@ -589,7 +589,7 @@ $\sigma_\varepsilon=0.3$, and standardized
 $\mu/\sigma_\varepsilon\in\{-1,-0.25,0,0.25,1\}$.
 For each of the 16 $(d,N,\sigma_\eta)$ settings,
 10,000 distinct, independently seeded three-series
-shock draws are planned. The five mean interventions
+shock draws were generated. The five mean interventions
 reuse the \emph{same} original shocks and the
 $R=1$ pool reuses the first member of the $R=3$
 pool. Thus 160,000 independent three-series shock
@@ -598,14 +598,14 @@ evaluations, or 12.8 million per-method records;
 these records are \emph{not} independent statistical
 replicates.
 
-A resumable local execution stores immutable,
+The completed local campaign stored immutable,
 SHA256-identified compressed shards of 100 independent
 draws each and checked paired reconstruction-loss
 summaries within every $(d,N,\sigma_\eta,\mu,R)$ cell.
-A common-dataset reconstruction error can then be
-compared through within-seed paired differences,
-with Monte Carlo uncertainty evaluated at the
-independent shock-draw level. Six methods are
+Reconstruction performance was compared through
+within-seed paired MSE differences, with Monte Carlo
+standard errors calculated at the independent
+shock-draw level. Six methods are
 equivariant to adding the deterministic term
 $\mu\binom{t}{d}$ and their fitted results can
 be reused algebraically under mean shifts;
@@ -623,19 +623,110 @@ condition number when representing small
 positive spectral modes at order four.
 Results from the originally executed $d=2$
 five-seed pilot remain separate and are not
-interchangeable with this prospective
+interchangeable with this completed
 independent-seed confirmation.
-Only after numerical checks and analysis of
-the Gaussian confirmation will a separately
-predeclared non-Gaussian mean-shift campaign
-be considered; no such confirmatory outcomes
-are claimed here.
+
+\begin{table}[ht]
+\centering
+\caption{Completed Gaussian Monte Carlo confirmation,
+three-series pools $R=3$ at true
+$\mu/\sigma_\varepsilon=1$. Each row
+averages four equal-sized, distinct
+$(N,\sigma_\eta)$ simulation cells, for
+descriptive compactness; between-order
+MSEs do \emph{not} select the best $d$.
+Lower realized latent-trend MSE is better.}
+\label{tab:multorder-gaussian-confirmation}
+\begin{tabular}{rrrrr}
+\toprule
+$d$ & Zero-$\mu$ ML & Fitted-$\mu$ ML &
+Fitted-$\mu$ CV & Zero-$\mu$ ML penalty\\
+\midrule
+1 & 0.369897 & 0.217522 & \textbf{0.216354} & 0.152376\\
+2 & 0.440161 & \textbf{0.347805} & 0.352994 & 0.092356\\
+3 & 0.508880 & \textbf{0.439738} & 0.449096 & 0.069142\\
+4 & 0.561674 & \textbf{0.506292} & 0.520423 & 0.055382\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Within all 16 $R=3$ cells at the substantial
+nonzero mean shift, imposing zero $\mu$
+caused an excess mean true-trend MSE for
+Gaussian contrast ML larger than the
+absolute gap between Gaussian GLS fitted-mean
+ML and fold-clean fitted-mean pooled CV.
+Correctly fitted-mean Gaussian ML had smaller
+mean reconstruction MSE than fitted-mean CV
+in 15/16 cells. The exception was
+$d=1,N=50,\sigma_\eta=2$:
+fitted-mean ML versus CV attained
+$0.405154$ versus $0.394350$, a within-seed
+paired mean MSE difference of $+0.010804$
+with approximate 95\% Monte Carlo interval
+$[0.007905,0.013703]$. For an example where
+Gaussian ML was better,
+$d=2,N=50,\sigma_\eta=2$ gave
+$0.659534$ versus $0.673468$, paired difference
+$-0.013934$ with 95\% interval
+$[-0.016784,-0.011085]$.
+Intervals reflect 10,000 independent
+shock draws \emph{per cell} under the specified
+Gaussian simulation, not external
+financial sampling or multiple-testing
+adjustment.
+
+When the true difference mean was zero,
+retaining the correct zero-mean restriction
+gave slightly lower mean MSE than
+estimating one unnecessary mean parameter
+in all 16 $R=3$ cells. With only one series
+($R=1$), the fitted-mean Gaussian versus
+CV ordering was less stable: in 13 of 16
+strata Gaussian ML had lower mean MSE,
+but incorrectly forcing zero $\mu$
+sometimes gave lower finite-sample
+mean loss than the fitted-mean ML
+estimator when $N=50$ and
+observation noise was high.
+These cases are important
+bias--variance counterexamples, not
+violations of the structural model.
+
+The five $\mu$ treatments per seed are
+dependent affine shifts of the \emph{same}
+stochastic realization. The fitted-mean
+methods' invariant error as $\mu$ changes
+is consequently an algebraic
+equivariance property, \emph{not}
+five independent repetitions.
+This experiment supports the
+importance of modeling the mean of
+trend differences under this Gaussian
+latent-reconstruction DGP, but does
+not show distribution-free method
+dominance, a unique best difference
+order, superior out-of-sample forecasts
+or numerical global-optimality guarantees.
+A separately prespecified non-Gaussian
+mean-shift campaign remains unrun.
+The exact 16-cell paired MSE contrasts,
+source SHA and bootstrap-free Monte Carlo
+standard errors are documented in
+\texttt{notes/MULTIORDER\_10000\_SEED\_CONFIRMATORY\_RESULTS\_2026-10-19.md}.
 
 \section{Discussion and limitations}
-\textbf{Confirmatory results pending.} The exploratory pilots have been recorded, but neither numerical dominance nor a
-novel global-solver theorem is established. Related algorithms,
-correlated errors, scalar minimization budgets and
-computational exactness require further investigation.
+\textbf{Gaussian confirmation completed, external robustness pending.}
+The independent 10,000-seed-per-cell Gaussian mean-difference
+simulation confirms a substantial reconstruction penalty for
+incorrectly fixing nonzero mean differences at zero in its
+three-series pools. It does not establish a uniformly best
+smoothing selector, Gaussian superiority under nonnormality,
+a method for selecting the difference order, or a novel
+global-optimality theorem. Evidence for dependent/non-Gaussian
+errors, application-calibrated signal scales, the relationship
+to forecast-horizon selection and generalization to financial
+observations remains for separate experiments.
 
 \bibliographystyle{plainnat}
 \bibliography{references}
