@@ -1,6 +1,6 @@
 # New finite-difference mean experiment: nonzero \(\mu\) in pooled observed-series reconstruction
 
-**Date:** 2026-10-19 (America/Mexico_City). **Status:** code and mathematical protocol implemented on independent branch; **NO full pilot executed, NO empirical results claimed**. Tiny CI tests/smoke separate. This working paper studies **observed-series LOOCV and retrospective latent trend reconstruction**, NOT completed \(h\)-step forecast losses and NOT the fourth mean-difference forecasting paper.
+**Date:** 2026-10-19 (America/Mexico_City). **Status:** code and mathematical protocol implemented on independent branch; **FULL PILOT NOW EXECUTED (2026-10-19T08:09:40Z), results uploaded and audited**. Tiny CI tests/smoke separate. This working paper studies **observed-series LOOCV and retrospective latent trend reconstruction**, NOT completed \(h\)-step forecast losses and NOT the fourth mean-difference forecasting paper.
 
 ## Source attribution and nonduplication
 
@@ -158,3 +158,8 @@ The formulas above are *derived mathematical identities and software verificatio
 ### Figures produced on execution (not yet generated for the full pilot)
 
 The runner generates `example_latent_trend_errors.png` (the first predeclared positive-μ example: actual simulated fitted-minus-true errors for oracle, zero-μ LOOCV, pooled plug-in, GLS μ-ML and joint fold-clean μ-LOOCV) and `mean_shift_true_trend_mse_R3.png` (log-scale **descriptive** means of true reconstruction MSE by standardized true μ). Both figures are generated only when executing the actual pilot; neither exists as paper empirical evidence just because its code is committed. The second figure averages over N and noise SD and must not be used for a strong inference without per-cell paired analysis.
+
+
+## Post-execution checkpoint (without modifying predeclared design)
+
+The user completed and committed the full exploratory run: manifest SHA code version `90521235df9dab729451fcceb2e5a001554e3e9a`, complete 200 nested treatment pools and 1,600 method rows plus two actual PNG figures. See [measured nonzero-mean pilot audit](NONZERO_DIFFERENCE_MEAN_PILOT_AUDIT_2026-10-19.md) for full observed contrasts, MSE tables, mean errors, common-shock correlation, shift-equivariance and proper fold-clean loss semantics. Earlier prospective statements in sections above describe the **original pre-run design**, not current execution status. Independent confirmatory remains unrun.
