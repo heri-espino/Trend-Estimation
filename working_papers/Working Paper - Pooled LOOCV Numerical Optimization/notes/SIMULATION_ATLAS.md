@@ -1,6 +1,6 @@
 # Simulation atlas — observed-series LOOCV only
 
-**Status:** design predeclared 2026-10-18; *no new simulations reported*.
+**Status (2026-10-18):** the original factorial pilot **has been executed and committed**, along with two independent Guerrero-model pilots. The new misspecified-noise robustness study is **implemented but its full pilot has not yet been executed**. Run-by-run status and code/seed provenance: [RESULTS_LEDGER.md](RESULTS_LEDGER.md); new regime definitions: [ROBUSTNESS_PROTOCOL.md](ROBUSTNESS_PROTOCOL.md).
 
 ## Source-inspired 2^4 factorial: Cortés-Toto, Guerrero & Reyes (2017)
 
@@ -46,7 +46,7 @@ Across independent seeds within each scenario, summarize paired differences and 
 
 Report the frequency of multiple strict interior minima; near-flat regions; stationary roots close to endpoints; effect of R; runtime and failures. At least one grid resolution and derivative finite-difference sensitivity analysis is required.
 
-## Figures (planned, not generated)
+## Source-inspired figures (original plan; check ledger for outputs already generated)
 
 1. Same latent τ with low/high noise (one panel per σ); observations and fitted trend.
 2. Pooled F(S) vs component C_r(S), minima, stationary roots, exact endpoints.
