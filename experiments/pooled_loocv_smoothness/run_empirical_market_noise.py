@@ -404,7 +404,9 @@ def _write_csv(path: Path, data: list[dict]):
 def execute(*, preset: str, d: int, sigma_epsilon: float, source: str,
             ticker: str, start: str, end: str, csv_path: Path | None,
             cache_dir: Path, refresh: bool, out_dir: Path,
-            dry_run: bool=False):
+            trend_kind: str="stochastic", dry_run: bool=False):
+    if trend_kind not in ("stochastic","constant_mean"):
+        raise ValueError("unknown trend kind")
     if d not in (1,2,3) or sigma_epsilon<=0:
         raise ValueError("Select fixed d=1,2,3 and positive innovation SD")
     ns, scales, reps, Rs = design(preset)
@@ -416,7 +418,9 @@ def execute(*, preset: str, d: int, sigma_epsilon: float, source: str,
         "preset": preset, "source": source, "ticker": ticker,
         "start_inclusive": start, "end_exclusive": end,
         "analyst_fixed_difference_order": d,
-        "sigma_epsilon": sigma_epsilon,
+        "trend_kind": trend_kind,
+        "sigma_epsilon_option": sigma_epsilon,
+        "effective_trend_innovation_sd": 0.0 if trend_kind == "constant_mean" else sigma_epsilon,
         "synthetic_noise_population_sd": list(scales),
         "simulation_series_lengths": list(ns),
         "replicate_seeds_per_length": reps,
@@ -429,7 +433,7 @@ def execute(*, preset: str, d: int, sigma_epsilon: float, source: str,
         "methods": list(METHODS),
         "expected_nested_pools": len(ns)*len(scales)*reps*len(Rs)*len(NOISE_MODES),
         "expected_method_rows": len(ns)*len(scales)*reps*len(Rs)*len(NOISE_MODES)*len(METHODS),
-        "trend_construction": "D_d tau = iid Gaussian innovation; tau_j=0.02*(j-1) j<=d",
+        "trend_construction": ("constant tau_t=historical mean log return; D_d tau = 0" if trend_kind == "constant_mean" else "D_d tau = iid Gaussian innovation; tau_j=0.02*(j-1) j<=d"),
         "observations": "y_t=tau_t + sigma_eta * empirically shaped centered standardized return draw",
         "market_historical_mean_is_not_identified_stock_trend": True,
         "market_return_values_in_manifest": False,
@@ -455,10 +459,11 @@ def execute(*, preset: str, d: int, sigma_epsilon: float, source: str,
                         y,tau=draw_pool(calibration,n=n,R=R,d=d,
                                         sigma_eta=scale,
                                         sigma_epsilon=sigma_epsilon,
-                                        seed=seed,mode=mode)
+                                        seed=seed,mode=mode,trend_kind=trend_kind)
                         for method in compare_pool(y,tau,d):
                             rows.append({
-                                "N": n,"d":d,"sigma_eta":scale,
+                                "N": n,"d":d,"trend_kind":trend_kind,
+                                "sigma_eta":scale,
                                 "sigma_epsilon":sigma_epsilon,
                                 "replicate":rep,"seed":seed,
                                 "noise_mode":mode,"R":R,
