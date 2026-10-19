@@ -223,11 +223,11 @@ def choose(obj:PenalizedCriteria,criterion:Criterion,
     if solver=="bounded":
         minim=minimize_scalar(f,method="bounded",bounds=(lb,ub),
                               options={"xatol":xatol})
-        candidates=[(float(minim.fun),float(minim.x))]
+        candidates=[(float(minim.fun),float(minim.x),"log")]
     else:
         grid=np.linspace(lb,ub,scan_points)
         values=[f(float(v)) for v in grid]
-        candidates=[(values[0],lb),(values[-1],ub)]
+        candidates=[(values[0],lb,"log"),(values[-1],ub,"log")]
         for i in range(1,scan_points-1):
             if (np.isfinite(values[i]) and
                 values[i] <= values[i-1] and
@@ -236,15 +236,15 @@ def choose(obj:PenalizedCriteria,criterion:Criterion,
                     bounds=(float(grid[i-1]),float(grid[i+1])),
                     options={"xatol":xatol})
                 if local.success and np.isfinite(local.fun):
-                    candidates.append((float(local.fun),float(local.x)))
+                    candidates.append((float(local.fun),float(local.x),"log"))
     for lam in (0.,float("inf")) if criterion!="bic" else (float("inf"),):
         value=obj.score(criterion,lam)
         if np.isfinite(value):
-            candidates.append((value,lam))
-    best_val,best_x=min(candidates,key=lambda k:k[0])
-    best_lam=best_x if best_x in (0.,float("inf")) else float(np.exp(best_x))
-    if best_x==0.:bound="exact_zero"
-    elif np.isinf(best_x):bound="exact_infinity"
+            candidates.append((value,lam,"endpoint"))
+    best_val,best_x,best_kind=min(candidates,key=lambda k:k[0])
+    best_lam=best_x if best_kind=="endpoint" else float(np.exp(best_x))
+    if best_kind=="endpoint" and best_x==0.:bound="exact_zero"
+    elif best_kind=="endpoint" and np.isinf(best_x):bound="exact_infinity"
     elif abs(best_x-lb)<1e-5:bound="truncated_lower_lambda_limit"
     elif abs(best_x-ub)<1e-5:bound="truncated_upper_lambda_limit"
     else:bound=None
