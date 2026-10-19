@@ -71,6 +71,23 @@ def _run_one(item):
 
 
 def execute(jobs:list[Shard],root:Path,workers:int):
+    # A smaller preflight shard such as [0,2) must NOT coexist with
+    # confirmation [0,100) inside one aggregation root. Detect overlaps
+    # before launching any job, rather than waiting for final aggregation.
+    planned=[(s.order,s.n,s.sigma_eta,s.start,s.start+s.count) for s in jobs]
+    for existing_file in root.rglob("manifest.json") if root.exists() else ():
+        old=json.loads(existing_file.read_text(encoding="utf-8"))
+        if old.get("protocol")!="nonzero_difference_mean_multorder_confirmatory_v1":
+            raise ValueError(f"Foreign existing experiment file: {existing_file}")
+        prior=(old["difference_order_fixed"],old["N"],old["sigma_eta"],
+               old["seed_start_inclusive"],old["seed_stop_exclusive"])
+        for d,n,eta,start,end in planned:
+            if ((d,n,eta)==prior[:3] and max(start,prior[3])<min(end,prior[4])
+                and (start,end)!=(prior[3],prior[4])):
+                raise ValueError(
+                    f"Overlapping but not identical seed intervals in {existing_file}: "
+                    f"existing [{prior[3]},{prior[4]}) vs planned [{start},{end}). "
+                    "Use --root for isolated short numerical preflights.")
     if workers<1:
         raise ValueError("workers must be >=1")
     sha=_sha()
