@@ -2418,7 +2418,7 @@ This monotonicity does **not** imply the latent MSE is monotonic in $\lambda$.
 **Solution:**
 
 $$
-Rd+1=3(2)+1=\boxed7.
+Rd+1=3(2)+1=\boxed{7}.
 $$
 
 Do not count $R(d+1)=9$: that would give each series its own high-order mean coefficient.
