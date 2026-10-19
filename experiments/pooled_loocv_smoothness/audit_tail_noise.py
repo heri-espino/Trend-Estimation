@@ -230,7 +230,9 @@ def summarize(pools: list[dict]) -> dict:
 
 def write_csv(path: Path, records: list[dict]) -> None:
     # Histograms are nested objects and require a simple printable conversion.
-    columns = list(records[0])
+    # Some regimes (Cauchy) deliberately omit population-MSE means and
+    # include an infinite-risk warning, so preserve the union of columns.
+    columns = list(dict.fromkeys(k for record in records for k in record))
     with path.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=columns)
         writer.writeheader()
