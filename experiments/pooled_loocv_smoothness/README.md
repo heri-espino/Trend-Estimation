@@ -73,3 +73,14 @@ python -m experiments.pooled_loocv_smoothness.guerrero_ratio --preset pilot
 ```
 
 Smoke: 8 pools × 4 methods = 32 saved rows. Pilot: 12 settings × 5 independent seeds × 2 nested pool sizes = **120 pools**, 480 saved rows. Results go under `results/pooled_loocv_smoothness/guerrero/{smoke,pilot}/`, separate from the completed Cortés-Toto pilot. Outputs: `guerrero_solver_comparison.csv`, `summary.json`, `manifest.json`, `guerrero_example.png`, `guerrero_example_curves.csv`. The 100-seed confirmatory preset is manual, and no forecasts are used.
+
+
+## Reproduce the completed Guerrero pilot audit and figures
+
+The first Guerrero 12-scenario pilot was executed and uploaded on 2026-10-18 local date. The observed scores were audited in [the paper's dedicated pilot analysis](../../working_papers/Working%20Paper%20-%20Pooled%20LOOCV%20Numerical%20Optimization/notes/GUERRERO_RATIO_PILOT_AUDIT_2026-10-18.md). This does **not** re-run simulations:
+
+```powershell
+python -m experiments.pooled_loocv_smoothness.audit_guerrero_pilot
+```
+
+It reads the saved per-method CSV and writes `paired_pool_contrasts.csv`, `scenario_by_R_summary.csv`, `audit_summary.json`, and two figures into `results/pooled_loocv_smoothness/guerrero/pilot/audit/`. It keeps R=1 and R=3 separately because their first series is shared and reports 12 scenarios with only five independent seeds each. The charts show per-scenario true trend reconstruction MSE and paired changes in the two fundamentally different loss functions. No multiple-minimum claim is inferred from a stationary-root count.
