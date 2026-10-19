@@ -131,3 +131,29 @@ The results point toward a **model-order distinction** rather than merely "Gauss
 For Cauchy, Gaussian variance likelihood lacks a correct covariance interpretation: a truly robust likelihood or bounded-influence loss is more principled than pushing the Gaussian pseudo-variance estimate through more replications. Other potential direction: a dependence-aware comparison for correlated observation noise. Treat novelty and statistical performance as distinct from numerical-global-optimization claims.
 
 **Workflow rule:** commit directly to the existing `paper/pooled-loocv-numerical-optimization` branch. No PRs, no merge to main; new confirmatory simulations are manual-only.
+
+
+## Complete per-distribution exploratory summary (all 13 regimes, R=3)
+
+The earlier short research summary emphasized only selected Gamma, GARCH and skew-normal examples. The **entire set of finite-moment parametric noise families was actually run**, and the source CSV contains all method-level scores. For completeness, these are the 60 \(R=3\) pools per noise mechanism, comprising 20 pools at each matched d=1,2,3. The combined mean results below are descriptive **not** an appropriate decision rule for selecting \(d\).
+
+| Distribution | Gaussian differences ML mean true-trend MSE | Pooled observed LOOCV mean true-trend MSE | ML wins, out of 60 |
+|---|---:|---:|---:|
+| Gaussian iid | **0.318443** | 0.321763 | 37 |
+| Student t(3) observation | **0.292054** | 0.295833 | 39 |
+| Student t(3) innovation | **0.302376** | 0.303610 | 29 |
+| Centered Gamma right | **0.306045** | 0.320853 | 36 |
+| Centered Gamma left | **0.323218** | 0.328235 | 35 |
+| Rare Gaussian jump mixture | **0.338217** | 0.340307 | 34 |
+| Student t(5) GARCH observation | **0.310337** | 0.338917 | 41 |
+| Centered standardized skew-normal alpha -6 | **0.339486** | 0.343221 | 36 |
+| Skew-normal alpha -3 | **0.336722** | 0.336932 | 31 |
+| Skew-normal alpha 0 | **0.334225** | 0.339534 | 40 |
+| Skew-normal alpha +3 | **0.351735** | 0.354664 | 33 |
+| Skew-normal alpha +6 | **0.318019** | 0.327993 | 36 |
+
+**Cauchy is deliberately excluded from this mean-MSE table.** It has no population noise variance or finite expected squared reconstruction risk; the 60 Cauchy \(R=3\) pools are assessed in the separate robust-error table above.
+
+**Why the pattern is not paradoxical:** the Gaussian fitted contrast is a form of covariance likelihood or *Gaussian quasi-ML* outside normality. Whenever the observation and trend-difference noises are independent, centered and possess finite variances, the second-moment covariance identity \(\operatorname{Cov}(D_d y)=aI+bD_dD_d^\top\) still holds even if the marginal noise distribution is asymmetric or heavy-tailed. Thus the fit can remain useful beyond Gaussian noise. That does not imply it is always optimal. To test genuinely distribution-adapted statistical efficiency, compare a specified Student-t/skew/robust likelihood or a robust CV selector under a fair statistical target. Also note that the five skew-normal alpha levels use distinct independently drawn scenario streams, so apparent alpha trends are vulnerable to Monte Carlo fluctuations.
+
+The next experiment [EMPIRICAL_MARKET_BOOTSTRAP_PROTOCOL.md](EMPIRICAL_MARKET_BOOTSTRAP_PROTOCOL.md) calibrates the empirical **marginal return distribution** from actual SPY adjusted returns, while holding the analyst-chosen \(d\) fixed and comparing iid Gaussian, iid empirical, and dependent block-bootstrap noise on a *new synthetic conditional mean trend*. No results are claimed until that experiment is run.
