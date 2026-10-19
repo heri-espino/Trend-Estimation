@@ -1,6 +1,6 @@
-# Frozen proposed Gaussian confirmation: orders 1–4, 10,000 independent seeds per cell
+# Pre-run frozen Gaussian confirmation protocol: orders 1–4, 10,000 independent seeds per cell
 
-**Designed 2026-10-19. STATUS: IMPLEMENTED / NUMERICALLY TESTABLE; LARGE CAMPAIGN NOT EXECUTED.** Do not report a confirmation until all 16 cells reach 10,000 independent random-shock seeds each and the source SHA, shard manifests and completeness audit agree. This is for the **independent retrospective Pooled-LOOCV numerical optimization paper**, not the separate \(h\)-step forecast-CV paper.
+**Designed before running on 2026-10-19. STATUS AFTER EXECUTION: COMPLETE; the original pre-run design below is preserved as provenance.** Do not report a confirmation until all 16 cells reach 10,000 independent random-shock seeds each and the source SHA, shard manifests and completeness audit agree. This is for the **independent retrospective Pooled-LOOCV numerical optimization paper**, not the separate \(h\)-step forecast-CV paper.
 
 ## 1. What prompted this, and what is already known?
 
@@ -132,3 +132,8 @@ Our comparison is *retrospective reconstruction of artificially generated latent
 After passing numerical tests and full independent-seed confirmation, assess the primary contrasts per cell, by \(\mu\), and report paired MSE effect sizes and Monte Carlo uncertainty (including large boundary errors). An insignificant difference cannot be declared proof of equivalence. *Then* create an **independent non-Gaussian extension** preserving the same d/N/noise-factor conventions. Consider standardized Student-t with finite variance, skew-normal or centered Gamma, contaminated Gaussian jump mixtures and Student-t GARCH-type dependence with well-defined marginal covariance. Cauchy has **undefined population variance and infinite/undefined squared-risk expectation**, so a Guerrero true finite-variance-ratio benchmark cannot be compared to it and robust finite-sample absolute errors require separate analysis. Never silently combine these two DGP phases.
 
 **Research conclusion currently justified only by the executed five-seed pilot:** incorrectly imposing zero mean can be much more damaging than the tiny observed ML-versus-CV loss difference for some nonzero-\(\mu\) scenarios; there is a small price to estimating unnecessary \(\mu\) when it truly is zero. This *provisional* effect must withstand the new independent 10,000-seed-per-stratum analysis before a statistically defensible paper claim.
+
+
+## Post-run status addendum (2026-10-19)
+
+This predeclared full campaign **HAS NOW BEEN EXECUTED**, and the compact aggregates are committed to `results/pooled_loocv_smoothness/guerrero/nonzero_mean_multorder/audit_001/`. User-side aggregator reported `complete_10000_independent_draws_per_cell`, 16/16 cells, 160,000 independent R3 base shocks, 1,600 provenance-checked gzip shards, and 12.8M per-method rows. Exact code SHA `070b363b7d8a8156f320c833539fa068b684fc7b`. Independent saved-aggregate CI audit passed. Full empirical numerical interpretations, 16-cell paired CIs and important R1 exceptions are in [MULTIORDER_10000_SEED_CONFIRMATORY_RESULTS_2026-10-19.md](MULTIORDER_10000_SEED_CONFIRMATORY_RESULTS_2026-10-19.md). The source gzip shard files have NOT been pushed: keep/back up local files. Earlier future-tense statements preserve the **original pre-run protocol**, not the present completion status. Non-Gaussian confirmation is separate and **NOT yet run**.
