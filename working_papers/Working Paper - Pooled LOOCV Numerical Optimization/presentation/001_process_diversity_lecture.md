@@ -26,7 +26,8 @@ style: |
   section.lead strong { color: #66d3d1; }
   section.tight { font-size: 21px; }
   section.figure { padding-top: 33px; font-size: 23px; }
-  section.figure h1 { margin-bottom: 14px; }
+  section.figure h1 { font-size: 1.30em; margin: 0 0 5px; }
+  section.figure p { font-size: 0.95em; margin: 3px 0 0; line-height: 1.2; }
   section.small { font-size: 23px; }
   section.small table { font-size: 0.68em; }
   section.divider { background: #eaf5f4; color: #132c46; }
@@ -80,7 +81,7 @@ The difficulty is not merely computing an estimate. It is choosing **how strongl
 
 # Concept: signal versus observations
 
-![width:1050px](assets/01_observed_vs_latent.svg)
+![width:900px](assets/01_observed_vs_latent.svg)
 
 The observed series contains both the true simulated trend and observation errors. This figure is a schematic.
 
@@ -153,7 +154,7 @@ A zero second difference describes a **straight line**.
 
 # Visualizing the second-difference operator
 
-![width:1050px](assets/02_d2_matrix.svg)
+![width:900px](assets/02_d2_matrix.svg)
 
 The unpenalized discrete polynomial space has dimension two when $d=2$.
 
@@ -230,7 +231,7 @@ The smoothing operator is linear for fixed $\lambda$ and fixed mean structure.
 
 # Spectral effect of increasing lambda
 
-![width:1050px](assets/03_spectral_shrinkage.svg)
+![width:900px](assets/03_spectral_shrinkage.svg)
 
 Positive roughness eigencomponents are attenuated by $1/(1+\lambda q)$.
 
@@ -736,7 +737,7 @@ There are **1,000 independent seed units**, not 198,000 independent data draws.
 
 # Anatomy of a single simulation seed
 
-![width:1050px](assets/04_common_seed_design.svg)
+![width:900px](assets/04_common_seed_design.svg)
 
 The nine mechanisms and both pool sizes share their underlying seed-specific shocks.
 
@@ -900,7 +901,7 @@ $$
 
 # How much better is first place?
 
-![width:1050px](assets/06_runner_up_gaps.svg)
+![width:900px](assets/06_runner_up_gaps.svg)
 
 Top-two mean-risk differences are often small and not globally Holm-significant.
 
@@ -944,7 +945,7 @@ The distinction survives global Holm adjustment.
 
 # A true jump favors less smoothing
 
-![width:1050px](assets/08_level_jump_risk.svg)
+![width:900px](assets/08_level_jump_risk.svg)
 
 Mean MSE under the specified +7 latent level jump; this is not a universal optimality claim.
 
@@ -982,7 +983,7 @@ The single-series Gaussian ML estimator suffers some very poor realizations.
 
 # Outliers expose tail risk
 
-![width:1050px](assets/09_outlier_tail_summary.svg)
+![width:900px](assets/09_outlier_tail_summary.svg)
 
 Compare median, mean and 90th percentile MSE: GLS single-series fits have a heavier loss tail.
 
@@ -1018,7 +1019,7 @@ Joint point-LOOCV follows correlated observation fluctuations too closely **in t
 
 # AR(1) selected smoothness versus risk
 
-![width:1050px](assets/07_ar1_s_vs_mse.svg)
+![width:900px](assets/07_ar1_s_vs_mse.svg)
 
 Under autocorrelated errors, the chosen nominal smoothness strongly influences reconstruction error.
 
@@ -1115,7 +1116,7 @@ Do not compare R3 *average across three series* against R1 when their noise leve
 
 # Pooling changes lambda, not the first series
 
-![width:1050px](assets/05_pooled_parameter_logic.svg)
+![width:900px](assets/05_pooled_parameter_logic.svg)
 
 The first observed sequence is held identical when comparing R1 and R3.
 
@@ -1125,7 +1126,7 @@ The first observed sequence is held identical when comparing R1 and R3.
 
 # Pooling effects across nine processes
 
-![width:1050px](assets/10_first_series_pooling_forest.svg)
+![width:900px](assets/10_first_series_pooling_forest.svg)
 
 GLS first-series paired differences: negative means pooling helps; positive means harm.
 
@@ -1190,7 +1191,7 @@ A parameter good for the pooled sample is not necessarily good for the lowest-no
 
 # Identical first-series MSE before and after pooling
 
-![width:1050px](assets/11_heterogeneous_clean_series.svg)
+![width:900px](assets/11_heterogeneous_clean_series.svg)
 
 The cleanest observed series can be oversmoothed after pooling with noisier series.
 
@@ -1250,7 +1251,7 @@ The more interesting output is the *risk difference across independent seeds*, w
 
 # One-seed winners versus 1,000-seed mean winners
 
-![width:1050px](assets/12_one_seed_vs_1000.svg)
+![width:900px](assets/12_one_seed_vs_1000.svg)
 
 Only 7 of 18 single-gallery first places match the lowest 1,000-seed mean risk.
 
