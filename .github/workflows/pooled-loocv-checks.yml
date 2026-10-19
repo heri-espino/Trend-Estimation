@@ -6,12 +6,14 @@ on:
       - "experiments/pooled_loocv_smoothness/**"
       - "tests/test_pooled_loocv_smoothness.py"
       - "tests/test_guerrero_ratio_pooled_loocv.py"
+      - "tests/test_guerrero_variance_estimation.py"
       - ".github/workflows/pooled-loocv-checks.yml"
   pull_request:
     paths:
       - "experiments/pooled_loocv_smoothness/**"
       - "tests/test_pooled_loocv_smoothness.py"
       - "tests/test_guerrero_ratio_pooled_loocv.py"
+      - "tests/test_guerrero_variance_estimation.py"
       - ".github/workflows/pooled-loocv-checks.yml"
   workflow_dispatch:
 
@@ -28,7 +30,7 @@ jobs:
       - name: Install lightweight test dependencies
         run: python -m pip install -e ".[dev,symbolic]"
       - name: Run isolated mathematical and numerical tests
-        run: python -m pytest tests/test_pooled_loocv_smoothness.py tests/test_guerrero_ratio_pooled_loocv.py -q
+        run: python -m pytest tests/test_pooled_loocv_smoothness.py tests/test_guerrero_ratio_pooled_loocv.py tests/test_guerrero_variance_estimation.py -q
       - name: Confirm campaign preview without simulations
         run: python -m experiments.pooled_loocv_smoothness.run --preset pilot --dry-run
       - name: Execute tiny smoke and validate exported artifacts
@@ -44,6 +46,13 @@ jobs:
           test -s /tmp/guerrero-smoke/manifest.json
           test -s /tmp/guerrero-smoke/summary.json
           test -s /tmp/guerrero-smoke/guerrero_example.png
+      - name: Execute feasible variance estimator smoke and verify artifacts
+        run: |
+          python -m experiments.pooled_loocv_smoothness.run_variance_estimation --preset smoke --out-dir /tmp/estimated-variances-smoke
+          test -s /tmp/estimated-variances-smoke/variance_estimator_comparison.csv
+          test -s /tmp/estimated-variances-smoke/summary.json
+          test -s /tmp/estimated-variances-smoke/true_mse_by_noise_level.png
+          test -s /tmp/estimated-variances-smoke/common_noise_scale_invariance.csv
       - name: Audit uploaded Guerrero pilot when available
         run: |
           if [ -f results/pooled_loocv_smoothness/guerrero/pilot/guerrero_solver_comparison.csv ]; then
