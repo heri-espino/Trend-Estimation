@@ -30,6 +30,10 @@ style: |
   section.figure p { font-size: 0.95em; margin: 3px 0 0; line-height: 1.2; }
   section.small { font-size: 23px; }
   section.small table { font-size: 0.68em; }
+  section.data { font-size: 18px; padding: 34px 55px; }
+  section.data h1 { font-size: 31px; }
+  section.data table { font-size: .78em; }
+  section.data td, section.data th { padding: 6px 9px; }
   section.divider { background: #eaf5f4; color: #132c46; }
   section.divider h1 { font-size: 2.2em; }
 ---
@@ -2366,6 +2370,368 @@ Unknown market processes, other $\phi$, different noise scales, and horizon-$h$ 
 5. Interpret effect sizes and paired uncertainty without asserting universal dominance.
 
 This is a proposed next experiment, **not executed M.2 evidence**.
+
+---
+
+---
+<!-- _class: data -->
+# Complete results: gaussian reference (R=1)
+
+| Policy | Mean MSE | MAE | p90 MSE | Median S | Mean mu | Win % |
+|:--|--:|--:|--:|--:|--:|--:|
+| plugin_mu_ml | 0.0995 | 0.2483 | 0.1456 | 0.868 | 0.041 | 15.5 |
+| zero_mu_ml | 0.1001 | 0.2500 | 0.1454 | 0.844 | 0.000 | 14.8 |
+| aicc_joint | 0.1007 | 0.2506 | 0.1472 | 0.890 | 0.040 | 18.4 |
+| aicc_zero | 0.1018 | 0.2509 | 0.1487 | 0.886 | 0.000 | 13.9 |
+| cv_joint | 0.1095 | 0.2583 | 0.1582 | 0.873 | 0.040 | 5.0 |
+| gcv_joint | 0.1100 | 0.2588 | 0.1589 | 0.873 | 0.040 | 4.8 |
+| controlled_s0.8_joint | 0.1103 | 0.2629 | 0.1591 | 0.800 | 0.040 | 6.1 |
+| cv_zero | 0.1106 | 0.2592 | 0.1581 | 0.866 | 0.000 | 5.1 |
+| gcv_zero | 0.1108 | 0.2593 | 0.1611 | 0.868 | 0.000 | 4.2 |
+| gls_mu_ml | 0.1185 | 0.2652 | 0.1698 | 0.880 | 0.040 | 12.2 |
+| controlled_s0.5_joint | 0.2389 | 0.3887 | 0.3092 | 0.500 | 0.040 | 0.0 |
+
+Ordered by sample mean MSE; nearest ranks are not necessarily statistically separated.
+
+---
+<!-- _class: data -->
+# Complete results: smooth cycle (R=1)
+
+| Policy | Mean MSE | MAE | p90 MSE | Median S | Mean mu | Win % |
+|:--|--:|--:|--:|--:|--:|--:|
+| controlled_s0.8_joint | 0.1222 | 0.2761 | 0.1743 | 0.800 | 0.035 | 11.5 |
+| aicc_zero | 0.1259 | 0.2810 | 0.1803 | 0.821 | 0.000 | 30.1 |
+| aicc_joint | 0.1279 | 0.2825 | 0.1843 | 0.819 | 0.036 | 4.5 |
+| gls_mu_ml | 0.1327 | 0.2884 | 0.1900 | 0.755 | 0.033 | 2.4 |
+| plugin_mu_ml | 0.1331 | 0.2888 | 0.1896 | 0.754 | 0.029 | 3.3 |
+| zero_mu_ml | 0.1331 | 0.2891 | 0.1895 | 0.751 | 0.000 | 16.6 |
+| cv_zero | 0.1352 | 0.2883 | 0.1968 | 0.799 | 0.000 | 12.5 |
+| gcv_zero | 0.1358 | 0.2886 | 0.1960 | 0.800 | 0.000 | 15.0 |
+| gcv_joint | 0.1376 | 0.2901 | 0.1981 | 0.796 | 0.034 | 1.4 |
+| cv_joint | 0.1376 | 0.2903 | 0.1990 | 0.793 | 0.034 | 2.7 |
+| controlled_s0.5_joint | 0.2390 | 0.3887 | 0.3102 | 0.500 | 0.030 | 0.0 |
+
+Ordered by sample mean MSE; nearest ranks are not necessarily statistically separated.
+
+---
+<!-- _class: data -->
+# Complete results: slope break (R=1)
+
+| Policy | Mean MSE | MAE | p90 MSE | Median S | Mean mu | Win % |
+|:--|--:|--:|--:|--:|--:|--:|
+| plugin_mu_ml | 0.1078 | 0.2585 | 0.1550 | 0.853 | 0.050 | 12.1 |
+| zero_mu_ml | 0.1095 | 0.2616 | 0.1572 | 0.827 | 0.000 | 14.6 |
+| aicc_joint | 0.1113 | 0.2620 | 0.1594 | 0.878 | 0.050 | 17.9 |
+| aicc_zero | 0.1117 | 0.2621 | 0.1614 | 0.874 | 0.000 | 15.1 |
+| controlled_s0.8_joint | 0.1140 | 0.2674 | 0.1626 | 0.800 | 0.050 | 11.0 |
+| gls_mu_ml | 0.1151 | 0.2648 | 0.1612 | 0.863 | 0.050 | 10.2 |
+| gcv_joint | 0.1201 | 0.2704 | 0.1706 | 0.858 | 0.050 | 4.3 |
+| cv_joint | 0.1205 | 0.2707 | 0.1709 | 0.858 | 0.050 | 4.7 |
+| gcv_zero | 0.1206 | 0.2708 | 0.1730 | 0.855 | 0.000 | 6.0 |
+| cv_zero | 0.1208 | 0.2710 | 0.1719 | 0.854 | 0.000 | 4.1 |
+| controlled_s0.5_joint | 0.2392 | 0.3889 | 0.3099 | 0.500 | 0.050 | 0.0 |
+
+Ordered by sample mean MSE; nearest ranks are not necessarily statistically separated.
+
+---
+<!-- _class: data -->
+# Complete results: level jump (R=1)
+
+| Policy | Mean MSE | MAE | p90 MSE | Median S | Mean mu | Win % |
+|:--|--:|--:|--:|--:|--:|--:|
+| controlled_s0.5_joint | 0.3167 | 0.4242 | 0.3937 | 0.500 | 0.040 | 61.4 |
+| cv_zero | 0.3524 | 0.3912 | 0.4438 | 0.733 | 0.000 | 10.5 |
+| gcv_zero | 0.3528 | 0.3931 | 0.4435 | 0.728 | 0.000 | 6.9 |
+| gcv_joint | 0.3530 | 0.3931 | 0.4455 | 0.728 | 0.040 | 8.0 |
+| cv_joint | 0.3531 | 0.3913 | 0.4439 | 0.732 | 0.040 | 7.7 |
+| controlled_s0.8_joint | 0.3770 | 0.3740 | 0.4345 | 0.800 | 0.040 | 0.4 |
+| zero_mu_ml | 0.3963 | 0.3808 | 0.4728 | 0.813 | 0.000 | 1.2 |
+| aicc_zero | 0.4002 | 0.3813 | 0.4852 | 0.815 | 0.000 | 1.4 |
+| aicc_joint | 0.4008 | 0.3814 | 0.4873 | 0.816 | 0.040 | 2.1 |
+| plugin_mu_ml | 0.4143 | 0.3856 | 0.5017 | 0.823 | 0.041 | 0.1 |
+| gls_mu_ml | 0.4316 | 0.3924 | 0.5148 | 0.828 | 0.040 | 0.3 |
+
+Ordered by sample mean MSE; nearest ranks are not necessarily statistically separated.
+
+---
+<!-- _class: data -->
+# Complete results: observation outliers (R=1)
+
+| Policy | Mean MSE | MAE | p90 MSE | Median S | Mean mu | Win % |
+|:--|--:|--:|--:|--:|--:|--:|
+| aicc_joint | 0.1747 | 0.3235 | 0.2546 | 0.912 | 0.040 | 21.6 |
+| zero_mu_ml | 0.1777 | 0.3154 | 0.2533 | 0.874 | 0.000 | 15.1 |
+| aicc_zero | 0.1783 | 0.3244 | 0.2608 | 0.906 | 0.000 | 13.7 |
+| plugin_mu_ml | 0.1831 | 0.3235 | 0.2567 | 0.895 | 0.041 | 18.3 |
+| cv_joint | 0.1835 | 0.3227 | 0.2723 | 0.900 | 0.040 | 5.9 |
+| gcv_joint | 0.1851 | 0.3239 | 0.2741 | 0.901 | 0.040 | 4.2 |
+| cv_zero | 0.1886 | 0.3242 | 0.2742 | 0.893 | 0.000 | 4.5 |
+| gcv_zero | 0.1887 | 0.3250 | 0.2772 | 0.895 | 0.000 | 2.4 |
+| controlled_s0.8_joint | 0.2294 | 0.3400 | 0.3153 | 0.800 | 0.040 | 2.2 |
+| gls_mu_ml | 0.2820 | 0.3907 | 0.6937 | 0.909 | 0.040 | 12.1 |
+| controlled_s0.5_joint | 0.5256 | 0.4732 | 0.6550 | 0.500 | 0.040 | 0.0 |
+
+Ordered by sample mean MSE; nearest ranks are not necessarily statistically separated.
+
+---
+<!-- _class: data -->
+# Complete results: ar1 observation (R=1)
+
+| Policy | Mean MSE | MAE | p90 MSE | Median S | Mean mu | Win % |
+|:--|--:|--:|--:|--:|--:|--:|
+| controlled_s0.8_joint | 0.4907 | 0.5595 | 0.8080 | 0.800 | 0.040 | 95.7 |
+| aicc_joint | 0.5224 | 0.5771 | 0.8459 | 0.716 | 0.040 | 1.8 |
+| aicc_zero | 0.5226 | 0.5772 | 0.8450 | 0.715 | 0.000 | 0.8 |
+| gls_mu_ml | 0.5388 | 0.5857 | 0.8677 | 0.661 | 0.040 | 1.2 |
+| plugin_mu_ml | 0.5391 | 0.5859 | 0.8681 | 0.660 | 0.041 | 0.4 |
+| zero_mu_ml | 0.5448 | 0.5891 | 0.8727 | 0.631 | 0.000 | 0.1 |
+| controlled_s0.5_joint | 0.5641 | 0.5995 | 0.8783 | 0.500 | 0.040 | 0.0 |
+| cv_joint | 0.5761 | 0.6055 | 0.9067 | 0.441 | 0.040 | 0.0 |
+| cv_zero | 0.5765 | 0.6057 | 0.9061 | 0.440 | 0.000 | 0.0 |
+| gcv_joint | 0.5796 | 0.6074 | 0.9124 | 0.423 | 0.041 | 0.0 |
+| gcv_zero | 0.5797 | 0.6074 | 0.9124 | 0.422 | 0.000 | 0.0 |
+
+Ordered by sample mean MSE; nearest ranks are not necessarily statistically separated.
+
+---
+<!-- _class: data -->
+# Complete results: variance regime (R=1)
+
+| Policy | Mean MSE | MAE | p90 MSE | Median S | Mean mu | Win % |
+|:--|--:|--:|--:|--:|--:|--:|
+| plugin_mu_ml | 0.1025 | 0.2384 | 0.1602 | 0.867 | 0.041 | 13.8 |
+| zero_mu_ml | 0.1030 | 0.2364 | 0.1605 | 0.844 | 0.000 | 15.2 |
+| aicc_joint | 0.1043 | 0.2449 | 0.1624 | 0.891 | 0.040 | 17.4 |
+| aicc_zero | 0.1051 | 0.2446 | 0.1634 | 0.886 | 0.000 | 13.4 |
+| controlled_s0.8_joint | 0.1128 | 0.2430 | 0.1718 | 0.800 | 0.040 | 9.3 |
+| gls_mu_ml | 0.1220 | 0.2580 | 0.1826 | 0.880 | 0.040 | 13.9 |
+| cv_joint | 0.1224 | 0.2540 | 0.1880 | 0.873 | 0.040 | 5.8 |
+| gcv_joint | 0.1243 | 0.2553 | 0.1951 | 0.872 | 0.040 | 3.0 |
+| cv_zero | 0.1247 | 0.2549 | 0.1950 | 0.865 | 0.000 | 4.3 |
+| gcv_zero | 0.1256 | 0.2556 | 0.1976 | 0.867 | 0.000 | 3.9 |
+| controlled_s0.5_joint | 0.2432 | 0.3511 | 0.3360 | 0.500 | 0.041 | 0.0 |
+
+Ordered by sample mean MSE; nearest ranks are not necessarily statistically separated.
+
+---
+<!-- _class: data -->
+# Complete results: heterogeneous pool (R=1)
+
+| Policy | Mean MSE | MAE | p90 MSE | Median S | Mean mu | Win % |
+|:--|--:|--:|--:|--:|--:|--:|
+| plugin_mu_ml | 0.0170 | 0.1033 | 0.0228 | 0.756 | 0.040 | 11.7 |
+| gls_mu_ml | 0.0170 | 0.1035 | 0.0230 | 0.758 | 0.040 | 8.8 |
+| zero_mu_ml | 0.0172 | 0.1041 | 0.0232 | 0.714 | 0.000 | 25.6 |
+| controlled_s0.8_joint | 0.0176 | 0.1054 | 0.0236 | 0.800 | 0.040 | 8.2 |
+| aicc_joint | 0.0181 | 0.1066 | 0.0245 | 0.804 | 0.040 | 8.1 |
+| aicc_zero | 0.0181 | 0.1065 | 0.0245 | 0.801 | 0.000 | 10.7 |
+| cv_joint | 0.0185 | 0.1073 | 0.0251 | 0.751 | 0.040 | 7.9 |
+| cv_zero | 0.0185 | 0.1073 | 0.0249 | 0.746 | 0.000 | 6.6 |
+| gcv_joint | 0.0187 | 0.1077 | 0.0258 | 0.752 | 0.040 | 6.1 |
+| gcv_zero | 0.0187 | 0.1077 | 0.0254 | 0.750 | 0.000 | 6.2 |
+| controlled_s0.5_joint | 0.0240 | 0.1233 | 0.0312 | 0.500 | 0.040 | 0.1 |
+
+Ordered by sample mean MSE; nearest ranks are not necessarily statistically separated.
+
+---
+<!-- _class: data -->
+# Complete results: shared observation shock (R=1)
+
+| Policy | Mean MSE | MAE | p90 MSE | Median S | Mean mu | Win % |
+|:--|--:|--:|--:|--:|--:|--:|
+| plugin_mu_ml | 0.1021 | 0.2524 | 0.1527 | 0.868 | 0.040 | 15.8 |
+| zero_mu_ml | 0.1027 | 0.2532 | 0.1538 | 0.844 | 0.000 | 13.8 |
+| aicc_joint | 0.1031 | 0.2536 | 0.1538 | 0.891 | 0.040 | 18.6 |
+| aicc_zero | 0.1044 | 0.2541 | 0.1554 | 0.886 | 0.000 | 14.3 |
+| controlled_s0.8_joint | 0.1127 | 0.2660 | 0.1637 | 0.800 | 0.040 | 7.3 |
+| cv_joint | 0.1131 | 0.2631 | 0.1685 | 0.875 | 0.040 | 5.1 |
+| cv_zero | 0.1138 | 0.2636 | 0.1705 | 0.868 | 0.000 | 4.3 |
+| gcv_joint | 0.1144 | 0.2641 | 0.1709 | 0.875 | 0.040 | 5.0 |
+| gcv_zero | 0.1157 | 0.2650 | 0.1739 | 0.870 | 0.000 | 3.7 |
+| gls_mu_ml | 0.1179 | 0.2664 | 0.1761 | 0.880 | 0.040 | 12.1 |
+| controlled_s0.5_joint | 0.2413 | 0.3913 | 0.3171 | 0.500 | 0.040 | 0.0 |
+
+Ordered by sample mean MSE; nearest ranks are not necessarily statistically separated.
+
+---
+<!-- _class: data -->
+# Complete results: gaussian reference (R=3)
+
+| Policy | Mean MSE | MAE | p90 MSE | Median S | Mean mu | Win % |
+|:--|--:|--:|--:|--:|--:|--:|
+| plugin_mu_ml | 0.0967 | 0.2466 | 0.1217 | 0.870 | 0.040 | 15.7 |
+| gls_mu_ml | 0.0968 | 0.2467 | 0.1221 | 0.873 | 0.040 | 11.0 |
+| gcv_joint | 0.0984 | 0.2487 | 0.1251 | 0.873 | 0.040 | 9.3 |
+| cv_joint | 0.0984 | 0.2487 | 0.1256 | 0.873 | 0.040 | 8.8 |
+| aicc_joint | 0.0989 | 0.2494 | 0.1258 | 0.887 | 0.040 | 18.2 |
+| gcv_zero | 0.0996 | 0.2497 | 0.1266 | 0.869 | 0.000 | 5.3 |
+| cv_zero | 0.0997 | 0.2497 | 0.1274 | 0.866 | 0.000 | 4.9 |
+| zero_mu_ml | 0.1000 | 0.2505 | 0.1267 | 0.843 | 0.000 | 14.4 |
+| aicc_zero | 0.1002 | 0.2501 | 0.1272 | 0.883 | 0.000 | 11.6 |
+| controlled_s0.8_joint | 0.1111 | 0.2644 | 0.1393 | 0.800 | 0.040 | 0.8 |
+| controlled_s0.5_joint | 0.2394 | 0.3892 | 0.2791 | 0.500 | 0.040 | 0.0 |
+
+Ordered by sample mean MSE; nearest ranks are not necessarily statistically separated.
+
+---
+<!-- _class: data -->
+# Complete results: smooth cycle (R=3)
+
+| Policy | Mean MSE | MAE | p90 MSE | Median S | Mean mu | Win % |
+|:--|--:|--:|--:|--:|--:|--:|
+| controlled_s0.8_joint | 0.1233 | 0.2779 | 0.1542 | 0.800 | 0.035 | 8.9 |
+| gcv_zero | 0.1235 | 0.2787 | 0.1544 | 0.799 | 0.000 | 24.2 |
+| cv_zero | 0.1237 | 0.2789 | 0.1547 | 0.797 | 0.000 | 24.7 |
+| aicc_zero | 0.1250 | 0.2806 | 0.1569 | 0.819 | 0.000 | 28.8 |
+| gcv_joint | 0.1253 | 0.2802 | 0.1561 | 0.796 | 0.035 | 0.9 |
+| cv_joint | 0.1257 | 0.2808 | 0.1567 | 0.792 | 0.034 | 1.4 |
+| aicc_joint | 0.1269 | 0.2819 | 0.1589 | 0.817 | 0.036 | 1.9 |
+| gls_mu_ml | 0.1321 | 0.2881 | 0.1632 | 0.754 | 0.033 | 0.6 |
+| plugin_mu_ml | 0.1322 | 0.2882 | 0.1633 | 0.754 | 0.029 | 1.3 |
+| zero_mu_ml | 0.1326 | 0.2888 | 0.1639 | 0.751 | 0.000 | 7.3 |
+| controlled_s0.5_joint | 0.2394 | 0.3892 | 0.2799 | 0.500 | 0.030 | 0.0 |
+
+Ordered by sample mean MSE; nearest ranks are not necessarily statistically separated.
+
+---
+<!-- _class: data -->
+# Complete results: slope break (R=3)
+
+| Policy | Mean MSE | MAE | p90 MSE | Median S | Mean mu | Win % |
+|:--|--:|--:|--:|--:|--:|--:|
+| plugin_mu_ml | 0.1064 | 0.2578 | 0.1340 | 0.855 | 0.050 | 13.4 |
+| gls_mu_ml | 0.1064 | 0.2579 | 0.1342 | 0.858 | 0.051 | 9.1 |
+| cv_joint | 0.1082 | 0.2599 | 0.1374 | 0.857 | 0.050 | 8.6 |
+| gcv_joint | 0.1083 | 0.2600 | 0.1373 | 0.856 | 0.050 | 9.0 |
+| cv_zero | 0.1089 | 0.2605 | 0.1377 | 0.853 | 0.000 | 8.4 |
+| gcv_zero | 0.1090 | 0.2606 | 0.1381 | 0.853 | 0.000 | 6.9 |
+| aicc_joint | 0.1092 | 0.2604 | 0.1378 | 0.874 | 0.051 | 15.1 |
+| zero_mu_ml | 0.1095 | 0.2621 | 0.1378 | 0.825 | 0.000 | 14.3 |
+| aicc_zero | 0.1099 | 0.2609 | 0.1383 | 0.871 | 0.000 | 12.9 |
+| controlled_s0.8_joint | 0.1149 | 0.2688 | 0.1444 | 0.800 | 0.050 | 2.3 |
+| controlled_s0.5_joint | 0.2397 | 0.3895 | 0.2794 | 0.500 | 0.050 | 0.0 |
+
+Ordered by sample mean MSE; nearest ranks are not necessarily statistically separated.
+
+---
+<!-- _class: data -->
+# Complete results: level jump (R=3)
+
+| Policy | Mean MSE | MAE | p90 MSE | Median S | Mean mu | Win % |
+|:--|--:|--:|--:|--:|--:|--:|
+| controlled_s0.5_joint | 0.3167 | 0.4244 | 0.3593 | 0.500 | 0.040 | 63.0 |
+| gcv_zero | 0.3340 | 0.3795 | 0.3820 | 0.727 | 0.000 | 10.7 |
+| gcv_joint | 0.3341 | 0.3795 | 0.3827 | 0.727 | 0.040 | 12.8 |
+| cv_zero | 0.3360 | 0.3786 | 0.3837 | 0.734 | 0.000 | 7.2 |
+| cv_joint | 0.3364 | 0.3785 | 0.3845 | 0.734 | 0.040 | 6.2 |
+| controlled_s0.8_joint | 0.3774 | 0.3749 | 0.4125 | 0.800 | 0.040 | 0.0 |
+| aicc_zero | 0.3906 | 0.3784 | 0.4395 | 0.810 | 0.000 | 0.1 |
+| aicc_joint | 0.3909 | 0.3784 | 0.4399 | 0.810 | 0.040 | 0.0 |
+| zero_mu_ml | 0.3927 | 0.3789 | 0.4378 | 0.813 | 0.000 | 0.0 |
+| plugin_mu_ml | 0.4112 | 0.3835 | 0.4621 | 0.826 | 0.040 | 0.0 |
+| gls_mu_ml | 0.4137 | 0.3842 | 0.4660 | 0.827 | 0.040 | 0.0 |
+
+Ordered by sample mean MSE; nearest ranks are not necessarily statistically separated.
+
+---
+<!-- _class: data -->
+# Complete results: observation outliers (R=3)
+
+| Policy | Mean MSE | MAE | p90 MSE | Median S | Mean mu | Win % |
+|:--|--:|--:|--:|--:|--:|--:|
+| plugin_mu_ml | 0.1696 | 0.3156 | 0.2133 | 0.897 | 0.040 | 17.9 |
+| gls_mu_ml | 0.1703 | 0.3171 | 0.2137 | 0.900 | 0.040 | 13.5 |
+| gcv_joint | 0.1722 | 0.3176 | 0.2198 | 0.899 | 0.040 | 8.0 |
+| cv_joint | 0.1722 | 0.3171 | 0.2214 | 0.898 | 0.040 | 10.2 |
+| aicc_joint | 0.1724 | 0.3216 | 0.2189 | 0.909 | 0.040 | 22.3 |
+| gcv_zero | 0.1757 | 0.3190 | 0.2235 | 0.894 | 0.000 | 4.2 |
+| cv_zero | 0.1757 | 0.3182 | 0.2239 | 0.891 | 0.000 | 4.4 |
+| aicc_zero | 0.1761 | 0.3231 | 0.2227 | 0.903 | 0.000 | 7.6 |
+| zero_mu_ml | 0.1777 | 0.3152 | 0.2225 | 0.873 | 0.000 | 11.9 |
+| controlled_s0.8_joint | 0.2310 | 0.3409 | 0.2822 | 0.800 | 0.040 | 0.0 |
+| controlled_s0.5_joint | 0.5286 | 0.4738 | 0.6028 | 0.500 | 0.040 | 0.0 |
+
+Ordered by sample mean MSE; nearest ranks are not necessarily statistically separated.
+
+---
+<!-- _class: data -->
+# Complete results: ar1 observation (R=3)
+
+| Policy | Mean MSE | MAE | p90 MSE | Median S | Mean mu | Win % |
+|:--|--:|--:|--:|--:|--:|--:|
+| controlled_s0.8_joint | 0.4961 | 0.5630 | 0.6755 | 0.800 | 0.040 | 100.0 |
+| aicc_joint | 0.5298 | 0.5817 | 0.7135 | 0.707 | 0.040 | 0.0 |
+| aicc_zero | 0.5299 | 0.5818 | 0.7140 | 0.706 | 0.000 | 0.0 |
+| gls_mu_ml | 0.5429 | 0.5888 | 0.7274 | 0.658 | 0.040 | 0.0 |
+| plugin_mu_ml | 0.5430 | 0.5889 | 0.7275 | 0.658 | 0.040 | 0.0 |
+| zero_mu_ml | 0.5484 | 0.5918 | 0.7318 | 0.630 | 0.000 | 0.0 |
+| controlled_s0.5_joint | 0.5692 | 0.6029 | 0.7522 | 0.500 | 0.040 | 0.0 |
+| cv_joint | 0.5785 | 0.6077 | 0.7622 | 0.445 | 0.040 | 0.0 |
+| cv_zero | 0.5787 | 0.6078 | 0.7614 | 0.445 | 0.000 | 0.0 |
+| gcv_joint | 0.5818 | 0.6095 | 0.7641 | 0.422 | 0.040 | 0.0 |
+| gcv_zero | 0.5819 | 0.6095 | 0.7640 | 0.421 | 0.000 | 0.0 |
+
+Ordered by sample mean MSE; nearest ranks are not necessarily statistically separated.
+
+---
+<!-- _class: data -->
+# Complete results: variance regime (R=3)
+
+| Policy | Mean MSE | MAE | p90 MSE | Median S | Mean mu | Win % |
+|:--|--:|--:|--:|--:|--:|--:|
+| gls_mu_ml | 0.0978 | 0.2363 | 0.1288 | 0.874 | 0.040 | 13.7 |
+| plugin_mu_ml | 0.0979 | 0.2356 | 0.1291 | 0.870 | 0.040 | 15.4 |
+| aicc_joint | 0.1003 | 0.2415 | 0.1320 | 0.887 | 0.040 | 19.4 |
+| zero_mu_ml | 0.1013 | 0.2356 | 0.1356 | 0.844 | 0.000 | 14.5 |
+| cv_joint | 0.1013 | 0.2392 | 0.1358 | 0.873 | 0.040 | 7.0 |
+| gcv_joint | 0.1014 | 0.2393 | 0.1359 | 0.872 | 0.040 | 7.8 |
+| aicc_zero | 0.1015 | 0.2418 | 0.1338 | 0.882 | 0.000 | 10.0 |
+| cv_zero | 0.1024 | 0.2393 | 0.1353 | 0.866 | 0.000 | 6.1 |
+| gcv_zero | 0.1025 | 0.2397 | 0.1353 | 0.868 | 0.000 | 4.4 |
+| controlled_s0.8_joint | 0.1126 | 0.2439 | 0.1486 | 0.800 | 0.040 | 1.7 |
+| controlled_s0.5_joint | 0.2429 | 0.3515 | 0.2962 | 0.500 | 0.040 | 0.0 |
+
+Ordered by sample mean MSE; nearest ranks are not necessarily statistically separated.
+
+---
+<!-- _class: data -->
+# Complete results: heterogeneous pool (R=3)
+
+| Policy | Mean MSE | MAE | p90 MSE | Median S | Mean mu | Win % |
+|:--|--:|--:|--:|--:|--:|--:|
+| gls_mu_ml | 0.1360 | 0.2735 | 0.1877 | 0.888 | 0.040 | 14.7 |
+| plugin_mu_ml | 0.1362 | 0.2719 | 0.1860 | 0.883 | 0.040 | 15.1 |
+| aicc_joint | 0.1392 | 0.2798 | 0.1894 | 0.899 | 0.040 | 18.3 |
+| zero_mu_ml | 0.1412 | 0.2708 | 0.1936 | 0.860 | 0.000 | 17.1 |
+| aicc_zero | 0.1413 | 0.2800 | 0.1894 | 0.894 | 0.000 | 11.2 |
+| cv_joint | 0.1427 | 0.2776 | 0.1978 | 0.888 | 0.040 | 7.2 |
+| gcv_joint | 0.1430 | 0.2778 | 0.1974 | 0.887 | 0.040 | 7.2 |
+| cv_zero | 0.1446 | 0.2775 | 0.2005 | 0.881 | 0.000 | 4.1 |
+| gcv_zero | 0.1451 | 0.2783 | 0.1994 | 0.883 | 0.000 | 4.4 |
+| controlled_s0.8_joint | 0.1677 | 0.2853 | 0.2265 | 0.800 | 0.040 | 0.7 |
+| controlled_s0.5_joint | 0.3683 | 0.4141 | 0.4494 | 0.500 | 0.040 | 0.0 |
+
+Ordered by sample mean MSE; nearest ranks are not necessarily statistically separated.
+
+---
+<!-- _class: data -->
+# Complete results: shared observation shock (R=3)
+
+| Policy | Mean MSE | MAE | p90 MSE | Median S | Mean mu | Win % |
+|:--|--:|--:|--:|--:|--:|--:|
+| gls_mu_ml | 0.0983 | 0.2484 | 0.1329 | 0.873 | 0.040 | 14.9 |
+| plugin_mu_ml | 0.0986 | 0.2487 | 0.1334 | 0.865 | 0.040 | 16.6 |
+| aicc_joint | 0.1010 | 0.2517 | 0.1355 | 0.887 | 0.040 | 16.7 |
+| zero_mu_ml | 0.1017 | 0.2524 | 0.1394 | 0.843 | 0.000 | 13.6 |
+| aicc_zero | 0.1024 | 0.2525 | 0.1395 | 0.882 | 0.000 | 14.3 |
+| cv_joint | 0.1046 | 0.2554 | 0.1442 | 0.871 | 0.040 | 5.3 |
+| gcv_joint | 0.1051 | 0.2558 | 0.1445 | 0.871 | 0.040 | 6.8 |
+| cv_zero | 0.1056 | 0.2561 | 0.1438 | 0.865 | 0.000 | 5.5 |
+| gcv_zero | 0.1063 | 0.2567 | 0.1437 | 0.867 | 0.000 | 4.4 |
+| controlled_s0.8_joint | 0.1125 | 0.2660 | 0.1517 | 0.800 | 0.040 | 1.9 |
+| controlled_s0.5_joint | 0.2408 | 0.3908 | 0.2990 | 0.500 | 0.040 | 0.0 |
+
+Ordered by sample mean MSE; nearest ranks are not necessarily statistically separated.
 
 ---
 <!-- _class: lead -->
