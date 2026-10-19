@@ -68,7 +68,7 @@ Keep different DGPs and estimands separate, even when they share `PooledLOOCV`. 
 
 ### G controlled change in DGP and evaluation precautions
 
-- **New seed base 69000000**; `seed = base + N_index*10000 + sigma_eta_index*1000 + replicate`, so **mu levels share the identical simulated centered stochastic innovations and observation errors**, and R1 nests within R3. Never count mu-factor and R repetitions as independent Monte Carlo replicates.
+- **New seed base 69000000**; `seed = base + N_index*10000 + sigma_eta_index*1000 + replicate`, so **mu levels share the identical simulated centered stochastic innovations and observation errors**, and R1 nests within R3. Never count mu-factor and R repetitions as independent Monte Carlo replicates. The **100 R3 method-comparison treatment pools share only 20 distinct simulated shock draws** (4 N×eta groups × five seeds), each deliberately reused at five mu levels. Statistical uncertainty must account for that shared-shock clustering.
 - Unlike previous μ=0 pilots, **the true model's difference mean is `mu_factor * sigma_epsilon`**; when $mu\ne0$, imposing 0 changes the trend's expected polynomial degree.
 - For the fitted Gaussian common GLS mean, a PRESS score that freezes full-data μ is marked **diagnostic/NOT honest CV**. The proposed joint pooled CV refits μ within each observation deletion using an exact PRESS identity, verified against explicit refit tests.
 - Estimating μ **adds effective degrees of freedom** and changes its statistical interpretation; the previously used normalized S is retained as a nominal common λ coordinate, not true EDF of data-adaptive μ.
