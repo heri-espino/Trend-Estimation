@@ -1,6 +1,6 @@
 # Results and simulation provenance ledger — independent pooled observed-series paper
 
-**Maintained as of 2026-10-18 local; robustness pilot now verified and committed.** This table answers: *what was simulated, what was actually run, where is each result saved, how can we reproduce it, and what is not yet evidence?*
+**Maintained through 2026-10-19; 160,000 independent Gaussian multiorder shock draws confirmed and audited.** This table answers: *what was simulated, what was actually run, where is each result saved, how can we reproduce it, and what is not yet evidence?*
 
 Keep different DGPs and estimands separate, even when they share `PooledLOOCV`. Never replace an earlier committed result silently with a newly generated run. The source manifest's `git_sha` is the code version of the executed run; current branch tip may be later.
 
@@ -41,7 +41,7 @@ Keep different DGPs and estimands separate, even when they share `PooledLOOCV`. 
 
 | Study | DGP and scientific target | Executed status & exact size | Code and evidence |
 |---|---|---|---|
-| **H. Independent multorder nonzero-mean confirmation** | Fixed analyst order in each individual experiment `d=1,2,3,4`; stochastic (D_d\tau=\mu+\varepsilon), with centered Gaussian eps/eta. N=50,200 and observation SD=.5,2, five paired μ levels, nested R1/3, eight retained comparators. Independent base seeds for each (d,N,SD). Infer *within* d/N/SD from paired reconstruction loss, NOT across incomparable polynomial scales. | **IMPLEMENTED / NOT EXECUTED at 10k scale.** 16 strata × **10,000 independent base shock draws** = 160,000 independent R3 draws. Five μ shifts × two nested R sizes = 1.6M treatment evaluations; **12.8M method rows** if completed. Shard size 100, so 1,600 resumable shards. Tiny CI tests only. | [Full locked four-order protocol](MULTIORDER_10000_SEED_CONFIRMATORY_PROTOCOL.md), [current exact methods/results](HOW_THE_SIMULATION_WORKS_AND_MEASURED_RESULTS.md), runner `run_nonzero_mean_multorder.py`, manual launcher `launch_nonzero_mean_multorder.py`, checked aggregator `aggregate_nonzero_mean_multorder.py`, tests `test_nonzero_mean_multorder.py`. No confirmed source results for H yet. |
+| **H. Independent multorder nonzero-mean confirmation** | Fixed analyst order in each individual experiment `d=1,2,3,4`; stochastic (D_d\tau=\mu+\varepsilon), with centered Gaussian eps/eta. N=50,200 and observation SD=.5,2, five paired μ levels, nested R1/3, eight retained comparators. Independent base seeds for each (d,N,SD). Infer *within* d/N/SD from paired reconstruction loss, NOT across incomparable polynomial scales. | **EXECUTED AND COMMITTED:** 16 strata × 10,000 base shock draws = **160,000 independent R3 draws**, five paired μ shifts × nested R=1/3: **1.6M treatment pools**, **12.8M method rows represented**. User-side aggregator verified all 1,600 gzip SHA256s; compact GitHub campaign manifest and CSV aggregates are present. [Measured 16-cell confirmation](MULTIORDER_10000_SEED_CONFIRMATORY_RESULTS_2026-10-19.md). The non-Gaussian stage remains unrun. | [Full locked four-order protocol](MULTIORDER_10000_SEED_CONFIRMATORY_PROTOCOL.md), [current exact methods/results](HOW_THE_SIMULATION_WORKS_AND_MEASURED_RESULTS.md), runner `run_nonzero_mean_multorder.py`, manual launcher `launch_nonzero_mean_multorder.py`, checked aggregator `aggregate_nonzero_mean_multorder.py`, tests `test_nonzero_mean_multorder.py`. **Committed original aggregates** `results/pooled_loocv_smoothness/guerrero/nonzero_mean_multorder/audit_001/{campaign_manifest.json,by_d_N_eta_R_mu_method.csv,paired_MSE_contrasts_by_d_N_eta_R_mu.csv}`; SHA `070b363b7d8a8156f320c833539fa068b684fc7b`. [Independent aggregate audit](MULTIORDER_10000_SEED_CONFIRMATORY_RESULTS_2026-10-19.md). |
 
 ### A/B/C design and seeds, not interchangeable
 
@@ -90,12 +90,21 @@ Keep different DGPs and estimands separate, even when they share `PooledLOOCV`. 
 
 ### H operational and inferential safeguards
 
-- **Code/pilot status:** fixed-d2 five-seed G pilot was executed; H's four-order 10k-per-stratum independent confirmation is **planned and implemented but not executed**. Do not confuse G's mean MSE values with large-H findings.
+- **Status:** G's fixed-d2 five-seed pilot was executed; **H's 10k-per-stratum confirmation has NOW BEEN EXECUTED, UPLOADED and independently verified**. Never conflate G's five-seed sample findings with H's 160k-draw confirmation. H includes 1,280 method aggregates, 640 paired contrast aggregates and a complete 1,600-shard manifest.
 - H seed base **82100000**, formula `82100000 + d*1000000 + N_index*200000 + eta_index*100000 + replicate`, replicates 0–9999. This excludes G's earlier base 69000000 and tracks 160k distinct (d,N,eta,seed) draws, not 12.8M independent observations.
 - Six shift-equivariant methods are computed once at μ=0 for each seed/R; only forced-zero μ Gaussian/LOOCV are recomputed at other μ values. Tests compare accelerated results to direct existing eight-method computation for d=1..4; this is CPU reuse, not more statistical evidence.
 - Shards default to 100 independent base seeds, emit immutable `method_comparison.csv.gz`, `manifest.json`, `summary.json`. Compact aggregation verifies per-shard SHA256, disjoint seed intervals, one source commit, expected 10k reps **per** cell and matched paired-MSE summaries. Missing shards mark report incomplete.
 - Very high-order (d=4,N=200) has extremely small positive penalty spectrum and huge quartic expected shift. Stable SVD of D and spectral caching were added, but numerical preflight and timing should be checked before launching full large runs. Fitted order is **fixed**, not selected using the known simulated latent truth.
 - Non-Gaussian μ-shift scenarios (t, Gamma/skew, mixture, GARCH, Cauchy robust losses) form a **separate subsequent protocol** after H, not hidden additions to the Gaussian confirmatory family.
+
+### H measured outcome checkpoint — 2026-10-19
+
+- **Authoritative findings and sample uncertainty:** [MULTIORDER_10000_SEED_CONFIRMATORY_RESULTS_2026-10-19.md](MULTIORDER_10000_SEED_CONFIRMATORY_RESULTS_2026-10-19.md). Run source SHA `070b363b7d8a8156f320c833539fa068b684fc7b`. New `audit_multorder_confirmatory.py` rechecks compact CSV/manifest consistency and computes cell-specific paired 95% Monte Carlo CIs; `tests/test_multorder_confirmatory_aggregate.py` pass in dedicated CI.
+- **R3, mu/epsilonSD=+1:** in all 16 distinct (d,N,eta) settings, the cost of wrongly fixing mu=0 for Gaussian ML exceeds the absolute true-trend MSE gap between fitted-mean Gaussian GLS-ML and fitted-mean pooled LOOCV. GLS-ML has lower mean MSE in 15/16 cells; exception d1,N50,etaSD2. All 16 ML-vs-CV paired 95% Monte Carlo intervals exclude zero without multiple-test adjustment. This is **Gaussian DGP-specific**, not general ML dominance.
+- **R3, true mu=0:** forcing the correct mu=0 yields slightly better mean reconstruction for both selectors in all 16 cells, illustrating cost of estimating unnecessary mean.
+- **R1 counters:** incorrectly fixing zero mu gives lower mean MSE than estimated-mu Gaussian ML in 3/16 R1 settings (small N, large etaSD), despite model misspecification. R1 raw averaged method ranking differs and must remain separate.
+- Six equivariant fitted-mu/oracle procedures have exactly shift-invariant simulated reconstruction losses across the five mu shifts by construction; the statistical sample size is 10k per d/N/eta, **not 50k** per stratum. Source compressed shards were checked on the user's machine, retained locally and not copied into the repo. Raw fidelity requires backup before wiping any machine.
+- **NON-GAUSSIAN extension still NOT RUN**. Prior distributional tails pilot and market-calibrated noise experiment must not be confused with joint nonzero-mu x heavy-tail confirmation.
 
 ### Remaining decisions
 
