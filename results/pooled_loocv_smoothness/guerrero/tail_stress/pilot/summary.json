@@ -1,0 +1,859 @@
+{
+  "status": "descriptive_only_no_independent_confirmation",
+  "total_nested_pools": 1560,
+  "primary_R3_pools": 780,
+  "by_regime_R3": {
+    "gaussian_iid": {
+      "pool_count": 60,
+      "population_squared_error_risk_is_defined": true,
+      "mle_lower_realized_trend_mse_than_bounded": 37,
+      "by_method": {
+        "estimated_gaussian_difference_ml": {
+          "median_pool_realized_trend_MSE": 0.18103208191650663,
+          "median_pool_median_absolute_trend_error": 0.2793297237267137,
+          "median_pool_p90_absolute_trend_error": 0.677282638886656,
+          "mean_pool_realized_trend_MSE_diagnostic_only": 0.31844342045808843
+        },
+        "pooled_loocv_bounded_brent": {
+          "median_pool_realized_trend_MSE": 0.19291181277558195,
+          "median_pool_median_absolute_trend_error": 0.28605897421279425,
+          "median_pool_p90_absolute_trend_error": 0.6773100668179104,
+          "mean_pool_realized_trend_MSE_diagnostic_only": 0.3217626451388834
+        },
+        "pooled_loocv_multibracket_brent": {
+          "median_pool_realized_trend_MSE": 0.19291181448055916,
+          "median_pool_median_absolute_trend_error": 0.28605897374367617,
+          "median_pool_p90_absolute_trend_error": 0.6773100653868046,
+          "mean_pool_realized_trend_MSE_diagnostic_only": 0.3217626451879211
+        }
+      }
+    },
+    "student_t3_observation": {
+      "pool_count": 60,
+      "population_squared_error_risk_is_defined": true,
+      "mle_lower_realized_trend_mse_than_bounded": 39,
+      "by_method": {
+        "estimated_gaussian_difference_ml": {
+          "median_pool_realized_trend_MSE": 0.160443203544955,
+          "median_pool_median_absolute_trend_error": 0.2237608308595289,
+          "median_pool_p90_absolute_trend_error": 0.6137699277325869,
+          "mean_pool_realized_trend_MSE_diagnostic_only": 0.2920535145378272
+        },
+        "pooled_loocv_bounded_brent": {
+          "median_pool_realized_trend_MSE": 0.17030338688617333,
+          "median_pool_median_absolute_trend_error": 0.23732208896808468,
+          "median_pool_p90_absolute_trend_error": 0.6396575433895587,
+          "mean_pool_realized_trend_MSE_diagnostic_only": 0.2958327089440234
+        },
+        "pooled_loocv_multibracket_brent": {
+          "median_pool_realized_trend_MSE": 0.17030338672786915,
+          "median_pool_median_absolute_trend_error": 0.23732209643018495,
+          "median_pool_p90_absolute_trend_error": 0.6396575431714724,
+          "mean_pool_realized_trend_MSE_diagnostic_only": 0.29583270863611405
+        }
+      }
+    },
+    "student_t3_innovation": {
+      "pool_count": 60,
+      "population_squared_error_risk_is_defined": true,
+      "mle_lower_realized_trend_mse_than_bounded": 29,
+      "by_method": {
+        "estimated_gaussian_difference_ml": {
+          "median_pool_realized_trend_MSE": 0.14721652130746948,
+          "median_pool_median_absolute_trend_error": 0.26474928804032954,
+          "median_pool_p90_absolute_trend_error": 0.5886553634372245,
+          "mean_pool_realized_trend_MSE_diagnostic_only": 0.302376273646802
+        },
+        "pooled_loocv_bounded_brent": {
+          "median_pool_realized_trend_MSE": 0.15480018208078064,
+          "median_pool_median_absolute_trend_error": 0.267236378535869,
+          "median_pool_p90_absolute_trend_error": 0.6132658293936201,
+          "mean_pool_realized_trend_MSE_diagnostic_only": 0.30360953508570554
+        },
+        "pooled_loocv_multibracket_brent": {
+          "median_pool_realized_trend_MSE": 0.15480018202796908,
+          "median_pool_median_absolute_trend_error": 0.2672363790714335,
+          "median_pool_p90_absolute_trend_error": 0.6132658182146,
+          "mean_pool_realized_trend_MSE_diagnostic_only": 0.30360953446554156
+        }
+      }
+    },
+    "centered_gamma_right": {
+      "pool_count": 60,
+      "population_squared_error_risk_is_defined": true,
+      "mle_lower_realized_trend_mse_than_bounded": 36,
+      "by_method": {
+        "estimated_gaussian_difference_ml": {
+          "median_pool_realized_trend_MSE": 0.18427147901171068,
+          "median_pool_median_absolute_trend_error": 0.2759940717810716,
+          "median_pool_p90_absolute_trend_error": 0.7098568381012794,
+          "mean_pool_realized_trend_MSE_diagnostic_only": 0.30604529056552415
+        },
+        "pooled_loocv_bounded_brent": {
+          "median_pool_realized_trend_MSE": 0.18684734916243467,
+          "median_pool_median_absolute_trend_error": 0.279976813352779,
+          "median_pool_p90_absolute_trend_error": 0.6894420970988139,
+          "mean_pool_realized_trend_MSE_diagnostic_only": 0.3208532039184471
+        },
+        "pooled_loocv_multibracket_brent": {
+          "median_pool_realized_trend_MSE": 0.18684735170212866,
+          "median_pool_median_absolute_trend_error": 0.279976800588985,
+          "median_pool_p90_absolute_trend_error": 0.689442095621192,
+          "mean_pool_realized_trend_MSE_diagnostic_only": 0.3208532046775718
+        }
+      }
+    },
+    "centered_gamma_left": {
+      "pool_count": 60,
+      "population_squared_error_risk_is_defined": true,
+      "mle_lower_realized_trend_mse_than_bounded": 35,
+      "by_method": {
+        "estimated_gaussian_difference_ml": {
+          "median_pool_realized_trend_MSE": 0.15910847365826095,
+          "median_pool_median_absolute_trend_error": 0.25395018649290674,
+          "median_pool_p90_absolute_trend_error": 0.6151859339352553,
+          "mean_pool_realized_trend_MSE_diagnostic_only": 0.32321779564767417
+        },
+        "pooled_loocv_bounded_brent": {
+          "median_pool_realized_trend_MSE": 0.13850293793910254,
+          "median_pool_median_absolute_trend_error": 0.22894316263543596,
+          "median_pool_p90_absolute_trend_error": 0.6122462106796651,
+          "mean_pool_realized_trend_MSE_diagnostic_only": 0.3282349030385888
+        },
+        "pooled_loocv_multibracket_brent": {
+          "median_pool_realized_trend_MSE": 0.13850293927195428,
+          "median_pool_median_absolute_trend_error": 0.22894315643485477,
+          "median_pool_p90_absolute_trend_error": 0.6122462056400713,
+          "mean_pool_realized_trend_MSE_diagnostic_only": 0.32823490329931615
+        }
+      }
+    },
+    "gaussian_jump_mixture": {
+      "pool_count": 60,
+      "population_squared_error_risk_is_defined": true,
+      "mle_lower_realized_trend_mse_than_bounded": 34,
+      "by_method": {
+        "estimated_gaussian_difference_ml": {
+          "median_pool_realized_trend_MSE": 0.20390275210560765,
+          "median_pool_median_absolute_trend_error": 0.25991427915843107,
+          "median_pool_p90_absolute_trend_error": 0.6524771844737544,
+          "mean_pool_realized_trend_MSE_diagnostic_only": 0.33821676759202046
+        },
+        "pooled_loocv_bounded_brent": {
+          "median_pool_realized_trend_MSE": 0.20909369967859828,
+          "median_pool_median_absolute_trend_error": 0.24708037046973952,
+          "median_pool_p90_absolute_trend_error": 0.649903819811776,
+          "mean_pool_realized_trend_MSE_diagnostic_only": 0.3403072609535467
+        },
+        "pooled_loocv_multibracket_brent": {
+          "median_pool_realized_trend_MSE": 0.20909370136735633,
+          "median_pool_median_absolute_trend_error": 0.2470803701509502,
+          "median_pool_p90_absolute_trend_error": 0.6499038171286926,
+          "mean_pool_realized_trend_MSE_diagnostic_only": 0.340307260749113
+        }
+      }
+    },
+    "garch_t5_observation": {
+      "pool_count": 60,
+      "population_squared_error_risk_is_defined": true,
+      "mle_lower_realized_trend_mse_than_bounded": 41,
+      "by_method": {
+        "estimated_gaussian_difference_ml": {
+          "median_pool_realized_trend_MSE": 0.1601775667334233,
+          "median_pool_median_absolute_trend_error": 0.2509431972590665,
+          "median_pool_p90_absolute_trend_error": 0.6521587244156362,
+          "mean_pool_realized_trend_MSE_diagnostic_only": 0.310337087509991
+        },
+        "pooled_loocv_bounded_brent": {
+          "median_pool_realized_trend_MSE": 0.1597502563304096,
+          "median_pool_median_absolute_trend_error": 0.24606071267765073,
+          "median_pool_p90_absolute_trend_error": 0.6396728017734782,
+          "mean_pool_realized_trend_MSE_diagnostic_only": 0.33891733892852816
+        },
+        "pooled_loocv_multibracket_brent": {
+          "median_pool_realized_trend_MSE": 0.15975025468792123,
+          "median_pool_median_absolute_trend_error": 0.24606070953910097,
+          "median_pool_p90_absolute_trend_error": 0.6396727976259752,
+          "mean_pool_realized_trend_MSE_diagnostic_only": 0.33891733820822656
+        }
+      }
+    },
+    "cauchy_observation": {
+      "pool_count": 60,
+      "population_squared_error_risk_is_defined": false,
+      "mle_lower_realized_trend_mse_than_bounded": 18,
+      "by_method": {
+        "estimated_gaussian_difference_ml": {
+          "median_pool_realized_trend_MSE": 15.925465391545462,
+          "median_pool_median_absolute_trend_error": 2.1274690299096335,
+          "median_pool_p90_absolute_trend_error": 6.289895383136578,
+          "mean_pool_realized_trend_MSE_diagnostic_only": 96.83664807057701
+        },
+        "pooled_loocv_bounded_brent": {
+          "median_pool_realized_trend_MSE": 16.499529735006014,
+          "median_pool_median_absolute_trend_error": 1.8932090382503066,
+          "median_pool_p90_absolute_trend_error": 6.008423933971324,
+          "mean_pool_realized_trend_MSE_diagnostic_only": 69.99151791367133
+        },
+        "pooled_loocv_multibracket_brent": {
+          "median_pool_realized_trend_MSE": 16.499529518274517,
+          "median_pool_median_absolute_trend_error": 1.8932089157099026,
+          "median_pool_p90_absolute_trend_error": 6.008423933631044,
+          "mean_pool_realized_trend_MSE_diagnostic_only": 69.99151774612963
+        }
+      }
+    },
+    "skew_normal_m6": {
+      "pool_count": 60,
+      "population_squared_error_risk_is_defined": true,
+      "mle_lower_realized_trend_mse_than_bounded": 36,
+      "by_method": {
+        "estimated_gaussian_difference_ml": {
+          "median_pool_realized_trend_MSE": 0.18908455405670668,
+          "median_pool_median_absolute_trend_error": 0.27264429106112253,
+          "median_pool_p90_absolute_trend_error": 0.6846186119590325,
+          "mean_pool_realized_trend_MSE_diagnostic_only": 0.3394862637197592
+        },
+        "pooled_loocv_bounded_brent": {
+          "median_pool_realized_trend_MSE": 0.18175706508759568,
+          "median_pool_median_absolute_trend_error": 0.2805470002280054,
+          "median_pool_p90_absolute_trend_error": 0.6639531910583245,
+          "mean_pool_realized_trend_MSE_diagnostic_only": 0.3432213510054129
+        },
+        "pooled_loocv_multibracket_brent": {
+          "median_pool_realized_trend_MSE": 0.18175706515306894,
+          "median_pool_median_absolute_trend_error": 0.2805470007720637,
+          "median_pool_p90_absolute_trend_error": 0.6639531822009875,
+          "mean_pool_realized_trend_MSE_diagnostic_only": 0.3432213507289976
+        }
+      }
+    },
+    "skew_normal_m3": {
+      "pool_count": 60,
+      "population_squared_error_risk_is_defined": true,
+      "mle_lower_realized_trend_mse_than_bounded": 31,
+      "by_method": {
+        "estimated_gaussian_difference_ml": {
+          "median_pool_realized_trend_MSE": 0.18332720927969198,
+          "median_pool_median_absolute_trend_error": 0.2769658492646768,
+          "median_pool_p90_absolute_trend_error": 0.688914009274159,
+          "mean_pool_realized_trend_MSE_diagnostic_only": 0.33672198321014296
+        },
+        "pooled_loocv_bounded_brent": {
+          "median_pool_realized_trend_MSE": 0.18449994663350433,
+          "median_pool_median_absolute_trend_error": 0.2837622298331779,
+          "median_pool_p90_absolute_trend_error": 0.6829320120807562,
+          "mean_pool_realized_trend_MSE_diagnostic_only": 0.3369315214400625
+        },
+        "pooled_loocv_multibracket_brent": {
+          "median_pool_realized_trend_MSE": 0.1844999474112462,
+          "median_pool_median_absolute_trend_error": 0.2837622144091926,
+          "median_pool_p90_absolute_trend_error": 0.682932016349213,
+          "mean_pool_realized_trend_MSE_diagnostic_only": 0.3369315216948916
+        }
+      }
+    },
+    "skew_normal_0": {
+      "pool_count": 60,
+      "population_squared_error_risk_is_defined": true,
+      "mle_lower_realized_trend_mse_than_bounded": 40,
+      "by_method": {
+        "estimated_gaussian_difference_ml": {
+          "median_pool_realized_trend_MSE": 0.19373295694408865,
+          "median_pool_median_absolute_trend_error": 0.288069469914888,
+          "median_pool_p90_absolute_trend_error": 0.7139838231502055,
+          "mean_pool_realized_trend_MSE_diagnostic_only": 0.33422520025731356
+        },
+        "pooled_loocv_bounded_brent": {
+          "median_pool_realized_trend_MSE": 0.1979233008644754,
+          "median_pool_median_absolute_trend_error": 0.28708454533255834,
+          "median_pool_p90_absolute_trend_error": 0.7223377649910678,
+          "mean_pool_realized_trend_MSE_diagnostic_only": 0.339533625540423
+        },
+        "pooled_loocv_multibracket_brent": {
+          "median_pool_realized_trend_MSE": 0.19792329848712464,
+          "median_pool_median_absolute_trend_error": 0.2870845508233113,
+          "median_pool_p90_absolute_trend_error": 0.7223377791469398,
+          "mean_pool_realized_trend_MSE_diagnostic_only": 0.33953362577044055
+        }
+      }
+    },
+    "skew_normal_p3": {
+      "pool_count": 60,
+      "population_squared_error_risk_is_defined": true,
+      "mle_lower_realized_trend_mse_than_bounded": 33,
+      "by_method": {
+        "estimated_gaussian_difference_ml": {
+          "median_pool_realized_trend_MSE": 0.1626604439694897,
+          "median_pool_median_absolute_trend_error": 0.2833709525701348,
+          "median_pool_p90_absolute_trend_error": 0.646114947293098,
+          "mean_pool_realized_trend_MSE_diagnostic_only": 0.3517349482590371
+        },
+        "pooled_loocv_bounded_brent": {
+          "median_pool_realized_trend_MSE": 0.16342739551603208,
+          "median_pool_median_absolute_trend_error": 0.2831773028290321,
+          "median_pool_p90_absolute_trend_error": 0.6598657511340191,
+          "mean_pool_realized_trend_MSE_diagnostic_only": 0.3546637202100591
+        },
+        "pooled_loocv_multibracket_brent": {
+          "median_pool_realized_trend_MSE": 0.16342739583142257,
+          "median_pool_median_absolute_trend_error": 0.28317730027027505,
+          "median_pool_p90_absolute_trend_error": 0.659865760001193,
+          "mean_pool_realized_trend_MSE_diagnostic_only": 0.35466372023130216
+        }
+      }
+    },
+    "skew_normal_p6": {
+      "pool_count": 60,
+      "population_squared_error_risk_is_defined": true,
+      "mle_lower_realized_trend_mse_than_bounded": 36,
+      "by_method": {
+        "estimated_gaussian_difference_ml": {
+          "median_pool_realized_trend_MSE": 0.1682710560313464,
+          "median_pool_median_absolute_trend_error": 0.2719257500659511,
+          "median_pool_p90_absolute_trend_error": 0.6635062018099441,
+          "mean_pool_realized_trend_MSE_diagnostic_only": 0.3180194529029386
+        },
+        "pooled_loocv_bounded_brent": {
+          "median_pool_realized_trend_MSE": 0.17534666710473232,
+          "median_pool_median_absolute_trend_error": 0.27232848608925453,
+          "median_pool_p90_absolute_trend_error": 0.6551591108147449,
+          "mean_pool_realized_trend_MSE_diagnostic_only": 0.3279929680343255
+        },
+        "pooled_loocv_multibracket_brent": {
+          "median_pool_realized_trend_MSE": 0.1753466697104924,
+          "median_pool_median_absolute_trend_error": 0.27232848634647067,
+          "median_pool_p90_absolute_trend_error": 0.6551591411685705,
+          "mean_pool_realized_trend_MSE_diagnostic_only": 0.3279929681303432
+        }
+      }
+    }
+  },
+  "by_regime_R3_warning": "These descriptive regime values aggregate different d; use by_difference_order_R3 for primary comparisons.",
+  "by_difference_order_R3": {
+    "1": {
+      "pool_count": 260,
+      "by_regime": {
+        "gaussian_iid": {
+          "pool_count": 20,
+          "median_realized_MSE_by_method": {
+            "estimated_gaussian_difference_ml": 0.17721830269731112,
+            "pooled_loocv_bounded_brent": 0.18855609735964748,
+            "pooled_loocv_multibracket_brent": 0.18855609901634057
+          },
+          "median_absolute_error_by_method": {
+            "estimated_gaussian_difference_ml": 0.2793297237267137,
+            "pooled_loocv_bounded_brent": 0.28605897421279425,
+            "pooled_loocv_multibracket_brent": 0.28605897374367617
+          }
+        },
+        "student_t3_observation": {
+          "pool_count": 20,
+          "median_realized_MSE_by_method": {
+            "estimated_gaussian_difference_ml": 0.160443203544955,
+            "pooled_loocv_bounded_brent": 0.17030338688617333,
+            "pooled_loocv_multibracket_brent": 0.17030338672786915
+          },
+          "median_absolute_error_by_method": {
+            "estimated_gaussian_difference_ml": 0.2145260359365944,
+            "pooled_loocv_bounded_brent": 0.21947809836441076,
+            "pooled_loocv_multibracket_brent": 0.21947810583122815
+          }
+        },
+        "student_t3_innovation": {
+          "pool_count": 20,
+          "median_realized_MSE_by_method": {
+            "estimated_gaussian_difference_ml": 0.13151270638494517,
+            "pooled_loocv_bounded_brent": 0.13159996595356777,
+            "pooled_loocv_multibracket_brent": 0.1315999660739344
+          },
+          "median_absolute_error_by_method": {
+            "estimated_gaussian_difference_ml": 0.23950902946185582,
+            "pooled_loocv_bounded_brent": 0.23980852289891114,
+            "pooled_loocv_multibracket_brent": 0.2398085235586353
+          }
+        },
+        "centered_gamma_right": {
+          "pool_count": 20,
+          "median_realized_MSE_by_method": {
+            "estimated_gaussian_difference_ml": 0.18427147901171068,
+            "pooled_loocv_bounded_brent": 0.18684734916243467,
+            "pooled_loocv_multibracket_brent": 0.18684735170212866
+          },
+          "median_absolute_error_by_method": {
+            "estimated_gaussian_difference_ml": 0.2851528223503931,
+            "pooled_loocv_bounded_brent": 0.279976813352779,
+            "pooled_loocv_multibracket_brent": 0.279976800588985
+          }
+        },
+        "centered_gamma_left": {
+          "pool_count": 20,
+          "median_realized_MSE_by_method": {
+            "estimated_gaussian_difference_ml": 0.14948574363878997,
+            "pooled_loocv_bounded_brent": 0.12890080737506165,
+            "pooled_loocv_multibracket_brent": 0.12890080846434104
+          },
+          "median_absolute_error_by_method": {
+            "estimated_gaussian_difference_ml": 0.23664844052496642,
+            "pooled_loocv_bounded_brent": 0.2109857373982798,
+            "pooled_loocv_multibracket_brent": 0.21098573079884853
+          }
+        },
+        "gaussian_jump_mixture": {
+          "pool_count": 20,
+          "median_realized_MSE_by_method": {
+            "estimated_gaussian_difference_ml": 0.17930873772690284,
+            "pooled_loocv_bounded_brent": 0.18247075106138244,
+            "pooled_loocv_multibracket_brent": 0.1824707529751226
+          },
+          "median_absolute_error_by_method": {
+            "estimated_gaussian_difference_ml": 0.25991427915843107,
+            "pooled_loocv_bounded_brent": 0.24708037046973952,
+            "pooled_loocv_multibracket_brent": 0.2470803701509502
+          }
+        },
+        "garch_t5_observation": {
+          "pool_count": 20,
+          "median_realized_MSE_by_method": {
+            "estimated_gaussian_difference_ml": 0.1439196091619957,
+            "pooled_loocv_bounded_brent": 0.14298356882403185,
+            "pooled_loocv_multibracket_brent": 0.14298356719638955
+          },
+          "median_absolute_error_by_method": {
+            "estimated_gaussian_difference_ml": 0.23757334456678253,
+            "pooled_loocv_bounded_brent": 0.23635779194654927,
+            "pooled_loocv_multibracket_brent": 0.23635778892934528
+          }
+        },
+        "cauchy_observation": {
+          "pool_count": 20,
+          "median_realized_MSE_by_method": {
+            "estimated_gaussian_difference_ml": 3.2002342768482057,
+            "pooled_loocv_bounded_brent": 2.9282165114300422,
+            "pooled_loocv_multibracket_brent": 2.9282166598752397
+          },
+          "median_absolute_error_by_method": {
+            "estimated_gaussian_difference_ml": 1.3576547636177407,
+            "pooled_loocv_bounded_brent": 1.2289444058166454,
+            "pooled_loocv_multibracket_brent": 1.228944421567209
+          }
+        },
+        "skew_normal_m6": {
+          "pool_count": 20,
+          "median_realized_MSE_by_method": {
+            "estimated_gaussian_difference_ml": 0.18908455405670668,
+            "pooled_loocv_bounded_brent": 0.18175706508759568,
+            "pooled_loocv_multibracket_brent": 0.18175706515306894
+          },
+          "median_absolute_error_by_method": {
+            "estimated_gaussian_difference_ml": 0.2662314716194616,
+            "pooled_loocv_bounded_brent": 0.2805470002280054,
+            "pooled_loocv_multibracket_brent": 0.2805470007720637
+          }
+        },
+        "skew_normal_m3": {
+          "pool_count": 20,
+          "median_realized_MSE_by_method": {
+            "estimated_gaussian_difference_ml": 0.17577100553323086,
+            "pooled_loocv_bounded_brent": 0.1658999996429301,
+            "pooled_loocv_multibracket_brent": 0.16590000063453042
+          },
+          "median_absolute_error_by_method": {
+            "estimated_gaussian_difference_ml": 0.25869896663134223,
+            "pooled_loocv_bounded_brent": 0.2640124320936761,
+            "pooled_loocv_multibracket_brent": 0.26401241667103664
+          }
+        },
+        "skew_normal_0": {
+          "pool_count": 20,
+          "median_realized_MSE_by_method": {
+            "estimated_gaussian_difference_ml": 0.1774984584957317,
+            "pooled_loocv_bounded_brent": 0.1818992845427202,
+            "pooled_loocv_multibracket_brent": 0.18189928207864212
+          },
+          "median_absolute_error_by_method": {
+            "estimated_gaussian_difference_ml": 0.27086218604988466,
+            "pooled_loocv_bounded_brent": 0.27435324373149483,
+            "pooled_loocv_multibracket_brent": 0.27435325065244964
+          }
+        },
+        "skew_normal_p3": {
+          "pool_count": 20,
+          "median_realized_MSE_by_method": {
+            "estimated_gaussian_difference_ml": 0.15311556008592278,
+            "pooled_loocv_bounded_brent": 0.155146576295962,
+            "pooled_loocv_multibracket_brent": 0.1551465763882171
+          },
+          "median_absolute_error_by_method": {
+            "estimated_gaussian_difference_ml": 0.26919397950186646,
+            "pooled_loocv_bounded_brent": 0.2688194792293558,
+            "pooled_loocv_multibracket_brent": 0.2688194772189496
+          }
+        },
+        "skew_normal_p6": {
+          "pool_count": 20,
+          "median_realized_MSE_by_method": {
+            "estimated_gaussian_difference_ml": 0.1682710560313464,
+            "pooled_loocv_bounded_brent": 0.17534666710473232,
+            "pooled_loocv_multibracket_brent": 0.1753466697104924
+          },
+          "median_absolute_error_by_method": {
+            "estimated_gaussian_difference_ml": 0.2719257500659511,
+            "pooled_loocv_bounded_brent": 0.27232848608925453,
+            "pooled_loocv_multibracket_brent": 0.27232848634647067
+          }
+        }
+      }
+    },
+    "2": {
+      "pool_count": 260,
+      "by_regime": {
+        "gaussian_iid": {
+          "pool_count": 20,
+          "median_realized_MSE_by_method": {
+            "estimated_gaussian_difference_ml": 0.23342171155964875,
+            "pooled_loocv_bounded_brent": 0.26163638464924177,
+            "pooled_loocv_multibracket_brent": 0.2616363848999692
+          },
+          "median_absolute_error_by_method": {
+            "estimated_gaussian_difference_ml": 0.27796719503775,
+            "pooled_loocv_bounded_brent": 0.3040824674325742,
+            "pooled_loocv_multibracket_brent": 0.3040824618377321
+          }
+        },
+        "student_t3_observation": {
+          "pool_count": 20,
+          "median_realized_MSE_by_method": {
+            "estimated_gaussian_difference_ml": 0.24101965056654176,
+            "pooled_loocv_bounded_brent": 0.23919308690498983,
+            "pooled_loocv_multibracket_brent": 0.23919308654733537
+          },
+          "median_absolute_error_by_method": {
+            "estimated_gaussian_difference_ml": 0.2849511095017213,
+            "pooled_loocv_bounded_brent": 0.28718745115791217,
+            "pooled_loocv_multibracket_brent": 0.2871874527907801
+          }
+        },
+        "student_t3_innovation": {
+          "pool_count": 20,
+          "median_realized_MSE_by_method": {
+            "estimated_gaussian_difference_ml": 0.2381340221732879,
+            "pooled_loocv_bounded_brent": 0.23247921975642621,
+            "pooled_loocv_multibracket_brent": 0.23247921925075707
+          },
+          "median_absolute_error_by_method": {
+            "estimated_gaussian_difference_ml": 0.2796496167386198,
+            "pooled_loocv_bounded_brent": 0.2933632324012384,
+            "pooled_loocv_multibracket_brent": 0.2933632434321891
+          }
+        },
+        "centered_gamma_right": {
+          "pool_count": 20,
+          "median_realized_MSE_by_method": {
+            "estimated_gaussian_difference_ml": 0.20334554642377864,
+            "pooled_loocv_bounded_brent": 0.280603018479707,
+            "pooled_loocv_multibracket_brent": 0.280603018490345
+          },
+          "median_absolute_error_by_method": {
+            "estimated_gaussian_difference_ml": 0.25807451925753677,
+            "pooled_loocv_bounded_brent": 0.28478555414152945,
+            "pooled_loocv_multibracket_brent": 0.28478555395939603
+          }
+        },
+        "centered_gamma_left": {
+          "pool_count": 20,
+          "median_realized_MSE_by_method": {
+            "estimated_gaussian_difference_ml": 0.2081403558665253,
+            "pooled_loocv_bounded_brent": 0.20823766117213088,
+            "pooled_loocv_multibracket_brent": 0.20823766087318146
+          },
+          "median_absolute_error_by_method": {
+            "estimated_gaussian_difference_ml": 0.30392004027489977,
+            "pooled_loocv_bounded_brent": 0.30669863964820854,
+            "pooled_loocv_multibracket_brent": 0.30669863910784834
+          }
+        },
+        "gaussian_jump_mixture": {
+          "pool_count": 20,
+          "median_realized_MSE_by_method": {
+            "estimated_gaussian_difference_ml": 0.2590491466720606,
+            "pooled_loocv_bounded_brent": 0.2545771231642895,
+            "pooled_loocv_multibracket_brent": 0.25457712059026294
+          },
+          "median_absolute_error_by_method": {
+            "estimated_gaussian_difference_ml": 0.287110140537278,
+            "pooled_loocv_bounded_brent": 0.28534930861718744,
+            "pooled_loocv_multibracket_brent": 0.28534931004101205
+          }
+        },
+        "garch_t5_observation": {
+          "pool_count": 20,
+          "median_realized_MSE_by_method": {
+            "estimated_gaussian_difference_ml": 0.2191991765443304,
+            "pooled_loocv_bounded_brent": 0.21954112797611264,
+            "pooled_loocv_multibracket_brent": 0.21954112791028266
+          },
+          "median_absolute_error_by_method": {
+            "estimated_gaussian_difference_ml": 0.2587733540631225,
+            "pooled_loocv_bounded_brent": 0.25887902342084035,
+            "pooled_loocv_multibracket_brent": 0.25887901689986237
+          }
+        },
+        "cauchy_observation": {
+          "pool_count": 20,
+          "median_realized_MSE_by_method": {
+            "estimated_gaussian_difference_ml": 50.22065214958138,
+            "pooled_loocv_bounded_brent": 36.888303546101454,
+            "pooled_loocv_multibracket_brent": 36.888303625279704
+          },
+          "median_absolute_error_by_method": {
+            "estimated_gaussian_difference_ml": 3.1253664138725057,
+            "pooled_loocv_bounded_brent": 3.1029815123008184,
+            "pooled_loocv_multibracket_brent": 3.102981500174855
+          }
+        },
+        "skew_normal_m6": {
+          "pool_count": 20,
+          "median_realized_MSE_by_method": {
+            "estimated_gaussian_difference_ml": 0.24874752144001294,
+            "pooled_loocv_bounded_brent": 0.24749962103495343,
+            "pooled_loocv_multibracket_brent": 0.24749962103785378
+          },
+          "median_absolute_error_by_method": {
+            "estimated_gaussian_difference_ml": 0.3067122359456915,
+            "pooled_loocv_bounded_brent": 0.31126683920457443,
+            "pooled_loocv_multibracket_brent": 0.3112668399750079
+          }
+        },
+        "skew_normal_m3": {
+          "pool_count": 20,
+          "median_realized_MSE_by_method": {
+            "estimated_gaussian_difference_ml": 0.28003020519696264,
+            "pooled_loocv_bounded_brent": 0.28815496825240117,
+            "pooled_loocv_multibracket_brent": 0.28815496796998413
+          },
+          "median_absolute_error_by_method": {
+            "estimated_gaussian_difference_ml": 0.32920305804740213,
+            "pooled_loocv_bounded_brent": 0.3347433057828415,
+            "pooled_loocv_multibracket_brent": 0.33474330105084604
+          }
+        },
+        "skew_normal_0": {
+          "pool_count": 20,
+          "median_realized_MSE_by_method": {
+            "estimated_gaussian_difference_ml": 0.23420090534117669,
+            "pooled_loocv_bounded_brent": 0.22241066618749894,
+            "pooled_loocv_multibracket_brent": 0.22241066604607707
+          },
+          "median_absolute_error_by_method": {
+            "estimated_gaussian_difference_ml": 0.29961743010551334,
+            "pooled_loocv_bounded_brent": 0.2880261182106212,
+            "pooled_loocv_multibracket_brent": 0.28802611665486566
+          }
+        },
+        "skew_normal_p3": {
+          "pool_count": 20,
+          "median_realized_MSE_by_method": {
+            "estimated_gaussian_difference_ml": 0.2528515757842243,
+            "pooled_loocv_bounded_brent": 0.25923127562814985,
+            "pooled_loocv_multibracket_brent": 0.2592312770923587
+          },
+          "median_absolute_error_by_method": {
+            "estimated_gaussian_difference_ml": 0.31021133089013964,
+            "pooled_loocv_bounded_brent": 0.3099827539144409,
+            "pooled_loocv_multibracket_brent": 0.3099827558285631
+          }
+        },
+        "skew_normal_p6": {
+          "pool_count": 20,
+          "median_realized_MSE_by_method": {
+            "estimated_gaussian_difference_ml": 0.23680088003512884,
+            "pooled_loocv_bounded_brent": 0.23696290402732653,
+            "pooled_loocv_multibracket_brent": 0.2369629019934198
+          },
+          "median_absolute_error_by_method": {
+            "estimated_gaussian_difference_ml": 0.30339933740333924,
+            "pooled_loocv_bounded_brent": 0.2899209059080776,
+            "pooled_loocv_multibracket_brent": 0.2899209027289211
+          }
+        }
+      }
+    },
+    "3": {
+      "pool_count": 260,
+      "by_regime": {
+        "gaussian_iid": {
+          "pool_count": 20,
+          "median_realized_MSE_by_method": {
+            "estimated_gaussian_difference_ml": 0.3449202286940717,
+            "pooled_loocv_bounded_brent": 0.34584479294194953,
+            "pooled_loocv_multibracket_brent": 0.34584479167929033
+          },
+          "median_absolute_error_by_method": {
+            "estimated_gaussian_difference_ml": 0.33102938771911394,
+            "pooled_loocv_bounded_brent": 0.36246552365188345,
+            "pooled_loocv_multibracket_brent": 0.3624655267467931
+          }
+        },
+        "student_t3_observation": {
+          "pool_count": 20,
+          "median_realized_MSE_by_method": {
+            "estimated_gaussian_difference_ml": 0.32889613396323714,
+            "pooled_loocv_bounded_brent": 0.324919040765751,
+            "pooled_loocv_multibracket_brent": 0.3249190406632158
+          },
+          "median_absolute_error_by_method": {
+            "estimated_gaussian_difference_ml": 0.33324052315468844,
+            "pooled_loocv_bounded_brent": 0.3234309593552436,
+            "pooled_loocv_multibracket_brent": 0.3234309596042799
+          }
+        },
+        "student_t3_innovation": {
+          "pool_count": 20,
+          "median_realized_MSE_by_method": {
+            "estimated_gaussian_difference_ml": 0.3232167268691113,
+            "pooled_loocv_bounded_brent": 0.33323978277633903,
+            "pooled_loocv_multibracket_brent": 0.3332397791399533
+          },
+          "median_absolute_error_by_method": {
+            "estimated_gaussian_difference_ml": 0.3580765178065237,
+            "pooled_loocv_bounded_brent": 0.3506258308575557,
+            "pooled_loocv_multibracket_brent": 0.3506258354209358
+          }
+        },
+        "centered_gamma_right": {
+          "pool_count": 20,
+          "median_realized_MSE_by_method": {
+            "estimated_gaussian_difference_ml": 0.304980283355119,
+            "pooled_loocv_bounded_brent": 0.321717148466346,
+            "pooled_loocv_multibracket_brent": 0.3217171450308342
+          },
+          "median_absolute_error_by_method": {
+            "estimated_gaussian_difference_ml": 0.3380194621436708,
+            "pooled_loocv_bounded_brent": 0.3484998513544184,
+            "pooled_loocv_multibracket_brent": 0.3484998513521136
+          }
+        },
+        "centered_gamma_left": {
+          "pool_count": 20,
+          "median_realized_MSE_by_method": {
+            "estimated_gaussian_difference_ml": 0.2720773852983024,
+            "pooled_loocv_bounded_brent": 0.3182514451269132,
+            "pooled_loocv_multibracket_brent": 0.3182514426472953
+          },
+          "median_absolute_error_by_method": {
+            "estimated_gaussian_difference_ml": 0.29439577668944006,
+            "pooled_loocv_bounded_brent": 0.30321915436082225,
+            "pooled_loocv_multibracket_brent": 0.3032191547141698
+          }
+        },
+        "gaussian_jump_mixture": {
+          "pool_count": 20,
+          "median_realized_MSE_by_method": {
+            "estimated_gaussian_difference_ml": 0.30316382274424436,
+            "pooled_loocv_bounded_brent": 0.3076766179488982,
+            "pooled_loocv_multibracket_brent": 0.3076766181056326
+          },
+          "median_absolute_error_by_method": {
+            "estimated_gaussian_difference_ml": 0.3199835848162209,
+            "pooled_loocv_bounded_brent": 0.30209420904527207,
+            "pooled_loocv_multibracket_brent": 0.3020942123788757
+          }
+        },
+        "garch_t5_observation": {
+          "pool_count": 20,
+          "median_realized_MSE_by_method": {
+            "estimated_gaussian_difference_ml": 0.32254482223338926,
+            "pooled_loocv_bounded_brent": 0.32887706410674133,
+            "pooled_loocv_multibracket_brent": 0.3288770643265427
+          },
+          "median_absolute_error_by_method": {
+            "estimated_gaussian_difference_ml": 0.3348494657183647,
+            "pooled_loocv_bounded_brent": 0.3320535898966259,
+            "pooled_loocv_multibracket_brent": 0.332053586532143
+          }
+        },
+        "cauchy_observation": {
+          "pool_count": 20,
+          "median_realized_MSE_by_method": {
+            "estimated_gaussian_difference_ml": 35.65821060047078,
+            "pooled_loocv_bounded_brent": 36.452350413349585,
+            "pooled_loocv_multibracket_brent": 36.45235009580074
+          },
+          "median_absolute_error_by_method": {
+            "estimated_gaussian_difference_ml": 1.9762844118965006,
+            "pooled_loocv_bounded_brent": 1.8357008607502707,
+            "pooled_loocv_multibracket_brent": 1.8357008206131158
+          }
+        },
+        "skew_normal_m6": {
+          "pool_count": 20,
+          "median_realized_MSE_by_method": {
+            "estimated_gaussian_difference_ml": 0.24787979146496114,
+            "pooled_loocv_bounded_brent": 0.2687961244668942,
+            "pooled_loocv_multibracket_brent": 0.2687961218519571
+          },
+          "median_absolute_error_by_method": {
+            "estimated_gaussian_difference_ml": 0.3565561607776122,
+            "pooled_loocv_bounded_brent": 0.3568238074890856,
+            "pooled_loocv_multibracket_brent": 0.3568238153210158
+          }
+        },
+        "skew_normal_m3": {
+          "pool_count": 20,
+          "median_realized_MSE_by_method": {
+            "estimated_gaussian_difference_ml": 0.40394303400351833,
+            "pooled_loocv_bounded_brent": 0.37867328343155565,
+            "pooled_loocv_multibracket_brent": 0.37867328291611946
+          },
+          "median_absolute_error_by_method": {
+            "estimated_gaussian_difference_ml": 0.3535044523235662,
+            "pooled_loocv_bounded_brent": 0.3539081961547952,
+            "pooled_loocv_multibracket_brent": 0.3539081965182165
+          }
+        },
+        "skew_normal_0": {
+          "pool_count": 20,
+          "median_realized_MSE_by_method": {
+            "estimated_gaussian_difference_ml": 0.3555466438204262,
+            "pooled_loocv_bounded_brent": 0.3570351456396078,
+            "pooled_loocv_multibracket_brent": 0.3570351452815257
+          },
+          "median_absolute_error_by_method": {
+            "estimated_gaussian_difference_ml": 0.3622079542712946,
+            "pooled_loocv_bounded_brent": 0.3563784067555238,
+            "pooled_loocv_multibracket_brent": 0.35637840702127477
+          }
+        },
+        "skew_normal_p3": {
+          "pool_count": 20,
+          "median_realized_MSE_by_method": {
+            "estimated_gaussian_difference_ml": 0.41796710937719234,
+            "pooled_loocv_bounded_brent": 0.4208860115235785,
+            "pooled_loocv_multibracket_brent": 0.42088601408098714
+          },
+          "median_absolute_error_by_method": {
+            "estimated_gaussian_difference_ml": 0.4036269102056943,
+            "pooled_loocv_bounded_brent": 0.4006241665724417,
+            "pooled_loocv_multibracket_brent": 0.40062417913284776
+          }
+        },
+        "skew_normal_p6": {
+          "pool_count": 20,
+          "median_realized_MSE_by_method": {
+            "estimated_gaussian_difference_ml": 0.25145657227620405,
+            "pooled_loocv_bounded_brent": 0.24849011808868743,
+            "pooled_loocv_multibracket_brent": 0.2484901146818775
+          },
+          "median_absolute_error_by_method": {
+            "estimated_gaussian_difference_ml": 0.2976387945950434,
+            "pooled_loocv_bounded_brent": 0.3023093034454476,
+            "pooled_loocv_multibracket_brent": 0.3023093058002644
+          }
+        }
+      }
+    }
+  },
+  "Cauchy_warning": "Cauchy scale is not a standard deviation: no finite population noise variance, no Guerrero variance ratio, and no population expected squared-error risk for ordinary nontrivial linear reconstructions. Its mean empirical sample MSE is not comparable as expected risk.",
+  "nested_R_warning": "R=1 shares first generated series with R=3 at matching seed"
+}
