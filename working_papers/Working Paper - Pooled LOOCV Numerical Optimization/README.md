@@ -76,8 +76,9 @@ For R=1 this reduces to traditional single-series LOOCV. Group only statisticall
 24. [New non-Gaussian + nonzero-mean Monte Carlo protocol](notes/NONGAUSSIAN_NONZERO_MU_PROTOCOL_2026-10-19.md) — 12 noise distributions, 4 difference orders, mean shifts and moment-aware interpretation; pilot unrun.
 25. [Cortés-Toto criteria versus Gaussian MLE, with a common estimated μ and numerical search](notes/CORTES_TOTO_CRITERIA_AND_NUMERICAL_COMPARISON_PROTOCOL_2026-10-19.md) — original CV/GCV/AICc/BIC, pooled joint EDF, controlled smoothness, source-aware search caveats; large comparison **not run**.
 26. [Study K.1 exact 25-seed paired 26-method replay](notes/CORTES_TOTO_PAIRED_25_SEED_REPLAY_PROTOCOL_2026-10-19.md) — 32-worker manual, full same-seed J baseline checks, 192 cells and 1.248M per-method rows, **NOT RUN**.
-27. [Completed matched 25-seed exploratory 26-method results](notes/CORTES_TOTO_PAIRED_25_SEED_REPLAY_RESULTS_2026-10-19.md) — 192 strata, R1/R3, 12 noise laws, BIC-boundary pathology, original estimator parity and solver confound.
-28. [Agent handoff](AI_HANDOFF.md).
+27. [Full 26-method × 1,920-scenario wide MSE data](../../results/pooled_loocv_smoothness/guerrero/cortes_criteria_replay/audit_pilot_001/wide_all_26_methods_by_1920_scenarios.csv) — all 12 laws, four d, N50/200, ηSD, nested R1/R3 and five paired μ shifts; each scenario is 25 reused original J seeds.
+28. [Completed matched 25-seed exploratory 26-method results](notes/CORTES_TOTO_PAIRED_25_SEED_REPLAY_RESULTS_2026-10-19.md) — 192 strata, R1/R3, 12 noise laws, BIC-boundary pathology, original estimator parity and solver confound.
+29. [Agent handoff](AI_HANDOFF.md).
 
 ## Runnable independent pilot
 
