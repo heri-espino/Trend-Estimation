@@ -63,7 +63,9 @@ For R=1 this reduces to traditional single-series LOOCV. Group only statisticall
 11. [Results and reproducibility ledger](notes/RESULTS_LEDGER.md) — actual executed campaigns, exact simulation generators, fixed seeds, evidence boundaries.
 12. [Locked robustness protocol](notes/ROBUSTNESS_PROTOCOL.md) — heavy-tailed, autocorrelated and changing-variance simulated errors, with independent pilot seeds.
 13. [Completed robustness pilot audit](notes/ROBUSTNESS_PILOT_AUDIT_2026-10-18.md) — five noise regimes, 1,000 saved method rows, exploratory R=3 paired evidence.
-14. [Agent handoff](AI_HANDOFF.md).
+14. [Gaussian MLE and LOOCV explained](notes/GAUSSIAN_MLE_AND_LOOCV_EXPLAINED.md) — stepwise likelihood derivation and true-trend MSE distinction.
+15. [Heavy-tail noise protocol](notes/TAIL_NOISE_PROTOCOL.md) — Cauchy, Student-t3, centered Gamma skew, Gaussian jump mixtures, and GARCH-type clustering.
+16. [Agent handoff](AI_HANDOFF.md).
 
 ## Runnable independent pilot
 
@@ -101,6 +103,12 @@ We have now **implemented** a fifth independent experimental campaign, without r
 The [locked design](notes/ROBUSTNESS_PROTOCOL.md) calls for 20 scenarios × 5 seeds × nested R=1/3 = **200 pools**, 1000 method-level observations. The full pilot **has now been executed and committed**, with a [detailed observed-results audit](notes/ROBUSTNESS_PILOT_AUDIT_2026-10-18.md). Run `python -m experiments.pooled_loocv_smoothness.run_robustness --preset smoke` for the tiny check and `--preset pilot` for the manually initiated experiment. Read the [results ledger](notes/RESULTS_LEDGER.md) for the exact independent seeds, executed status, numerical limitations and output paths. An independent CSV audit is provided by `python -m experiments.pooled_loocv_smoothness.audit_robustness`; use `--figures` for manual plots.
 
 **Repository action policy:** commit directly to `paper/pooled-loocv-numerical-optimization`; no PR creation, no merging into main, and no automatic heavy Monte Carlo.
+
+## Heavy-tailed and asymmetric noise (new separate campaign)
+
+We implemented a new **8-regime research stress test** of noise distribution assumptions, with **no changes to existing committed experimental outputs**. The Gaussian difference-likelihood selector, one-start LOOCV, and multibracket LOOCV are compared on the same generated data. Student-t3 has finite variance but infinite fourth moment; centered Gamma has mean 0 and skew; GARCH-t5 introduces volatility clustering; Cauchy has **undefined variance and expected squared-error risk** (report robust quantiles instead). The [locked protocol](notes/TAIL_NOISE_PROTOCOL.md) defines 32 scenarios × 5 seeds × nested R1/3 = **320 pools**, 960 method rows. This full pilot has **not yet been run**; CI is limited to a tiny 16-pool smoke.
+
+`python -m experiments.pooled_loocv_smoothness.run_tail_noise --preset pilot` runs the exploratory pilot manually and saves CSV/JSON/manifest under `results/pooled_loocv_smoothness/guerrero/tail_stress/pilot/`. The [results ledger](notes/RESULTS_LEDGER.md) separates implemented from actually executed campaigns. No PRs; commit only to the existing independent paper branch.
 
 ## Separation contract
 
