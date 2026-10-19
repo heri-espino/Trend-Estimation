@@ -118,6 +118,10 @@ jobs:
           python -m experiments.pooled_loocv_smoothness.audit_nonzero_mu_nongaussian_pilot --out-dir /tmp/nongaussian-mu-independent-audit > /tmp/nongaussian-mu-audit-report.json
           test -s /tmp/nongaussian-mu-independent-audit/audit_summary.json
           test -s /tmp/nongaussian-mu-independent-audit/R1_R3_mu_plus1_all_8_methods.csv
+      - name: Reproduce one Cortes-Toto criterion versus eight baseline fits (NOT a Monte Carlo campaign)
+        run: |
+          python -m experiments.pooled_loocv_smoothness.run_cortes_criteria_case --regime gaussian_iid --d 2 --n 50 --sigma-eta 0.5 --R 3 --replicate 0 --mu-factor 1 --solver bounded --output /tmp/cortes-onecase.json
+          test -s /tmp/cortes-onecase.json
       - name: Verify misspecified-noise robustness smoke
         run: |
           python -m experiments.pooled_loocv_smoothness.run_robustness --preset smoke --out-dir /tmp/guerrero-robustness-smoke
