@@ -122,3 +122,20 @@ From repository root in PowerShell:
 Distinct output root: \`results/pooled_loocv_smoothness/guerrero/robustness/{smoke,pilot}/\` with \`method_comparison.csv\`, \`summary.json\`, \`manifest.json\` and \`robustness_true_trend_mse_R3.png\`. All software versions, random seeds, exact scenario grid, noise mechanisms and code SHA are retained. All large simulations and figure production remain **manual** rather than triggered by every commit. Only tiny smoke/test validation belongs in automatic CI.
 
 After inspection, explicitly \`git add\` the relevant small CSV/JSON/PNG results, \`git commit\` and \`git push\` on the **same branch**. Do not open a PR or merge into main.
+
+
+## 7. Execution addendum (added after the design was frozen)
+
+**Actual user-run pilot has now been executed and committed.** Original protocol and seeds above are retained unchanged. The corresponding saved manifest reports 2026-10-19T03:14:20Z UTC, seed base 30610000, 20 design cells, 200 nested pooled evaluations and 1,000 method rows.
+
+Read the results *separately* in [ROBUSTNESS_PILOT_AUDIT_2026-10-18.md](ROBUSTNESS_PILOT_AUDIT_2026-10-18.md), rather than rewriting pre-experiment hypotheses after seeing the data. Gaussian difference likelihood had R=3 mean true-trend MSE 0.542908 versus 0.620746 for direct pooled LOOCV; **AR(1) explained approximately 91% of the mean absolute gap** between methods across five equal-weighted regimes. Under iid Gaussian the R=3 means nearly tied. The original confirmatory preset remains unrun and its seeds are independent.
+
+Machine-readable audit (no new simulation):
+
+    python -m experiments.pooled_loocv_smoothness.audit_robustness
+
+Optional charts are explicitly manual:
+
+    python -m experiments.pooled_loocv_smoothness.audit_robustness --figures
+
+The corpus of executed results and audit status is now tracked in [RESULTS_LEDGER.md](RESULTS_LEDGER.md).
