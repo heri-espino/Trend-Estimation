@@ -15,7 +15,12 @@ from pathlib import Path
 
 def main() -> int:
     here = Path(__file__).resolve().parent
-    deck = here / "001_process_diversity_lecture.md"
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--version", choices=("v1", "v2"), default="v1")
+    args = parser.parse_args()
+    deck = here / ("001_process_diversity_lecture.md" if args.version == "v1"
+                   else "002_process_diversity_lecture_v2.md")
     errors: list[str] = []
     if not deck.is_file():
         raise SystemExit(f"Missing deck: {deck}")
@@ -28,10 +33,11 @@ def main() -> int:
     if text.count("$$") % 2:
         errors.append("Unpaired $$ display math delimiter")
     slides = len(re.findall(r"(?m)^---\s*$", text)) - 1
-    if slides < 60:
+    min_slides = 150 if args.version == "v2" else 60
+    if slides < min_slides:
         errors.append(f"Unexpectedly short lecture: {slides} slides")
     images = re.findall(r"!\[[^\]]*]\(([^)]+)\)", text)
-    if len(images) < 20:
+    if len(images) < (35 if args.version == "v2" else 20):
         errors.append(f"Expected gallery and new figure images, got {len(images)}")
     checks = set()
     for media in images:
@@ -51,8 +57,9 @@ def main() -> int:
                 errors.append(f"Invalid SVG/XML {media}: {exc}")
             checks.add(p)
     svg_assets = sorted((here / "assets").glob("*.svg"))
-    if len(svg_assets) != 12:
-        errors.append(f"Expected 12 new SVGs, found {len(svg_assets)}")
+    expected_min = 23 if args.version == "v2" else 12
+    if len(svg_assets) < expected_min:
+        errors.append(f"Expected at least {expected_min} lecture SVGs, found {len(svg_assets)}")
     for p in svg_assets:
         if p not in checks:
             try:
