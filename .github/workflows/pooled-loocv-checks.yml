@@ -10,6 +10,7 @@ on:
       - "tests/test_estimated_variance_audit.py"
       - "tests/test_guerrero_robustness.py"
       - "tests/test_guerrero_robustness_audit.py"
+      - "tests/test_guerrero_tail_noise.py"
       - ".github/workflows/pooled-loocv-checks.yml"
   pull_request:
     paths:
@@ -20,6 +21,7 @@ on:
       - "tests/test_estimated_variance_audit.py"
       - "tests/test_guerrero_robustness.py"
       - "tests/test_guerrero_robustness_audit.py"
+      - "tests/test_guerrero_tail_noise.py"
       - ".github/workflows/pooled-loocv-checks.yml"
   workflow_dispatch:
 
@@ -36,7 +38,7 @@ jobs:
       - name: Install lightweight test dependencies
         run: python -m pip install -e ".[dev,symbolic]"
       - name: Run isolated mathematical and numerical tests
-        run: python -m pytest tests/test_pooled_loocv_smoothness.py tests/test_guerrero_ratio_pooled_loocv.py tests/test_guerrero_variance_estimation.py tests/test_estimated_variance_audit.py tests/test_guerrero_robustness.py tests/test_guerrero_robustness_audit.py -q
+        run: python -m pytest tests/test_pooled_loocv_smoothness.py tests/test_guerrero_ratio_pooled_loocv.py tests/test_guerrero_variance_estimation.py tests/test_estimated_variance_audit.py tests/test_guerrero_robustness.py tests/test_guerrero_robustness_audit.py tests/test_guerrero_tail_noise.py -q
       - name: Confirm campaign preview without simulations
         run: python -m experiments.pooled_loocv_smoothness.run --preset pilot --dry-run
       - name: Execute tiny smoke and validate exported artifacts
@@ -61,6 +63,14 @@ jobs:
           test -s /tmp/estimated-variances-smoke/common_noise_scale_invariance.csv
       - name: Preview robustness design without running its pilot
         run: python -m experiments.pooled_loocv_smoothness.run_robustness --preset pilot --dry-run > /tmp/robustness-plan.json
+      - name: Check tail-stress design without launching its pilot
+        run: python -m experiments.pooled_loocv_smoothness.run_tail_noise --preset pilot --dry-run > /tmp/tail-stress-plan.json
+      - name: Execute tiny tail-stress smoke only
+        run: |
+          python -m experiments.pooled_loocv_smoothness.run_tail_noise --preset smoke --out-dir /tmp/tail-stress-smoke > /tmp/tail-smoke-summary.txt
+          test -s /tmp/tail-stress-smoke/method_comparison.csv
+          test -s /tmp/tail-stress-smoke/manifest.json
+          test -s /tmp/tail-stress-smoke/summary.json
       - name: Verify misspecified-noise robustness smoke
         run: |
           python -m experiments.pooled_loocv_smoothness.run_robustness --preset smoke --out-dir /tmp/guerrero-robustness-smoke
