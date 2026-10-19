@@ -227,6 +227,80 @@ configurations. The $R=1$ observations are nested in $R=3$,
 not independent replications. Complete per-cell results and
 replication details are retained in the corresponding notes.
 
+\subsection{Misspecified observation and innovation noise: robustness pilot}
+
+To assess sensitivity to noise-model assumptions, we ran a distinct
+five-regime pilot. The underlying second-difference PLS estimator
+and retrospective latent-trend MSE target were unchanged, while
+noise generation varied over iid Gaussian errors, standardized
+Student-$t_5$ observation errors, standardized Student-$t_5$
+trend innovations, stationary AR(1) observation errors with
+$\phi=0.65$, and observations with unequal half-sample variances
+$0.25\sigma_\eta^2$ and $1.75\sigma_\eta^2$.
+Each regime covered $N\in\{50,200\}$, $\sigma_\eta\in\{0.5,2\}$,
+$\sigma_\varepsilon=0.3$, five independent replicate seeds and
+nested pool sizes $R=1,3$. The experiment thus contains
+200 pool evaluations, each scored using five parameter-selection
+procedures. Only the 100 $R=3$ pools, 20 per regime, are shown
+in Table~\ref{tab:robustness-pilot}.
+
+\begin{table}[ht]
+\centering
+\caption{Exploratory latent trend MSE under five noise mechanisms
+($R=3$; twenty pooled realizations per regime). These are paired
+Monte Carlo diagnostics, not independent confirmatory findings.}
+\label{tab:robustness-pilot}
+\begin{tabular}{lrrr}
+\toprule
+Noise mechanism & Gaussian difference ML & LOOCV Brent & ML wins\\
+\midrule
+Gaussian iid & 0.355507 & \textbf{0.355433} & 15/20\\
+Student-$t_5$ observation & \textbf{0.337182} & 0.352827 & 13/20\\
+Student-$t_5$ innovations & \textbf{0.335247} & 0.336293 & 12/20\\
+AR(1) observation & \textbf{1.350641} & 1.704392 & 20/20\\
+Changing observation variance & \textbf{0.335961} & 0.354783 & 16/20\\
+\bottomrule
+\end{tabular}
+\end{table}
+Across regimes the equally weighted mean reconstruction errors were
+$0.542908$ for Gaussian difference likelihood and $0.620746$
+for direct LOOCV; Gaussian likelihood was lower in 76 of 100
+paired $R=3$ evaluations. However, the AR(1) regime contributes
+about 91\% of the overall \emph{absolute} difference of these
+equal-regime means, and the iid Gaussian group has nearly identical
+mean reconstruction MSE under the two feasible selectors.
+
+In the AR(1) group, single-observation LOOCV attained a
+\emph{lower observed} CV score ($0.913917$ rather than $1.035299$)
+but much worse latent trend reconstruction than Gaussian difference
+likelihood. Serially dependent observation errors violate the
+independent-deletion interpretation of ordinary LOOCV. The
+difference-Gaussian likelihood also has misspecified covariance,
+and its observed relative performance should not be attributed
+to a covariance-correct optimality theorem. Moreover, the nominal
+$\sigma_\eta^2/\sigma_\varepsilon^2$ reference is not an oracle for
+correlated or time-varying measurement covariance.
+
+For single-series $R=1$ with Student-$t_5$ trend innovations,
+Gaussian likelihood instead had a larger mean true-trend MSE
+than LOOCV ($0.392287$ versus $0.324086$), despite lower error
+in 11 of 20 paired realizations. Hence neither feasible selector
+uniformly dominates under misspecification.
+
+Single-start and multibracket Brent attained LOOCV objectives
+equal to a numerical tolerance of $10^{-7}$ in all 100 pooled
+$R=3$ evaluations; no numerical advantage of multibracket
+search emerged. The nonnegative-moments estimator selected
+$\widehat\sigma_\varepsilon^2=0$ in 30 of 100 $R=3$ pools,
+demonstrating frequent boundary oversmoothing in this
+specific simple variance estimator.
+
+All these summaries are based on only five independent seeds
+per DGP cell, with $R=1$ nested within $R=3$. Neither
+statistical significance nor generalized solver superiority
+is inferred. A dependence-aware or covariance-aware benchmark
+is needed before further conclusions about the AR(1) case.
+
 \section{Discussion and limitations}
 \textbf{Confirmatory results pending.} The exploratory pilots have been recorded, but neither numerical dominance nor a
 novel global-solver theorem is established. Related algorithms,
