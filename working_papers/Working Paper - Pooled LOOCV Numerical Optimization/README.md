@@ -1,5 +1,8 @@
 # Working Paper — Numerical Optimization of Pooled LOOCV Smoothness
 
+> **CURRENT STATUS — 2026-10-19 (read before chronological sections):** [Consolidated research state + future-agent read order](notes/CURRENT_RESEARCH_STATE_AND_AGENT_CONTINUITY_2026-10-19.md). Gaussian four-order 160k-draw confirmation, Study J finite-variance non-Gaussian **25-seed pilot**, and Study K.1 **26-method Cortés-Toto matched-seed replay** are all **EXECUTED and COMMITTED**; their results/audits and limitations are linked there. K.1 uses J's same seeds, so is exploratory and **not an independent 10k-seed confirmation**. The manuscript and some historical protocol sections below still contain “not run” wording from before upload: interpret them by date and consult manifest status. Study L [same-objective numerical search comparison](notes/STUDY_L_SAME_OBJECTIVE_NUMERICAL_COMPARISON_DESIGN_2026-10-19.md) is **proposed only, not yet implemented/executed**. Future work: update notes and handoffs after every run, direct commits to the existing branch only, never a PR/merge or automatic large simulation.
+
+
 **Status:** independent working paper, initiated 2026-10-18; Gaussian 160k-draw fixed-order/mean-difference reconstruction confirmation completed 2026-10-19; non-Gaussian joint-mean extension remains prospective.  
 **Prospective venue:** SMCCA (journal scope and submission requirements must be verified before submission).  
 **Working title:** *Numerical Optimization of Penalized Trend Smoothness by Pooled Leave-One-Out Cross-Validation*.
