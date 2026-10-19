@@ -12,6 +12,7 @@ on:
       - "tests/test_guerrero_robustness_audit.py"
       - "tests/test_guerrero_tail_noise.py"
       - "tests/test_guerrero_tail_pilot_audit.py"
+      - "tests/test_empirical_market_noise.py"
       - ".github/workflows/pooled-loocv-checks.yml"
   pull_request:
     paths:
@@ -24,6 +25,7 @@ on:
       - "tests/test_guerrero_robustness_audit.py"
       - "tests/test_guerrero_tail_noise.py"
       - "tests/test_guerrero_tail_pilot_audit.py"
+      - "tests/test_empirical_market_noise.py"
       - ".github/workflows/pooled-loocv-checks.yml"
   workflow_dispatch:
 
@@ -40,7 +42,7 @@ jobs:
       - name: Install lightweight test dependencies
         run: python -m pip install -e ".[dev,symbolic]"
       - name: Run isolated mathematical and numerical tests
-        run: python -m pytest tests/test_pooled_loocv_smoothness.py tests/test_guerrero_ratio_pooled_loocv.py tests/test_guerrero_variance_estimation.py tests/test_estimated_variance_audit.py tests/test_guerrero_robustness.py tests/test_guerrero_robustness_audit.py tests/test_guerrero_tail_noise.py tests/test_guerrero_tail_pilot_audit.py -q
+        run: python -m pytest tests/test_pooled_loocv_smoothness.py tests/test_guerrero_ratio_pooled_loocv.py tests/test_guerrero_variance_estimation.py tests/test_estimated_variance_audit.py tests/test_guerrero_robustness.py tests/test_guerrero_robustness_audit.py tests/test_guerrero_tail_noise.py tests/test_guerrero_tail_pilot_audit.py tests/test_empirical_market_noise.py -q
       - name: Confirm campaign preview without simulations
         run: python -m experiments.pooled_loocv_smoothness.run --preset pilot --dry-run
       - name: Execute tiny smoke and validate exported artifacts
@@ -73,6 +75,14 @@ jobs:
           test -s /tmp/tail-stress-smoke/method_comparison.csv
           test -s /tmp/tail-stress-smoke/manifest.json
           test -s /tmp/tail-stress-smoke/summary.json
+      - name: Validate financial empirical-noise design without internet
+        run: python -m experiments.pooled_loocv_smoothness.run_empirical_market_noise --preset pilot --dry-run > /tmp/market-return-pilot-plan.json
+      - name: Execute offline synthetic-fixture market-noise smoke only
+        run: |
+          python -m experiments.pooled_loocv_smoothness.run_empirical_market_noise --preset smoke --out-dir /tmp/market-noise-smoke
+          test -s /tmp/market-noise-smoke/method_comparison.csv
+          test -s /tmp/market-noise-smoke/manifest.json
+          test -s /tmp/market-noise-smoke/summary.json
       - name: Verify misspecified-noise robustness smoke
         run: |
           python -m experiments.pooled_loocv_smoothness.run_robustness --preset smoke --out-dir /tmp/guerrero-robustness-smoke
