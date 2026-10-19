@@ -2734,6 +2734,187 @@ Ordered by sample mean MSE; nearest ranks are not necessarily statistically sepa
 Ordered by sample mean MSE; nearest ranks are not necessarily statistically separated.
 
 ---
+---
+<!-- _class: data -->
+# Pooling on the identical first series: gaussian reference
+
+| Method | R3−R1 MSE | 95% low | 95% high | Seeds improved % |
+|:--|--:|--:|--:|--:|
+| cv_zero | -0.0122 | -0.0154 | -0.0091 | 63.5 |
+| gcv_zero | -0.0125 | -0.0157 | -0.0093 | 62.9 |
+| aicc_zero | -0.0031 | -0.0037 | -0.0024 | 60.6 |
+| cv_joint | -0.0125 | -0.0157 | -0.0093 | 64.4 |
+| gcv_joint | -0.0130 | -0.0162 | -0.0097 | 64.0 |
+| aicc_joint | -0.0033 | -0.0040 | -0.0026 | 60.6 |
+| gls_mu_ml | -0.0232 | -0.0286 | -0.0177 | 62.3 |
+| plugin_mu_ml | -0.0041 | -0.0059 | -0.0024 | 60.1 |
+| zero_mu_ml | -0.0012 | -0.0016 | -0.0009 | 58.8 |
+| controlled_s0.5_joint | -0.0000 | -0.0000 | -0.0000 | 67.0 |
+| controlled_s0.8_joint | -0.0001 | -0.0002 | -0.0001 | 57.8 |
+
+Negative means pooling improved this **same** first series; intervals are pointwise.
+
+---
+<!-- _class: data -->
+# Pooling on the identical first series: smooth cycle
+
+| Method | R3−R1 MSE | 95% low | 95% high | Seeds improved % |
+|:--|--:|--:|--:|--:|
+| cv_zero | -0.0127 | -0.0161 | -0.0093 | 64.6 |
+| gcv_zero | -0.0135 | -0.0172 | -0.0097 | 65.0 |
+| aicc_zero | -0.0023 | -0.0027 | -0.0020 | 64.9 |
+| cv_joint | -0.0130 | -0.0165 | -0.0096 | 64.8 |
+| gcv_joint | -0.0136 | -0.0173 | -0.0098 | 66.4 |
+| aicc_joint | -0.0025 | -0.0029 | -0.0021 | 65.2 |
+| gls_mu_ml | -0.0016 | -0.0020 | -0.0011 | 54.2 |
+| plugin_mu_ml | -0.0018 | -0.0022 | -0.0014 | 56.4 |
+| zero_mu_ml | -0.0014 | -0.0019 | -0.0010 | 51.1 |
+| controlled_s0.5_joint | -0.0000 | -0.0000 | -0.0000 | 67.0 |
+| controlled_s0.8_joint | -0.0001 | -0.0002 | -0.0001 | 54.8 |
+
+Negative means pooling improved this **same** first series; intervals are pointwise.
+
+---
+<!-- _class: data -->
+# Pooling on the identical first series: slope break
+
+| Method | R3−R1 MSE | 95% low | 95% high | Seeds improved % |
+|:--|--:|--:|--:|--:|
+| cv_zero | -0.0133 | -0.0165 | -0.0102 | 66.4 |
+| gcv_zero | -0.0130 | -0.0161 | -0.0099 | 65.7 |
+| aicc_zero | -0.0034 | -0.0040 | -0.0027 | 62.5 |
+| cv_joint | -0.0139 | -0.0171 | -0.0107 | 66.1 |
+| gcv_joint | -0.0134 | -0.0164 | -0.0103 | 65.5 |
+| aicc_joint | -0.0039 | -0.0046 | -0.0031 | 62.3 |
+| gls_mu_ml | -0.0101 | -0.0131 | -0.0070 | 60.9 |
+| plugin_mu_ml | -0.0027 | -0.0034 | -0.0019 | 59.0 |
+| zero_mu_ml | -0.0011 | -0.0015 | -0.0008 | 58.0 |
+| controlled_s0.5_joint | -0.0000 | -0.0000 | -0.0000 | 67.1 |
+| controlled_s0.8_joint | -0.0001 | -0.0002 | -0.0001 | 57.5 |
+
+Negative means pooling improved this **same** first series; intervals are pointwise.
+
+---
+<!-- _class: data -->
+# Pooling on the identical first series: level jump
+
+| Method | R3−R1 MSE | 95% low | 95% high | Seeds improved % |
+|:--|--:|--:|--:|--:|
+| cv_zero | -0.0168 | -0.0199 | -0.0136 | 61.8 |
+| gcv_zero | -0.0190 | -0.0224 | -0.0157 | 63.7 |
+| aicc_zero | -0.0103 | -0.0125 | -0.0081 | 56.8 |
+| cv_joint | -0.0170 | -0.0202 | -0.0139 | 61.7 |
+| gcv_joint | -0.0191 | -0.0225 | -0.0158 | 64.4 |
+| aicc_joint | -0.0107 | -0.0129 | -0.0084 | 58.2 |
+| gls_mu_ml | -0.0186 | -0.0250 | -0.0123 | 51.1 |
+| plugin_mu_ml | -0.0038 | -0.0065 | -0.0012 | 46.0 |
+| zero_mu_ml | -0.0042 | -0.0060 | -0.0023 | 51.1 |
+| controlled_s0.5_joint | -0.0000 | -0.0000 | -0.0000 | 67.0 |
+| controlled_s0.8_joint | -0.0001 | -0.0002 | -0.0001 | 57.8 |
+
+Negative means pooling improved this **same** first series; intervals are pointwise.
+
+---
+<!-- _class: data -->
+# Pooling on the identical first series: observation outliers
+
+| Method | R3−R1 MSE | 95% low | 95% high | Seeds improved % |
+|:--|--:|--:|--:|--:|
+| cv_zero | -0.0150 | -0.0195 | -0.0104 | 59.6 |
+| gcv_zero | -0.0150 | -0.0195 | -0.0105 | 58.8 |
+| aicc_zero | -0.0047 | -0.0060 | -0.0034 | 55.0 |
+| cv_joint | -0.0137 | -0.0177 | -0.0098 | 59.5 |
+| gcv_joint | -0.0153 | -0.0198 | -0.0107 | 59.4 |
+| aicc_joint | -0.0050 | -0.0066 | -0.0035 | 57.1 |
+| gls_mu_ml | -0.1149 | -0.1307 | -0.0992 | 66.7 |
+| plugin_mu_ml | -0.0162 | -0.0225 | -0.0099 | 60.2 |
+| zero_mu_ml | -0.0023 | -0.0036 | -0.0009 | 54.4 |
+| controlled_s0.5_joint | -0.0000 | -0.0000 | -0.0000 | 67.0 |
+| controlled_s0.8_joint | -0.0001 | -0.0002 | -0.0001 | 57.8 |
+
+Negative means pooling improved this **same** first series; intervals are pointwise.
+
+---
+<!-- _class: data -->
+# Pooling on the identical first series: ar1 observation
+
+| Method | R3−R1 MSE | 95% low | 95% high | Seeds improved % |
+|:--|--:|--:|--:|--:|
+| cv_zero | -0.0028 | -0.0041 | -0.0014 | 49.4 |
+| gcv_zero | -0.0028 | -0.0041 | -0.0015 | 49.8 |
+| aicc_zero | 0.0019 | 0.0014 | 0.0025 | 40.2 |
+| cv_joint | -0.0026 | -0.0040 | -0.0012 | 49.1 |
+| gcv_joint | -0.0027 | -0.0041 | -0.0014 | 49.5 |
+| aicc_joint | 0.0021 | 0.0015 | 0.0026 | 40.2 |
+| gls_mu_ml | -0.0011 | -0.0020 | -0.0002 | 48.2 |
+| plugin_mu_ml | -0.0013 | -0.0022 | -0.0004 | 48.6 |
+| zero_mu_ml | -0.0016 | -0.0024 | -0.0008 | 51.4 |
+| controlled_s0.5_joint | -0.0000 | -0.0000 | -0.0000 | 59.3 |
+| controlled_s0.8_joint | -0.0001 | -0.0001 | -0.0001 | 54.3 |
+
+Negative means pooling improved this **same** first series; intervals are pointwise.
+
+---
+<!-- _class: data -->
+# Pooling on the identical first series: variance regime
+
+| Method | R3−R1 MSE | 95% low | 95% high | Seeds improved % |
+|:--|--:|--:|--:|--:|
+| cv_zero | -0.0229 | -0.0279 | -0.0178 | 66.3 |
+| gcv_zero | -0.0236 | -0.0288 | -0.0184 | 65.7 |
+| aicc_zero | -0.0043 | -0.0051 | -0.0035 | 63.0 |
+| cv_joint | -0.0217 | -0.0266 | -0.0168 | 65.7 |
+| gcv_joint | -0.0234 | -0.0286 | -0.0183 | 66.3 |
+| aicc_joint | -0.0046 | -0.0055 | -0.0038 | 60.6 |
+| gls_mu_ml | -0.0245 | -0.0301 | -0.0190 | 64.9 |
+| plugin_mu_ml | -0.0049 | -0.0066 | -0.0032 | 61.6 |
+| zero_mu_ml | -0.0019 | -0.0024 | -0.0014 | 58.0 |
+| controlled_s0.5_joint | -0.0000 | -0.0000 | -0.0000 | 67.0 |
+| controlled_s0.8_joint | -0.0001 | -0.0002 | -0.0001 | 59.0 |
+
+Negative means pooling improved this **same** first series; intervals are pointwise.
+
+---
+<!-- _class: data -->
+# Pooling on the identical first series: heterogeneous pool
+
+| Method | R3−R1 MSE | 95% low | 95% high | Seeds improved % |
+|:--|--:|--:|--:|--:|
+| cv_zero | 0.0190 | 0.0179 | 0.0200 | 6.2 |
+| gcv_zero | 0.0198 | 0.0187 | 0.0209 | 7.2 |
+| aicc_zero | 0.0301 | 0.0289 | 0.0313 | 0.3 |
+| cv_joint | 0.0209 | 0.0198 | 0.0220 | 6.2 |
+| gcv_joint | 0.0207 | 0.0195 | 0.0218 | 7.4 |
+| aicc_joint | 0.0309 | 0.0297 | 0.0322 | 0.5 |
+| gls_mu_ml | 0.0234 | 0.0224 | 0.0244 | 0.5 |
+| plugin_mu_ml | 0.0200 | 0.0192 | 0.0209 | 1.0 |
+| zero_mu_ml | 0.0104 | 0.0099 | 0.0109 | 6.4 |
+| controlled_s0.5_joint | -0.0000 | -0.0000 | -0.0000 | 56.9 |
+| controlled_s0.8_joint | -0.0000 | -0.0000 | 0.0000 | 53.9 |
+
+Negative means pooling improved this **same** first series; intervals are pointwise.
+
+---
+<!-- _class: data -->
+# Pooling on the identical first series: shared observation shock
+
+| Method | R3−R1 MSE | 95% low | 95% high | Seeds improved % |
+|:--|--:|--:|--:|--:|
+| cv_zero | -0.0079 | -0.0105 | -0.0053 | 60.1 |
+| gcv_zero | -0.0091 | -0.0119 | -0.0062 | 59.7 |
+| aicc_zero | -0.0019 | -0.0024 | -0.0013 | 59.4 |
+| cv_joint | -0.0081 | -0.0110 | -0.0052 | 59.0 |
+| gcv_joint | -0.0089 | -0.0117 | -0.0060 | 57.5 |
+| aicc_joint | -0.0020 | -0.0027 | -0.0013 | 56.4 |
+| gls_mu_ml | -0.0195 | -0.0241 | -0.0148 | 60.6 |
+| plugin_mu_ml | -0.0032 | -0.0045 | -0.0019 | 56.2 |
+| zero_mu_ml | -0.0007 | -0.0011 | -0.0004 | 55.5 |
+| controlled_s0.5_joint | -0.0000 | -0.0000 | -0.0000 | 51.6 |
+| controlled_s0.8_joint | -0.0000 | -0.0000 | 0.0000 | 49.9 |
+
+Negative means pooling improved this **same** first series; intervals are pointwise.
+
+---
 <!-- _class: lead -->
 
 # End of V2 technical appendix
