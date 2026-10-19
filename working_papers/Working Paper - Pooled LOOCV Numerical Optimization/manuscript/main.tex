@@ -172,6 +172,61 @@ single-start procedure. The results require a genuinely
 independent confirmatory experiment and objective-specific
 numerical verification before journal-level claims.
 
+\subsection{Feasible estimation of both variance components: exploratory pilot}
+
+The preceding known-ratio comparison assumes the true variance
+components are supplied. This is not a feasible smoothing selector
+for ordinary data. Under the additional independent Gaussian
+stochastic-difference model and $V=I$, put $z^{(r)}=D_2y^{(r)}$ and
+$A=D_2D_2^\top$. Then
+\[
+ \operatorname{Cov}(z^{(r)})=
+ \sigma_\varepsilon^2 I+\sigma_\eta^2 A.
+\]
+We independently implement two \emph{feasible extensions}: (a)
+Gaussian maximum likelihood of the differenced observations, with
+the common covariance scale profiled analytically, and (b) two
+quadratic moment equations with nonnegative least-squares
+constraints. These estimators are \emph{not} attributed to
+Guerrero's published smoothness-selection procedure.
+
+A distinct exploratory pilot considered $N\in\{50,200\}$,
+$\sigma_\eta\in\{0.5,2\}$,
+$\sigma_\varepsilon\in\{0.1,0.3,1\}$,
+five independently seeded pools per cell, and nested $R=1$ and $R=3$.
+For the primary $R=3$ subset (60 pools), the mean
+observed-series LOOCV and latent-trend MSE results were:
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Parameter selection & LOOCV MSE & Latent trend MSE\\
+\midrule
+Known true variance ratio (oracle) & 2.697581 & \textbf{0.385673}\\
+Estimated Gaussian difference likelihood & 2.696789 & 0.387916\\
+Pooled LOOCV (bounded Brent) & \textbf{2.681409} & 0.394848\\
+Estimated nonnegative quadratic moments & 102.033035 & 96.127631\\
+\bottomrule
+\end{tabular}
+\end{center}
+Gaussian likelihood achieved lower realized trend MSE than bounded
+LOOCV in 37 of 60 $R=3$ paired pools. It estimated observation-noise
+and trend-innovation variance with average relative absolute errors
+of approximately 10.0\% and 18.3\%, respectively. The error rates
+fell with increasing sample length in this particular simulation.
+
+The constrained moment method set its estimated trend-innovation
+variance to zero in 16 of 60 $R=3$ pools, implying
+$\widehat\lambda=\infty$ and fitting a linear polynomial even
+when the stochastic trend had nonzero second differences. Such
+catastrophic errors make its mean latent-trend MSE unreliable as a
+measure of typical numerical approximation accuracy; we report
+failure rates and medians as well. The comparison is necessarily
+exploratory with just five seeds per DGP cell, and results
+do not establish an expected-risk inequality for all noise
+configurations. The $R=1$ observations are nested in $R=3$,
+not independent replications. Complete per-cell results and
+replication details are retained in the corresponding notes.
+
 \section{Discussion and limitations}
 \textbf{Confirmatory results pending.} The exploratory pilots have been recorded, but neither numerical dominance nor a
 novel global-solver theorem is established. Related algorithms,
