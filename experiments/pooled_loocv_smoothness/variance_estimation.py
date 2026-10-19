@@ -13,6 +13,7 @@ from dataclasses import dataclass
 
 import numpy as np
 from scipy.optimize import minimize_scalar, nnls
+from .objective import cached_difference_contrast_basis, difference_matrix
 
 
 @dataclass(frozen=True)
@@ -44,7 +45,9 @@ def _prepare(series: np.ndarray, d: np.ndarray):
         raise ValueError("series contains nonfinite observations")
     z = y @ d.T
     a = d @ d.T
-    eigvals, basis = np.linalg.eigh(a)
+    eigvals, basis = (cached_difference_contrast_basis(y.shape[1], y.shape[1]-d.shape[0])
+                      if np.array_equal(d, difference_matrix(y.shape[1], y.shape[1]-d.shape[0]))
+                      else np.linalg.eigh(a))
     if np.any(eigvals <= 0):
         raise ArithmeticError("difference covariance matrix must be positive definite")
     eigenpower = np.mean((z @ basis) ** 2, axis=0)
