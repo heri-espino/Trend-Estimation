@@ -560,6 +560,77 @@ source SHA are recorded in
 The completed historical $h$-step forecast-mean paper is
 separate.
 
+\subsection{Prespecified independent-seed confirmation across four orders}
+
+A subsequent, \emph{not yet executed}, confirmatory
+Monte Carlo design extends the Gaussian mean-difference
+experiment to four separately analyst-selected orders
+$d\in\{1,2,3,4\}$. For each $d$ the correctly matched
+generating and fitted trend model is
+\begin{equation}\label{eq:multorder-dgp}
+ D_d\tau^{(r)}=\mu\mathbf1+\varepsilon^{(r)},\quad
+ y^{(r)}=\tau^{(r)}+\eta^{(r)},\quad
+ \varepsilon^{(r)}\sim N(0,\sigma_\varepsilon^2I),\quad
+ \eta^{(r)}\sim N(0,\sigma_\eta^2I).
+\end{equation}
+With zero-indexed time and initial trend
+$\tau_t=0.02t$ for $t<d$, the realized latent
+trajectory, not merely its expectation, has the form
+\begin{equation}\label{eq:multorder-latent-trajectory}
+ \tau_t=0.02t+\mu\binom{t}{d}
+  +\sum_{j=0}^{t-d}\binom{t-j-1}{d-1}\varepsilon_j,
+ \qquad t\ge d .
+\end{equation}
+
+We keep the eight original selectors and true
+retrospective trend-MSE target fixed, while varying
+$N\in\{50,200\}$, $\sigma_\eta\in\{0.5,2\}$,
+$\sigma_\varepsilon=0.3$, and standardized
+$\mu/\sigma_\varepsilon\in\{-1,-0.25,0,0.25,1\}$.
+For each of the 16 $(d,N,\sigma_\eta)$ settings,
+10,000 distinct, independently seeded three-series
+shock draws are planned. The five mean interventions
+reuse the \emph{same} original shocks and the
+$R=1$ pool reuses the first member of the $R=3$
+pool. Thus 160,000 independent three-series shock
+draws give 1.6 million nested treatment-pool
+evaluations, or 12.8 million per-method records;
+these records are \emph{not} independent statistical
+replicates.
+
+A resumable local execution stores immutable,
+SHA256-identified compressed shards of 100 independent
+draws each and checked paired reconstruction-loss
+summaries within every $(d,N,\sigma_\eta,\mu,R)$ cell.
+A common-dataset reconstruction error can then be
+compared through within-seed paired differences,
+with Monte Carlo uncertainty evaluated at the
+independent shock-draw level. Six methods are
+equivariant to adding the deterministic term
+$\mu\binom{t}{d}$ and their fitted results can
+be reused algebraically under mean shifts;
+the two incorrectly fixed-zero-mean selectors
+must be reoptimized at each shift. This is
+computational simplification, not additional
+replication.
+
+The polynomial drift grows rapidly with
+$d$ and $N$, particularly for $d=4$, so
+cross-order raw MSE is \emph{not} an estimand
+for choosing the best difference order.
+A direct SVD of $D_d$ avoids squaring its
+condition number when representing small
+positive spectral modes at order four.
+Results from the originally executed $d=2$
+five-seed pilot remain separate and are not
+interchangeable with this prospective
+independent-seed confirmation.
+Only after numerical checks and analysis of
+the Gaussian confirmation will a separately
+predeclared non-Gaussian mean-shift campaign
+be considered; no such confirmatory outcomes
+are claimed here.
+
 \section{Discussion and limitations}
 \textbf{Confirmatory results pending.} The exploratory pilots have been recorded, but neither numerical dominance nor a
 novel global-solver theorem is established. Related algorithms,
