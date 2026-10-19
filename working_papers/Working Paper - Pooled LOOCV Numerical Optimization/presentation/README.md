@@ -1,5 +1,14 @@
 # Marp lecture — pooled trend smoothness and Study M.2
 
+## Expanded Lecture V2
+
+The **[187-slide V2 Marp master](002_process_diversity_lecture_v2.md)** is committed separately; V1 remains unchanged. V2 contains detailed proofs, solved exercises, all 198 mean-risk result rows, all 99 paired first-series pooling contrasts, and 11 additional source-backed SVG figures.
+
+See [V2_NOTES.md](V2_NOTES.md) for provenance, build commands, audit scope and honest pending QA. Regenerate the eleven additional figures using [generate_v2_figures.mjs](generate_v2_figures.mjs). A small [optional criterion-curve exporter](export_v2_criterion_examples.py) is coded, **not executed**; its extra PNG plots are not linked until they exist and are reviewed.
+
+Static check: run check_deck.py --version v2. For Marp HTML/PDF/PPTX, use the commands below with 002_process_diversity_lecture_v2.md as input. Exported files still require local visual inspection.
+
+
 **Title:** *How should we choose trend smoothness?*  
 **Status:** first COMPLETE editable teaching edition, 2026-10-19.  
 **Branch:** paper/pooled-loocv-numerical-optimization.  
