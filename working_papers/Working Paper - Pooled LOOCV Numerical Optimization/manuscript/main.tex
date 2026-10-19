@@ -716,6 +716,60 @@ source SHA and bootstrap-free Monte Carlo
 standard errors are documented in
 \texttt{notes/MULTIORDER\_10000\_SEED\_CONFIRMATORY\_RESULTS\_2026-10-19.md}.
 
+\subsection{Prespecified non-Gaussian sensitivity with estimated difference means}
+
+The Gaussian independent-seed confirmation does not isolate
+whether the ranking of Gaussian contrast likelihood and
+pooled observed-series LOOCV persists under nonnormal shocks.
+We therefore prespecify a separate, \emph{not yet executed},
+finite-variance noise experiment that retains the matched
+orders $d=1,\ldots,4$, common difference mean $\mu$, and
+within-seed paired reconstruction comparisons. Twelve law
+regimes reuse the parameters of the completed independent
+tail-noise pilot: a Gaussian reference; standardized
+Student-$t(3)$ in observations or trend innovations; centered
+Gamma errors with both skew directions; standardized
+rare Gaussian jumps; Student-$t(5)$ GARCH observation
+disturbances; and skew-normal observation errors for
+shape $\alpha\in\{-6,-3,0,3,6\}$.
+
+The observed-series Gaussian estimator is treated as a
+\emph{Gaussian quasi-likelihood} when the disturbance
+density is nonnormal. For independent, centered,
+finite-second-moment shocks, the covariance of the
+$d$th differences remains
+$aI+bD_dD_d^\top$, irrespective of marginal normality.
+In the Student-$t(5)$ GARCH design, observation
+errors are serially uncorrelated but exhibit
+conditionally varying second moments. We retain
+the known-variance-ratio smoother only as an
+infeasible \emph{linear covariance benchmark},
+not a true heavy-tailed conditional oracle.
+
+The pilot is restricted to $25$ independent random
+shock draws for each of the $12\times4\times2\times2=192$
+distribution/order/length/noise strata,
+or $4{,}800$ independent base R3 draws and
+$384{,}000$ per-method observations after
+the same five paired $\mu$ shifts and nested
+$R\in\{1,3\}$. An independent $10{,}000$-seed
+confirmation per stratum is \emph{separately reserved}
+and has not been executed.
+Student-$t(3)$ has a finite variance but
+an infinite fourth moment; therefore ordinary
+normal Monte Carlo confidence intervals
+for mean squared reconstruction losses require
+more than their usual sample standard errors.
+Cauchy contamination remains outside this
+population-MSE analysis because its variance
+and the corresponding true variance-ratio
+benchmark do not exist. The exact preregistered
+regimes, seed protocol, numerical assumptions and
+manual-only execution are recorded in
+\texttt{notes/NONGAUSSIAN\_NONZERO\_MU\_PROTOCOL\_2026-10-19.md}.
+No new distributional performance results
+are claimed at this stage.
+
 \section{Discussion and limitations}
 \textbf{Gaussian confirmation completed, external robustness pending.}
 The independent 10,000-seed-per-cell Gaussian mean-difference
