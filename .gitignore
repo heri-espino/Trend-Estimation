@@ -74,3 +74,7 @@ wiki/_adjuntos/.DS_Store
 wiki/.obsidian/community-plugins.json
 wiki/.obsidian/core-plugins.json
 wiki/.obsidian/appearance.json
+
+# Reproducible user-side Yahoo market return snapshot; distribution/terms may restrict redistribution
+# Experiment manifests record SHA256 and source dates but do not commit raw prices/returns.
+data/market_calibration/
