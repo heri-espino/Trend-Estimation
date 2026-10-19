@@ -1,5 +1,8 @@
 # Instructions for coding/research agents
 
+> **2026-10-19 branch-specific checkpoint:** Work on `paper/pooled-loocv-numerical-optimization` must first read [the consolidated current-state/agent-continuity note](working_papers/Working%20Paper%20-%20Pooled%20LOOCV%20Numerical%20Optimization/notes/CURRENT_RESEARCH_STATE_AND_AGENT_CONTINUITY_2026-10-19.md), [its executed 26-method Study K.1 results](working_papers/Working%20Paper%20-%20Pooled%20LOOCV%20Numerical%20Optimization/notes/CORTES_TOTO_PAIRED_25_SEED_REPLAY_RESULTS_2026-10-19.md), and [the proposed same-score Study L design](working_papers/Working%20Paper%20-%20Pooled%20LOOCV%20Numerical%20Optimization/notes/STUDY_L_SAME_OBJECTIVE_NUMERICAL_COMPARISON_DESIGN_2026-10-19.md). Those *later executed results* override chronological “not run” text in older protocols. The study is retrospective reconstruction **not** the horizon-h forecasting project. Keep direct commits on the **existing research branch**, no PR/merge/force-push; heavy simulations manual only. Preserve reproducibility manifests and per-run scientific notes.
+
+
 **Last updated: 2026-10-09. Read this file FIRST, then**
 1. [AI_HANDOFF.md](AI_HANDOFF.md) — implementation state / what is NOT done;
 2. [working_papers/THEORETICAL_CONTRIBUTIONS.md](working_papers/THEORETICAL_CONTRIBUTIONS.md)
