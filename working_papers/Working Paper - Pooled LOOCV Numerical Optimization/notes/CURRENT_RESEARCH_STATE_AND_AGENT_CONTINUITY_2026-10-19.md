@@ -1,5 +1,9 @@
 # Current research state and agent continuity — 2026-10-19
 
+
+> **Latest request / Study M update (2026-10-19):** The user prefers *different process mechanisms and concrete illustrations* rather than more seeds or immediate numerical Study L. [Process gallery protocol](PROCESS_DIVERSITY_ILLUSTRATIVE_EXPERIMENT_2026-10-19.md); [runner](../../../experiments/pooled_loocv_smoothness/run_process_examples.py); and [tests](../../../tests/test_pooled_process_examples.py) are **IMPLEMENTED, NOT RUN**. Nine processes × nested R1/R3 × eleven feasible policies = 198 **illustrative** rows once manually executed; no new confirmatory Monte Carlo and no method-winner claim until saved results are audited. Include signal shape, outliers, temporal dependence and cross-series pooling assumptions. Study L remains a prospective, lower-priority numerical design.
+
+
 **Branch:** `paper/pooled-loocv-numerical-optimization`. **Scope:** the *independent, retrospective observed-series reconstruction* paper, not the separate horizon-`h` forecast-CV paper. This is a navigation checkpoint derived from inspected branch files, saved manifests, source code, and the already-written result audits. Initial inspected branch head: `16184b51e7e223dcdb9fbedc804018002127e39c`; this checkpoint itself is subsequently committed and therefore changes the head. The per-experiment **source SHA in each manifest** takes precedence over the branch head for reproducibility.
 
 ## 0. Read this before running or editing anything
