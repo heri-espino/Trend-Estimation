@@ -56,3 +56,20 @@ Once `solver_comparison.csv` is present from an actual run or GitHub pull, compu
     python -m experiments.pooled_loocv_smoothness.audit_pilot --csv results/pooled_loocv_smoothness/pilot/solver_comparison.csv --out results/pooled_loocv_smoothness/pilot/audit_summary.json
 
 Read the [2026-10-18 pilot audit](../../working_papers/Working%20Paper%20-%20Pooled%20LOOCV%20Numerical%20Optimization/notes/PILOT_AUDIT_2026-10-18.md) before selecting heavier experiments; its detected root counts are **not exact** and not an automatic count of distinct minima.
+
+
+## New Guerrero known variance-ratio benchmark (separate stochastic DGP)
+
+Unlike the original 2017-inspired deterministic-trend simulation, this experiment generates independent **stochastic** integrated trends from `D_2 tau = epsilon` with known process noise variance and observations `y = tau + eta` with known observation noise variance. The Guerrero known-parameter benchmark chooses `lambda_G = sigma_eta^2 / sigma_epsilon^2`. Compare it with pooled LOOCV selected by Brent, multibracket Brent, and a dense-grid reference; evaluate both observed LOOCV and true latent-trend MSE. Read the [source-grounded protocol](../../working_papers/Working%20Paper%20-%20Pooled%20LOOCV%20Numerical%20Optimization/notes/GUERRERO_VARIANCE_RATIO_PROTOCOL.md).
+
+```powershell
+conda activate trend-estimation
+git switch paper/pooled-loocv-numerical-optimization
+git pull --ff-only
+python -m pytest tests/test_guerrero_ratio_pooled_loocv.py -q
+python -m experiments.pooled_loocv_smoothness.guerrero_ratio --preset smoke
+python -m experiments.pooled_loocv_smoothness.guerrero_ratio --preset pilot --dry-run
+python -m experiments.pooled_loocv_smoothness.guerrero_ratio --preset pilot
+```
+
+Smoke: 8 pools × 4 methods = 32 saved rows. Pilot: 12 settings × 5 independent seeds × 2 nested pool sizes = **120 pools**, 480 saved rows. Results go under `results/pooled_loocv_smoothness/guerrero/{smoke,pilot}/`, separate from the completed Cortés-Toto pilot. Outputs: `guerrero_solver_comparison.csv`, `summary.json`, `manifest.json`, `guerrero_example.png`, `guerrero_example_curves.csv`. The 100-seed confirmatory preset is manual, and no forecasts are used.
