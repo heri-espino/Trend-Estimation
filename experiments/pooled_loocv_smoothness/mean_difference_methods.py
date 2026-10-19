@@ -77,6 +77,7 @@ class JointMeanPooledLOOCV:
         self.up = self.base.u_positive.T @ self.p
         self.yn = self.base.uty
         self.calls_score = 0
+        self.calls_derivative = 0
 
     def _parts(self, lam: float):
         if np.isnan(lam) or lam < 0:
@@ -117,6 +118,7 @@ class JointMeanPooledLOOCV:
 
     def reset_counts(self):
         self.calls_score = 0
+        self.calls_derivative = 0
 
 
 def estimate_contrast_gaussian_mean(
