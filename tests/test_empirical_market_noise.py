@@ -140,3 +140,24 @@ def test_invalid_difference_order_fails_without_side_effects(tmp_path):
                 ticker="SPY",start="2015-01-01",end="2026-01-01",
                 csv_path=None,cache_dir=tmp_path,refresh=False,
                 out_dir=tmp_path/"out")
+
+
+def test_literal_historical_mean_trend_control_is_constant_and_isolated(tmp_path):
+    cal=synthetic_calibration()
+    for d in (1,2,3):
+        y,tau=draw_pool(cal,n=50,R=3,d=d,sigma_eta=.5,
+                         sigma_epsilon=.3,seed=817,mode="empirical_iid",
+                         trend_kind="constant_mean")
+        assert tau.shape==(3,50)
+        np.testing.assert_allclose(tau,cal.mean)
+        np.testing.assert_allclose(difference_matrix(50,d)@tau[0],0,atol=1e-12)
+    out=tmp_path/"mean_smoke"
+    result=execute(preset="smoke",d=1,sigma_epsilon=.3,source="yfinance",
+                   ticker="SPY",start="2015-01-01",end="2026-01-01",
+                   csv_path=None,cache_dir=tmp_path/"cache",refresh=False,
+                   out_dir=out,trend_kind="constant_mean")
+    saved=json.loads((out/"manifest.json").read_text())
+    assert saved["trend_kind"]=="constant_mean"
+    assert saved["effective_trend_innovation_sd"]==0.
+    assert saved["actual_method_rows"]==16
+    assert result["n_total_R1_and_R3_pools"]==8
