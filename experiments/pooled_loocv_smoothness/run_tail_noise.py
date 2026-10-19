@@ -18,6 +18,7 @@ import csv
 import json
 import platform
 import subprocess
+from math import comb
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -25,7 +26,6 @@ from pathlib import Path
 import numpy as np
 import scipy
 
-from .guerrero_ratio import integrated_trend
 from .objective import PooledLOOCV
 from .search import bounded_brent, multibracket_brent
 from .variance_estimation import estimate_gaussian_differences
@@ -40,12 +40,25 @@ REGIMES = (
     "gaussian_jump_mixture",
     "garch_t5_observation",
     "cauchy_observation",
+    "skew_normal_m6",
+    "skew_normal_m3",
+    "skew_normal_0",
+    "skew_normal_p3",
+    "skew_normal_p6",
 )
 METHODS = (
     "estimated_gaussian_difference_ml",
     "pooled_loocv_bounded_brent",
     "pooled_loocv_multibracket_brent",
 )
+SKEW_NORMAL_ALPHAS = {
+    "skew_normal_m6": -6.0,
+    "skew_normal_m3": -3.0,
+    "skew_normal_0": 0.0,
+    "skew_normal_p3": 3.0,
+    "skew_normal_p6": 6.0,
+}
+DIFFERENCE_ORDERS = (1, 2, 3)
 T3_DF = 3
 T5_DF = 5
 GAMMA_SHAPE = 0.5
@@ -67,8 +80,8 @@ class TailScenario:
     def __post_init__(self):
         if self.regime not in REGIMES:
             raise ValueError("unknown tail-noise regime")
-        if self.n < 12 or self.n % 2 or self.order != 2:
-            raise ValueError("require even N >= 12 and d=2")
+        if self.n < 12 or self.n % 2 or self.order not in DIFFERENCE_ORDERS:
+            raise ValueError("require even N >= 12 and d in {1,2,3}")
         if not np.isfinite(self.noise_scale) or self.noise_scale <= 0:
             raise ValueError("noise scale must be positive and finite")
         if not np.isfinite(self.sigma_epsilon) or self.sigma_epsilon <= 0:
@@ -84,14 +97,56 @@ def _standard_t(rng: np.random.Generator, df: int, n: int):
     return rng.standard_t(df, size=n) * np.sqrt((df - 2.0) / df)
 
 
+def integrate_differences(innovations: np.ndarray, order: int) -> np.ndarray:
+    """Integrate D_d tau = eps exactly, with deterministic polynomial start.
+
+    d=1 has a fixed initial level, d=2 a fixed level and slope, and
+    d=3 three initial polynomial values (zero initial curvature).
+    The method uses integer binomial coefficients, not numerical
+    inverse differencing. Verify D_d @ tau == eps in tests.
+    """
+    if order not in DIFFERENCE_ORDERS:
+        raise ValueError("unsupported difference order")
+    eps = np.asarray(innovations, dtype=float)
+    if eps.ndim != 1 or not np.isfinite(eps).all():
+        raise ValueError("innovations must be a finite vector")
+    n = eps.size + order
+    tau = np.empty(n, dtype=float)
+    tau[:order] = 0.02 * np.arange(order)
+    earlier = np.array([
+        (-1) ** (order - k) * comb(order, k) for k in range(order)
+    ], dtype=float)
+    for j, innovation in enumerate(eps):
+        tau[j + order] = innovation - float(
+            earlier @ tau[j:j + order])
+    return tau
+
+
+def centered_skew_normal(rng: np.random.Generator, n: int,
+                         alpha: float) -> np.ndarray:
+    """Azzalini skew-normal, population-centered and variance-standardized.
+
+    Z = delta |U| + sqrt(1-delta^2) V, delta=alpha/sqrt(1+alpha^2).
+    Subtract E[Z] and divide by sqrt(Var(Z)) analytically; never
+    center/scale each realized sample using its own sample moments.
+    For alpha=0, Z is standard Gaussian in distribution.
+    """
+    delta = alpha / np.sqrt(1.0 + alpha**2)
+    z = (delta * np.abs(rng.standard_normal(n)) +
+         np.sqrt(1.0 - delta**2) * rng.standard_normal(n))
+    mu = delta * np.sqrt(2.0 / np.pi)
+    variance = 1.0 - 2.0 * delta**2 / np.pi
+    return (z - mu) / np.sqrt(variance)
+
+
 def draw_one(sc: TailScenario, rng: np.random.Generator):
     """Independent trend/observation-noise mechanisms, returns y,tau,eta."""
     n = sc.n
     if sc.regime == "student_t3_innovation":
-        eps = sc.sigma_epsilon * _standard_t(rng, T3_DF, n - 2)
+        eps = sc.sigma_epsilon * _standard_t(rng, T3_DF, n - sc.order)
     else:
-        eps = sc.sigma_epsilon * rng.standard_normal(n - 2)
-    tau = integrated_trend(eps, order=2, intercept=0., slope=.02)
+        eps = sc.sigma_epsilon * rng.standard_normal(n - sc.order)
+    tau = integrate_differences(eps, sc.order)
 
     if sc.regime == "student_t3_observation":
         eta = sc.noise_scale * _standard_t(rng, T3_DF, n)
@@ -119,6 +174,9 @@ def draw_one(sc: TailScenario, rng: np.random.Generator):
                         (eta[t-1] / sc.noise_scale)**2 +
                         GARCH_BETA * h[t-1])
             eta[t] = sc.noise_scale * np.sqrt(h[t]) * standardized[t]
+    elif sc.regime in SKEW_NORMAL_ALPHAS:
+        eta = sc.noise_scale * centered_skew_normal(
+            rng, n, SKEW_NORMAL_ALPHAS[sc.regime])
     elif sc.regime == "cauchy_observation":
         # noise_scale = CAUCHY SCALE gamma; it is *not* a SD.
         eta = sc.noise_scale * rng.standard_cauchy(n)
@@ -142,9 +200,11 @@ def draw_pool(sc: TailScenario, r: int, seed: int):
 
 def design(preset: str):
     if preset == "smoke":
-        return [TailScenario(regime, 24, 0.5) for regime in REGIMES], 1, (1, 3), 31
+        return [TailScenario(regime, 24, 0.5, order=d)
+                for regime in REGIMES for d in DIFFERENCE_ORDERS], 1, (1, 3), 31
     if preset in ("pilot", "confirmatory"):
-        cells = [TailScenario(regime, n, scale) for regime in REGIMES
+        cells = [TailScenario(regime, n, scale, order=d)
+                 for regime in REGIMES for d in DIFFERENCE_ORDERS
                  for n in (50, 200) for scale in (0.5, 2.0)]
         return cells, (5 if preset == "pilot" else 100), (1, 3), 81
     raise ValueError("unknown preset")
@@ -181,7 +241,8 @@ def compare_pool(sc: TailScenario, y: np.ndarray, truth: np.ndarray,
         residual = obj.trend(lam) - truth
         abs_err = np.abs(residual)
         rows.append({
-            "regime": sc.regime, "N": sc.n, "R": obj.r,
+            "regime": sc.regime, "N": sc.n, "d": sc.order, "R": obj.r,
+            "skew_normal_alpha": SKEW_NORMAL_ALPHAS.get(sc.regime, float("nan")),
             "noise_scale": sc.noise_scale,
             "noise_scale_semantics": (
                 "cauchy_scale_gamma" if not sc.observation_variance_exists
@@ -243,11 +304,38 @@ def summarize(rows: list[dict]):
                 } for m in METHODS
             },
         }
+    by_d = {}
+    for order in DIFFERENCE_ORDERS:
+        subset = [p for p in pools.values()
+                  if p[METHODS[0]]["R"] == 3 and p[METHODS[0]]["d"] == order]
+        by_d[str(order)] = {
+            "pool_count": len(subset),
+            "by_regime": {
+                regime: {
+                    "pool_count": len([
+                        p for p in subset if p[METHODS[0]]["regime"] == regime]),
+                    "median_realized_MSE_by_method": {
+                        method: float(np.median([
+                            p[method]["realized_true_trend_MSE"]
+                            for p in subset if p[METHODS[0]]["regime"] == regime]))
+                        for method in METHODS
+                    },
+                    "median_absolute_error_by_method": {
+                        method: float(np.median([
+                            p[method]["realized_median_absolute_trend_error"]
+                            for p in subset if p[METHODS[0]]["regime"] == regime]))
+                        for method in METHODS
+                    },
+                }
+                for regime in REGIMES
+            },
+        }
     return {
         "status": "descriptive_only_no_independent_confirmation",
         "total_nested_pools": len(pools),
         "primary_R3_pools": sum(p[METHODS[0]]["R"] == 3 for p in pools.values()),
         "by_regime_R3": results,
+        "by_difference_order_R3": by_d,
         "Cauchy_warning": (
             "Cauchy scale is not a standard deviation: no finite "
             "population noise variance, no Guerrero variance ratio, "
@@ -272,14 +360,18 @@ def execute(preset: str, out: Path, dry_run: bool = False):
         "rng": "numpy.random.default_rng", "base_seed": base,
         "seed_formula": "base_seed + scenario_id*10000 + replicate",
         "scenario_count": len(scenarios),
-        "scenario_grid": [{"regime": s.regime, "N": s.n,
+        "scenario_grid": [{"regime": s.regime, "N": s.n, "d": s.order,
+                           "skew_normal_alpha": SKEW_NORMAL_ALPHAS.get(s.regime),
                            "noise_scale": s.noise_scale,
                            "scale_is_population_SD": s.observation_variance_exists,
                            "sigma_epsilon": s.sigma_epsilon} for s in scenarios],
         "replicates_per_scenario": repeats, "R_values": list(sizes),
-        "nested_R1_in_R3": True, "d": 2,
+        "nested_R1_in_R3": True, "difference_orders": list(DIFFERENCE_ORDERS),
+        "difference_order_matches_trend_generator": True,
+        "skew_normal_alphas": SKEW_NORMAL_ALPHAS,
         "methods": list(METHODS), "ml_profile_scan_points": scan,
         "Student_t3_df": T3_DF, "Student_t5_df": T5_DF,
+        "skew_normal_centered_by_population_formula": True,
         "Gamma_shape": GAMMA_SHAPE, "Gamma_center_scale":
             "(X-shape)/sqrt(shape), sign flipped for left skew",
         "jump_probability": JUMP_PROBABILITY,
@@ -319,6 +411,7 @@ def execute(preset: str, out: Path, dry_run: bool = False):
         "status": manifest["status"], "scenarios": len(scenarios),
         "pools": summary["total_nested_pools"], "method_rows": len(rows),
         "by_regime_R3": summary["by_regime_R3"],
+        "by_difference_order_R3": summary["by_difference_order_R3"],
         "output": str(out),
     }, indent=2))
     return summary
