@@ -112,7 +112,7 @@ Our implementation computes this ratio spectrally and evaluates the \(\lambda=0\
 
 **Critical differentiation:** the pooled joint fitted \(\widehat\mu_\lambda\) is not Guerrero's simple observed-difference plug-in except in a special limit, and not the completed-origin \(h\)-step forecast-CV profiler from the fourth working paper. Dedicated regression tests compare this PRESS formula numerically to **explicit deletion and refitting of every trend and the common \(\mu\)**.
 
-## 5. Seven comparisons, four feasible in practice
+## 5. Eight comparisons, five feasible in practice
 
 | Name in result CSV | \(\mu\) used | \(\lambda\) selection | Status |
 |---|---|---|---|
@@ -124,13 +124,13 @@ Our implementation computes this ratio spectrally and evaluates the \(\lambda=0\
 | `estimated_mu_gaussian_gls_ml` | GLS profile \(\widehat\mu\) | joint Gaussian differenced ML of a,b,mu | feasible, full-data fit |
 | `estimated_mu_fold_clean_pooled_loocv` | common pooled jointly penalized \(\widehat\mu_\lambda\) | optimize **exact fold-reestimated** PRESS over lambda | feasible, honest LOOCV selector |
 
-**Important metric boundary:** true latent reconstruction MSE is computed identically for all seven methods and directly comparable within the *same simulated pool*. For the full-data GLS \(\widehat\mu\), a PRESS score computed while freezing that *all-data-estimated* mean is **NOT a valid fully refitted LOOCV score**. The results label that score `frozen_full_data_estimated_mu_PRESS_diagnostic_NOT_CV`; never use it to claim one method has lower honest CV. The exact fold-clean score for the `estimated_mu_fold_clean_pooled_loocv` method is separately marked `exact_fold_reestimated_mu_PRESS`. The oracle supplied mean is external/fixed and legitimately remains the same within folds.
+**Important metric boundary:** true latent reconstruction MSE is computed identically for all eight methods and directly comparable within the *same simulated pool*. For the full-data GLS \(\widehat\mu\), a PRESS score computed while freezing that *all-data-estimated* mean is **NOT a valid fully refitted LOOCV score**. The results label that score `frozen_full_data_estimated_mu_PRESS_diagnostic_NOT_CV`; never use it to claim one method has lower honest CV. The exact fold-clean score for the `estimated_mu_fold_clean_pooled_loocv` method is separately marked `exact_fold_reestimated_mu_PRESS`. The oracle supplied mean is external/fixed and legitimately remains the same within folds. The pooled Guerrero-style plug-in estimates μ using ALL data and then fits covariance-ML conditional on μ; any frozen-μ PRESS shown for this hybrid is **diagnostic, not deletion-honest**, just like the full-data GLS mean's diagnostic.
 
 ## 6. Locked exploratory campaign
 
-- **Automatic CI tiny smoke only:** N=24, eta SD 0.5, eps SD 0.3, mean factors -1/0/+1, one seed, nested R1/3: **6 pools × 7 = 42 method rows**. Smoke includes exact-fold-vs-direct-refit verification tests. The CI must NEVER run the pilot/confirmatory datasets automatically.
-- **Manual exploratory pilot:** N∈{50,200}, eta SD∈{0.5,2.0}, eps SD 0.3, mean factors \(-1,-0.25,0,0.25,1\), five seeds per cell, nested R1/3: **20 scenarios ×5 seeds ×2 R=200 pools, 1,400 method rows**, 100 independent R3 primary pools, R1 nested. Each different mu factor shares underlying innovation/error noise at the same N, eta, seed.
-- **Prospective confirmatory (NOT run):** same 20 cells with 100 new independent random seeds each, 4,000 nested pools, 28,000 method rows. Run only after auditing pilot, fixing comparisons, uncertainty method and computational costs.
+- **Automatic CI tiny smoke only:** N=24, eta SD 0.5, eps SD 0.3, mean factors -1/0/+1, one seed, nested R1/3: **6 pools × 8 = 48 method rows**. Smoke includes exact-fold-vs-direct-refit verification tests. The CI must NEVER run the pilot/confirmatory datasets automatically.
+- **Manual exploratory pilot:** N∈{50,200}, eta SD∈{0.5,2.0}, eps SD 0.3, mean factors \(-1,-0.25,0,0.25,1\), five seeds per cell, nested R1/3: **20 scenarios ×5 seeds ×2 R=200 pools, 1,600 method rows**, 100 independent R3 primary pools, R1 nested. Each different mu factor shares underlying innovation/error noise at the same N, eta, seed.
+- **Prospective confirmatory (NOT run):** same 20 cells with 100 new independent random seeds each, 4,000 nested pools, 32,000 method rows. Run only after auditing pilot, fixing comparisons, uncertainty method and computational costs.
 
 `numpy.random.default_rng` base seed 69000000 for smoke/pilot, base 70000000 for fresh confirmatory, seed formula `base+N_index*10000+sigma_eta_index*1000+replicate`. Each scenario's N, noise SDs, d, true mu, true ratio, seed and selected variance estimates are retained in manifest and per-method CSV. Results **not** committed until user executes the full exploratory pilot.
 
