@@ -1,5 +1,8 @@
 # Working Paper — Numerical Optimization of Pooled LOOCV Smoothness
 
+> **LECTURE V2 COMPLETED AS EDITABLE SOURCE (2026-10-19):** [187-slide master Marp deck](presentation/002_process_diversity_lecture_v2.md), [V2 authoring/source note](presentation/V2_NOTES.md) and 11 new data-backed SVG plots preserve V1. Includes rigorous theorem/proof appendices, complete 198 mean-risk rows and 99 pooling results. [Generator](presentation/generate_v2_figures.mjs) reproduces plots; [optional one-seed criterion exporter](presentation/export_v2_criterion_examples.py) is implemented but NOT run. Run check_deck.py --version v2. Full rendered PDF/HTML/PPTX and clipping check remain user-local; raw thousand-seed files remain locally backed up, not Git. No PR/main changes.
+
+
 > **COMPLETED TEACHING ARTIFACT — 2026-10-19:** [92-slide source-grounded Marp lecture](presentation/001_process_diversity_lecture.md), [build README and source provenance](presentation/README.md), [presenter guide](presentation/PRESENTER_GUIDE.md). From model y=tau+eta and D2 singular penalty through H_lambda, S, pooled nonzero-mu profiling, exact fold-clean LOOCV, GCV/AICc/Gaussian ML, nine gallery processes, 1000-seed Study M.2, paired global Holm, first-series pooling harm, limitations. **12 new tracked SVG lecture figures** with two Node-only deterministic generators; reuses saved 18 gallery PNGs and R1/R3 relative-risk heatmaps. Lightweight CI checks local images and SVG XML. **HTML/PDF/PPTX NOT yet rendered here** (requires user-local Marp CLI/browser); do not claim visual slide export validation. Preserve original studies and raw-shard backup; same research branch, no PR/merge.
 
 
