@@ -19,6 +19,10 @@
 4. `experiments/pooled_loocv_smoothness/run_robustness.py` and dedicated tests.
 5. **Direct branch-only Git changes.** User prohibits PRs: do not open new PRs or merge anything. Keep all substantial simulation campaigns manual and independent from frozen work.
 
+## Current next requested work (2026-10-18)
+
+User requested derivation of Gaussian difference likelihood, separation of observed LOOCV error from latent truth MSE, and exploring Cauchy and financial-style non-Gaussian tails. **Completed:** documented exact implementation in `notes/GAUSSIAN_MLE_AND_LOOCV_EXPLAINED.md`; committed new independent `run_tail_noise.py` with 8 prespecified DGPs and generator tests. **NOT completed:** full 320-pool exploratory pilot, and no Cauchy results have been claimed. Its manual steps, finite-moment vs infinite-moment evaluation semantics and seed grid are in `notes/TAIL_NOISE_PROTOCOL.md`. Update `notes/RESULTS_LEDGER.md` and file a source-linked Markdown results audit after user runs the new pilot and pushes CSV/JSON manifests. Under **no circumstances open a PR** or merge; all edits go directly to branch `paper/pooled-loocv-numerical-optimization`.
+
 ## Non-negotiable identity
 
 **This is NOT the existing forecast-oriented Numerical Methods paper.** It deliberately changes the scientific object to classical *observed-series LOOCV for PLS trend reconstruction*. No future-block loss, no h, no rolling forecast validation, no branches or regime forecasting.
