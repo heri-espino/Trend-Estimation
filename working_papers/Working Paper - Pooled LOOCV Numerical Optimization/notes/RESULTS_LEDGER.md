@@ -37,6 +37,12 @@ Keep different DGPs and estimands separate, even when they share `PooledLOOCV`. 
 - The methods that allow mu shift with the deterministic `mu*p` term are exactly affine-equivariant: invariance of MSE across five mu levels **is an algebraic consequence of how simulations reuse the same random errors**, not replication fivefold.
 - The source's all-data estimated-mu Gaussian or plug-in **frozen-mu PRESS is not valid fold-clean CV**. True latent MSE may be compared across methods, but honest LOOCV metrics must respect deletion/refitting. No independent confirmatory simulations nor real financial tests.
 
+### H: prospective d=1..4, 10,000 independent Gaussian replicates / stratum
+
+| Study | DGP and scientific target | Executed status & exact size | Code and evidence |
+|---|---|---|---|
+| **H. Independent multorder nonzero-mean confirmation** | Fixed analyst order in each individual experiment `d=1,2,3,4`; stochastic (D_d\tau=\mu+\varepsilon), with centered Gaussian eps/eta. N=50,200 and observation SD=.5,2, five paired μ levels, nested R1/3, eight retained comparators. Independent base seeds for each (d,N,SD). Infer *within* d/N/SD from paired reconstruction loss, NOT across incomparable polynomial scales. | **IMPLEMENTED / NOT EXECUTED at 10k scale.** 16 strata × **10,000 independent base shock draws** = 160,000 independent R3 draws. Five μ shifts × two nested R sizes = 1.6M treatment evaluations; **12.8M method rows** if completed. Shard size 100, so 1,600 resumable shards. Tiny CI tests only. | [Full locked four-order protocol](MULTIORDER_10000_SEED_CONFIRMATORY_PROTOCOL.md), [current exact methods/results](HOW_THE_SIMULATION_WORKS_AND_MEASURED_RESULTS.md), runner `run_nonzero_mean_multorder.py`, manual launcher `launch_nonzero_mean_multorder.py`, checked aggregator `aggregate_nonzero_mean_multorder.py`, tests `test_nonzero_mean_multorder.py`. No confirmed source results for H yet. |
+
 ### A/B/C design and seeds, not interchangeable
 
 - A manifest: `results/pooled_loocv_smoothness/pilot/manifest.json`, independent seed offset **100000**, difference order 2, log penalty domain [-20,35], R=1,3, 401-point grid and 101-point derivative scan. Simulation was originally run with NumPy 2.4.6, SciPy 1.17.1 and Python 3.11.16. Verified **160** pooled cases.
@@ -81,6 +87,15 @@ Keep different DGPs and estimands separate, even when they share `PooledLOOCV`. 
 - For the fitted Gaussian common GLS mean, a PRESS score that freezes full-data μ is marked **diagnostic/NOT honest CV**. The proposed joint pooled CV refits μ within each observation deletion using an exact PRESS identity, verified against explicit refit tests.
 - Estimating μ **adds effective degrees of freedom** and changes its statistical interpretation; the previously used normalized S is retained as a nominal common λ coordinate, not true EDF of data-adaptive μ.
 - The prior separate [Mean-Difference Forecasting paper](../../Working%20Paper%20-%20Trend%20Simulation%20and%20Mean-Difference%20Forecasting/README.md) deals with completed h-step *forecast* CV, NOT this retrospective observed-series LOOCV target.
+
+### H operational and inferential safeguards
+
+- **Code/pilot status:** fixed-d2 five-seed G pilot was executed; H's four-order 10k-per-stratum independent confirmation is **planned and implemented but not executed**. Do not confuse G's mean MSE values with large-H findings.
+- H seed base **82100000**, formula `82100000 + d*1000000 + N_index*200000 + eta_index*100000 + replicate`, replicates 0–9999. This excludes G's earlier base 69000000 and tracks 160k distinct (d,N,eta,seed) draws, not 12.8M independent observations.
+- Six shift-equivariant methods are computed once at μ=0 for each seed/R; only forced-zero μ Gaussian/LOOCV are recomputed at other μ values. Tests compare accelerated results to direct existing eight-method computation for d=1..4; this is CPU reuse, not more statistical evidence.
+- Shards default to 100 independent base seeds, emit immutable `method_comparison.csv.gz`, `manifest.json`, `summary.json`. Compact aggregation verifies per-shard SHA256, disjoint seed intervals, one source commit, expected 10k reps **per** cell and matched paired-MSE summaries. Missing shards mark report incomplete.
+- Very high-order (d=4,N=200) has extremely small positive penalty spectrum and huge quartic expected shift. Stable SVD of D and spectral caching were added, but numerical preflight and timing should be checked before launching full large runs. Fitted order is **fixed**, not selected using the known simulated latent truth.
+- Non-Gaussian μ-shift scenarios (t, Gamma/skew, mixture, GARCH, Cauchy robust losses) form a **separate subsequent protocol** after H, not hidden additions to the Gaussian confirmatory family.
 
 ### Remaining decisions
 
