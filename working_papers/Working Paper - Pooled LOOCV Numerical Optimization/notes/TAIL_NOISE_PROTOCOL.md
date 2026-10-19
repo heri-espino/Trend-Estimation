@@ -136,3 +136,16 @@ After a verified pilot, add the small generated files, commit and push to **the 
 Rama Cont, *Empirical properties of asset returns: stylized facts and statistical issues*, Quantitative Finance 1(2), 223–236 (2001), DOI 10.1080/713665670: heavy tails, asymmetry, volatility clustering and nonlinear dependence are established stylized facts of returns. Student-t, skewed families, mixture and volatility dynamics are **motivated** by those properties; this study does **not** claim our 8 exact innovation laws match any specific stock index without a separate observed-return calibration exercise.
 
 Theodossiou, *Financial Data and the Skewed Generalized T Distribution*, Management Science 44(12), 1650–1661 (1998), DOI 10.1287/mnsc.44.12.1650: a literature example treating asymmetry and heavy tails jointly; our centered Gamma is a cheap diagnostic control, **not** the skewed generalized-t estimator of that paper.
+
+
+## Execution addendum after protocol freeze
+
+**Completed pilot**: the full v2 grid was run and results uploaded at \`results/pooled_loocv_smoothness/guerrero/tail_stress/pilot/\`, with manifest creation timestamp 2026-10-19T05:55:02Z. This addendum records execution status *after* the design was fixed, without changing the earlier hypotheses. The source SHA in the manifest is \`c215089c4adb737e5e8ed67ce91237d8961adad9\`; base seed **47800000**, 156 cases, five seeds, nested R1/3, **1,560 pools**, **4,680 complete method rows**.
+
+The separately written [pilot audit](TAIL_NOISE_PILOT_AUDIT_2026-10-18.md) stratifies empirical Gaussian-likelihood vs LOOCV comparisons by d and distribution, isolates Cauchy as an infinite-variance stress test, and records numerical root candidates without overclaiming solver improvement. None of the prospective confirmatory seeds have been executed.
+
+Read the committed CSV without rerunning simulated trends:
+
+    python -m pytest tests/test_guerrero_tail_pilot_audit.py -q
+    python -m experiments.pooled_loocv_smoothness.audit_tail_noise
+    python -m experiments.pooled_loocv_smoothness.audit_tail_noise --figures  # manual plotting only
