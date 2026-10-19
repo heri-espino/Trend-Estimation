@@ -18,10 +18,10 @@
 Let `R` comparable observed series have `N` observations and a preselected order `1 <= d < N`. Let `D=D_d` denote forward differences, `Q=D^T D`, `lambda >= 0` the regularization parameter, and `H_lambda=(I+lambda Q)^(-1)` the zero/fixed-mean smoother. Let `p_t=binom(t,d)` for zero-based indices, so `Dp=1`.
 
 The generating model in the stochastic mean-shift simulations is
-```math
+$$
 D_d\tau^{(r)} = \mu\mathbf 1 + \varepsilon^{(r)},\quad
 y^{(r)} = \tau^{(r)} + \eta^{(r)}.
-```
+$$
 The true *realized* `tau` (including accumulated innovations) exists in synthetic experiments, not in actual financial datasets. Choosing a penalty by noisy-observation CV is not equivalent to minimizing unobserved true-trend reconstruction risk. All comparisons must separate:
 
 - **Statistical selection target:** ordinary pooled leave-one-observation-out CV, GCV, corrected AIC, restricted plug-in BIC, Gaussian contrast ML/quasi-ML, or externally preset smoothness. Controlled smoothness `S=0.5/0.8` is a predeclared policy, **not** optimized likelihood/CV.
@@ -29,11 +29,11 @@ The true *realized* `tau` (including accumulated innovations) exists in syntheti
 - **Numerical algorithm:** one bounded Brent-like search, score-grid multistart refinement, derivative-sign root scans, finite dense grids, restricted exact rational/Sturm isolation. A better *score minimizer* need not have better realized latent MSE.
 
 For R series with jointly fitted one common `mu`, let `T_lambda=QH_lambda`, `b_lambda=T_lambda p`, and `k_lambda=p^T T_lambda p`. The exact total effective degrees of freedom, at finite positive lambda, are
-```math
+$$
 \operatorname{EDF}_{\mathrm{joint}}(\lambda)
 =R\operatorname{tr}(H_\lambda)
 +\lambda\|b_\lambda\|_2^2/k_\lambda .
-```
+$$
 Its infinite-penalty limit is `Rd+1`, versus `Rd` with externally fixed `mu`. The *nominal* normalized smoothness `S=(N-tr H)/(N-d)` is a monotone coordinate for lambda, **not the full pooled joint-model EDF**. Guerrero (2007) already treats `mu != 0`; this is not a discovery of nonzero-difference trends.
 
 ## 2. Executed versus not executed: authoritative provenance
