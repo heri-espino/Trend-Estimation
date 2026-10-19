@@ -173,6 +173,16 @@ def test_full_d4_n200_large_curvature_has_finite_method_scores():
     assert all(np.isfinite(r["realized_true_trend_mse"]) for r in shifted)
     assert all(np.isfinite(r["reported_press_score"]) for r in shifted)
     assert max(abs(r["true_mu"]-sc.mu) for r in shifted) < 1e-10
+    # Spot-check the algebraic speedup against the full direct eight-method
+    # fit at the most numerically delicate d4/N200 polynomial shift.
+    direct={r["method"]:r for r in compare_pool(
+        sc,y+sc.mu*p[None,:],tau+sc.mu*p[None,:])}
+    for row in shifted:
+        method=row["method"]
+        assert row["realized_true_trend_mse"]==pytest.approx(
+            direct[method]["realized_true_trend_mse"],abs=1e-4,rel=1e-4)
+        assert row["reported_press_score"]==pytest.approx(
+            direct[method]["reported_press_score"],abs=1e-4,rel=1e-4)
 
 
 def test_manual_launcher_plans_160k_seeds_and_resume(tmp_path):
