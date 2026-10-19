@@ -147,7 +147,7 @@ def test_method_rows_use_no_truth_in_selection_and_preserve_all_roles():
     y,tau=draw_pool(sc,1,69010000)
     rows=compare_pool(sc,y,tau)
     assert {row["method"] for row in rows}==set(METHODS)
-    assert len(rows)==7
+    assert len(rows)==8
     assert all(np.isfinite(row["realized_true_trend_mse"]) for row in rows)
     by={x["method"]:x for x in rows}
     assert by["estimated_mu_fold_clean_pooled_loocv"][
@@ -155,6 +155,9 @@ def test_method_rows_use_no_truth_in_selection_and_preserve_all_roles():
     assert by["estimated_mu_gaussian_gls_ml"][
         "reported_press_kind"]=="frozen_full_data_estimated_mu_PRESS_diagnostic_NOT_CV"
     assert by["known_mu_true_ratio_oracle"]["estimated_mu"]==sc.mu
+    observed_diff_plugin = float(np.mean(y@difference_matrix(sc.n,2).T))
+    assert by["pooled_guerrero_plugin_mu_plus_gaussian_ml"]["estimated_mu"] == pytest.approx(observed_diff_plugin)
+    assert by["pooled_guerrero_plugin_mu_plus_gaussian_ml"]["reported_press_kind"] == "frozen_full_data_estimated_mu_PRESS_diagnostic_NOT_CV"
 
 
 def test_dry_run_and_smoke_write_immutable_machine_readable_artifacts(tmp_path):
@@ -163,16 +166,16 @@ def test_dry_run_and_smoke_write_immutable_machine_readable_artifacts(tmp_path):
     dry=tmp_path/"dry"
     plan=execute("pilot",dry,dry_run=True)
     assert plan["expected_nested_pools"]==200
-    assert plan["expected_method_rows"]==1400
+    assert plan["expected_method_rows"]==1600
     assert not dry.exists()
     results=tmp_path/"smoke"
     summary=execute("smoke",results)
     assert summary["total_nested_pools"]==6
-    assert summary["total_method_rows"]==42
+    assert summary["total_method_rows"]==48
     with (results/"method_comparison.csv").open(newline="") as f:
         rows=list(csv.DictReader(f))
     manifest=json.loads((results/"manifest.json").read_text())
-    assert len(rows)==manifest["expected_method_rows"]==42
+    assert len(rows)==manifest["expected_method_rows"]==48
     assert manifest["truth_used_in_parameter_tuning"] is False
     assert manifest["order_d_fixed"]==2
     assert {r["method"] for r in rows}==set(METHODS)
