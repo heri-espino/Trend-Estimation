@@ -67,7 +67,8 @@ For R=1 this reduces to traditional single-series LOOCV. Group only statisticall
 15. [Heavy-tail noise protocol](notes/TAIL_NOISE_PROTOCOL.md) — Cauchy, Student-t3, centered Gamma skew, Gaussian jump mixtures, and GARCH-type clustering.
 16. [Completed d=1–3 tail-noise pilot audit](notes/TAIL_NOISE_PILOT_AUDIT_2026-10-18.md) — 4,680 result rows, matched-order comparisons, Cauchy limits, skew-normal and detected roots.
 17. [Empirical market-return Monte Carlo protocol](notes/EMPIRICAL_MARKET_BOOTSTRAP_PROTOCOL.md) — SPY return histogram, iid versus block resampling, fixed analyst d and observed pooled LOOCV.
-18. [Agent handoff](AI_HANDOFF.md).
+18. [Nonzero mean of trend differences](notes/NONZERO_DIFFERENCE_MEAN_PROTOCOL.md) — exact GLS mean profiling and deletion-safe pooled observation LOOCV, including known-mean oracles.
+19. [Agent handoff](AI_HANDOFF.md).
 
 ## Runnable independent pilot
 
@@ -119,6 +120,12 @@ The user correctly specifies **analyst-fixed difference order d**, followed by p
 The **implemented but unexecuted** market-calibrated study uses actual adjusted SPY daily prices (2015–2025) only to infer the **marginal shape of historical log-return shocks**, not a true stock-price trend. It compares matched Gaussian, empirical return bootstrap, and circular block lengths 5/20 on **new synthetic trend-plus-shock series with known conditional mean τ**, R1/3, d=2, N50/200, two standardized noise scales, five seeds: 160 pools, 320 method rows. A second optional **literal mean baseline** is `--trend-kind constant_mean --d 1`: the synthetic return process has fixed conditional mean equal to the historical mean log return, and true trend-innovation variance is zero (a boundary model). It is saved separately, never mixed with the stochastic-trend results. A local cached return snapshot is ignored by Git but hashed in the manifest. A histogram and return/squared-return dependence plot are generated when the user runs the pilot. CI uses only a synthetic fixture. No PR.
 
 `python -m experiments.pooled_loocv_smoothness.run_empirical_market_noise --preset pilot --ticker SPY` is the manual experiment; `python -m pytest tests/test_empirical_market_noise.py -q` verifies the code offline.
+
+## New independent study: allowing a nonzero mean of trend differences
+
+The previous experiments set (E[D_d\tau]=0); [Guerrero (2007) already permits and estimates nonzero difference means](notes/NONZERO_DIFFERENCE_MEAN_PROTOCOL.md). We implemented an **unrun new sensitivity study** for **fixed analyst d=2** with (D_2\tau=\mu\mathbf1+\varepsilon). It compares zero-mean constraints against Gaussian GLS estimation of mu and a fold-clean common-mu pooled LOOCV criterion, and includes oracle true-mu and true-variance comparators. Fitting mu adds effective degrees of freedom; we reestimate it in each training deletion using an exact derived PRESS expression.
+
+Pilot: 20 cells, 5 independent replicate seeds, nested R1/3, **200 pools, 1,400 per-method rows**, seven selectors. The new DGP shares the same random shocks across μ shifts, preserving paired comparison. Manual command: `python -m experiments.pooled_loocv_smoothness.run_nonzero_difference_mean --preset pilot`. Run `tests/test_nonzero_difference_mean_reconstruction.py` and tiny smoke first; CI never runs full pilot. No PRs or merging. This is **retrospective observed-series reconstruction**, not the distinct nonzero-μ horizon-h forecast paper.
 
 ## Separation contract
 
