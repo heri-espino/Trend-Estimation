@@ -1,0 +1,108 @@
+{
+  "rows": 480,
+  "methods": [
+    "estimated_gaussian_difference_ml",
+    "estimated_moments_nnls",
+    "guerrero_known_ratio",
+    "pooled_loocv_bounded_brent"
+  ],
+  "method_labels": {
+    "guerrero_known_ratio": "oracle_true_simulation_variances",
+    "estimated_gaussian_difference_ml": "feasible_difference_covariance_mle",
+    "estimated_moments_nnls": "feasible_nonnegative_two_moment_method",
+    "pooled_loocv_bounded_brent": "feasible_observed_loocv_optimizer"
+  },
+  "by_R": {
+    "1": {
+      "number_pools": 60,
+      "by_method": {
+        "estimated_gaussian_difference_ml": {
+          "mean_observed_loocv_mse": 2.629798153996892,
+          "mean_true_trend_mse": 0.3905601800585245,
+          "median_true_trend_mse": 0.15989875537892617,
+          "mean_absolute_error_sigma_eta2": 0.2852128218066836,
+          "mean_absolute_error_sigma_epsilon2": 0.07243368959983602,
+          "infinite_lambda_count": 1,
+          "zero_lambda_count": 0,
+          "negative_unconstrained_moment_count": 0
+        },
+        "estimated_moments_nnls": {
+          "mean_observed_loocv_mse": 352.9322652490146,
+          "mean_true_trend_mse": 340.6300074541223,
+          "median_true_trend_mse": 0.8687365541237175,
+          "mean_absolute_error_sigma_eta2": 0.4475845806308963,
+          "mean_absolute_error_sigma_epsilon2": 0.7068766298989428,
+          "infinite_lambda_count": 19,
+          "zero_lambda_count": 0,
+          "negative_unconstrained_moment_count": 19
+        },
+        "guerrero_known_ratio": {
+          "mean_observed_loocv_mse": 2.637697616709079,
+          "mean_true_trend_mse": 0.38185014541327184,
+          "median_true_trend_mse": 0.15439573299009635,
+          "mean_absolute_error_sigma_eta2": 0.0,
+          "mean_absolute_error_sigma_epsilon2": 0.0,
+          "infinite_lambda_count": 0,
+          "zero_lambda_count": 0,
+          "negative_unconstrained_moment_count": 0
+        },
+        "pooled_loocv_bounded_brent": {
+          "mean_observed_loocv_mse": 2.6044186520720585,
+          "mean_true_trend_mse": 0.41416423297092864,
+          "median_true_trend_mse": 0.16819596544657284,
+          "mean_absolute_error_sigma_eta2": null,
+          "mean_absolute_error_sigma_epsilon2": null,
+          "infinite_lambda_count": 1,
+          "zero_lambda_count": 0,
+          "negative_unconstrained_moment_count": 0
+        }
+      }
+    },
+    "3": {
+      "number_pools": 60,
+      "by_method": {
+        "estimated_gaussian_difference_ml": {
+          "mean_observed_loocv_mse": 2.6967887320424544,
+          "mean_true_trend_mse": 0.3879155661026364,
+          "median_true_trend_mse": 0.16795248055449352,
+          "mean_absolute_error_sigma_eta2": 0.18810606902535082,
+          "mean_absolute_error_sigma_epsilon2": 0.05609873176684613,
+          "infinite_lambda_count": 0,
+          "zero_lambda_count": 0,
+          "negative_unconstrained_moment_count": 0
+        },
+        "estimated_moments_nnls": {
+          "mean_observed_loocv_mse": 102.0330349764529,
+          "mean_true_trend_mse": 96.12763147441113,
+          "median_true_trend_mse": 0.7701874653701927,
+          "mean_absolute_error_sigma_eta2": 0.2610684864581589,
+          "mean_absolute_error_sigma_epsilon2": 0.502033626450176,
+          "infinite_lambda_count": 16,
+          "zero_lambda_count": 0,
+          "negative_unconstrained_moment_count": 16
+        },
+        "guerrero_known_ratio": {
+          "mean_observed_loocv_mse": 2.6975808593969623,
+          "mean_true_trend_mse": 0.3856726467595351,
+          "median_true_trend_mse": 0.16579246979699927,
+          "mean_absolute_error_sigma_eta2": 0.0,
+          "mean_absolute_error_sigma_epsilon2": 0.0,
+          "infinite_lambda_count": 0,
+          "zero_lambda_count": 0,
+          "negative_unconstrained_moment_count": 0
+        },
+        "pooled_loocv_bounded_brent": {
+          "mean_observed_loocv_mse": 2.6814091525154495,
+          "mean_true_trend_mse": 0.39484765221803125,
+          "median_true_trend_mse": 0.20095508623014108,
+          "mean_absolute_error_sigma_eta2": null,
+          "mean_absolute_error_sigma_epsilon2": null,
+          "infinite_lambda_count": 0,
+          "zero_lambda_count": 0,
+          "negative_unconstrained_moment_count": 0
+        }
+      }
+    }
+  },
+  "warning": "R=1 is nested in R=3 for same seed; 5 seeds/cell are exploratory. Moment estimates can set epsilon variance to zero and cause extreme oversmoothing and huge mean errors. Known ratio is an oracle."
+}

@@ -1,0 +1,108 @@
+{
+  "protocol": "guerrero_feasible_estimated_variance_ratio_v1",
+  "status": "executed",
+  "created_utc": "2026-10-19T02:38:46.208407+00:00",
+  "preset": "pilot",
+  "DGP": "independent Gaussian D_d tau=epsilon and y=tau+eta",
+  "scenarios": [
+    {
+      "n": 50,
+      "sigma_eta": 0.5,
+      "sigma_epsilon": 0.1,
+      "true_lambda": 25.0
+    },
+    {
+      "n": 50,
+      "sigma_eta": 0.5,
+      "sigma_epsilon": 0.3,
+      "true_lambda": 2.777777777777778
+    },
+    {
+      "n": 50,
+      "sigma_eta": 0.5,
+      "sigma_epsilon": 1.0,
+      "true_lambda": 0.25
+    },
+    {
+      "n": 50,
+      "sigma_eta": 2.0,
+      "sigma_epsilon": 0.1,
+      "true_lambda": 400.0
+    },
+    {
+      "n": 50,
+      "sigma_eta": 2.0,
+      "sigma_epsilon": 0.3,
+      "true_lambda": 44.44444444444445
+    },
+    {
+      "n": 50,
+      "sigma_eta": 2.0,
+      "sigma_epsilon": 1.0,
+      "true_lambda": 4.0
+    },
+    {
+      "n": 200,
+      "sigma_eta": 0.5,
+      "sigma_epsilon": 0.1,
+      "true_lambda": 25.0
+    },
+    {
+      "n": 200,
+      "sigma_eta": 0.5,
+      "sigma_epsilon": 0.3,
+      "true_lambda": 2.777777777777778
+    },
+    {
+      "n": 200,
+      "sigma_eta": 0.5,
+      "sigma_epsilon": 1.0,
+      "true_lambda": 0.25
+    },
+    {
+      "n": 200,
+      "sigma_eta": 2.0,
+      "sigma_epsilon": 0.1,
+      "true_lambda": 400.0
+    },
+    {
+      "n": 200,
+      "sigma_eta": 2.0,
+      "sigma_epsilon": 0.3,
+      "true_lambda": 44.44444444444445
+    },
+    {
+      "n": 200,
+      "sigma_eta": 2.0,
+      "sigma_epsilon": 1.0,
+      "true_lambda": 4.0
+    }
+  ],
+  "seeds_per_cell": 5,
+  "pool_sizes": [
+    1,
+    3
+  ],
+  "total_pools": 120,
+  "methods": [
+    "guerrero_known_ratio",
+    "estimated_gaussian_difference_ml",
+    "estimated_moments_nnls",
+    "pooled_loocv_bounded_brent"
+  ],
+  "seed_base": 20262000,
+  "git_sha": "faed2982df59f1fdc7033603aa46a2bf8d5b5f04",
+  "python": "3.11.16",
+  "numpy": "2.4.6",
+  "scipy": "1.17.1",
+  "interpretive_limits": [
+    "Known Guerrero ratio is an oracle using true DGP variances.",
+    "Gaussian variance components maximize marginal likelihood of D_d y, not y.",
+    "Moment NNLS estimate may lie on boundary, causing catastrophic over-smoothing.",
+    "One-shot Brent is local; does not guarantee global LOOCV minimum.",
+    "R=1 and R=3 at matching seed are nested and not independent.",
+    "Scale experiment rescales the same path, not independent draws.",
+    "No financial data, predictions or future values are used."
+  ],
+  "rows_written": 480
+}
