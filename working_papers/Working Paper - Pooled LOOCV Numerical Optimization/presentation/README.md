@@ -5,9 +5,9 @@
 **Branch:** paper/pooled-loocv-numerical-optimization.  
 **Markdown:** [001_process_diversity_lecture.md](001_process_diversity_lecture.md).
 
-This is a **full, source-grounded lecture** from the observation model, matrix penalty, normal equations, eigenvalues and degrees of freedom, through pooled exact deletion-honest CV, GCV, AICc, Gaussian covariance ML, nine data-generating processes, and the completed 1,000-seed Study M.2 results. It distinguishes **retrospective reconstruction** from future forecasting throughout.
+See also the [presenter guide with explanations and class exercises](PRESENTER_GUIDE.md). This is a **full, source-grounded lecture** from the observation model, matrix penalty, normal equations, eigenvalues and degrees of freedom, through pooled exact deletion-honest CV, GCV, AICc, Gaussian covariance ML, nine data-generating processes, and the completed 1,000-seed Study M.2 results. It distinguishes **retrospective reconstruction** from future forecasting throughout.
 
-The authored deck contains **89 slides, 28 inserted image references / 25 distinct image assets**, including **12 newly designed lecture SVGs**, saved one-seed process graphics and previously audited R1/R3 excess-risk heatmaps. It has explicit worked formulas, experimental tables, interpretation, pooling contrasts, discussion questions and methodological limitations. The two heatmaps and single-seed trajectories are reused without changing the historical result source files. Source-specific findings are in [the completed M.2 analysis](../notes/STUDY_M2_1000_SEED_PROCESS_RESULTS_2026-10-19.md).
+The authored deck contains **92 slides, 28 inserted image references / 25 distinct image assets**, including **12 newly designed lecture SVGs**, saved one-seed process graphics and previously audited R1/R3 excess-risk heatmaps. It also has three intermediate derivation slides (pooled mean profiling, low-rank EDF and fold-clean PRESS), and explicit worked formulas, experimental tables, interpretation, pooling contrasts, discussion questions and methodological limitations. The two heatmaps and single-seed trajectories are reused without changing the historical result source files. Source-specific findings are in [the completed M.2 analysis](../notes/STUDY_M2_1000_SEED_PROCESS_RESULTS_2026-10-19.md).
 
 ## Rendering (PowerShell from repository root)
 
