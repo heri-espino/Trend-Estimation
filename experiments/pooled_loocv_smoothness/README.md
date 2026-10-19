@@ -275,3 +275,26 @@ python -m experiments.pooled_loocv_smoothness.run_cortes_criteria_case --regime 
 ```
 
 No full 192×25-case criterion comparison or 10k replication was run or added to CI. Avoid all-data estimated μ frozen inside purported deletion-clean CV (data leakage); true μ externally fixed is an infeasible oracle. Numerical Brent minima are not global certificates. Distinguish empirical smoothing percentage from latent realized trend MSE and the 2017 original study's attained-smoothness response.
+
+
+### K.1 paired 25-seed J-pilot replay — READY, NOT RUN
+
+One user-run case (Gaussian d2/N50/R3/positive mu, seed 128000000) completed: 18 new policies+8 old, `cv_zero_multibracket` smallest true-trend MSE **in that single draw only**. Full [prespecified 26-method same-seed protocol](../../working_papers/Working%20Paper%20-%20Pooled%20LOOCV%20Numerical%20Optimization/notes/CORTES_TOTO_PAIRED_25_SEED_REPLAY_PROTOCOL_2026-10-19.md) combines original four criteria/controlled smoothness, μ modes zero/joint/true known oracle and the old eight selectors. It replays the **exact original J 25 seeds ×192 strata**, so **4,800 REUSED independent shock draws** (not new cohorts), 48k paired/nested treatment pools and 1.248M compressed method rows. The new manual-only launcher skips checksum-verified matching complete shards and rejects mixed source/solver and seed overlap. The aggregator verifies complete method/pair coverage, SHA256, seed intervals, and **parity of prior-eight-method mean-MSE with original uploaded Study J pilot** before claiming full completion.
+
+```powershell
+conda activate trend-estimation
+git switch paper/pooled-loocv-numerical-optimization
+git pull --ff-only
+python -m pytest tests/test_cortes_criteria_paired_pilot.py -q
+python -m experiments.pooled_loocv_smoothness.launch_cortes_criteria_pilot --workers 32
+python -m experiments.pooled_loocv_smoothness.launch_cortes_criteria_pilot --regime gaussian_iid --d 2 --n 50 --sigma-eta 0.5 --stop 1 --workers 1 --root results/pooled_loocv_smoothness/guerrero/cortes_criteria_replay/preflight_gaussian_d2 --execute
+python -m experiments.pooled_loocv_smoothness.launch_cortes_criteria_pilot --regime student_t3_observation --d 4 --n 200 --sigma-eta 2 --stop 1 --workers 1 --root results/pooled_loocv_smoothness/guerrero/cortes_criteria_replay/preflight_t3_d4 --execute
+$env:OPENBLAS_NUM_THREADS="1"
+$env:MKL_NUM_THREADS="1"
+$env:OMP_NUM_THREADS="1"
+$env:NUMEXPR_NUM_THREADS="1"
+python -m experiments.pooled_loocv_smoothness.launch_cortes_criteria_pilot --workers 32 --execute
+python -m experiments.pooled_loocv_smoothness.aggregate_cortes_criteria_pilot --require-complete --verify-digests --out-dir results/pooled_loocv_smoothness/guerrero/cortes_criteria_replay/audit_pilot_001
+```
+
+**Do not run on push**, commit only the compact `audit_pilot_001/` three files after independent complete audit. Source gzip shards excluded from Git and must be backed up locally. Expected 49,920 per-method compact aggregates and 80,640 paired effects. Cauchy excluded; Student-t3 sample mean MSE normal confidence intervals not guaranteed; BIC is constrained logRSS positive-domain benchmark, **not a globally defined BIC minimum**.
