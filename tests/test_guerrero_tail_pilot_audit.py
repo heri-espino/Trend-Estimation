@@ -1,10 +1,11 @@
 """Independent audit regression tests for uploaded 13-regime x 3-order pilot."""
 
 from pathlib import Path
+import json
 
 import pytest
 
-from experiments.pooled_loocv_smoothness.audit_tail_noise import read_pools, summarize
+from experiments.pooled_loocv_smoothness.audit_tail_noise import execute, read_pools, summarize
 
 
 BASE = Path("results/pooled_loocv_smoothness/guerrero/tail_stress/pilot")
@@ -74,3 +75,21 @@ def test_rejects_corrupted_csv_without_all_three_methods(tmp_path):
         '"expected_pools":1}', encoding="utf-8")
     with pytest.raises(ValueError, match="all three"):
         read_pools(data, manifest)
+
+
+
+def test_uploaded_pilot_full_audit_json_csv_export(tmp_path):
+    """Exercise actual artifact writer, not just intermediate dictionaries."""
+    csv_path = BASE / "method_comparison.csv"
+    manifest_path = BASE / "manifest.json"
+    if not csv_path.is_file() or not manifest_path.is_file():
+        pytest.skip("Uploaded pilot is not available in this checkout")
+    summary = execute(csv_path, manifest_path, tmp_path, figures=False)
+    saved = json.loads((tmp_path / "audit_summary.json").read_text())
+    assert summary["primary_R3_pools"] == 780
+    assert saved["primary_R3_pools"] == 780
+    assert (tmp_path / "R3_by_d_distribution.csv").is_file()
+    assert (tmp_path / "R3_by_scenario.csv").is_file()
+    assert (tmp_path / "paired_pool_diagnostics.csv").is_file()
+    assert saved["Cauchy_primary_R3"]["ML_infinite_lambda_count"] == 27
+    assert saved["Cauchy_primary_R3"]["LOOCV_infinite_lambda_count"] == 8
