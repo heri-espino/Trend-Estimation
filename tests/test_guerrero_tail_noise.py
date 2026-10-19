@@ -151,3 +151,15 @@ def test_invalid_config_rejected():
         TailScenario("gaussian_iid", 24, 1., order=4)
     with pytest.raises(ValueError):
         draw_pool(TailScenario("gaussian_iid", 24, 1.), 0, seed=1)
+
+
+def test_d3_n200_uses_full_positive_spectrum_and_finite_smoother():
+    """Guard high-order conditioning at the longest planned sample size."""
+    from experiments.pooled_loocv_smoothness.objective import PooledLOOCV
+    sc = TailScenario("skew_normal_p6", 200, 2.0, order=3)
+    y, truth = draw_pool(sc, r=3, seed=6901)
+    smoother = PooledLOOCV(y, order=3)
+    assert smoother.eigenvalues.size == 197
+    assert np.isfinite(smoother.score(10.0))
+    assert np.all(np.isfinite(smoother.trend(10.0)))
+    assert float(np.mean((smoother.trend(10.0) - truth)**2)) >= 0
