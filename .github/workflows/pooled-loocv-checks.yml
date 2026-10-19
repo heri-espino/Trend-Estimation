@@ -15,6 +15,7 @@ on:
       - "tests/test_empirical_market_noise.py"
       - "tests/test_nonzero_difference_mean_reconstruction.py"
       - "tests/test_nonzero_mean_multorder.py"
+      - "tests/test_multorder_confirmatory_aggregate.py"
       - ".github/workflows/pooled-loocv-checks.yml"
   pull_request:
     paths:
@@ -44,7 +45,7 @@ jobs:
       - name: Install lightweight test dependencies
         run: python -m pip install -e ".[dev,symbolic]"
       - name: Run isolated mathematical and numerical tests
-        run: python -m pytest tests/test_pooled_loocv_smoothness.py tests/test_guerrero_ratio_pooled_loocv.py tests/test_guerrero_variance_estimation.py tests/test_estimated_variance_audit.py tests/test_guerrero_robustness.py tests/test_guerrero_robustness_audit.py tests/test_guerrero_tail_noise.py tests/test_guerrero_tail_pilot_audit.py tests/test_empirical_market_noise.py tests/test_nonzero_difference_mean_reconstruction.py tests/test_nonzero_mean_multorder.py -q
+        run: python -m pytest tests/test_pooled_loocv_smoothness.py tests/test_guerrero_ratio_pooled_loocv.py tests/test_guerrero_variance_estimation.py tests/test_estimated_variance_audit.py tests/test_guerrero_robustness.py tests/test_guerrero_robustness_audit.py tests/test_guerrero_tail_noise.py tests/test_guerrero_tail_pilot_audit.py tests/test_empirical_market_noise.py tests/test_nonzero_difference_mean_reconstruction.py tests/test_nonzero_mean_multorder.py tests/test_multorder_confirmatory_aggregate.py -q
       - name: Confirm campaign preview without simulations
         run: python -m experiments.pooled_loocv_smoothness.run --preset pilot --dry-run
       - name: Execute tiny smoke and validate exported artifacts
@@ -97,6 +98,12 @@ jobs:
         run: |
           python -m experiments.pooled_loocv_smoothness.run_nonzero_mean_multorder --d 4 --n 200 --sigma-eta 2 --start-replicate 0 --count 100 --dry-run > /tmp/multorder-d4-design.json
           test -s /tmp/multorder-d4-design.json
+      - name: Independently audit committed 160k Gaussian confirmatory aggregates (no Monte Carlo)
+        run: |
+          python -m experiments.pooled_loocv_smoothness.audit_multorder_confirmatory --out-dir /tmp/multorder-confirmatory-audit > /tmp/multorder-confirmatory-audit-report.json
+          test -s /tmp/multorder-confirmatory-audit/R3_with_paired_95pct_CIs.csv
+          test -s /tmp/multorder-confirmatory-audit/R1_with_paired_95pct_CIs.csv
+          test -s /tmp/multorder-confirmatory-audit/audit_summary.json
       - name: Verify misspecified-noise robustness smoke
         run: |
           python -m experiments.pooled_loocv_smoothness.run_robustness --preset smoke --out-dir /tmp/guerrero-robustness-smoke
