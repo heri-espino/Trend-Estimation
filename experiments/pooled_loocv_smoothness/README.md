@@ -235,3 +235,27 @@ python -m experiments.pooled_loocv_smoothness.audit_multorder_confirmatory
 ```
 
 The non-Gaussian × nonzero-mean follow-up has NOT been executed. Keep all original raw compressed shards backed up outside the university VM before deletion; only compact aggregate statistics and SHA provenance are in the repository.
+
+
+## Study J: non-Gaussian shocks AND nonzero difference mean (implemented, unrun)
+
+Read the full [prespecified independent protocol](../../working_papers/Working%20Paper%20-%20Pooled%20LOOCV%20Numerical%20Optimization/notes/NONGAUSSIAN_NONZERO_MU_PROTOCOL_2026-10-19.md). This experiment deliberately **does not overwrite** the completed 160k-Gaussian-shock campaign or earlier 13-regime nonGaussian tail pilot. Twelve **finite-variance** regimes retained exactly from `run_tail_noise.py`, with d1–4 (including d4), N50/200, eta population SD=.5/2, sigma eps .3, five paired `mu/epsSD` shifts, R1 nested in R3 and eight estimators. Gaussian contrast fitting under nonGaussianity is **quasi-ML**; t3 has infinite fourth moment so normal-approx MSE CI is not valid without further analysis. **Cauchy is NOT part of a true-variance-ratio or mean-square-risk comparison**; its robust-risk extension comes later.
+
+```powershell
+conda activate trend-estimation
+git switch paper/pooled-loocv-numerical-optimization
+git pull --ff-only
+python -m pytest tests/test_nonzero_mu_nongaussian.py -q
+python -m experiments.pooled_loocv_smoothness.launch_nonzero_mu_nongaussian --phase pilot --workers 32
+# Tiny 2-seed d4 stress test in a directory ISOLATED from full pilot:
+python -m experiments.pooled_loocv_smoothness.launch_nonzero_mu_nongaussian --phase pilot --regime student_t3_observation --d 4 --n 200 --sigma-eta 2 --seed-stop 2 --workers 1 --root results/pooled_loocv_smoothness/guerrero/nonzero_mu_nongaussian/preflight_t3_d4 --execute
+# After checking preflight, user-triggered complete 25-seed exploratory pilot:
+$env:OPENBLAS_NUM_THREADS="1"
+$env:MKL_NUM_THREADS="1"
+$env:OMP_NUM_THREADS="1"
+$env:NUMEXPR_NUM_THREADS="1"
+python -m experiments.pooled_loocv_smoothness.launch_nonzero_mu_nongaussian --phase pilot --workers 32 --execute
+python -m experiments.pooled_loocv_smoothness.aggregate_nonzero_mu_nongaussian --phase pilot --require-complete --verify-digests --out-dir results/pooled_loocv_smoothness/guerrero/nonzero_mu_nongaussian/audit_pilot_001
+```
+
+The manual pilot has 192 finite-variance base cells ×25 fresh seeds = **4,800 independent R3 base shock draws / 384,000 per-method records**. The later **10,000 entirely new independent seeds per each cell** means **1.92M base draws / 153.6M method records**, needing much more storage and manual CPU time; **not automatically executed or claimed complete**. `--execute` is mandatory for simulations, `--workers` controls process count; resume verifies exact source SHA, disjoint seed intervals and gzip SHA256. Raw `pilot/`, `confirmatory/`, isolated `preflight_*/` folders are excluded from Git; commit only SHA-verified `audit_*/` CSV/JSON aggregates after local execution, preserving raw shards externally.
