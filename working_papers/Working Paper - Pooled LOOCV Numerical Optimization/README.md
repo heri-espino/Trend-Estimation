@@ -68,7 +68,8 @@ For R=1 this reduces to traditional single-series LOOCV. Group only statisticall
 16. [Completed d=1–3 tail-noise pilot audit](notes/TAIL_NOISE_PILOT_AUDIT_2026-10-18.md) — 4,680 result rows, matched-order comparisons, Cauchy limits, skew-normal and detected roots.
 17. [Empirical market-return Monte Carlo protocol](notes/EMPIRICAL_MARKET_BOOTSTRAP_PROTOCOL.md) — SPY return histogram, iid versus block resampling, fixed analyst d and observed pooled LOOCV.
 18. [Nonzero mean of trend differences](notes/NONZERO_DIFFERENCE_MEAN_PROTOCOL.md) — exact GLS mean profiling and deletion-safe pooled observation LOOCV, including known-mean oracles.
-19. [Agent handoff](AI_HANDOFF.md).
+19. [Executed nonzero-mean pilot audit](notes/NONZERO_DIFFERENCE_MEAN_PILOT_AUDIT_2026-10-19.md) — 1,600 saved method rows, paired observed mean-shift effects, eight baselines and two committed figures.
+20. [Agent handoff](AI_HANDOFF.md).
 
 ## Runnable independent pilot
 
@@ -123,9 +124,9 @@ The **implemented but unexecuted** market-calibrated study uses actual adjusted 
 
 ## New independent study: allowing a nonzero mean of trend differences
 
-The previous experiments set (E[D_d\tau]=0); [Guerrero (2007) already permits and estimates nonzero difference means](notes/NONZERO_DIFFERENCE_MEAN_PROTOCOL.md). We implemented an **unrun new sensitivity study** for **fixed analyst d=2** with (D_2\tau=\mu\mathbf1+\varepsilon). It compares zero-mean constraints against Gaussian GLS estimation of mu and a fold-clean common-mu pooled LOOCV criterion, and includes oracle true-mu and true-variance comparators. Fitting mu adds effective degrees of freedom; we reestimate it in each training deletion using an exact derived PRESS expression.
+The previous experiments set (E[D_d\tau]=0); [Guerrero (2007) already permits and estimates nonzero difference means](notes/NONZERO_DIFFERENCE_MEAN_PROTOCOL.md). We implemented and executed an **exploratory sensitivity study** for **fixed analyst d=2** with (D_2\tau=\mu\mathbf1+\varepsilon). It compares zero-mean constraints against Gaussian GLS estimation of mu and a fold-clean common-mu pooled LOOCV criterion, and includes oracle true-mu and true-variance comparators. Fitting mu adds effective degrees of freedom; we reestimate it in each training deletion using an exact derived PRESS expression.
 
-Pilot: 20 cells, five seeds per N×noise group, nested R1/3, **200 treatment pools (20 independent underlying shock streams), 1,600 per-method rows**, eight selectors. The new DGP shares the same random shocks across μ shifts, preserving paired comparison. Manual command: `python -m experiments.pooled_loocv_smoothness.run_nonzero_difference_mean --preset pilot`. Run `tests/test_nonzero_difference_mean_reconstruction.py` and tiny smoke first; CI never runs full pilot. No PRs or merging. This is **retrospective observed-series reconstruction**, not the distinct nonzero-μ horizon-h forecast paper.
+Pilot: 20 cells, five seeds per N×noise group, nested R1/3, **200 treatment pools (20 independent underlying shock streams), 1,600 per-method rows**, eight selectors. The new DGP shares the same random shocks across μ shifts, preserving paired comparison. **The full pilot is uploaded**; see the [measured analysis](notes/NONZERO_DIFFERENCE_MEAN_PILOT_AUDIT_2026-10-19.md). Manual reproducibility command: `python -m experiments.pooled_loocv_smoothness.run_nonzero_difference_mean --preset pilot`. Run `tests/test_nonzero_difference_mean_reconstruction.py` and tiny smoke first if needed; CI never reruns the full pilot. Its two PNG figures have already been generated and committed. No PRs or merging. This is **retrospective observed-series reconstruction**, not the distinct nonzero-μ horizon-h forecast paper.
 
 ## Separation contract
 
