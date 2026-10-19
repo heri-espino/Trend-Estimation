@@ -64,8 +64,8 @@ class MeanScenario:
     d: int = FIXED_D
 
     def __post_init__(self):
-        if self.d != 2 or self.n < 12:
-            raise ValueError("experiment fixes d=2 and N>=12")
+        if self.d not in (1,2,3,4) or self.n < 12:
+            raise ValueError("require d in {1,2,3,4} and N>=12")
         if self.sigma_eta <= 0 or self.sigma_epsilon <= 0:
             raise ValueError("noise standard deviations must be >0")
         if not np.isfinite((self.sigma_eta,self.sigma_epsilon,self.mu_factor)).all():
@@ -101,6 +101,25 @@ def shared_seed(base: int, n: int, sigma_eta: float, replicate: int):
     return base + n_index*10000 + eta_index*1000 + replicate
 
 
+def _integrate_order(innovation: np.ndarray, order: int) -> np.ndarray:
+    """Generate integrated stochastic trend with zero higher-order drift.
+
+    Retain the historical implementation for d=1,2,3. d=4 uses
+    repeated cumulative sums of the padded innovations, avoiding
+    unstable high-order explicit autoregressive recurrences.
+    The deterministic initial mean is the same line .02*t.
+    """
+    if order in (1,2,3):
+        return integrate_differences(innovation, order)
+    if order != 4:
+        raise ValueError("unsupported integration order")
+    n=len(innovation)+order
+    result=np.concatenate((np.zeros(order),np.asarray(innovation,dtype=float)))
+    for _ in range(order):
+        result=np.cumsum(result)
+    return result + .02*np.arange(n)
+
+
 def draw_pool(sc: MeanScenario,R: int,seed: int):
     if R < 1:
         raise ValueError("R must be >=1")
@@ -109,7 +128,7 @@ def draw_pool(sc: MeanScenario,R: int,seed: int):
     truths,ys=[],[]
     for _ in range(R):
         centered_eps=sc.sigma_epsilon*rng.standard_normal(sc.n-sc.d)
-        baseline_tau=integrate_differences(centered_eps,sc.d)
+        baseline_tau=_integrate_order(centered_eps,sc.d)
         tau=baseline_tau+sc.mu*p
         eta=sc.sigma_eta*rng.standard_normal(sc.n)
         truths.append(tau)
