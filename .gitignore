@@ -78,3 +78,8 @@ wiki/.obsidian/appearance.json
 # Reproducible user-side Yahoo market return snapshot; distribution/terms may restrict redistribution
 # Experiment manifests record SHA256 and source dates but do not commit raw prices/returns.
 data/market_calibration/
+
+# Large 10k-seed/d/N/noise Monte Carlo shards: retain locally and back up
+# outside temporary machines. Aggregate CSV/manifest folders remain trackable.
+results/pooled_loocv_smoothness/guerrero/nonzero_mean_multorder/confirmatory/d*/
+results/pooled_loocv_smoothness/guerrero/nonzero_mean_multorder/preflight_*/
