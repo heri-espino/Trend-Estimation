@@ -23,6 +23,12 @@ Keep different DGPs and estimands separate, even when they share `PooledLOOCV`. 
 |---|---|---|---|
 | **F. Market-calibrated return-noise Monte Carlo** | User-selected **fixed d=2** default. Optional distinct literal constant-return-mean control (`--trend-kind constant_mean --d 1`) has true difference-innovation SD 0, not the usual positive Guerrero variance ratio. Historical SPY adjusted daily closing prices from 2015–2025 are converted to centered log returns. Four noise methods: matched iid Gaussian, iid bootstrap of historical returns (histogram distribution), circular blocks of length 5 or 20 (partly preserve volatility dependence). The fitted synthetic observations are **new** (Y=\tau+\eta) with **known conditional mean trend \(\tau\)**, *not observed stock-price truth*. | **IMPLEMENTED / NOT YET RUN WITH REAL MARKET DATA**. CI synthetic fixture: 8 nested R1/R3 pools, 16 rows. Actual manually executed pilot planned: **160 nested pools**, 320 method rows, 20 primary R3 pools per mode. Market calibration snapshot never committed. | [Locked real-market bootstrap design](EMPIRICAL_MARKET_BOOTSTRAP_PROTOCOL.md), code `run_empirical_market_noise.py`, tests `test_empirical_market_noise.py`. Expected user-run results `results/pooled_loocv_smoothness/empirical_market_noise/SPY/d2/pilot/`. |
 
+### New planned experiment G: nonzero mean of trend differences (Guerrero source-aware)
+
+| Study | Data-generating process / scientific question | Status and experimental size | Location |
+|---|---|---|---|
+| **G. Nonzero mean of penalized differences** | Fixed analyst (d=2): (D_2\tau=\mu\mathbf1+\varepsilon), (y=\tau+\eta), both noises centered Gaussian. Compare forcing \(\mu=0\), externally known \(\mu\), joint GLS Gaussian contrast estimation of \(\mu,a,b\), exact fold-clean pooled LOOCV fitting one shared \(\mu\), and known-mu/known-ratio oracle. Five \(\mu/\sigma_\varepsilon\) levels. **Guerrero (2007) already allows and plugs in nonzero difference means; do not claim this as a new basic model.** | **CODE AND PROTOCOL IMPLEMENTED, FULL PILOT NOT RUN.** Pilot: 20 cells × 5 seeds × nested R1/3 = **200 pools, 1,400 method rows**; small CI smoke 6 pools, 42 rows. Future confirmatory 4,000 nested pools, manual only. | [Locked mathematical and experimental protocol](NONZERO_DIFFERENCE_MEAN_PROTOCOL.md); source `mean_difference_methods.py` and `run_nonzero_difference_mean.py`; tests `test_nonzero_difference_mean_reconstruction.py`; expected pilot results `results/pooled_loocv_smoothness/guerrero/nonzero_difference_mean/pilot/`. |
+
 ### A/B/C design and seeds, not interchangeable
 
 - A manifest: `results/pooled_loocv_smoothness/pilot/manifest.json`, independent seed offset **100000**, difference order 2, log penalty domain [-20,35], R=1,3, 401-point grid and 101-point derivative scan. Simulation was originally run with NumPy 2.4.6, SciPy 1.17.1 and Python 3.11.16. Verified **160** pooled cases.
@@ -59,6 +65,14 @@ Keep different DGPs and estimands separate, even when they share `PooledLOOCV`. 
 - The market histogram is NOT itself a time-series process; iid bootstrap loses serial dependence, circular block bootstrap partly preserves it. The historical arithmetic mean of log returns is NOT the unique latent price trend.
 - **Analyst fixes d**, and `PooledLOOCV.score` selects a single \(\lambda\) minimizing the average of the R LOOCV losses. It does NOT average the individually optimized smoothness percentages (these operations generally differ).
 - Current status is **code/protocol implemented**, not real-market pilot executed. Raw downloaded returns are kept in ignored `data/market_calibration/` for precise local reruns; only source hash/meta and synthetic results are eligible for Git.
+
+### G controlled change in DGP and evaluation precautions
+
+- **New seed base 69000000**; `seed = base + N_index*10000 + sigma_eta_index*1000 + replicate`, so **mu levels share the identical simulated centered stochastic innovations and observation errors**, and R1 nests within R3. Never count mu-factor and R repetitions as independent Monte Carlo replicates.
+- Unlike previous μ=0 pilots, **the true model's difference mean is `mu_factor * sigma_epsilon`**; when $mu\ne0$, imposing 0 changes the trend's expected polynomial degree.
+- For the fitted Gaussian common GLS mean, a PRESS score that freezes full-data μ is marked **diagnostic/NOT honest CV**. The proposed joint pooled CV refits μ within each observation deletion using an exact PRESS identity, verified against explicit refit tests.
+- Estimating μ **adds effective degrees of freedom** and changes its statistical interpretation; the previously used normalized S is retained as a nominal common λ coordinate, not true EDF of data-adaptive μ.
+- The prior separate [Mean-Difference Forecasting paper](../../Working%20Paper%20-%20Trend%20Simulation%20and%20Mean-Difference%20Forecasting/README.md) deals with completed h-step *forecast* CV, NOT this retrospective observed-series LOOCV target.
 
 ### Remaining decisions
 
