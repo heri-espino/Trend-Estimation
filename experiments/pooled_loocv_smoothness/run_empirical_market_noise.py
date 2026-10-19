@@ -492,6 +492,7 @@ def main():
     p.add_argument("--preset", choices=("smoke","pilot","confirmatory"),
                    default="smoke")
     p.add_argument("--d",type=int,default=2)
+    p.add_argument("--trend-kind",choices=("stochastic","constant_mean"),default="stochastic")
     p.add_argument("--sigma-epsilon",type=float,default=.3)
     p.add_argument("--source",choices=("yfinance","returns_csv","prices_csv"),
                    default="yfinance")
@@ -505,12 +506,12 @@ def main():
     p.add_argument("--out-dir",type=Path,default=None)
     p.add_argument("--dry-run",action="store_true")
     a=p.parse_args()
-    out=a.out_dir or (Path("results/pooled_loocv_smoothness/empirical_market_noise")
-                       / a.ticker / f"d{a.d}" / a.preset)
+    base=(Path("results/pooled_loocv_smoothness/empirical_market_noise") / a.ticker / f"d{a.d}")
+    out=a.out_dir or (base/a.preset if a.trend_kind=="stochastic" else base/"constant_mean"/a.preset)
     execute(preset=a.preset,d=a.d,sigma_epsilon=a.sigma_epsilon,
             source=a.source,ticker=a.ticker,start=a.start,end=a.end,
             csv_path=a.csv,cache_dir=a.cache_dir,refresh=a.refresh_data,
-            out_dir=out,dry_run=a.dry_run)
+            out_dir=out,trend_kind=a.trend_kind,dry_run=a.dry_run)
 
 
 if __name__=="__main__":
