@@ -75,7 +75,8 @@ For R=1 this reduces to traditional single-series LOOCV. Group only statisticall
 23. [Full eight-method breakdown for all 160 confirmed scenarios](notes/EIGHT_METHODS_BY_SCENARIO_160.md) — no averaging across N, noise, order, mu or pool size; [wide downloadable CSV](../../results/pooled_loocv_smoothness/guerrero/nonzero_mean_multorder/audit_001/eight_methods_all_160_scenarios.csv).
 24. [New non-Gaussian + nonzero-mean Monte Carlo protocol](notes/NONGAUSSIAN_NONZERO_MU_PROTOCOL_2026-10-19.md) — 12 noise distributions, 4 difference orders, mean shifts and moment-aware interpretation; pilot unrun.
 25. [Cortés-Toto criteria versus Gaussian MLE, with a common estimated μ and numerical search](notes/CORTES_TOTO_CRITERIA_AND_NUMERICAL_COMPARISON_PROTOCOL_2026-10-19.md) — original CV/GCV/AICc/BIC, pooled joint EDF, controlled smoothness, source-aware search caveats; large comparison **not run**.
-26. [Agent handoff](AI_HANDOFF.md).
+26. [Study K.1 exact 25-seed paired 26-method replay](notes/CORTES_TOTO_PAIRED_25_SEED_REPLAY_PROTOCOL_2026-10-19.md) — 32-worker manual, full same-seed J baseline checks, 192 cells and 1.248M per-method rows, **NOT RUN**.
+27. [Agent handoff](AI_HANDOFF.md).
 
 ## Runnable independent pilot
 
@@ -154,6 +155,14 @@ The user requested a wider method comparison anchored in **Cortés-Toto, Guerrer
 - **Numerical methods:** bounded versus multiple-bracket Brent and exact applicable endpoints with diagnostic scores/calls. These are solver choices for identical objectives, **not extra statistical criteria**; no global guarantee.
 
 The new `cortes_optimality_criteria.py` implements the published criterion expressions, stable spectral endpoints, and our **new generalization** to R-series pooled joint-μ EDF (R\operatorname{tr}H_\lambda+\lambda\|b\|^2/k). Exact pooled CV remains the established tested class. **WARNING:** straightforward log(RSS) BIC diverges to −∞ as λ↓0 under interpolation; BIC is deliberately limited to explicitly reported finite positive λ bounds and cannot claim an unrestricted optimum. AICc is excluded where degrees-of-freedom denominator is nonpositive. `run_cortes_criteria_case.py` exactly replays **one** prior Study J non-Gaussian Gaussian/shock seed, reporting 18 selector choices plus original eight baselines (simulation latent MSE only for post-hoc evaluation). `tests/test_cortes_optimality_criteria.py` mathematically checks exact GCV/AICc/BIC EDF via the full RN×RN linear smoother. **No large K experiment executed;** reproduce one diagnostic first, then freeze a paired replay plan.
+
+## Study K.1 implemented: 26 methods under exactly the SAME J pilot shocks
+
+A *single* user-executed shock for d2/N50/etaSD.5/R3, Gaussian, `mu/epsSD=+1` returned `cv_zero_multibracket` as the **lowest realized synthetic latent-MSE new feasible policy ON THAT ONE DRAW ONLY**; this is not a statistically valid winner or evidence that incorrectly zero mean improves expected reconstruction. Next independent step is a **paired replay**, NOT fresh independent seeds.
+
+The new `run_cortes_criteria_pilot.py`, `launch_cortes_criteria_pilot.py`, `aggregate_cortes_criteria_pilot.py` and `tests/test_cortes_criteria_paired_pilot.py` implement an optional manual **192 strata × exactly the same 25 J pilot shock draws per stratum**: 4,800 **previously used** independent base shocks, 48,000 nested R/paired-mu treatments, **26 methods = 18 new selector policies + eight old J estimators**, **1,248,000 compressed method rows**. Reuse the exact J original generator/seed convention, affine shift-equivariant selectors evaluated once per underlying draw/R, all 26 methods compared on identical y and known stochastic latent truth after selection. Fixed true mu modes explicitly labelled infeasible oracles; controlled smoothness presets not selected using latent truth. Numerical **multibracket** search held constant for new criteria; do not mistake it for global certification. The aggregator validates saved raw gzip SHA256, 25-seed cell completeness, mixed-code/solver rejection, and **exact same original eight-method average MSE** as the previous committed J pilot, guarding against accidental generator drift. Raw source shards ignored by git, compact aggregates remain trackable.
+
+**NOT YET RUN:** Run `python -m experiments.pooled_loocv_smoothness.launch_cortes_criteria_pilot --workers 32` for plan only; explicit `--execute` starts it. Do small preflights under separate roots first, as documented in [exact paired replay protocol](notes/CORTES_TOTO_PAIRED_25_SEED_REPLAY_PROTOCOL_2026-10-19.md). Do not claim 4,800 new independent shock draws, confidence with only 25 seeds/cell, valid normal CIs for Student t3, unrestricted BIC optimality, or outcome superiority by `cv_zero_multibracket` from one seed.
 
 ## Separation contract
 
