@@ -196,3 +196,28 @@ python -m experiments.pooled_loocv_smoothness.run_nonzero_difference_mean --pres
 ```
 
 Pilot writes `results/pooled_loocv_smoothness/guerrero/nonzero_difference_mean/pilot/{manifest.json,summary.json,method_comparison.csv,example_latent_trend_errors.png,mean_shift_true_trend_mse_R3.png}`. N=50/200; sigma eta=.5/2; sigma epsilon=.3; mu/sigma epsilon=-1,-.25,0,.25,1; a Guerrero-style **pooled observed-difference mean plug-in hybrid** included; 5 shared-shock seeds; nested R1/3 => 200 pools, 1600 method rows. Check carefully before adding only these three result files; do not use `git add .`. Full independent confirmatory preset remains manual/unrun.
+
+
+## Four-order, 10,000-independent-seed per cell manual confirmation — NOT RUN
+
+Read both [measured original simulation methods and results](../../working_papers/Working%20Paper%20-%20Pooled%20LOOCV%20Numerical%20Optimization/notes/HOW_THE_SIMULATION_WORKS_AND_MEASURED_RESULTS.md) and [full immutable large-campaign protocol](../../working_papers/Working%20Paper%20-%20Pooled%20LOOCV%20Numerical%20Optimization/notes/MULTIORDER_10000_SEED_CONFIRMATORY_PROTOCOL.md). This new source code **does not alter** old 1,600-row d2 results.
+
+Each of 16 `d=1,2,3,4` × `N=50,200` × `observation SD=.5,2` strata will have **10,000 independent base R3 Gaussian shock draws** and *five paired mu shifts* per draw. R1 nests within R3 and eight old methods remain; eventual complete 160,000 base draws = 1.6M treatment pools × eight methods = 12.8M records. Large simulations **NEVER run on push**. Source `run_nonzero_mean_multorder.py`, manual launcher `launch_nonzero_mean_multorder.py`, checked aggregator `aggregate_nonzero_mean_multorder.py`, automated `tests/test_nonzero_mean_multorder.py`.
+
+```powershell
+conda activate trend-estimation
+git switch paper/pooled-loocv-numerical-optimization
+git pull --ff-only
+python -m pytest tests/test_nonzero_mean_multorder.py -q
+python -m experiments.pooled_loocv_smoothness.launch_nonzero_mean_multorder --d 4 --n 200 --sigma-eta 2 --seed-stop 2
+# EXPLICIT two-seed test; creates one immutable gzip shard
+python -m experiments.pooled_loocv_smoothness.launch_nonzero_mean_multorder --d 4 --n 200 --sigma-eta 2 --seed-stop 2 --workers 1 --execute
+# PLAN ALL, no simulation; 1600 shards at default 100 base draws
+python -m experiments.pooled_loocv_smoothness.launch_nonzero_mean_multorder --workers 8
+# After preflight, optional full large run on university machine:
+python -m experiments.pooled_loocv_smoothness.launch_nonzero_mean_multorder --workers 8 --execute
+# Aggregate when all shards are complete, choose a NEW audit directory:
+python -m experiments.pooled_loocv_smoothness.aggregate_nonzero_mean_multorder --require-complete --verify-digests --out-dir results/pooled_loocv_smoothness/guerrero/nonzero_mean_multorder/audit_001
+```
+
+**Output hygiene:** 1600 immutable compressed shards, each `method_comparison.csv.gz` (8000 method rows), `manifest.json` (code SHA, seed interval, data hash), `summary.json` (per-method metrics *and paired within-seed differences*). The complete-run aggregate gives small per-(d,N,eta,R,mu) method CSV and pair-difference CSV and a single completeness manifest. Don't commit all huge raw results to Git; back them up outside disposable VMs and commit the compact proof-of-run/audit only. Do not merge to main or open a PR. Separate non-Gaussian extension only after Gaussian confirmations.
