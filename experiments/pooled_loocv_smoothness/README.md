@@ -138,3 +138,22 @@ python -m experiments.pooled_loocv_smoothness.audit_robustness --figures
 ```
 
 Generated audit CSV/JSON/figures are under `results/pooled_loocv_smoothness/guerrero/robustness/pilot/audit/`, and can be committed separately after inspection. Do not launch the 100-seed confirmatory preset or auto-generate heavyweight figures on push. No PRs.
+
+
+## New extreme tails, centered Gamma, jumps, and GARCH volatility (manual pilot)
+
+The complete [tail stress-test protocol](../../working_papers/Working%20Paper%20-%20Pooled%20LOOCV%20Numerical%20Optimization/notes/TAIL_NOISE_PROTOCOL.md) and [stepwise Gaussian MLE / LOOCV explanation](../../working_papers/Working%20Paper%20-%20Pooled%20LOOCV%20Numerical%20Optimization/notes/GAUSSIAN_MLE_AND_LOOCV_EXPLAINED.md) provide precise mathematics and distribution parameters. The new independent runner does **not** touch saved Gaussian or prior robustness campaigns.
+
+It compares Gaussian difference-likelihood, single-start Brent LOOCV, and multibracket Brent LOOCV on 8 noise regimes: Gaussian control; t3 observation; t3 trend difference; centered right/left Gamma; rare Gaussian jumps; GARCH-t5 observation volatility; and Cauchy observation noise. Finite-variance regimes retain true-trend MSE evaluation. **Cauchy has infinite population MSE** and is evaluated using sample-error medians/quantiles, never assigned a Guerrero noise-variance ratio.
+
+```powershell
+conda activate trend-estimation
+git switch paper/pooled-loocv-numerical-optimization
+git pull --ff-only
+python -m pytest tests/test_guerrero_tail_noise.py -q
+python -m experiments.pooled_loocv_smoothness.run_tail_noise --preset smoke
+python -m experiments.pooled_loocv_smoothness.run_tail_noise --preset pilot --dry-run
+python -m experiments.pooled_loocv_smoothness.run_tail_noise --preset pilot
+```
+
+The full pilot is **320 nested pools × 3 methods = 960 rows**. Outputs to `results/pooled_loocv_smoothness/guerrero/tail_stress/pilot/{manifest.json,method_comparison.csv,summary.json}`. Commit and push those after inspecting them; the confirmatory preset is manual and intentionally unrun. No PRs or heavy Monte Carlo on push.
