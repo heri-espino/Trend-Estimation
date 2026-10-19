@@ -11,6 +11,7 @@ on:
       - "tests/test_guerrero_robustness.py"
       - "tests/test_guerrero_robustness_audit.py"
       - "tests/test_guerrero_tail_noise.py"
+      - "tests/test_guerrero_tail_pilot_audit.py"
       - ".github/workflows/pooled-loocv-checks.yml"
   pull_request:
     paths:
@@ -22,6 +23,7 @@ on:
       - "tests/test_guerrero_robustness.py"
       - "tests/test_guerrero_robustness_audit.py"
       - "tests/test_guerrero_tail_noise.py"
+      - "tests/test_guerrero_tail_pilot_audit.py"
       - ".github/workflows/pooled-loocv-checks.yml"
   workflow_dispatch:
 
@@ -38,7 +40,7 @@ jobs:
       - name: Install lightweight test dependencies
         run: python -m pip install -e ".[dev,symbolic]"
       - name: Run isolated mathematical and numerical tests
-        run: python -m pytest tests/test_pooled_loocv_smoothness.py tests/test_guerrero_ratio_pooled_loocv.py tests/test_guerrero_variance_estimation.py tests/test_estimated_variance_audit.py tests/test_guerrero_robustness.py tests/test_guerrero_robustness_audit.py tests/test_guerrero_tail_noise.py -q
+        run: python -m pytest tests/test_pooled_loocv_smoothness.py tests/test_guerrero_ratio_pooled_loocv.py tests/test_guerrero_variance_estimation.py tests/test_estimated_variance_audit.py tests/test_guerrero_robustness.py tests/test_guerrero_robustness_audit.py tests/test_guerrero_tail_noise.py tests/test_guerrero_tail_pilot_audit.py -q
       - name: Confirm campaign preview without simulations
         run: python -m experiments.pooled_loocv_smoothness.run --preset pilot --dry-run
       - name: Execute tiny smoke and validate exported artifacts
@@ -93,6 +95,14 @@ jobs:
             test -s /tmp/robustness-pilot-audit/audit_summary.json
             test -s /tmp/robustness-pilot-audit/R3_scenario_summary.csv
             test -s /tmp/robustness-pilot-audit/paired_pool_differences.csv
+          fi
+      - name: Independently audit uploaded tail-noise pilot (no simulation)
+        run: |
+          if [ -f results/pooled_loocv_smoothness/guerrero/tail_stress/pilot/method_comparison.csv ]; then
+            python -m experiments.pooled_loocv_smoothness.audit_tail_noise --out-dir /tmp/tail-pilot-audit > /tmp/tail-pilot-audit.stdout.json
+            test -s /tmp/tail-pilot-audit/audit_summary.json
+            test -s /tmp/tail-pilot-audit/R3_by_d_distribution.csv
+            test -s /tmp/tail-pilot-audit/R3_by_scenario.csv
           fi
       - name: Audit committed pilot when available
         run: |
