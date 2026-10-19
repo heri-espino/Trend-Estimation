@@ -90,3 +90,8 @@ results/pooled_loocv_smoothness/guerrero/nonzero_mean_multorder/preflight_*/
 results/pooled_loocv_smoothness/guerrero/nonzero_mu_nongaussian/pilot/
 results/pooled_loocv_smoothness/guerrero/nonzero_mu_nongaussian/confirmatory/
 results/pooled_loocv_smoothness/guerrero/nonzero_mu_nongaussian/preflight_*/
+
+# Study K: paired Cortes-Toto criterion pilot uses original J 25 shocks.
+# Leave gzip source rows locally/backed-up; commit only compact audit CSV/JSON.
+results/pooled_loocv_smoothness/guerrero/cortes_criteria_replay/pilot/
+results/pooled_loocv_smoothness/guerrero/cortes_criteria_replay/preflight_*/
