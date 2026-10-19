@@ -65,7 +65,8 @@ For R=1 this reduces to traditional single-series LOOCV. Group only statisticall
 13. [Completed robustness pilot audit](notes/ROBUSTNESS_PILOT_AUDIT_2026-10-18.md) — five noise regimes, 1,000 saved method rows, exploratory R=3 paired evidence.
 14. [Gaussian MLE and LOOCV explained](notes/GAUSSIAN_MLE_AND_LOOCV_EXPLAINED.md) — stepwise likelihood derivation and true-trend MSE distinction.
 15. [Heavy-tail noise protocol](notes/TAIL_NOISE_PROTOCOL.md) — Cauchy, Student-t3, centered Gamma skew, Gaussian jump mixtures, and GARCH-type clustering.
-16. [Agent handoff](AI_HANDOFF.md).
+16. [Completed d=1–3 tail-noise pilot audit](notes/TAIL_NOISE_PILOT_AUDIT_2026-10-18.md) — 4,680 result rows, matched-order comparisons, Cauchy limits, skew-normal and detected roots.
+17. [Agent handoff](AI_HANDOFF.md).
 
 ## Runnable independent pilot
 
@@ -106,9 +107,9 @@ The [locked design](notes/ROBUSTNESS_PROTOCOL.md) calls for 20 scenarios × 5 se
 
 ## Heavy-tailed and asymmetric noise (new separate campaign)
 
-We implemented a new **13-distribution-setting, three-difference-order research stress test** of noise distribution assumptions, with **no changes to existing committed experimental outputs**. The Gaussian difference-likelihood selector, one-start LOOCV, and multibracket LOOCV are compared on the same generated data. Student-t3 has finite variance but infinite fourth moment; centered Gamma has mean 0 and skew; GARCH-t5 introduces volatility clustering; Cauchy has **undefined variance and expected squared-error risk** (report robust quantiles instead). The [revised, unrun protocol](notes/TAIL_NOISE_PROTOCOL.md) crosses d∈{1,2,3}, five population-centered skew-normal shapes α=-6,-3,0,3,6, and the original eight regimes: **156 scenarios × 5 seeds × nested R1/3 = 1,560 pools, 4,680 method rows**. This full pilot has **not yet been run**; CI is limited to a tiny 78-pool smoke.
+We implemented a new **13-distribution-setting, three-difference-order research stress test** of noise distribution assumptions, with **no changes to existing committed experimental outputs**. The Gaussian difference-likelihood selector, one-start LOOCV, and multibracket LOOCV are compared on the same generated data. Student-t3 has finite variance but infinite fourth moment; centered Gamma has mean 0 and skew; GARCH-t5 introduces volatility clustering; Cauchy has **undefined variance and expected squared-error risk** (report robust quantiles instead). The [revised, unrun protocol](notes/TAIL_NOISE_PROTOCOL.md) crosses d∈{1,2,3}, five population-centered skew-normal shapes α=-6,-3,0,3,6, and the original eight regimes: **156 scenarios × 5 seeds × nested R1/3 = 1,560 pools, 4,680 method rows**. The **expanded pilot has now been run and uploaded**. Its findings and limitations are documented in the [completed tail-noise pilot audit](notes/TAIL_NOISE_PILOT_AUDIT_2026-10-18.md). Confirmatory research remains unrun; CI stays lightweight.
 
-`python -m experiments.pooled_loocv_smoothness.run_tail_noise --preset pilot` runs the exploratory pilot manually and saves CSV/JSON/manifest under `results/pooled_loocv_smoothness/guerrero/tail_stress/pilot/`. The [results ledger](notes/RESULTS_LEDGER.md) separates implemented from actually executed campaigns. No PRs; commit only to the existing independent paper branch.
+`python -m experiments.pooled_loocv_smoothness.run_tail_noise --preset pilot` runs the exploratory pilot manually and saves CSV/JSON/manifest under `results/pooled_loocv_smoothness/guerrero/tail_stress/pilot/`. The [results ledger](notes/RESULTS_LEDGER.md) identifies the executed pilot and source SHA; the new saved-data re-audit uses `python -m experiments.pooled_loocv_smoothness.audit_tail_noise` without regenerating the simulations. No PRs; commit only to the existing independent paper branch.
 
 ## Separation contract
 
