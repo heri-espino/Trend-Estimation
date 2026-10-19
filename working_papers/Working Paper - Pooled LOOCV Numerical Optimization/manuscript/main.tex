@@ -140,6 +140,38 @@ error. The fixed polynomial initialization of the integrated trend
 should not be conflated with a proper finite-variance prior for
 its unpenalized nullspace coefficients.
 
+\subsection{Exploratory known-ratio pilot (not confirmatory)}
+A separate stochastic-trend pilot completed $12$ settings,
+each with five randomly seeded repetitions and pool sizes $R=1$
+and $R=3$, yielding $120$ nested pool evaluations and four method
+rows per evaluation. The two pool sizes share the first generated
+series at matching seeds; hence they cannot be treated as
+independent samples in a pooled inferential analysis.
+
+For the $R=3$ group (60 pool evaluations), the mean observed
+LOOCV scores were $2.697581$ for the known Guerrero variance
+ratio and $2.681409$ for the multi-bracket LOOCV selection.
+The mean \emph{true trend} MSEs were instead $0.385673$
+and $0.394848$, respectively. In $45$ of those $60$
+paired pools the Guerrero ratio attained lower realized
+trend MSE. This is a known-parameter comparison;
+the advantage cannot be attributed to an estimated variance
+component method.
+
+In this stochastic pilot, both bounded Brent and
+multi-bracket Brent attained effectively identical LOOCV
+objectives in every pool at a tolerance of $10^{-7}$.
+All $60$ $R=3$ objectives yielded only one
+numerically detected derivative-sign root under the
+finite scan. This count is \emph{not} a global certificate
+or a proof of unimodality. Therefore, this particular
+DGP provides evidence for the distinction between
+statistical and numerical targets, but no measured
+numerical superiority of multi-bracket search over the
+single-start procedure. The results require a genuinely
+independent confirmatory experiment and objective-specific
+numerical verification before journal-level claims.
+
 \section{Discussion and limitations}
 \textbf{Results pending.} Neither numerical dominance nor a
 novel global-solver theorem is established. Related algorithms,
