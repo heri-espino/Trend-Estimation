@@ -1,6 +1,6 @@
 # Research notebook: pooled LOOCV and numerical optimization
 
-**Date:** 2026-10-18. **Scientific status:** three distinct exploratory pilots have **executed and been committed**; the next independent noise-misspecification robustness pilot is implemented but **not yet executed**. See the source-authoritative [RESULTS_LEDGER.md](RESULTS_LEDGER.md), [variance-estimation pilot audit](VARIANCE_ESTIMATION_PILOT_AUDIT_2026-10-18.md) and [ROBUSTNESS_PROTOCOL.md](ROBUSTNESS_PROTOCOL.md). Neither overall numerical superiority nor a universal statistical method improvement has been established.
+**Date:** 2026-10-18. **Scientific status:** three distinct exploratory pilots have **executed and been committed**; the independent five-regime noise-misspecification robustness pilot **has now also executed and been committed** (200 nested pools, 1,000 per-method rows). See the [completed robustness audit](ROBUSTNESS_PILOT_AUDIT_2026-10-18.md), which distinguishes a strong AR(1) outcome from nearly equal mean results under iid Gaussian noise. See the source-authoritative [RESULTS_LEDGER.md](RESULTS_LEDGER.md), [variance-estimation pilot audit](VARIANCE_ESTIMATION_PILOT_AUDIT_2026-10-18.md) and [ROBUSTNESS_PROTOCOL.md](ROBUSTNESS_PROTOCOL.md). Neither overall numerical superiority nor a universal statistical method improvement has been established.
 
 ## 1. Problem and terminology
 
