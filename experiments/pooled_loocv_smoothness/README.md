@@ -211,7 +211,7 @@ git pull --ff-only
 python -m pytest tests/test_nonzero_mean_multorder.py -q
 python -m experiments.pooled_loocv_smoothness.launch_nonzero_mean_multorder --d 4 --n 200 --sigma-eta 2 --seed-stop 2
 # EXPLICIT two-seed test; creates one immutable gzip shard
-python -m experiments.pooled_loocv_smoothness.launch_nonzero_mean_multorder --d 4 --n 200 --sigma-eta 2 --seed-stop 2 --workers 1 --execute
+python -m experiments.pooled_loocv_smoothness.launch_nonzero_mean_multorder --d 4 --n 200 --sigma-eta 2 --seed-stop 2 --workers 1 --root results/pooled_loocv_smoothness/guerrero/nonzero_mean_multorder/preflight_d4_N200 --execute
 # PLAN ALL, no simulation; 1600 shards at default 100 base draws
 python -m experiments.pooled_loocv_smoothness.launch_nonzero_mean_multorder --workers 8
 # After preflight, optional full large run on university machine:
