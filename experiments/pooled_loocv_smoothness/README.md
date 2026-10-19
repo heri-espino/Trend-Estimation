@@ -177,3 +177,22 @@ python -m experiments.pooled_loocv_smoothness.run_empirical_market_noise --prese
 ```
 
 For the **literal constant historical mean** rather than a time-varying synthetic conditional mean, run a **separate** `python -m experiments.pooled_loocv_smoothness.run_empirical_market_noise --preset pilot --ticker SPY --trend-kind constant_mean --d 1`. This is a zero-trend-innovation boundary case with its own `SPY/d1/constant_mean/pilot/` directory. **Outputs only after the user actually executes the real-data pilot**: `results/pooled_loocv_smoothness/empirical_market_noise/SPY/d2/pilot/` stores `manifest.json`, `method_comparison.csv`, `summary.json`, `empirical_return_histogram_vs_gaussian.png`, `market_return_and_squared_return_acf.png`. Source raw return snapshot remains locally cached and ignored at `data/market_calibration/`; result manifest records its SHA256. Do not assume Yahoo can be reproduced byte-for-byte by later redownload. CSV source is supported via `--source returns_csv --csv ...` or `--source prices_csv --csv ...` for authorized local data. Full Monte Carlo manual-only; tiny synthetic-source smoke in CI. No PR.
+
+
+## New nonzero-difference-mean simulation: fixed d=2 (unrun full pilot)
+
+The [locked protocol and mathematical derivations](../../working_papers/Working%20Paper%20-%20Pooled%20LOOCV%20Numerical%20Optimization/notes/NONZERO_DIFFERENCE_MEAN_PROTOCOL.md) compare seven selectors on (D_2\tau=\mu+\varepsilon, y=\tau+\eta), including known true mu and known true variances (ORACLES), two feasible forced-zero-mu selectors, estimated GLS Gaussian differenced-data contrast mean, and exact **fold-reestimated mu** pooled observation LOOCV.
+
+The Gaussian-mean model has variance (aI+bD_2D_2^\top) and common mean (μ\mathbf1). Joint CV profiles one common mu from the data for each lambda; it must be refit within folds. **Guerrero (2007) itself already allows nonzero mean and a simple observed-difference plug-in**. The independent *forecast* mean-difference paper is not affected.
+
+```powershell
+conda activate trend-estimation
+git switch paper/pooled-loocv-numerical-optimization
+git pull --ff-only
+python -m pytest tests/test_nonzero_difference_mean_reconstruction.py -q
+python -m experiments.pooled_loocv_smoothness.run_nonzero_difference_mean --preset smoke
+python -m experiments.pooled_loocv_smoothness.run_nonzero_difference_mean --preset pilot --dry-run
+python -m experiments.pooled_loocv_smoothness.run_nonzero_difference_mean --preset pilot
+```
+
+Pilot writes `results/pooled_loocv_smoothness/guerrero/nonzero_difference_mean/pilot/{manifest.json,summary.json,method_comparison.csv}`. N=50/200; sigma eta=.5/2; sigma epsilon=.3; mu/sigma epsilon=-1,-.25,0,.25,1; 5 shared-shock seeds; nested R1/3 => 200 pools, 1400 method rows. Check carefully before adding only these three result files; do not use `git add .`. Full independent confirmatory preset remains manual/unrun.
