@@ -121,8 +121,7 @@ def export(out_dir: Path, seed: int, n: int, num_points: int,
     full_df = []
     for s in smoothness:
         sol = obj.choose_fixed_smoothness(float(s))
-        nominal_df.append(float(np.trace(obj.raw.smoothness.__self__.raw.hat_matrix(sol.lam)))
-                          if False else n - (n - 2) * s)
+        nominal_df.append(float(n - (n - 2) * s))
         full_df.append(float(obj.diagnostics(sol.lam)["edf_total"]))
     fig, ax = plt.subplots(figsize=(10, 5.5))
     ax.plot(smoothness, np.array(nominal_df) * r,
