@@ -298,3 +298,16 @@ python -m experiments.pooled_loocv_smoothness.aggregate_cortes_criteria_pilot --
 ```
 
 **Do not run on push**, commit only the compact `audit_pilot_001/` three files after independent complete audit. Source gzip shards excluded from Git and must be backed up locally. Expected 49,920 per-method compact aggregates and 80,640 paired effects. Cauchy excluded; Student-t3 sample mean MSE normal confidence intervals not guaranteed; BIC is constrained logRSS positive-domain benchmark, **not a globally defined BIC minimum**.
+
+
+### K.1 uploaded source-matched 26-method pilot: COMPLETE, exploratory
+
+Original 192 strata × 25 **REUSED** J shock draws, 26 methods, 1.248M rows, exact previous eight-method mean reconstruction MSE parity across 15,360 cells (max deviation 0.0). Three uploaded compact audit files under `results/pooled_loocv_smoothness/guerrero/cortes_criteria_replay/audit_pilot_001/` contain 49,920 method cells and 80,640 paired contrasts, original source SHA `1785889d7d64a77f548d8746d41a9ea786e3e588`. [Full exploratory interpretation and 12-regime tables](../../working_papers/Working%20Paper%20-%20Pooled%20LOOCV%20Numerical%20Optimization/notes/CORTES_TOTO_PAIRED_25_SEED_REPLAY_RESULTS_2026-10-19.md).
+
+Independent lightweight compact-data audit (no simulation):
+```powershell
+python -m pytest tests/test_cortes_criteria_confirmed_aggregate.py -q
+python -m experiments.pooled_loocv_smoothness.audit_cortes_criteria_confirmed_pilot
+```
+
+R3 Gaussian GLS-ML wins mean MSE in 179/192 vs new joint CV, 180/192 vs GCV, 178/192 vs AICc cells; R1 estimates reverse under some regimes. Naive logRSS BIC bounded λ hits lower search boundary in all 4,800 original shocks at μ/epsSD+1 for each R and is not an unrestricted criterion. New and old fold-clean CV use *same* criterion with different numerical solvers; follow up by comparing fixed observed-data CV objective scores at their λ values, not only true latent MSE. Only 25 original shocks per stratum: **exploratory**, Cauchy excluded, t3 fourth moment infinite.
