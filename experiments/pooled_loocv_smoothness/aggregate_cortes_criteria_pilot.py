@@ -149,7 +149,7 @@ def collect(root:Path=ROOT,*,verify_digests=False,verify_prior=True):
     # generated with the same seeds and generator. This direct test can
     # detect changes in RNG, PLS, mu or variance estimators after Study J.
     prior_parity={"status":"skipped_prior_replay_not_checked"}
-    if verify_prior:
+    if verify_prior and complete:
         file=PRIOR_ROOT/"by_regime_d_N_eta_R_mu_method.csv"
         if not file.is_file():
             raise FileNotFoundError(f"J pilot aggregate missing for reproducibility: {file}")
@@ -174,6 +174,8 @@ def collect(root:Path=ROOT,*,verify_digests=False,verify_prior=True):
         prior_parity={"status":"checked_same_25_J_seeds",
                       "saved_J_baseline_cells_matched":checked,
                       "maximum_mean_true_MSE_difference":max_error}
+    if verify_prior and not complete:
+        prior_parity={"status":"skipped_incomplete_shards_cannot_compare_single_seed_to_25_seed_J_means"}
     report={
         "protocol":PROTOCOL,
         "status":"COMPLETE_25_SEED_PAIRED_REPLAY_EXPLORATORY" if complete
