@@ -43,12 +43,12 @@ This is a **descriptive equal weighting of heterogeneous simulation cells**, NOT
 
 **R3 nuanced outcome:**
 - Under true \(\mu/\sigma_\varepsilon=1\), the 192 **cell-average comparisons** favor Gaussian GLS quasi-MLE over the new joint CV in **179/192** cells; GLS versus new GCV in **180/192**; GLS versus AICc in **178/192**. These are 192 different DGP cells and each has only 25 seeds: **NOT inferential counts of 192 independently confirmed victories**.
-- Among the **feasible** 23 methods (excluding all three original true-mean/true-covariance oracles and six new true-mean fixed-policy oracles), the lowest observed cell-average MSE occurs for **pooled plug-in** in **84/192**, GLS MLE in **82/192**, joint AICc in **13/192**, preset controlled S=.8 in **10/192**, joint CV in **2/192**, and joint GCV in **1/192**. The method that wins by observing synthetic true τ *after the fact* is **not a legitimate data-driven real-market selector**.
+- Among the **feasible** 17 methods (excluding all three original true-mean/true-covariance oracles and six new true-mean fixed-policy oracles), the lowest observed cell-average MSE occurs for **pooled plug-in** in **84/192**, GLS MLE in **82/192**, joint AICc in **13/192**, preset controlled S=.8 in **10/192**, joint CV in **2/192**, and joint GCV in **1/192**. The method that wins by observing synthetic true τ *after the fact* is **not a legitimate data-driven real-market selector**.
 - The plug-in hybrid is materially competitive: it has slightly lower mean risk in some law/parameter subgroups, even though GLS has the lowest broad descriptive R3 average.
 
 **R1 reversals:**
 - R1 total averages of joint AICc **0.389669** and feasible plug-in **0.392452** are below GLS **0.429410**. AICc often strongly changes the selected penalty at small N and high η noise; that is a descriptive numerical pattern, not proof of AICc population superiority at each cell.
-- Among the same 23 feasible procedures, the pilot's minimum within individual R1 cells belongs to plug-in **83/192**, GLS **40/192**, preset S=.8 **38/192**, AICc **28/192**, joint GCV **2/192**, and the earlier CV **1/192**.
+- Among the same 17 feasible procedures, the pilot's minimum within individual R1 cells belongs to plug-in **83/192**, GLS **40/192**, preset S=.8 **38/192**, AICc **28/192**, joint GCV **2/192**, and the earlier CV **1/192**.
 - The R1 mean is especially influenced by \(N=50,\sigma_\eta=2\) scenarios; see the individual cell CSV from `audit_cortes_criteria_confirmed_pilot.py` before interpreting a broad ranking.
 - Some single-series noise/t3 scenarios are extremely variable, making a 25-seed mean unreliable.
 
