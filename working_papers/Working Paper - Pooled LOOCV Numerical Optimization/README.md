@@ -59,7 +59,8 @@ For R=1 this reduces to traditional single-series LOOCV. Group only statisticall
 7. [Guerrero variance-ratio benchmark](notes/GUERRERO_VARIANCE_RATIO_PROTOCOL.md) — a separate stochastic-trend experiment comparing known noise ratio with true trend MSE.
 8. [Guerrero ratio CI smoke findings](notes/GUERRERO_RATIO_SMOKE_2026-10-18.md) — verified first comparison of observed LOOCV and latent MSE (8 tiny pools).
 9. [Completed Guerrero ratio pilot audit](notes/GUERRERO_RATIO_PILOT_AUDIT_2026-10-18.md) — 120 uploaded pools, two loss definitions, independent R=3 analysis and numerical limits.
-10. [Agent handoff](AI_HANDOFF.md).
+10. [Estimated-variance pilot audit](notes/VARIANCE_ESTIMATION_PILOT_AUDIT_2026-10-18.md) — completed 120 pools, likelihood estimates, catastrophic moments boundaries and variance-level breakdown.
+11. [Agent handoff](AI_HANDOFF.md).
 
 ## Runnable independent pilot
 
@@ -83,6 +84,12 @@ The smoke and first 16-cell **pilot were executed and pushed** on 2026-10-18. Se
 We separately simulate `D_2 tau = epsilon` and `y = tau + eta`, so the ratio `lambda_G = sigma_eta^2 / sigma_epsilon^2` is **known**. We compare it to Brent-selected pooled LOOCV and record both LOOCV MSE and true latent-trend MSE. The known ratio uses oracle simulation parameters and is not a variance estimator for market series.
 
 An eight-pool [Guerrero ratio smoke](notes/GUERRERO_RATIO_SMOKE_2026-10-18.md) has run successfully in isolated GitHub CI. Run `python -m experiments.pooled_loocv_smoothness.guerrero_ratio --preset smoke` locally to save its artifacts. The [benchmark protocol](notes/GUERRERO_VARIANCE_RATIO_PROTOCOL.md) defines a separate 12-scenario pilot (120 pools). The **pilot has now been executed and pushed**: see the [pilot audit](notes/GUERRERO_RATIO_PILOT_AUDIT_2026-10-18.md). It does not overwrite the completed 2017-inspired 16-cell pilot.
+
+## Variances estimated rather than known
+
+The [variance-estimation protocol](notes/VARIANCE_ESTIMATION_PROTOCOL.md) compares the known (oracle) Guerrero ratio with **feasible Gaussian difference-covariance likelihood**, nonnegative quadratic moments, and LOOCV. The 12-scenario **pilot is executed and pushed**. See the [measured pilot audit](notes/VARIANCE_ESTIMATION_PILOT_AUDIT_2026-10-18.md); Gaussian ML approached the known-ratio mean true trend MSE for R=3, but the moment method had severe boundary failures. **Neither feasible procedure is claimed to be an estimator prescribed by Guerrero (2007).** The exploratory results are not a global numerical-optimizer novelty claim.
+
+`python -m experiments.pooled_loocv_smoothness.audit_variance_estimation` generates per-scenario diagnostics and three figures manually, using the saved uploaded CSV. The ordinary lightweight CI checks the audit without regenerating those charts.
 
 ## Separation contract
 
