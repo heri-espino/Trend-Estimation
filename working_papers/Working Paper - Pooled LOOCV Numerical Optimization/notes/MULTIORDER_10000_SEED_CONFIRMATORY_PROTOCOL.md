@@ -123,7 +123,7 @@ python -m experiments.pooled_loocv_smoothness.aggregate_nonzero_mean_multorder -
 
 Only the **plan** is run by default; `--execute` launches jobs. On resume, completed matching shards are skipped; on a cross-code SHA mismatch it stops rather than silently mixing cohorts. Aggregator output directory must be new, preventing overwrite of a previous audit. `--require-complete` rejects incomplete runs; without it, aggregates are marked exploratory/incomplete.
 
-Do not automatically stage the 1,600 compressed raw gzip shard files into GitHub. Back up the raw shards outside temporary university machines; use the saved campaign manifest, compact aggregate CSVs and reproducible independent seeds to preserve provenance. GitHub Actions runs **mathematical tests and a tiny 1–2-seed smoke only**, not the full confirmation.
+The **raw confirmatory d*/ folders and isolated preflight_*/ folders are explicitly excluded in `.gitignore`** to prevent accidental `git add .` of millions of output rows. Only the separately created compact `audit_*/` statistics folders remain trackable. Do not automatically stage the 1,600 compressed raw gzip shard files into GitHub. Back up the raw shards outside temporary university machines; use the saved campaign manifest, compact aggregate CSVs and reproducible independent seeds to preserve provenance. GitHub Actions runs **mathematical tests and a tiny 1–2-seed smoke only**, not the full confirmation.
 
 ## 7. Interpretation and staged future robustness
 
