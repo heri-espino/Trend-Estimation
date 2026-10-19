@@ -1,6 +1,6 @@
 # Guerrero known-variance-ratio pilot — observed CV versus true-trend error
 
-**Source results committed by user:** [manifest](../../../../results/pooled_loocv_smoothness/guerrero/pilot/manifest.json), [summary](../../../../results/pooled_loocv_smoothness/guerrero/pilot/summary.json), [per-pool, per-method CSV](../../../../results/pooled_loocv_smoothness/guerrero/pilot/guerrero_solver_comparison.csv).  
+**Source results committed by user:** [manifest](../../../results/pooled_loocv_smoothness/guerrero/pilot/manifest.json), [summary](../../../results/pooled_loocv_smoothness/guerrero/pilot/summary.json), [per-pool, per-method CSV](../../../results/pooled_loocv_smoothness/guerrero/pilot/guerrero_solver_comparison.csv).  
 **Status:** [MEASURED PILOT], independently read back from GitHub. Not confirmatory or publication-ready. Analysis added 2026-10-18 local date.
 
 ## A. Scientific target
