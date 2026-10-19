@@ -770,6 +770,80 @@ manual-only execution are recorded in
 No new distributional performance results
 are claimed at this stage.
 
+\subsection{Additional optimality criteria as source-aligned comparators}
+
+Cortés-Toto, Guerrero and Reyes (2017) compared
+ordinary cross-validation (CV), generalized
+cross-validation (GCV), corrected Akaike
+information criterion (AICc), and Bayesian
+information criterion (BIC) for penalized
+least-squares trend smoothing, principally for
+second-order differences with zero reference mean.
+They also describe Guerrero's earlier
+controlled-smoothness criterion and explicitly
+acknowledge his nonzero-mean formulation.
+Their numerical study assesses
+\emph{attained smoothness} under linear and
+nonlinear trends, seasonality and noise; our
+stochastic latent-trend reconstruction experiments
+are not a replication of that factorial design.
+
+We implement their four criterion functions as
+additional prospective comparators while keeping
+three distinctions explicit: the statistical
+objective, whether the difference mean is fixed
+or fitted, and the numerical optimizer. If the
+same mean $\mu$ is estimated jointly across $R$
+series with the penalized trends, the full
+linear-smoother effective degrees of freedom is
+\begin{equation}\label{eq:joint-mean-edf-selection}
+ \operatorname{edf}_{R,\mu}(\lambda)
+ =R\operatorname{tr}(H_\lambda)
+  +\lambda\frac{\|b_\lambda\|_2^2}
+                    {p^\top T_\lambda p},
+ \qquad
+ T_\lambda=Q(I+\lambda Q)^{-1},
+ \quad b_\lambda=T_\lambda p,
+\end{equation}
+where $D_dp=\mathbf1$. Unlike the fixed-mean
+degrees of freedom $R\operatorname{tr}H_\lambda$,
+this formula accounts for the one additional
+pooled fitted mean and approaches $Rd+1$
+for $\lambda\to\infty$. The resulting GCV,
+AICc and BIC formulations use the full
+$RN$ observations and the pooled
+effective dimension. Their interpretation
+under correlated observations requires separate
+justification. Ordinary CV with a jointly
+fitted mean continues to use our previously
+verified exact observation-deletion residual.
+
+There are numerical boundary issues. AICc is
+inadmissible when $RN-\operatorname{edf}\le2$.
+A simple BIC based on $\log\operatorname{RSS}$
+is unbounded as the PLS smoother interpolates
+the data for $\lambda\downarrow0$; thus any
+BIC output from a finite positive search range
+is necessarily \emph{domain-constrained}
+and cannot be called the unrestricted optimum.
+A preselected smoothness target is likewise a
+policy comparator rather than an optimized
+data criterion. Finally, a known true $\mu$
+benchmark is explicitly an infeasible oracle,
+and freezing a mean estimated from all observed
+data inside CV would not be deletion-honest.
+
+A deterministic one-shock replay and
+linear-algebra unit tests have been implemented
+to check these criteria against the same
+simulated data and earlier ML/CV baselines.
+No additional independent-seed Monte Carlo
+results for these criteria are claimed.
+The preregistered comparator definitions,
+finite-domain search caveats, and proposed
+paired design are in
+\texttt{notes/CORTES\_TOTO\_CRITERIA\_AND\_NUMERICAL\_COMPARISON\_PROTOCOL\_2026-10-19.md}.
+
 \section{Discussion and limitations}
 \textbf{Gaussian confirmation completed, external robustness pending.}
 The independent 10,000-seed-per-cell Gaussian mean-difference
