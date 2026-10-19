@@ -896,6 +896,16 @@ The aggregate audit found 787/990 adjusted p-values below 0.05; many reflect obv
 
 <!-- _class: figure -->
 
+# Win frequency in R1
+
+![width:900px](assets/v2_win_frequency_R1.svg)
+
+Ex-post win fractions are not equivalent to minimizing mean MSE.
+
+---
+
+<!-- _class: figure -->
+
 # All nine mechanisms — R = 1
 
 ![width:1130px](../figures/study_m2_relative_excess_mse_R1.svg)
@@ -906,11 +916,31 @@ Percentage excess mean-MSE above the best mean-MSE policy **within the same proc
 
 <!-- _class: figure -->
 
+# Win frequency in R3
+
+![width:900px](assets/v2_win_frequency_R3.svg)
+
+The sample mean-risk winner may win only a minority of individual seeds.
+
+---
+
+<!-- _class: figure -->
+
 # All nine mechanisms — R = 3
 
 ![width:1130px](../figures/study_m2_relative_excess_mse_R3.svg)
 
 The apparent winner changes across processes. The figure compares **relative regret**, not raw MSE on a common scale.
+
+---
+
+<!-- _class: figure -->
+
+# How much smoothing was selected in R1?
+
+![width:900px](assets/v2_selected_s_R1.svg)
+
+Fixed smoothness S=.5/.8 stays fixed; criterion-chosen smoothness changes by process.
 
 ---
 
@@ -931,6 +961,16 @@ The apparent winner changes across processes. The figure compares **relative reg
 | Shared observation shock | Pooled plug-in + ML | **0.10214** |
 
 **These are sample risk minima; significance must be tested separately.**
+
+---
+
+<!-- _class: figure -->
+
+# How much smoothing was selected in R3?
+
+![width:900px](assets/v2_selected_s_R3.svg)
+
+Compare AR1 and genuine-jump regimes; nominal S is not joint EDF.
 
 ---
 
@@ -984,6 +1024,16 @@ $$
 ![width:900px](assets/06_runner_up_gaps.svg)
 
 Top-two mean-risk differences are often small and not globally Holm-significant.
+
+---
+
+<!-- _class: figure -->
+
+# Process-by-process ranking ladder
+
+![width:900px](assets/v2_ranking_ladder_R3.svg)
+
+Ranks describe point estimates; use paired Holm results to judge separation.
 
 ---
 
@@ -1041,6 +1091,16 @@ For a **true structural jump**, aggressive global smoothing introduces substanti
 
 ---
 
+<!-- _class: figure -->
+
+# Outlier tail risk: R1
+
+![width:900px](assets/v2_mean_vs_p90_R1.svg)
+
+Large p90 reconstruction losses can coexist with a less alarming average or median.
+
+---
+
 # An observation spike is a different problem
 
 In the outlier case, the true trend is not changed.
@@ -1066,6 +1126,16 @@ The single-series Gaussian ML estimator suffers some very poor realizations.
 ![width:900px](assets/09_outlier_tail_summary.svg)
 
 Compare median, mean and 90th percentile MSE: GLS single-series fits have a heavier loss tail.
+
+---
+
+<!-- _class: figure -->
+
+# Outlier tail risk: R3
+
+![width:900px](assets/v2_mean_vs_p90_R3.svg)
+
+Pooling changes both mean loss and upper-tail loss; this is not a raw scatterplot.
 
 ---
 
@@ -1146,6 +1216,16 @@ However, preset $S=.8$ versus **joint** CV has difference **−0.00248**, CI [�
 
 ---
 
+<!-- _class: figure -->
+
+# Fitted μ across all nine processes
+
+![width:900px](assets/v2_fitted_mu_R3.svg)
+
+Under the sinusoidal departure, a constant difference mean is misspecified.
+
+---
+
 # What did we learn about estimating μ?
 
 Joint mean estimation adds a degree of freedom, and the fitted mean changes with $\lambda$.
@@ -1209,6 +1289,36 @@ The first observed sequence is held identical when comparing R1 and R3.
 ![width:900px](assets/10_first_series_pooling_forest.svg)
 
 GLS first-series paired differences: negative means pooling helps; positive means harm.
+
+---
+
+<!-- _class: figure -->
+
+# First-series pooling effects: joint CV
+
+![width:900px](assets/v2_pooling_forest_cv_joint.svg)
+
+Negative = helps; positive = harms the identical first simulated series.
+
+---
+
+<!-- _class: figure -->
+
+# First-series pooling effects: joint AICc
+
+![width:900px](assets/v2_pooling_forest_aicc_joint.svg)
+
+Intervals are pointwise, not simultaneously adjusted across 99 effects.
+
+---
+
+<!-- _class: figure -->
+
+# First-series pooling effects: plug-in ML
+
+![width:900px](assets/v2_pooling_forest_plugin_mu_ml.svg)
+
+Different methods respond differently to the same heterogeneous pooled series.
 
 ---
 
