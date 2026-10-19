@@ -44,6 +44,14 @@ jobs:
           test -s /tmp/guerrero-smoke/manifest.json
           test -s /tmp/guerrero-smoke/summary.json
           test -s /tmp/guerrero-smoke/guerrero_example.png
+      - name: Audit uploaded Guerrero pilot when available
+        run: |
+          if [ -f results/pooled_loocv_smoothness/guerrero/pilot/guerrero_solver_comparison.csv ]; then
+            python -m experiments.pooled_loocv_smoothness.audit_guerrero_pilot --out-dir /tmp/guerrero-pilot-audit
+            test -s /tmp/guerrero-pilot-audit/audit_summary.json
+            test -s /tmp/guerrero-pilot-audit/scenario_by_R_summary.csv
+            test -s /tmp/guerrero-pilot-audit/guerrero_paired_two_loss_contrasts.png
+          fi
       - name: Audit committed pilot when available
         run: |
           if [ -f results/pooled_loocv_smoothness/pilot/solver_comparison.csv ]; then
