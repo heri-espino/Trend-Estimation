@@ -66,7 +66,8 @@ For R=1 this reduces to traditional single-series LOOCV. Group only statisticall
 14. [Gaussian MLE and LOOCV explained](notes/GAUSSIAN_MLE_AND_LOOCV_EXPLAINED.md) — stepwise likelihood derivation and true-trend MSE distinction.
 15. [Heavy-tail noise protocol](notes/TAIL_NOISE_PROTOCOL.md) — Cauchy, Student-t3, centered Gamma skew, Gaussian jump mixtures, and GARCH-type clustering.
 16. [Completed d=1–3 tail-noise pilot audit](notes/TAIL_NOISE_PILOT_AUDIT_2026-10-18.md) — 4,680 result rows, matched-order comparisons, Cauchy limits, skew-normal and detected roots.
-17. [Agent handoff](AI_HANDOFF.md).
+17. [Empirical market-return Monte Carlo protocol](notes/EMPIRICAL_MARKET_BOOTSTRAP_PROTOCOL.md) — SPY return histogram, iid versus block resampling, fixed analyst d and observed pooled LOOCV.
+18. [Agent handoff](AI_HANDOFF.md).
 
 ## Runnable independent pilot
 
@@ -110,6 +111,14 @@ The [locked design](notes/ROBUSTNESS_PROTOCOL.md) calls for 20 scenarios × 5 se
 We implemented a new **13-distribution-setting, three-difference-order research stress test** of noise distribution assumptions, with **no changes to existing committed experimental outputs**. The Gaussian difference-likelihood selector, one-start LOOCV, and multibracket LOOCV are compared on the same generated data. Student-t3 has finite variance but infinite fourth moment; centered Gamma has mean 0 and skew; GARCH-t5 introduces volatility clustering; Cauchy has **undefined variance and expected squared-error risk** (report robust quantiles instead). The [revised, unrun protocol](notes/TAIL_NOISE_PROTOCOL.md) crosses d∈{1,2,3}, five population-centered skew-normal shapes α=-6,-3,0,3,6, and the original eight regimes: **156 scenarios × 5 seeds × nested R1/3 = 1,560 pools, 4,680 method rows**. The **expanded pilot has now been run and uploaded**. Its findings and limitations are documented in the [completed tail-noise pilot audit](notes/TAIL_NOISE_PILOT_AUDIT_2026-10-18.md). Confirmatory research remains unrun; CI stays lightweight.
 
 `python -m experiments.pooled_loocv_smoothness.run_tail_noise --preset pilot` runs the exploratory pilot manually and saves CSV/JSON/manifest under `results/pooled_loocv_smoothness/guerrero/tail_stress/pilot/`. The [results ledger](notes/RESULTS_LEDGER.md) identifies the executed pilot and source SHA; the new saved-data re-audit uses `python -m experiments.pooled_loocv_smoothness.audit_tail_noise` without regenerating the simulations. No PRs; commit only to the existing independent paper branch.
+
+## Next independent experiment: financial return histogram as synthetic noise
+
+The user correctly specifies **analyst-fixed difference order d**, followed by pooling **LOOCV losses** to choose a common penalty; this differs from averaging series-by-series best smoothness percentages. See [the financial Monte Carlo protocol](notes/EMPIRICAL_MARKET_BOOTSTRAP_PROTOCOL.md) for the exact mathematical distinction.
+
+The **implemented but unexecuted** market-calibrated study uses actual adjusted SPY daily prices (2015–2025) only to infer the **marginal shape of historical log-return shocks**, not a true stock-price trend. It compares matched Gaussian, empirical return bootstrap, and circular block lengths 5/20 on **new synthetic trend-plus-shock series with known conditional mean τ**, R1/3, d=2, N50/200, two standardized noise scales, five seeds: 160 pools, 320 method rows. A local cached return snapshot is ignored by Git but hashed in the manifest. A histogram and return/squared-return dependence plot are generated when the user runs the pilot. CI uses only a synthetic fixture. No PR.
+
+`python -m experiments.pooled_loocv_smoothness.run_empirical_market_noise --preset pilot --ticker SPY` is the manual experiment; `python -m pytest tests/test_empirical_market_noise.py -q` verifies the code offline.
 
 ## Separation contract
 
