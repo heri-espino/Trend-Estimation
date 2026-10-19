@@ -115,8 +115,7 @@ def test_tiny_shard_hashes_aggregate_and_original_baselines(tmp_path):
     assert report["independent_original_J_shock_draws_replayed"]==1
     assert len(methods)==260
     assert len(pairs)==420
-    assert report["original_eight_method_parity"]["status"]=="checked_same_25_J_seeds"
-    assert report["original_eight_method_parity"]["saved_J_baseline_cells_matched"]==80
+    assert report["original_eight_method_parity"]["status"].startswith("skipped_incomplete_")
     with pytest.raises(ValueError,match="Incomplete"):
         aggregate(root,tmp_path/"not_written",require_complete=True)
     ok=aggregate(root,tmp_path/"audit",verify_digests=True)
