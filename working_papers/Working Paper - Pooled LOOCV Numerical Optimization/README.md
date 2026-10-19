@@ -76,7 +76,8 @@ For R=1 this reduces to traditional single-series LOOCV. Group only statisticall
 24. [New non-Gaussian + nonzero-mean Monte Carlo protocol](notes/NONGAUSSIAN_NONZERO_MU_PROTOCOL_2026-10-19.md) — 12 noise distributions, 4 difference orders, mean shifts and moment-aware interpretation; pilot unrun.
 25. [Cortés-Toto criteria versus Gaussian MLE, with a common estimated μ and numerical search](notes/CORTES_TOTO_CRITERIA_AND_NUMERICAL_COMPARISON_PROTOCOL_2026-10-19.md) — original CV/GCV/AICc/BIC, pooled joint EDF, controlled smoothness, source-aware search caveats; large comparison **not run**.
 26. [Study K.1 exact 25-seed paired 26-method replay](notes/CORTES_TOTO_PAIRED_25_SEED_REPLAY_PROTOCOL_2026-10-19.md) — 32-worker manual, full same-seed J baseline checks, 192 cells and 1.248M per-method rows, **NOT RUN**.
-27. [Agent handoff](AI_HANDOFF.md).
+27. [Completed matched 25-seed exploratory 26-method results](notes/CORTES_TOTO_PAIRED_25_SEED_REPLAY_RESULTS_2026-10-19.md) — 192 strata, R1/R3, 12 noise laws, BIC-boundary pathology, original estimator parity and solver confound.
+28. [Agent handoff](AI_HANDOFF.md).
 
 ## Runnable independent pilot
 
@@ -163,6 +164,12 @@ A *single* user-executed shock for d2/N50/etaSD.5/R3, Gaussian, `mu/epsSD=+1` re
 The new `run_cortes_criteria_pilot.py`, `launch_cortes_criteria_pilot.py`, `aggregate_cortes_criteria_pilot.py` and `tests/test_cortes_criteria_paired_pilot.py` implement an optional manual **192 strata × exactly the same 25 J pilot shock draws per stratum**: 4,800 **previously used** independent base shocks, 48,000 nested R/paired-mu treatments, **26 methods = 18 new selector policies + eight old J estimators**, **1,248,000 compressed method rows**. Reuse the exact J original generator/seed convention, affine shift-equivariant selectors evaluated once per underlying draw/R, all 26 methods compared on identical y and known stochastic latent truth after selection. Fixed true mu modes explicitly labelled infeasible oracles; controlled smoothness presets not selected using latent truth. Numerical **multibracket** search held constant for new criteria; do not mistake it for global certification. The aggregator validates saved raw gzip SHA256, 25-seed cell completeness, mixed-code/solver rejection, and **exact same original eight-method average MSE** as the previous committed J pilot, guarding against accidental generator drift. Raw source shards ignored by git, compact aggregates remain trackable.
 
 **NOT YET RUN:** Run `python -m experiments.pooled_loocv_smoothness.launch_cortes_criteria_pilot --workers 32` for plan only; explicit `--execute` starts it. Do small preflights under separate roots first, as documented in [exact paired replay protocol](notes/CORTES_TOTO_PAIRED_25_SEED_REPLAY_PROTOCOL_2026-10-19.md). Do not claim 4,800 new independent shock draws, confidence with only 25 seeds/cell, valid normal CIs for Student t3, unrestricted BIC optimality, or outcome superiority by `cv_zero_multibracket` from one seed.
+
+## Latest K.1 exploratory results (completed and uploaded)
+
+The 26-method 192-cell **same-original-J-25-seed** criterion replay has now **been executed** and compact results pushed (`results/pooled_loocv_smoothness/guerrero/cortes_criteria_replay/audit_pilot_001/`), source SHA `1785889d7d64a77f548d8746d41a9ea786e3e588`; original 8 method mean-MSE parity **exact at all 15,360 mean cells (maximum 0.0)**. 4,800 ORIGINAL seeded R3 shock draws, paired μ changes, nested R1/3 → 1,248,000 method records, 49,920 method aggregates and 80,640 paired. This is **EXPLORATORY ONLY**, not a new 4,800-seed independent cohort, nor 10k confirmatory evidence. Full source-aware [observed report and scenario tables](notes/CORTES_TOTO_PAIRED_25_SEED_REPLAY_RESULTS_2026-10-19.md).
+
+At R3 and μ/epsSD=1: Gaussian GLS ML beats new joint fitted-mean CV/GCV/AICc on mean true trend MSE in 179/180/178 of 192 separate 25-seed strata respectively. At R1, joint AICc and pooled Guerrero-style plug-in are competitive or descriptively superior on equal-cell means. `bic_joint` ALWAYS selects the artificial positive-domain lower penalty limit (4,800 original shocks at each R); this naive BIC is not a meaningful unrestricted selector. Exact fold-clean old/new joint CV uses same mathematical criterion but DIFFERENT numerical optimizers; MSE differences motivate a controlled matched-score solver study before claiming criterion benefits. Do not infer significance from 25-seed cells or usual normal MSE CIs under t3.
 
 ## Separation contract
 
