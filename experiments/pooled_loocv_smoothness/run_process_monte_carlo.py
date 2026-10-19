@@ -206,13 +206,19 @@ def _load_matrix(out_dir: Path, cfg: dict):
                     raise ValueError(f"unexpected case/pool/method in {file}") from exc
                 if not np.isnan(arr[slot, c, r, m, 0]):
                     raise ValueError(f"duplicate row in {file}: {row}")
-                values = np.array([float(row[field]) for field in columns])
-                if not np.isfinite(values).all():
+                values = np.array([
+                    float(row[field]) if row[field] else float("nan")
+                    for field in columns
+                ])
+                # Full-model EDF is deliberately unspecified for GLS/plug-in
+                # variance estimators: don't silently equate their selection
+                # EDF with the fitted penalized-smoother trace.
+                if not np.isfinite(values[:-1]).all():
                     raise ValueError(f"nonfinite result in {file}: {row}")
                 arr[slot, c, r, m] = values
                 total += 1
     expected = count * len(names) * len(POOL_SIZES) * len(methods)
-    if total != expected or np.isnan(arr).any():
+    if total != expected or np.isnan(arr[..., :-1]).any():
         raise ValueError(f"incomplete Monte Carlo grid: {total}/{expected}")
     return arr
 
@@ -260,7 +266,9 @@ def summarize_matrix(arr: np.ndarray, cfg: dict):
                     "mean_first_series_mae": float(np.mean(x[:, mi, 3])),
                     "median_selected_s_nominal": float(np.median(x[:, mi, 4])),
                     "mean_fitted_mu": float(np.mean(x[:, mi, 5])),
-                    "mean_edf_total": float(np.mean(x[:, mi, 6])),
+                    "mean_edf_total": (float(np.mean(x[:, mi, 6]))
+                                       if np.isfinite(x[:, mi, 6]).all()
+                                       else None),
                     "ex_post_seed_win_fraction": float(
                         np.mean(fractional_wins[:, mi])
                     ),
