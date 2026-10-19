@@ -301,7 +301,7 @@ statistical significance nor generalized solver superiority
 is inferred. A dependence-aware or covariance-aware benchmark
 is needed before further conclusions about the AR(1) case.
 
-\subsection{Prospective matched-order and skew-normal stress test}
+\subsection{Matched-order and skew-normal tail-noise pilot}
 
 Before running the follow-up tail-shape experiment, we extended its
 design to three matched generating and fitting orders
@@ -328,17 +328,73 @@ $U,V\sim N(0,1)$, the observation disturbance is
 Thus skewness varies with $\alpha$ while population mean and
 variance remain $0$ and $\sigma_\eta^2$, respectively.
 
-The revised manual pilot is a \emph{planned, unexecuted} factorial:
+The executed exploratory pilot used the predeclared factorial:
 13 distribution settings, three values of $d$, two series lengths
 and two noise scales, five seeds per cell and nested pool sizes
 $R=1,3$ (1,560 paired pool evaluations and 4,680 method rows).
-Results will be stratified by $d$, since integrated trend
+Results are stratified by $d$, since integrated trend
 magnitudes vary greatly by order. For Cauchy observation noise,
 variance and population squared-error risk are undefined;
 there is no true Guerrero variance ratio and only robust
 finite-realization error summaries are appropriate.
 This experiment is distinct from the completed five-regime
 robustness pilot reported above.
+
+\subsection{Exploratory tail-noise results by difference order}
+
+The matched-order noise campaign produced 1,560 nested pool
+evaluations (4,680 method rows), with 780 three-series
+$(R=3)$ evaluations. The 13 noise settings include one
+Cauchy observation-noise case, which cannot be combined with
+finite-variance squared-risk comparisons. Among the
+$720$ three-series pools with finite population
+observation-noise variance (12 regimes, 240 per order),
+the realized latent-trend MSE results were:
+\begin{table}[ht]
+\centering
+\caption{Descriptive reconstruction MSE on matched-order
+finite-variance noise settings, excluding Cauchy ($R=3$).
+Each order changes the stochastic DGP itself; raw MSE
+is not a measure for choosing $d$ across rows.}
+\label{tab:tail-d-orders}
+\begin{tabular}{rrrr}
+\toprule
+$d$ & Gaussian difference ML & Pooled LOOCV Brent & ML lower MSE pools\\
+\midrule
+1 & \textbf{0.207687} & 0.208839 & 122/240\\
+2 & \textbf{0.338310} & 0.348313 & 149/240\\
+3 & \textbf{0.421723} & 0.430813 & 156/240\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+In these exploratory realizations Gaussian difference-likelihood
+variance estimation attained a slightly lower mean true-trend MSE
+than ordinary pooled LOOCV at each matched generating/fitting order.
+The differences are modest, particularly at $d=1$, and only
+five independently seeded pools were evaluated per detailed
+$(d,\text{distribution},N,\sigma_\eta)$ cell.
+The skew-normal cases show no clear monotone effect of increasing
+shape $\alpha$ on the relative MSE advantage. There is no
+independent confirmation or interval estimate for these differences.
+
+Under Cauchy observation noise the measurement variance and hence
+Guerrero's scalar population ratio are undefined. Gaussian
+difference-likelihood fitted parameters are numeric pseudo-values;
+we therefore do \emph{not} compare expected squared risks there.
+Among 60 three-series Cauchy pools, Gaussian ML attained smaller
+realized squared error in only 18 cases, and ordinary LOOCV
+had smaller median per-pool median absolute reconstruction
+errors at all three orders. Gaussian ML selected the infinite
+penalty boundary in 27/60 Cauchy pools.
+
+On the numerical side, bounded and multi-bracket Brent
+returned LOOCV objectives agreeing to within $10^{-7}$
+throughout the 780 three-series pools, including seven with
+multiple derivative sign-change stationary candidates.
+A finite scan is not a certification of a unique global minimum,
+but this campaign offers no demonstrated objective advantage
+from the more elaborate candidate-recovery procedure.
 
 \section{Discussion and limitations}
 \textbf{Confirmatory results pending.} The exploratory pilots have been recorded, but neither numerical dominance nor a
