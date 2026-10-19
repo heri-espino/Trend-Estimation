@@ -844,6 +844,93 @@ finite-domain search caveats, and proposed
 paired design are in
 \texttt{notes/CORTES\_TOTO\_CRITERIA\_AND\_NUMERICAL\_COMPARISON\_PROTOCOL\_2026-10-19.md}.
 
+\subsection{Exploratory matched-seed comparison of optimality criteria}
+
+We subsequently completed a \emph{matched-seed
+exploratory replay} of 25 previously used Monte Carlo
+shock draws in each of the 192
+$(\text{noise law},d,N,\sigma_\eta)$ cells
+from the non-Gaussian mean-difference pilot.
+Five common-noise $\mu$ treatments and nested
+$R\in\{1,3\}$ lead to 48,000 treatment-pool
+evaluations and 1,248,000 per-method records
+for 26 selectors (18 criteria/mean-policy
+combinations plus eight existing methods).
+These are \emph{not} 1,248,000 statistically
+independent records or new independent replications.
+The original eight methods reproduced all
+15,360 pre-existing cell means with
+maximum absolute discrepancy exactly zero.
+
+\begin{table}[ht]
+\centering
+\caption{Exploratory realized latent-trend mean
+MSE at $\mu/\sigma_\varepsilon=1$.
+Each entry averages 192 distinct law/order/length/
+measurement-noise cells with 25 \emph{reused}
+shock draws per cell. These descriptive means
+do not represent one homogeneous
+risk across differing trends.}
+\label{tab:cortes-criteria-matched-pilot}
+\begin{tabular}{lrr}
+\toprule
+Selector & $R=3$ & $R=1$\\
+\midrule
+Gaussian GLS quasi-ML, fitted mean & \textbf{0.37334} & 0.42941\\
+Pooled difference-mean plug-in + Gaussian ML & 0.37508 & 0.39245\\
+GCV, jointly fitted mean & 0.37940 & 0.41962\\
+CV, jointly fitted mean, multibracket & 0.38132 & 0.41565\\
+AICc, jointly fitted mean & 0.38133 & \textbf{0.38967}\\
+Earlier joint fold-clean CV, original solver & 0.38229 & 0.42496\\
+BIC, restricted positive penalty domain & 2.12253 & 2.11113\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+At $R=3$ the Gaussian GLS quasi-likelihood
+has smaller mean reconstruction MSE than
+new joint-mean CV in 179 of 192 distinct
+scenario cells, than GCV in 180, and
+than AICc in 178; each cell has only
+25 reused shock draws. Under $R=1$,
+AICc and the pooled plug-in hybrid are
+substantially more competitive in the
+descriptive averages. The jointly fitted
+BIC based on $\log(\mathrm{RSS})$ selected
+the \emph{artificial lower $\lambda$ domain
+limit} in all 4,800 evaluated base draws
+under each of $R=1$ and $R=3$ at
+$\mu/\sigma_\varepsilon=1$.
+This is an expected interpolation
+pathology of that criterion formula
+and does not establish that other
+likelihood-based information criteria fail.
+
+Even the two implementations of the
+\emph{same} joint-mean observed-data
+CV objective produce different fitted
+latent losses, reflecting distinct
+numerical search methods and their
+different selected penalty values.
+Before attributing an apparent improvement
+to a new statistical criterion, a
+controlled solver experiment must compare
+the \emph{identical observed-CV objective}
+at each solver's selected $\lambda$ and
+record computation costs and boundary
+behavior. Lower latent reconstruction MSE
+alone does not prove more successful
+numerical minimization of observed-data CV.
+Normal-approximation standard errors
+for quadratic loss in Student-$t(3)$
+cells are not automatically valid because
+of infinite fourth moments. The complete
+25-seed exploratory tables and source
+manifest are in
+\texttt{notes/CORTES\_TOTO\_PAIRED\_25\_SEED\_REPLAY\_RESULTS\_2026-10-19.md};
+no independent-seed 10,000-replicate
+confirmation for these criteria has been run.
+
 \section{Discussion and limitations}
 \textbf{Gaussian confirmation completed, external robustness pending.}
 The independent 10,000-seed-per-cell Gaussian mean-difference
