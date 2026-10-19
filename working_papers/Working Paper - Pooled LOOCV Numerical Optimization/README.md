@@ -72,7 +72,8 @@ For R=1 this reduces to traditional single-series LOOCV. Group only statisticall
 20. [Exact simulation and measured results](notes/HOW_THE_SIMULATION_WORKS_AND_MEASURED_RESULTS.md) — actual latent trend recursion, eight estimators, independent-shock grouping and original pilot statistics.
 21. [10,000-seed multorder confirmatory protocol](notes/MULTIORDER_10000_SEED_CONFIRMATORY_PROTOCOL.md) — d=1,2,3,4; shard control; code SHA, paired Monte Carlo inference and numerical preflights.
 22. [Completed Gaussian 160k-draw confirmatory audit](notes/MULTIORDER_10000_SEED_CONFIRMATORY_RESULTS_2026-10-19.md) — per-(d,N,noise) paired MSE, 95% Monte Carlo intervals and single-series exceptions.
-23. [Agent handoff](AI_HANDOFF.md).
+23. [Full eight-method breakdown for all 160 confirmed scenarios](notes/EIGHT_METHODS_BY_SCENARIO_160.md) — no averaging across N, noise, order, mu or pool size; [wide downloadable CSV](../../results/pooled_loocv_smoothness/guerrero/nonzero_mean_multorder/audit_001/eight_methods_all_160_scenarios.csv).
+24. [Agent handoff](AI_HANDOFF.md).
 
 ## Runnable independent pilot
 
