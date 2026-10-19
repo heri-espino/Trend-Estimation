@@ -192,3 +192,6 @@ def test_manual_launcher_plans_160k_seeds_and_resume(tmp_path):
     again=launch(single,root,workers=1)
     assert again["verified_existing"]==1
     assert first["verified_existing"]==0
+    overlapping=plan((1,),(50,),(0.5,),seed_start=0,seed_stop=2,shard_size=2)
+    with pytest.raises(ValueError,match="Overlapping"):
+        launch(overlapping,root,workers=1)
