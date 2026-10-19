@@ -172,6 +172,8 @@ def test_dry_run_and_smoke_write_immutable_machine_readable_artifacts(tmp_path):
     summary=execute("smoke",results)
     assert summary["total_nested_pools"]==6
     assert summary["total_method_rows"]==48
+    assert (results/"example_latent_trend_errors.png").stat().st_size > 0
+    assert (results/"mean_shift_true_trend_mse_R3.png").stat().st_size > 0
     with (results/"method_comparison.csv").open(newline="") as f:
         rows=list(csv.DictReader(f))
     manifest=json.loads((results/"manifest.json").read_text())
