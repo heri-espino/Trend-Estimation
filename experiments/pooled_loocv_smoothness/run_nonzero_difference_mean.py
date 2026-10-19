@@ -219,8 +219,8 @@ def summarize(rows: list[dict]) -> dict:
                     slot[method]["realized_true_trend_mse"] for slot in subset])),
                 "mean_abs_mu_error":float(np.mean([
                     abs(slot[method]["mu_bias"]) for slot in subset])),
-                "selected_infinite_lambda_count":sum(
-                    np.isinf(slot[method]["selected_lambda"]) for slot in subset),
+                "selected_infinite_lambda_count":int(sum(
+                    bool(np.isinf(slot[method]["selected_lambda"])) for slot in subset)),
             } for method in METHODS],
         })
     return {
