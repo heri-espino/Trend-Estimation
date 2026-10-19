@@ -17,6 +17,12 @@ Keep different DGPs and estimands separate, even when they share `PooledLOOCV`. 
 |---|---|---|---|
 | **E. Tail shape & Cauchy stress** | Thirteen distribution settings: Gaussian iid control, Student-t3 observation, Student-t3 trend innovations, centered Gamma right/left skew, rare Gaussian jump mixture, Student-t5 GARCH observation, Cauchy observation, and **five centered standardized skew-normal levels α=-6,-3,0,+3,+6**. Each crossed with **matched generating/fitted orders d=1,2,3**. All use identical PLS and feasible Gaussian ML / Brent selectors. For Cauchy the noise has **no variance or population MSE**, so report median finite-pool error and quantiles rather than an expected-MSE comparison. | **EXECUTED AND COMMITTED (pilot)**: **156 scenario cells × 5 seeds × nested R1/3 = 1,560 pools, 4,680 method rows**. Confirmatory NOT executed. Tiny automatic smoke is separate (78 pools, 234 method rows). | [full locked protocol](TAIL_NOISE_PROTOCOL.md), [ML and LOOCV derivations](GAUSSIAN_MLE_AND_LOOCV_EXPLAINED.md), generator `experiments/pooled_loocv_smoothness/run_tail_noise.py`, tests `tests/test_guerrero_tail_noise.py`. Expected pilot output `results/pooled_loocv_smoothness/guerrero/tail_stress/pilot/` |
 
+### New planned experiment F: actual adjusted financial returns as Monte Carlo noise calibration
+
+| Study | Data generating process / question | Status and size | Authoritative records |
+|---|---|---|---|
+| **F. Market-calibrated return-noise Monte Carlo** | User-selected **fixed d=2** default. Historical SPY adjusted daily closing prices from 2015–2025 are converted to centered log returns. Four noise methods: matched iid Gaussian, iid bootstrap of historical returns (histogram distribution), circular blocks of length 5 or 20 (partly preserve volatility dependence). The fitted synthetic observations are **new** (Y=\tau+\eta) with **known conditional mean trend \(\tau\)**, *not observed stock-price truth*. | **IMPLEMENTED / NOT YET RUN WITH REAL MARKET DATA**. CI synthetic fixture: 8 nested R1/R3 pools, 16 rows. Actual manually executed pilot planned: **160 nested pools**, 320 method rows, 20 primary R3 pools per mode. Market calibration snapshot never committed. | [Locked real-market bootstrap design](EMPIRICAL_MARKET_BOOTSTRAP_PROTOCOL.md), code `run_empirical_market_noise.py`, tests `test_empirical_market_noise.py`. Expected user-run results `results/pooled_loocv_smoothness/empirical_market_noise/SPY/d2/pilot/`. |
+
 ### A/B/C design and seeds, not interchangeable
 
 - A manifest: `results/pooled_loocv_smoothness/pilot/manifest.json`, independent seed offset **100000**, difference order 2, log penalty domain [-20,35], R=1,3, 401-point grid and 101-point derivative scan. Simulation was originally run with NumPy 2.4.6, SciPy 1.17.1 and Python 3.11.16. Verified **160** pooled cases.
@@ -46,6 +52,13 @@ Keep different DGPs and estimands separate, even when they share `PooledLOOCV`. 
 - For all non-Cauchy regimes, observation scale means population SD; Cauchy uses `gamma`, the *scale*, not a variance or standard deviation.
 - The **pilot CSV and manifest are now committed and independently analyzed**. For 720 primary R3 finite-variance pools, mean trend-MSE 0.322573 Gaussian ML vs 0.329322 LOOCV (427/720 ML realized wins); d1 0.207687 vs 0.208839, d2 0.338310 vs 0.348313, d3 0.421723 vs 0.430813. **Cauchy separately:** 60 R3 pools, Gaussian ML lower realized MSE in only 18/60; no population Guerrero variance ratio or expected-MSE comparison. Brent and multibracket tied in observed LOOCV loss to 1e-7 on all 780 R3 pools. See [TAIL_NOISE_PILOT_AUDIT_2026-10-18.md](TAIL_NOISE_PILOT_AUDIT_2026-10-18.md).
 - The relevant market-return source is Rama Cont (2001), *Empirical properties of asset returns: stylized facts and statistical issues*, DOI 10.1080/713665670, supporting the motivation of tails, asymmetry and clustering, **not** validating these exact synthetic error models as stock return distributions.
+
+### F market-data integrity
+
+- F's fixed dates, source adjustment, local raw snapshot SHA256, source ticker, theoretical conditional mean, RNG seed and common-latent-truth pairing are specified in [EMPIRICAL_MARKET_BOOTSTRAP_PROTOCOL.md](EMPIRICAL_MARKET_BOOTSTRAP_PROTOCOL.md).
+- The market histogram is NOT itself a time-series process; iid bootstrap loses serial dependence, circular block bootstrap partly preserves it. The historical arithmetic mean of log returns is NOT the unique latent price trend.
+- **Analyst fixes d**, and `PooledLOOCV.score` selects a single \(\lambda\) minimizing the average of the R LOOCV losses. It does NOT average the individually optimized smoothness percentages (these operations generally differ).
+- Current status is **code/protocol implemented**, not real-market pilot executed. Raw downloaded returns are kept in ignored `data/market_calibration/` for precise local reruns; only source hash/meta and synthetic results are eligible for Git.
 
 ### Remaining decisions
 
