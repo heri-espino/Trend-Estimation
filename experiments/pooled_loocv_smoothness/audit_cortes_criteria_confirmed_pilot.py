@@ -93,9 +93,7 @@ def verify(root=ROOT):
         key=(law,d,n,eta,R,mu,m)
         if ((law,d,n,eta) not in expected or R not in (1,3) or
             mu not in MU_FACTORS or m not in ALL_METHODS or
-            int(x["n_independent_base_J_shocks"])!=25 or
-            x["fourth_moment_infinite_normal_CI_not_valid"]!="True" if False else False):
-            # Boolean warning checked below, without ternary precedence ambiguity.
+            int(x["n_independent_base_J_shocks"])!=25):
             raise ValueError("Malformed factor-method row")
         if bool(x["fourth_moment_infinite_normal_CI_not_valid"]=="True") != (law in HEAVY_FOURTH):
             raise ValueError("Incorrect Student-t3 infinite-fourth-moment label")
