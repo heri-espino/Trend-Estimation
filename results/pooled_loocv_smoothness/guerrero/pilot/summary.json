@@ -1,0 +1,88 @@
+{
+  "pool_count": 120,
+  "method_count": 4,
+  "row_count": 480,
+  "overall": {
+    "bounded_brent": {
+      "mean_LOOCV_MSE": 2.642913902293754,
+      "mean_true_trend_MSE": 0.40450594259448,
+      "mean_S": 0.7586463719416646
+    },
+    "dense_reference": {
+      "mean_LOOCV_MSE": 2.6430013823599676,
+      "mean_true_trend_MSE": 0.40429684677924294,
+      "mean_S": 0.7581655734564462
+    },
+    "guerrero_known_ratio": {
+      "mean_LOOCV_MSE": 2.6676392380530207,
+      "mean_true_trend_MSE": 0.3837613960864034,
+      "mean_S": 0.7566548398057293
+    },
+    "multibracket_brent": {
+      "mean_LOOCV_MSE": 2.642913902293754,
+      "mean_true_trend_MSE": 0.40450594188270717,
+      "mean_S": 0.7586463714054864
+    }
+  },
+  "by_R": {
+    "1": {
+      "pool_count": 60,
+      "metrics": {
+        "bounded_brent": {
+          "mean_LOOCV_MSE": 2.6044186520720585,
+          "mean_true_trend_MSE": 0.41416423297092864,
+          "mean_S": 0.7589278843661024
+        },
+        "dense_reference": {
+          "mean_LOOCV_MSE": 2.604506292790003,
+          "mean_true_trend_MSE": 0.41359117879553203,
+          "mean_S": 0.7582212571771356
+        },
+        "guerrero_known_ratio": {
+          "mean_LOOCV_MSE": 2.637697616709079,
+          "mean_true_trend_MSE": 0.38185014541327184,
+          "mean_S": 0.7566548398057293
+        },
+        "multibracket_brent": {
+          "mean_LOOCV_MSE": 2.6044186520720585,
+          "mean_true_trend_MSE": 0.41416423225875804,
+          "mean_S": 0.7589278838906639
+        }
+      },
+      "guerrero_lower_true_mse_than_multibracket_count": 50,
+      "multibracket_lower_LOOCV_than_guerrero_count": 60
+    },
+    "3": {
+      "pool_count": 60,
+      "metrics": {
+        "bounded_brent": {
+          "mean_LOOCV_MSE": 2.6814091525154495,
+          "mean_true_trend_MSE": 0.39484765221803125,
+          "mean_S": 0.7583648595172271
+        },
+        "dense_reference": {
+          "mean_LOOCV_MSE": 2.681496471929932,
+          "mean_true_trend_MSE": 0.39500251476295395,
+          "mean_S": 0.7581098897357564
+        },
+        "guerrero_known_ratio": {
+          "mean_LOOCV_MSE": 2.6975808593969623,
+          "mean_true_trend_MSE": 0.3856726467595351,
+          "mean_S": 0.7566548398057293
+        },
+        "multibracket_brent": {
+          "mean_LOOCV_MSE": 2.6814091525154495,
+          "mean_true_trend_MSE": 0.39484765150665646,
+          "mean_S": 0.758364858920309
+        }
+      },
+      "guerrero_lower_true_mse_than_multibracket_count": 45,
+      "multibracket_lower_LOOCV_than_guerrero_count": 60
+    }
+  },
+  "multibracket_lower_LOOCV_than_guerrero_count": 120,
+  "guerrero_lower_true_MSE_than_multibracket_count": 95,
+  "multibracket_lower_true_MSE_than_guerrero_count": 25,
+  "bounded_worse_LOOCV_than_multibracket_count": 0,
+  "interpretation": "A smaller observed LOOCV score does not imply lower true latent-trend MSE. Guerrero is given actual DGP variances; pooled rows at R=1 and R=3 are nested. Report paired by-seed uncertainty before scientific claims."
+}

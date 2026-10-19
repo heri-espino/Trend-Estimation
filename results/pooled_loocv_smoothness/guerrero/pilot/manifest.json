@@ -1,0 +1,129 @@
+{
+  "protocol": "guerrero_known_variance_ratio_pooled_loocv_v1",
+  "status": "executed",
+  "preset": "pilot",
+  "created_utc": "2026-10-19T01:57:10.428584+00:00",
+  "DGP": "D_d tau = epsilon; y = tau + eta; independent Gaussian noises",
+  "true_lambda_definition": "sigma_eta**2 / sigma_epsilon**2",
+  "true_lambda_is_known_parameter_oracle": true,
+  "model": "V=I, mu=0, fixed initial trend values",
+  "scenario_count": 12,
+  "scenarios": [
+    {
+      "n": 50,
+      "d": 2,
+      "sigma_eta": 0.5,
+      "sigma_epsilon": 0.1,
+      "guerrero_lambda": 25.0
+    },
+    {
+      "n": 50,
+      "d": 2,
+      "sigma_eta": 0.5,
+      "sigma_epsilon": 0.3,
+      "guerrero_lambda": 2.777777777777778
+    },
+    {
+      "n": 50,
+      "d": 2,
+      "sigma_eta": 0.5,
+      "sigma_epsilon": 1.0,
+      "guerrero_lambda": 0.25
+    },
+    {
+      "n": 50,
+      "d": 2,
+      "sigma_eta": 2.0,
+      "sigma_epsilon": 0.1,
+      "guerrero_lambda": 400.0
+    },
+    {
+      "n": 50,
+      "d": 2,
+      "sigma_eta": 2.0,
+      "sigma_epsilon": 0.3,
+      "guerrero_lambda": 44.44444444444445
+    },
+    {
+      "n": 50,
+      "d": 2,
+      "sigma_eta": 2.0,
+      "sigma_epsilon": 1.0,
+      "guerrero_lambda": 4.0
+    },
+    {
+      "n": 200,
+      "d": 2,
+      "sigma_eta": 0.5,
+      "sigma_epsilon": 0.1,
+      "guerrero_lambda": 25.0
+    },
+    {
+      "n": 200,
+      "d": 2,
+      "sigma_eta": 0.5,
+      "sigma_epsilon": 0.3,
+      "guerrero_lambda": 2.777777777777778
+    },
+    {
+      "n": 200,
+      "d": 2,
+      "sigma_eta": 0.5,
+      "sigma_epsilon": 1.0,
+      "guerrero_lambda": 0.25
+    },
+    {
+      "n": 200,
+      "d": 2,
+      "sigma_eta": 2.0,
+      "sigma_epsilon": 0.1,
+      "guerrero_lambda": 400.0
+    },
+    {
+      "n": 200,
+      "d": 2,
+      "sigma_eta": 2.0,
+      "sigma_epsilon": 0.3,
+      "guerrero_lambda": 44.44444444444445
+    },
+    {
+      "n": 200,
+      "d": 2,
+      "sigma_eta": 2.0,
+      "sigma_epsilon": 1.0,
+      "guerrero_lambda": 4.0
+    }
+  ],
+  "independent_seed_repeats_per_cell": 5,
+  "pool_sizes": [
+    1,
+    3
+  ],
+  "nested_pools": true,
+  "total_pool_cases": 120,
+  "solver_methods": [
+    "guerrero_known_ratio",
+    "bounded_brent",
+    "multibracket_brent",
+    "dense_reference"
+  ],
+  "dense_grid_points": 401,
+  "derivative_scan_points": 101,
+  "log_lambda_bounds": [
+    -20,
+    35
+  ],
+  "seed_base": 20262000,
+  "git_sha": "7fc208e18b74e45cfe1075eede9390a6f30f23b3",
+  "python": "3.11.16",
+  "numpy": "2.4.6",
+  "scipy": "1.17.1",
+  "caveats": [
+    "Guerrero uses known true simulation variances, not estimated real-data variances.",
+    "The deterministic initialization of each integrated trend is not the diffuse prior formulation.",
+    "Results for R=1 and R=3 at the same seed share their first generated series.",
+    "The observed LOOCV target and latent trend MSE have different estimands.",
+    "Numerical root-search candidates and finite grids are not global certificates."
+  ],
+  "rows_written": 480
+}
