@@ -73,7 +73,8 @@ For R=1 this reduces to traditional single-series LOOCV. Group only statisticall
 21. [10,000-seed multorder confirmatory protocol](notes/MULTIORDER_10000_SEED_CONFIRMATORY_PROTOCOL.md) — d=1,2,3,4; shard control; code SHA, paired Monte Carlo inference and numerical preflights.
 22. [Completed Gaussian 160k-draw confirmatory audit](notes/MULTIORDER_10000_SEED_CONFIRMATORY_RESULTS_2026-10-19.md) — per-(d,N,noise) paired MSE, 95% Monte Carlo intervals and single-series exceptions.
 23. [Full eight-method breakdown for all 160 confirmed scenarios](notes/EIGHT_METHODS_BY_SCENARIO_160.md) — no averaging across N, noise, order, mu or pool size; [wide downloadable CSV](../../results/pooled_loocv_smoothness/guerrero/nonzero_mean_multorder/audit_001/eight_methods_all_160_scenarios.csv).
-24. [Agent handoff](AI_HANDOFF.md).
+24. [New non-Gaussian + nonzero-mean Monte Carlo protocol](notes/NONGAUSSIAN_NONZERO_MU_PROTOCOL_2026-10-19.md) — 12 noise distributions, 4 difference orders, mean shifts and moment-aware interpretation; pilot unrun.
+25. [Agent handoff](AI_HANDOFF.md).
 
 ## Runnable independent pilot
 
@@ -137,6 +138,12 @@ Pilot: 20 cells, five seeds per N×noise group, nested R1/3, **200 treatment poo
 The user requested documenting the exact process and actual measured `d=2` five-seed results, then expanding **without rewriting old results** to fitted/generating orders `d=1,2,3,4`, with **10,000 independent Monte Carlo seeds per (d,N,observation SD)**. This is 16 independent base cells, **160,000 underlying independent R3 shock draws**, five **paired** mu shifts and nested R1/R3, or **1.6 million treatment-pool evaluations / 12.8 million method rows**. These numbers now describe a **completed manual Gaussian run**, source SHA `070b363b7d8a8156f320c833539fa068b684fc7b`; original per-seed gzip files are local and the compact verified aggregates are committed. Details: [canonical methodology/results note](notes/HOW_THE_SIMULATION_WORKS_AND_MEASURED_RESULTS.md) and [frozen confirmatory protocol](notes/MULTIORDER_10000_SEED_CONFIRMATORY_PROTOCOL.md).
 
 The new sharded `run_nonzero_mean_multorder.py` records deterministic seed intervals, original source SHA and compressed CSV SHA256, avoids overlarge in-memory results and exploits exact affine-shift equivariance. `launch_nonzero_mean_multorder.py` is **plan-only by default**; only `--execute` starts local jobs, with `--workers` and safe resume. `aggregate_nonzero_mean_multorder.py` rejects overlapping seed intervals, mixed source commits and false completeness; it keeps the **paired true-MSE differences per seed** and outputs compact per-(d,N,eta,mu,R) statistics for legitimate uncertainty assessment. Earlier d2 1,600-row pilot results remain untouched; no PR/merge/main. Measured [16-cell confirmatory audit](notes/MULTIORDER_10000_SEED_CONFIRMATORY_RESULTS_2026-10-19.md) distinguishes both R3 dominance pattern and R1 counterexamples. Non-Gaussian mu-shift extension is **separately prospective**, after Gaussian numerical validation.
+
+## Next experiment J — non-Gaussian mean-shift Monte Carlo (implemented; NOT RUN)
+
+The independently verified 160k Gaussian base-shock campaign motivates a **separate finite-variance distributional stress study**: 12 regimes including Gaussian control, t3 observation/innovations, centered Gamma ±, rare Gaussian jumps, GARCH-t5 and five skew-normal shapes. Keep analyst-fixed d=1,2,3,4, N=50/200, observation population SD=.5/2, common `mu/sigma_epsilon` shifts [-1,-.25,0,.25,1], nested R1/3 and the eight existing fitting procedures. `gaussian_difference` MLE is **quasi-ML** outside normality. Exact statistical and reproducibility rules: [locked experiment J protocol](notes/NONGAUSSIAN_NONZERO_MU_PROTOCOL_2026-10-19.md).
+
+**Status:** 25-seed ×192-cell pilot = **4,800 new independent base R3 shock draws and 384,000 method rows**, **NOT YET RUN**. New 10k/cell confirmation (1.92M base draws / 153.6M rows) is **future**, not silently launched. Run `python -m experiments.pooled_loocv_smoothness.launch_nonzero_mu_nongaussian --phase pilot --workers 32` to preview; append `--execute` for an explicitly authorized manual run on the user's own PC. `aggregate_nonzero_mu_nongaussian` checks SHA256 and all 192 strata. Cauchy is **intentionally separated** because population variance and squared risk are undefined. Student t3 has finite variance but infinite fourth moment, so mean-loss normal error bars need caution. Original Gaussian and historical tail pilots are unchanged.
 
 ## Separation contract
 
