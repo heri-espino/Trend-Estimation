@@ -114,3 +114,23 @@ Main artifact directory: `results/pooled_loocv_smoothness/empirical_market_noise
 This is **retrospective synthetic reconstruction with empirical market-noise shape**, not a true-trend forecast evaluation on stock prices. A later true financial forecasting experiment must choose the validation target and leakage-safe backtesting protocol separately; a stock price does not reveal a privileged ground-truth trend.
 
 **Relevant public methodology:** R. Cont (2001), *Empirical properties of asset returns: stylized facts and statistical issues*, *Quantitative Finance*, DOI 10.1080/713665670; empirical tails and dependence are distinctive concerns in return modeling. R. Davis et al. (2018), *Inference on the tail process with application to financial time series modeling*, *Journal of Econometrics* 205(2), 508–525; research motivation for block bootstrap under dependent heavy-tailed financial observations. The source URL and date are retained rather than incorrectly attributing this particular Monte Carlo protocol to either paper.
+
+
+## 7. Additional analyst-requested literal mean control (pre-run)
+
+The original question also proposed a **constant trend equal to the mean of the historical return distribution**. That is now available as an **explicit, separately named experiment**, rather than being silently substituted for the stochastic trend. Run:
+
+    python -m experiments.pooled_loocv_smoothness.run_empirical_market_noise --preset pilot --ticker SPY --trend-kind constant_mean --d 1
+
+Here the real historical return mean (log-return units) \(\bar r\) sets the known synthetic signal at every time:
+
+\[
+\tau_t\equiv \bar r,\quad
+Y_t=\bar r+\sigma_\eta\,\tilde z_t,\quad
+\mathbb E[\tilde z_t]=0,\quad
+\mathbb E[Y_t]=\bar r.
+\]
+
+This is the **literal return-mean baseline** the user had in mind, and the default integrated-trend experiment remains available with \`--trend-kind stochastic\` (the default). The constant-mean control has **zero true trend-difference variance**, \(\sigma_\varepsilon^2=0\); thus the nominal Guerrero variance ratio is infinite/at the boundary, **not the positive finite ratio of the stochastic-trend model**. Its Gaussian differenced-data likelihood fitting is a boundary-estimation problem, and all results should be interpreted separately. Set \`--d 1\` for the most natural constant-mean penalty, as the constant is then exactly the nullspace of \(D_1\). This is still a **synthetic** realized return process, not an observation of the true mean of market returns or proof that market returns have a constant conditional mean.
+
+The constant-mean results are automatically isolated in \`results/pooled_loocv_smoothness/empirical_market_noise/SPY/d1/constant_mean/pilot/\`; the stochastic-default path \`.../SPY/d2/pilot/\` is unchanged, and neither overwrites previous simulation results. Both studies sample the same optional cached market-return calibration when using the same ticker/dates, but should not be merged into a single equal-model comparison.
