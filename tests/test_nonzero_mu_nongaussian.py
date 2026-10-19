@@ -43,7 +43,7 @@ def test_twelve_finite_regimes_and_explicit_cauchy_exclusion():
     assert full["independent_base_shock_draws"]==1920000
     assert full["nested_pooled_treatments"]==19200000
     assert full["method_level_rows"]==153600000
-    assert full["shards_at_default_size"]==76800  # with a 25-seed default, launcher uses 100
+    assert full["shards_at_default_size"]==19200
 
 
 @pytest.mark.parametrize("regime",FINITE_REGIMES)
