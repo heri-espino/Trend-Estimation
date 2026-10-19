@@ -95,3 +95,8 @@ results/pooled_loocv_smoothness/guerrero/nonzero_mu_nongaussian/preflight_*/
 # Leave gzip source rows locally/backed-up; commit only compact audit CSV/JSON.
 results/pooled_loocv_smoothness/guerrero/cortes_criteria_replay/pilot/
 results/pooled_loocv_smoothness/guerrero/cortes_criteria_replay/preflight_*/
+
+# Study M: independent-seed process gallery. Keep compact manifest/reports in Git.
+# Raw compressed per-seed shards can be large: back them up outside the repo.
+results/pooled_loocv_smoothness/process_examples/**/rows_*.csv.gz
+results/pooled_loocv_smoothness/process_examples/**/rows_*.csv.gz.partial
