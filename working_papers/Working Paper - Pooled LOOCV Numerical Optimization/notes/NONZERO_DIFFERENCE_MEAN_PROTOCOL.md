@@ -129,7 +129,7 @@ Our implementation computes this ratio spectrally and evaluates the \(\lambda=0\
 ## 6. Locked exploratory campaign
 
 - **Automatic CI tiny smoke only:** N=24, eta SD 0.5, eps SD 0.3, mean factors -1/0/+1, one seed, nested R1/3: **6 pools × 8 = 48 method rows**. Smoke includes exact-fold-vs-direct-refit verification tests. The CI must NEVER run the pilot/confirmatory datasets automatically.
-- **Manual exploratory pilot:** N∈{50,200}, eta SD∈{0.5,2.0}, eps SD 0.3, mean factors \(-1,-0.25,0,0.25,1\), five seeds per cell, nested R1/3: **20 scenarios ×5 seeds ×2 R=200 pools, 1,600 method rows**, 100 independent R3 primary pools, R1 nested. Each different mu factor shares underlying innovation/error noise at the same N, eta, seed.
+- **Manual exploratory pilot:** N∈{50,200}, eta SD∈{0.5,2.0}, eps SD 0.3, mean factors \(-1,-0.25,0,0.25,1\), five seeds per cell, nested R1/3: **20 scenarios ×5 seeds ×2 R=200 pools, 1,600 method rows**, 100 R3 treatment evaluations, but **only 20 distinct underlying random-innovation draws** (4 N×noise groups × five replicate seeds), reused across the five μ treatments; R1 nested. Each different mu factor shares underlying innovation/error noise at the same N, eta, seed.
 - **Prospective confirmatory (NOT run):** same 20 cells with 100 new independent random seeds each, 4,000 nested pools, 32,000 method rows. Run only after auditing pilot, fixing comparisons, uncertainty method and computational costs.
 
 `numpy.random.default_rng` base seed 69000000 for smoke/pilot, base 70000000 for fresh confirmatory, seed formula `base+N_index*10000+sigma_eta_index*1000+replicate`. Each scenario's N, noise SDs, d, true mu, true ratio, seed and selected variance estimates are retained in manifest and per-method CSV. Results **not** committed until user executes the full exploratory pilot.
@@ -153,3 +153,8 @@ Results under `results/pooled_loocv_smoothness/guerrero/nonzero_difference_mean/
 ## 8. What may be said in the paper now?
 
 The formulas above are *derived mathematical identities and software verifications*, not empirical superiority results and not a claimed novelty over Guerrero's original nonzero-mean method. The experiment is **precommitted/design complete but not yet empirically run**. After the user pushes real results, update `RESULTS_LEDGER.md`, write a source-linked dated results audit, add the *measured* table and interpretation to the LaTeX manuscript. Keep the nonzero-\(\mu\) experiment clearly separate from completed \(\mu=0\) pilots and the distinct mean-difference **forecasting** paper.
+
+
+### Figures produced on execution (not yet generated for the full pilot)
+
+The runner generates `example_latent_trend_errors.png` (the first predeclared positive-μ example: actual simulated fitted-minus-true errors for oracle, zero-μ LOOCV, pooled plug-in, GLS μ-ML and joint fold-clean μ-LOOCV) and `mean_shift_true_trend_mse_R3.png` (log-scale **descriptive** means of true reconstruction MSE by standardized true μ). Both figures are generated only when executing the actual pilot; neither exists as paper empirical evidence just because its code is committed. The second figure averages over N and noise SD and must not be used for a strong inference without per-cell paired analysis.
