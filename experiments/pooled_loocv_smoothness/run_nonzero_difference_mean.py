@@ -260,6 +260,74 @@ def _sha():
         return None
 
 
+def _plot_example(out_dir: Path, sc: MeanScenario, y: np.ndarray,
+                  truth: np.ndarray, methods: list[dict]):
+    """Plot actual realized reconstruction errors at one preselected seed."""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    base = PooledLOOCV(y, order=sc.d)
+    selected = {
+        "known_mu_true_ratio_oracle": "Known mu and variances (oracle)",
+        "zero_mu_pooled_loocv": "LOOCV, mu forced to 0",
+        "pooled_guerrero_plugin_mu_plus_gaussian_ml": "Pooled observed-difference plug-in",
+        "estimated_mu_gaussian_gls_ml": "Gaussian GLS estimated mu",
+        "estimated_mu_fold_clean_pooled_loocv": "Fold-clean pooled LOOCV mu",
+    }
+    data = {item["method"]: item for item in methods}
+    fig, ax = plt.subplots(figsize=(10, 4.8))
+    x = np.arange(sc.n)
+    for name, label in selected.items():
+        item = data[name]
+        fit = fitted_affine_trend(base, item["selected_lambda"],
+                                   item["estimated_mu"])
+        ax.plot(x, fit[0] - truth[0], label=label, linewidth=1.6)
+    ax.axhline(0, linestyle="--", linewidth=1, color="grey")
+    ax.set_xlabel("Observation index")
+    ax.set_ylabel("Fitted minus true latent trend")
+    ax.set_title(f"Simulated nonzero difference mean, d={sc.d}, mu={sc.mu:g}")
+    ax.legend(fontsize=8)
+    fig.tight_layout()
+    fig.savefig(out_dir / "example_latent_trend_errors.png", dpi=160)
+    plt.close(fig)
+
+
+def _plot_mu_sensitivity(out_dir: Path, summary: dict):
+    """Descriptive only: mean errors aggregate different N/noise levels."""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    groups = summary["by_mu_factor_R3"]
+    if not groups:
+        raise ValueError("no R3 mean scenarios available")
+    x = [g["mu_over_sigma_epsilon"] for g in groups]
+    selected = {
+        "known_mu_true_ratio_oracle": "Known mu, known ratio (oracle)",
+        "zero_mu_pooled_loocv": "Incorrect mu=0 LOOCV",
+        "pooled_guerrero_plugin_mu_plus_gaussian_ml": "Pooled Guerrero-style plug-in + ML",
+        "estimated_mu_gaussian_gls_ml": "Estimated GLS mu + ML",
+        "estimated_mu_fold_clean_pooled_loocv": "Estimated mu + fold-clean LOOCV",
+    }
+    fig, ax = plt.subplots(figsize=(9.5, 5))
+    for name, label in selected.items():
+        mean_mse = [
+            next(v["mean_realized_trend_mse"] for v in g["methods"]
+                 if v["name"] == name)
+            for g in groups
+        ]
+        ax.plot(x, mean_mse, marker="o", label=label)
+    ax.set_xlabel("True mu / sigma_epsilon")
+    ax.set_ylabel("Mean true latent trend reconstruction MSE")
+    ax.set_yscale("log")
+    ax.set_title("Exploratory pooled reconstruction across mu shifts (R=3)")
+    ax.legend(fontsize=8)
+    fig.tight_layout()
+    fig.savefig(out_dir / "mean_shift_true_trend_mse_R3.png", dpi=160)
+    plt.close(fig)
+
+
 def execute(preset: str,out_dir: Path,dry_run: bool=False):
     scenarios,replicates,R_values=design(preset)
     base=SEED_BASE if preset!="confirmatory" else SEED_BASE+1000000
@@ -304,7 +372,13 @@ def execute(preset: str,out_dir: Path,dry_run: bool=False):
             seed=shared_seed(base,sc.n,sc.sigma_eta,rep)
             for R in R_values:
                 y,tau=draw_pool(sc,R,seed)
-                for item in compare_pool(sc,y,tau):
+                calculated=compare_pool(sc,y,tau)
+                if (rep==0 and R==3 and sc.mu_factor>0
+                    and sc.n==scenarios[0].n and
+                    sc.sigma_eta==scenarios[0].sigma_eta
+                    and not (out_dir/"example_latent_trend_errors.png").exists()):
+                    _plot_example(out_dir,sc,y,tau,calculated)
+                for item in calculated:
                     records.append({
                         "scenario_id":scenario_id,
                         "replicate":rep,"seed":seed,"R":R,
@@ -315,6 +389,7 @@ def execute(preset: str,out_dir: Path,dry_run: bool=False):
                         **item,
                     })
     summary=summarize(records)
+    _plot_mu_sensitivity(out_dir,summary)
     with (out_dir/"method_comparison.csv").open("w",encoding="utf-8",newline="") as f:
         writer=csv.DictWriter(f,fieldnames=list(records[0]))
         writer.writeheader();writer.writerows(records)
