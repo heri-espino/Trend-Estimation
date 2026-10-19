@@ -396,6 +396,97 @@ A finite scan is not a certification of a unique global minimum,
 but this campaign offers no demonstrated objective advantage
 from the more elaborate candidate-recovery procedure.
 
+\subsection{Prospective sensitivity to nonzero mean trend differences}
+
+The preceding stochastic-trend experiments set the population
+mean of the penalized trend differences equal to zero.
+This is a modeling restriction, not a requirement of
+Guerrero's framework: Guerrero (2007) already allows nonzero
+mean differences and proposes an observed-difference sample
+mean plug-in. We therefore prespecify a separate
+\emph{observed-series reconstruction} experiment to measure
+the consequences of a misspecified zero-difference mean.
+
+For a fixed analyst-chosen order $d=2$, assume
+\begin{equation}\label{eq:nonzero-mu-dgp}
+ y^{(r)}=\tau^{(r)}+\eta^{(r)},\qquad
+ D_d\tau^{(r)}=\mu\mathbf1+\varepsilon^{(r)},\qquad
+ \varepsilon^{(r)}\sim N(0,aI),\quad
+ \eta^{(r)}\sim N(0,bI),
+\end{equation}
+with independent centered innovations and independent
+series $r=1,\ldots,R$. Let $p_j=\binom jd$ for zero-indexed $j$
+so that $D_dp=\mathbf1$. For an externally fixed mean,
+\begin{equation}\label{eq:nonzero-mu-affine}
+ \widehat\tau_{\lambda,\mu}
+ =\arg\min_{\tau}
+ \{\|y-\tau\|^2+\lambda\|D_d\tau-\mu\mathbf1\|^2\}
+ =H_\lambda y+\mu(I-H_\lambda)p.
+\end{equation}
+This well-known affine form is not claimed as a novelty.
+For $d=2$ the $\lambda\to\infty$ fit has constant
+second differences $\mu$, rather than a linear nullspace
+fit if $\mu=0$ is imposed.
+
+Let $z_r=D_dy_r$, $A=D_dD_d^\top$, and
+$\Sigma=aI+bA$. Under the Gaussian differenced-data model,
+$z_r\sim N(\mu\mathbf1,\Sigma)$. Conditional on a fixed
+covariance, the common generalized least-squares mean is
+\begin{equation}\label{eq:gls-mean-contrast}
+ \widehat\mu(\Sigma)=
+ \frac{\sum_r\mathbf1^\top\Sigma^{-1}z_r}
+ {R\,\mathbf1^\top\Sigma^{-1}\mathbf1}.
+\end{equation}
+We fit $(\mu,a,b)$ by a profiled Gaussian
+\emph{differenced-observation} contrast likelihood;
+this is a computational extension, not a new estimator
+attributed to Guerrero.
+
+For a separate pooled observed-LOOCV comparison,
+we estimate a single common $\mu$ jointly with all $R$
+penalized trends \emph{within each training deletion}.
+With $T_\lambda=Q(I+\lambda Q)^{-1}$,
+$b_\lambda=T_\lambda p$,
+$k_\lambda=p^\top T_\lambda p>0$ and
+$\overline y=R^{-1}\sum_r y_r$, the joint full-sample
+mean is
+\[
+ \widehat\mu_\lambda=
+ \frac{b_\lambda^\top\overline y}{k_\lambda}.
+\]
+The associated exact pooled leave-one-observation-out
+residual, which accounts for re-estimation of $\mu$
+after omitting its target, is
+\begin{equation}\label{eq:nonzero-mu-fold-clean-press}
+ e_{ri}(\lambda)=
+ \frac{(T_\lambda y_r)_i-
+       b_{\lambda,i}\widehat\mu_\lambda}
+ {(T_\lambda)_{ii}-
+       b_{\lambda,i}^2/(R k_\lambda)}.
+\end{equation}
+This differs from computing an all-data $\widehat\mu$ once
+and incorrectly treating it as fixed during validation.
+The effective degrees of freedom also change upon
+estimating $\mu$; the original normalized smoothness
+index remains a monotone penalty coordinate but is
+not the full data-selected-mean smoother's EDF.
+
+The distinct, unrun simulation protocol fixes
+$\sigma_\varepsilon=0.3$, considers
+$\mu/\sigma_\varepsilon\in\{-1,-0.25,0,0.25,1\}$,
+$N\in\{50,200\}$, $\sigma_\eta\in\{0.5,2\}$,
+and five common-random-number replicates per cell
+with nested $R\in\{1,3\}$. Seven parameter-selection
+comparators distinguish imposed zero mean, externally
+known mean, estimated mean, and a true-mu/true-variance
+oracle. The exploratory pilot design consists of
+200 nested pools and 1,400 method rows; these are
+\emph{planned}, not empirical results. The same latent
+trend is known only in simulation, for post-selection
+reconstruction MSE. The completed historical $h$-step
+forecast-mean paper is separate and must not be
+conflated with this observed-series LOOCV sensitivity study.
+
 \section{Discussion and limitations}
 \textbf{Confirmatory results pending.} The exploratory pilots have been recorded, but neither numerical dominance nor a
 novel global-solver theorem is established. Related algorithms,
