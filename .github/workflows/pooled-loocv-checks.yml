@@ -61,8 +61,12 @@ jobs:
         run: |
           python -m experiments.pooled_loocv_smoothness.audit_process_monte_carlo_compact --out-dir /tmp/process-study-m2-audit
           test -s /tmp/process-study-m2-audit/audit_summary.json
-      - name: Validate Marp lecture deck assets without rendering
-        run: python "working_papers/Working Paper - Pooled LOOCV Numerical Optimization/presentation/check_deck.py"
+      - name: Validate both Marp lectures, JS generators and optional Python export syntax
+        run: |
+          python "working_papers/Working Paper - Pooled LOOCV Numerical Optimization/presentation/check_deck.py" --version v1
+          python "working_papers/Working Paper - Pooled LOOCV Numerical Optimization/presentation/check_deck.py" --version v2
+          python -m py_compile "working_papers/Working Paper - Pooled LOOCV Numerical Optimization/presentation/export_v2_criterion_examples.py"
+          node --check "working_papers/Working Paper - Pooled LOOCV Numerical Optimization/presentation/generate_v2_figures.mjs"
       - name: Confirm campaign preview without simulations
         run: python -m experiments.pooled_loocv_smoothness.run --preset pilot --dry-run
       - name: Execute tiny smoke and validate exported artifacts
