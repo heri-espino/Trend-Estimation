@@ -30,7 +30,7 @@ function concepts(){
  {
  let c=ln(116,538,1080,538,N,2)+ln(116,203,116,538,N,2);
  const sets=[[.03,T],[.3,B],[2,R]];
- for(let [lam,col] of sets){let z=pts(t=>1/(1+lam*30*t),116,211,947,300);c+=pth(z,col,5);}
+ for(let [lam,col] of sets){let z=pts(t=>1-1/(1+lam*30*t),116,211,947,300);c+=pth(z,col,5);}
  c+=tx(90,220,"1",18,K)+tx(87,540,"0",18,K)+tx(1050,577,"q →",20,K);
  sets.forEach(([lam,col],i)=>{c+=ln(530,143+i*27,574,143+i*27,col,5)+tx(587,150+i*27,"λ = "+lam,19,col)});
  c+=tx(177,603,"Spectral response = 1 / (1 + λq)",26,N);
