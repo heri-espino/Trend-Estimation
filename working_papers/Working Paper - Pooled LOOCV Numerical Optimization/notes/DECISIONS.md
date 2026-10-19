@@ -24,3 +24,15 @@
 - Whether derivative-sign-only bracketing is insufficient; consider certified interval methods if empirical misses are material.
 - Whether the journal scope should emphasize computational algorithms or statistical simulation.
 - Whether experiments favor LOOCV, GCV, or no difference: negative results must be documented.
+
+## D007 — 2026-10-18 — Evidence provenance ledger and DGP separation
+**Decision:** Maintain [RESULTS_LEDGER.md](RESULTS_LEDGER.md) to identify exactly which simulations were generated, seed formulas, output manifests/CSVs, and whether each campaign is *implemented*, *CI smoke*, *executed and committed*, or *independent confirmatory*. The original deterministic-trend factorial, stochastic known-ratio benchmark, and estimated-variance experiment are **distinct**. R=1 pools are nested within R=3 at the same seed; never report nested outcomes as independent evidence.
+
+## D008 — 2026-10-18 — Feasible fitted variance-ratio extension
+**Decision:** Fit Gaussian likelihood of differenced observations `D_2y` and nonnegative two-moment variance estimates as **extensions**, not algorithms proposed by Guerrero (2007). Known true noise ratio is an informational oracle under the iid model. Under correctly specified Gaussian simulation, fitted Gaussian covariance likelihood came close to oracle true trend MSE; direct LOOCV minimized observed LOOCV; the constrained-moment estimator had catastrophic zero-innovation-variance boundaries. Record that failure instead of deleting it.
+
+## D009 — 2026-10-18 — Locked robustness mechanisms
+**Decision:** Keep noise model as the experimental factor while the smoother and trend-reconstruction target remain fixed. Prespecify five mechanisms (Gaussian baseline, Student-t measurement noise, Student-t trend innovations, Gaussian AR1 measurement noise, changing observation variance), pilot 20 scenarios × 5 seeds × nested R=1/3, then only **after auditing** choose an independent confirmatory design. In covariance-misspecified regimes, the true marginal variance ratio is a *nominal reference*, **not** a valid statistical optimality oracle. See [ROBUSTNESS_PROTOCOL.md](ROBUSTNESS_PROTOCOL.md).
+
+## D010 — 2026-10-18 — Git workflow explicitly requested by user
+**Decision:** **No PRs** for this project. Commit directly to the existing `paper/pooled-loocv-numerical-optimization` branch and push there. Do not merge or force-push. All substantial Monte Carlo campaigns are manual-only; automatic CI runs only lightweight tests and tiny smoke checks.
