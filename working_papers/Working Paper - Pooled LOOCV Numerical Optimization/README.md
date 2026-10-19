@@ -69,7 +69,9 @@ For R=1 this reduces to traditional single-series LOOCV. Group only statisticall
 17. [Empirical market-return Monte Carlo protocol](notes/EMPIRICAL_MARKET_BOOTSTRAP_PROTOCOL.md) — SPY return histogram, iid versus block resampling, fixed analyst d and observed pooled LOOCV.
 18. [Nonzero mean of trend differences](notes/NONZERO_DIFFERENCE_MEAN_PROTOCOL.md) — exact GLS mean profiling and deletion-safe pooled observation LOOCV, including known-mean oracles.
 19. [Executed nonzero-mean pilot audit](notes/NONZERO_DIFFERENCE_MEAN_PILOT_AUDIT_2026-10-19.md) — 1,600 saved method rows, paired observed mean-shift effects, eight baselines and two committed figures.
-20. [Agent handoff](AI_HANDOFF.md).
+20. [Exact simulation and measured results](notes/HOW_THE_SIMULATION_WORKS_AND_MEASURED_RESULTS.md) — actual latent trend recursion, eight estimators, independent-shock grouping and original pilot statistics.
+21. [10,000-seed multorder confirmatory protocol](notes/MULTIORDER_10000_SEED_CONFIRMATORY_PROTOCOL.md) — d=1,2,3,4; shard control; code SHA, paired Monte Carlo inference and numerical preflights.
+22. [Agent handoff](AI_HANDOFF.md).
 
 ## Runnable independent pilot
 
@@ -127,6 +129,12 @@ The **implemented but unexecuted** market-calibrated study uses actual adjusted 
 The previous experiments set (E[D_d\tau]=0); [Guerrero (2007) already permits and estimates nonzero difference means](notes/NONZERO_DIFFERENCE_MEAN_PROTOCOL.md). We implemented and executed an **exploratory sensitivity study** for **fixed analyst d=2** with (D_2\tau=\mu\mathbf1+\varepsilon). It compares zero-mean constraints against Gaussian GLS estimation of mu and a fold-clean common-mu pooled LOOCV criterion, and includes oracle true-mu and true-variance comparators. Fitting mu adds effective degrees of freedom; we reestimate it in each training deletion using an exact derived PRESS expression.
 
 Pilot: 20 cells, five seeds per N×noise group, nested R1/3, **200 treatment pools (20 independent underlying shock streams), 1,600 per-method rows**, eight selectors. The new DGP shares the same random shocks across μ shifts, preserving paired comparison. **The full pilot is uploaded**; see the [measured analysis](notes/NONZERO_DIFFERENCE_MEAN_PILOT_AUDIT_2026-10-19.md). Manual reproducibility command: `python -m experiments.pooled_loocv_smoothness.run_nonzero_difference_mean --preset pilot`. Run `tests/test_nonzero_difference_mean_reconstruction.py` and tiny smoke first if needed; CI never reruns the full pilot. Its two PNG figures have already been generated and committed. No PRs or merging. This is **retrospective observed-series reconstruction**, not the distinct nonzero-μ horizon-h forecast paper.
+
+## Next registered multorder confirmation — NOT YET EXECUTED
+
+The user requested documenting the exact process and actual measured `d=2` five-seed results, then expanding **without rewriting old results** to fitted/generating orders `d=1,2,3,4`, with **10,000 independent Monte Carlo seeds per (d,N,observation SD)**. This is 16 independent base cells, **160,000 underlying independent R3 shock draws**, five **paired** mu shifts and nested R1/R3, or **1.6 million treatment-pool evaluations / 12.8 million method rows**. These numbers represent a planned manual run, not completed results. Details: [canonical methodology/results note](notes/HOW_THE_SIMULATION_WORKS_AND_MEASURED_RESULTS.md) and [frozen confirmatory protocol](notes/MULTIORDER_10000_SEED_CONFIRMATORY_PROTOCOL.md).
+
+The new sharded `run_nonzero_mean_multorder.py` records deterministic seed intervals, original source SHA and compressed CSV SHA256, avoids overlarge in-memory results and exploits exact affine-shift equivariance. `launch_nonzero_mean_multorder.py` is **plan-only by default**; only `--execute` starts local jobs, with `--workers` and safe resume. `aggregate_nonzero_mean_multorder.py` rejects overlapping seed intervals, mixed source commits and false completeness; it keeps the **paired true-MSE differences per seed** and outputs compact per-(d,N,eta,mu,R) statistics for legitimate uncertainty assessment. Earlier d2 1,600-row pilot results remain untouched; no PR/merge/main. Non-Gaussian mu-shift extension is **separately prospective**, after Gaussian numerical validation.
 
 ## Separation contract
 
