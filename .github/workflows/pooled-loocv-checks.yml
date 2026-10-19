@@ -20,6 +20,7 @@ on:
       - "tests/test_nonzero_mu_nongaussian_aggregate.py"
       - "tests/test_cortes_optimality_criteria.py"
       - "tests/test_cortes_criteria_paired_pilot.py"
+      - "tests/test_cortes_criteria_confirmed_aggregate.py"
       - ".github/workflows/pooled-loocv-checks.yml"
   pull_request:
     paths:
@@ -49,7 +50,7 @@ jobs:
       - name: Install lightweight test dependencies
         run: python -m pip install -e ".[dev,symbolic]"
       - name: Run isolated mathematical and numerical tests
-        run: python -m pytest tests/test_pooled_loocv_smoothness.py tests/test_guerrero_ratio_pooled_loocv.py tests/test_guerrero_variance_estimation.py tests/test_estimated_variance_audit.py tests/test_guerrero_robustness.py tests/test_guerrero_robustness_audit.py tests/test_guerrero_tail_noise.py tests/test_guerrero_tail_pilot_audit.py tests/test_empirical_market_noise.py tests/test_nonzero_difference_mean_reconstruction.py tests/test_nonzero_mean_multorder.py tests/test_multorder_confirmatory_aggregate.py tests/test_nonzero_mu_nongaussian.py tests/test_nonzero_mu_nongaussian_aggregate.py tests/test_cortes_optimality_criteria.py tests/test_cortes_criteria_paired_pilot.py -q
+        run: python -m pytest tests/test_pooled_loocv_smoothness.py tests/test_guerrero_ratio_pooled_loocv.py tests/test_guerrero_variance_estimation.py tests/test_estimated_variance_audit.py tests/test_guerrero_robustness.py tests/test_guerrero_robustness_audit.py tests/test_guerrero_tail_noise.py tests/test_guerrero_tail_pilot_audit.py tests/test_empirical_market_noise.py tests/test_nonzero_difference_mean_reconstruction.py tests/test_nonzero_mean_multorder.py tests/test_multorder_confirmatory_aggregate.py tests/test_nonzero_mu_nongaussian.py tests/test_nonzero_mu_nongaussian_aggregate.py tests/test_cortes_optimality_criteria.py tests/test_cortes_criteria_paired_pilot.py tests/test_cortes_criteria_confirmed_aggregate.py -q
       - name: Confirm campaign preview without simulations
         run: python -m experiments.pooled_loocv_smoothness.run --preset pilot --dry-run
       - name: Execute tiny smoke and validate exported artifacts
@@ -129,6 +130,12 @@ jobs:
           python -m experiments.pooled_loocv_smoothness.run_cortes_criteria_pilot --regime gaussian_iid --d 2 --n 50 --sigma-eta 0.5 --count 1 --solver bounded --scan-points 9 --dry-run > /tmp/cortes-matched-one-seed-plan.json
           test -s /tmp/cortes-matched-25-plan.json
           test -s /tmp/cortes-matched-one-seed-plan.json
+      - name: Independently audit committed 1.248M-row Study K compact results (NO Monte Carlo)
+        run: |
+          python -m experiments.pooled_loocv_smoothness.audit_cortes_criteria_confirmed_pilot --out-dir /tmp/cortes-26-method-independent-audit
+          test -s /tmp/cortes-26-method-independent-audit/audit_summary.json
+          test -s /tmp/cortes-26-method-independent-audit/R1_R3_mu_plus1_26_methods_per_scenario.csv
+          test -s /tmp/cortes-26-method-independent-audit/by_regime_R_mu_plus1_key_methods.csv
       - name: Verify misspecified-noise robustness smoke
         run: |
           python -m experiments.pooled_loocv_smoothness.run_robustness --preset smoke --out-dir /tmp/guerrero-robustness-smoke
