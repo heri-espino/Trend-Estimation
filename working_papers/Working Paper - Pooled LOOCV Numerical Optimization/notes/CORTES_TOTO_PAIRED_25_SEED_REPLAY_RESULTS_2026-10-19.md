@@ -88,7 +88,7 @@ For \(R=1\), the comparable exploratory means are:
 | Skew-normal +3 | 0.42597 | 0.39565 | 0.41454 | 0.41175 | **0.38804** |
 | Skew-normal +6 | 0.44121 | 0.40087 | 0.42921 | 0.42703 | **0.39127** |
 
-These tables show why **mean estimation must be explicitly modeled** and why a single averaged superiority claim about Gaussian likelihood is not justified. The "best" in each row is the smallest descriptive average among the selected columns, *not necessarily the lowest of all 23 feasible method policies*; in some individual cells controlled S or a zero-mean restriction can win by chance or conditional bias–variance behavior.
+These tables show why **mean estimation must be explicitly modeled** and why a single averaged superiority claim about Gaussian likelihood is not justified. The "best" in each row is the smallest descriptive average among the selected columns, *not necessarily the lowest of all 17 feasible method policies*; in some individual cells controlled S or a zero-mean restriction can win by chance or conditional bias–variance behavior.
 
 ## 5. BIC and numerical optimization: two scientifically essential findings
 
