@@ -16,25 +16,25 @@ In [Study K.1](CORTES_TOTO_PAIRED_25_SEED_REPLAY_RESULTS_2026-10-19.md), the new
 
 For comparable observed series `y_r`, fixed d and pooled common mean, with `p_t=choose(t,d)`, `T_lambda=Q(I+lambda Q)^(-1)`, `b=T_lambda p`, `k=p^T T_lambda p`, and `mu_hat=b^T ybar/k`, use
 
-```math
+$$
 e_{ri}^{(-i)}(\lambda)=\frac{(T_\lambda y_r)_i-b_i\widehat\mu_\lambda}
 {(T_\lambda)_{ii}-b_i^2/(Rk)},
 \qquad F_{\rm CV,joint}(\lambda)
 =\frac{1}{RN}\sum_{r=1}^R\sum_{i=1}^N(e_{ri}^{(-i)}(\lambda))^2.
-```
+$$
 
 The held-out observation is excluded analytically through the full pooled hat diagonal. The score is **the same** for each solver arm. Test against direct deletion/refitting for small N and each d. Include exact `lambda=0` and `lambda=infinity` limits, handling the unidentifiable mu at `lambda=0` through its continuous fitted-trend/CV limit.
 
 A separate **GCV** arm can use
 
-```math
+$$
 F_{\rm GCV,joint}(\lambda)
 =\frac{\mathrm{RSS}(\lambda)/(RN)}
 {[1-\mathrm{EDF}_{\mathrm{joint}}(\lambda)/(RN)]^2},
 \qquad
 \mathrm{EDF}_{\mathrm{joint}}
 =R\mathrm{tr}(H_\lambda)+\lambda\frac{\|T_\lambda p\|_2^2}{p^T T_\lambda p}.
-```
+$$
 
 Never compare the *minimum CV score* with the *minimum GCV score* as if these have the same scale/objective. Compare algorithms **within one criterion at a time**. BIC based on unrestricted `log(RSS)` has no finite global minimizing lambda in this interpolating setting and is **excluded from primary solver rankings**; AICc has invalid domains near full EDF and should only be a secondary arm with explicit feasibility rules.
 
