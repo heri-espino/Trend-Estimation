@@ -60,7 +60,9 @@ For R=1 this reduces to traditional single-series LOOCV. Group only statisticall
 8. [Guerrero ratio CI smoke findings](notes/GUERRERO_RATIO_SMOKE_2026-10-18.md) — verified first comparison of observed LOOCV and latent MSE (8 tiny pools).
 9. [Completed Guerrero ratio pilot audit](notes/GUERRERO_RATIO_PILOT_AUDIT_2026-10-18.md) — 120 uploaded pools, two loss definitions, independent R=3 analysis and numerical limits.
 10. [Estimated-variance pilot audit](notes/VARIANCE_ESTIMATION_PILOT_AUDIT_2026-10-18.md) — completed 120 pools, likelihood estimates, catastrophic moments boundaries and variance-level breakdown.
-11. [Agent handoff](AI_HANDOFF.md).
+11. [Results and reproducibility ledger](notes/RESULTS_LEDGER.md) — actual executed campaigns, exact simulation generators, fixed seeds, evidence boundaries.
+12. [Locked robustness protocol](notes/ROBUSTNESS_PROTOCOL.md) — heavy-tailed, autocorrelated and changing-variance simulated errors, with independent pilot seeds.
+13. [Agent handoff](AI_HANDOFF.md).
 
 ## Runnable independent pilot
 
@@ -90,6 +92,14 @@ An eight-pool [Guerrero ratio smoke](notes/GUERRERO_RATIO_SMOKE_2026-10-18.md) h
 The [variance-estimation protocol](notes/VARIANCE_ESTIMATION_PROTOCOL.md) compares the known (oracle) Guerrero ratio with **feasible Gaussian difference-covariance likelihood**, nonnegative quadratic moments, and LOOCV. The 12-scenario **pilot is executed and pushed**. See the [measured pilot audit](notes/VARIANCE_ESTIMATION_PILOT_AUDIT_2026-10-18.md); Gaussian ML approached the known-ratio mean true trend MSE for R=3, but the moment method had severe boundary failures. **Neither feasible procedure is claimed to be an estimator prescribed by Guerrero (2007).** The exploratory results are not a global numerical-optimizer novelty claim.
 
 `python -m experiments.pooled_loocv_smoothness.audit_variance_estimation` generates per-scenario diagnostics and three figures manually, using the saved uploaded CSV. The ordinary lightweight CI checks the audit without regenerating those charts.
+
+## Next experiment: robustness to misspecified noise
+
+We have now **implemented** a fifth independent experimental campaign, without rerunning or overwriting prior results. It compares the fitted Gaussian difference-likelihood variance ratio, pooled observed LOOCV (single-start and multibracket), constrained moments, and a nominal known-variance ratio under **five data-generating regimes**: correctly specified iid Gaussian; Student-t observations; Student-t trend innovations; AR(1) observations; and time-varying observation variance. Under the last two regimes the nominal ratio is *not a valid oracle* because the covariance structure differs.
+
+The [locked design](notes/ROBUSTNESS_PROTOCOL.md) calls for 20 scenarios × 5 seeds × nested R=1/3 = **200 pools**, 1000 method-level observations. The full pilot **has not yet been run/committed**. Run `python -m experiments.pooled_loocv_smoothness.run_robustness --preset smoke` for the tiny check and `--preset pilot` for the manually initiated experiment. Read the [results ledger](notes/RESULTS_LEDGER.md) before inferring that implementing a runner has produced empirical findings.
+
+**Repository action policy:** commit directly to `paper/pooled-loocv-numerical-optimization`; no PR creation, no merging into main, and no automatic heavy Monte Carlo.
 
 ## Separation contract
 
