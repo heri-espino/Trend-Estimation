@@ -137,10 +137,10 @@ def summarize(pools: list[dict]) -> dict:
                 r["p90_abs_error_ml"] for r in records]),
             "median_pool_p90_absolute_error_LOOCV": median([
                 r["p90_abs_error_cv"] for r in records]),
-            "ML_infinite_lambda_count": sum(
-                np.isinf(r["lambda_ml"]) for r in records),
-            "LOOCV_infinite_lambda_count": sum(
-                np.isinf(r["lambda_cv"]) for r in records),
+            "ML_infinite_lambda_count": int(sum(
+                bool(np.isinf(r["lambda_ml"])) for r in records)),
+            "LOOCV_infinite_lambda_count": int(sum(
+                bool(np.isinf(r["lambda_cv"])) for r in records)),
             "bounded_Brent_LOOCV_loss_worse_than_multibracket_gt_1e7":
                 sum(r["paired_loocv_cv_minus_multi"] > 1e-7
                     for r in records),
