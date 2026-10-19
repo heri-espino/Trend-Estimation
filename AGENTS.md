@@ -276,3 +276,9 @@ to have executed a job they did not run.
 
 **Priority order:** mathematical clarity > correct causal evaluation
 > interpretable replicated evidence > app UX > speed optimization.
+
+## Independent observed-series LOOCV paper (2026-10-18) — current branch policy
+
+The independent classical **pooled observed-series LOOCV** working paper is at `working_papers/Working Paper - Pooled LOOCV Numerical Optimization/`, **not** the earlier forecast-oriented numerical paper. Agents must first read `notes/RESULTS_LEDGER.md` and `notes/ROBUSTNESS_PROTOCOL.md` inside that paper before altering simulations or claiming a result. The ledger separates executed/committed pilots from smoke tests and unexecuted designs. Its stochastic-model extension compares known-ratio Guerrero, feasible Gaussian difference-likelihood variance-component estimation, NNLS moments and ordinary pooled LOOCV; do not attribute those proposed two-component estimators to Guerrero (2007).
+
+**Explicit user Git policy for this work: no pull requests.** Commit edits **directly to the existing `paper/pooled-loocv-numerical-optimization` branch**, not `main`; do not open/reopen PRs, merge, force-push, or overwrite other agents' work. Keep full robustness/confirmatory Monte Carlo and figure generation **manual only**; ordinary small tests and smoke verification may use automatic CI. Use a new output folder for every independent DGP and preserve seeds, manifest, code SHA, per-pool CSV and research notes. The next robustness experiment includes Student-t noise, stationary AR1 observation errors and time-varying observation variance, with distinct confidence limits and no oracle claim for misspecified covariance.
