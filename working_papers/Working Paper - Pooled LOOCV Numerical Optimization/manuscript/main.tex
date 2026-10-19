@@ -22,8 +22,10 @@ or more comparable observed time series. We define a pooled criterion,
 derive its finite-parameter derivative and exact endpoint limits,
 and specify comparisons between bounded scalar minimization,
 multi-bracket Brent root refinement and restricted exact Sturm
-root isolation. A source-inspired factorial simulation and a
-retrospective financial illustration are planned. No accuracy or
+root isolation. A completed source-inspired pilot is complemented by a separate
+stochastic-trend simulation comparing observed-series LOOCV against
+the known noise-variance ratio in Guerrero's model. A financial
+illustration remains a prospective application. No accuracy or
 efficiency superiority result is asserted at this stage.
 \end{abstract}
 
@@ -102,6 +104,41 @@ Predeclare paired comparisons of candidate recovery, objective
 values, runtime, boundary selection and sensitivity to pooling.
 A financial case study may illustrate retrospective smoothing,
 without forecasting or investment-performance claims.
+
+\subsection{Known noise-variance ratio under Guerrero's model}
+
+To distinguish numerical LOOCV optimization from model-informed trend
+estimation, we introduce a \emph{separate} stochastic design following
+\citet{guerrero2007}. For mutually uncorrelated disturbances, let
+\begin{equation}
+ y^{(r)}=\tau^{(r)}+\eta^{(r)},\quad
+ D_d\tau^{(r)}=\varepsilon^{(r)},\quad
+ \operatorname{Var}(\eta^{(r)})=\sigma_\eta^2I,\quad
+ \operatorname{Var}(\varepsilon^{(r)})=\sigma_\varepsilon^2I.
+\end{equation}
+The population variance ratio motivates the model-informed parameter
+\begin{equation}
+ \lambda_G=\frac{\sigma_\eta^2}{\sigma_\varepsilon^2}.
+\end{equation}
+The benchmark is given \emph{true simulation variances}, not estimated
+variance components from empirical financial observations. We compare
+$\lambda_G$ with the pooled LOOCV selections produced by one bounded
+Brent run, multibracket derivative Brent, and a finite dense grid.
+
+For each choice $\lambda_m$ we measure (i) observed-series
+$F_R(\lambda_m)$ and (ii) the latent-trend reconstruction criterion
+\begin{equation}
+ \mathrm{TrendMSE}(\lambda_m)=
+ \frac{1}{RN}\sum_{r=1}^R
+ \|H_{\lambda_m}y^{(r)}-\tau^{(r)}\|_2^2.
+\end{equation}
+The simulated latent trend is \emph{never} used to select $\lambda$
+under LOOCV. The optimization objective and the reconstruction target
+are different; obtaining the smallest observed-sample CV criterion
+does not establish the smallest realized or expected latent-trend
+error. The fixed polynomial initialization of the integrated trend
+should not be conflated with a proper finite-variance prior for
+its unpenalized nullspace coefficients.
 
 \section{Discussion and limitations}
 \textbf{Results pending.} Neither numerical dominance nor a
