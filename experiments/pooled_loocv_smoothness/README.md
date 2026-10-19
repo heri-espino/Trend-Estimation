@@ -157,3 +157,23 @@ python -m experiments.pooled_loocv_smoothness.run_tail_noise --preset pilot
 ```
 
 The full pilot is **1,560 nested pools × 3 methods = 4,680 rows**. Outputs to `results/pooled_loocv_smoothness/guerrero/tail_stress/pilot/{manifest.json,method_comparison.csv,summary.json}`. The pilot files have now been committed; see [measured audit](../../working_papers/Working%20Paper%20-%20Pooled%20LOOCV%20Numerical%20Optimization/notes/TAIL_NOISE_PILOT_AUDIT_2026-10-18.md). Run `python -m experiments.pooled_loocv_smoothness.audit_tail_noise` to independently recheck all saved data, or append `--figures` to create three manual order-stratified figures. The confirmatory preset is manual and intentionally unrun. No PRs or heavy Monte Carlo on push.
+
+
+## Market-return histogram and block-bootstrap noise (new, manual real-data pilot)
+
+The analyst chooses d (default 2) before running any simulation; a single lambda is selected by minimizing **the arithmetic mean of the R observed LOOCV loss functions**. It is not the mean of separately optimized lambda/S values. This project deliberately evaluates retrospective synthetic conditional-mean trend recovery; it does not treat a market price's sample mean as a known true stochastic trend.
+
+The [complete market calibration protocol](../../working_papers/Working%20Paper%20-%20Pooled%20LOOCV%20Numerical%20Optimization/notes/EMPIRICAL_MARKET_BOOTSTRAP_PROTOCOL.md) describes how actual historical adjusted SPY daily log returns calibrate the empirical zero-mean distribution, how iid histogram bootstrap differs from circular 5/20 trading-day block bootstrap, and why a matched Gaussian noise experiment remains relevant under nonnormal finite-second-moment distributions.
+
+```powershell
+conda activate trend-estimation
+git switch paper/pooled-loocv-numerical-optimization
+git pull --ff-only
+python -m pip install -e ".[dev,finance]"
+python -m pytest tests/test_empirical_market_noise.py -q
+python -m experiments.pooled_loocv_smoothness.run_empirical_market_noise --preset smoke
+python -m experiments.pooled_loocv_smoothness.run_empirical_market_noise --preset pilot --dry-run
+python -m experiments.pooled_loocv_smoothness.run_empirical_market_noise --preset pilot --ticker SPY
+```
+
+**Outputs only after the user actually executes the real-data pilot**: `results/pooled_loocv_smoothness/empirical_market_noise/SPY/d2/pilot/` stores `manifest.json`, `method_comparison.csv`, `summary.json`, `empirical_return_histogram_vs_gaussian.png`, `market_return_and_squared_return_acf.png`. Source raw return snapshot remains locally cached and ignored at `data/market_calibration/`; result manifest records its SHA256. Do not assume Yahoo can be reproduced byte-for-byte by later redownload. CSV source is supported via `--source returns_csv --csv ...` or `--source prices_csv --csv ...` for authorized local data. Full Monte Carlo manual-only; tiny synthetic-source smoke in CI. No PR.
