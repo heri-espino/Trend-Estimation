@@ -1,0 +1,1106 @@
+{
+  "protocol": "misspecified_guerrero_noise_robustness_v1",
+  "status": "descriptive_simulation_not_confirmatory",
+  "total_pools": 200,
+  "nested_R_warning": "R=1 and R=3 at same seed share the first series",
+  "primary_R3": {
+    "pool_count": 100,
+    "methods": {
+      "nominal_known_ratio": {
+        "mean_true_trend_mse": 0.46330374010617825,
+        "median_true_trend_mse": 0.33538319987596765,
+        "mean_observed_loocv_mse": 2.342222055526571,
+        "infinite_lambda_count": 0
+      },
+      "estimated_gaussian_difference_ml": {
+        "mean_true_trend_mse": 0.5429075862902357,
+        "median_true_trend_mse": 0.35661593843154105,
+        "mean_observed_loocv_mse": 2.261619839059321,
+        "infinite_lambda_count": 0
+      },
+      "pooled_loocv_bounded_brent": {
+        "mean_true_trend_mse": 0.6207456553951402,
+        "median_true_trend_mse": 0.36076094610236253,
+        "mean_observed_loocv_mse": 2.225871735397267,
+        "infinite_lambda_count": 0
+      },
+      "pooled_loocv_multibracket_brent": {
+        "mean_true_trend_mse": 0.6207456557257321,
+        "median_true_trend_mse": 0.3607609483327557,
+        "mean_observed_loocv_mse": 2.225871735397267,
+        "infinite_lambda_count": 0
+      },
+      "estimated_moments_nnls": {
+        "mean_true_trend_mse": 361.8577520693931,
+        "median_true_trend_mse": 0.9482740100119129,
+        "mean_observed_loocv_mse": 372.78502554224775,
+        "infinite_lambda_count": 30
+      }
+    },
+    "ml_true_mse_beats_single_cv": 76,
+    "single_cv_misses_multibracket_more_than_1e-7": 0,
+    "mean_paired_true_mse_single_cv_minus_ml": 0.07783806910490429
+  },
+  "by_regime_R3": {
+    "gaussian_iid": {
+      "pool_count": 20,
+      "methods": {
+        "nominal_known_ratio": {
+          "mean_true_trend_mse": 0.3497897187836908,
+          "median_true_trend_mse": 0.27372460631231527,
+          "mean_observed_loocv_mse": 2.5515956612671458,
+          "infinite_lambda_count": 0
+        },
+        "estimated_gaussian_difference_ml": {
+          "mean_true_trend_mse": 0.35550738230100665,
+          "median_true_trend_mse": 0.27527676518403066,
+          "mean_observed_loocv_mse": 2.558732326381704,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_bounded_brent": {
+          "mean_true_trend_mse": 0.35543318952607733,
+          "median_true_trend_mse": 0.29165522237938657,
+          "mean_observed_loocv_mse": 2.5421572803565526,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_multibracket_brent": {
+          "mean_true_trend_mse": 0.3554331893442396,
+          "median_true_trend_mse": 0.2916552185345764,
+          "mean_observed_loocv_mse": 2.5421572803565526,
+          "infinite_lambda_count": 0
+        },
+        "estimated_moments_nnls": {
+          "mean_true_trend_mse": 389.9135641717418,
+          "median_true_trend_mse": 0.8489170739399465,
+          "mean_observed_loocv_mse": 401.3958350203337,
+          "infinite_lambda_count": 7
+        }
+      },
+      "ml_true_mse_beats_single_cv": 15,
+      "single_cv_misses_multibracket_more_than_1e-7": 0,
+      "mean_paired_true_mse_single_cv_minus_ml": -7.419277492930025e-05
+    },
+    "student_t_observation": {
+      "pool_count": 20,
+      "methods": {
+        "nominal_known_ratio": {
+          "mean_true_trend_mse": 0.3407911178781919,
+          "median_true_trend_mse": 0.2925940508795462,
+          "mean_observed_loocv_mse": 2.4882185439387134,
+          "infinite_lambda_count": 0
+        },
+        "estimated_gaussian_difference_ml": {
+          "mean_true_trend_mse": 0.3371815014830868,
+          "median_true_trend_mse": 0.2884111883867857,
+          "mean_observed_loocv_mse": 2.4901209885516975,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_bounded_brent": {
+          "mean_true_trend_mse": 0.3528267379640786,
+          "median_true_trend_mse": 0.2909171302535348,
+          "mean_observed_loocv_mse": 2.4794489293896147,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_multibracket_brent": {
+          "mean_true_trend_mse": 0.3528267393332699,
+          "median_true_trend_mse": 0.29091712968011224,
+          "mean_observed_loocv_mse": 2.4794489293896147,
+          "infinite_lambda_count": 0
+        },
+        "estimated_moments_nnls": {
+          "mean_true_trend_mse": 598.0960519054206,
+          "median_true_trend_mse": 0.9482740100119129,
+          "mean_observed_loocv_mse": 615.5302872461381,
+          "infinite_lambda_count": 6
+        }
+      },
+      "ml_true_mse_beats_single_cv": 13,
+      "single_cv_misses_multibracket_more_than_1e-7": 0,
+      "mean_paired_true_mse_single_cv_minus_ml": 0.015645236480991864
+    },
+    "student_t_innovation": {
+      "pool_count": 20,
+      "methods": {
+        "nominal_known_ratio": {
+          "mean_true_trend_mse": 0.33448322958652826,
+          "median_true_trend_mse": 0.29293274525525564,
+          "mean_observed_loocv_mse": 2.6329545737251,
+          "infinite_lambda_count": 0
+        },
+        "estimated_gaussian_difference_ml": {
+          "mean_true_trend_mse": 0.335246616350554,
+          "median_true_trend_mse": 0.2927121369164512,
+          "mean_observed_loocv_mse": 2.6291277849610104,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_bounded_brent": {
+          "mean_true_trend_mse": 0.3362927849961212,
+          "median_true_trend_mse": 0.2987405648044125,
+          "mean_observed_loocv_mse": 2.6184351062625453,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_multibracket_brent": {
+          "mean_true_trend_mse": 0.33629278506965765,
+          "median_true_trend_mse": 0.2987405657298601,
+          "mean_observed_loocv_mse": 2.6184351062625453,
+          "infinite_lambda_count": 0
+        },
+        "estimated_moments_nnls": {
+          "mean_true_trend_mse": 177.15372719185729,
+          "median_true_trend_mse": 0.8336002785133886,
+          "mean_observed_loocv_mse": 184.41740225523668,
+          "infinite_lambda_count": 7
+        }
+      },
+      "ml_true_mse_beats_single_cv": 12,
+      "single_cv_misses_multibracket_more_than_1e-7": 0,
+      "mean_paired_true_mse_single_cv_minus_ml": 0.0010461686455671853
+    },
+    "ar1_observation": {
+      "pool_count": 20,
+      "methods": {
+        "nominal_known_ratio": {
+          "mean_true_trend_mse": 0.9557151276073419,
+          "median_true_trend_mse": 0.7142092990576002,
+          "mean_observed_loocv_mse": 1.4158214781481082,
+          "infinite_lambda_count": 0
+        },
+        "estimated_gaussian_difference_ml": {
+          "mean_true_trend_mse": 1.3506410830902655,
+          "median_true_trend_mse": 0.998010163677055,
+          "mean_observed_loocv_mse": 1.0352994403188822,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_bounded_brent": {
+          "mean_true_trend_mse": 1.7043924773008867,
+          "median_true_trend_mse": 1.3306465615957928,
+          "mean_observed_loocv_mse": 0.9139167729492408,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_multibracket_brent": {
+          "mean_true_trend_mse": 1.7043924776093076,
+          "median_true_trend_mse": 1.330646569262966,
+          "mean_observed_loocv_mse": 0.9139167729492408,
+          "infinite_lambda_count": 0
+        },
+        "estimated_moments_nnls": {
+          "mean_true_trend_mse": 1.652251867505273,
+          "median_true_trend_mse": 1.302145908409869,
+          "mean_observed_loocv_mse": 0.9178291123775434,
+          "infinite_lambda_count": 0
+        }
+      },
+      "ml_true_mse_beats_single_cv": 20,
+      "single_cv_misses_multibracket_more_than_1e-7": 0,
+      "mean_paired_true_mse_single_cv_minus_ml": 0.3537513942106212
+    },
+    "heteroskedastic_observation": {
+      "pool_count": 20,
+      "methods": {
+        "nominal_known_ratio": {
+          "mean_true_trend_mse": 0.3357395066751381,
+          "median_true_trend_mse": 0.2693010763568066,
+          "mean_observed_loocv_mse": 2.622520020553786,
+          "infinite_lambda_count": 0
+        },
+        "estimated_gaussian_difference_ml": {
+          "mean_true_trend_mse": 0.3359613482262656,
+          "median_true_trend_mse": 0.2776149859584405,
+          "mean_observed_loocv_mse": 2.594818655083311,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_bounded_brent": {
+          "mean_true_trend_mse": 0.35478308718853613,
+          "median_true_trend_mse": 0.2769821652397777,
+          "mean_observed_loocv_mse": 2.57540058802838,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_multibracket_brent": {
+          "mean_true_trend_mse": 0.354783087272186,
+          "median_true_trend_mse": 0.2769821673083066,
+          "mean_observed_loocv_mse": 2.57540058802838,
+          "infinite_lambda_count": 0
+        },
+        "estimated_moments_nnls": {
+          "mean_true_trend_mse": 642.4731652104399,
+          "median_true_trend_mse": 13.293420877626488,
+          "mean_observed_loocv_mse": 661.6637740771528,
+          "infinite_lambda_count": 10
+        }
+      },
+      "ml_true_mse_beats_single_cv": 16,
+      "single_cv_misses_multibracket_more_than_1e-7": 0,
+      "mean_paired_true_mse_single_cv_minus_ml": 0.018821738962270566
+    }
+  },
+  "by_cell_R3": [
+    {
+      "regime": "ar1_observation",
+      "N": 50,
+      "sigma_eta": 0.5,
+      "sigma_epsilon": 0.3,
+      "nominal_lambda": 2.777777777777778,
+      "pool_count": 5,
+      "methods": {
+        "nominal_known_ratio": {
+          "mean_true_trend_mse": 0.19818160552092995,
+          "median_true_trend_mse": 0.19525599808656596,
+          "mean_observed_loocv_mse": 0.14773938203173956,
+          "infinite_lambda_count": 0
+        },
+        "estimated_gaussian_difference_ml": {
+          "mean_true_trend_mse": 0.2132547818204608,
+          "median_true_trend_mse": 0.220335927960346,
+          "mean_observed_loocv_mse": 0.11940884631804527,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_bounded_brent": {
+          "mean_true_trend_mse": 0.22414290673458964,
+          "median_true_trend_mse": 0.231805287525519,
+          "mean_observed_loocv_mse": 0.11695404986656635,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_multibracket_brent": {
+          "mean_true_trend_mse": 0.22414290670975645,
+          "median_true_trend_mse": 0.23180528733321068,
+          "mean_observed_loocv_mse": 0.11695404986656635,
+          "infinite_lambda_count": 0
+        },
+        "estimated_moments_nnls": {
+          "mean_true_trend_mse": 0.21728546063391993,
+          "median_true_trend_mse": 0.22718704425437353,
+          "mean_observed_loocv_mse": 0.11786668279679091,
+          "infinite_lambda_count": 0
+        }
+      },
+      "ml_true_mse_beats_single_cv": 5,
+      "single_cv_misses_multibracket_more_than_1e-7": 0,
+      "mean_paired_true_mse_single_cv_minus_ml": 0.010888124914128865
+    },
+    {
+      "regime": "ar1_observation",
+      "N": 50,
+      "sigma_eta": 2.0,
+      "sigma_epsilon": 0.3,
+      "nominal_lambda": 44.44444444444445,
+      "pool_count": 5,
+      "methods": {
+        "nominal_known_ratio": {
+          "mean_true_trend_mse": 1.6619173322227332,
+          "median_true_trend_mse": 1.6116956435465801,
+          "mean_observed_loocv_mse": 2.6817621744452214,
+          "infinite_lambda_count": 0
+        },
+        "estimated_gaussian_difference_ml": {
+          "mean_true_trend_mse": 2.5580677751886816,
+          "median_true_trend_mse": 2.4191301374571808,
+          "mean_observed_loocv_mse": 1.9051182396841575,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_bounded_brent": {
+          "mean_true_trend_mse": 3.18291315305206,
+          "median_true_trend_mse": 3.1923496896000567,
+          "mean_observed_loocv_mse": 1.6931891676110182,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_multibracket_brent": {
+          "mean_true_trend_mse": 3.1829131549674705,
+          "median_true_trend_mse": 3.1923496986245326,
+          "mean_observed_loocv_mse": 1.6931891676110187,
+          "infinite_lambda_count": 0
+        },
+        "estimated_moments_nnls": {
+          "mean_true_trend_mse": 3.084309259710177,
+          "median_true_trend_mse": 3.216848321819122,
+          "mean_observed_loocv_mse": 1.7023621007825191,
+          "infinite_lambda_count": 0
+        }
+      },
+      "ml_true_mse_beats_single_cv": 5,
+      "single_cv_misses_multibracket_more_than_1e-7": 0,
+      "mean_paired_true_mse_single_cv_minus_ml": 0.6248453778633786
+    },
+    {
+      "regime": "ar1_observation",
+      "N": 200,
+      "sigma_eta": 0.5,
+      "sigma_epsilon": 0.3,
+      "nominal_lambda": 2.777777777777778,
+      "pool_count": 5,
+      "methods": {
+        "nominal_known_ratio": {
+          "mean_true_trend_mse": 0.20121431499759312,
+          "median_true_trend_mse": 0.19671661117587358,
+          "mean_observed_loocv_mse": 0.15804388840500305,
+          "infinite_lambda_count": 0
+        },
+        "estimated_gaussian_difference_ml": {
+          "mean_true_trend_mse": 0.22407919422178027,
+          "median_true_trend_mse": 0.2166359016289719,
+          "mean_observed_loocv_mse": 0.12482193744281181,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_bounded_brent": {
+          "mean_true_trend_mse": 0.23883306651724054,
+          "median_true_trend_mse": 0.2318254196423651,
+          "mean_observed_loocv_mse": 0.12092196982123901,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_multibracket_brent": {
+          "mean_true_trend_mse": 0.23883306664905518,
+          "median_true_trend_mse": 0.2318254202493343,
+          "mean_observed_loocv_mse": 0.12092196982123904,
+          "infinite_lambda_count": 0
+        },
+        "estimated_moments_nnls": {
+          "mean_true_trend_mse": 0.23106680303133337,
+          "median_true_trend_mse": 0.2248730932292647,
+          "mean_observed_loocv_mse": 0.12186339024839273,
+          "infinite_lambda_count": 0
+        }
+      },
+      "ml_true_mse_beats_single_cv": 5,
+      "single_cv_misses_multibracket_more_than_1e-7": 0,
+      "mean_paired_true_mse_single_cv_minus_ml": 0.014753872295460274
+    },
+    {
+      "regime": "ar1_observation",
+      "N": 200,
+      "sigma_eta": 2.0,
+      "sigma_epsilon": 0.3,
+      "nominal_lambda": 44.44444444444445,
+      "pool_count": 5,
+      "methods": {
+        "nominal_known_ratio": {
+          "mean_true_trend_mse": 1.7615472576881115,
+          "median_true_trend_mse": 1.9513781329432784,
+          "mean_observed_loocv_mse": 2.675740467710468,
+          "infinite_lambda_count": 0
+        },
+        "estimated_gaussian_difference_ml": {
+          "mean_true_trend_mse": 2.40716258113014,
+          "median_true_trend_mse": 2.5162612284655244,
+          "mean_observed_loocv_mse": 1.9918487378305147,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_bounded_brent": {
+          "mean_true_trend_mse": 3.1716807828996574,
+          "median_true_trend_mse": 3.4090982660657065,
+          "mean_observed_loocv_mse": 1.724601904498139,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_multibracket_brent": {
+          "mean_true_trend_mse": 3.1716807821109483,
+          "median_true_trend_mse": 3.4090982663407914,
+          "mean_observed_loocv_mse": 1.724601904498139,
+          "infinite_lambda_count": 0
+        },
+        "estimated_moments_nnls": {
+          "mean_true_trend_mse": 3.076345946645662,
+          "median_true_trend_mse": 3.299848419934643,
+          "mean_observed_loocv_mse": 1.729224275682471,
+          "infinite_lambda_count": 0
+        }
+      },
+      "ml_true_mse_beats_single_cv": 5,
+      "single_cv_misses_multibracket_more_than_1e-7": 0,
+      "mean_paired_true_mse_single_cv_minus_ml": 0.7645182017695171
+    },
+    {
+      "regime": "gaussian_iid",
+      "N": 50,
+      "sigma_eta": 0.5,
+      "sigma_epsilon": 0.3,
+      "nominal_lambda": 2.777777777777778,
+      "pool_count": 5,
+      "methods": {
+        "nominal_known_ratio": {
+          "mean_true_trend_mse": 0.07506179009960542,
+          "median_true_trend_mse": 0.0650649666410568,
+          "mean_observed_loocv_mse": 0.36620393548403884,
+          "infinite_lambda_count": 0
+        },
+        "estimated_gaussian_difference_ml": {
+          "mean_true_trend_mse": 0.07624140740390656,
+          "median_true_trend_mse": 0.06955271720587687,
+          "mean_observed_loocv_mse": 0.3650758411219228,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_bounded_brent": {
+          "mean_true_trend_mse": 0.08378617413433365,
+          "median_true_trend_mse": 0.07901564108541706,
+          "mean_observed_loocv_mse": 0.35759293557690175,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_multibracket_brent": {
+          "mean_true_trend_mse": 0.08378617398830338,
+          "median_true_trend_mse": 0.07901564116009085,
+          "mean_observed_loocv_mse": 0.35759293557690175,
+          "infinite_lambda_count": 0
+        },
+        "estimated_moments_nnls": {
+          "mean_true_trend_mse": 0.083200788723765,
+          "median_true_trend_mse": 0.08246419280800739,
+          "mean_observed_loocv_mse": 0.3589848829740479,
+          "infinite_lambda_count": 0
+        }
+      },
+      "ml_true_mse_beats_single_cv": 5,
+      "single_cv_misses_multibracket_more_than_1e-7": 0,
+      "mean_paired_true_mse_single_cv_minus_ml": 0.007544766730427084
+    },
+    {
+      "regime": "gaussian_iid",
+      "N": 50,
+      "sigma_eta": 2.0,
+      "sigma_epsilon": 0.3,
+      "nominal_lambda": 44.44444444444445,
+      "pool_count": 5,
+      "methods": {
+        "nominal_known_ratio": {
+          "mean_true_trend_mse": 0.6424932025776077,
+          "median_true_trend_mse": 0.56370720359269,
+          "mean_observed_loocv_mse": 4.710696488774435,
+          "infinite_lambda_count": 0
+        },
+        "estimated_gaussian_difference_ml": {
+          "mean_true_trend_mse": 0.6552603667052528,
+          "median_true_trend_mse": 0.5605881754144342,
+          "mean_observed_loocv_mse": 4.7464126472803265,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_bounded_brent": {
+          "mean_true_trend_mse": 0.6448389358808654,
+          "median_true_trend_mse": 0.5625705200792191,
+          "mean_observed_loocv_mse": 4.690033063718699,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_multibracket_brent": {
+          "mean_true_trend_mse": 0.6448389344373032,
+          "median_true_trend_mse": 0.5625705200660197,
+          "mean_observed_loocv_mse": 4.6900330637187,
+          "infinite_lambda_count": 0
+        },
+        "estimated_moments_nnls": {
+          "mean_true_trend_mse": 40.289869265041446,
+          "median_true_trend_mse": 3.467733820478132,
+          "mean_observed_loocv_mse": 49.20183149952362,
+          "infinite_lambda_count": 3
+        }
+      },
+      "ml_true_mse_beats_single_cv": 4,
+      "single_cv_misses_multibracket_more_than_1e-7": 0,
+      "mean_paired_true_mse_single_cv_minus_ml": -0.010421430824387434
+    },
+    {
+      "regime": "gaussian_iid",
+      "N": 200,
+      "sigma_eta": 0.5,
+      "sigma_epsilon": 0.3,
+      "nominal_lambda": 2.777777777777778,
+      "pool_count": 5,
+      "methods": {
+        "nominal_known_ratio": {
+          "mean_true_trend_mse": 0.07632202712450378,
+          "median_true_trend_mse": 0.07895653167158605,
+          "mean_observed_loocv_mse": 0.3501619783082296,
+          "infinite_lambda_count": 0
+        },
+        "estimated_gaussian_difference_ml": {
+          "mean_true_trend_mse": 0.07682601502057367,
+          "median_true_trend_mse": 0.07890022589289696,
+          "mean_observed_loocv_mse": 0.3497010993450035,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_bounded_brent": {
+          "mean_true_trend_mse": 0.07680249756474955,
+          "median_true_trend_mse": 0.07940350444895883,
+          "mean_observed_loocv_mse": 0.3495624647025786,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_multibracket_brent": {
+          "mean_true_trend_mse": 0.07680249766135243,
+          "median_true_trend_mse": 0.07940350452114889,
+          "mean_observed_loocv_mse": 0.3495624647025786,
+          "infinite_lambda_count": 0
+        },
+        "estimated_moments_nnls": {
+          "mean_true_trend_mse": 220.27819130252496,
+          "median_true_trend_mse": 0.0800088365799946,
+          "mean_observed_loocv_mse": 226.5936541060068,
+          "infinite_lambda_count": 1
+        }
+      },
+      "ml_true_mse_beats_single_cv": 3,
+      "single_cv_misses_multibracket_more_than_1e-7": 0,
+      "mean_paired_true_mse_single_cv_minus_ml": -2.3517455824130508e-05
+    },
+    {
+      "regime": "gaussian_iid",
+      "N": 200,
+      "sigma_eta": 2.0,
+      "sigma_epsilon": 0.3,
+      "nominal_lambda": 44.44444444444445,
+      "pool_count": 5,
+      "methods": {
+        "nominal_known_ratio": {
+          "mean_true_trend_mse": 0.6052818553330465,
+          "median_true_trend_mse": 0.5834427557318766,
+          "mean_observed_loocv_mse": 4.779320242501878,
+          "infinite_lambda_count": 0
+        },
+        "estimated_gaussian_difference_ml": {
+          "mean_true_trend_mse": 0.6137017400742937,
+          "median_true_trend_mse": 0.5838779866199727,
+          "mean_observed_loocv_mse": 4.773739717779563,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_bounded_brent": {
+          "mean_true_trend_mse": 0.6163051505243609,
+          "median_true_trend_mse": 0.5852204480070384,
+          "mean_observed_loocv_mse": 4.771440657428029,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_multibracket_brent": {
+          "mean_true_trend_mse": 0.6163051512899995,
+          "median_true_trend_mse": 0.5852204491184091,
+          "mean_observed_loocv_mse": 4.771440657428029,
+          "infinite_lambda_count": 0
+        },
+        "estimated_moments_nnls": {
+          "mean_true_trend_mse": 1299.002995330677,
+          "median_true_trend_mse": 1209.1945373473104,
+          "mean_observed_loocv_mse": 1329.4288695928306,
+          "infinite_lambda_count": 3
+        }
+      },
+      "ml_true_mse_beats_single_cv": 3,
+      "single_cv_misses_multibracket_more_than_1e-7": 0,
+      "mean_paired_true_mse_single_cv_minus_ml": 0.002603410450067278
+    },
+    {
+      "regime": "heteroskedastic_observation",
+      "N": 50,
+      "sigma_eta": 0.5,
+      "sigma_epsilon": 0.3,
+      "nominal_lambda": 2.777777777777778,
+      "pool_count": 5,
+      "methods": {
+        "nominal_known_ratio": {
+          "mean_true_trend_mse": 0.07100770557266632,
+          "median_true_trend_mse": 0.06647079960546745,
+          "mean_observed_loocv_mse": 0.3566508900228807,
+          "infinite_lambda_count": 0
+        },
+        "estimated_gaussian_difference_ml": {
+          "mean_true_trend_mse": 0.07062494790674759,
+          "median_true_trend_mse": 0.06632711936973158,
+          "mean_observed_loocv_mse": 0.35567085464755416,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_bounded_brent": {
+          "mean_true_trend_mse": 0.07333004143140973,
+          "median_true_trend_mse": 0.07187013727046741,
+          "mean_observed_loocv_mse": 0.35377693339225724,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_multibracket_brent": {
+          "mean_true_trend_mse": 0.07333004144405991,
+          "median_true_trend_mse": 0.07187013740800706,
+          "mean_observed_loocv_mse": 0.3537769333922573,
+          "infinite_lambda_count": 0
+        },
+        "estimated_moments_nnls": {
+          "mean_true_trend_mse": 6.841114796262102,
+          "median_true_trend_mse": 0.10660485321814474,
+          "mean_observed_loocv_mse": 7.774477830888652,
+          "infinite_lambda_count": 1
+        }
+      },
+      "ml_true_mse_beats_single_cv": 5,
+      "single_cv_misses_multibracket_more_than_1e-7": 0,
+      "mean_paired_true_mse_single_cv_minus_ml": 0.002705093524662154
+    },
+    {
+      "regime": "heteroskedastic_observation",
+      "N": 50,
+      "sigma_eta": 2.0,
+      "sigma_epsilon": 0.3,
+      "nominal_lambda": 44.44444444444445,
+      "pool_count": 5,
+      "methods": {
+        "nominal_known_ratio": {
+          "mean_true_trend_mse": 0.5756495813014914,
+          "median_true_trend_mse": 0.4866123516984272,
+          "mean_observed_loocv_mse": 5.026119302230984,
+          "infinite_lambda_count": 0
+        },
+        "estimated_gaussian_difference_ml": {
+          "mean_true_trend_mse": 0.5730676530645162,
+          "median_true_trend_mse": 0.4908395755268265,
+          "mean_observed_loocv_mse": 4.917170515371585,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_bounded_brent": {
+          "mean_true_trend_mse": 0.6408520518893559,
+          "median_true_trend_mse": 0.6201348371182857,
+          "mean_observed_loocv_mse": 4.849901156368199,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_multibracket_brent": {
+          "mean_true_trend_mse": 0.6408520531203777,
+          "median_true_trend_mse": 0.6201348363635317,
+          "mean_observed_loocv_mse": 4.849901156368199,
+          "infinite_lambda_count": 0
+        },
+        "estimated_moments_nnls": {
+          "mean_true_trend_mse": 19.11052009924933,
+          "median_true_trend_mse": 25.45985847885942,
+          "mean_observed_loocv_mse": 26.34641631537889,
+          "infinite_lambda_count": 3
+        }
+      },
+      "ml_true_mse_beats_single_cv": 3,
+      "single_cv_misses_multibracket_more_than_1e-7": 0,
+      "mean_paired_true_mse_single_cv_minus_ml": 0.0677843988248396
+    },
+    {
+      "regime": "heteroskedastic_observation",
+      "N": 200,
+      "sigma_eta": 0.5,
+      "sigma_epsilon": 0.3,
+      "nominal_lambda": 2.777777777777778,
+      "pool_count": 5,
+      "methods": {
+        "nominal_known_ratio": {
+          "mean_true_trend_mse": 0.07505348887314764,
+          "median_true_trend_mse": 0.07349408301798611,
+          "mean_observed_loocv_mse": 0.35502201659308674,
+          "infinite_lambda_count": 0
+        },
+        "estimated_gaussian_difference_ml": {
+          "mean_true_trend_mse": 0.07515316875867015,
+          "median_true_trend_mse": 0.07453854509486559,
+          "mean_observed_loocv_mse": 0.35503295112045863,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_bounded_brent": {
+          "mean_true_trend_mse": 0.07683055943335954,
+          "median_true_trend_mse": 0.07748882252931817,
+          "mean_observed_loocv_mse": 0.3536915381359257,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_multibracket_brent": {
+          "mean_true_trend_mse": 0.07683055947515359,
+          "median_true_trend_mse": 0.0774888228249455,
+          "mean_observed_loocv_mse": 0.3536915381359258,
+          "infinite_lambda_count": 0
+        },
+        "estimated_moments_nnls": {
+          "mean_true_trend_mse": 1576.2253076157929,
+          "median_true_trend_mse": 1631.3821419038995,
+          "mean_observed_loocv_mse": 1616.0363535253216,
+          "infinite_lambda_count": 3
+        }
+      },
+      "ml_true_mse_beats_single_cv": 4,
+      "single_cv_misses_multibracket_more_than_1e-7": 0,
+      "mean_paired_true_mse_single_cv_minus_ml": 0.0016773906746893968
+    },
+    {
+      "regime": "heteroskedastic_observation",
+      "N": 200,
+      "sigma_eta": 2.0,
+      "sigma_epsilon": 0.3,
+      "nominal_lambda": 44.44444444444445,
+      "pool_count": 5,
+      "methods": {
+        "nominal_known_ratio": {
+          "mean_true_trend_mse": 0.6212472509532468,
+          "median_true_trend_mse": 0.6592128000279643,
+          "mean_observed_loocv_mse": 4.752287873368192,
+          "infinite_lambda_count": 0
+        },
+        "estimated_gaussian_difference_ml": {
+          "mean_true_trend_mse": 0.6249996231751285,
+          "median_true_trend_mse": 0.6581994486804648,
+          "mean_observed_loocv_mse": 4.751400299193646,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_bounded_brent": {
+          "mean_true_trend_mse": 0.6281196960000195,
+          "median_true_trend_mse": 0.6587796285273839,
+          "mean_observed_loocv_mse": 4.744232724217138,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_multibracket_brent": {
+          "mean_true_trend_mse": 0.6281196950491527,
+          "median_true_trend_mse": 0.6587796297925133,
+          "mean_observed_loocv_mse": 4.744232724217138,
+          "infinite_lambda_count": 0
+        },
+        "estimated_moments_nnls": {
+          "mean_true_trend_mse": 967.7157183304553,
+          "median_true_trend_mse": 796.2963871279684,
+          "mean_observed_loocv_mse": 996.4978486370219,
+          "infinite_lambda_count": 3
+        }
+      },
+      "ml_true_mse_beats_single_cv": 4,
+      "single_cv_misses_multibracket_more_than_1e-7": 0,
+      "mean_paired_true_mse_single_cv_minus_ml": 0.003120072824891118
+    },
+    {
+      "regime": "student_t_innovation",
+      "N": 50,
+      "sigma_eta": 0.5,
+      "sigma_epsilon": 0.3,
+      "nominal_lambda": 2.777777777777778,
+      "pool_count": 5,
+      "methods": {
+        "nominal_known_ratio": {
+          "mean_true_trend_mse": 0.09149165616522668,
+          "median_true_trend_mse": 0.090225674685961,
+          "mean_observed_loocv_mse": 0.3739682033548163,
+          "infinite_lambda_count": 0
+        },
+        "estimated_gaussian_difference_ml": {
+          "mean_true_trend_mse": 0.09104685030981181,
+          "median_true_trend_mse": 0.09045620351090752,
+          "mean_observed_loocv_mse": 0.3724485433943896,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_bounded_brent": {
+          "mean_true_trend_mse": 0.09460720745997041,
+          "median_true_trend_mse": 0.0951691985812589,
+          "mean_observed_loocv_mse": 0.3702512955484359,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_multibracket_brent": {
+          "mean_true_trend_mse": 0.094607207227113,
+          "median_true_trend_mse": 0.09516919865544035,
+          "mean_observed_loocv_mse": 0.3702512955484359,
+          "infinite_lambda_count": 0
+        },
+        "estimated_moments_nnls": {
+          "mean_true_trend_mse": 18.921292156811326,
+          "median_true_trend_mse": 0.10787787096495878,
+          "mean_observed_loocv_mse": 21.35375904029041,
+          "infinite_lambda_count": 2
+        }
+      },
+      "ml_true_mse_beats_single_cv": 5,
+      "single_cv_misses_multibracket_more_than_1e-7": 0,
+      "mean_paired_true_mse_single_cv_minus_ml": 0.0035603571501585996
+    },
+    {
+      "regime": "student_t_innovation",
+      "N": 50,
+      "sigma_eta": 2.0,
+      "sigma_epsilon": 0.3,
+      "nominal_lambda": 44.44444444444445,
+      "pool_count": 5,
+      "methods": {
+        "nominal_known_ratio": {
+          "mean_true_trend_mse": 0.6164012255465963,
+          "median_true_trend_mse": 0.6223722792192787,
+          "mean_observed_loocv_mse": 5.267458168250997,
+          "infinite_lambda_count": 0
+        },
+        "estimated_gaussian_difference_ml": {
+          "mean_true_trend_mse": 0.6209583342200495,
+          "median_true_trend_mse": 0.6117724115376789,
+          "mean_observed_loocv_mse": 5.256212829539405,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_bounded_brent": {
+          "mean_true_trend_mse": 0.6202921653963235,
+          "median_true_trend_mse": 0.6202005961087612,
+          "mean_observed_loocv_mse": 5.222526574121675,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_multibracket_brent": {
+          "mean_true_trend_mse": 0.6202921658579568,
+          "median_true_trend_mse": 0.6202005997960515,
+          "mean_observed_loocv_mse": 5.222526574121675,
+          "infinite_lambda_count": 0
+        },
+        "estimated_moments_nnls": {
+          "mean_true_trend_mse": 21.39775604673074,
+          "median_true_trend_mse": 21.569857634645658,
+          "mean_observed_loocv_mse": 27.294078164021254,
+          "infinite_lambda_count": 3
+        }
+      },
+      "ml_true_mse_beats_single_cv": 2,
+      "single_cv_misses_multibracket_more_than_1e-7": 0,
+      "mean_paired_true_mse_single_cv_minus_ml": -0.0006661688237259433
+    },
+    {
+      "regime": "student_t_innovation",
+      "N": 200,
+      "sigma_eta": 0.5,
+      "sigma_epsilon": 0.3,
+      "nominal_lambda": 2.777777777777778,
+      "pool_count": 5,
+      "methods": {
+        "nominal_known_ratio": {
+          "mean_true_trend_mse": 0.07193694442219153,
+          "median_true_trend_mse": 0.07346406559982581,
+          "mean_observed_loocv_mse": 0.34281416735794457,
+          "infinite_lambda_count": 0
+        },
+        "estimated_gaussian_difference_ml": {
+          "mean_true_trend_mse": 0.07196485497382014,
+          "median_true_trend_mse": 0.07288616198477162,
+          "mean_observed_loocv_mse": 0.3428364132536224,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_bounded_brent": {
+          "mean_true_trend_mse": 0.07210515207203709,
+          "median_true_trend_mse": 0.07410184231033946,
+          "mean_observed_loocv_mse": 0.342680784909397,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_multibracket_brent": {
+          "mean_true_trend_mse": 0.07210515200292557,
+          "median_true_trend_mse": 0.0741018420398951,
+          "mean_observed_loocv_mse": 0.342680784909397,
+          "infinite_lambda_count": 0
+        },
+        "estimated_moments_nnls": {
+          "mean_true_trend_mse": 0.07215174147063858,
+          "median_true_trend_mse": 0.0737906576741536,
+          "mean_observed_loocv_mse": 0.3444202859827451,
+          "infinite_lambda_count": 0
+        }
+      },
+      "ml_true_mse_beats_single_cv": 2,
+      "single_cv_misses_multibracket_more_than_1e-7": 0,
+      "mean_paired_true_mse_single_cv_minus_ml": 0.00014029709821694326
+    },
+    {
+      "regime": "student_t_innovation",
+      "N": 200,
+      "sigma_eta": 2.0,
+      "sigma_epsilon": 0.3,
+      "nominal_lambda": 44.44444444444445,
+      "pool_count": 5,
+      "methods": {
+        "nominal_known_ratio": {
+          "mean_true_trend_mse": 0.5581030922120984,
+          "median_true_trend_mse": 0.5349632168269562,
+          "mean_observed_loocv_mse": 4.547577755936643,
+          "infinite_lambda_count": 0
+        },
+        "estimated_gaussian_difference_ml": {
+          "mean_true_trend_mse": 0.5570164258985346,
+          "median_true_trend_mse": 0.5336131896622499,
+          "mean_observed_loocv_mse": 4.545013353656627,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_bounded_brent": {
+          "mean_true_trend_mse": 0.5581666150561537,
+          "median_true_trend_mse": 0.537043756856012,
+          "mean_observed_loocv_mse": 4.5382817704706735,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_multibracket_brent": {
+          "mean_true_trend_mse": 0.5581666151906349,
+          "median_true_trend_mse": 0.5370437584128912,
+          "mean_observed_loocv_mse": 4.538281770470673,
+          "infinite_lambda_count": 0
+        },
+        "estimated_moments_nnls": {
+          "mean_true_trend_mse": 668.2237088224165,
+          "median_true_trend_mse": 0.8399245471804142,
+          "mean_observed_loocv_mse": 688.6773515306523,
+          "infinite_lambda_count": 2
+        }
+      },
+      "ml_true_mse_beats_single_cv": 3,
+      "single_cv_misses_multibracket_more_than_1e-7": 0,
+      "mean_paired_true_mse_single_cv_minus_ml": 0.0011501891576191415
+    },
+    {
+      "regime": "student_t_observation",
+      "N": 50,
+      "sigma_eta": 0.5,
+      "sigma_epsilon": 0.3,
+      "nominal_lambda": 2.777777777777778,
+      "pool_count": 5,
+      "methods": {
+        "nominal_known_ratio": {
+          "mean_true_trend_mse": 0.07404213637396573,
+          "median_true_trend_mse": 0.080784636763414,
+          "mean_observed_loocv_mse": 0.380651769363245,
+          "infinite_lambda_count": 0
+        },
+        "estimated_gaussian_difference_ml": {
+          "mean_true_trend_mse": 0.075096219811161,
+          "median_true_trend_mse": 0.08168852163778895,
+          "mean_observed_loocv_mse": 0.37926841725271127,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_bounded_brent": {
+          "mean_true_trend_mse": 0.0793480877632202,
+          "median_true_trend_mse": 0.08322347597893755,
+          "mean_observed_loocv_mse": 0.3766846711556375,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_multibracket_brent": {
+          "mean_true_trend_mse": 0.07934808746302621,
+          "median_true_trend_mse": 0.08322347560192273,
+          "mean_observed_loocv_mse": 0.37668467115563753,
+          "infinite_lambda_count": 0
+        },
+        "estimated_moments_nnls": {
+          "mean_true_trend_mse": 1.949192498048451,
+          "median_true_trend_mse": 0.08415839383479191,
+          "mean_observed_loocv_mse": 2.316591271841736,
+          "infinite_lambda_count": 1
+        }
+      },
+      "ml_true_mse_beats_single_cv": 5,
+      "single_cv_misses_multibracket_more_than_1e-7": 0,
+      "mean_paired_true_mse_single_cv_minus_ml": 0.0042518679520591966
+    },
+    {
+      "regime": "student_t_observation",
+      "N": 50,
+      "sigma_eta": 2.0,
+      "sigma_epsilon": 0.3,
+      "nominal_lambda": 44.44444444444445,
+      "pool_count": 5,
+      "methods": {
+        "nominal_known_ratio": {
+          "mean_true_trend_mse": 0.582444216019967,
+          "median_true_trend_mse": 0.5729211320073305,
+          "mean_observed_loocv_mse": 4.472592078617708,
+          "infinite_lambda_count": 0
+        },
+        "estimated_gaussian_difference_ml": {
+          "mean_true_trend_mse": 0.5734069502476261,
+          "median_true_trend_mse": 0.5813243129454829,
+          "mean_observed_loocv_mse": 4.486996377890117,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_bounded_brent": {
+          "mean_true_trend_mse": 0.6349639445530527,
+          "median_true_trend_mse": 0.5943682047789539,
+          "mean_observed_loocv_mse": 4.451114067865041,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_multibracket_brent": {
+          "mean_true_trend_mse": 0.6349639510654387,
+          "median_true_trend_mse": 0.5943682119354267,
+          "mean_observed_loocv_mse": 4.451114067865041,
+          "infinite_lambda_count": 0
+        },
+        "estimated_moments_nnls": {
+          "mean_true_trend_mse": 10.8324185231269,
+          "median_true_trend_mse": 1.0993931831993156,
+          "mean_observed_loocv_mse": 15.566178630818317,
+          "infinite_lambda_count": 2
+        }
+      },
+      "ml_true_mse_beats_single_cv": 4,
+      "single_cv_misses_multibracket_more_than_1e-7": 0,
+      "mean_paired_true_mse_single_cv_minus_ml": 0.061556994305426514
+    },
+    {
+      "regime": "student_t_observation",
+      "N": 200,
+      "sigma_eta": 0.5,
+      "sigma_epsilon": 0.3,
+      "nominal_lambda": 2.777777777777778,
+      "pool_count": 5,
+      "methods": {
+        "nominal_known_ratio": {
+          "mean_true_trend_mse": 0.07868457490686243,
+          "median_true_trend_mse": 0.0800495677173218,
+          "mean_observed_loocv_mse": 0.34841696949663936,
+          "infinite_lambda_count": 0
+        },
+        "estimated_gaussian_difference_ml": {
+          "mean_true_trend_mse": 0.0788180817011319,
+          "median_true_trend_mse": 0.08017734073054728,
+          "mean_observed_loocv_mse": 0.34830079859522484,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_bounded_brent": {
+          "mean_true_trend_mse": 0.07933600458998538,
+          "median_true_trend_mse": 0.08016855734438243,
+          "mean_observed_loocv_mse": 0.3476559342743948,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_multibracket_brent": {
+          "mean_true_trend_mse": 0.07933600448418276,
+          "median_true_trend_mse": 0.08016855735007786,
+          "mean_observed_loocv_mse": 0.34765593427439484,
+          "infinite_lambda_count": 0
+        },
+        "estimated_moments_nnls": {
+          "mean_true_trend_mse": 0.08439884643937584,
+          "median_true_trend_mse": 0.08164312842723052,
+          "mean_observed_loocv_mse": 0.3542944429889815,
+          "infinite_lambda_count": 0
+        }
+      },
+      "ml_true_mse_beats_single_cv": 3,
+      "single_cv_misses_multibracket_more_than_1e-7": 0,
+      "mean_paired_true_mse_single_cv_minus_ml": 0.0005179228888534699
+    },
+    {
+      "regime": "student_t_observation",
+      "N": 200,
+      "sigma_eta": 2.0,
+      "sigma_epsilon": 0.3,
+      "nominal_lambda": 44.44444444444445,
+      "pool_count": 5,
+      "methods": {
+        "nominal_known_ratio": {
+          "mean_true_trend_mse": 0.6279935442119726,
+          "median_true_trend_mse": 0.6443993894923896,
+          "mean_observed_loocv_mse": 4.751213358277262,
+          "infinite_lambda_count": 0
+        },
+        "estimated_gaussian_difference_ml": {
+          "mean_true_trend_mse": 0.6214047541724279,
+          "median_true_trend_mse": 0.637866366262204,
+          "mean_observed_loocv_mse": 4.745918360468738,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_bounded_brent": {
+          "mean_true_trend_mse": 0.6176589149500561,
+          "median_true_trend_mse": 0.6305697473187842,
+          "mean_observed_loocv_mse": 4.742341044263386,
+          "infinite_lambda_count": 0
+        },
+        "pooled_loocv_multibracket_brent": {
+          "mean_true_trend_mse": 0.6176589143204317,
+          "median_true_trend_mse": 0.6305697475916422,
+          "mean_observed_loocv_mse": 4.742341044263387,
+          "infinite_lambda_count": 0
+        },
+        "estimated_moments_nnls": {
+          "mean_true_trend_mse": 2379.518197754068,
+          "median_true_trend_mse": 1579.1730282903773,
+          "mean_observed_loocv_mse": 2443.884084638903,
+          "infinite_lambda_count": 3
+        }
+      },
+      "ml_true_mse_beats_single_cv": 1,
+      "single_cv_misses_multibracket_more_than_1e-7": 0,
+      "mean_paired_true_mse_single_cv_minus_ml": -0.0037458392223717273
+    }
+  ],
+  "interpretation_warnings": [
+    "The nominal variance ratio is not the correct oracle under AR1 or time-varying noise.",
+    "For Student-t shocks finite second moments exist (df=5) but Gaussian likelihood is misspecified.",
+    "Ordinary LOOCV also assumes a meaningful held-out conditional prediction target; autocorrelated observations can invalidate its interpretation.",
+    "True tau appears only in evaluation, never in any fitted selector.",
+    "Small exploratory pilot seeds cannot support publication-ready superiority claims.",
+    "Multibracket derivative scans are finite, without global completeness guarantees."
+  ]
+}

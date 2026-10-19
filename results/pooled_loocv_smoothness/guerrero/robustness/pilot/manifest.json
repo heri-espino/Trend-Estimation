@@ -1,0 +1,214 @@
+{
+  "protocol": "misspecified_guerrero_noise_robustness_v1",
+  "status": "executed",
+  "created_utc": "2026-10-19T03:14:20.547889+00:00",
+  "preset": "pilot",
+  "seed_base": 30610000,
+  "seed_formula": "seed_base + scenario_id*10000 + replicate",
+  "random_generator": "numpy.random.default_rng",
+  "regimes": [
+    "gaussian_iid",
+    "student_t_observation",
+    "student_t_innovation",
+    "ar1_observation",
+    "heteroskedastic_observation"
+  ],
+  "scenario_count": 20,
+  "scenarios": [
+    {
+      "regime": "gaussian_iid",
+      "n": 50,
+      "d": 2,
+      "sigma_eta": 0.5,
+      "sigma_epsilon": 0.3,
+      "nominal_lambda": 2.777777777777778
+    },
+    {
+      "regime": "gaussian_iid",
+      "n": 50,
+      "d": 2,
+      "sigma_eta": 2.0,
+      "sigma_epsilon": 0.3,
+      "nominal_lambda": 44.44444444444445
+    },
+    {
+      "regime": "gaussian_iid",
+      "n": 200,
+      "d": 2,
+      "sigma_eta": 0.5,
+      "sigma_epsilon": 0.3,
+      "nominal_lambda": 2.777777777777778
+    },
+    {
+      "regime": "gaussian_iid",
+      "n": 200,
+      "d": 2,
+      "sigma_eta": 2.0,
+      "sigma_epsilon": 0.3,
+      "nominal_lambda": 44.44444444444445
+    },
+    {
+      "regime": "student_t_observation",
+      "n": 50,
+      "d": 2,
+      "sigma_eta": 0.5,
+      "sigma_epsilon": 0.3,
+      "nominal_lambda": 2.777777777777778
+    },
+    {
+      "regime": "student_t_observation",
+      "n": 50,
+      "d": 2,
+      "sigma_eta": 2.0,
+      "sigma_epsilon": 0.3,
+      "nominal_lambda": 44.44444444444445
+    },
+    {
+      "regime": "student_t_observation",
+      "n": 200,
+      "d": 2,
+      "sigma_eta": 0.5,
+      "sigma_epsilon": 0.3,
+      "nominal_lambda": 2.777777777777778
+    },
+    {
+      "regime": "student_t_observation",
+      "n": 200,
+      "d": 2,
+      "sigma_eta": 2.0,
+      "sigma_epsilon": 0.3,
+      "nominal_lambda": 44.44444444444445
+    },
+    {
+      "regime": "student_t_innovation",
+      "n": 50,
+      "d": 2,
+      "sigma_eta": 0.5,
+      "sigma_epsilon": 0.3,
+      "nominal_lambda": 2.777777777777778
+    },
+    {
+      "regime": "student_t_innovation",
+      "n": 50,
+      "d": 2,
+      "sigma_eta": 2.0,
+      "sigma_epsilon": 0.3,
+      "nominal_lambda": 44.44444444444445
+    },
+    {
+      "regime": "student_t_innovation",
+      "n": 200,
+      "d": 2,
+      "sigma_eta": 0.5,
+      "sigma_epsilon": 0.3,
+      "nominal_lambda": 2.777777777777778
+    },
+    {
+      "regime": "student_t_innovation",
+      "n": 200,
+      "d": 2,
+      "sigma_eta": 2.0,
+      "sigma_epsilon": 0.3,
+      "nominal_lambda": 44.44444444444445
+    },
+    {
+      "regime": "ar1_observation",
+      "n": 50,
+      "d": 2,
+      "sigma_eta": 0.5,
+      "sigma_epsilon": 0.3,
+      "nominal_lambda": 2.777777777777778
+    },
+    {
+      "regime": "ar1_observation",
+      "n": 50,
+      "d": 2,
+      "sigma_eta": 2.0,
+      "sigma_epsilon": 0.3,
+      "nominal_lambda": 44.44444444444445
+    },
+    {
+      "regime": "ar1_observation",
+      "n": 200,
+      "d": 2,
+      "sigma_eta": 0.5,
+      "sigma_epsilon": 0.3,
+      "nominal_lambda": 2.777777777777778
+    },
+    {
+      "regime": "ar1_observation",
+      "n": 200,
+      "d": 2,
+      "sigma_eta": 2.0,
+      "sigma_epsilon": 0.3,
+      "nominal_lambda": 44.44444444444445
+    },
+    {
+      "regime": "heteroskedastic_observation",
+      "n": 50,
+      "d": 2,
+      "sigma_eta": 0.5,
+      "sigma_epsilon": 0.3,
+      "nominal_lambda": 2.777777777777778
+    },
+    {
+      "regime": "heteroskedastic_observation",
+      "n": 50,
+      "d": 2,
+      "sigma_eta": 2.0,
+      "sigma_epsilon": 0.3,
+      "nominal_lambda": 44.44444444444445
+    },
+    {
+      "regime": "heteroskedastic_observation",
+      "n": 200,
+      "d": 2,
+      "sigma_eta": 0.5,
+      "sigma_epsilon": 0.3,
+      "nominal_lambda": 2.777777777777778
+    },
+    {
+      "regime": "heteroskedastic_observation",
+      "n": 200,
+      "d": 2,
+      "sigma_eta": 2.0,
+      "sigma_epsilon": 0.3,
+      "nominal_lambda": 44.44444444444445
+    }
+  ],
+  "seed_repetitions_per_scenario": 5,
+  "pool_sizes": [
+    1,
+    3
+  ],
+  "nested_pool_first_series_reused": true,
+  "expected_pools": 200,
+  "expected_method_rows": 1000,
+  "methods": [
+    "nominal_known_ratio",
+    "estimated_gaussian_difference_ml",
+    "pooled_loocv_bounded_brent",
+    "pooled_loocv_multibracket_brent",
+    "estimated_moments_nnls"
+  ],
+  "difference_order": 2,
+  "student_t_df": 5,
+  "t_variance_normalization": "(df-2)/df",
+  "ar1_phi": 0.65,
+  "heteroskedastic_first_half_variance_factor": 0.25,
+  "heteroskedastic_second_half_variance_factor": 1.75,
+  "reference_variance_ratio": "sigma_eta_nominal**2/sigma_epsilon_nominal**2",
+  "reference_ratio_warning": "Model-informed Guerrero ratio only for iid Gaussian; under other regimes a NOMINAL reference, not an oracle.",
+  "cv_log_lambda_bounds": [
+    -20,
+    35
+  ],
+  "ml_profile_scan_points": 81,
+  "multibracket_derivative_scan_points": 81,
+  "git_sha": "203a3d9b85dc3bba3cfeb45e4d7e5b1115bcc107",
+  "python": "3.11.16",
+  "numpy": "2.4.6",
+  "scipy": "1.17.1",
+  "truth_used_for_tuning": false,
+  "actual_rows": 1000
+}
