@@ -1,10 +1,54 @@
 # Tail-shape, asymmetry, jump-mixture and clustered-volatility stress study
 
-**Prepared 2026-10-18 (Mexico City time). Status: algorithm/protocol implemented; full exploratory pilot NOT claimed executed until its manifest and CSV are uploaded.** Distinct from the previously completed 5-regime robustness pilot. Executable: `experiments/pooled_loocv_smoothness/run_tail_noise.py`. Mathematical context: [MSE AND GAUSSIAN LIKELIHOOD EXPLANATION](GAUSSIAN_MLE_AND_LOOCV_EXPLAINED.md).
+**Prepared 2026-10-18; revised to v2 before experiment execution. Full pilot NOT executed.** Distinct from the previously completed 5-regime robustness pilot. Executable: `experiments/pooled_loocv_smoothness/run_tail_noise.py`. Mathematical context: [MSE AND GAUSSIAN LIKELIHOOD EXPLANATION](GAUSSIAN_MLE_AND_LOOCV_EXPLAINED.md).
 
-## 1. What is being simulated?
+## Version 2 amendment — added **before running the pilot**
 
-The common synthetic data model remains
+**Latest planned design (2026-10-18):** the earlier proposed d=2, eight-distribution experiment has been revised **before any full pilot is run**. The current executable experiment combines **three difference orders** \(d\in\{1,2,3\}\) with **13 distribution settings** (the eight original controls plus five centered skew-normal shape settings). All previous simulations and their artifacts remain unchanged. Any older counts below are superseded by the explicit numbers in this amendment.
+
+**What is changed mathematically?** Each new scenario generates the true stochastic trend and fits the PLS smoother with the **same** order:
+
+\[
+D_d\tau=\varepsilon,\qquad
+\widehat\tau_\lambda=(I+\lambda D_d^\top D_d)^{-1}y,
+\qquad d\in\{1,2,3\}.
+\]
+
+The first d values of the trend are fixed at \(\tau_j=0.02(j-1)\), for \(j=1,\ldots,d\); subsequent values are recursively generated as
+
+\[
+\tau_{j+d}=\varepsilon_j-\sum_{k=0}^{d-1}
+(-1)^{d-k}\binom{d}{k}\tau_{j+k}.
+\]
+
+This ensures exactly \(D_d\tau=\varepsilon\). The infinite-smoothing limit is constant for d=1, linear for d=2 and quadratic for d=3. Comparing fitted order versus a *different* generating order is a separate future misspecification study; this campaign only compares correctly matched orders. Higher-order integrated trends can have much larger low-frequency variation: **stratify by d**, never infer one method dominates from unstratified MSE averages across orders.
+
+**Skew-normal with population mean zero.** Five levels \(\alpha\in\{-6,-3,0,+3,+6\}\) are included. Let \(\delta=\alpha/\sqrt{1+\alpha^2}\) and \(U,V\) be independent standard normals. Define
+
+\[
+Z=\delta |U|+\sqrt{1-\delta^2}\,V,\quad
+\mu_Z=\delta\sqrt{2/\pi},\quad
+s_Z^2=1-2\delta^2/\pi.
+\]
+
+Actual simulated noise is
+
+\[
+\boxed{\eta=\sigma_\eta\,\frac{Z-\mu_Z}{s_Z}}.
+\]
+
+Thus \(\mathbb E\eta=0\) and \(\operatorname{Var}(\eta)=\sigma_\eta^2\), **independently of skewness**. We use *analytic population* centering and scaling, not the mean/SD computed from each realization. At \(\alpha=0\) this is a Gaussian-in-distribution control. The five additional settings are \`skew_normal_m6\`, \`skew_normal_m3\`, \`skew_normal_0\`, \`skew_normal_p3\`, \`skew_normal_p6\`. Unlike a regular unshifted Gamma, these skew-normals can take both positive and negative values.
+
+**Final unrun pilot grid:** \(13\) distribution settings × \(3\) orders × \(2\) lengths (N=50,200) × \(2\) noise scales (0.5,2) = **156 scenarios**. At five independent seeds per scenario and nested R=1/3, this is **1,560 pool evaluations, 4,680 method rows** (780 primary R=3 pools). The **tiny CI smoke** instead checks N=24, noise scale 0.5, one seed, 13×3×2 = **78 pools, 234 method rows**. The manual-only prospective confirmatory preset is 31,200 pools and 93,600 method rows (not run now). Pilot seeds remain fixed to base **47800000**, \`base+10000*scenario_id+replicate\`; the revised scenario order is recorded in the manifest. This pilot has **not been executed**.
+
+**Risk semantics remain:** Cauchy scale gamma is not an SD; Cauchy has neither finite population variance nor expected squared-error risk. Report its median per-pool realized MSE and absolute-error quantiles, not an expected MSE or Guerrero variance ratio. Student-t3, skew-normal, centered Gamma, mixture, and GARCH regimes have finite observation variance, though distributional assumptions may be misspecified. The empirical financial-return motivation does not make additive-noise synthetic trends a calibrated stock-market DGP.
+
+---
+
+## 1. Original distribution definitions (retained)
+
+
+The original d=2-only notation below is superseded by the **matched d=1,2,3** generator defined in the v2 amendment. The common synthetic data model remains
 
 \[
  D_2\tau^{(r)}=\varepsilon^{(r)},\quad
@@ -16,7 +60,7 @@ Do not describe this as actual equity/ETF returns or real market data: returns o
 
 Trend-innovation SD \(\sigma_\varepsilon=0.3\) unless overridden. \(\eta\) noise has nominal standard deviation \(\sigma_\eta\in\{0.5,2.0\}\) **except Cauchy**, where the number is its **scale \(\gamma\)**, not an SD. Two lengths \(N\in\{50,200\}\). Noise is centered and independent across observations *except* in the volatility-clustering regime; all latent innovation and observation-noise processes are independent of each other, and separate pool members are simulated independently.
 
-Eight specifically named DGP regimes (NO silent truncation or winsorization):
+Eight original DGP regimes (five additional skew-normal shapes are defined in the v2 amendment above) (NO silent truncation or winsorization):
 
 | Regime | Construction | Moments and relevance |
 |---|---|---|
@@ -60,12 +104,12 @@ No finite theoretical Cauchy standard deviation, no matching \(\lambda_G\), and 
 
 ## 4. Statistical design and immutable seeds
 
-- **Automated tiny smoke ONLY:** 8 DGP regimes × N24 × noise scale 0.5 × 1 seed × R1/3 = **16 nested pools** and **48 method rows**.
-- **Exploratory pilot (manual, not automatically triggered):** 8 regimes × 2 lengths × 2 noise scales = **32 scenario cells**, five independent replicate seeds, R1/3 nested = **320 pooled evaluations, 960 method rows**, 160 independent R3 pools (the R1 observations reuse series #1).
-- **Prospective independent confirmation (manual only):** 32 cells × 100 fresh seeds × R1/3 = **6,400 nested pooled evaluations** and 19,200 method rows, only after pilot diagnostics.
+- **Automated tiny smoke ONLY:** 13 settings × 3 orders × N24 × noise scale 0.5 × 1 seed × R1/3 = **78 nested pools** and **234 method rows**.
+- **Exploratory pilot (manual, not automatically triggered):** 13 settings × 3 orders × 2 lengths × 2 noise scales = **156 scenario cells**, five independent replicate seeds, R1/3 nested = **1,560 pooled evaluations, 4,680 method rows**, 780 primary R3 pools (the R1 observations reuse series #1).
+- **Prospective independent confirmation (manual only):** 156 cells × 100 fresh seeds × R1/3 = **31,200 nested pooled evaluations** and 93,600 method rows, only after pilot diagnostics.
 - NumPy `default_rng`, seed base **47800000**, `seed=base+10000*scenario_id+replicate`. Independent confirmatory seed base **48800000**. Prior results and their seeds are not touched.
 
-**Primary finite-second-moment estimand:** paired difference of true latent trend MSE between ML and bounded LOOCV for R=3 at fixed scenario/seed, report by regime, length and scale (not just pooled average).
+**Primary finite-second-moment estimand:** paired difference of true latent trend MSE between ML and bounded LOOCV for R=3 at fixed scenario/seed, report by **difference order**, regime, length and scale (not just pooled average).
 
 **Cauchy primary estimand:** comparative distribution (quantiles) of *realized finite-sample robust absolute errors*, with *no population expected-MSE interpretation*. Report median rather than only mean, retain extreme realizations, and use common latent truth and noisy observations across methods.
 
