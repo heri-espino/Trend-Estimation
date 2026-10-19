@@ -62,7 +62,8 @@ For R=1 this reduces to traditional single-series LOOCV. Group only statisticall
 10. [Estimated-variance pilot audit](notes/VARIANCE_ESTIMATION_PILOT_AUDIT_2026-10-18.md) — completed 120 pools, likelihood estimates, catastrophic moments boundaries and variance-level breakdown.
 11. [Results and reproducibility ledger](notes/RESULTS_LEDGER.md) — actual executed campaigns, exact simulation generators, fixed seeds, evidence boundaries.
 12. [Locked robustness protocol](notes/ROBUSTNESS_PROTOCOL.md) — heavy-tailed, autocorrelated and changing-variance simulated errors, with independent pilot seeds.
-13. [Agent handoff](AI_HANDOFF.md).
+13. [Completed robustness pilot audit](notes/ROBUSTNESS_PILOT_AUDIT_2026-10-18.md) — five noise regimes, 1,000 saved method rows, exploratory R=3 paired evidence.
+14. [Agent handoff](AI_HANDOFF.md).
 
 ## Runnable independent pilot
 
@@ -97,7 +98,7 @@ The [variance-estimation protocol](notes/VARIANCE_ESTIMATION_PROTOCOL.md) compar
 
 We have now **implemented** a fifth independent experimental campaign, without rerunning or overwriting prior results. It compares the fitted Gaussian difference-likelihood variance ratio, pooled observed LOOCV (single-start and multibracket), constrained moments, and a nominal known-variance ratio under **five data-generating regimes**: correctly specified iid Gaussian; Student-t observations; Student-t trend innovations; AR(1) observations; and time-varying observation variance. Under the last two regimes the nominal ratio is *not a valid oracle* because the covariance structure differs.
 
-The [locked design](notes/ROBUSTNESS_PROTOCOL.md) calls for 20 scenarios × 5 seeds × nested R=1/3 = **200 pools**, 1000 method-level observations. The full pilot **has not yet been run/committed**. Run `python -m experiments.pooled_loocv_smoothness.run_robustness --preset smoke` for the tiny check and `--preset pilot` for the manually initiated experiment. Read the [results ledger](notes/RESULTS_LEDGER.md) before inferring that implementing a runner has produced empirical findings.
+The [locked design](notes/ROBUSTNESS_PROTOCOL.md) calls for 20 scenarios × 5 seeds × nested R=1/3 = **200 pools**, 1000 method-level observations. The full pilot **has now been executed and committed**, with a [detailed observed-results audit](notes/ROBUSTNESS_PILOT_AUDIT_2026-10-18.md). Run `python -m experiments.pooled_loocv_smoothness.run_robustness --preset smoke` for the tiny check and `--preset pilot` for the manually initiated experiment. Read the [results ledger](notes/RESULTS_LEDGER.md) for the exact independent seeds, executed status, numerical limitations and output paths. An independent CSV audit is provided by `python -m experiments.pooled_loocv_smoothness.audit_robustness`; use `--figures` for manual plots.
 
 **Repository action policy:** commit directly to `paper/pooled-loocv-numerical-optimization`; no PR creation, no merging into main, and no automatic heavy Monte Carlo.
 
