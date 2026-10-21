@@ -86,3 +86,22 @@ def test_plotting_returns_axes():
     assert plot_trend(y, fit) is not None
     assert plot_selection(selection) is not None
     plt.close("all")
+
+
+def test_cv_matches_explicit_leave_one_out_fixed_nonzero_mu():
+    from trendestimation import score_lambda
+    rng = np.random.default_rng(99)
+    n, d, lam, mu = 15, 2, 7.0, 0.15
+    y = rng.normal(size=n)
+    sm = TrendSmoother(n, d)
+    cv = score_lambda(sm, y, lambda_=lam, mu=mu, criterion="cv")
+    errors = []
+    for withheld in range(n):
+        weights = np.ones(n)
+        weights[withheld] = 0
+        D = sm.D
+        A = np.diag(weights) + lam * (D.T @ D)
+        b = weights * y + lam * mu * D.T @ np.ones(n - d)
+        prediction = np.linalg.solve(A, b)[withheld]
+        errors.append((y[withheld] - prediction) ** 2)
+    assert cv == pytest.approx(np.mean(errors), rel=1e-9)
